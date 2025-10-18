@@ -1,7 +1,7 @@
 
 जैमिनीय  साम  प्रकृति  गानम्
 
-Version 0.11 27th September 2025
+Version 0.14 18th October 2025
 
 \BLOCK{ for i, supersection in supersections.items() }
     %- set super_id = "super_" ~ i 
@@ -35,10 +35,9 @@ Version 0.11 27th September 2025
 
 
             \BLOCK{ endif }
-             %- set mantra_sets = subsection.get('mantra_sets', [])
-            \BLOCK{ if mantra_sets }
+            
 \VAR{subsection|format_mantra_sets_text(j,k)}
-            \BLOCK{ endif }
+           
         \BLOCK{ endfor }
     \BLOCK{ endfor }
 \BLOCK{ endfor }
