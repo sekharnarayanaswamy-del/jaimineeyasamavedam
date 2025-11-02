@@ -13,6 +13,7 @@
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\raggedbottom
 \hypersetup{
     colorlinks=true,
     linktoc=all,
@@ -79,14 +80,13 @@ Version 1.0 1st November 2025
 \tableofcontents
 \phantomsection
 
-\vfill
+
 \clearpage
 
 \BLOCK{ for i, supersection in supersections.items() }
     %- set supersection_title = supersection.get("supersection_title", "Untitled Supersection") 
     
     \BLOCK{ if not loop.first }
-\vfill
 \clearpage
     \BLOCK{ endif }
     
@@ -95,23 +95,28 @@ Version 1.0 1st November 2025
 \section*{\textbf{\VAR{ supersection_title|escape_for_latex|replacecolon }}}
 \addcontentsline{toc}{section}{ \VAR{ supersection_title|escape_for_latex|replacecolon }}
     \BLOCK{ endif }
-    
+   
     \BLOCK{ for j, section in supersection.get('sections', {}).items() }
-        \BLOCK{ if j != 'count' and section.get('section_title') }
-            %- set section_title_text = section.get('section_title')
-            
-            \BLOCK{ if not loop.first }
-\vfill
-\clearpage
+        \BLOCK{ if section.get('section_title') }
+
+            \BLOCK{ if j != 'section_1' }
+    \clearpage
             \BLOCK{ endif }
   
-\phantomsection
-\subsection*{\textbf{\VAR{ section_title_text|escape_for_latex|replacecolon }}}
-\addcontentsline{toc}{subsection}{ \VAR{ section_title_text|escape_for_latex|replacecolon }}
+       %- set section_title_text = section.get('section_title')
+       \phantomsection
+       \subsection*{\textbf{\VAR{ section_title_text|escape_for_latex|replacecolon }}}
+       \addcontentsline{toc}{subsection}{ \VAR{ section_title_text|escape_for_latex|replacecolon }}
 
+                  
         \BLOCK{ for k, subsection in section.get('subsections', {}).items() }
+        \begin{minipage}[t]{\textwidth}
+               
+            
             %- set header = subsection.get('header', {}).get('header', 'Untitled Header') 
-            \BLOCK{ if header }
+            %- set header_number = subsection.get('header', {}).get('header_number', 0) 
+            %- set subsection_title = header 
+            \BLOCK{ if subsection_title }
 \phantomsection
 \subsubsection*{\textbf{\VAR{ header|escape_for_latex|replacecolon }}}
 \addcontentsline{toc}{subsubsection}{ \VAR{ header|escape_for_latex|replacecolon }}
@@ -121,7 +126,8 @@ Version 1.0 1st November 2025
             \BLOCK{ endif }
             
 \VAR{subsection|format_mantra_sets(j,k)}
-           
+
+            \end{minipage}
         \BLOCK{ endfor }
         \BLOCK{ endif }
     \BLOCK{ endfor }
