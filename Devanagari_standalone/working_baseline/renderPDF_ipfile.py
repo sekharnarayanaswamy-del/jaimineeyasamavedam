@@ -241,9 +241,7 @@ def escape_for_latex(data):
         return "".join([latex_special_chars.get(c, c) for c in data])
 
     return data
-MAX_COLUMNS = 18
-# Revert to simple 'l' columns, relying on \setlength{\tabcolsep}{0pt} for spacing control
-column_spec_1 = "l" * MAX_COLUMNS 
+
 
 def replacecolon(data):
     if isinstance(data,str):
@@ -259,7 +257,7 @@ def format_mantra_sets(subsection, section_title, subsection_title):
     # Pattern to handle the case where a word like "word(swara)" might be missed by the tokenization
     # We rely on the core tokenization loop below instead of a pre-processing step.
 
-    #column_spec_1 = "l" * MAX_COLUMNS
+   
     formatted_sets = []
     mantra_for_issues = ""
     mantra_sets = subsection.get('mantra_sets', [])
@@ -293,18 +291,17 @@ def format_mantra_sets(subsection, section_title, subsection_title):
         # Clean up the mantra
         mantra = mantra.replace("{[}", "X")
         mantra = mantra.replace(":", "ः")
-        # Remove mantra numbers
-        #if match_instance := re.search(number_pattern, mantra):
-            #mantra = mantra.replace(match_instance.group(0), "")
+       
         
         # Extract and remove mantra numbers
         if match_instance := re.search(number_pattern, mantra):
             mantra_number = match_instance.group(0).strip() # Capture the number (e.g., "॥1॥")
             mantra = mantra.replace(match_instance.group(0), "") # Remove it from the mantra string
 
-
-        # We skip the "Handle danda(swara) pattern" pre-processing as it interferes with new tokenization.
+         # ADD THIS LINE HERE:
+        MAX_COLS_PER_LINE = 125  # Adjust this based on page width
         
+             
         # --- NEW "ALIGNED TWO-ROW" LOGIC START ---
         
         mantra_row_cols = []
@@ -319,7 +316,8 @@ def format_mantra_sets(subsection, section_title, subsection_title):
             
             # 2. Check for danda
             if mantra[i] in '।॥|':
-                danda_token = r'{\hspace{3pt}\textbf{' + mantra[i] + r'}\hspace{3pt}}'
+                # Add a \quad (1em space) AFTER the danda and its padding
+                danda_token = r'{\hspace{3pt}\textbf{' + mantra[i] + r'}\hspace{3pt}\quad}'
                 mantra_row_cols.append(danda_token)
                 swara_row_cols.append('{}') # Empty cell in swara row
                 i += 1
@@ -375,45 +373,48 @@ def format_mantra_sets(subsection, section_title, subsection_title):
                 if i == token_start:
                     i += 1  # Avoid infinite loop
         
-        # --- NEW "ALIGNED TWO-ROW" LOGIC END ---
-             
-        # --- TABLE ASSEMBLY START ---
+        # --- NEW "ALIGNED TWO-ROW" LOGIC END ---            
+                   
+        # --- TABLE ASSEMBLY WITH LINE WRAPPING START ---
         
         if len(mantra_row_cols) > 0:
+            all_tables = []
             
-            # Join all mantra columns
-            mantra_row_str = '&'.join(mantra_row_cols)
-            # Join all swara columns
-            swara_row_str = '&'.join(swara_row_cols)
-            
-            # Combine both rows with a LaTeX line break
-            # We add [0.5ex] for vertical spacing
-            result_mantra = f'{mantra_row_str} \\\\[0.1ex] {swara_row_str}'
-
-            # 2. Build STABLE table structure using 'tabular' and simple column spec
-            # NOTE: We use simple 'l' columns and rely on \tabcolsep=0pt from the template.
-            
-           # Count the *actual* number of columns needed for this specific mantra
-            num_cols = len(mantra_row_cols)
-            
-            # Create a dynamic column spec (e.g., "llll" if num_cols is 4)
-            # Use 'l' (left-align) for all columns
-            dynamic_col_spec = "l" * num_cols
-            
-            # Use the new dynamic spec instead of the fixed 18-column one
-            tbl_start_string = f'\\begin{{tabular}}[t]{{{dynamic_col_spec}}}'            
-                                           
-            tbl_end_string = '\\end{tabular}'
-             
-                      
-            if mantra_number:
-                # This line has the number, but no newline
-                page_string = f'{tbl_start_string}{result_mantra}\\\\{tbl_end_string}\\hfill \\textbf{{{mantra_number}}}'
-            else:
-                # This line has no number and no newline
-                page_string = f'{tbl_start_string}{result_mantra}\\\\{tbl_end_string}'
+            # Split columns into chunks for line wrapping
+            for chunk_start in range(0, len(mantra_row_cols), MAX_COLS_PER_LINE):
+                chunk_end = min(chunk_start + MAX_COLS_PER_LINE, len(mantra_row_cols))
                 
-            formatted_sets.append(page_string)
+                mantra_chunk = mantra_row_cols[chunk_start:chunk_end]
+                swara_chunk = swara_row_cols[chunk_start:chunk_end]
+                
+                if len(mantra_chunk) > 0:
+                    # Join columns in this chunk
+                    mantra_row_str = '&'.join(mantra_chunk)
+                    swara_row_str = '&'.join(swara_chunk)
+                    
+                    # Combine rows with line break
+                    result_mantra = f'{mantra_row_str} \\\\[0.1ex] {swara_row_str}'
+                    
+                    # Create dynamic column spec for this chunk
+                    num_cols = len(mantra_chunk)
+                    dynamic_col_spec = "l" * num_cols
+                    
+                    # Build table for this chunk
+                    tbl_start_string = f'\\begin{{tabular}}[t]{{{dynamic_col_spec}}}'
+                    tbl_end_string = '\\end{tabular}'
+                    
+                    table_str = f'{tbl_start_string}{result_mantra}\\\\{tbl_end_string}'
+                    all_tables.append(table_str)
+            
+            # Join all table chunks
+            if all_tables:
+                if mantra_number:
+                    # Add number at the end of the last line
+                    page_string = '\n'.join(all_tables) + f'\\hfill \\textbf{{{mantra_number}}}'
+                else:
+                    page_string = '\n'.join(all_tables)
+                    
+                formatted_sets.append(page_string)
 
         mantra_for_issues += "\n\n" + mantra_for_issue
     
