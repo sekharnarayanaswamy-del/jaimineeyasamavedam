@@ -295,7 +295,8 @@ def format_mantra_sets(subsection, section_title, subsection_title):
         
         # Extract and remove mantra numbers
         if match_instance := re.search(number_pattern, mantra):
-            mantra_number = match_instance.group(0).strip() # Capture the number (e.g., "॥1॥")
+            #mantra_number = match_instance.group(0).strip() # Capture the number (e.g., "॥1॥")
+            mantra_number = f"॥ {match_instance.group(1).strip()} ॥" # Capture and reformat (e.g., "॥ 1 ॥")
             mantra = mantra.replace(match_instance.group(0), "") # Remove it from the mantra string
 
          # ADD THIS LINE HERE:
@@ -314,15 +315,35 @@ def format_mantra_sets(subsection, section_title, subsection_title):
                 i += 1
                 continue
             
+            
             # 2. Check for danda
             if mantra[i] in '।॥|':
-                # Add a \quad (1em space) AFTER the danda and its padding
+                
+                # --- ADD A NEW SPACER COLUMN ---
+                # Add ONE blank column with a fixed 1em space
+                mantra_row_cols.append(r'{\hspace{1em}}')
+               
+               
+               # <ADDED JUST NOW> Add empty cell in swara row below the spacer
+                swara_row_cols.append(r'{\hspace{1em}}') # Empty cell below the spacer
+                # ---------------------------------
+
+                # Add danda column (with \quad for space AFTER)
                 danda_token = r'{\hspace{3pt}\textbf{' + mantra[i] + r'}\hspace{3pt}\quad}'
                 mantra_row_cols.append(danda_token)
                 swara_row_cols.append('{}') # Empty cell in swara row
+                
                 i += 1
                 continue
             
+
+
+
+
+
+
+
+
             # 3. Check for pattern: [Word] + (Swara)
             match = re.match(r'\s*([^\s()।॥]+)\(([^)]+)\)', mantra[i:])
 
