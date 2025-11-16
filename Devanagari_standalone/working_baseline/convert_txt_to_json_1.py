@@ -4,6 +4,243 @@ import json
 import re
 import os
 
+# --- New Imports for Moved Functions ---
+import grapheme
+import urllib.parse
+from requests.models import PreparedRequest
+# --- End New Imports ---
+
+
+# --- Functions Moved from renderPDF.py ---
+
+# --- Original code from convert_txt_to_json_1.py starts here ---
+
+def combine_halants(graphemes):
+    """
+    Combines sequences of halanted consonants with the following grapheme.
+    e.g., ['पा', 'र्', 'त्', 'थी'] -> ['पा', 'र्त्थी']
+    """
+    # The Devanagari Halant/Virama character
+    HALANT = '\u094D'
+    
+    result = []
+    cluster_buffer = []
+
+    for g in graphemes:
+        # Check if the grapheme ends with a halant
+        if g.endswith(HALANT):
+            # If it is, add it to the buffer to build a cluster
+            cluster_buffer.append(g)
+        else:
+            # This is a non-halanted grapheme (like 'पा' or 'थी')
+            if cluster_buffer:
+                # If we have a pending cluster, join it with this grapheme
+                combined = "".join(cluster_buffer) + g
+                result.append(combined)
+                # Clear the buffer
+                cluster_buffer = []
+            else:
+                # No pending cluster, just add the grapheme
+                result.append(g)
+    
+    # If the string ended with a halant, add any remaining items
+    if cluster_buffer:
+        result.extend(cluster_buffer)
+        
+    return result
+
+
+def combine_ardhaksharas(text):
+    """
+    Combine ardhaksharas (half consonants) with following characters to form complete units.
+    For example: ग् + ना -> ग्ना as a single unit
+    """
+    grapheme_list = list(grapheme.graphemes(text))
+    final_list = combine_halants(grapheme_list)        
+    return final_list
+
+def my_encodeURL(url,param1,value1,param2,value2):
+    #x=urllib.parse.quote(URL)
+    #print("URL is ",url, "param1 is ",param1,"value1 is ",value1,"param2 is ",param2,"value2 is ",value2)
+    #x=urllib.parse.quote(url+"?"+param1+"="+value1+"&"+param2+"="+value2)
+    req = PreparedRequest()
+    params = {param1:value1,param2:value2}
+    req.prepare_url(url, params)
+    #print(req.url)
+    return req.url
+
+def my_format(my_number):
+    my_int=int(my_number)
+    my_string=f"{my_int:3d}"
+    return my_string
+
+def replacecolon(data):
+    if isinstance(data,str):
+        data=data.replace(":","ः")
+    return data
+
+def normalize_and_trim(text):
+    # 1. Normalize ASCII pipes to Devanagari single/double danda forms (optional)
+    text = text.replace("||", "॥").replace("|", "।")
+    # 2. Remove a sequence of danda/space that appears right after a sentence separator (like a dot or danda)
+    #    e.g. ".... .॥ गौतम..."  ->  ".... .गौतम..."
+    #    Pattern: (sep char) + optional spaces + 1+ danda-like chars + optional spaces  -> keep sep char only
+    text = re.sub(r'([.\u0964\u0965])\s*[\u0964\u0965\|]+\s*', r'\1', text)
+    # 3. Trim any remaining leading/trailing whitespace or danda-like characters
+    text = re.sub(r'^[\s\|\u0964\u0965]+|[\s\|\u0964\u0965]+$', '', text)
+    return text
+
+# --- End of Moved Functions ---
+
+# --- NEW FUNCTION (Moved Logic from Step 2) ---
+
+def parse_mantra_for_latex(subsection, supersection_title, section_title, subsection_title, pada_config):
+    """
+    Parses mantra text into rows of graphemes and swaras for LaTeX table rendering.
+    This contains all the parsing logic, moved from renderPDF.format_mantra_sets.
+    """
+    mantra_number = "" # Will be captured by the loop
+
+    mantra_sets = subsection.get('corrected-mantra_sets', [])
+    
+    # --- Determine the line_break_limit using the config ---
+    clean_ss_title = re.sub(r'\s+', ' ', supersection_title).strip()
+    clean_s_title = re.sub(r'\s+', ' ', section_title).strip()
+    clean_sub_title = re.sub(r'\s+', ' ', subsection_title).strip()
+
+    key_ss = clean_ss_title
+    key_s = f"{key_ss}.{clean_s_title}"
+    key_sub = f"{key_s}.{clean_sub_title}"  
+    key_sub = normalize_and_trim(key_sub) # Using local function
+    key_sub = key_sub.replace(":", "ः")
+   
+    if key_sub in pada_config:
+        pada_setting = pada_config[key_sub]
+    elif key_s in pada_config:
+        pada_setting = pada_config[key_s]
+    elif key_ss in pada_config:
+        pada_setting = pada_config[key_ss]
+    else:
+        pada_setting = pada_config["DEFAULT"]
+    
+    # --- Process mantra sets based on config type ---
+    if isinstance(pada_setting, int):
+        line_break_limit = pada_setting
+    elif isinstance(pada_setting, list): 
+        sub_samam_count = 0 
+        line_break_limit = pada_setting[0]     
+        
+    # --- Combine all mantra lines into one single string ---
+    full_mantra_string = ""
+    for mantra_set in mantra_sets:
+        full_mantra_string += mantra_set.get('corrected-mantra', "") + " "
+    
+    # --- Main Parsing Logic ---
+    all_mantra_rows = []
+    all_swara_rows = []
+    current_mantra_row = []
+    current_swara_row = []
+    pada_count = 0
+    i = 0
+    
+    while i < len(full_mantra_string):
+        
+        # 1. Skip whitespace
+        if full_mantra_string[i].isspace() :
+            i += 1
+            continue
+        # Handle visarga replacement           
+        full_mantra_string = full_mantra_string.replace(":", "ः")    
+
+        # 2. Check for danda
+        if full_mantra_string[i] in '।॥|':
+            number_match = re.match(r'॥\s*(\d+)\s*॥', full_mantra_string[i:])
+            if number_match:
+                mantra_number = f"॥ {number_match.group(1).strip()} ॥"            
+                current_mantra_row.append(mantra_number)
+                current_swara_row.append('{}')
+                if isinstance(pada_setting, list):
+                    sub_samam_count += 1  
+                    if sub_samam_count < len(pada_setting):
+                        line_break_limit = int(pada_setting[sub_samam_count])
+                                        
+                i += len(number_match.group(0))
+            else:
+                danda_token = r'{\leavevmode\quad\hspace{3pt}\textbf{' + full_mantra_string[i] + r'}\hspace{3pt}\quad}'
+                current_mantra_row.append(danda_token)
+                current_swara_row.append('{}')
+                i += 1
+                
+            # --- PADA-BREAKING LOGIC (Using dynamic limit) ---
+            pada_count += 1
+            if pada_count >= line_break_limit or number_match:
+                all_mantra_rows.append(current_mantra_row)
+                all_swara_rows.append(current_swara_row)
+                current_mantra_row = []
+                current_swara_row = []
+                pada_count = 0
+            # --- END PADA-BREAKING LOGIC ---
+            
+            continue
+            
+        # 3. Check for pattern: [Word] + (Swara)
+        string_chk = full_mantra_string[i:]
+        match = re.match(r'\s*([^\s()।॥]+)\s*\(([^)]+)\)', string_chk)
+
+        if match:
+            mantra_word = match.group(1)
+            swara_word = match.group(2)
+            
+            mylist = combine_ardhaksharas(mantra_word) # Using local function
+            
+            if len(mylist) > 0:
+                target_grapheme = mylist[-1]
+                preceding_graphemes = ''.join(mylist[0:-1])
+
+                if preceding_graphemes:
+                    current_mantra_row.append(f'{{{preceding_graphemes}}}')
+                    current_swara_row.append('{}') 
+
+                current_mantra_row.append(f'{{{target_grapheme}}}')
+                current_swara_row.append(f'{{\\hspace{{2pt}}\\smallredfont {swara_word}}}')
+            else:
+                current_mantra_row.append('{}')
+                current_swara_row.append(f'{{\\hspace{{2pt}}\\smallredfont {swara_word}}}')
+
+            match_start_index = full_mantra_string[i:].find(match.group(0))
+            if match_start_index != -1:
+                i += match_start_index + len(match.group(0))
+            else:
+                i += 1
+        
+        # 4. Continuous text block (no swara)
+        else:
+            token_start = i
+            while i < len(full_mantra_string):
+                if full_mantra_string[i] in '।॥|(' or full_mantra_string[i].isspace():
+                    break
+                i += 1
+            
+            continuous_text = full_mantra_string[token_start:i].strip()
+            
+            if continuous_text:
+                current_mantra_row.append(f'{{{continuous_text}}}')
+                current_swara_row.append('{}')
+            if i == token_start:
+                i += 1 # Prevent infinite loop if no progress made
+        
+    # --- END PADA LOGIC ---
+    
+    # Add any remaining items
+    if current_mantra_row:
+        all_mantra_rows.append(current_mantra_row)
+        all_swara_rows.append(current_swara_row)
+
+    # Return the raw row data for the formatter
+    return all_mantra_rows, all_swara_rows
+
+# --- End of NEW FUNCTION ---
+
 def parse_mantra_set(mantra_set_text):
     """
     Parses a block of mantra set text into a list of mantra/swara dictionaries.
