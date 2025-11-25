@@ -86,78 +86,6 @@ def format_header(text):
         return text
 
 # ----------------------------------------------------
-# 3. Utility function: Line Breaks (FIXED WITH FLATTENING)
-# ----------------------------------------------------
-def add_enhanced_linebreaks_4(text):
-    # --- STEP 0: NORMALIZE ---
-    text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
-    text = text.replace('|', r'।\ ').replace('।', r'।\ ')
-    text = text.lstrip()
-    danda = r'॥'
-
-    # --- STEP 0.5: AGGRESSIVE PRE-MERGE ---
-    # Attempts to glue '||' and 'Atha' if they are separated by whitespace
-    # We use [\|॥] to catch both standard and double pipe dandas
-    text = re.sub(r'[\|॥]+\s+(अथ)', r'॥ \1', text)
-
-    # --- DEFINE PATTERNS ---
-    
-    # 1. ITI PATTERN
-    iti_pat = r'(' + danda + r'.*?इति.*?' + danda + r')'
-    
-    # 2. SAMAPTAH PATTERN
-    samaptah_pat = r'((?:' + danda + r')?.*?समाप्तः.*?\s*' + danda + r')'
-    
-    # 3. ATHA PATTERN (The Flattening Fix)
-    # We capture: (Optional Danda + Spaces) + Atha + ... + End Danda
-    atha_pat = r'((?:' + danda + r'\s*)?अथ.*?' + danda + r')'
-    
-    mantra_pat = r'(' + danda + r'\s*[\d\u0966-\u096F]+\s*' + danda + r')'
-
-    # --- STEP 1: GLUE 'ITI' + 'SAMAPTAH' ---
-    double_footer_pattern = iti_pat + r'\s+' + samaptah_pat
-    text = re.sub(double_footer_pattern, r'\1 \\\\*[1ex] \2 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 2: HANDLE REMAINING 'ITI' ---
-    single_footer_pattern = iti_pat + r'(?!\s*\\)'
-    text = re.sub(single_footer_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-    
-    # --- STEP 2.5: HANDLE REMAINING 'SAMAPTAH' ---
-    single_samaptah_pattern = samaptah_pat + r'(?!\s*\\)'
-    text = re.sub(single_samaptah_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 3: HANDLE 'ATHA' HEADERS (NEW FLATTENING LOGIC) ---
-    # Instead of a simple replace, we use a function to STRIP newlines inside the match.
-    def flatten_atha(match):
-        content = match.group(1)
-        # Replace all newlines/tabs with a single space
-        content = re.sub(r'\s+', ' ', content)
-        return content.strip() + r' \\\\' + '\n'
-
-    text = re.sub(atha_pat, flatten_atha, text, flags=re.DOTALL)
-
-    # --- STEP 4: HANDLE MANTRA LINE BREAKS ---
-    mantra_break_pattern = mantra_pat + r'(?!\s*\\\\)'
-    text = re.sub(mantra_break_pattern, r'\1 \\\\\n', text)
-    
-    # --- STEP 4.5: FIX MANTRA NUMBER SPACING & PREVENT SPLITTING ---
-    # We find || Digits || and wrap them in \mbox{...}
-    # \mbox prevents LaTeX from breaking the line inside this block.
-    number_spacing_pattern = r'॥\s*([\u0966-\u096F]+)\s*॥'
-    text = re.sub(number_spacing_pattern, r'\\mbox{॥ \1 ॥}', text)
-
-   # --- STEP 5: ORPHAN CLEANUP ---
-    # Removes lines containing ONLY Dandas/Pipes
-    orphan_pattern = r'(?m)^\s*[\|॥\u0964\u0965I]+\s*$'
-    text = re.sub(orphan_pattern, '', text)
-    
-    # Clean up double dandas that might have merged
-    text = re.sub(r'॥\s*॥', r'॥', text)
-    # Remove excess newlines
-    text = re.sub(r'\n\s*\n\s*\n', r'\n\n', text)
-    
-    return text.lstrip()        
-# ----------------------------------------------------
 # 3. Utility function: Line Breaks (With Clearpage for Atha)
 # ----------------------------------------------------
 def add_enhanced_linebreaks(text):
@@ -220,132 +148,6 @@ def add_enhanced_linebreaks(text):
     
     return text.lstrip()
 
-def add_enhanced_linebreaks_2(text):
-    # --- STEP 0: NORMALIZE ---
-    text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
-    text = text.replace('|', r'।\ ').replace('।', r'।\ ')
-    text = text.lstrip()
-    danda = r'॥'
-
-    # --- DEFINE PATTERNS ---
-    
-    # 1. ITI PATTERN
-    iti_pat = r'(' + danda + r'.*?इति.*?' + danda + r')'
-    
-    # 2. SAMAPTAH PATTERN
-    samaptah_pat = r'((?:' + danda + r')?.*?समाप्तः.*?\s*' + danda + r')'
-    
-    # 3. ATHA PATTERN (STRICTER)
-    # logic: Optional Danda -> whitespace -> Literal "Atha"
-    # Removed ".*?" before Atha to ensure it grabs the IMMEDIATE preceding Danda
-    atha_pat = r'((?:' + danda + r'\s*)?अथ.*?' + danda + r')'
-    
-    mantra_pat = r'(' + danda + r'\s*[\d\u0966-\u096F]+\s*' + danda + r')'
-
-    # --- STEP 1: GLUE 'ITI' + 'SAMAPTAH' ---
-    double_footer_pattern = iti_pat + r'\s+' + samaptah_pat
-    text = re.sub(double_footer_pattern, r'\1 \\\\*[1ex] \2 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 2: HANDLE REMAINING 'ITI' ---
-    single_footer_pattern = iti_pat + r'(?!\s*\\)'
-    text = re.sub(single_footer_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-    
-    # --- STEP 2.5: HANDLE REMAINING 'SAMAPTAH' ---
-    single_samaptah_pattern = samaptah_pat + r'(?!\s*\\)'
-    text = re.sub(single_samaptah_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 3: HANDLE 'ATHA' HEADERS ---
-    atha_break_pattern = atha_pat + r'(?!\s*\\\\)'
-    text = re.sub(atha_break_pattern, r'\1 \\\\\n', text, flags=re.DOTALL)
-
-    # --- STEP 4: HANDLE MANTRA LINE BREAKS ---
-    mantra_break_pattern = mantra_pat + r'(?!\s*\\\\)'
-    text = re.sub(mantra_break_pattern, r'\1 \\\\\n', text)
-    
-    # --- STEP 4.5: FIX MANTRA NUMBER SPACING & PREVENT SPLITTING ---
-    # We find || Digits || and wrap them in \mbox{...}
-    # \mbox prevents LaTeX from breaking the line inside this block.
-    number_spacing_pattern = r'॥\s*([\u0966-\u096F]+)\s*॥'
-    text = re.sub(number_spacing_pattern, r'\\mbox{॥ \1 ॥}', text)
-
-   # --- STEP 5: ORPHAN CLEANUP ---
-    # Removes lines containing ONLY Dandas/Pipes
-    orphan_pattern = r'(?m)^\s*[\|॥\u0964\u0965I]+\s*$'
-    text = re.sub(orphan_pattern, '', text)
-    
-    # Clean up double dandas that might have merged
-    text = re.sub(r'॥\s*॥', r'॥', text)
-    # Remove excess newlines
-    text = re.sub(r'\n\s*\n\s*\n', r'\n\n', text)
-    
-    return text.lstrip()
-
-# ----------------------------------------------------
-# 3. Utility function: Line Breaks (FIXED FOR ORPHANS & ATHA)
-# ----------------------------------------------------
-def add_enhanced_linebreaks_1(text):
-    # --- STEP 0: NORMALIZE ---
-    text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
-    # Convert single '|' to Devanagari Single Danda (।) PLUS a space.
-    text = text.replace('|', r'।\ ').replace('।', r'।\ ')
-    text = text.lstrip()
-    danda = r'॥'
-
-    # --- DEFINE PATTERNS ---
-    
-    # 1. ITI PATTERN
-    iti_pat = r'(' + danda + r'.*?इति.*?' + danda + r')'
-    
-    # 2. SAMAPTAH PATTERN
-    # Captures "|| ... Samaptah ... ||"
-    samaptah_pat = r'((?:' + danda + r')?.*?समाप्तः.*?\s*' + danda + r')'
-    
-    # 3. ATHA PATTERN (FIXED)
-    # The (?:\s*'+danda+r')? looks for an optional Danda BEFORE "Atha".
-    # We added \s* inside the group so it captures the Danda even if there is a newline between them.
-    atha_pat = r'((?:' + danda + r'\s*)?.*?अथ.*?' + danda + r')'
-    
-    mantra_pat = r'(' + danda + r'\s*[\d\u0966-\u096F]+\s*' + danda + r')'
-
-    # --- STEP 1: GLUE 'ITI' + 'SAMAPTAH' ---
-    double_footer_pattern = iti_pat + r'\s+' + samaptah_pat
-    text = re.sub(double_footer_pattern, r'\1 \\\\*[1ex] \2 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 2: HANDLE REMAINING 'ITI' ---
-    single_footer_pattern = iti_pat + r'(?!\s*\\)'
-    text = re.sub(single_footer_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-    
-    # --- STEP 2.5: HANDLE REMAINING 'SAMAPTAH' ---
-    single_samaptah_pattern = samaptah_pat + r'(?!\s*\\)'
-    text = re.sub(single_samaptah_pattern, r'\1 \\\\[1ex]\n', text, flags=re.DOTALL)
-
-    # --- STEP 3: HANDLE 'ATHA' HEADERS ---
-    # This logic now pulls the '||' onto the same line as 'Atha'
-    atha_break_pattern = atha_pat + r'(?!\s*\\\\)'
-    text = re.sub(atha_break_pattern, r'\1 \\\\\n', text, flags=re.DOTALL)
-
-    # --- STEP 4: HANDLE MANTRA LINE BREAKS ---
-    mantra_break_pattern = mantra_pat + r'(?!\s*\\\\)'
-    text = re.sub(mantra_break_pattern, r'\1 \\\\\n', text)
-    
-    # --- STEP 4.5: FIX MANTRA NUMBER SPACING ---
-    # Ensures || 5 || format
-    number_spacing_pattern = r'॥\s*([\u0966-\u096F]+)\s*॥'
-    text = re.sub(number_spacing_pattern, r'॥ \1 ॥', text)
-
-   # --- STEP 5: ORPHAN CLEANUP (CRITICAL FIX) ---
-    # This specifically targets lines that contain ONLY dandas or whitespace
-    # and removes them completely. This fixes the extra lines in your image.
-    orphan_pattern = r'(?m)^\s*[\|॥\u0964\u0965I]+\s*$'
-    text = re.sub(orphan_pattern, '', text)
-    
-    # Clean up double dandas that might have merged
-    text = re.sub(r'॥\s*॥', r'॥', text)
-    # Remove excess newlines
-    text = re.sub(r'\n\s*\n\s*\n', r'\n\n', text)
-    
-    return text.lstrip()
-
 # ----------------------------------------------------
 # 4. Utility function: Reduce Trailing Whitespace (UPDATED)
 # ----------------------------------------------------
@@ -362,47 +164,7 @@ def eliminate_trailing_whitespace(text):
     text = re.sub(mantra_number_pattern, zero_space + r'\2', text)
     
     return text
-
-   
-   
-    # --- OLD APPROACH BELOW (FOR REFERENCE) --- 
-    
-    #mantra_pattern = r'(' + danda + r'\s*[\u0966-\u096F]+\s*' + danda + r')'
-    #text = re.sub(mantra_pattern, r'\1 \\\\\n', text)
-    #header_pattern = r'(' + danda + r'\s*इति.*?' + danda + r')'
-    #text = re.sub(header_pattern, r'\1 \n\\clearpage', text, flags=re.DOTALL)
-    # --- STEP 1: Handle the "Iti / End of Section" Footer ---
-    # This glues the last mantra to the "Iti" line and forces a page clear.
-    # Note: We added flags=re.DOTALL to handle multiline matching
-    #section_end_pattern = r'(' + danda + r'\s*[\u0966-\u096F]+\s*' + danda + r')\s*(' + danda + r'\s*इति.*?' + danda + r')'
-    #section_end_replacement = r'\1 \\\\*[3ex] \2 \n\\clearpage'
-    
-    #text = re.sub(section_end_pattern, section_end_replacement, text, flags=re.DOTALL)
-    #text = re.sub(pattern, replacement, text)
-
-    # --- STEP 2: Handle Standard Mantra Line Breaks ---
-    # This adds a new line (\\) after every other mantra number.
-    # Logic:
-    # 1. Match the mantra end (|| digits ||) -> Group 1
-    # 2. Negative Lookahead (?!\s*\\\\): 
-    #    "Only match if NOT followed immediately by a LaTeX break (\\)."
-    #    This ensures we don't mess up the lines processed in Step 1.
-    
-    #general_pattern = r'(' + danda + r'\s*[\u0966-\u096F]+\s*' + danda + r')(?!\s*\\\\)'
-    #general_replacement = r'\1 \\\\[\\baselineskip]\n'
-    
-    #text = re.sub(general_pattern, general_replacement, text)
-    
-    
-        # 1. Handle khanda colophon FIRST (before mantra numbers)
-        # Pattern: ॥ इति ... खण्डः ॥
-        # This should be on its own line with a page break after
-        #khanda_pattern = r'॥\s*इति.*?खण्डः\s*॥'
-        #text = re.sub(khanda_pattern, r'\\par\\nopagebreak\\vspace{1em}\\textbf{\g<0>}\\clearpage', text)
-    
-        
-    #return text
-
+  
 # ----------------------------------------------------
 # 4. Utility function: Reduce Trailing Whitespace
 # ----------------------------------------------------
@@ -429,7 +191,7 @@ def reduce_trailing_whitespace(text):
     return text
 
     # ----------------------------------------------------
-    # NEW UTILITY: Remove Internal Spaces (Continuous Script)
+    # NEW UTILITY: Remove Internal Spaces (Continuous Script - Samhita aka Scriptio continua)
     # ----------------------------------------------------
 def remove_mantra_spaces(text):
     """
@@ -518,7 +280,6 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     # (The \kerns we added above are preserved)
     processed_text = replace_accents(processed_text)
    
-    
     processed_text = add_enhanced_linebreaks(processed_text)
 
     # 6. Handle trailing whitespace LAST
