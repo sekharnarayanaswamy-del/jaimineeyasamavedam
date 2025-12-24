@@ -94,7 +94,15 @@ def normalize_and_trim(text):
 
 # --- NEW FUNCTION (Moved Logic from Step 2) ---
 
-def parse_mantra_for_latex(subsection, supersection_title, section_title, subsection_title, pada_config):
+def parse_mantra_for_latex(subsection, supersection_title, section_title, subsection_title):
+    # UPDATED: Removed pada_config from arguments
+    
+    # --- SAFETY FIX: Convert Undefined/None to empty strings ---
+    def safe_str(s): return str(s) if s and 'Undefined' not in str(type(s)) else ''
+    supersection_title = safe_str(supersection_title)
+    section_title = safe_str(section_title)
+    subsection_title = safe_str(subsection_title)
+    # -------------------------------------------------------
     """
     Parses mantra text into rows of graphemes and swaras for LaTeX table rendering.
     This contains all the parsing logic, moved from renderPDF.format_mantra_sets.
@@ -103,32 +111,7 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
 
     mantra_sets = subsection.get('corrected-mantra_sets', [])
     
-    # --- Determine the line_break_limit using the config ---
-    clean_ss_title = re.sub(r'\s+', ' ', supersection_title).strip()
-    clean_s_title = re.sub(r'\s+', ' ', section_title).strip()
-    clean_sub_title = re.sub(r'\s+', ' ', subsection_title).strip()
-
-    key_ss = clean_ss_title
-    key_s = f"{key_ss}.{clean_s_title}"
-    key_sub = f"{key_s}.{clean_sub_title}"  
-    key_sub = normalize_and_trim(key_sub) # Using local function
-    key_sub = key_sub.replace(":", "ः")
-   
-    if key_sub in pada_config:
-        pada_setting = pada_config[key_sub]
-    elif key_s in pada_config:
-        pada_setting = pada_config[key_s]
-    elif key_ss in pada_config:
-        pada_setting = pada_config[key_ss]
-    else:
-        pada_setting = pada_config["DEFAULT"]
-    
-    # --- Process mantra sets based on config type ---
-    if isinstance(pada_setting, int):
-        line_break_limit = pada_setting
-    elif isinstance(pada_setting, list): 
-        sub_samam_count = 0 
-        line_break_limit = pada_setting[0]     
+    # UPDATED: Removed logic for line_break_limit and config lookups
         
     # --- Combine all mantra lines into one single string ---
     full_mantra_string = ""
@@ -140,15 +123,19 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
     all_swara_rows = []
     current_mantra_row = []
     current_swara_row = []
-    pada_count = 0
+    # UPDATED: Removed pada_count
     i = 0
     
     while i < len(full_mantra_string):
         
-        # 1. Skip whitespace
-        if full_mantra_string[i].isspace() :
+        # 1. Handle whitespace (Capture it for Justification)
+        if full_mantra_string[i].isspace():
+            # We insert a specific marker to tell the renderer "This is a word break"
+            current_mantra_row.append("SPACE_TOKEN")
+            current_swara_row.append("{}") 
             i += 1
             continue
+        
         # Handle visarga replacement           
         full_mantra_string = full_mantra_string.replace(":", "ः")    
 
@@ -159,27 +146,20 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                 mantra_number = f"॥ {number_match.group(1).strip()} ॥"            
                 current_mantra_row.append(mantra_number)
                 current_swara_row.append('{}')
-                if isinstance(pada_setting, list):
-                    sub_samam_count += 1  
-                    if sub_samam_count < len(pada_setting):
-                        line_break_limit = int(pada_setting[sub_samam_count])
-                                        
                 i += len(number_match.group(0))
-            else:
-                danda_token = r'{\leavevmode\quad\hspace{3pt}\textbf{' + full_mantra_string[i] + r'}\hspace{3pt}\quad}'
-                current_mantra_row.append(danda_token)
-                current_swara_row.append('{}')
-                i += 1
                 
-            # --- PADA-BREAKING LOGIC (Using dynamic limit) ---
-            pada_count += 1
-            if pada_count >= line_break_limit or number_match:
+                # Force line break on mantra number match
                 all_mantra_rows.append(current_mantra_row)
                 all_swara_rows.append(current_swara_row)
                 current_mantra_row = []
                 current_swara_row = []
-                pada_count = 0
-            # --- END PADA-BREAKING LOGIC ---
+            else:
+                danda_token =  full_mantra_string[i] 
+                current_mantra_row.append(danda_token)
+                current_swara_row.append('{}')
+                i += 1
+            
+            # UPDATED: Removed pada_count based breaking logic
             
             continue
             
@@ -202,10 +182,10 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                     current_swara_row.append('{}') 
 
                 current_mantra_row.append(f'{{{target_grapheme}}}')
-                current_swara_row.append(f'{{\\hspace{{2pt}}\\smallredfont {swara_word}}}')
+                current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
             else:
                 current_mantra_row.append('{}')
-                current_swara_row.append(f'{{\\hspace{{2pt}}\\smallredfont {swara_word}}}')
+                current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
 
             match_start_index = full_mantra_string[i:].find(match.group(0))
             if match_start_index != -1:
@@ -224,12 +204,29 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
             continuous_text = full_mantra_string[token_start:i].strip()
             
             if continuous_text:
-                current_mantra_row.append(f'{{{continuous_text}}}')
-                current_swara_row.append('{}')
+                # Check if there is a previous item and it is NOT a Danda              
+                if current_mantra_row and '।' not in current_mantra_row[-1] and '॥' not in current_mantra_row[-1] and "SPACE_TOKEN" not in current_mantra_row[-1]:
+                    
+                    # 1. Get the last entry from current_mantra_row     
+                    existing_string = current_mantra_row[-1]
+                    
+                    # 2. Clean it: Remove { and } to get raw text
+                    raw_text = existing_string.replace('{', '').replace('}', '')
+                    
+                    # 3. Combine raw text with new tail
+                    new_combined_string = raw_text + continuous_text
+                    
+                    # 4. Overwrite the last element
+                    current_mantra_row[-1] = f'{{{new_combined_string}}}'
+                    
+                else:
+                    # Fallback: Start of line OR previous item was a Danda 
+                    # Append as a NEW separate token
+                    current_mantra_row.append(f'{{{continuous_text}}}')
+                    current_swara_row.append('{}')         
             if i == token_start:
                 i += 1 # Prevent infinite loop if no progress made
         
-    # --- END PADA LOGIC ---
     
     # Add any remaining items
     if current_mantra_row:
@@ -240,6 +237,32 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
     return all_mantra_rows, all_swara_rows
 
 # --- End of NEW FUNCTION ---
+
+def sanitize_data_structure(supersections):
+    """
+    Recursively cleans titles in the dictionary structure.
+    Replaces ':' with 'ः' in Supersection and Section titles.
+    """
+    for ss_key, ss_val in supersections.items():
+        # Clean Supersection Title
+        if 'supersection_title' in ss_val:
+            ss_val['supersection_title'] = ss_val['supersection_title'].replace(':', 'ः')
+
+        # Clean Section Titles
+        if 'sections' in ss_val:
+            for s_key, s_val in ss_val['sections'].items():
+                if 'section_title' in s_val:
+                    s_val['section_title'] = s_val['section_title'].replace(':', 'ः')
+                    
+                # Note: Subsections are handled by format_mantra_sets, 
+                # but cleaning them here doesn't hurt.
+                if 'subsections' in s_val:
+                    for sub_key, sub_val in s_val['subsections'].items():
+                        if 'header' in sub_val and 'header' in sub_val['header']:
+                             sub_val['header']['header'] = sub_val['header']['header'].replace(':', 'ः')
+
+    return supersections
+
 
 def parse_mantra_set(mantra_set_text):
     """
@@ -258,9 +281,11 @@ def parse_mantra_set(mantra_set_text):
     for mantra in mantras:
         if mantra:
             # The entire line is placed in 'corrected-mantra', including inline swara markings.
+            # Replacing danda characters with spaced versions for consistency
+            mantra = mantra.replace('।', r' । ')
             mantra_sets.append({
                 "corrected-mantra": mantra,
-                "corrected-swara": ""  # Left empty as per user's example
+                "corrected-swara": ""   
             })
             
     return mantra_sets

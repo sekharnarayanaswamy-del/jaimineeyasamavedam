@@ -1,43 +1,15 @@
-\documentclass[a4paper,18pt]{extbook}
-\usepackage[a4paper,portrait,margin=0.5in]{geometry}
-\usepackage{tabularray}
-\usepackage{fancyhdr}
+\documentclass[12pt, a4paper, openany]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec} 
+\titlespacing*{\chapter}{0pt}{-10pt}{10pt}
 
+% --- LANGUAGE & FONT SETUP ---
 \usepackage{fontspec}
-\setmainfont{Noto Serif}
-\setsansfont{Noto Sans}
-\setmonofont{Noto Sans Mono}
-
 \usepackage{polyglossia}
-\usepackage{bookmark}
-\disablehyphenation
-\usepackage{varwidth}
-\usepackage{color}
-\usepackage{xcolor}
-\usepackage{hyperref}
-\raggedbottom
-\hypersetup{
-    colorlinks=true,
-    linktoc=all,
-    linkcolor=black,
-}
-\usepackage{emoji}
-\BLOCK{ if os == "Windows" }
-    \setemojifont{Segoe UI Emoji}
-\BLOCK{ elif os == "Darwin" }
-    \setemojifont{Apple Color Emoji}
-\BLOCK{ else }
-    \setemojifont{Noto Color Emoji}
-\BLOCK{ endif }
- 
-\usepackage{tabularray}
-\usepackage{imakeidx}
-\makeindex
-
-\setlength{\tabcolsep}{0pt}
+\setdefaultlanguage{sanskrit}
 
 \setmainfont[
-    Scale=1.8,
+    Scale=1.5, 
     Script=Devanagari,
     Ligatures=TeX,
     AutoFakeSlant,
@@ -46,14 +18,9 @@
     ItalicFont={AdiShila Vedic Italic},
     BoldItalicFont={AdiShila Vedic Bold Italic}
 ]{AdiShila Vedic}
-\setmainlanguage{sanskrit}
 
-\setotherlanguages{USenglish,tamil}
-
-\renewcommand{\theHsection}{\thepart.section.\thesection}
-\renewcommand{\thesection}{\arabic{section}}
 \newfontfamily\smallredfont[
-    Scale=1.25,  
+    Scale=1.0,  
     Script=Devanagari,
     Ligatures=TeX,
     Color=red,
@@ -63,94 +30,179 @@
     ItalicFont={AdiShila Vedic Italic},
     BoldItalicFont={AdiShila Vedic Bold Italic}
 ]{AdiShila Vedic}
+\setcounter{tocdepth}{3}
+
+% --- PACKAGES ---
+\usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
+\usepackage{ragged2e} 
+\usepackage{stackengine} 
+\usepackage{fancyhdr}    
+\usepackage{hyperref}    
+\usepackage{imakeidx}    
+\usepackage{emoji}       
+\usepackage{needspace}
+% --- CRITICAL: MICROTYPE FOR SPACING ---
+% This allows LaTeX to stretch letters by 20% to avoid gaps between words 
+\usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
+% --- SPACING & BREAKING RULES ---
+% 1. Reduce the "Cost" of breaking a word.
+%    Default is 50. Lower means "Please break here instead of stretching spaces."
+\hyphenpenalty=10     
+\exhyphenpenalty=10
+
+% --- HYPHENATION & SPACING RULES (CRITICAL) ---
+\lefthyphenmin=3      % Never split first 2 letters (e.g., prevents "ha-")
+\righthyphenmin=3     % Never split last 2 letters (e.g., prevents "-ih")
+\tolerance=500       % Lower tolerance forces better breaks (standard is 200)
+\pretolerance=100     % Tries to break without hyphens first
+\setlength{\emergencystretch}{1em} % Reduced stretch (forces breaks over gaps)
+\setlength{\hfuzz}{2pt}
+\setlength{\parindent}{0pt} 
+
+% --- STACKING COMMANDS (Strictly No Phantom Spaces) ---
+
+% 1. CENTERED Stack (Single Swara)
+% Natural width. No \useanchorwidth{T}.
+% The % signs are CRITICAL to prevent invisible spaces.
+\newcommand{\stackcenter}[2]{%
+  \begingroup%
+  \def\stackalignment{c}%
+  \stackunder{#1}{#2}%
+  \endgroup%
+}
+
+% 2. LEFT Stack (Multi Swara)
+% Natural width.
+\newcommand{\stackleft}[2]{%
+  \begingroup%
+  \def\stackalignment{l}%
+  \stackunder{#1}{#2}%
+  \endgroup%
+}
+
+% --- INDEX INITIALIZATION ---
+\makeindex[columns=2, title=Alphabetical Index, intoc]
+
+% --- HYPERREF ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,     
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Vedic Text},
+    pdfpagemode=UseOutlines, 
+}
+
+% --- EMOJI ---
+\BLOCK{ if os == "Windows" }
+    \setemojifont{Segoe UI Emoji}
+\BLOCK{ elif os == "Darwin" }
+    \setemojifont{Apple Color Emoji}
+\BLOCK{ else }
+    \setemojifont{Noto Color Emoji}
+\BLOCK{ endif }
+
+% --- STACK CONFIG ---
+\def\stackalignment{c} 
+\def\stacktype{L}     
+\setstackgap{L}{0.9\baselineskip} 
+
+% --- HEADER CONFIG ---
+\setlength{\headheight}{22pt} 
+\addtolength{\topmargin}{-10pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\rightmark}   
+\fancyhead[RE]{\leftmark}    
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Jinja helpers
 \newcommand{\VAR}[1]{}
 \newcommand{\BLOCK}[1]{}
 
-\setcounter{tocdepth}{3}
-\renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
+% Command to format accent marks with larger size and bold
+\newcommand{\accentmark}[2]{%
+    {\fontsize{#1pt}{#1pt}\selectfont\bfseries\addfontfeature{FakeBold=3}#2}%
+}
+
+% --- ACCENT OVERLAP ADJUSTMENT ---
+% Defines a small negative space (kerning) to pull the next character closer
+% Used when two "danger" accents (Anudatta/Kampa) appear consecutively.
+\newcommand{\accentadj}{\kern0.15ex}
+
+% --- ADD THIS SECTION ---
+\usepackage{newunicodechar}
+\newunicodechar{।}{\hspace{0.6em}।} % Adds space before Single Danda
+\newunicodechar{॥}{\hspace{0.3em}॥\hspace{0.3em}}
+% ------------------------
 
 \begin{document}
 
+\renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
+
 \begin{titlepage}
     \begin{center}
-\begin{sanskrit}
-    { \Huge
-    जैमिनीय  साम  प्रकृति  गानम्
-    }
-\end{sanskrit}
-\vfill
-Version 1.0 1st November 2025
-\end{center}
+        \begin{sanskrit}
+            { \Huge जैमिनीय साम प्रकृति गानम् }
+        \end{sanskrit}
+        \vfill
+        \date{\today}
+    \end{center}
 \end{titlepage}
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{}
-\fancyhead[R]{}
-\fancyfoot[R]{\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0pt}
+% --- TOC ---
+{
+  \RaggedRight 
+  \tableofcontents
+}
+\newpage
 
-\tableofcontents
-\phantomsection
-\clearpage
+% ==========================================
+% JINJA2 LOOP STRUCTURE
+% ==========================================
 
-\BLOCK{ for i, supersection in supersections.items() }
-    %- set supersection_title = supersection.get("supersection_title", "Untitled Supersection") 
-  
-    \BLOCK{ if supersection_title }
-\clearpage
-\phantomsection
-\section*{\textbf{\VAR{ supersection_title|escape_for_latex|replacecolon }}}
-\addcontentsline{toc}{section}{ \VAR{ supersection_title|escape_for_latex|replacecolon }}
-    \BLOCK{ endif }
-   
-    \BLOCK{ for j, section in supersection.get('sections', {}).items() }
-        \BLOCK{ if section.get('section_title') }
+\BLOCK{ for key, supersection in supersections.items() }
 
-            \BLOCK{ if j != 'section_1' }
-    \clearpage
-            \BLOCK{ endif }
-  
-       %- set section_title_text = section.get('section_title')
-       \phantomsection
-       \subsection*{\textbf{\VAR{ section_title_text|escape_for_latex|replacecolon }}}
-       \addcontentsline{toc}{subsection}{ \VAR{ section_title_text|escape_for_latex|replacecolon }}
+    % --- SUPERSECTION ---
+    \cleardoublepage           
+    \phantomsection              
+    \chapter*{\centering \VAR{supersection.supersection_title}}
+    \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title}}
+    \markboth{\VAR{supersection.supersection_title}}{\VAR{supersection.supersection_title.replace}}
+    
+    % GLUE FIX: Prevent page break between Chapter and First Section
+    \nopagebreak
 
-                  
-        \BLOCK{ for k, subsection in section.get('subsections', {}).items() }
-        \begin{minipage}[t]{\textwidth}
-               
-            
-            %- set header = subsection.get('header', {}).get('header', 'Untitled Header') 
-            %- set header_number = subsection.get('header', {}).get('header_number', 0) 
-            %- set header = header.strip()
+    \BLOCK{ for section_key, section in supersection.sections.items() }
+        \BLOCK{ if section_key != 'count' }
         
-        %# Adding space before and after text to centre within the danda symbol
+            % --- SECTION ---
             
-            %- set subsection_title = header 
+            \phantomsection  
+                
+            \section*{\centering \VAR{section.section_title.replace(':', 'ः')}}
+            \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')}} 
+            \markright{\VAR{section.section_title.replace(':', 'ः')}}
+            \nopagebreak % Keep section title with first mantra
 
-            \BLOCK{ if subsection_title }
-\phantomsection
-\bigskip
-\subsubsection*{\textbf{\VAR{ header|escape_for_latex|replacecolon }}}
-\addcontentsline{toc}{subsubsection}{ \textbf\VAR{ header|escape_for_latex|replacecolon }}
-\index{\VAR{ index_header|escape_for_latex }}  
-
-\noindent
-
-            \BLOCK{ endif }
-            
-
-\VAR{subsection|format_mantra_sets(supersection_title, section_title_text, header, pada_config)}
-
-            \end{minipage}
-        \BLOCK{ endfor }
+            \BLOCK{ for subsection_key, subsection in section.subsections.items() }
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % FIXED: Removed 'pada_config' argument
+                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict)}
+               
+                                
+            \BLOCK{ endfor }
+            % MOVED \clearpage TO HERE
+            % This ensures the NEXT section starts on a new page, 
+            % but the FIRST section stays glued to the Chapter.
+            \clearpage
         \BLOCK{ endif }
     \BLOCK{ endfor }
+
 \BLOCK{ endfor }
 
-\printindex 
-
+  \printindex
 
 \end{document}
