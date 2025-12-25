@@ -5,6 +5,12 @@ venv/
 ENV/
 env/
 
+# Samhita main project - not tracked in format-mantras branch
+Samhita main project/
+venv/
+ENV/
+env/
+
 # IDE
 .idea/
 .vscode/
