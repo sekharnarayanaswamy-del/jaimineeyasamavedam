@@ -1,2 +1,68 @@
-myenv
-output_text/lines/*
+# Virtual environments
+myenv/
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Output lines folder
+output_text/lines/
+
+# Documents
+*.pdf
+*.docx
+*.xlsx
+*.doc
+*.xls
+
+# Data files
+*.json
+*.txt
+*.csv
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+
+# LaTeX files
+*.tex
+*.aux
+*.log
+*.out
+*.toc
+*.idx
+*.ilg
+*.ind
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.lyx
+
+# Template files
+*.template
+
+# Windows/macOS
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Logs
+logs/
