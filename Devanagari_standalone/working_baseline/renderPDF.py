@@ -273,14 +273,18 @@ def escape_for_latex(data):
 
     return data
 
-def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}):
+def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
     
     formatted_output = []
     
     # --- DATA EXTRACTION ---
+    current_rik_id = subsection.get('rik_id')
     string_1 = subsection.get('rik_metadata', '')
     string_2 = subsection.get('rik_text', '')
     string_3 = subsection.get('saman_metadata', '')
+    
+    # Determine if we should show rik_metadata and rik_text (only when rik_id changes)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
     
     # Clean titles
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title)
@@ -295,16 +299,16 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{display_sub_title}}}")
         formatted_output.append(f"\\index{{{index_title}}}")
 
-    # 2. String 1: Rik Metadata (Plain Centered)
+    # 2. String 1: Rik Metadata (Plain Centered) - Only if rik_id changed
     # COLOR: BLUE
-    if string_1:
+    if string_1 and show_rik_info:
         s1 = format_dandas(string_1)
         formatted_output.append(f"{{\\centering \\textcolor{{DarkOrchid}}{{{s1}}} \\par}}")
         formatted_output.append(r"\vspace{0.6em}")
 
-    # 3. String 2: Rik Text (With Vedic Accents, Upright)
+    # 3. String 2: Rik Text (With Vedic Accents, Upright) - Only if rik_id changed
     # COLOR: BLUE
-    if string_2:
+    if string_2 and show_rik_info:
         # Step A: Remove Spaces (Samhita Mode)
         s2 = remove_mantra_spaces(string_2)
         # Step B: Handle Consecutive Accent Kerning
@@ -448,6 +452,190 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
     formatted_sets.append(f"\n#End of Mantra Sets -- {subsection_title} ## DO NOT EDIT")
     return "\n".join(formatted_sets)
 
+# ----------------------------------------------------
+# HTML GENERATION FUNCTIONS
+# ----------------------------------------------------
+
+def escape_for_html(text):
+    """Escape special HTML characters."""
+    if not text:
+        return text
+    html_escapes = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }
+    return ''.join(html_escapes.get(c, c) for c in text)
+
+def format_dandas_html(text):
+    """
+    Formats danda symbols for HTML output.
+    Adds appropriate spacing and wraps mantra numbers in spans.
+    """
+    if not text or not isinstance(text, str):
+        return text
+
+    # Normalize dandas
+    text = re.sub(r'\|\|', '॥', text)
+    text = re.sub(r'\|\s*\|', '॥', text)
+    text = re.sub(r'।।', '॥', text)
+    text = text.replace('|', '।')
+
+    # Wrap mantra numbers in span
+    danda_pattern = r'(?:\|\||॥)'
+    digits = r'[\d०-९]+'
+    pattern = rf'({danda_pattern})\s*({digits})\s*({danda_pattern})'
+    text = re.sub(pattern, r'<span class="mantra-number">\1 \2 \3</span>', text)
+
+    # Add spacing around dandas
+    text = text.replace('॥', ' <span class="danda">॥</span> ')
+    text = text.replace('।', ' <span class="danda">।</span> ')
+
+    # Clean up extra spaces
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
+
+def replace_accents_html(text):
+    """
+    Replaces ASCII accent markers with Unicode characters for HTML.
+    Uses the actual Vedic accent Unicode characters directly.
+    """
+    if not text:
+        return text
+    
+    replacements = [
+        # Swarita (Vertical line above)
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        # Anudatta (Horizontal line below)  
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        # Kampa (Curve)
+        ('(3)', '<span class="accent-swarita">\u1CF8</span>'),
+        # Trikampa
+        ('(4)', '<span class="accent-swarita">\u1CF9</span>'),
+    ]
+    
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
+    
+    return text
+
+def format_mantra_sets_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+    """
+    Formats mantra data as HTML using table-based layout for word/swara stacking.
+    Uses tables similar to existing HTML output in the project.
+    Only renders rik_metadata and rik_text if rik_id differs from prev_rik_id.
+    """
+    formatted_output = []
+    
+    # --- DATA EXTRACTION ---
+    current_rik_id = subsection.get('rik_id')
+    string_1 = subsection.get('rik_metadata', '')
+    string_2 = subsection.get('rik_text', '')
+    string_3 = subsection.get('saman_metadata', '')
+    
+    # Determine if we should show rik_metadata and rik_text (only when rik_id changes)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    
+    # Clean titles
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+
+    # 1. Rik Metadata - Only if rik_id changed
+    if string_1 and show_rik_info:
+        s1 = format_dandas_html(escape_for_html(string_1))
+        formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
+
+    # 2. Rik Text (With accents) - Only if rik_id changed
+    if string_2 and show_rik_info:
+        s2 = remove_mantra_spaces(string_2)
+        s2 = replace_accents_html(escape_for_html(s2))
+        s2 = format_dandas_html(s2)
+        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+
+    # 3. Combined Header
+    header_parts = []
+    if display_sub_title:
+        header_parts.append(f'<span class="header-title">{escape_for_html(display_sub_title)}</span>')
+    if string_3:
+        meta = format_dandas_html(escape_for_html(string_3))
+        header_parts.append(f'<span class="header-meta">{meta}</span>')
+    
+    if header_parts:
+        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
+
+    # --- MANTRA CONTENT RENDERING (Inline-block for wrapping) ---
+    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
+        subsection, 
+        supersection_title, 
+        section_title, 
+        subsection_title
+    )
+    
+    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
+        
+        is_verse_end = False
+        if mantra_row:
+            for token in reversed(mantra_row):
+                if "SPACE_TOKEN" in token:
+                    continue
+                if "॥" in token or "||" in token:
+                    is_verse_end = True
+                break
+
+        # Build inline-block elements for mantra and swara stacking
+        word_elements = []
+        
+        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
+            text_part = mantra_chunk.strip().replace(":", "ः")
+            text_part = text_part.replace('{', '').replace('}', '').strip()
+            
+            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
+            swara_part = swara_part.replace('\\smallredfont ', '').strip()
+
+            if "SPACE_TOKEN" in text_part:
+                # Skip space tokens - CSS will handle spacing
+                continue
+
+            # Escape and format for HTML
+            text_part = escape_for_html(text_part)
+            text_part = format_dandas_html(text_part)
+            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
+            
+            # Create stacked word element
+            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
+            word_elements.append(word_html)
+
+        # Create verse div with flowing content
+        if word_elements:
+            verse_html = ''.join(word_elements)
+            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
+
+    return '\n'.join(formatted_output)
+
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data):
+    """
+    Creates an HTML file from the template and data.
+    Similar to CreatePdf but outputs HTML instead.
+    """
+    outputdir = "output_text"
+    exit_code = 0
+    
+    HtmlFileName = f"{name}_{DocfamilyName}_Unicode.html"
+    template = templateFileName
+    outputdir = f"{outputdir}/html/{name}"
+    Path(outputdir).mkdir(parents=True, exist_ok=True)
+    
+    document = template.render(supersections=data)
+    
+    output_path = Path(f"{outputdir}/{HtmlFileName}")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(document)
+    
+    print(f"HTML file created: {output_path}")
+    return exit_code
+
+
 def main():
     if len(sys.argv) > 1:
        input_file = sys.argv[1]
@@ -456,6 +644,7 @@ def main():
         
     template_dir="pdf_templates"
     text_template_dir="text_templates"
+    html_template_dir="html_templates"
     
     templateFile_Grantha=f"{template_dir}/Grantha_main.template"
     templateFile_Devanagari=f"{template_dir}/Devanagari_main.template"
@@ -463,10 +652,12 @@ def main():
     templateFile_Malayalam=f"{template_dir}/Malayalam_main.template"
     
     text_templateFile_Devanagari=f"{text_template_dir}/Devanagari_main.template"
+    html_templateFile_Devanagari=f"{html_template_dir}/Devanagari_main_html.template"
 
     outputdir="output_text"
     logdir="pdf_logs"
     
+    # LaTeX/Text Jinja environment (uses LaTeX-style delimiters)
     latex_jinja_env = jinja2.Environment(
     block_start_string = r'\BLOCK{',
     block_end_string = '}',
@@ -488,6 +679,26 @@ def main():
     latex_jinja_env.filters["format_mantra_sets_text"] = format_mantra_sets_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
     
+    # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
+    html_jinja_env = jinja2.Environment(
+    block_start_string = r'\BLOCK{',
+    block_end_string = '}',
+    variable_start_string = r'\VAR{',
+    variable_end_string = '}',
+    comment_start_string = r'\#{',
+    comment_end_string = '}',
+    line_statement_prefix = '%-',
+    line_comment_prefix = '%#',
+    trim_blocks = True,
+    lstrip_blocks=True,
+    autoescape = False,
+    loader = jinja2.FileSystemLoader(os.path.abspath('.')),
+    extensions=['jinja2.ext.loopcontrols']
+    )
+    html_jinja_env.filters["format_mantra_sets_html"] = format_mantra_sets_html
+    html_jinja_env.filters["escape_for_html"] = escape_for_html
+    html_jinja_env.filters["replacecolon"] = replacecolon
+    
     # invocation=''
     # title=''
     # print("running xelatex with ",samhitaTemplateFile)
@@ -498,6 +709,7 @@ def main():
     
     template_file = latex_jinja_env.get_template(templateFile_Devanagari)
     text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
+    html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
     
     ts_string_Devanagari = Path(input_file).read_text(encoding="utf-8")
     data_Devanagari = json.loads(ts_string_Devanagari)
@@ -508,6 +720,7 @@ def main():
     current_os = platform.system() 
     CreatePdf(template_file,f"Devanagari","Devanagari",supersections, current_os=current_os)
     CreateTextFile(text_template_file,f"Devanagari","Devanagari",supersections)
+    CreateHtmlFile(html_template_file,f"Devanagari","Devanagari",supersections)
     
     # ts_string_Tamil = Path("output_text/final-Tamil.json").read_text(encoding="utf-8")
     # data_Tamil = json.loads(ts_string_Tamil)

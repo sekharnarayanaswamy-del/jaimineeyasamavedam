@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जैमिनीय साम प्रकृति गानम्</title>
+    <style>
+        :root {
+            --primary-color: #2d3a4a;
+            --accent-blue: #1565c0;
+            --accent-green: #2e7d32;
+            --accent-purple: #7b1fa2;
+            --swara-red: #c62828;
+            --bg-light: #f8f9fa;
+            --border-color: #dee2e6;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--primary-color);
+            background: var(--bg-light);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        /* Header Styles */
+        .title-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+        
+        .title-page h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .toc h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            padding: 5px 0;
+        }
+        
+        .toc a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .toc-chapter {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+        
+        .toc-section {
+            padding-left: 20px;
+        }
+        
+        .toc-subsection {
+            padding-left: 40px;
+            font-size: 0.95em;
+        }
+        
+        /* Chapter/Section Styles */
+        .chapter {
+            page-break-before: always;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px solid var(--accent-purple);
+        }
+        
+        .chapter-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+        
+        /* Mantra Styles */
+        .subsection {
+            margin: 25px 0;
+            padding: 15px;
+            background: white;
+            border-left: 4px solid var(--accent-blue);
+        }
+        
+        .rik-metadata {
+            text-align: center;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+        }
+        
+        .rik-text {
+            text-align: center;
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+        }
+        
+        .subsection-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .subsection-header .header-title {
+            color: var(--accent-green);
+        }
+        
+        .subsection-header .header-meta {
+            color: var(--accent-purple);
+        }
+        
+        /* Mantra display - flexbox for no whitespace and natural wrapping */
+        .mantra-verse {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 0;
+        }
+        
+        .mantra-word {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: stretch;
+            vertical-align: top;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .mantra-text {
+            font-family: 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1.2;
+        }
+        
+        .swara-text {
+            font-family: 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            color: var(--swara-red);
+            font-size: 0.8rem;
+            line-height: 1;
+            text-align: left;
+            min-height: 1em;
+            border-right: 1px solid transparent;
+            padding-right: 2px;
+        }
+        
+        .word-space {
+            width: 0.3em;
+        }
+        
+        /* Danda and Mantra Number */
+        .danda {
+            margin: 0 0.2em;
+        }
+        
+        .mantra-number {
+            display: inline-block;
+            white-space: nowrap;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        /* Accent marks */
+        .accent-swarita {
+            color: var(--swara-red);
+        }
+        
+        .accent-anudatta {
+            color: var(--swara-red);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                font-size: 1.1rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .title-page h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subsection {
+                padding: 10px;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            .chapter {
+                page-break-before: always;
+            }
+            
+            .subsection {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-bar a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        
+        .nav-bar a:hover {
+            background: var(--bg-light);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <a href="#toc">॥ अनुक्रमणिका ॥</a>
+            <span>जैमिनीय साम</span>
+        </nav>
+        
+        <!-- Title Page -->
+        <div class="title-page">
+            <h1>जैमिनीय साम प्रकृति गानम्</h1>
+        </div>
+        
+        <!-- Table of Contents -->
+        <div class="toc" id="toc">
+            <h2>॥ अनुक्रमणिका ॥</h2>
+            <ul>
+            \BLOCK{ for key, supersection in supersections.items() }
+                <li class="toc-chapter">
+                    <a href="#\VAR{key}">\VAR{supersection.supersection_title}</a>
+                </li>
+                \BLOCK{ for section_key, section in supersection.sections.items() }
+                    \BLOCK{ if section_key != 'count' }
+                    <li class="toc-section">
+                        <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')}</a>
+                    </li>
+                    \BLOCK{ endif }
+                \BLOCK{ endfor }
+            \BLOCK{ endfor }
+            </ul>
+        </div>
+        
+        <!-- Content -->
+        \BLOCK{ for key, supersection in supersections.items() }
+        <div class="chapter" id="\VAR{key}">
+            <h1 class="chapter-title">\VAR{supersection.supersection_title}</h1>
+            
+            \BLOCK{ for section_key, section in supersection.sections.items() }
+                \BLOCK{ if section_key != 'count' }
+                <div class="section" id="\VAR{key}-\VAR{section_key}">
+                    <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')}</h2>
+                    
+                \BLOCK{ set ns = namespace(prev_rik_id=none) }
+                    \BLOCK{ for subsection_key, subsection in section.subsections.items() }
+                    <div class="subsection" id="\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">
+                        \VAR{subsection | format_mantra_sets_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
+                    </div>
+                    \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
+                    \BLOCK{ endfor }
+                </div>
+                \BLOCK{ endif }
+            \BLOCK{ endfor }
+        </div>
+        \BLOCK{ endfor }
+        
+    </div>
+</body>
+</html>
