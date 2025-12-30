@@ -12,11 +12,7 @@
     Scale=1.5, 
     Script=Devanagari,
     Ligatures=TeX,
-    AutoFakeSlant,
-    UprightFont={*-Bold},
-    BoldFont={AdiShila Vedic Bold},
-    ItalicFont={AdiShila Vedic Italic},
-    BoldItalicFont={AdiShila Vedic Bold Italic}
+    AutoFakeSlant
 ]{AdiShila Vedic}
 
 \newfontfamily\smallredfont[
@@ -24,11 +20,7 @@
     Script=Devanagari,
     Ligatures=TeX,
     Color=red,
-    AutoFakeSlant,
-    UprightFont={*-Bold},
-    BoldFont={AdiShila Vedic Bold},
-    ItalicFont={AdiShila Vedic Italic},
-    BoldItalicFont={AdiShila Vedic Bold Italic}
+    AutoFakeSlant
 ]{AdiShila Vedic}
 \setcounter{tocdepth}{3}
 
@@ -71,11 +63,11 @@
   \endgroup%
 }
 
-% 2. LEFT Stack (Multi Swara)
-% Natural width.
+% 2. LEFT Stack (Multi Swara) - NOW USING CENTER FOR BETTER ALIGNMENT
+% Changed from 'l' to 'c' to center mantra above swara
 \newcommand{\stackleft}[2]{%
   \begingroup%
-  \def\stackalignment{l}%
+  \def\stackalignment{c}%
   \stackunder{#1}{#2}%
   \endgroup%
 }
@@ -116,6 +108,10 @@
 \fancyhead[LO]{\rightmark}   
 \fancyhead[RE]{\leftmark}    
 \renewcommand{\headrulewidth}{0.4pt}
+
+% --- FOOTER CONFIG ---
+\fancyfoot[C]{\footnotesize jaimineeyasamavedam.org}
+\renewcommand{\footrulewidth}{0.4pt}
 
 % Jinja helpers
 \newcommand{\VAR}[1]{}
@@ -186,11 +182,13 @@
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
 
+            \BLOCK{ set ns = namespace(prev_rik_id=none) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
                 
-                % FIXED: Removed 'pada_config' argument
-                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict)}
+                % FIXED: Added prev_rik_id tracking to prevent duplicate Rik text
+                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                
                                 
             \BLOCK{ endfor }

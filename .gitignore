@@ -34,7 +34,10 @@ output_text/lines/
 
 # Data files
 *.json
-*.txt
+!corrections_003_merged_out.json
+!Rik_Processing/corrections_003_merged_out.json
+
+# *.txt
 *.csv
 
 # Images
@@ -64,7 +67,10 @@ output_text/lines/
 
 # Template files
 *.template
-
+!html_templates/Devanagari_main_html.template
+!Devanagari_standalone/working_baseline/Devanagari_main.template
+!Devanagari_standalone/Devanagari_main.template
+!pdf_templates/Devanagari_main.template
 # Windows/macOS
 desktop.ini
 Thumbs.db
@@ -72,3 +78,61 @@ Thumbs.db
 
 # Logs
 logs/
+
+# Allow access to generated tex files
+!output_text/**/*.tex
+
+# --- NEW ADDITIONS TO CLEAN UP YOUR VIEW ---
+
+# Ignore the entire Scratch folder (temporary work)
+**/Scratch/
+
+# Ignore OCR outputs (assuming these are generated/raw data)
+**/OCR/
+
+# Ignore MHTML files (seen in your OCR folder)
+*.mhtml
+
+# Ignore test outputs specifically
+test_output.txt
+out_1.txt
+
+# If you want to ignore all those date-stamped text files:
+# This ignores any txt file with a dash (common in your date-stamped files)
+*-*.txt
+!rishi_devata_chandas_for_rik.txt
+!corrections_003.txt
+!pdf_templates/Devanagari_main.template
+!sama_rishi_chandas_out.txt
+!vedic_text.txt
+!html_templates/Devanagari_main_html.template
+output_text/pdf/Devanagari/Devanagari_Devanagari_Unicode_for_Lyx.tex
+output_text/pdf/Devanagari/Devanagari_Devanagari_Unicode_for_OLF.tex
+output_text/pdf/Devanagari/Agneyam_to_Pavamanam_latest.tex
+output_text/Corrections/Aindram Unicode.txt
+output_text/Corrections/correction_004.txt
+output_text/Corrections/corrections_001.txt
+output_text/Corrections/corrections_002.txt
+output_text/Corrections/corrections_004.txt
+output_text/Corrections/corrections_005.txt
+output_text/Corrections/corrections_006_.txt
+output_text/Corrections/corrections_006.txt
+output_text/Corrections/corrections/corrections_001.txt
+output_text/Corrections/corrections/corrections_002.txt
+output_text/Corrections/corrections/corrections_003.txt
+output_text/Corrections/corrections/README.txt
+check_json_debug.py
+!vedic_text.txt
+debug_output.txt
+debug_rik_id_alignment.py
+test_regex_output.txt
+test_regex.py
+test_rik_parser.py
+test_strip_output.txt
+test_strip.py
+extracted_output.txt
+corrections_003_merged_out.json
+output_text/txt/Devanagari/Devanagari_Devanagari_Unicode.txt
+Devanagari_standalone/corrections_003_rishi_chandas.txt
+Devanagari_standalone/Devanagari_main.template
+html_templates/Devanagari_main_html.template
