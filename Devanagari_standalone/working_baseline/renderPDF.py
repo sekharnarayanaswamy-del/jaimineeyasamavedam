@@ -186,7 +186,7 @@ def CreateCompilation():
             prasnaInfo=prasna['id']
             CreateMd(templateFileName_md,f"TS_{kandaInfo}_{prasnaInfo}","Compilation",prasna)
                        
-def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows"):
+def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined"):
     data=escape_for_latex(data)
     
     outputdir="output_text"
@@ -198,10 +198,10 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows"):
     TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
     LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
     template = templateFileName
-    outputdir = f"{outputdir}/pdf/{name}"
+    outputdir = f"{outputdir}/pdf/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
-    document = template.render(supersections=data, os=current_os)
+    document = template.render(supersections=data, os=current_os, output_mode=output_mode)
     
 
     tmpdirname="."
@@ -240,7 +240,7 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows"):
 
     return exit_code
 
-def CreateTextFile (templateFileName,name,DocfamilyName,data):
+def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combined"):
     data=escape_for_latex(data)
     
     outputdir="output_text"
@@ -253,10 +253,10 @@ def CreateTextFile (templateFileName,name,DocfamilyName,data):
     TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
     LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
     template = templateFileName
-    outputdir = f"{outputdir}/txt/{name}"
+    outputdir = f"{outputdir}/txt/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
-    document = template.render(supersections=data)
+    document = template.render(supersections=data, output_mode=output_mode)
     
 
     tmpdirname="."
@@ -327,7 +327,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     # COLOR: BLUE
     if string_1 and show_rik_info:
         s1 = format_dandas(string_1)
-        formatted_output.append(f"{{\\centering \\textcolor{{DarkOrchid}}{{{s1}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
         formatted_output.append(r"\vspace{0.6em}")
 
     # 3. String 2: Rik Text (With Vedic Accents, Upright) - Only if rik_id changed
@@ -347,12 +347,12 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     # 4. Combined Header: || Subsection header || || samam_metadata ||
     header_part = display_sub_title.strip()
-    header_part = f"\\textcolor{{ForestGreen}}{{{header_part}}}"  
+    header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}"  
     
     # COLOR: Samam Metadata -> BROWN
     meta_part = format_dandas(string_3).strip()
     if meta_part:
-        meta_part = f"\\textcolor{{DarkOrchid}}{{{meta_part}}}"
+        meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
     
     combined_header = ""
     if header_part and meta_part:
@@ -443,6 +443,176 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         formatted_output.append(r"\par\vspace{0.5em}")
 
     return "\n\n".join(formatted_output)
+
+
+# ----------------------------------------------------
+# RIK-ONLY FORMATTING (for separate output mode)
+# ----------------------------------------------------
+def format_rik_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+    """
+    Format only Rik content (rik_metadata and rik_text) for separate output mode.
+    Skips all Samam-related content.
+    """
+    formatted_output = []
+    
+    current_rik_id = subsection.get('rik_id')
+    string_1 = subsection.get('rik_metadata', '')
+    string_2 = subsection.get('rik_text', '')
+    
+    # Skip if no Rik content
+    if not string_1 and not string_2:
+        return ""
+    
+    # Only show if rik_id changed (avoid duplicates)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info:
+        return ""
+    
+    # Page Break / Indexing
+    formatted_output.append(r"\par\filbreak")
+    formatted_output.append(r"\phantomsection")
+    
+    rik_id_display = f"Rik {current_rik_id}" if current_rik_id else ""
+    if rik_id_display:
+        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{rik_id_display}}}")
+
+    # Rik Metadata
+    if string_1:
+        s1 = format_dandas(string_1)
+        formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
+        formatted_output.append(r"\vspace{0.6em}")
+
+    # Rik Text (with Vedic Accents)
+    if string_2:
+        s2 = remove_mantra_spaces(string_2)
+        s2 = handle_consecutive_accents(s2)
+        s2 = replace_accents(s2)
+        s2 = format_dandas(s2)
+        formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(r"\vspace{0.8em}")
+
+    return "\n\n".join(formatted_output)
+
+
+# ----------------------------------------------------
+# SAMAM-ONLY FORMATTING (for separate output mode)
+# ----------------------------------------------------
+def format_samam_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+    """
+    Format only Samam content (header, saman_metadata, mantra text) for separate output mode.
+    Skips all Rik-related content.
+    """
+    formatted_output = []
+    
+    string_3 = subsection.get('saman_metadata', '')
+    
+    # Clean titles
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ""
+    index_title = re.sub(r'[|॥]', '', subsection_title).strip() if subsection_title else ""
+
+    # Page Break / Indexing
+    formatted_output.append(r"\par\filbreak")
+    formatted_output.append(r"\phantomsection")
+    if subsection_title:
+        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{display_sub_title}}}")
+        formatted_output.append(f"\\index{{{index_title}}}")
+
+    # Combined Header: Subsection header + samam_metadata
+    header_part = display_sub_title.strip()
+    header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}" if header_part else ""
+    
+    meta_part = format_dandas(string_3).strip()
+    if meta_part:
+        meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
+    
+    combined_header = ""
+    if header_part and meta_part:
+        combined_header = f"{header_part} \\quad {meta_part}"
+    elif header_part:
+        combined_header = header_part
+    elif meta_part:
+        combined_header = meta_part
+        
+    if combined_header:
+        formatted_output.append(f"{{\\centering \\textbf{{{combined_header}}} \\par}}")
+
+    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\vspace{0.5em}")
+    formatted_output.append(r"\nopagebreak")
+
+    # Mantra Content Rendering (Samam text only - no Rik text)
+    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
+        subsection, 
+        supersection_title, 
+        section_title, 
+        subsection_title
+    )
+    
+    paragraph_buffer = []
+    
+    footnotes_map = {}
+    raw_footnotes = subsection.get('footnotes', []) 
+    for note in raw_footnotes:
+        if 'word' in note and 'content' in note:
+            footnotes_map[note['word']] = note['content']
+
+    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
+        
+        is_verse_end = False
+        if mantra_row:
+            for token in reversed(mantra_row):
+                if "SPACE_TOKEN" in token: continue
+                if "॥" in token or "||" in token:
+                    is_verse_end = True
+                break 
+
+        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
+            text_part = mantra_chunk.strip().replace(":", "ः")
+            text_part = clean_stack_arg(text_part)
+            text_part = format_dandas(text_part)
+            swara_part = swara_chunk.strip().replace('{}', '')
+            swara_part = clean_stack_arg(swara_part)
+
+            if "SPACE_TOKEN" in text_part:
+                paragraph_buffer.append("")
+                continue 
+
+            extras = "" 
+            clean_word = text_part.replace('{', '').replace('}', '').strip()
+            
+            if clean_word in footnote_dict:
+                extras = f"\\footnote{{{footnote_dict[clean_word]}}}"
+            elif clean_word in footnotes_map:
+                extras = f"\\footnote{{{footnotes_map[clean_word]}}}"
+
+            if swara_part:
+                clean_swara = swara_part.replace('{', '').replace('}', '')
+                if len(clean_swara) > 1:
+                    stack = f"\\stackleft{{{text_part}}}{{{swara_part}}}\\hspace{{0.05em}}"
+                else:
+                    stack = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+            else:
+                stack = text_part
+                      
+            token = stack + extras
+
+            if token and token != '{}':
+                paragraph_buffer.append(token)
+                paragraph_buffer.append("\\allowbreak")
+
+        if is_verse_end:
+            full_paragraph = "".join(paragraph_buffer)
+            formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
+            formatted_output.append(r"\par\vspace{0.5em}") 
+            paragraph_buffer = [] 
+
+    if paragraph_buffer:
+        full_paragraph = "".join(paragraph_buffer)
+        formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
+        formatted_output.append(r"\par\vspace{0.5em}")
+
+    return "\n\n".join(formatted_output)
+
 
 def format_mantra_sets_text(subsection,section_title,subsection_title):
     
@@ -615,7 +785,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
             text_part = text_part.replace('{', '').replace('}', '').strip()
             
             swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
-            swara_part = swara_part.replace('\\smallredfont ', '').strip()
+            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').strip()
 
             if "SPACE_TOKEN" in text_part:
                 # Skip space tokens - CSS will handle spacing
@@ -637,23 +807,124 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
 
     return '\n'.join(formatted_output)
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiShila Vedic', 'Adishila SanVedic'"):
+
+# ----------------------------------------------------
+# RIK-ONLY HTML FORMATTING (for separate output mode)
+# ----------------------------------------------------
+def format_rik_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+    """
+    Format only Rik content (rik_metadata and rik_text) for HTML separate output mode.
+    Skips all Samam-related content.
+    """
+    formatted_output = []
+    
+    current_rik_id = subsection.get('rik_id')
+    string_1 = subsection.get('rik_metadata', '')
+    string_2 = subsection.get('rik_text', '')
+    
+    # Skip if no Rik content
+    if not string_1 and not string_2:
+        return ""
+    
+    # Only show if rik_id changed (avoid duplicates)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info:
+        return ""
+    
+    # Rik Metadata
+    if string_1:
+        s1 = format_dandas_html(escape_for_html(string_1))
+        formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
+
+    # Rik Text (with accents)
+    if string_2:
+        s2 = remove_mantra_spaces(string_2)
+        s2 = replace_accents_html(escape_for_html(s2))
+        s2 = format_dandas_html(s2)
+        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+
+    return '\n'.join(formatted_output)
+
+
+# ----------------------------------------------------
+# SAMAM-ONLY HTML FORMATTING (for separate output mode)
+# ----------------------------------------------------
+def format_samam_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+    """
+    Format only Samam content (header, saman_metadata, mantra text) for HTML separate output mode.
+    Skips all Rik-related content.
+    """
+    formatted_output = []
+    
+    string_3 = subsection.get('saman_metadata', '')
+    
+    # Clean titles
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+
+    # Combined Header: subsection title + samam metadata
+    header_parts = []
+    if display_sub_title:
+        header_parts.append(f'<span class="header-title">{escape_for_html(display_sub_title)}</span>')
+    if string_3:
+        meta = format_dandas_html(escape_for_html(string_3))
+        header_parts.append(f'<span class="header-meta">{meta}</span>')
+    
+    if header_parts:
+        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
+
+    # Mantra Content
+    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
+        subsection, 
+        supersection_title, 
+        section_title, 
+        subsection_title
+    )
+    
+    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
+        word_elements = []
+        
+        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
+            text_part = mantra_chunk.strip().replace(":", "ः")
+            text_part = text_part.replace('{', '').replace('}', '').strip()
+            
+            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
+            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').strip()
+
+            if "SPACE_TOKEN" in text_part:
+                continue
+
+            text_part = escape_for_html(text_part)
+            text_part = format_dandas_html(text_part)
+            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
+            
+            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
+            word_elements.append(word_html)
+
+        if word_elements:
+            verse_html = ''.join(word_elements)
+            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
+
+    return '\n'.join(formatted_output)
+
+
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiShila Vedic', 'Adishila SanVedic'", output_mode="combined"):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
     
     Args:
         html_font: Font family string for HTML output (e.g., "'AdiShila Vedic', 'Adishila SanVedic'")
+        output_mode: 'combined', 'rik', or 'samam' for filtering content
     """
     outputdir = "output_text"
     exit_code = 0
     
     HtmlFileName = f"{name}_{DocfamilyName}_Unicode.html"
     template = templateFileName
-    outputdir = f"{outputdir}/html/{name}"
+    outputdir = f"{outputdir}/html/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     
-    document = template.render(supersections=data, html_font=html_font)
+    document = template.render(supersections=data, html_font=html_font, output_mode=output_mode)
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
     with open(output_path, "w", encoding="utf-8") as f:
@@ -665,9 +936,24 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiS
 
 def main():
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description='Generate PDF and HTML from Vedic text JSON')
+    parser = argparse.ArgumentParser(
+        description='Generate PDF, HTML, and Text from Vedic text JSON',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Output Modes:
+  combined  - Single output with both Rik and Samam content (default)
+  separate  - Two separate outputs: Rik-only and Samam-only
+
+Examples:
+  python renderPDF.py input.json
+  python renderPDF.py input.json --output-mode separate
+        """
+    )
     parser.add_argument('input_file', nargs='?', default='corrections_003_out.json',
                         help='Input JSON file (default: corrections_003_out.json)')
+    parser.add_argument('--output-mode', dest='output_mode',
+                        choices=['combined', 'separate'], default='combined',
+                        help='Output mode: combined (default) or separate')
     parser.add_argument('--pdf-font', dest='pdf_font', default='AdiShila Vedic',
                         help='Font for PDF output (default: AdiShila Vedic)')
     parser.add_argument('--html-font', dest='html_font', default="'AdiShila Vedic', 'Adishila SanVedic'",
@@ -675,6 +961,7 @@ def main():
     
     args = parser.parse_args()
     input_file = args.input_file
+    output_mode = args.output_mode
     pdf_font = args.pdf_font
     html_font = args.html_font
     template_dir="pdf_templates"
@@ -712,6 +999,8 @@ def main():
     latex_jinja_env.filters["escape_for_latex"] = escape_for_latex
     latex_jinja_env.filters["format_mantra_sets"] = format_mantra_sets
     latex_jinja_env.filters["format_mantra_sets_text"] = format_mantra_sets_text
+    latex_jinja_env.filters["format_rik_only"] = format_rik_only
+    latex_jinja_env.filters["format_samam_only"] = format_samam_only
     latex_jinja_env.filters["replacecolon"] = replacecolon
     
     # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
@@ -731,43 +1020,52 @@ def main():
     extensions=['jinja2.ext.loopcontrols']
     )
     html_jinja_env.filters["format_mantra_sets_html"] = format_mantra_sets_html
+    html_jinja_env.filters["format_rik_only_html"] = format_rik_only_html
+    html_jinja_env.filters["format_samam_only_html"] = format_samam_only_html
     html_jinja_env.filters["escape_for_html"] = escape_for_html
     html_jinja_env.filters["replacecolon"] = replacecolon
-    
-    # invocation=''
-    # title=''
-    # print("running xelatex with ",samhitaTemplateFile)
-    # template_file = latex_jinja_env.get_template(templateFile_Grantha)
-    # supersections = data_Grantha.get('supersection', {})
-    # CreatePdf(template_file,f"Grantha","Grantha",supersections)
 
-    
-    template_file = latex_jinja_env.get_template(templateFile_Devanagari)
-    text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
-    html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
-    
+    # Load input JSON data
     ts_string_Devanagari = Path(input_file).read_text(encoding="utf-8")
     data_Devanagari = json.loads(ts_string_Devanagari)
     
     supersections = data_Devanagari.get('supersection', {})
     supersections = sanitize_data_structure(supersections)
     
-    current_os = platform.system() 
-    CreatePdf(template_file,f"Devanagari","Devanagari",supersections, current_os=current_os)
-    CreateTextFile(text_template_file,f"Devanagari","Devanagari",supersections)
-    CreateHtmlFile(html_template_file,f"Devanagari","Devanagari",supersections, html_font=html_font)
+    current_os = platform.system()
     
-    # ts_string_Tamil = Path("output_text/final-Tamil.json").read_text(encoding="utf-8")
-    # data_Tamil = json.loads(ts_string_Tamil)
-    # template_file = latex_jinja_env.get_template(templateFile_Tamil)
-    # supersections = data_Tamil.get('supersection', {})
-    # CreatePdf(template_file,f"Tamil","Tamil",supersections)
-
-    # ts_string_Malayalam = Path("output_text/final-Malayalam.json").read_text(encoding="utf-8")
-    # data_Malayalam = json.loads(ts_string_Malayalam)
-    # template_file = latex_jinja_env.get_template(templateFile_Malayalam)
-    # supersections = data_Malayalam.get('supersection', {})
-    # CreatePdf(template_file,f"Malayalam","Malayalam",supersections)
+    print(f"Processing {input_file} in '{output_mode}' mode...")
+    
+    if output_mode == 'combined':
+        # Default: Combined output (Rik + Samam together)
+        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
+        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
+        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        
+        CreatePdf(template_file, f"Devanagari", "Devanagari", supersections, current_os=current_os, output_mode='combined')
+        CreateTextFile(text_template_file, f"Devanagari", "Devanagari", supersections, output_mode='combined')
+        CreateHtmlFile(html_template_file, f"Devanagari", "Devanagari", supersections, html_font=html_font, output_mode='combined')
+        print("Success! Generated combined output files.")
+        
+    else:
+        # Separate mode: Generate Rik-only and Samam-only files
+        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
+        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
+        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        
+        # Rik-only output: Pass output_mode='rik' to template
+        print("Generating Rik-only output...")
+        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik')
+        CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik')
+        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik')
+        
+        # Samam-only output: Pass output_mode='samam' to template
+        print("Generating Samam-only output...")
+        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam')
+        CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam')
+        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam')
+        
+        print("Success! Generated separate Rik and Samam output files.")
 
 if __name__ == "__main__":
     main()

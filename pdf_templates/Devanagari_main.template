@@ -26,6 +26,12 @@
 
 % --- PACKAGES ---
 \usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
+
+% --- CUSTOM COLORS (Matching HTML color scheme) ---
+\definecolor{AccentBlue}{HTML}{1565c0}      % Rik text - matches HTML --accent-blue
+\definecolor{AccentPurple}{HTML}{7b1fa2}    % Metadata - matches HTML --accent-purple
+\definecolor{AccentGreen}{HTML}{2e7d32}     % Headers - matches HTML --accent-green
+\definecolor{SwaraRed}{HTML}{c62828}        % Swara marks - matches HTML --swara-red
 \usepackage{ragged2e} 
 \usepackage{stackengine} 
 \usepackage{fancyhdr}    
@@ -186,8 +192,14 @@
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
                 
-                % FIXED: Added prev_rik_id tracking to prevent duplicate Rik text
+                % Conditional rendering based on output_mode
+                \BLOCK{ if output_mode == 'rik' }
+                \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \BLOCK{ elif output_mode == 'samam' }
+                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \BLOCK{ else }
                 \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \BLOCK{ endif }
                 \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                
                                 

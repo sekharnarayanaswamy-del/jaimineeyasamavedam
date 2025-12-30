@@ -135,4 +135,4 @@ corrections_003_merged_out.json
 output_text/txt/Devanagari/Devanagari_Devanagari_Unicode.txt
 Devanagari_standalone/corrections_003_rishi_chandas.txt
 Devanagari_standalone/Devanagari_main.template
-html_templates/Devanagari_main_html.template
+!html_templates/Devanagari_main_html.template

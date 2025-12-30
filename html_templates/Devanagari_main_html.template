@@ -398,7 +398,13 @@
                 \BLOCK{ set ns = namespace(prev_rik_id=none) }
                     \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                     <div class="subsection" id="\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">
+                        \BLOCK{ if output_mode == 'rik' }
+                        \VAR{subsection | format_rik_only_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
+                        \BLOCK{ elif output_mode == 'samam' }
+                        \VAR{subsection | format_samam_only_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
+                        \BLOCK{ else }
                         \VAR{subsection | format_mantra_sets_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
+                        \BLOCK{ endif }
                     </div>
                     \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                     \BLOCK{ endfor }

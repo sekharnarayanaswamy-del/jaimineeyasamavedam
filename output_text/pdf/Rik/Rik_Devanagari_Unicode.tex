@@ -1,0 +1,818 @@
+\documentclass[12pt, a4paper, openany]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage{titlesec} 
+\titlespacing*{\chapter}{0pt}{-10pt}{10pt}
+
+% --- LANGUAGE & FONT SETUP ---
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{sanskrit}
+
+\setmainfont[
+    Scale=1.5, 
+    Script=Devanagari,
+    Ligatures=TeX,
+    AutoFakeSlant
+]{AdiShila Vedic}
+
+\newfontfamily\smallredfont[
+    Scale=1.0,  
+    Script=Devanagari,
+    Ligatures=TeX,
+    Color=red,
+    AutoFakeSlant
+]{AdiShila Vedic}
+\setcounter{tocdepth}{3}
+
+% --- PACKAGES ---
+\usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
+\usepackage{ragged2e} 
+\usepackage{stackengine} 
+\usepackage{fancyhdr}    
+\usepackage{hyperref}    
+\usepackage{imakeidx}    
+\usepackage{emoji}       
+\usepackage{needspace}
+% --- CRITICAL: MICROTYPE FOR SPACING ---
+% This allows LaTeX to stretch letters by 20% to avoid gaps between words 
+\usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
+% --- SPACING & BREAKING RULES ---
+% 1. Reduce the "Cost" of breaking a word.
+%    Default is 50. Lower means "Please break here instead of stretching spaces."
+\hyphenpenalty=10     
+\exhyphenpenalty=10
+
+% --- HYPHENATION & SPACING RULES (CRITICAL) ---
+\lefthyphenmin=3      % Never split first 2 letters (e.g., prevents "ha-")
+\righthyphenmin=3     % Never split last 2 letters (e.g., prevents "-ih")
+\tolerance=500       % Lower tolerance forces better breaks (standard is 200)
+\pretolerance=100     % Tries to break without hyphens first
+\setlength{\emergencystretch}{1em} % Reduced stretch (forces breaks over gaps)
+\setlength{\hfuzz}{2pt}
+\setlength{\parindent}{0pt} 
+
+% --- STACKING COMMANDS (Strictly No Phantom Spaces) ---
+
+% 1. CENTERED Stack (Single Swara)
+% Natural width. No \useanchorwidth{T}.
+% The % signs are CRITICAL to prevent invisible spaces.
+\newcommand{\stackcenter}[2]{%
+  \begingroup%
+  \def\stackalignment{c}%
+  \stackunder{#1}{#2}%
+  \endgroup%
+}
+
+% 2. LEFT Stack (Multi Swara) - NOW USING CENTER FOR BETTER ALIGNMENT
+% Changed from 'l' to 'c' to center mantra above swara
+\newcommand{\stackleft}[2]{%
+  \begingroup%
+  \def\stackalignment{c}%
+  \stackunder{#1}{#2}%
+  \endgroup%
+}
+
+% --- INDEX INITIALIZATION ---
+\makeindex[columns=2, title=Alphabetical Index, intoc]
+
+% --- HYPERREF ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,     
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Vedic Text},
+    pdfpagemode=UseOutlines, 
+}
+
+% --- EMOJI ---
+    \setemojifont{Segoe UI Emoji}
+
+% --- STACK CONFIG ---
+\def\stackalignment{c} 
+\def\stacktype{L}     
+\setstackgap{L}{0.9\baselineskip} 
+
+% --- HEADER CONFIG ---
+\setlength{\headheight}{22pt} 
+\addtolength{\topmargin}{-10pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\rightmark}   
+\fancyhead[RE]{\leftmark}    
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- FOOTER CONFIG ---
+\fancyfoot[C]{\footnotesize jaimineeyasamavedam.org}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Jinja helpers
+\newcommand{\VAR}[1]{}
+\newcommand{\BLOCK}[1]{}
+
+% Command to format accent marks with larger size and bold
+\newcommand{\accentmark}[2]{%
+    {\fontsize{#1pt}{#1pt}\selectfont\bfseries\addfontfeature{FakeBold=3}#2}%
+}
+
+% --- ACCENT OVERLAP ADJUSTMENT ---
+% Defines a small negative space (kerning) to pull the next character closer
+% Used when two "danger" accents (Anudatta/Kampa) appear consecutively.
+\newcommand{\accentadj}{\kern0.15ex}
+
+% --- ADD THIS SECTION ---
+\usepackage{newunicodechar}
+\newunicodechar{।}{\hspace{0.6em}।} % Adds space before Single Danda
+\newunicodechar{॥}{\hspace{0.3em}॥\hspace{0.3em}}
+% ------------------------
+
+\begin{document}
+
+\renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
+
+\begin{titlepage}
+    \begin{center}
+        \begin{sanskrit}
+            { \Huge जैमिनीय साम प्रकृति गानम् }
+        \end{sanskrit}
+        \vfill
+        \date{\today}
+    \end{center}
+\end{titlepage}
+
+% --- TOC ---
+{
+  \RaggedRight 
+  \tableofcontents
+}
+\newpage
+
+% ==========================================
+% JINJA2 LOOP STRUCTURE
+% ==========================================
+
+
+    % --- SUPERSECTION ---
+    \cleardoublepage           
+    \phantomsection              
+    \chapter*{\centering आग्नेयपाठः}
+    \addcontentsline{toc}{chapter}{आग्नेयपाठः}
+    \markboth{आग्नेयपाठः}{<built-in method replace of str object at 0x0000023E95E45B10>}
+    
+    % GLUE FIX: Prevent page break between Chapter and First Section
+    \nopagebreak
+
+        
+            % --- SECTION ---
+            
+            \phantomsection  
+                
+            \section*{\centering प्रथम खण्डः}
+            \addcontentsline{toc}{section}{प्रथम खण्डः} 
+            \markright{प्रथम खण्डः}
+            \nopagebreak % Keep section title with first mantra
+
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 1}
+
+{\centering \textcolor{DarkOrchid}{॥ भारद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}आ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}याहीवी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ये । गृ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}णा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नोहव्यादा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}तये । नीहो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सत्सीबर्हीषि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} \mbox{॥ १ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 2}
+
+{\centering \textcolor{DarkOrchid}{॥ भारद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{त्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}माग्नेयज्ञा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नां । हो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}ताविश्वे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}षांहितः । देवेभि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}र्मानूषे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}जने \mbox{॥ २ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 3}
+
+{\centering \textcolor{DarkOrchid}{॥ मेधातिथिः काण्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्निंदूतं\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वृ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}णीमहे । हो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}रंविश्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}दसं । अस्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}यज्ञास्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सुक्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}तुम् \mbox{॥ ३ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 4}
+
+{\centering \textcolor{DarkOrchid}{॥ भारद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्निर्वृ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}णि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}जङ्घनात् । द्रविणास्यु\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}र्वीपन्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}या । सामी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}द्धश्शुक्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}आहूतः \mbox{॥ ४ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 5}
+
+{\centering \textcolor{DarkOrchid}{॥ उशनाः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{प्रेष्ठं\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}वोआतीथिं । स्तू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मित्रामीवाप्रीयं । अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नेराथन्ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वेद्यम् \mbox{॥ ५ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 6}
+
+{\centering \textcolor{DarkOrchid}{॥ सुदीतिपुरुमीढा{-}वांगिरसौ तयोर्वाऽन्यतरः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{त्वन्नोआग्नेमा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}हो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}भिः । पाहीविश्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}स्याआ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}तेः । ऊत\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}द्वीषोमर्क्त्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}स्या \mbox{॥ ६ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 7}
+
+{\centering \textcolor{DarkOrchid}{॥ भारद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{एह्यू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षुब्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}णिते । अग्नाइत्थे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}गीराः । ए\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}भिर्वार्धा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}साइ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्दू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}भिः \mbox{॥ ७ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 8}
+
+{\centering \textcolor{DarkOrchid}{॥ वत्सः काण्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{आ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}तेवात्सो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मानोयमात् । परामा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ञ्चित्साधास्थात् । अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्ने\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}त्वांकामयोगी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} \mbox{॥ ८ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 9}
+
+{\centering \textcolor{DarkOrchid}{॥ भारद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{त्वामाग्नेपु\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ष्काराद\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}धी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । आ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}थ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}र्वाणीरा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}मन्धत । मूर्ध्नो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}विश्वास्यावाघा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}: \mbox{॥ ९ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 10}
+
+{\centering \textcolor{DarkOrchid}{॥ वामदेवः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्नेवी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्वादा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}भारा । अस्मभ्यामू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ये\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}माहे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} । देवोह्यासी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नोदृशे \mbox{॥ १० ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+            % MOVED \clearpage TO HERE
+            % This ensures the NEXT section starts on a new page, 
+            % but the FIRST section stays glued to the Chapter.
+            \clearpage
+        
+            % --- SECTION ---
+            
+            \phantomsection  
+                
+            \section*{\centering द्वितीय खण्डः}
+            \addcontentsline{toc}{section}{द्वितीय खण्डः} 
+            \markright{द्वितीय खण्डः}
+            \nopagebreak % Keep section title with first mantra
+
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 1}
+
+{\centering \textcolor{DarkOrchid}{॥ आयुन्ङ्क्श्वाहि: (ऋ विरूपांगिरसः) ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{नामास्ते\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}अग्ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ओज\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}से । गृणन्तीदे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}कृष्टायाः । आमै\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रामित्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मर्दया \mbox{॥ १ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 2}
+
+{\centering \textcolor{DarkOrchid}{॥ वामदेवो गौतमः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{दूतंवो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}विश्वावे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}दसम् । हव्यावाहामामा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}र्क्त्यम्\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । याजीष्ठमृन्जसे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}गीरा \mbox{॥ २ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 3}
+
+{\centering \textcolor{DarkOrchid}{॥ प्रयोगो भागर्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{ऊपात्वाजामायो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}गीराः\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । देदीशतिर्हा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}विष्कृताः । वायोरा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नीकेअस्थिरन् \mbox{॥ ३ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 4}
+
+{\centering \textcolor{DarkOrchid}{॥ मधछु न्दा वैश्वामित्रः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{ऊ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}पात्वाग्नेदीवे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}दीवे । दो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}वस्तार्धीयावायम्\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} । ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मोभा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}र\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}न्ताएमा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सि \mbox{॥ ४ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 5}
+
+{\centering \textcolor{DarkOrchid}{॥ शुनः शेप आजीर्गितः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{जरा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}बोधाताव्दीविड्ढी । वीशेवी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}शेय\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}ज्ञीयाया । स्तो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}मंरुद्रायादृशीक\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}म् \mbox{॥ ५ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 6}
+
+{\centering \textcolor{DarkOrchid}{॥ मेधातिथिः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{प्रातित्यञ्चा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रुमाध्वारं\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} । गो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}पी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}था\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}यप्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}हू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}यसे । मा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रुद्भीरग्नाआग\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}हि \mbox{॥ ६ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 7}
+
+{\centering \textcolor{DarkOrchid}{॥ शुनः शेप आजीर्गितः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}श्वन्न\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}त्वावारा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}व\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्तम् । व\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}न्द\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ध्याआग्नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्नामोभिः । स\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}म्म्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}जन्तमाध्वाराणा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}म् \mbox{॥ ७ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 8}
+
+{\centering \textcolor{DarkOrchid}{॥ प्रयोगो भागर्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{और्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}भृगूवच्छूचिम् । आप्नावा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नावादाहु\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}वे । अग्निं\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}सामुद्रावाससम् \mbox{॥ ८ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 9}
+
+{\centering \textcolor{DarkOrchid}{॥ प्रयोगो भागर्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मिन्धानो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}माना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सा । धी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}यंसचेतामा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}र्त्याः\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मिन्धेवीवा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}भिः \mbox{॥ ९ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 10}
+
+{\centering \textcolor{DarkOrchid}{॥ वत्सः काण्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{आदी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}त्प्रत्ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्यारे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सः । ज्योतिःपश्यन्तीवासा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रम् । पा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रोयातिध्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}तेदीवि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} \mbox{॥ १० ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+            % MOVED \clearpage TO HERE
+            % This ensures the NEXT section starts on a new page, 
+            % but the FIRST section stays glued to the Chapter.
+            \clearpage
+        
+            % --- SECTION ---
+            
+            \phantomsection  
+                
+            \section*{\centering तृतीय खण्डः}
+            \addcontentsline{toc}{section}{तृतीय खण्डः} 
+            \markright{तृतीय खण्डः}
+            \nopagebreak % Keep section title with first mantra
+
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 1}
+
+{\centering \textcolor{DarkOrchid}{॥ प्रयोगो भागर्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्निंवोवृधन्तं । अध्वाराणांपुरूतामं । अच्छानाप्नेसाहा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्वते \mbox{॥ १ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 2}
+
+{\centering \textcolor{DarkOrchid}{॥ भाद्वाजो बार्हस्पत्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्निस्तिग्मे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}शोचीषा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । यंसद्वि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}श्वंन्याटट्यत्रीणं । अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}र्नो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}वंसतेरायिम्\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}} \mbox{॥ २ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 3}
+
+{\centering \textcolor{DarkOrchid}{॥ वामदेवो गौतमः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अग्नेमृ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ळामाहंआ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । आ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}याआ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}दे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}वायुन्ज\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नम् । ईये\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}थाबर्ही\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}रासादम् \mbox{॥ ३ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 4}
+
+{\centering \textcolor{DarkOrchid}{॥ वसिष्ठो मैत्रावरुणिः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नेर\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}क्षाणोअं\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}हा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सः । प्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}तीस्मदेवरिषाताः । ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}पीष्ठैराज\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रोदहा \mbox{॥ ४ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 6}
+
+{\centering \textcolor{DarkOrchid}{॥ वसिष्ठो मैत्रावरुणिः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{नित्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नक्ष्यविस्पते । धू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}म\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}न्त\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्धीमहेवायम् । सु\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रामग्नआ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}हुतः \mbox{॥ ६ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 7}
+
+{\centering \textcolor{DarkOrchid}{॥ विरूप आंगिरसः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}र्मूर्द्धादीवाःकाकू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}त् । पा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}तीःपृथिव्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}आ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}यम् । आपांरेतांसिजिन्वति \mbox{॥ ७ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 8}
+
+{\centering \textcolor{DarkOrchid}{॥ शुनः शेप आजीर्गितः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{ई\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मामू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}षुत्वाम\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्मा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}कम् । सा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}ङ्गा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}यात्र\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्नव्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}सम् । अग्ने\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}दे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षुप्रा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वोचः \mbox{॥ ८ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 9}
+
+{\centering \textcolor{DarkOrchid}{॥ गोपवन अत्रयेः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{तन्त्वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}गोपा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नोगिरा । जा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}ष्ठदग्नेअङ्गिरः । सा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}पा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}वकाश्रू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}धीहा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}व\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}म् \mbox{॥ ९ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 10}
+
+{\centering \textcolor{DarkOrchid}{॥ वामदेवो गौतमः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{पा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}रिवा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}जपतीःकाविः\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} । अ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ग्नि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ऋ\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}हव्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}क्रमीत् । दध\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}द्रत्ना\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नीदाशू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} \mbox{॥ १० ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 12}
+
+{\centering \textcolor{DarkOrchid}{॥ मेधातिथिः काण्वः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{का\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}माग्नी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}पा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}स्तुहि । स\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}त्या\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}धर्मा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}णमाध्वारे । दे\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}वा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}मा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}मीवाचा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}नम् \mbox{॥ १२ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 13}
+
+{\centering \textcolor{DarkOrchid}{॥ सिन्धुद्वीप आम्बरीषः त्रित आत्यो वा ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{श\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}न्नो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}देवी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}राभीष्टा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}ये । श\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}न्नो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}भूवन्तूपीता\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}ये\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}} । श\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}य्योराभि\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}स्रावन्तूनः \mbox{॥ १३ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+                % --- SUBSECTIONS (Mantras) ---
+                
+                % Conditional rendering based on output_mode
+                \par\filbreak
+
+\phantomsection
+
+\addcontentsline{toc}{subsection}{Rik 14}
+
+{\centering \textcolor{DarkOrchid}{॥ उशना काव्यः ॥ अग्निः ॥ गायत्री ॥} \par}
+
+\vspace{0.6em}
+
+{\centering \textcolor{blue}{कस्यानू\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}नम्पारी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}णसि । धीयो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}जिन्वसिसत्पते । गो\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}षा\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}तायस्यातागी\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}राः\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}} \mbox{॥ १४ ॥}} \par}
+
+\vspace{0.8em}
+               
+                                
+            % MOVED \clearpage TO HERE
+            % This ensures the NEXT section starts on a new page, 
+            % but the FIRST section stays glued to the Chapter.
+            \clearpage
+
+
+  \printindex
+
+\end{document}

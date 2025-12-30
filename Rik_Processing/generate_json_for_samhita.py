@@ -488,6 +488,83 @@ def convert_corrections_to_json(
 
     return json_output
 
+def extract_rik_only_data(combined_data):
+    """Extract only Rik-related content from combined data."""
+    rik_data = {"supersection": {}}
+    
+    for ss_id, ss_content in combined_data.get("supersection", {}).items():
+        rik_data["supersection"][ss_id] = {
+            "supersection_title": ss_content.get("supersection_title", ""),
+            "sections": {}
+        }
+        
+        for sec_id, sec_content in ss_content.get("sections", {}).items():
+            if sec_id == "count":
+                rik_data["supersection"][ss_id]["sections"]["count"] = sec_content
+                continue
+                
+            rik_data["supersection"][ss_id]["sections"][sec_id] = {
+                "section_title": sec_content.get("section_title", ""),
+                "section_count": sec_content.get("section_count", ""),
+                "subsections": {}
+            }
+            
+            # Track unique Rik IDs to avoid duplicates
+            seen_rik_ids = set()
+            
+            for sub_id, sub_content in sec_content.get("subsections", {}).items():
+                rik_id = sub_content.get("rik_id")
+                
+                # Skip if we've already seen this Rik ID
+                if rik_id in seen_rik_ids:
+                    continue
+                seen_rik_ids.add(rik_id)
+                
+                rik_data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = {
+                    "header": sub_content.get("header", {"header": f"Rik {rik_id}"}),
+                    "rik_id": rik_id,
+                    "rik_metadata": sub_content.get("rik_metadata", ""),
+                    "rik_text": sub_content.get("rik_text", ""),
+                    "saman_metadata": "",  # Empty for Rik-only
+                    "corrected-mantra_sets": [],  # Empty for Rik-only
+                    "mantra_sets": [],  # Empty for Rik-only
+                }
+    
+    return rik_data
+
+
+def extract_samam_only_data(combined_data):
+    """Extract only Samam-related content from combined data."""
+    samam_data = {"supersection": {}}
+    
+    for ss_id, ss_content in combined_data.get("supersection", {}).items():
+        samam_data["supersection"][ss_id] = {
+            "supersection_title": ss_content.get("supersection_title", ""),
+            "sections": {}
+        }
+        
+        for sec_id, sec_content in ss_content.get("sections", {}).items():
+            if sec_id == "count":
+                samam_data["supersection"][ss_id]["sections"]["count"] = sec_content
+                continue
+                
+            samam_data["supersection"][ss_id]["sections"][sec_id] = {
+                "section_title": sec_content.get("section_title", ""),
+                "section_count": sec_content.get("section_count", ""),
+                "subsections": {}
+            }
+            
+            for sub_id, sub_content in sec_content.get("subsections", {}).items():
+                samam_data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = {
+                    "header": sub_content.get("header", {}),
+                    "saman_metadata": sub_content.get("saman_metadata", ""),
+                    "corrected-mantra_sets": sub_content.get("corrected-mantra_sets", []),
+                    "mantra_sets": sub_content.get("mantra_sets", []),
+                }
+    
+    return samam_data
+
+
 if __name__ == "__main__":
     input_file = "corrections_003.txt"
     rik_meta = "rishi_devata_chandas_for_rik.txt"
