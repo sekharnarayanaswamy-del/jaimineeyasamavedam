@@ -109,6 +109,7 @@ Version 1.0 1st November 2025
        \addcontentsline{toc}{subsection}{ \VAR{ section_title_text|escape_for_latex|replacecolon }}
 
                   
+        \BLOCK{ set ns = namespace(prev_rik_id=none) }
         \BLOCK{ for k, subsection in section.get('subsections', {}).items() }
         \begin{minipage}[t]{\textwidth}
                
@@ -125,7 +126,8 @@ Version 1.0 1st November 2025
 
             \BLOCK{ endif }
             
-\VAR{subsection|format_mantra_sets(j,k)}
+\VAR{subsection|format_mantra_sets(j,k,{}, ns.prev_rik_id)}
+            \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
 
             \end{minipage}
         \BLOCK{ endfor }

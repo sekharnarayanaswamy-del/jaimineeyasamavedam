@@ -145,17 +145,12 @@ class RikTextParser:
                 if '(' not in raw_text and ')' not in raw_text:
                     continue
                 
-                # Extract only the actual Rik text - find first swara marker and take from nearest word start
-                # Look for pattern like "word(num)" which indicates actual Rik content
-                rik_start_match = re.search(r'[\u0900-\u097F]+\([0-9०-९]+\)', raw_text)
-                if rik_start_match:
-                    # Find the start of the word containing the first swara
-                    # Look back for whitespace or line break before first Sanskrit character of that word
-                    rik_start = rik_start_match.start()
-                    # Go back to find start of the word containing the match
-                    while rik_start > 0 and raw_text[rik_start-1] not in '\n\r ':
-                        rik_start -= 1
-                    raw_text = raw_text[rik_start:].strip()
+                # Use raw_text as-is - no truncation needed
+                # (Previously had logic to find first swara marker, but it was cutting off valid text)
+                
+                # Strip line number prefix (e.g., "12: ") if present at the start
+                # The input file has format: "N: text ॥ num ॥"
+                raw_text = re.sub(r'^\s*\d+:\s*', '', raw_text)
                 
                 clean_text = f"{raw_text} ॥ {rik_num_str} ॥"
                 # Store by rik_id (overwrite if duplicate - take last occurrence)
@@ -177,6 +172,13 @@ class RikTextParser:
         if rik_id is None:
             return None
         return self.current_map.get(rik_id, None)
+
+    def get_current_section_max_id(self):
+        """Returns the maximum Rik ID in the current section, or 0 if empty/no section."""
+        if not self.current_map:
+            return 0
+        return max(self.current_map.keys())
+
     
     def get_data_by_samam_id(self, samam_id_str):
         """Legacy method - kept for compatibility."""
@@ -206,6 +208,10 @@ class SamanMetadataParser:
         prev_rik_id = 0
         
         for line in lines:
+            # Skip comment lines starting with #
+            if line.startswith('#'):
+                continue
+            
             # Parse format: "RikId-SamamCount. [Title] ।। [Metadata] ।।"
             match = re.match(r'^(\d+)-(\d+)\.(.*)$', line)
             if not match:
@@ -324,8 +330,8 @@ def convert_corrections_to_json(
     rik_text_parser = RikTextParser(rik_text_file)
     saman_meta_parser = SamanMetadataParser(saman_meta_file)
     
-    # Initialize saman parser to first section (contains all samams for sequential processing)
-    saman_meta_parser.advance_section()
+    # NOTE: saman_meta_parser advances per section along with other parsers
+    # since sama_rishi_chandas_out.txt now uses local Rik IDs per section
 
     print(f"--- Step 2: Parsing Structure from {file_path} ---")
 
@@ -348,6 +354,7 @@ def convert_corrections_to_json(
         print("[ERROR] No SuperSections found.")
         return None
 
+    global_rik_offset = 0
     global_subsection_offset = 0
 
     for supersection_id, title_content, supersection_content in supersections_data:
@@ -366,10 +373,19 @@ def convert_corrections_to_json(
         current_supersection_sections["count"] = { "prev_count": 0, "current_count": section_count, "total_count": section_count }
         
         for section_id, section_title, section_count_str, section_content in sections_data:
-            # Advance external parsers (only Rik parsers - saman parser is processed sequentially)
+            # Update offset based on the section we are about to leave (if any)
+            # But wait - we are about to advance to a NEW section.
+            # So the offset should be incremented by the size of the previous section?
+            # Actually, rik_text_parser is currently at the END of the previous section.
+            if rik_text_parser.current_section_idx >= 0:
+                 section_max = rik_text_parser.get_current_section_max_id()
+                 global_rik_offset += section_max
+                 print(f"[DEBUG] Finished Section {rik_text_parser.current_section_idx+1}. Max ID: {section_max}. New Offset: {global_rik_offset}")
+
+            # Advance ALL external parsers - they all use local Rik IDs per section now
             rik_meta_parser.advance_section()
             rik_text_parser.advance_section()
-            # NOTE: saman_meta_parser does NOT advance sections - it's processed sequentially
+            saman_meta_parser.advance_section()  # Now advances per section (local Rik IDs)
 
             
             clean_section_title = section_title.strip()
@@ -421,8 +437,17 @@ def convert_corrections_to_json(
                 
                 # --- 3. DETERMINE RIK_TEXT AND RIK_METADATA ---
                 if rik_id_from_saman is not None:
-                    # Got valid rik_id from saman metadata
-                    display_rik_text = rik_text_parser.get_text_by_rik_id(rik_id_from_saman)
+                    # Got valid rik_id from saman metadata (now Local ID per section)
+                    
+                    # Rik IDs are now local per section, so use directly
+                    local_rik_id = rik_id_from_saman
+                    # print(f"  [DEBUG] Rik Global: {rik_id_from_saman}, Offset: {global_rik_offset} -> Local: {local_rik_id}")
+
+                    display_rik_text = rik_text_parser.get_text_by_rik_id(local_rik_id)
+                    
+                    # Rik Metadata seems to work with Global IDs (based on user observation/file content), 
+                    # but if it fails we might need to check if it also needs conversion.
+                    # Assuming Metadata file follows the same numbering as Saman Metadata (Global).
                     raw_rik_meta = rik_meta_parser.get_metadata_by_rik_id(rik_id_from_saman)
                     
                     # Track for carry-forward (when rik_id changes)
@@ -432,8 +457,8 @@ def convert_corrections_to_json(
                         last_rik_text = display_rik_text
                         last_rik_meta = raw_rik_meta
                     else:
-                        # Same Rik ID as previous - use last known text (don't re-display)
-                        # Actually we SHOULD display the same rik_text for all samams of same Rik
+                        # Same Rik ID as previous - reuse LAST KNOWN TEXT even if lookup returned None for current sub-part
+                        # (Though mostly we want to display it again if it's the same Rik)
                         pass
                 else:
                     # No saman metadata - use carry-forward

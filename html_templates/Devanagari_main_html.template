@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>जैमिनीय साम प्रकृति गानम्</title>
+    <title>॥ जैमिनीयसामप्रकृतिगानम् ॥</title>
     <style>
         :root {
             --primary-color: #2d3a4a;
@@ -20,7 +20,7 @@
         }
         
         body {
-            font-family: 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
+            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
             font-size: 1.3rem;
             line-height: 1.8;
             color: var(--primary-color);
@@ -129,28 +129,32 @@
         
         /* Mantra Styles */
         .subsection {
-            margin: 25px 0;
-            padding: 15px;
+            margin: 10px 0;
+            padding: 10px;
             background: white;
             border-left: 4px solid var(--accent-blue);
+            text-align: center;
         }
         
         .rik-metadata {
             text-align: center;
             color: var(--accent-purple);
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
         
         .rik-text {
             text-align: center;
             color: var(--accent-blue);
+            font-size: 1.5rem;
             margin-bottom: 15px;
         }
         
         .subsection-header {
             text-align: center;
             font-weight: bold;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
         
         .subsection-header .header-title {
@@ -163,11 +167,17 @@
         
         /* Mantra display - flexbox for no whitespace and natural wrapping */
         .mantra-verse {
-            margin: 10px 0;
-            display: flex;
+            margin: 5px 0;
+            display: inline-flex;
             flex-wrap: wrap;
             align-items: flex-start;
+            text-align: center;
             gap: 0;
+        }
+        
+        /* Wrapper to center the inline-flex mantra-verse */
+        .subsection {
+            text-align: center;
         }
         
         .mantra-word {
@@ -180,17 +190,18 @@
         }
         
         .mantra-text {
-            font-family: 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
-            font-size: 1.3rem;
+            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            font-size: 1.5rem;
             line-height: 1.2;
         }
         
         .swara-text {
-            font-family: 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
             color: var(--swara-red);
-            font-size: 0.8rem;
+            font-size: 1.25rem;
             line-height: 1;
-            text-align: left;
+            text-align: center;
+            margin-top: -0.3em;
             min-height: 1em;
             border-right: 1px solid transparent;
             padding-right: 2px;
@@ -212,13 +223,74 @@
             font-weight: bold;
         }
         
-        /* Accent marks */
+        /* Accent marks - zero-width positioning for fonts without native Vedic support */
         .accent-swarita {
-            color: var(--swara-red);
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
         }
         
         .accent-anudatta {
-            color: var(--swara-red);
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }
+        
+        .accent-kampa {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }
+        
+        .accent-trikampa {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-top: 2px solid var(--border-color);
+            background: white;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+        
+        .footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
         }
         
         /* Responsive */
@@ -286,12 +358,12 @@
         <!-- Navigation -->
         <nav class="nav-bar">
             <a href="#toc">॥ अनुक्रमणिका ॥</a>
-            <span>जैमिनीय साम</span>
+            <span>॥ जैमिनीयसामप्रकृतिगानम् ॥</span>
         </nav>
         
         <!-- Title Page -->
         <div class="title-page">
-            <h1>जैमिनीय साम प्रकृति गानम्</h1>
+            <h1>॥ जैमिनीयसामप्रकृतिगानम् ॥</h1>
         </div>
         
         <!-- Table of Contents -->
@@ -337,5 +409,9 @@
         \BLOCK{ endfor }
         
     </div>
+    
+    <footer class="footer">
+        <p>Visit us at <a href="https://jaimineeyasamavedam.org" target="_blank">jaimineeyasamavedam.org</a></p>
+    </footer>
 </body>
 </html>

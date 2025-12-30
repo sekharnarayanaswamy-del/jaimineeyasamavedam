@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 
 import sys
+import argparse
 #from doc_utils import escape_for_latex
 import jinja2
 import subprocess
@@ -25,28 +26,36 @@ from convert_txt_to_json_1 import (
 # --- End new import ---
 
 # ----------------------------------------------------
-# 1. NEW UTILITY: Accent Replacements (UPDATED POSITIONS)
+# 1. NEW UTILITY: Accent Replacements (RAISED ZERO-WIDTH)
 # ----------------------------------------------------
 def replace_accents(text):
     r"""
-    Replaces ASCII markers (1), (2), etc., with LaTeX commands.
-    UPDATES:
-    1. Adjusted \raisebox for Anudatta to -0.8ex (Significant drop).
+    Replaces ASCII markers (1), (2), etc., with raised accent marks.
+    
+    Uses \makebox[0pt] to create zero-width accent overlays that don't
+    add horizontal spacing. The accents are raised using \raisebox and
+    made bold/larger using \accentmark.
+    
+    Unicode Vedic Accent Characters:
+    - U+0951 = ॑ (Swarita - vertical line above)
+    - U+1CD2 = ᳒ (Anudatta - horizontal line below) 
+    - U+1CF8 = ᳸ (Kampa - curved mark)
+    - U+1CF9 = ᳹ (Trikampa - double curve)
     """
     if not text: return text
     
     replacements = [
-        # Swarita (Vertical line above): Raised to 0.1ex
-        ('(1)', r'\accentmark{12}{\raisebox{0.3ex}{\char"0951}}'),  
+        # Swarita (Vertical line above) - all accents at same level
+        ('(1)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}'),  
         
-        # Anudatta (Horizontal line below): Lowered to -0.8ex to fix touching
-        ('(2)', r'\accentmark{15}{\raisebox{0.25ex}{\char"1CD2}}'),  
+        # Anudatta (Horizontal line below) - same level  
+        ('(2)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}'),  
         
-        # Kampa (Curve): Raised to 0.1ex
-        ('(3)', r'\accentmark{12}{\raisebox{0.3ex}{\char"1CF8}}'),  
+        # Kampa (Curve) - same level
+        ('(3)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}'),  
         
-        # Trikampa: Raised to 0.1ex
-        ('(4)', r'\accentmark{12}{\raisebox{0.25ex}{\char"1CF9}}'),  
+        # Trikampa - same level
+        ('(4)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}'),  
     ]
   
     for marker, replacement in replacements:
@@ -59,25 +68,32 @@ def replace_accents(text):
 # ----------------------------------------------------
 def handle_consecutive_accents(text):
     r"""
-    Inserts a small \kern to separate specific accent transitions 
-    that are prone to visual overlap.
+    Previously inserted \kern to separate specific accent transitions 
+    that were prone to visual overlap with AdiShila Vedic font.
+    
+    With Noto Sans Devanagari, this kerning is not needed and causes
+    unwanted spacing. Returning text unchanged.
     """
     if not text: return text
     
+    # NOTE: Kerning disabled for Noto Sans Devanagari
+    # The font handles accent spacing properly without manual adjustments
+    # Keep the patterns commented for reference if switching fonts:
+    
     # CASE A: Anudatta (2) followed by Anudatta (2)
-    pat_2_2 = r'(\(2\))(?=[^()]{1,5}\(2\))'
-    text = re.sub(pat_2_2, r'\1\\kern0.15em', text)
+    # pat_2_2 = r'(\(2\))(?=[^()]{1,5}\(2\))'
+    # text = re.sub(pat_2_2, r'\1\\kern0.15em', text)
 
     # CASE B: Swarita (1) followed by Anudatta (2)
-    pat_1_2 = r'(\(1\))(?=[^()]{1,5}\(2\))'
-    text = re.sub(pat_1_2, r'\1\\kern0.15em', text)
+    # pat_1_2 = r'(\(1\))(?=[^()]{1,5}\(2\))'
+    # text = re.sub(pat_1_2, r'\1\\kern0.15em', text)
 
     # CASE C: Anudatta (2) followed by Kampa (3) or Trikampa (4)
-    pat_2_3= r'(\(2\))(?=[^()]{1,5}\(3\))'
-    text = re.sub(pat_2_3, r'\1\\kern0.15em', text)
+    # pat_2_3= r'(\(2\))(?=[^()]{1,5}\(3\))'
+    # text = re.sub(pat_2_3, r'\1\\kern0.15em', text)
 
-    pat_2_4= r'(\(2\))(?=[^()]{1,5}\(4\))'
-    text = re.sub(pat_2_4, r'\1\\kern0.15em', text)
+    # pat_2_4= r'(\(2\))(?=[^()]{1,5}\(4\))'
+    # text = re.sub(pat_2_4, r'\1\\kern0.15em', text)
     
     return text
 
@@ -87,12 +103,20 @@ def handle_consecutive_accents(text):
 def remove_mantra_spaces(text):
     """
     Removes all spaces within the text to create continuous Samhita text.
+    Handles all types of Unicode whitespace characters.
     Preserves Dandas.
     """
     if not text: return text
     
-    text = text.replace(' ', '')
-    text = text.replace('\t', '')
+    # Remove all Unicode whitespace characters using regex
+    # \s covers: space, tab, newline, carriage return, form feed, vertical tab
+    # Also explicitly remove non-breaking space (U+00A0) and other invisible separators
+    text = re.sub(r'\s+', '', text)
+    text = text.replace('\u00A0', '')  # Non-breaking space
+    text = text.replace('\u200B', '')  # Zero-width space
+    text = text.replace('\u200C', '')  # Zero-width non-joiner
+    text = text.replace('\u200D', '')  # Zero-width joiner
+    text = text.replace('\uFEFF', '')  # Byte order mark
     
     return text
 
@@ -315,7 +339,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         s2 = handle_consecutive_accents(s2)
         # Step C: Replace Accents with LaTeX commands (with adjusted sizes)
         s2 = replace_accents(s2)
-        # Step D: Format Dandas (Spaces and No-Break Numbers)
+        # Step D: Format Dandas (Spaces around dandas only)
         s2 = format_dandas(s2)
         # Output: Upright (not italics)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
@@ -499,21 +523,21 @@ def format_dandas_html(text):
 
 def replace_accents_html(text):
     """
-    Replaces ASCII accent markers with Unicode characters for HTML.
-    Uses the actual Vedic accent Unicode characters directly.
+    Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
+    AdiShila Vedic font properly supports these characters.
     """
     if not text:
         return text
     
     replacements = [
-        # Swarita (Vertical line above)
+        # Swarita (Vertical line above) - U+0951
         ('(1)', '<span class="accent-swarita">\u0951</span>'),
-        # Anudatta (Horizontal line below)  
+        # Anudatta (Horizontal line below) - U+1CD2
         ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
-        # Kampa (Curve)
-        ('(3)', '<span class="accent-swarita">\u1CF8</span>'),
-        # Trikampa
-        ('(4)', '<span class="accent-swarita">\u1CF9</span>'),
+        # Kampa (Curve) - U+1CF8
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        # Trikampa - U+1CF9
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
     ]
     
     for marker, replacement in replacements:
@@ -613,10 +637,13 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
 
     return '\n'.join(formatted_output)
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiShila Vedic', 'Adishila SanVedic'"):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
+    
+    Args:
+        html_font: Font family string for HTML output (e.g., "'AdiShila Vedic', 'Adishila SanVedic'")
     """
     outputdir = "output_text"
     exit_code = 0
@@ -626,7 +653,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data):
     outputdir = f"{outputdir}/html/{name}"
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     
-    document = template.render(supersections=data)
+    document = template.render(supersections=data, html_font=html_font)
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
     with open(output_path, "w", encoding="utf-8") as f:
@@ -637,11 +664,19 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data):
 
 
 def main():
-    if len(sys.argv) > 1:
-       input_file = sys.argv[1]
-    else:
-        input_file = "corrections_003_out.json"
-        
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Generate PDF and HTML from Vedic text JSON')
+    parser.add_argument('input_file', nargs='?', default='corrections_003_out.json',
+                        help='Input JSON file (default: corrections_003_out.json)')
+    parser.add_argument('--pdf-font', dest='pdf_font', default='AdiShila Vedic',
+                        help='Font for PDF output (default: AdiShila Vedic)')
+    parser.add_argument('--html-font', dest='html_font', default="'AdiShila Vedic', 'Adishila SanVedic'",
+                        help="Font for HTML output (default: 'AdiShila Vedic', 'Adishila SanVedic')")
+    
+    args = parser.parse_args()
+    input_file = args.input_file
+    pdf_font = args.pdf_font
+    html_font = args.html_font
     template_dir="pdf_templates"
     text_template_dir="text_templates"
     html_template_dir="html_templates"
@@ -720,7 +755,7 @@ def main():
     current_os = platform.system() 
     CreatePdf(template_file,f"Devanagari","Devanagari",supersections, current_os=current_os)
     CreateTextFile(text_template_file,f"Devanagari","Devanagari",supersections)
-    CreateHtmlFile(html_template_file,f"Devanagari","Devanagari",supersections)
+    CreateHtmlFile(html_template_file,f"Devanagari","Devanagari",supersections, html_font=html_font)
     
     # ts_string_Tamil = Path("output_text/final-Tamil.json").read_text(encoding="utf-8")
     # data_Tamil = json.loads(ts_string_Tamil)
