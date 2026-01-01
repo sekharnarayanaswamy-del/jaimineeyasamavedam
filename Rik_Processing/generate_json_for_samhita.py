@@ -565,18 +565,199 @@ def extract_samam_only_data(combined_data):
     return samam_data
 
 
-if __name__ == "__main__":
-    input_file = "corrections_003.txt"
-    rik_meta = "rishi_devata_chandas_for_rik.txt"
-    saman_meta = "sama_rishi_chandas_out.txt"
-    rik_text = "vedic_text.txt"
-
-    if len(sys.argv) > 1:
-        input_file = sys.argv[1]
+# --- UNICODE TEXT FILE PARSER (for correction cycle) ---
+def parse_unicode_text_file(filepath):
+    """
+    Parse the structured Unicode text file back into JSON format.
+    Uses # Start/End markers to identify sections.
+    """
+    import re
     
-    output_file_path = Path(input_file).stem + "_merged_out.json"
-    print(f"Processing {input_file}...")
-    output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text)
+    if not os.path.exists(filepath):
+        print(f"[ERROR] Unicode file '{filepath}' not found.")
+        return None
+    
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Initialize data structure
+    data = {"supersection": {}}
+    
+    # Patterns for matching markers
+    supersection_pattern = re.compile(
+        r'# Start of SuperSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of SuperSection Title', 
+        re.MULTILINE
+    )
+    section_pattern = re.compile(
+        r'# Start of Section Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of Section Title', 
+        re.MULTILINE
+    )
+    rik_metadata_pattern = re.compile(
+        r'# Start of Rik Metadata -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Rik Metadata', 
+        re.MULTILINE | re.DOTALL
+    )
+    rik_text_pattern = re.compile(
+        r'# Start of Rik Text -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Rik Text', 
+        re.MULTILINE | re.DOTALL
+    )
+    subsection_pattern = re.compile(
+        r'# Start of SubSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of SubSection Title', 
+        re.MULTILINE
+    )
+    mantra_pattern = re.compile(
+        r'#Start of Mantra Sets -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#End of Mantra Sets', 
+        re.MULTILINE | re.DOTALL
+    )
+    
+    # Extract supersections
+    for ss_match in supersection_pattern.finditer(content):
+        ss_id = ss_match.group(1)
+        ss_title = ss_match.group(2).strip()
+        data["supersection"][ss_id] = {
+            "supersection_title": ss_title,
+            "sections": {}
+        }
+    
+    # Extract sections
+    for sec_match in section_pattern.finditer(content):
+        sec_id = sec_match.group(1)
+        sec_title = sec_match.group(2).strip()
+        # Find which supersection this belongs to (assume first for now)
+        for ss_id in data["supersection"]:
+            if sec_id not in data["supersection"][ss_id]["sections"]:
+                data["supersection"][ss_id]["sections"][sec_id] = {
+                    "section_title": sec_title,
+                    "subsections": {}
+                }
+    
+    # Extract Rik metadata for each subsection
+    rik_metadata_map = {}
+    for rm_match in rik_metadata_pattern.finditer(content):
+        sub_id = rm_match.group(1)
+        rik_metadata_map[sub_id] = rm_match.group(2).strip()
+    
+    # Extract Rik text for each subsection
+    rik_text_map = {}
+    for rt_match in rik_text_pattern.finditer(content):
+        sub_id = rt_match.group(1)
+        rik_text_map[sub_id] = rt_match.group(2).strip()
+    
+    # Extract subsection headers (Samam header + metadata)
+    subsection_headers = {}
+    for sub_match in subsection_pattern.finditer(content):
+        sub_id = sub_match.group(1)
+        header_line = sub_match.group(2).strip()
+        # Split header and saman_metadata (they're separated by double space)
+        parts = header_line.split('  ', 1)
+        header = parts[0].strip()
+        saman_metadata = parts[1].strip() if len(parts) > 1 else ""
+        subsection_headers[sub_id] = {"header": header, "saman_metadata": saman_metadata}
+    
+    # Extract mantra sets
+    mantra_sets_map = {}
+    for m_match in mantra_pattern.finditer(content):
+        sub_id = m_match.group(1)
+        mantra_text = m_match.group(2).strip()
+        # Parse mantras - each line is part of the mantra content
+        mantras = [line for line in mantra_text.split('\n') if line.strip()]
+        mantra_sets_map[sub_id] = mantras
+    
+    # Extract footnotes
+    footnote_pattern = re.compile(
+        r'# Start of Footnote -- (\S+) ## DO NOT EDIT\s*\n(.*?)\n# End of Footnote',
+        re.MULTILINE | re.DOTALL
+    )
+    footnotes_map = {}
+    for fn_match in footnote_pattern.finditer(content):
+        sub_id = fn_match.group(1)
+        footnote_text = fn_match.group(2).strip()
+        # Parse footnotes: "s1 - footnote text" format
+        footnotes = {}
+        for line in footnote_text.split('\n'):
+            line = line.strip()
+            if ' - ' in line:
+                key, text = line.split(' - ', 1)
+                footnotes[key.strip()] = text.strip()
+        if footnotes:
+            footnotes_map[sub_id] = footnotes
+    
+    # Build complete subsections
+    all_subsection_ids = set(subsection_headers.keys()) | set(mantra_sets_map.keys())
+    
+    # Determine which section each subsection belongs to based on order
+    subsection_to_section = {}
+    current_section = None
+    for line in content.split('\n'):
+        sec_match = re.match(r'# Start of Section Title -- (\S+) ## DO NOT EDIT', line)
+        if sec_match:
+            current_section = sec_match.group(1)
+        sub_match = re.match(r'# Start of SubSection Title -- (\S+) ## DO NOT EDIT', line)
+        if sub_match and current_section:
+            subsection_to_section[sub_match.group(1)] = current_section
+    
+    # Add subsections to their sections
+    for sub_id in sorted(all_subsection_ids, key=lambda x: int(x.replace('subsection_', '')) if x.startswith('subsection_') else 0):
+        sec_id = subsection_to_section.get(sub_id, 'section_1')
+        
+        # Find the supersection containing this section
+        for ss_id in data["supersection"]:
+            if sec_id in data["supersection"][ss_id]["sections"]:
+                header_info = subsection_headers.get(sub_id, {"header": "", "saman_metadata": ""})
+                
+                # Extract rik_id from subsection number
+                sub_num = int(sub_id.replace('subsection_', '')) if sub_id.startswith('subsection_') else 0
+                
+                # Build subsection entry
+                subsection_entry = {
+                    "header": {"header": header_info["header"], "header_number": sub_num},
+                    "rik_id": sub_num,  # Will be corrected by Rik mapping if needed
+                    "rik_metadata": rik_metadata_map.get(sub_id, ""),
+                    "rik_text": rik_text_map.get(sub_id, ""),
+                    "saman_metadata": header_info["saman_metadata"],
+                    "mantra_sets": [],
+                    "corrected-mantra_sets": [{"corrected-mantra": '\n'.join(mantra_sets_map.get(sub_id, []))}],
+                    "footnotes": footnotes_map.get(sub_id, {})
+                }
+                
+                data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
+                break
+    
+    return data
+
+
+if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Generate JSON for Samhita rendering')
+    parser.add_argument('--input-mode', choices=['initial', 'correction'], default='initial',
+                        help='Input mode: initial (from multiple source files) or correction (from Unicode text)')
+    parser.add_argument('--unicode-file', type=str, 
+                        default='output_text/txt/Devanagari/Devanagari_Devanagari_Unicode.txt',
+                        help='Path to Unicode text file (for correction mode)')
+    parser.add_argument('--corrections-file', type=str, default='corrections_003.txt',
+                        help='Path to corrections file (for initial mode)')
+    parser.add_argument('--output', type=str, default=None,
+                        help='Output JSON file path')
+    
+    args = parser.parse_args()
+    
+    if args.input_mode == 'initial':
+        # Initial mode: use multiple source files
+        input_file = args.corrections_file
+        rik_meta = "rishi_devata_chandas_for_rik.txt"
+        saman_meta = "sama_rishi_chandas_out.txt"
+        rik_text = "vedic_text.txt"
+        
+        output_file_path = args.output or (Path(input_file).stem + "_merged_out.json")
+        print(f"Processing {input_file} in INITIAL mode...")
+        output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text)
+        
+    else:
+        # Correction mode: parse Unicode text file
+        unicode_file = args.unicode_file
+        output_file_path = args.output or "corrections_003_merged_out.json"
+        print(f"Processing {unicode_file} in CORRECTION mode...")
+        output_data = parse_unicode_text_file(unicode_file)
     
     if output_data:
         try:

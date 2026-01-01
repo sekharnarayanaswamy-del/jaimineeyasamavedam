@@ -138,6 +138,14 @@
 \newunicodechar{।}{\hspace{0.6em}।} % Adds space before Single Danda
 \newunicodechar{॥}{\hspace{0.3em}॥\hspace{0.3em}}
 % ------------------------
+% --- CUSTOM FOOTNOTE STYLE: Devanagari Numerals & Higher Position ---
+\makeatletter
+\def\devanagarinumeral#1{\expandafter\dodevanagari\number#1\relax}
+\def\dodevanagari#1{\ifx#1\relax\else\ifcase#1०\or१\or२\or३\or४\or५\or६\or७\or८\or९\fi\expandafter\dodevanagari\fi}
+\renewcommand{\thefootnote}{\devanagarinumeral{\value{footnote}}}
+\renewcommand\@makefnmark{\hbox{\textsuperscript{\raisebox{1.2ex}{\normalfont\@thefnmark}}}}
+\makeatother
+% ------------------------
 
 \begin{document}
 

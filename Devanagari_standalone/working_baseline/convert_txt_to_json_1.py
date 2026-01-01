@@ -159,17 +159,29 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                 current_swara_row.append('{}')
                 i += 1
             
-            # UPDATED: Removed pada_count based breaking logic
-            
+            continue
+
+        # 2.5 Explicitly Check for Footnote Token (sN) at start
+        # e.g. (s2)Word... or Word(Swara)(s3) -> (s3)
+        fn_match = re.match(r'\s*(\(s\d+\))', full_mantra_string[i:])
+        if fn_match:
+            # Found standalone footnote token
+            fn_token = fn_match.group(1)
+            current_mantra_row.append(f'{{{fn_token}}}')
+            current_swara_row.append('{}')
+            i += len(fn_match.group(0))
             continue
             
         # 3. Check for pattern: [Word] + (Swara)
         string_chk = full_mantra_string[i:]
+        # Strict Regex: NO Parens in Word part
         match = re.match(r'\s*([^\s()।॥]+)\s*\(([^)]+)\)', string_chk)
 
         if match:
             mantra_word = match.group(1)
             swara_word = match.group(2)
+            
+            # (Removed the "Is logic Footnote" block since we handle (sN) separately now)
             
             mylist = combine_ardhaksharas(mantra_word) # Using local function
             
@@ -182,10 +194,16 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                     current_swara_row.append('{}') 
 
                 current_mantra_row.append(f'{{{target_grapheme}}}')
-                current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
+                if swara_word:
+                    current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
+                else:
+                    current_swara_row.append('{}')
             else:
                 current_mantra_row.append('{}')
-                current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
+                if swara_word:
+                    current_swara_row.append(f'{{\\smallredfont {swara_word}}}')
+                else:
+                    current_swara_row.append('{}')
 
             match_start_index = full_mantra_string[i:].find(match.group(0))
             if match_start_index != -1:
@@ -197,7 +215,8 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
         else:
             token_start = i
             while i < len(full_mantra_string):
-                if full_mantra_string[i] in '।॥|(' or full_mantra_string[i].isspace():
+                # Break on space, danda, OR Start of Parentheses (potential swara/footnote)
+                if full_mantra_string[i] in '।॥|' or full_mantra_string[i].isspace() or full_mantra_string[i] == '(':
                     break
                 i += 1
             
@@ -225,7 +244,12 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                     current_mantra_row.append(f'{{{continuous_text}}}')
                     current_swara_row.append('{}')         
             if i == token_start:
-                i += 1 # Prevent infinite loop if no progress made
+                # We are stuck! (e.g. found '(' but it didn't match strict Word+Swara or Fn pattern)
+                # It means we have an orphaned '(' or weird syntax.
+                # Just consume one char to proceed
+                current_mantra_row.append(f'{{{full_mantra_string[i]}}}')
+                current_swara_row.append('{}')
+                i += 1
         
     
     # Add any remaining items
@@ -304,6 +328,21 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
 
     json_output = {"supersection": {}}
     
+    # --- 0. Helper to Extract Subsection-level Aux Data ---
+    aux_data = {} # subsection_id -> {Key: Value}
+    
+    def extract_aux(pattern_str, key_name):
+        pat = re.compile(pattern_str, re.DOTALL)
+        for sub_id, content in pat.findall(file_content):
+            sub_id = sub_id.strip()
+            if sub_id not in aux_data: aux_data[sub_id] = {}
+            aux_data[sub_id][key_name] = content.strip()
+
+    # Regex patterns for Rik Metadata, Rik Text, and Footnotes
+    extract_aux(r'# Start of Rik Metadata -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Rik Metadata -- \1 ## DO NOT EDIT', 'rik_metadata')
+    extract_aux(r'# Start of Rik Text -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Rik Text -- \1 ## DO NOT EDIT', 'rik_text')
+    extract_aux(r'# Start of Footnote -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Footnote -- \1 ## DO NOT EDIT', 'footnotes_raw')
+
     # --- 1. Extract ALL Supersections ---
     supersection_pattern = re.compile(
         r'# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*'
@@ -339,8 +378,8 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
         # --- 2. Extract Sections within this supersection ---
         section_pattern = re.compile(
             r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*'
-            r'(.*?)\s*\((.*?)\)\s*'
-            r'# End of Section Title -- \1 ## DO NOT EDIT\s*'
+            r'(.*?)'
+            r'\s*# End of Section Title -- \1 ## DO NOT EDIT\s*'
             r'(.*?)'
             r'(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)',
             re.DOTALL
@@ -348,31 +387,39 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
         sections_data = section_pattern.findall(supersection_content)
         
         # Calculate section count
-        section_count = len(sections_data)
+        section_count_total = len(sections_data)
         current_supersection_sections["count"] = {
             "prev_count": 0,
-            "current_count": section_count,
-            "total_count": section_count
+            "current_count": section_count_total,
+            "total_count": section_count_total
         }
         
         # --- 3. Extract Subsections and Mantra Sets within each section ---
         subsection_pattern = re.compile(
             r'# Start of SubSection Title -- (subsection_\d+) ## DO NOT EDIT\s*'
             r'(.*?)'
-            r'\s*# End of SubSection Title -- \1 ## DO NOT EDIT\s*'
+            r'\s*# End of SubSection Title -- \1 ## DO NOT EDIT'
+            r'.*?'
             r'#Start of Mantra Sets -- \1 ## DO NOT EDIT\s*'
             r'(.*?)'
             r'\s*#End of Mantra Sets -- \1 ## DO NOT EDIT',
             re.DOTALL
         )
 
-        for section_id, section_title, section_count, section_content in sections_data:
-            # Clean the section title
-            clean_section_title = section_title.strip()
-            
+        for section_id, section_title_raw, section_content in sections_data:
+            # Parse title and count from raw string if present
+            # e.g. "Title (123)"
+            m_count = re.match(r'(.*?)\s*\((.*?)\)$', section_title_raw.strip())
+            if m_count:
+                clean_section_title = m_count.group(1).strip()
+                s_count = m_count.group(2).strip()
+            else:
+                clean_section_title = section_title_raw.strip()
+                s_count = ""
+
             current_supersection_sections[section_id] = {
                 "section_title": clean_section_title,
-                "section_count": section_count.strip(),
+                "section_count": s_count,
                 "subsections": {}
             }
             
@@ -382,12 +429,29 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
                 # Clean up header text: remove tags, extra whitespace, and trailing markers
                 clean_header_text = re.sub(r'<[^>]+>', '', raw_header_text.strip()).strip().rstrip('…|')
                 
+                # Retrieve Aux Data
+                s_aux = aux_data.get(subsection_id, {})
+                
+                # Parse Footnotes
+                footnotes = {}
+                if 'footnotes_raw' in s_aux:
+                    for line in s_aux['footnotes_raw'].split('\n'):
+                        line = line.strip()
+                        if not line: continue
+                        m = re.match(r'(s\d+)\s*[-:]\s*(.*)', line)
+                        if m:
+                            footnotes[m.group(1)] = m.group(2)
+
                 current_supersection_sections[section_id]["subsections"][subsection_id] = {
                     "corrected-mantra_sets": parse_mantra_set(mantra_set_content),
                     "header": {
                         "header": clean_header_text
                     },
-                    "mantra_sets": []
+                    "mantra_sets": [],
+                    "rik_metadata": s_aux.get('rik_metadata', ''),
+                    "rik_text": s_aux.get('rik_text', ''),
+                    "saman_metadata": "",
+                    "footnotes": footnotes
                 }
 
     return json_output

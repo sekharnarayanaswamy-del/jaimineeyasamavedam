@@ -71,6 +71,7 @@ output_text/lines/
 !Devanagari_standalone/working_baseline/Devanagari_main.template
 !Devanagari_standalone/Devanagari_main.template
 !pdf_templates/Devanagari_main.template
+!text_templates/Devanagari_main.template
 # Windows/macOS
 desktop.ini
 Thumbs.db
@@ -132,7 +133,7 @@ test_strip_output.txt
 test_strip.py
 extracted_output.txt
 corrections_003_merged_out.json
-output_text/txt/Devanagari/Devanagari_Devanagari_Unicode.txt
+!output_text/txt/Devanagari/*.txt
 Devanagari_standalone/corrections_003_rishi_chandas.txt
 Devanagari_standalone/Devanagari_main.template
 !html_templates/Devanagari_main_html.template
