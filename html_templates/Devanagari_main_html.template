@@ -280,6 +280,35 @@
             top: -0.15em;
         }
         
+        /* Footnote Section Styles */
+        .footnote-separator {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 20px 0 10px 0;
+            width: 40%;
+            margin-left: 0;
+        }
+        
+        .footnote-section {
+            padding: 10px 0;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .footnote-item {
+            padding: 5px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .footnote-item .footnote-ref {
+            color: var(--accent-blue);
+            font-weight: bold;
+            margin-right: 0.5em;
+            min-width: 1.5em;
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -403,19 +432,15 @@
                 <div class="section" id="\VAR{key}-\VAR{section_key}">
                     <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')}</h2>
                     
-                \BLOCK{ set ns = namespace(prev_rik_id=none) }
-                    \BLOCK{ for subsection_key, subsection in section.subsections.items() }
-                    <div class="subsection" id="\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">
-                        \BLOCK{ if output_mode == 'rik' }
-                        \VAR{subsection | format_rik_only_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
-                        \BLOCK{ elif output_mode == 'samam' }
-                        \VAR{subsection | format_samam_only_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
-                        \BLOCK{ else }
-                        \VAR{subsection | format_mantra_sets_html(none, none, subsection.header.header, {}, ns.prev_rik_id)}
-                        \BLOCK{ endif }
+                    <!-- Pre-rendered Subsections -->
+                    \BLOCK{ for sub_html in section.html_subsections }
+                    <div class="subsection" id="\VAR{sub_html.id}">
+                        \VAR{sub_html.content}
                     </div>
-                    \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                     \BLOCK{ endfor }
+
+                    <!-- Pre-rendered Footnotes -->
+                    \VAR{section.html_footer}
                 </div>
                 \BLOCK{ endif }
             \BLOCK{ endfor }

@@ -29,6 +29,8 @@ from convert_txt_to_json_1 import (
 # DEVANAGARI NUMERAL CONVERSION
 # ----------------------------------------------------
 HTML_FOOTNOTE_COUNTER = 0
+HTML_FOOTNOTES_ACCUMULATOR = []  # Accumulates footnotes across subsections within a section
+HTML_SEEN_CONTENT_MAP = {} # Tracks seen footnote CONTENT -> (id, display_num)
 
 def to_devanagari_numeral(num):
     """Convert Arabic numerals to Devanagari numerals."""
@@ -37,6 +39,52 @@ def to_devanagari_numeral(num):
     mapping = {'0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
                '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'}
     return ''.join(mapping.get(c, c) for c in str(num))
+
+def reset_html_footnote_counter(dummy=None):
+    """Reset the HTML footnote counter AND clear the accumulator.
+    Call this at section boundaries (start of each section).
+    Takes a dummy argument so it can be used as a Jinja filter.
+    Returns empty string so it doesn't output anything in the template.
+    """
+    global HTML_FOOTNOTE_COUNTER, HTML_FOOTNOTES_ACCUMULATOR, HTML_SEEN_CONTENT_MAP
+    import os
+    HTML_FOOTNOTES_ACCUMULATOR.clear()
+    HTML_SEEN_CONTENT_MAP.clear()
+    with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
+         f.write(f"RESET_CALL\n")
+         f.flush()
+         os.fsync(f.fileno())
+    return ""
+
+def accumulate_footnotes(footnotes_list):
+    """Add footnotes to the section-level accumulator.
+    Called by formatting functions instead of rendering inline.
+    """
+    global HTML_FOOTNOTES_ACCUMULATOR, HTML_SEEN_CONTENT_MAP
+    import os
+    HTML_FOOTNOTES_ACCUMULATOR.extend(footnotes_list)
+    with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
+         f.write(f"ACCUM_CALL: Added {len(footnotes_list)}. Total {len(HTML_FOOTNOTES_ACCUMULATOR)}\n")
+         f.flush()
+         os.fsync(f.fileno())
+
+def render_section_footnotes(dummy=None):
+    """Render all accumulated footnotes for this section.
+    Call this at section end in the template.
+    Returns HTML for the footnote section, or empty string if no footnotes.
+    """
+    global HTML_FOOTNOTES_ACCUMULATOR
+    return f"<!-- DEBUG_FOOTNOTES_HERE Total={len(HTML_FOOTNOTES_ACCUMULATOR)} -->"
+    
+    output = ['<hr class="footnote-separator"/>']
+    output.append('<div class="footnote-section">')
+    for unique_id, display_num, text in HTML_FOOTNOTES_ACCUMULATOR:
+        output.append(f'<div class="footnote-item" id="{unique_id}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
+    output.append('</div>')
+    
+    return '\n'.join(output)
+
+
 
 # ----------------------------------------------------
 # 1. NEW UTILITY: Accent Replacements (RAISED ZERO-WIDTH)
@@ -136,67 +184,122 @@ def remove_mantra_spaces(text):
 # ----------------------------------------------------
 # FOOTNOTE PROCESSING UTILITIES
 # ----------------------------------------------------
-def process_footnotes_latex(text, footnotes_dict):
+def process_footnotes_latex(text, footnotes_dict, seen_markers=None, subsection_key=None):
     """
-    Replace (s1), (s2) markers with LaTeX \\footnote{} commands.
-    LaTeX automatically handles page-relative numbering.
+    Replace (s1), (s2) markers with state-aware LaTeX footnotes/references.
     
     Args:
         text: The text containing footnote markers like (s1), (s2)
-        footnotes_dict: Dictionary mapping marker to footnote text, e.g. {"s1": "footnote text"}
-    
-    Returns:
-        Text with markers replaced by LaTeX footnote commands
+        footnotes_dict: Dictionary { "s1": "text" }
+        seen_markers: set of seen markers ("s1", "s2") for this subsection scope
+        subsection_key: unique ID for the subsection to generate stable labels
     """
     if not footnotes_dict:
         return text
     
-    for marker, footnote_text in footnotes_dict.items():
-        pattern = rf'\({re.escape(marker)}\)'
-        # LaTeX footnote command - will be auto-numbered per page
-        replacement = f'\\\\footnote{{{footnote_text}}}'
-        text = re.sub(pattern, replacement, text)
+    # We need to find all markers matching (s\d+) in the text
+    # and replace them sequentially to update the seen_markers set.
     
-    return text
+    def replacer(match):
+        marker = match.group(1) # s1
+        full_marker = match.group(0) # (s1)
+        
+        if marker not in footnotes_dict:
+            return full_marker # Keep original if not found (or log error)
+            
+        footnote_text = footnotes_dict[marker]
+        
+        if seen_markers is not None and subsection_key is not None:
+             label = f"fn:{subsection_key}:{marker}"
+             if marker in seen_markers:
+                 # Reference existing footnote
+                 # Use rule (2.5ex) to ensure top alignment + raisebox (1.2ex) to match template
+                 return f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
+             else:
+                 # Create new footnote with label
+                 seen_markers.add(marker)
+                 return f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{footnote_text}\\label{{{label}}}}}"
+        else:
+             # Fallback to stateless replacement (old behavior)
+             return f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{footnote_text}}}"
 
-def process_footnotes_html(text, footnotes_dict, global_counter=0):
+    pattern = r'\((s\d+)\)'
+    new_text = re.sub(pattern, replacer, text)
+    
+    return new_text
+
+def process_footnotes_html(text, footnotes_dict, local_counter=0, seen_markers_map=None, subsection_key=None):
     """
     Replace (s1), (s2) markers with HTML superscript links.
-    Uses continuous numbering across the document.
+    Uses LOCAL counter for display numbering (resets per subsection).
+    Uses subsection_key for unique IDs to prevent collisions across document.
     
     Args:
-        text: The text containing footnote markers like (s1), (s2)
-        footnotes_dict: Dictionary mapping marker to footnote text
-        global_counter: Current global footnote counter for continuous numbering
-    
+        text: Text to process
+        footnotes_dict: Dict mapping markers to text
+        local_counter: Current local counter for this subsection (display only)
+        seen_markers_map: Map of seen markers to (unique_id, display_num) in this subsection
+        subsection_key: Unique key for this subsection
+        
     Returns:
-        Tuple of (processed_text, footnotes_list, updated_counter)
-        footnotes_list contains (number, text) tuples for display at end
+        (processed_text, list_of_footnotes_data, new_local_counter)
+        footnotes_data tuple: (unique_id, display_num, text)
     """
     if not footnotes_dict:
-        return text, [], global_counter
+        return text, [], local_counter
     
     footnotes_list = []
     
+    import os
     # regex to find (sX)
-    matches = list(set(re.findall(r'\(s\d+\)', text))) # set to unique, though usually one per token
-    # Sort matches to process in order s1, s2... to maintain consistency if multiple in one block
+    matches = list(set(re.findall(r'\(s\d+\)', text))) # set to unique within this text block
+    # Sort matches
     matches.sort(key=lambda x: int(x[2:-1]))
     
+    # Sort matches
+    matches.sort(key=lambda x: int(x[2:-1]))
+
+
     for marker_full in matches:
         marker = marker_full[1:-1] # strip ( ) -> s1
         if marker in footnotes_dict:
-             global_counter += 1
-             footnote_text = footnotes_dict[marker]
-             devanagari_num = to_devanagari_numeral(global_counter)
+             footnote_text = footnotes_dict[marker].strip()
              
-             # Replace this specific marker occurrence
-             replacement = f'<sup class="footnote-ref"><a href="#fn-{global_counter}" id="fnref-{global_counter}">{devanagari_num}</a></sup>'
-             text = text.replace(marker_full, replacement)
-             
-             footnotes_list.append((global_counter, devanagari_num, footnote_text))
+             # Check if CONTENT has been seen in the broader context
+             if seen_markers_map is not None and footnote_text in seen_markers_map:
+                 with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
+                      f.write(f"  SEEN: {marker}\n")
+                      f.flush()
+                      os.fsync(f.fileno())
+                 # Reuse existing number and ID
+                 unique_id, dev_num = seen_markers_map[footnote_text]
+                 # For duplicates, link to existing ID
+                 replacement = f'<sup class="footnote-ref"><a href="#{unique_id}">{dev_num}</a></sup>'
+                 text = text.replace(marker_full, replacement)
+             else:
+                 with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
+                      f.write(f"  NEW: {marker}\n")
+                      f.flush()
+                      os.fsync(f.fileno())
+                 # New footnote
+                 local_counter += 1
+                 # footnote_text already fetched above
+                 devanagari_num = to_devanagari_numeral(local_counter)
+                 
+                 # Generate unique ID using subsection_key
+                 safe_key = subsection_key if subsection_key else "unknown"
+                 unique_id = f"fn-{safe_key}-{marker}"
+                 
+                 # Replace this specific marker occurrence
+                 replacement = f'<sup class="footnote-ref"><a href="#{unique_id}" id="ref-{unique_id}">{devanagari_num}</a></sup>'
+                 text = text.replace(marker_full, replacement)
+                 
+                 footnotes_list.append((unique_id, devanagari_num, footnote_text))
+                 
+                 if seen_markers_map is not None:
+                     seen_markers_map[footnote_text] = (unique_id, devanagari_num)
 
-    return text, footnotes_list, global_counter
+    return text, footnotes_list, local_counter
 
 def process_footnotes_text(text, footnotes_dict):
     """
@@ -404,9 +507,12 @@ def escape_for_latex(data):
 
     return data
 
-def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None):
     
     formatted_output = []
+    
+    # --- FOOTNOTE TRACKING ---
+    seen_markers = set()
     
     # --- DATA EXTRACTION ---
     current_rik_id = subsection.get('rik_id')
@@ -450,7 +556,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     # COLOR: BLUE
     if string_1 and show_rik_info:
         s1 = format_dandas(string_1)
-        s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}))
+        s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}), seen_markers, subsection_key)
         formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
         formatted_output.append(r"\vspace{0.6em}")
 
@@ -464,7 +570,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Step C: Replace Accents with LaTeX commands (with adjusted sizes)
         s2 = replace_accents(s2)
         # Process Footnotes in Rik Text
-        s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}))
+        s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
         # Step D: Format Dandas (Spaces around dandas only)
         s2 = format_dandas(s2)
         # Output: Upright (not italics)
@@ -477,7 +583,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     
     # COLOR: Samam Metadata -> BROWN
     meta_part = format_dandas(string_3).strip()
-    meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}))
+    meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
     if meta_part:
         meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
     
@@ -536,35 +642,57 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
             extras = "" 
             
-            # --- FOOTNOTE PROCESSING FOR MANTRA TOKENS ---
+            # --- FOOTNOTE TRACKING (Ensure initialized at start of function too) ---
             # Extract footnotes from text_part if present
             # We look for (sX) patterns
-            found_footnotes = []
             if '(' in text_part and ')' in text_part:
                 # Find all markers
                 markers = re.findall(r'\((s\d+)\)', text_part)
                 footnote_data = subsection.get('footnotes', {})
                 for marker in markers:
-                    if marker in footnote_data:
-                        found_footnotes.append(footnote_data[marker])
-                        # Remove marker from text_part so it doesn't go into stack
-                        text_part = text_part.replace(f'({marker})', '')
+                    # Remove marker from text_part so it doesn't go into stack
+                    text_part = text_part.replace(f'({marker})', '')
+                    
+                    # Logic: If seen, use ref. If new, use footnote+label
+                    # Use subsection_key to make label unique
+                    # If subsection_key is None, fallback to unique-ish string or random
+                    safe_key = subsection_key if subsection_key else "unknown"
+                    label = f"fn:{safe_key}:{marker}"
+                    
+                    if marker in seen_markers:
+                        # Refer to existing
+                        # Use rule for top alignment + raisebox for template match
+                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
+                    else:
+                        # Create new
+                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
+                        extras += f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{fn_text}\\label{{{label}}}}}"
+                        seen_markers.add(marker)
             
-            # Append accumulated footnotes to extras
-            for fn_text in found_footnotes:
-                extras += f"\\footnote{{{fn_text}}}"
+            # (Deleted old loop: for fn_text in found_footnotes...)
 
             if swara_part:
                 clean_swara = swara_part.replace('{', '').replace('}', '')
                 if len(clean_swara) > 1:
-                    stack = f"\\stackleft{{{text_part}}}{{{swara_part}}}\\hspace{{0.05em}}"
+                    # LEFT STACK
+                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
+                    spacing = "\\hspace{0.05em}"
                 else:
-                    stack = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+                    # CENTER STACK
+                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+                    spacing = "" # standard spacing handled by stackgap or none
             else:
-                stack = text_part
+                stack_base = text_part
+                spacing = ""
             
-                      
-            token = stack + extras
+            # Handle empty text_part (footnote marker was the only content)
+            # Also handle "{}" which is left when marker like "{(s1)}" is stripped
+            if (not text_part.strip() or text_part.strip() == '{}') and extras:
+                # Output only the footnote, no empty braces or spacing
+                token = extras
+            else:
+                # Normal case: stack + extras + spacing
+                token = stack_base + extras + spacing
 
             if token and token != '{}':
                 paragraph_buffer.append(token)
@@ -587,12 +715,15 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 # ----------------------------------------------------
 # RIK-ONLY FORMATTING (for separate output mode)
 # ----------------------------------------------------
-def format_rik_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_rik_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None):
     """
     Format only Rik content (rik_metadata and rik_text) for separate output mode.
     Skips all Samam-related content.
     """
     formatted_output = []
+    
+    # --- FOOTNOTE TRACKING ---
+    seen_markers = set()
     
     current_rik_id = subsection.get('rik_id')
     string_1 = subsection.get('rik_metadata', '')
@@ -619,7 +750,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     if string_1:
         s1 = format_dandas(string_1)
         # Apply footnotes
-        s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}))
+        s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}), seen_markers, subsection_key)
         formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
         formatted_output.append(r"\vspace{0.6em}")
 
@@ -629,7 +760,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
         s2 = handle_consecutive_accents(s2)
         s2 = replace_accents(s2)
         # Apply footnotes
-        s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}))
+        s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
         s2 = format_dandas(s2)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
         formatted_output.append(r"\vspace{0.8em}")
@@ -640,12 +771,15 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 # ----------------------------------------------------
 # SAMAM-ONLY FORMATTING (for separate output mode)
 # ----------------------------------------------------
-def format_samam_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_samam_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None):
     """
     Format only Samam content (header, saman_metadata, mantra text) for separate output mode.
     Skips all Rik-related content.
     """
     formatted_output = []
+    
+    # --- FOOTNOTE TRACKING ---
+    seen_markers = set()
     
     string_3 = subsection.get('saman_metadata', '')
     
@@ -665,7 +799,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}" if header_part else ""
     
     meta_part = format_dandas(string_3).strip()
-    meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}))
+    meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
     if meta_part:
         meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
     
@@ -723,34 +857,57 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
             extras = "" 
             
-            # --- FOOTNOTE PROCESSING FOR MANTRA TOKENS ---
+            # --- FOOTNOTE TRACKING (Ensure initialized at start of function too) ---
             # Extract footnotes from text_part if present
             # We look for (sX) patterns
-            found_footnotes = []
             if '(' in text_part and ')' in text_part:
                 # Find all markers
                 markers = re.findall(r'\((s\d+)\)', text_part)
                 footnote_data = subsection.get('footnotes', {})
                 for marker in markers:
-                    if marker in footnote_data:
-                        found_footnotes.append(footnote_data[marker])
-                        # Remove marker from text_part so it doesn't go into stack
-                        text_part = text_part.replace(f'({marker})', '')
+                    # Remove marker from text_part so it doesn't go into stack
+                    text_part = text_part.replace(f'({marker})', '')
+                    
+                    # Logic: If seen, use ref. If new, use footnote+label
+                    # Use subsection_key to make label unique
+                    # If subsection_key is None, fallback to unique-ish string or random
+                    safe_key = subsection_key if subsection_key else "unknown"
+                    label = f"fn:{safe_key}:{marker}"
+                    
+                    if marker in seen_markers:
+                        # Refer to existing
+                        # Use rule for top alignment + raisebox for template match
+                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
+                    else:
+                        # Create new
+                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
+                        extras += f"\\vphantom{{\\char\"0951}}\\footnote{{{fn_text}\\label{{{label}}}}}"
+                        seen_markers.add(marker)
             
-            # Append accumulated footnotes to extras
-            for fn_text in found_footnotes:
-                extras += f"\\footnote{{{fn_text}}}"
+            # (Deleted old loop: for fn_text in found_footnotes...)
 
             if swara_part:
                 clean_swara = swara_part.replace('{', '').replace('}', '')
                 if len(clean_swara) > 1:
-                    stack = f"\\stackleft{{{text_part}}}{{{swara_part}}}\\hspace{{0.05em}}"
+                    # LEFT STACK
+                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
+                    spacing = "\\hspace{0.05em}"
                 else:
-                    stack = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+                    # CENTER STACK
+                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+                    spacing = ""
             else:
-                stack = text_part
+                stack_base = text_part
+                spacing = ""
                       
-            token = stack + extras
+            # Handle empty text_part (footnote marker was the only content)
+            # Also handle "{}" which is left when marker like "{(s1)}" is stripped
+            if (not text_part.strip() or text_part.strip() == '{}') and extras:
+                # Output only the footnote, no empty braces or spacing
+                token = extras
+            else:
+                # Normal case: stack + extras + spacing
+                token = stack_base + extras + spacing
 
             if token and token != '{}':
                 paragraph_buffer.append(token)
@@ -955,15 +1112,21 @@ def replace_accents_html(text):
     
     return text
 
-def format_mantra_sets_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_mantra_sets_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, 
+                              footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
     """
     Formats mantra data as HTML using table-based layout for word/swara stacking.
     Uses tables similar to existing HTML output in the project.
     Only renders rik_metadata and rik_text if rik_id differs from prev_rik_id.
     """
-    global HTML_FOOTNOTE_COUNTER
+    # Use passed state objects
+    # global HTML_FOOTNOTE_COUNTER, HTML_SEEN_CONTENT_MAP -- REMOVED globals
+    
+    HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+
     
     # --- DATA EXTRACTION ---
     current_rik_id = subsection.get('rik_id')
@@ -982,7 +1145,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     if string_1 and show_rik_info:
         s1 = escape_for_html(string_1)
         s1 = format_dandas_html(s1)
-        s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER)
+        s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
 
@@ -991,7 +1154,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         s2 = remove_mantra_spaces(string_2)
         s2 = escape_for_html(s2)
         # Process footnotes
-        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER)
+        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         
         s2 = replace_accents_html(s2)
@@ -1005,7 +1168,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     if string_3:
         meta = escape_for_html(string_3)
         meta = format_dandas_html(meta)
-        meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER)
+        meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
     
@@ -1051,7 +1214,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
             text_part = format_dandas_html(text_part)
             
             # Process footnotes in mantra text
-            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER)
+            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
             collected_footnotes.extend(fnotes)
 
             swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
@@ -1065,29 +1228,28 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
             verse_html = ''.join(word_elements)
             formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
 
-    # Append accumulated footnotes for this subsection
-    if collected_footnotes:
-        formatted_output.append('<hr class="footnote-separator"/>')
-        formatted_output.append('<div class="footnote-section">')
-        for num, display_num, text in collected_footnotes:
-             formatted_output.append(f'<div class="footnote-item" id="fn-{num}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
-        formatted_output.append('</div>')
+    # Accumulate footnotes for section-level rendering (don't render inline)
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
 
-    return '\n'.join(formatted_output)
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
 
 # ----------------------------------------------------
 # RIK-ONLY HTML FORMATTING (for separate output mode)
 # ----------------------------------------------------
-def format_rik_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_rik_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+                         footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
     """
     Format only Rik content (rik_metadata and rik_text) for HTML separate output mode.
     Skips all Samam-related content.
     """
-    global HTML_FOOTNOTE_COUNTER
+    # Use passed state
+    HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
     footnote_data = subsection.get('footnotes', {})
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
     
     current_rik_id = subsection.get('rik_id')
     string_1 = subsection.get('rik_metadata', '')
@@ -1106,7 +1268,7 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
     if string_1:
         s1 = escape_for_html(string_1)
         s1 = format_dandas_html(s1)
-        s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER)
+        s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
 
@@ -1115,37 +1277,35 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
         s2 = remove_mantra_spaces(string_2)
         s2 = escape_for_html(s2)
         
-        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER)
+        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         
         s2 = replace_accents_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
 
-    # Append accumulated footnotes
-    # Append accumulated footnotes
-    if collected_footnotes:
-        formatted_output.append('<hr class="footnote-separator"/>')
-        formatted_output.append('<div class="footnote-section">')
-        for num, display_num, text in collected_footnotes:
-             formatted_output.append(f'<div class="footnote-item" id="fn-{num}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
-        formatted_output.append('</div>')
+    # Accumulate footnotes for section-level rendering (don't render inline)
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
 
-    return '\n'.join(formatted_output)
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
 
 # ----------------------------------------------------
 # SAMAM-ONLY HTML FORMATTING (for separate output mode)
 # ----------------------------------------------------
-def format_samam_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None):
+def format_samam_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+                           footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
     """
     Format only Samam content (header, saman_metadata, mantra text) for HTML separate output mode.
     Skips all Rik-related content.
     """
-    global HTML_FOOTNOTE_COUNTER
+    # Use passed state
+    HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
     footnote_data = subsection.get('footnotes', {})
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
     
     string_3 = subsection.get('saman_metadata', '')
     
@@ -1159,7 +1319,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
     if string_3:
         meta = escape_for_html(string_3)
         meta = format_dandas_html(meta)
-        meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER)
+        meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
     
@@ -1191,7 +1351,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
             text_part = escape_for_html(text_part)
             text_part = format_dandas_html(text_part)
             
-            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER)
+            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
             collected_footnotes.extend(fnotes)
 
             swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
@@ -1203,16 +1363,78 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
             verse_html = ''.join(word_elements)
             formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
 
-    # Append accumulated footnotes
-    # Append accumulated footnotes
-    if collected_footnotes:
-        formatted_output.append('<hr class="footnote-separator"/>')
-        formatted_output.append('<div class="footnote-section">')
-        for num, display_num, text in collected_footnotes:
-             formatted_output.append(f'<div class="footnote-item" id="fn-{num}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
-        formatted_output.append('</div>')
+    # Accumulate footnotes for section-level rendering (don't render inline)
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
             
-    return '\n'.join(formatted_output)
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
+
+def preprocess_html_data(supersections, output_mode):
+    """
+    Pre-processes the data structure to generate HTML for subsections and footnotes
+    BEFORE template rendering. This avoids global state issues in Jinja.
+    """
+    print("DEBUG: Starting HTML Pre-processing...")
+    
+    for super_key, supersection in supersections.items():
+        for section_key, section in supersection.get('sections', {}).items():
+            if section_key == 'count': continue
+            
+            # --- SECTION STATE ---
+            footnote_counter = 0
+            footnotes_accumulator = []
+            seen_content_map = {}
+            
+            section['html_subsections'] = [] # List of HTML strings
+            
+            prev_rik_id = None
+            
+            for subsection_key, subsection in section.get('subsections', {}).items():
+                unique_key = f"{super_key}_{section_key}_{subsection_key}"
+                
+                # Dispatch based on mode
+                html_content = ""
+                if output_mode == 'rik':
+                    html_content, footnote_counter = format_rik_only_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                elif output_mode == 'samam':
+                     html_content, footnote_counter = format_samam_only_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                else:
+                    html_content, footnote_counter = format_mantra_sets_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                
+                section['html_subsections'].append({
+                    'id': f"{super_key}-{section_key}-{subsection_key}",
+                    'content': html_content
+                })
+                
+                prev_rik_id = subsection.get('rik_id')
+                
+            # --- GENERATE FOOTNOTE HTML ---
+            # Using the logic from render_section_footnotes but locally
+            if footnotes_accumulator:
+                 output = ['<hr class="footnote-separator"/>']
+                 output.append('<div class="footnote-section">')
+                 for unique_id, display_num, text in footnotes_accumulator:
+                     output.append(f'<div class="footnote-item" id="{unique_id}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
+                 output.append('</div>')
+                 section['html_footer'] = '\n'.join(output)
+                 print(f"DEBUG: Generated footer for {section_key} with {len(footnotes_accumulator)} items.")
+            else:
+                 section['html_footer'] = ""
+                 print(f"DEBUG: No footnotes for {section_key}.")
+
+
 
 
 def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiShila Vedic', 'Adishila SanVedic'", output_mode="combined"):
@@ -1233,7 +1455,10 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiS
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     
     global HTML_FOOTNOTE_COUNTER
-    HTML_FOOTNOTE_COUNTER = 0
+    HTML_FOOTNOTE_COUNTER = 0 # Not used in pre-process mode but kept for safety
+    
+    # PRE-PROCESS DATA
+    preprocess_html_data(data, output_mode)
     
     document = template.render(supersections=data, html_font=html_font, output_mode=output_mode)
     
@@ -1337,6 +1562,8 @@ Examples:
     html_jinja_env.filters["format_samam_only_html"] = format_samam_only_html
     html_jinja_env.filters["escape_for_html"] = escape_for_html
     html_jinja_env.filters["replacecolon"] = replacecolon
+    html_jinja_env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
+    html_jinja_env.filters["render_section_footnotes"] = render_section_footnotes
 
     # Load input JSON data
     ts_string_Devanagari = Path(input_file).read_text(encoding="utf-8")

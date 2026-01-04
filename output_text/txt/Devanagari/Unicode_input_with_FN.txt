@@ -13,23 +13,22 @@ Version 0.15 1st January 2026
 ।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
 # End of Rik Metadata -- subsection_1 ## DO NOT EDIT
 # Start of Rik Text -- subsection_1 ## DO NOT EDIT
-अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1)(s1) सत्सी बर्हीषि(1) ॥ १ ॥
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1)(s1) ॥ १ ॥
 # End of Rik Text -- subsection_1 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_1 ## DO NOT EDIT
 ॥गौतमस्यपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
 # End of SubSection Title -- subsection_1 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
-ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा) इ(श)(s2) । ता या(टा) इता या(टि) इ(श) ।
-गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इता या(टि) इ(श) ।
-नाइ हो(कि) ता(च) । सा(ट) त्सा(ट) इ बा(खा) औहो वा(शि) (s3)।
+ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा) इ(श)(s1) । ता या(टा) इता या(टि) इ(श) (s1)।
+गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इता या(टि) इ(श) (s2) ।
+नाइ हो(कि) ता(च) । सा(ट) त्सा(ट) इ बा(खा) औहो वा(शि) ।
 ही(ख) षि(श) ॥१॥
 #End of Mantra Sets -- subsection_1 ## DO NOT EDIT
 
 # Start of Footnote -- subsection_1 ## DO NOT EDIT
-s1: This explains the first swara variation
-s2: This explains the second swara variation
-s3: This explains the third swara variation
+s1: इ(श): Kerala Padhati, No swara marking in Thogur Padhati
+s2: इ(श): KL, इ in TP
 # End of Footnote -- subsection_1 ## DO NOT EDIT    
 
 # Start of SubSection Title -- subsection_2 ## DO NOT EDIT

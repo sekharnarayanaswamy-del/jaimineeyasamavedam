@@ -52,7 +52,7 @@ class RikMetadataParser:
             print(f"[WARNING] Rik Metadata file '{filepath}' not found.")
             return
         with open(filepath, 'r', encoding='utf-8') as f:
-            self.section_lines = [line.strip() for line in f if line.strip()]
+            self.section_lines = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
 
     def parse_range_string(self, range_str):
         indices = []

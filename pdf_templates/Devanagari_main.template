@@ -39,6 +39,7 @@
 \usepackage{imakeidx}    
 \usepackage{emoji}       
 \usepackage{needspace}
+\usepackage[perpage]{footmisc} % Resets footnote numbering on every page
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
@@ -202,11 +203,11 @@
                 
                 % Conditional rendering based on output_mode
                 \BLOCK{ if output_mode == 'rik' }
-                \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ elif output_mode == 'samam' }
-                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ else }
-                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id)}
+                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                
