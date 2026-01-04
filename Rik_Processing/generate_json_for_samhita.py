@@ -243,9 +243,12 @@ class SamanMetadataParser:
                         # Clean and standardize danda wrapping
                         meta_part = re.sub(r'^[।|॥\s]+', '', meta_part)
                         meta_part = re.sub(r'[।|॥\s]+$', '', meta_part)
+                            # Normalize internal pipes to Devanagari dandas
+                        meta_part = meta_part.replace('||', '॥').replace('|', '।')
+                        
                         if meta_part:
                             metadata = '।। ' + meta_part + ' ।।'
-            
+
             # Store as (rik_id, title, metadata) tuple in order
             current_section.append((rik_id, title, metadata))
         
@@ -253,7 +256,7 @@ class SamanMetadataParser:
         if current_section:
             self.sections.append(current_section)
         
-        print(f"[INFO] Loaded {len(self.sections)} sections from Saman metadata file.")
+        print(f"[INFO] Loaded {len(self.sections)} sections from Samam metadata file.")
         for i, sec in enumerate(self.sections):
             print(f"  Section {i+1}: {len(sec)} samams")
     
@@ -315,6 +318,10 @@ def clean_rik_metadata_format(text):
     if not text: return ""
     text = " ".join(text.split())
     text = re.sub(r'[।|]+\s*$', '', text).strip()
+    
+    # Normalize pipes -> dandas
+    text = text.replace('||', '॥').replace('|', '।')
+    
     if not text: return ""
     return text + "।।"
 
@@ -634,11 +641,15 @@ def parse_unicode_text_file(filepath):
     rik_metadata_map = {}
     for rm_match in rik_metadata_pattern.finditer(content):
         sub_id = rm_match.group(1)
-        rik_metadata_map[sub_id] = rm_match.group(2).strip()
+        meta_text = rm_match.group(2).strip()
+        # Normalize pipes
+        meta_text = meta_text.replace('||', '॥').replace('|', '।')
+        rik_metadata_map[sub_id] = meta_text
     
     # Extract Rik text for each subsection
     rik_text_map = {}
     for rt_match in rik_text_pattern.finditer(content):
+        # ... existing extraction ...
         sub_id = rt_match.group(1)
         rik_text_map[sub_id] = rt_match.group(2).strip()
     
@@ -651,6 +662,8 @@ def parse_unicode_text_file(filepath):
         parts = header_line.split('  ', 1)
         header = parts[0].strip()
         saman_metadata = parts[1].strip() if len(parts) > 1 else ""
+        # Normalize pipes
+        saman_metadata = saman_metadata.replace('||', '॥').replace('|', '।')
         subsection_headers[sub_id] = {"header": header, "saman_metadata": saman_metadata}
     
     # Extract mantra sets
