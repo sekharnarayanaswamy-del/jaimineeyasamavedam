@@ -676,21 +676,28 @@ def parse_unicode_text_file(filepath):
         mantra_sets_map[sub_id] = mantras
     
     # Extract footnotes
+    # Extract footnotes
     footnote_pattern = re.compile(
-        r'# Start of Footnote -- (\S+) ## DO NOT EDIT\s*\n(.*?)\n# End of Footnote',
+        r'# Start of Footnote -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Footnote',
         re.MULTILINE | re.DOTALL
     )
     footnotes_map = {}
     for fn_match in footnote_pattern.finditer(content):
         sub_id = fn_match.group(1)
         footnote_text = fn_match.group(2).strip()
-        # Parse footnotes: "s1 - footnote text" format
+        # Parse footnotes: "s1 - footnote text" or "s1: footnote text" or "s1 : footnote text"
         footnotes = {}
         for line in footnote_text.split('\n'):
             line = line.strip()
-            if ' - ' in line:
-                key, text = line.split(' - ', 1)
-                footnotes[key.strip()] = text.strip()
+            if not line: continue
+            
+            # Try to match sN separator text
+            # Separator can be - or :
+            m_fn = re.match(r'^(s\d+)\s*[-:]\s*(.*)$', line)
+            if m_fn:
+                key = m_fn.group(1).strip()
+                text = m_fn.group(2).strip()
+                footnotes[key] = text
         if footnotes:
             footnotes_map[sub_id] = footnotes
     
