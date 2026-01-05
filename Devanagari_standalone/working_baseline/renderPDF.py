@@ -1152,6 +1152,8 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     # 2. Rik Text (With accents) - Only if rik_id changed
     if string_2 and show_rik_info:
         s2 = remove_mantra_spaces(string_2)
+        # Remove LaTeX newline commands that shouldn't appear in HTML
+        s2 = s2.replace('\\newline%', '').replace('\\newline', '')
         s2 = escape_for_html(s2)
         # Process footnotes
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
@@ -1275,6 +1277,8 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
     # Rik Text (with accents)
     if string_2:
         s2 = remove_mantra_spaces(string_2)
+        # Remove LaTeX newline commands that shouldn't appear in HTML
+        s2 = s2.replace('\\newline%', '').replace('\\newline', '')
         s2 = escape_for_html(s2)
         
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
