@@ -625,17 +625,28 @@ def parse_unicode_text_file(filepath):
             "sections": {}
         }
     
-    # Extract sections
+    # Build section-to-supersection mapping by scanning file order
+    section_to_supersection = {}
+    current_supersection = None
+    for line in content.split('\n'):
+        ss_match = re.match(r'# Start of SuperSection Title -- (\S+) ## DO NOT EDIT', line)
+        if ss_match:
+            current_supersection = ss_match.group(1)
+        sec_match = re.match(r'# Start of Section Title -- (\S+) ## DO NOT EDIT', line)
+        if sec_match and current_supersection:
+            section_to_supersection[sec_match.group(1)] = current_supersection
+    
+    # Extract sections and assign to correct supersection
     for sec_match in section_pattern.finditer(content):
         sec_id = sec_match.group(1)
         sec_title = sec_match.group(2).strip()
-        # Find which supersection this belongs to (assume first for now)
-        for ss_id in data["supersection"]:
-            if sec_id not in data["supersection"][ss_id]["sections"]:
-                data["supersection"][ss_id]["sections"][sec_id] = {
-                    "section_title": sec_title,
-                    "subsections": {}
-                }
+        # Use the mapping to find the correct supersection
+        ss_id = section_to_supersection.get(sec_id, 'supersection_1')
+        if ss_id in data["supersection"]:
+            data["supersection"][ss_id]["sections"][sec_id] = {
+                "section_title": sec_title,
+                "subsections": {}
+            }
     
     # Extract Rik metadata for each subsection
     rik_metadata_map = {}
@@ -748,36 +759,46 @@ def parse_unicode_text_file(filepath):
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description='Generate JSON for Samhita rendering')
-    parser.add_argument('--input-mode', choices=['initial', 'correction'], default='initial',
-                        help='Input mode: initial (from multiple source files) or correction (from Unicode text)')
-    parser.add_argument('--unicode-file', type=str, 
-                        default='output_text/txt/Devanagari/Devanagari_Devanagari_Unicode.txt',
-                        help='Path to Unicode text file (for correction mode)')
-    parser.add_argument('--corrections-file', type=str, default='corrections_003.txt',
-                        help='Path to corrections file (for initial mode)')
+    parser = argparse.ArgumentParser(
+        description='Generate JSON for Samhita rendering',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Input Modes:
+  initial     - Reads raw text files and combines with external metadata files
+                (rishi_devata_chandas_for_rik.txt, sama_rishi_chandas_out.txt, vedic_text.txt)
+  correction  - Reads processed Unicode text file with embedded metadata
+
+Examples:
+  python generate_json_for_samhita.py corrections_003.txt --input-mode initial
+  python generate_json_for_samhita.py Full_Samhita_ip_with_FN.txt --input-mode correction --output output.json
+        """
+    )
+    parser.add_argument('input_file', type=str,
+                        help='Input text file to process')
+    parser.add_argument('--input-mode', choices=['initial', 'correction'], default='correction',
+                        help='Input mode: initial or correction (default: correction)')
     parser.add_argument('--output', type=str, default=None,
-                        help='Output JSON file path')
+                        help='Output JSON file path (default: auto-generated from input filename)')
     
     args = parser.parse_args()
     
+    input_file = args.input_file
+    
     if args.input_mode == 'initial':
         # Initial mode: use multiple source files
-        input_file = args.corrections_file
         rik_meta = "rishi_devata_chandas_for_rik.txt"
         saman_meta = "sama_rishi_chandas_out.txt"
         rik_text = "vedic_text.txt"
         
-        output_file_path = args.output or (Path(input_file).stem + "_merged_out.json")
+        output_file_path = args.output or (Path(input_file).stem + "_out.json")
         print(f"Processing {input_file} in INITIAL mode...")
         output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text)
         
     else:
         # Correction mode: parse Unicode text file
-        unicode_file = args.unicode_file
-        output_file_path = args.output or "corrections_003_merged_out.json"
-        print(f"Processing {unicode_file} in CORRECTION mode...")
-        output_data = parse_unicode_text_file(unicode_file)
+        output_file_path = args.output or (Path(input_file).stem + "_out.json")
+        print(f"Processing {input_file} in CORRECTION mode...")
+        output_data = parse_unicode_text_file(input_file)
     
     if output_data:
         try:
