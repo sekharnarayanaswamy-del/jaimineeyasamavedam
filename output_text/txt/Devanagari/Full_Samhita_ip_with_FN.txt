@@ -10,27 +10,21 @@ Version 0.15 1st January 2026
 प्रथम खण्डः
 # End of Section Title -- section_1 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_1 ## DO NOT EDIT
-।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_1 ## DO NOT EDIT
 # Start of Rik Text -- subsection_1 ## DO NOT EDIT
-अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1)(s1) ॥ १ ॥
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) (s1) ॥ १ ॥
 # End of Rik Text -- subsection_1 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_1 ## DO NOT EDIT
 ॥गौतमस्यपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
 # End of SubSection Title -- subsection_1 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
-ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा)इ(श) । ता या(टा) इ(श)(s1)ता या(टि) इ(श) ।
-गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इ(श)(s2)ता या(टि) इ(श) ।
+ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा) इ(श)(s1) । ता या(टा) इ(श)‍(s1) ता या(टि) इ(श) ।
+गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इ(श)(s2) ता या(टि) इ(श) ।
 नाइ हो(कि) ता(च) । सा(ट) त्सा(ट) इ बा(खा) औहो वा(शि) ।
 ही(ख) षि(श) ॥१॥
 #End of Mantra Sets -- subsection_1 ## DO NOT EDIT
-
-# Start of Footnote -- subsection_1 ## DO NOT EDIT
-s1: इ(श): Kerala Padhati, No swara marking in Thogur Padhati
-s2: इ(श): KL, इ in TP
-s3: Random foonote
-# End of Footnote -- subsection_1 ## DO NOT EDIT    
 
 # Start of SubSection Title -- subsection_2 ## DO NOT EDIT
 ॥कश्यपस्यबर्हिषीयम्॥  ।। कश्यपो गायत्र्यग्निः ।।
@@ -41,6 +35,11 @@ s3: Random foonote
 षा(खा) औहोवा(शि) ।ब(च) र्हीषी(खा)॥२॥
 #End of Mantra Sets -- subsection_2 ## DO NOT EDIT
 
+# Start of Footnote -- subsection_1 ## DO NOT EDIT
+s1: इ(श): Kerala Padhati, No swara marking in Thogur Padhati
+s2: इ(श): KL, इ in TP
+# End of Footnote -- subsection_1 ## DO NOT EDIT    
+
 # Start of SubSection Title -- subsection_3 ## DO NOT EDIT
 ॥गौतमस्यचैवपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
 # End of SubSection Title -- subsection_3 ## DO NOT EDIT
@@ -50,7 +49,7 @@ s3: Random foonote
 #End of Mantra Sets -- subsection_3 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_4 ## DO NOT EDIT
-।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_4 ## DO NOT EDIT
 # Start of Rik Text -- subsection_4 ## DO NOT EDIT
 त्वा(1)माग्ने यज्ञा(2)नां । हो(1)ता विश्वे(1)षां हितः । देवेभि(1)र्मानूषे(1) जने ॥ २ ॥
@@ -68,10 +67,10 @@ s3: Random foonote
 # Start of Footnote -- subsection_4 ## DO NOT EDIT
 s1: Kerala Padhati (क)
 s2: Thogur Padhati (त)
-# End of Footnote -- subsection_4 ## DO NOT EDIT 
+# End of Footnote -- subsection_4 ## DO NOT EDIT  
 
 # Start of Rik Metadata -- subsection_5 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। अग्निः।। गायत्री।।
+।। मेधातिथिः काण्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_5 ## DO NOT EDIT
 # Start of Rik Text -- subsection_5 ## DO NOT EDIT
 अग्निंदूतं(2)वृ(1)णीमहे । हो(2)ता(1)रंविश्वा(2)वे(1)दसं । अस्या(4)यज्ञास्या(1) सुक्रा(1)तुम् ॥ ३ ॥
@@ -87,7 +86,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_5 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_6 ## DO NOT EDIT
-।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_6 ## DO NOT EDIT
 # Start of Rik Text -- subsection_6 ## DO NOT EDIT
 अग्निर्वृ(1)णि(1)जङ्घनात् । द्रविणास्यु(4)र्वीपन्या(2)या । सामी(2)द्धश्शुक्रा(2)आहूतः ॥ ४ ॥
@@ -111,7 +110,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_6 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_7 ## DO NOT EDIT
-।। उशनाः ।। अग्निः।। गायत्री।।
+।। उशनाः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_7 ## DO NOT EDIT
 # Start of Rik Text -- subsection_7 ## DO NOT EDIT
 प्रेष्ठं(3)वोआतीथिं । स्तू(2) षे(2) मित्रामीवाप्रीयं । अ(2)ग्ने राथन्ना(2)वेद्यम् ॥ ५ ॥
@@ -139,7 +138,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_8 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_9 ## DO NOT EDIT
-।। सुदीतिपुरुमीढा वांगिरसौ तयोर्वाऽन्यतरः ।। अग्निः।। गायत्री।।
+।। सुदीतिपुरुमीढा वांगिरसौ तयोर्वाऽन्यतरः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_9 ## DO NOT EDIT
 # Start of Rik Text -- subsection_9 ## DO NOT EDIT
 त्वन्नोआग्नेमा(2)हो(1)भिः । पाही विश्वा(1)स्याआ(2)रा(1)तेः । ऊत(2)द्वीषो मर्क्त्या(1)स्या ॥ ६ ॥
@@ -158,7 +157,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_9 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_10 ## DO NOT EDIT
-।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_10 ## DO NOT EDIT
 # Start of Rik Text -- subsection_10 ## DO NOT EDIT
 एह्यू(2)षुब्रा(2)वा(1)णिते । अग्नाइत्थे(4)ता(1)रा(1)गीराः । ए(2)भिर्वार्धा(1)साइ(2)न्दू(1)भिः ॥ ७ ॥
@@ -176,7 +175,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_10 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_11 ## DO NOT EDIT
-।। वत्सः काण्वः ।। अग्निः।। गायत्री।।
+।। वत्सः काण्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_11 ## DO NOT EDIT
 # Start of Rik Text -- subsection_11 ## DO NOT EDIT
 आ(3)तेवात्सो(2)मानो यमात् । परामा(4)ञ्चित्साधास्थात् । अ(2) ग्ने(2) त्वांकामयो गी(2)रा(1) ॥ ८ ॥
@@ -196,7 +195,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_11 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_12 ## DO NOT EDIT
-।। भारद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_12 ## DO NOT EDIT
 # Start of Rik Text -- subsection_12 ## DO NOT EDIT
 त्वामाग्ने पु(4)ष्काराद(2)धी(1) । आ(3)थ(1)र्वाणीरा(1)मन्धत । मूर्ध्नो(2) विश्वास्यावाघा(2)ता(1): ॥ ९ ॥
@@ -211,7 +210,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_12 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_13 ## DO NOT EDIT
-।। वामदेवः ।। अग्निः।। गायत्री।।
+।। वामदेवः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_13 ## DO NOT EDIT
 # Start of Rik Text -- subsection_13 ## DO NOT EDIT
 अग्नेवी(3)वा(2)स्वादा(2) भारा । अस्मभ्यामू(2)ता(4)ये(1) माहे(2) । देवो ह्यासी(1) नोदृशे ॥ १० ॥
@@ -231,7 +230,7 @@ s2: Thogur Padhati (त)
 द्वितीय खण्डः
 # End of Section Title -- section_2 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_14 ## DO NOT EDIT
-।। आयुन्ङ्क्श्वाहि: (ऋ विरूपांगिरसः) ।। अग्निः।। गायत्री।।
+।। आयुन्ङ्क्श्वाहि: (ऋ विरूपांगिरसः) अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_14 ## DO NOT EDIT
 # Start of Rik Text -- subsection_14 ## DO NOT EDIT
 नामास्ते(2)अग्ना(2)ओज(1)से । गृणन्तीदे(2)वा(1)कृष्टायाः । आमै(2)रामित्रा(2)मर्दया ॥ १ ॥
@@ -247,7 +246,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_14 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_15 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। अग्निः।। गायत्री।।
+।। वामदेवो गौतमः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_15 ## DO NOT EDIT
 # Start of Rik Text -- subsection_15 ## DO NOT EDIT
 दूतंवो(1)विश्वावे(1)दसम् । हव्यावाहामामा(2)र्क्त्यम्(1)। याजीष्ठमृन्जसे(2)गीरा ॥ २ ॥
@@ -262,7 +261,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_15 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_16 ## DO NOT EDIT
-।। प्रयोगो भागर्वः ।। अग्निः।। गायत्री।।
+।। प्रयोगो भागर्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_16 ## DO NOT EDIT
 # Start of Rik Text -- subsection_16 ## DO NOT EDIT
 ऊपात्वा जामायो(2)गीराः(1)। देदीशतिर्हा(1)विष्कृताः । वायोरा(1)नीकेअस्थिरन् ॥ ३ ॥
@@ -281,7 +280,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_16 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_17 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। अग्निः।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_17 ## DO NOT EDIT
 # Start of Rik Text -- subsection_17 ## DO NOT EDIT
 ऊ(1)पात्वाग्ने दीवे(2)दीवे । दो(2)षा(1)वस्तार्धीया वायम्(2) । ना(2)मो भा(4)र(1)न्ताएमा(1)सि ॥ ४ ॥
@@ -297,7 +296,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_17 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_18 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। अग्निः।। गायत्री।।
+।। शुनः शेप आजीर्गितः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_18 ## DO NOT EDIT
 # Start of Rik Text -- subsection_18 ## DO NOT EDIT
 जरा(1)बोधाताव्दीविड्ढी । वीशेवी(2)शेय(1)ज्ञीयाया । स्तो(3)मंरुद्रायादृशीक(2)म् ॥ ५ ॥
@@ -315,7 +314,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_18 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_19 ## DO NOT EDIT
-।। मेधातिथिः ।। अग्निः।। गायत्री।।
+।। मेधातिथिः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_19 ## DO NOT EDIT
 # Start of Rik Text -- subsection_19 ## DO NOT EDIT
 प्रातित्यञ्चा(2)रुमाध्वारं(2) । गो(3)पी(1)था(2)यप्रा(2)हू(1)यसे । मा(2)रुद्भीरग्नाआग(1)हि ॥ ६ ॥
@@ -331,7 +330,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_19 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_20 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। अग्निः।। गायत्री।।
+।। शुनः शेप आजीर्गितः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_20 ## DO NOT EDIT
 # Start of Rik Text -- subsection_20 ## DO NOT EDIT
 अ(1)श्वन्न(2)त्वा वारा(1) व(2)न्तम् । व(3)न्द(4)ध्याआग्नि(2) न्नामोभिः । स(2)म्म्रा(2)जन्तमाध्वाराणा(1)म् ॥ ७ ॥
@@ -362,7 +361,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_21 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_22 ## DO NOT EDIT
-।। प्रयोगो भागर्वः ।। अग्निः।। गायत्री।।
+।। प्रयोगो भागर्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_22 ## DO NOT EDIT
 # Start of Rik Text -- subsection_22 ## DO NOT EDIT
 और्वा(2)भृगूवच्छूचिम् । आप्नावा(2)नावादाहु(1)वे । अग्निं(4)सामुद्रावाससम् ॥ ८ ॥
@@ -382,7 +381,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_22 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_23 ## DO NOT EDIT
-।। प्रयोगो भागर्वः ।। अग्निः।। गायत्री।।
+।। प्रयोगो भागर्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_23 ## DO NOT EDIT
 # Start of Rik Text -- subsection_23 ## DO NOT EDIT
 अ(2)ग्नी(2)मिन्धानो(1) माना(1)सा। धी(1)यं सचेतामा(2)र्त्याः(1) । अ(2)ग्नी(2)मिन्धे वीवा(2)स्वा(1)भिः ॥ ९ ॥
@@ -398,7 +397,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_23 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_24 ## DO NOT EDIT
-।। वत्सः काण्वः ।। अग्निः।। गायत्री।।
+।। वत्सः काण्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_24 ## DO NOT EDIT
 # Start of Rik Text -- subsection_24 ## DO NOT EDIT
 आदी(2)त्प्रत्ना(2)स्यारे(2)ता(1)सः । ज्योतिः पश्यन्ती वासा(2)रम् । पा(2)रोयातिध्या(4)ते दीवि(2) ॥ १० ॥
@@ -417,7 +416,7 @@ s2: Thogur Padhati (त)
 तृतीय खण्डः
 # End of Section Title -- section_3 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_25 ## DO NOT EDIT
-।। प्रयोगो भागर्वः ।। अग्निः।। गायत्री।।
+।। प्रयोगो भागर्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_25 ## DO NOT EDIT
 # Start of Rik Text -- subsection_25 ## DO NOT EDIT
 अग्निंवोवृधन्तं । अध्वाराणांपुरूतामं । अच्छानाप्नेसाहा(2)स्वते ॥ १ ॥
@@ -437,7 +436,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_25 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_26 ## DO NOT EDIT
-।। भाद्वाजो बार्हस्पत्यः ।। अग्निः।। गायत्री।।
+।। भाद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_26 ## DO NOT EDIT
 # Start of Rik Text -- subsection_26 ## DO NOT EDIT
 अग्निस्तिग्मे(4)ना(1)शोचीषा(1) । यंसद्वि(2)श्वंन्या टट्य त्रीणं । अ(2)ग्नि(2)र्नो(1)वंसतेरायिम्(3) ॥ २ ॥
@@ -466,7 +465,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_27 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_28 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। अग्निः।। गायत्री।।
+।। वामदेवो गौतमः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_28 ## DO NOT EDIT
 # Start of Rik Text -- subsection_28 ## DO NOT EDIT
 अग्नेमृ(4)ळामाहं आ(1)सि(1)। आ(2)याआ(4)दे(1)वायुन्ज(1)नम् ।ईये(3)थाबर्ही(1)रासादम् ॥ ३ ॥
@@ -484,7 +483,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_28 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_29 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः।। गायत्री।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_29 ## DO NOT EDIT
 # Start of Rik Text -- subsection_29 ## DO NOT EDIT
 अ(2)ग्नेर(4)क्षाणोअं(2)हा(1)सः। प्रा(2)तीस्मदेवरिषाताः। ता(2)पीष्ठैराज(2)रोदहा ॥ ४ ॥
@@ -501,7 +500,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_29 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_30 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः।। गायत्री।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_30 ## DO NOT EDIT
 # Start of Rik Text -- subsection_30 ## DO NOT EDIT
 नित्वा(1)नक्ष्यविस्पते । धू(2)म(1)न्त(2)न्धीमहे वायम् । सु(2)वी(2)रामग्नआ(3)हुतः ॥ ६ ॥
@@ -517,7 +516,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_30 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_31 ## DO NOT EDIT
-।। विरूप आंगिरसः ।। अग्निः।। गायत्री।।
+।। विरूप आंगिरसः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_31 ## DO NOT EDIT
 # Start of Rik Text -- subsection_31 ## DO NOT EDIT
 अ(2)ग्नि(2)र्मूर्द्धादीवाःकाकू(2)त् । पा(2)तीः पृथिव्या(2)आ(2)यम्। आपांरेतांसिजिन्वति ॥ ७ ॥
@@ -533,7 +532,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_31 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_32 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। अग्निः।। गायत्री।।
+।। शुनः शेप आजीर्गितः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_32 ## DO NOT EDIT
 # Start of Rik Text -- subsection_32 ## DO NOT EDIT
 ई(2)मामू(1)षुत्वाम(2)स्मा(1)कम् । सा(2)नि(4) ङ्गा(1)यात्र(2)न्नव्या(1)सम् । अग्ने(1) दे(2) वे(2)षु प्रा(2)वोचः ॥ ८ ॥
@@ -549,7 +548,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_32 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_33 ## DO NOT EDIT
-।। गोपवन अत्रयेः ।। अग्निः।। गायत्री।।
+।। गोपवन अत्रयेः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_33 ## DO NOT EDIT
 # Start of Rik Text -- subsection_33 ## DO NOT EDIT
 तन्त्वा(1)गोपा(2)वा(1)नो गिरा । जा(2)नि(1)ष्ठदग्ने अङ्गिरः । सा(2)पा(1)वकाश्रू(1)धीहा(2)व(1)म् ॥ ९ ॥
@@ -565,7 +564,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_33 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_34 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। अग्निः।। गायत्री।।
+।। वामदेवो गौतमः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_34 ## DO NOT EDIT
 # Start of Rik Text -- subsection_34 ## DO NOT EDIT
 पा(2)रिवा(2)जपतीः काविः(2) । अ(2)ग्नि(2)ऋ(2)हव्या(2)न्या(1)क्रमीत् । दध(2)द्रत्ना(2)नीदाशू(2)षे(2) ॥ १० ॥
@@ -583,7 +582,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_34 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_35 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। अग्निः।। गायत्री।।
+।। मेधातिथिः काण्वः अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_35 ## DO NOT EDIT
 # Start of Rik Text -- subsection_35 ## DO NOT EDIT
 का(2)वी(2)माग्नी(2)मू(2)पा(1)स्तुहि । स(2)त्या(2)धर्मा(1)णमाध्वारे । दे(2)वा(2)मा(1)मीवाचा(2)ता(1)नम् ॥ १२ ॥
@@ -599,7 +598,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_35 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_36 ## DO NOT EDIT
-।। सिन्धुद्वीप आम्बरीषः त्रित आत्यो वा ।। अग्निः।। गायत्री।।
+।। सिन्धुद्वीप आम्बरीषः त्रित आत्यो वा अग्निः गायत्री।।
 # End of Rik Metadata -- subsection_36 ## DO NOT EDIT
 # Start of Rik Text -- subsection_36 ## DO NOT EDIT
 श(3)न्नो(1) देवी(2)राभीष्टा(1)ये।श(2)न्नो(1) भूवन्तूपीता(2)ये(1) । श(2)य्योराभि(2)स्रावन्तूनः ॥ १३ ॥
@@ -636,7 +635,7 @@ s2: Thogur Padhati (त)
 चतुर्थ खण्डः
 # End of Section Title -- section_4 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_38 ## DO NOT EDIT
-।। शय्युबार्हस्पत्यः ( ।। अग्निः।। बृहती।।
+।। शय्युबार्हस्पत्यः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_38 ## DO NOT EDIT
 # Start of Rik Text -- subsection_38 ## DO NOT EDIT
 यज्ञा(2)याज्ञा(2)वो अग्ना(2)ये(1) । गी(2)रा(2)गी(1)राचाद(2)क्षासे । प्र(3)प्रा(2)वाया(2)मामृ(4)त(2)ञ्जा(1)तावेदसम् । प्रीयम्मित्र(2) न्ना(2)शंसिषम् ॥ १ ॥
@@ -677,7 +676,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_40 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_41 ## DO NOT EDIT
-।। भगः प्रागाथः ।। अग्निः।। बृहती।।
+।। भगः प्रागाथः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_41 ## DO NOT EDIT
 # Start of Rik Text -- subsection_41 ## DO NOT EDIT
 पाहिनोअग्नाएका(1)या । पा(2)ह्यूता द्वि(2)तीया(2)या । पा(2)हीगीर्भीस्तीसृ(2)भीरूर्जां(1) पते । पाही(4)चातासृभी(1)र्वसो ॥ २ ॥
@@ -714,7 +713,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_43 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_44 ## DO NOT EDIT
-।। शय्युबार्हस्पत्यः ( ।। अग्निः।। बृहती।।
+।। शय्युबार्हस्पत्यः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_44 ## DO NOT EDIT
 # Start of Rik Text -- subsection_44 ## DO NOT EDIT
 बृ(2)हा(2)त्भी(1)रग्नेरर्च्ची(1)भिः । शुक्रेणा(1) देवाशोची(2)षा(1) । भारा(2)द्वा(1)जेसमीधा । नो(2)या(1)विष्यारेवा(2)त्पा(1)वकदीदिहि ॥ ३ ॥
@@ -736,7 +735,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_44 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_45 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_45 ## DO NOT EDIT
 # Start of Rik Text -- subsection_45 ## DO NOT EDIT
 त्वय्या(1)ग्नेस्वा(2)हुतः । प्रीया(2)सा(2)सन्तू सूरायाः(1) । यन्ता(2)रोयेमाघा(4)वा(1)नो ज(2)ना(1)नाम् । ऊर्वन्दय(3)न्ता गो(2)नाम् ॥ ४ ॥
@@ -753,7 +752,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_45 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_46 ## DO NOT EDIT
-।। भगः प्रागाथः ।। अग्निः।। बृहती।।
+।। भगः प्रागाथः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_46 ## DO NOT EDIT
 # Start of Rik Text -- subsection_46 ## DO NOT EDIT
 अग्ने जरी(2)तार्वीस्पातिः । तपानो(2) देवारक्षा(2)साः । अ(2)प्रो(1)षिवान् ग्रहापा(1)ति र्माहंआ(1)सि । दी(1)वा(2)स्पायू(2) र्दुरोणायुः ॥ ५ ॥
@@ -777,7 +776,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_46 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_47 ## DO NOT EDIT
-।। प्रस्कण्वः काण्वः ।। अग्निः।। बृहती।।
+।। प्रस्कण्वः काण्वः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_47 ## DO NOT EDIT
 # Start of Rik Text -- subsection_47 ## DO NOT EDIT
 अग्नेवी(2)वा(1)स्वादूषा(2)साः । चि(2)त्रं(2)रा(2)धोआ(2)मा(1)र्क्त्याम्(1) । \newline%
@@ -800,7 +799,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_47 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_48 ## DO NOT EDIT
-।। तृणपाणिः) ।। अग्निः।। बृहती।।
+।। शय्युबार्हस्पत्यः (तृणपाणिः) अग्निः बृहती।।
 # End of Rik Metadata -- subsection_48 ## DO NOT EDIT
 # Start of Rik Text -- subsection_48 ## DO NOT EDIT
 त्व(3)न्नाश्चित्रावूत्य । वा(2)सो(2)राधांसि चो(2)दया। अ(2)स्या(2)रायेत्वा(2)मा(1)ग्ने रा(1)थीरासी(2) । वीदागा(2)धन्तूचेतूनाः ॥ ७ ॥
@@ -817,7 +816,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_48 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_49 ## DO NOT EDIT
-।। भगः प्रागाथः ।। अग्निः।। बृहती।।
+।। भगः प्रागाथः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_49 ## DO NOT EDIT
 # Start of Rik Text -- subsection_49 ## DO NOT EDIT
 त्वा(2)मीत्सप्रा(2)था(1)(2)असि । अग्नेत्राता(2)ऋताःकाविः।त्वांविप्रा(1)सस्समीधानदीदिवः। आ(2)वीवासन्तीवेधासाः ॥ ८ ॥
@@ -838,7 +837,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_49 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_50 ## DO NOT EDIT
-।। भगः प्रागाथः ।। अग्निः।। बृहती।।
+।। भगः प्रागाथः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_50 ## DO NOT EDIT
 # Start of Rik Text -- subsection_50 ## DO NOT EDIT
 आनो(1) आग्नेवायो(2) वृ(2)धं(1) । रायिंपा(1)वाका(1)शंस्यम्(1) । रास्वा(1)चन(2)उपमाते पूरूस्पृहं(1) । सू(1)नीं(2)ती सू(2)याशस्तरम् ॥ ९ ॥
@@ -855,7 +854,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_50 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_51 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।। बृहती।।
+।। सोभिरः काण्वः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_51 ## DO NOT EDIT
 # Start of Rik Text -- subsection_51 ## DO NOT EDIT
 यो(2) विश्वाद(4)यातेवासू(1) । हो(3)ता(1)मन्द्रोजना(1)नां । मा(2)धोर्नपात्राप्राथा(2)मान्यस्मै । प्रस्तो(2)मायन्त्वग्ना(2)ये ॥ १० ॥
@@ -893,7 +892,7 @@ s2: Thogur Padhati (त)
 पञ्चम खण्डः
 # End of Section Title -- section_5 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_53 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः।। 8 इन्द्रः।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_53 ## DO NOT EDIT
 # Start of Rik Text -- subsection_53 ## DO NOT EDIT
 ए(2)नावो(2) अग्नि(2)न्ना(2)मा(1)सा । ऊर्जो(4) नापातामाहू(1)वे । प्री(2)यञ्चेतिष्ठामारातिं(4) स्वाध्वारं(2) । विश्वा(1)स्यादूता(3)मामृत(1)म् ॥ १ ॥
@@ -926,7 +925,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_54 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_55 ## DO NOT EDIT
-।। भगः प्रागाथः ।। अग्निः।। 8 इन्द्रः।। बृहती।।
+।। भगः प्रागाथः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_55 ## DO NOT EDIT
 # Start of Rik Text -- subsection_55 ## DO NOT EDIT
 शे(2)षेवा(2)ने(1)षू मातृ(1)षु । स(2)न्त्वा मर्क्ता(1)स इन्धते । आत(1)न्द्रो हव्यं(2)वा(1)हसि हाविष्कृताः(1) । आ(2)दि(2)द्देवेषु(1)राजसि ॥ २ ॥
@@ -968,7 +967,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_57 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_58 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।। 8 इन्द्रः।। बृहती।।
+।। सोभिरः काण्वः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_58 ## DO NOT EDIT
 # Start of Rik Text -- subsection_58 ## DO NOT EDIT
 अ(2)द(1)र्शीगातूवि(2)क्ता(1)मः । यस्मि(1)न्व्राता(4)न्याद(2)धुः(2) । ऊपोषूजाता(4)मा(4)र्यास्या वार्थानं । अ(2)ग्नि(2)न्ना(1)क्षन्तू नोगीराः(1) ॥ ३ ॥
@@ -1032,7 +1031,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_62 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_63 ## DO NOT EDIT
-।। मनवुर्वैस्वस्तः ।। अग्निः।। 8 इन्द्रः।। बृहती।।
+।। मनवुर्वैस्वस्तः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_63 ## DO NOT EDIT
 # Start of Rik Text -- subsection_63 ## DO NOT EDIT
 अग्नी(2)रूत्थेपूरो(2)हितः(2) । ग्रावा(1)णोबर्हीरा(1)ध्वारे(2) । ऋचा(2)या(1)मिमरुतो ब्रह्मणस्पते । देवंआ(2)वोवा(2)रेण्यम् ॥ ४ ॥
@@ -1056,7 +1055,7 @@ s2: Thogur Padhati (त)
 षष्ठ खण्डः
 # End of Section Title -- section_6 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_64 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_64 ## DO NOT EDIT
 # Start of Rik Text -- subsection_64 ## DO NOT EDIT
 दे(2)वो(2)वो(1)द्रविणोदाः । पूर्णां(1)वी(1)वाष्ट्‌वासी(2)च(1)म् । उद्वा(1) सिन्चा(2)ध्वामू(2)पा(1) वापृणध्वं । आदीद्वो(1)देवा(2) ओहते ॥ १ ॥
@@ -1073,7 +1072,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_64 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_65 ## DO NOT EDIT
-।। कण्वो घौरः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। कण्वो घौरः ब्रह्मणस्पतिः बृहती।।
 # End of Rik Metadata -- subsection_65 ## DO NOT EDIT
 # Start of Rik Text -- subsection_65 ## DO NOT EDIT
 प्रैतू(4)ब्रह्माण(2)स्पा(2)तीः । प्रा(2)देव्येतू सूनृ(2)ता । अच्छा वीरं(4)नर्यं(1)पङ्तीरा(1)धसं । दे(2)वा(2) यज्ञ(2) न्ना(2)यन्तुनः ॥ २ ॥
@@ -1090,7 +1089,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_65 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_66 ## DO NOT EDIT
-।। कण्वो घौरः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। कण्वो घौरः यूपः बृहती।।
 # End of Rik Metadata -- subsection_66 ## DO NOT EDIT
 # Start of Rik Text -- subsection_66 ## DO NOT EDIT
 ऊर्ध्वाऊषू(4)णा(1) ऊता(2)ये(1) । तिष्ठा(1) देवो(4)ना(4)सा(1)वीता । ऊर्ध्वो वा(2)ज(1)स्यासानीता(4) यादन्जी(2)भिः(1) । वा(2)घा(4)त्भी(1)र्वीभ्वाया(1)महे ॥ ३ ॥
@@ -1108,7 +1107,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_66 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_67 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। सोभिरः काण्वः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_67 ## DO NOT EDIT
 # Start of Rik Text -- subsection_67 ## DO NOT EDIT
 प्र(3)योरा(1)येनीनीषते । म(2)र्तोयस्तेवासोदा(1)शा(1)त् । सावीरन्धाक्तेअ(2)ग्नि उत्थाशंसी(1)नं । इत्माना(1) सहस्रापोषी(2)णम् ॥ ४ ॥
@@ -1125,7 +1124,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_67 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_68 ## DO NOT EDIT
-।। कण्वो घौरः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। कण्वो घौरः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_68 ## DO NOT EDIT
 # Start of Rik Text -- subsection_68 ## DO NOT EDIT
 प्रावो(1) यंभंपू(1)रूणां(2) । वीशा(2)न्दे(1)वायातीनां । अग्निं सूक्तेभिर्वाचो(1)भिर्वृणीमहे । यं समीदन्याइ(2)न्धा(2)ते ॥ ५ ॥
@@ -1142,7 +1141,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_68 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_69 ## DO NOT EDIT
-।। उत्कीलः कात्यः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। उत्कीलः कात्यः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_69 ## DO NOT EDIT
 # Start of Rik Text -- subsection_69 ## DO NOT EDIT
 आया(2)मग्नी(2)सूवी(2)र्या(1)स्या । ई(2)शेहिसौ(2)भा(2)गस्य । रायाई(2)शेस्वापत्यास्यागो(2)मा(1)तः। ईशे(1)हि वृ(2)त्राहा(2)थानाम् ॥ ६ ॥
@@ -1160,7 +1159,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_69 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_70 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_70 ## DO NOT EDIT
 # Start of Rik Text -- subsection_70 ## DO NOT EDIT
 त्वा(3)मा(1)ग्नेगृहा(2)पा(1)तिः । त्वं(2)होता(1) नोआ(3)ध्वारे । त्वां(2)पो(2)ता(1)विश्वावार प्रा(2)चे(1)तः । य(2)क्षीया(4)सी(1)चावार्यम् ॥ ७ ॥
@@ -1187,7 +1186,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_70 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_71 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। अग्निः, 2 ब्रह्मणस्पतिः 3 यूपः।। बृहती।।
+।। विश्वामित्रो गाथिनः अग्निः बृहती।।
 # End of Rik Metadata -- subsection_71 ## DO NOT EDIT
 # Start of Rik Text -- subsection_71 ## DO NOT EDIT
 साखायस्त्वाववृमहे । दे(2)वंमर्ता(2)साऊता(2)ये । आ(2)पान्ना(1)पातंसूभा(4)गं(1) सूदंसा(1)सं । सु(2)प्रा(2)तू(1)र्तीमानेहा(2)सम् ॥ ८ ॥
@@ -1206,6 +1205,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_7 ## DO NOT EDIT
 सप्तम खण्डः
 # End of Section Title -- section_7 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_72 ## DO NOT EDIT
+।। श्यावाश्वो वामदेवो वा त्रिष्टुप्।।
+# End of Rik Metadata -- subsection_72 ## DO NOT EDIT
 # Start of Rik Text -- subsection_72 ## DO NOT EDIT
 आजू(1)होताहविषा(1)मर्जयध्वं । नीहो(2)ता(1)रंगृहा(2)पा(1)तिं दधिध्वम् । ईळा(1)स्पाते नामा(1)सारा(2)ताहा(1)व्यं । सपर्याता याजतम्पस्त्या ठ(1) नाम् ॥ १ ॥
 # End of Rik Text -- subsection_72 ## DO NOT EDIT
@@ -1222,7 +1224,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_72 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_73 ## DO NOT EDIT
-।। उपस्तुतो वाहिष्ठव्यः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। उपस्तुतो वाहिष्ठव्यः जगती।।
 # End of Rik Metadata -- subsection_73 ## DO NOT EDIT
 # Start of Rik Text -- subsection_73 ## DO NOT EDIT
 चित्र(2) इच्छीशो(2)स्ता(2)रुणास्या वक्षा(2)थाः(1) । न(2)यो(2) माता(4)रा(1)वन्वे(2)ती धा(2)ता(1)वे । अ(2)नुधा(2) याद(2)जीज(1)नाद(2)धा(1) चीदा(2) । \newline%
@@ -1248,7 +1250,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_73 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_74 ## DO NOT EDIT
-।। बृहदुक्तो वामदेव्यः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। बृहदुक्तो वामदेव्यः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_74 ## DO NOT EDIT
 # Start of Rik Text -- subsection_74 ## DO NOT EDIT
 ईद(2)न्ताएकं(1) पारा(4)ऊ(1) ता एकं(1) । तृतीये(1)न ज्योती(1)षासं(2)वीशस्वा । सं(2)वे(2)शान(4)स्तन्वे टट्य चारू(2)रेधि । \newline%
@@ -1267,7 +1269,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_74 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_75 ## DO NOT EDIT
-।। कुत्स आंगिरसः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। कुत्स आंगिरसः जगती।।
 # End of Rik Metadata -- subsection_75 ## DO NOT EDIT
 # Start of Rik Text -- subsection_75 ## DO NOT EDIT
 इमं(2)स्तोमामर्हाते जाता(2)वेदसे । राथा(1)मी(4)वा(2)संमा(1)हेमा मा(1)नीषा(2)या । भ(2)द्रा(2)ही नःप्रामा(1)तीरस्यासंसादि । \newline%
@@ -1286,7 +1288,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_75 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_76 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। भरद्वाजो बार्हस्पत्यः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_76 ## DO NOT EDIT
 # Start of Rik Text -- subsection_76 ## DO NOT EDIT
 मूर्धानंदीवोआ(1)रातिं(4) पृ(1)थिव्याः(2) । वैश्वा(2)नारा(2)मृतआ(2) जाता(2)म(2)ग्निम् । काविं(2) सम्म्राजमा(4)तीथि(1)ञ्ज(1)ना(1)नां । \newline%
@@ -1311,7 +1313,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_76 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_77 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। भरद्वाजो बार्हस्पत्यः।।
 # End of Rik Metadata -- subsection_77 ## DO NOT EDIT
 # Start of Rik Text -- subsection_77 ## DO NOT EDIT
 वित्वा(2)दापो(2)नापा(2)र्वातस्या पृष्ठात् । उक्थे(2)भी(1)रग्ने र्जनयन्ता दे(2)वाः(2) । त न्त्वा(2) गीरा(1)स्सू(1)ष्टू(1)तायो(1) र्वाजयन्ति । \newline%
@@ -1337,7 +1339,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_77 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_78 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। वामदेवो गौतमः।।
 # End of Rik Metadata -- subsection_78 ## DO NOT EDIT
 # Start of Rik Text -- subsection_78 ## DO NOT EDIT
 आ(2) वो रा(2)जानमध्वर(4)स्या(1) रूद्रं(2) । हो(2)ता(1)रं सत्याया(2)जं रो(2)द॑(1)स्योः । अग्निं पूरा(2) तानाइत्नो(2)राचिक्तात् । \newline%
@@ -1355,7 +1357,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_78 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_79 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। वसिष्ठो मैत्रावरुणिः।।
 # End of Rik Metadata -- subsection_79 ## DO NOT EDIT
 # Start of Rik Text -- subsection_79 ## DO NOT EDIT
 इन्धेरा(2)जा सामर्यो(4) नामो(1)भिः । यस्या प्रा(4)ती(1)कामा(1)हूतङ्घृतेना । नारो(2) हव्येभीरीडतेसाबाधाः । \newline%
@@ -1383,7 +1385,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_79 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_80 ## DO NOT EDIT
-।। त्रिशिरास्त्वष्टुः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। त्रिशिरास्त्वष्टुः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_80 ## DO NOT EDIT
 # Start of Rik Text -- subsection_80 ## DO NOT EDIT
 प्रा(2)केतुना(1)बृहाता(4)यात्य(2)ग्निः(2)। आ(2)रो(1)दसी(1)वृषाभो(2)रो(1)रवीति।दीवा(2)श्चीद(2)न्तादूपामा(2)मू(2)दानाट्। \newline%
@@ -1409,7 +1411,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_80 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_81 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। 1, 3, 5, 9 त्रिष्टुप् 2, 4 जगती 10 त्रिपदाविराटगायत्री।।
+।। वसिष्ठो मैत्रावरुणिः त्रिपदाविराटगायत्री।।
 # End of Rik Metadata -- subsection_81 ## DO NOT EDIT
 # Start of Rik Text -- subsection_81 ## DO NOT EDIT
 अग्निन्नारो(2)दीधितिभिरारण्योः(1)।ह(2)स्ता(1)च्युतञ्जनयतप्राशस्तम्।दूरेदृशङ्गृहा(2)पा(1)तीमाथव्युम् ॥ १० ॥
@@ -1437,7 +1439,7 @@ s2: Thogur Padhati (त)
 अष्टम खण्डः
 # End of Section Title -- section_8 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_82 ## DO NOT EDIT
-।। गय आत्रयेः ।। अग्निः।। अनुष्टुप्।।
+।। गय आत्रयेः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_82 ## DO NOT EDIT
 # Start of Rik Text -- subsection_82 ## DO NOT EDIT
 आ(2)बो(1)ध्यग्निस्सा(2)मीधा ज(2)ना(1)नां । प्रा(3)ती धेनू(2)मीवायातीमू(2)षा(2)सम् । यह्वा(3)इ(3)व प्रा(2) वाया(2)मूज्जीहा(1)नाः । \newline%
@@ -1455,7 +1457,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_82 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_83 ## DO NOT EDIT
-।। वामदेवः ।। अग्निः।। अनुष्टुप्।।
+।। वामदेवः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_83 ## DO NOT EDIT
 # Start of Rik Text -- subsection_83 ## DO NOT EDIT
 प्रा भूर्जय(2)न्त म्माहीं(4) वीपोधाम् । मूरै(2)रा(2) मू(2)रं पूरा(2) न्द(1)र्माण(1)म् । \newline%
@@ -1473,7 +1475,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_83 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_84 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। अग्निः।। अनुष्टुप्।।
+।। भरद्वाजो बार्हस्पत्यः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_84 ## DO NOT EDIT
 # Start of Rik Text -- subsection_84 ## DO NOT EDIT
 शु(2)क्रन्ते(1) अन्य(1)द्या जतन्ते(1)अन्यात् । वि(1)षूरूपे आ(3)हा(1)नि द्यौरीवा(1)सी । \newline%
@@ -1491,7 +1493,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_84 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_85 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। अग्निः।। अनुष्टुप्।।
+।। भरद्वाजो बार्हस्पत्यः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_85 ## DO NOT EDIT
 # Start of Rik Text -- subsection_85 ## DO NOT EDIT
 ई(1)ळामग्ने(4) पू(1)रूदं(3)सं(3)सा(3)निं गोः । श(2)श्वक्ता मं(2)हा(2)वा(1)मानाया सा(2)धा:(1) । \newline%
@@ -1509,7 +1511,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_85 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_86 ## DO NOT EDIT
-।। द्वितो भृगवुाहा आत्रयेः ।। अग्निः।। अनुष्टुप्।।
+।। द्वितो भृगवुाहा आत्रयेः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_86 ## DO NOT EDIT
 # Start of Rik Text -- subsection_86 ## DO NOT EDIT
 प्र हो(3)ता(1) जातो(1) माहा(4)न्ना(2)भोवीत् । नृषात्मा(1) सीददपां(4) वीवार्ते(1) । \newline%
@@ -1533,7 +1535,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_86 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_87 ## DO NOT EDIT
-।। वस्युव आत्रयेाः ।। अग्निः।। अनुष्टुप्।।
+।। वस्युव आत्रयेाः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_87 ## DO NOT EDIT
 # Start of Rik Text -- subsection_87 ## DO NOT EDIT
 प्रा सम्राजमा(2)सू(1)रस्य प्रा(1)शस्तं । पुंसः कृष्टीना(4)मा(1)नूमाद्यास्या(1) । इन्द्रस्येव प्रा(2) तावा(4)सःकृता(2)नि । व(2)न्द(4)द्वीरा वन्दमाना विवष्टु ॥ ६ ॥
@@ -1554,7 +1556,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_87 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_88 ## DO NOT EDIT
-।। पूरुरात्रयेः ।। अग्निः।। अनुष्टुप्।।
+।। पूरुरात्रयेः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_88 ## DO NOT EDIT
 # Start of Rik Text -- subsection_88 ## DO NOT EDIT
 सा(2)नाद(1) अग्ने मृणसि(1) यतूधाना(1)न् । न(2)त्वा रक्षां(4)सी पृ(2)ता(1)नासु जिग्युः । आनू(1) दहा साहामूरान् काया(2)दाः । मा(3) ते(1) हेत्या मू(1)क्षाता दै(2)व्या(1)याः ॥ ८ ॥
@@ -1575,7 +1577,7 @@ s2: Thogur Padhati (त)
 नवम खण्डः
 # End of Section Title -- section_9 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_89 ## DO NOT EDIT
-।। अग्निस्तापसः ।। अग्निः, 1 विश्वेदेवाः 2 अंगिराः।। अनुष्टुप्।।
+।। अग्निस्तापसः विश्वेदेवाः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_89 ## DO NOT EDIT
 # Start of Rik Text -- subsection_89 ## DO NOT EDIT
 अग्ना(4) ओजीष्ठामा(2) भा(1)रा । धुम्नामस्माभ्या(1)मधिगो । प्रा(3) नो(3) रा(1)ये पा(2)नीयसे । रत्सी वा(4)जाया पन्थाम् ॥ १ ॥
@@ -1596,7 +1598,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_89 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_90 ## DO NOT EDIT
-।। वामदेवो कश्यपः, असितो दवेलो वा ।। अग्निः, 1 विश्वेदेवाः 2 अंगिराः।। अनुष्टुप्।।
+।। वामदेवो कश्यपः, असितो दवेलो वा अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_90 ## DO NOT EDIT
 # Start of Rik Text -- subsection_90 ## DO NOT EDIT
 आबो त्वे(2)ष(4)स्ते(1)धूमा(2) ऋण्वति । दिविसत्शुक्र आ(2)त(1)तः । सू(2)रोनहिद्यूता त्वं(2) । कृपापावा(2)का रो(2)चा(1)से ॥ ३ ॥
@@ -1613,7 +1615,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_90 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_91 ## DO NOT EDIT
-।। सोमाहुतिभागर्वः ।। अग्निः, 1 विश्वेदेवाः 2 अंगिराः।। अनुष्टुप्।।
+।। सोमाहुतिभागर्वः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_91 ## DO NOT EDIT
 # Start of Rik Text -- subsection_91 ## DO NOT EDIT
 त्वं(1)ही क्षैता(2)व(2)द्या(2)शाः । अ(3)ग्ने(1)मित्रो(2) नापा(2)त्या(1)से । त्वं वि(1)चर्षा(1)णेश्रा(2)वाः(1) । वासो(1) पूष्टिन्ना(2)पूष्यसि ॥ ४ ॥
@@ -1630,7 +1632,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_91 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_92 ## DO NOT EDIT
-।। पायुभारद्वाजः ।। अग्निः, 1 विश्वेदेवाः 2 अंगिराः।। अनुष्टुप्।।
+।। पायुभारद्वाजः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_92 ## DO NOT EDIT
 # Start of Rik Text -- subsection_92 ## DO NOT EDIT
 प्रा(3)ता(1)रग्निःपूरूप्रीयः(2) । वीश(4)स्तावेता(2)तीथिः । विश्वे यास्मिन्ना(2)मार्ये । हव्यं मर्ता(1)साइन्धाते ॥ ५ ॥
@@ -1648,7 +1650,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_92 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_93 ## DO NOT EDIT
-।। प्रस्कण्वः काण्वः ।। अग्निः, 1 विश्वेदेवाः 2 अंगिराः।। अनुष्टुप्।।
+।। प्रस्कण्वः काण्वः अग्निः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_93 ## DO NOT EDIT
 # Start of Rik Text -- subsection_93 ## DO NOT EDIT
 य(3)द्वाही(1)ष्ठन्ता(1) दग्ना(2)ये । बृहा(2)द(1)र्चविभा(1)वसो । माही(1)षीवत्वा(2)द्रायिः । त्व(3)द्वा(1)जाऊ(2)दी(1)रते ॥ ६ ॥
@@ -1739,6 +1741,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_10 ## DO NOT EDIT
 दशम खण्डः
 # End of Section Title -- section_10 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_99 ## DO NOT EDIT
+।। दीर्घतमा औचथ्यः अग्निः उष्णिक्।।
+# End of Rik Metadata -- subsection_99 ## DO NOT EDIT
 # Start of Rik Text -- subsection_99 ## DO NOT EDIT
 सोमंरा(4)जा(1)नंवा(2)रूणम्। अ(2)ग्नी(2)मन्वारा(1)भामहे । आ(2)दित्यंविष्णुंसू(2)र्य(1)म् । ब्र(2)ह्मा(4)ण(1)ञ्चाबृहस्पा(2)तिम् ॥ १ ॥
 # End of Rik Text -- subsection_99 ## DO NOT EDIT
@@ -1754,7 +1759,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_99 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_100 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। अग्निः 5 पवमानः सोमः 6 अदितिः 9 विश्वेदेवाः।। उष्णिक्।।
+।। विश्वामित्रो गाथिनः अग्निः उष्णिक्।।
 # End of Rik Metadata -- subsection_100 ## DO NOT EDIT
 # Start of Rik Text -- subsection_100 ## DO NOT EDIT
 ईता(2)एता(2)ऊदारूहन् । दीवः(2)पृष्ठान्यारू(1)हन् । प्राभूर्जयो(1)या(4)थापाथा(2) । उ(2)द्यामङ्गी(1)रसोययुः ॥ २ ॥
@@ -1772,7 +1777,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_100 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_101 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। अग्निः 5 पवमानः सोमः 6 अदितिः 9 विश्वेदेवाः।। उष्णिक्।।
+।। गौतमो राहूगणः अग्निः उष्णिक्।।
 # End of Rik Metadata -- subsection_101 ## DO NOT EDIT
 # Start of Rik Text -- subsection_101 ## DO NOT EDIT
 रा(2)ये(2)आग्नेमाहेत्वा । दा(4)ना(1)यासा(2)मी(1)धीमहि । ई(3)ळिष्वाहीमा(1)हेवृषन् । द्या(3)वा(1)होत्रा(1)या(1)पृथिवी(2) ॥ ३ ॥
@@ -1791,7 +1796,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_101 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_102 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। अग्निः 5 पवमानः सोमः 6 अदितिः 9 विश्वेदेवाः।। उष्णिक्।।
+।। विश्वामित्रो गाथिनः अग्निः उष्णिक्।।
 # End of Rik Metadata -- subsection_102 ## DO NOT EDIT
 # Start of Rik Text -- subsection_102 ## DO NOT EDIT
 दधन्वे(2)वाया(2)दीमानू । वो(4)चा(1)त्ब्रह्मे(2)तीवे(2)रूतात् । पा(2)रीवि(4)श्वा(1)नीका(2)व्या(1)। ने(2)मीश्चक्रा(2)मी(1)वाभुवात् ॥ ४ ॥
@@ -1807,7 +1812,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_102 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_103 ## DO NOT EDIT
-।। त्रित आत्यः ।। अग्निः 5 पवमानः सोमः 6 अदितिः 9 विश्वेदेवाः।। उष्णिक्।।
+।। त्रित आत्यः पवमानः सोमः उष्णिक्।।
 # End of Rik Metadata -- subsection_103 ## DO NOT EDIT
 # Start of Rik Text -- subsection_103 ## DO NOT EDIT
 त्वामा(1)ग्नेवा(4)सुंरिहा। रूद्रं(4)आ(1)दित्यंऊता।याजस्वाध्वार(2)ञ्ज(2)न(1)म् । आ(2)नूजातङ्घृ(4)तप्रू(2)षम् ॥ ५ ॥
@@ -1823,7 +1828,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_103 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_104 ## DO NOT EDIT
-।। इरिम्बिठः काण्वः ।। अग्निः 5 पवमानः सोमः 6 अदितिः 9 विश्वेदेवाः।। उष्णिक्।।
+।। इरिम्बिठः काण्वः अदितिः उष्णिक्।।
 # End of Rik Metadata -- subsection_104 ## DO NOT EDIT
 # Start of Rik Text -- subsection_104 ## DO NOT EDIT
 प्रत्य(1)ग्नेहा(4)रा(1)साहा(2)राः । शृणा(2)हीविश्वा(2)तप्रा(2)ती । या(2)तूधा(2)ना(1)स्या(3)रक्षासाः(1) । बलं न्युब्जावीर्य(1)म् ॥ ६ ॥
@@ -1841,6 +1846,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_11 ## DO NOT EDIT
 एकादश खण्डः
 # End of Section Title -- section_11 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_105 ## DO NOT EDIT
+।। प्रयोगो भागर्वः (सोभिरः काण्वः) अग्निः।।
+# End of Rik Metadata -- subsection_105 ## DO NOT EDIT
 # Start of Rik Text -- subsection_105 ## DO NOT EDIT
 पूरू(2)त्वा(1)दाशीवं(2)वो(1)चे(3)त् । आरीरग्नेता(4)वास्वीदा(2) । तोद(2)स्ये(2)वशारणआ(1)माहास्या(1) ॥ १ ॥
 # End of Rik Text -- subsection_105 ## DO NOT EDIT
@@ -1874,7 +1882,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_106 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_107 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।।
+।। सोभिरः काण्वः अग्निः।।
 # End of Rik Metadata -- subsection_107 ## DO NOT EDIT
 # Start of Rik Text -- subsection_107 ## DO NOT EDIT
 प्र(3)होत्रे(1)पूर्वीयंवाचाः(1) । अग्नाये(1)भरताबृहा(2)त् । वीपांज्योती(1)षिबि(4)भ्रा(1)\newline%
@@ -1894,7 +1902,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_107 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_108 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।।
+।। सोभिरः काण्वः अग्निः।।
 # End of Rik Metadata -- subsection_108 ## DO NOT EDIT
 # Start of Rik Text -- subsection_108 ## DO NOT EDIT
 अग्नेवाज(1)स्यागोमा(1)तः । ई(2)शा(1)नस्सहसोयहो । अ(3)स्मे(2)देहीजातवेदोमा(2)हिश्रावाः ॥ ३ ॥
@@ -1913,7 +1921,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_108 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_109 ## DO NOT EDIT
-।। प्रयोगो भागर्वः सोभिरः काण्वो वा ।। अग्निः।।
+।। प्रयोगो भागर्वः सोभिरः काण्वो वा अग्निः।।
 # End of Rik Metadata -- subsection_109 ## DO NOT EDIT
 # Start of Rik Text -- subsection_109 ## DO NOT EDIT
 अ(3)ग्ने(2)या(2)जीष्ठोआध्वारे । देवान्दे(1)वायातेयाजा । होता(1)मन्द्रो(4) वी(1)राज(2)स्यातिसृधाः ॥ ४ ॥
@@ -1935,7 +1943,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_109 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_110 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।।
+।। सोभिरः काण्वः अग्निः।।
 # End of Rik Metadata -- subsection_110 ## DO NOT EDIT
 # Start of Rik Text -- subsection_110 ## DO NOT EDIT
 जज्ञान(2)स्सप्ता(2)मातृ(2)भिः । मे(2)धामाशा(1)सातश्रिये(2) । आ(3)यन्ध्रुवोरायीणां(4)चीके(1)तादा ॥ ५ ॥
@@ -1959,7 +1967,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_111 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_112 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।।
+।। सोभिरः काण्वः अग्निः।।
 # End of Rik Metadata -- subsection_112 ## DO NOT EDIT
 # Start of Rik Text -- subsection_112 ## DO NOT EDIT
 ऊत(2)स्या(2)नोदीवामातिः । आदी(1)तीरूत्यगमात् । साश(3)न्तातामायास्कारादपश्री(2)धाः ॥ ६ ॥
@@ -1983,7 +1991,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_113 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_114 ## DO NOT EDIT
-।। सोभिरः काण्वः ।। अग्निः।।
+।। सोभिरः काण्वः अग्निः।।
 # End of Rik Metadata -- subsection_114 ## DO NOT EDIT
 # Start of Rik Text -- subsection_114 ## DO NOT EDIT
 ईळि(1)ष्वाहि(4)प्रा(1)तिव्यम्(1) । या(2)ज(1)स्वाजातावे(1)दसं । चरिष्णू(1)धूमामागृभीतशोचिषम् ॥ ७ ॥
@@ -2013,7 +2021,7 @@ s2: Thogur Padhati (त)
 द्वादश खण्डः
 # End of Section Title -- section_12 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_116 ## DO NOT EDIT
-।। शय्युबार्हस्पत्यः ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। शय्युबार्हस्पत्यः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_116 ## DO NOT EDIT
 # Start of Rik Text -- subsection_116 ## DO NOT EDIT
 प्रमंही(1)ष्ठायगायता । ऋताव्नेबृहाते(2)शुक्राशो(1)चिषे । उ(2)प(2)स्तूता(4)सो(1)अग्नाये ॥ १ ॥
@@ -2040,7 +2048,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_116 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_117 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा आंगिरसः ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_117 ## DO NOT EDIT
 # Start of Rik Text -- subsection_117 ## DO NOT EDIT
 प्र(3)सोअग्नेतावोतीभीः । सू(2)वीरा(1)भिस्तारातीवा(2)जकर्म(1)भिः । या(2)स्यत्वं(2)सख्यमा(2)वी(2)थ ॥ २ ॥
@@ -2056,7 +2064,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_117 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_118 ## DO NOT EDIT
-।। हयतः प्रागाथः ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। हयतः प्रागाथः इन्द्रः (अग्निर्हवींषि वा) गायत्री।।
 # End of Rik Metadata -- subsection_118 ## DO NOT EDIT
 # Start of Rik Text -- subsection_118 ## DO NOT EDIT
 तं(2)गूर्धायास्व(2)र्णारं । देवासो(1)देवा(4)मा(1)रातिन्द(1)धन्विरे । देवात्रा(2)हव्या(2)मू(1)हिषे ॥ ३ ॥
@@ -2080,7 +2088,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_118 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_119 ## DO NOT EDIT
-।। श्रुतकक्षः (ऋषिः सुकक्षो वा ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। श्रुतकक्षः (सुकक्षो वा) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_119 ## DO NOT EDIT
 # Start of Rik Text -- subsection_119 ## DO NOT EDIT
 मानो(1)हृ(1)णिथाआ(2)तीथिं । वा(4)सूरग्निः(2)पू(1)रूप्राशस्ता(2) एषः । या(2)सुहोता(1)सूआध्वारः ॥ ४ ॥
@@ -2108,7 +2116,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_120 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_121 ## DO NOT EDIT
-।। सुकक्षः) आंगिरसः ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। श्रुतकक्षः (सुकक्षो वा सुकक्षः) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_121 ## DO NOT EDIT
 # Start of Rik Text -- subsection_121 ## DO NOT EDIT
 भद्रो(4)नो(1)अग्नि(2)राहूतः । भ(2)द्रा(2)रातिस्सू(2)भागभद्रो(4)आ(1)ध्वारः(2) । भद्रा(4) ऊतप्रा(2)शा(1)स्तयः ॥ ५ ॥
@@ -2133,7 +2141,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_122 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_123 ## DO NOT EDIT
-।। देवजामय इन्द्रमातरः ऋषिकाः ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। देवजामय इन्द्रमातरः ऋषिकाः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_123 ## DO NOT EDIT
 # Start of Rik Text -- subsection_123 ## DO NOT EDIT
 या(2)जी(1)ष्ठं(1)त्वाववृमहे । देवन्दे(1)वत्रा(4)हो(4)ता(1)रामा(2)मा(1)र्क्त्यम् । अस्या(2) यज्ञा(4)स्या(1)सुक्रातु(1)म् ॥ ६ ॥
@@ -2158,7 +2166,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_124 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_125 ## DO NOT EDIT
-।। गोषूकश्वसूनूकाण्वायनाै ।। इन्द्रः (ऋषिः 3 अग्निहवषि वा )।। गायत्री।।
+।। गोषूकश्वसूनूकाण्वायनाै इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_125 ## DO NOT EDIT
 # Start of Rik Text -- subsection_125 ## DO NOT EDIT
 ता(2)दग्नेद्युम्नामा(2)भारा । य(2)त्सासा(2)हासाद(1)ने कञ्ची(1)दत्री(2)णं । मन्यु(2)ञ्जना(1)स्यादूढ्यम् ॥ ७ ॥
@@ -2182,7 +2190,7 @@ s2: Thogur Padhati (त)
 प्रथम खण्डः
 # End of Section Title -- section_13 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_127 ## DO NOT EDIT
-।। सुकक्षत्रुतकाै (ऋषिः सुकक्ष आंगिरसः) ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। सुकक्षत्रुतकाै (सुकक्ष आंगिरसः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_127 ## DO NOT EDIT
 # Start of Rik Text -- subsection_127 ## DO NOT EDIT
 त(2)द्वो(2) गाया सू(2)ते सा(2)चा । पुरुहूता(2)या सात्वा(1)ने । शं(2) य(2)त्ग(2)वे ना शाकीने ॥ १ ॥
@@ -2219,7 +2227,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_129 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_130 ## DO NOT EDIT
-।। सुकक्षत्रुतकाै (ऋषिः सुकक्ष आंगिरसः) ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। सुकक्षत्रुतकाै (सुकक्ष आंगिरसः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_130 ## DO NOT EDIT
 # Start of Rik Text -- subsection_130 ## DO NOT EDIT
 य(3)स्ते(1) नूनं शा(1)तकृतो(1) । इन्द्र(1) घुम्नीता(1)मो(2) मा(2)दाः(1) । ते(3)ना(1) नूनम्मादे(1) मदेः ॥ २ ॥
@@ -2234,7 +2242,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_130 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_131 ## DO NOT EDIT
-।। भारद्वाजः (ऋषिः शय्युबार्हस्पत्यः) ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। भारद्वाजः (शय्युबार्हस्पत्यः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_131 ## DO NOT EDIT
 # Start of Rik Text -- subsection_131 ## DO NOT EDIT
 गा(2)वा ऊ(2)पा(1) वादावाटे(2) । माही(2) यज्ञास्या(4) रप्सू(1)दाः । ऊ(2)भा क(2)र्णा(1) हीरण्या(2)या ॥ ३ ॥
@@ -2254,7 +2262,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_131 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_132 ## DO NOT EDIT
-।। श्रुतकक्षः (ऋषिः सुकक्षो वा आंगिरसः) ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। श्रुतकक्षः (सुकक्षो वा आंगिरसः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_132 ## DO NOT EDIT
 # Start of Rik Text -- subsection_132 ## DO NOT EDIT
 आ(2)राम(4)श्व(1)य गायता । श्रू(3)ता(1)कक्षा(2)रं ग(2)वे । आ(2)रामि(4)न्द्रा(1)स्या धा(2)म्ने(3) ॥ ४ ॥
@@ -2273,7 +2281,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_132 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_133 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_133 ## DO NOT EDIT
 # Start of Rik Text -- subsection_133 ## DO NOT EDIT
 त(2)मि(2)न्द्रं(1) वाजयामसि । मा(3)हे(1) वृत्राया ह(2)न्ता(1)वे । स(2) वृ(2)षा(1) वृषाभो(2) भू(1)वात् ॥ ५ ॥
@@ -2307,7 +2315,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_134 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_135 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_135 ## DO NOT EDIT
 # Start of Rik Text -- subsection_135 ## DO NOT EDIT
 त्वा(3)मिन्द्रा ब(2)लाद(2)धी(1) । साहा(2)सा(2) जाता(2) ओ(2)ज(1)सा । त्वं(3) सन्वृष(1)न् वृषेद(1)सि ॥ ६ ॥
@@ -2329,7 +2337,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_135 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_136 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_136 ## DO NOT EDIT
 # Start of Rik Text -- subsection_136 ## DO NOT EDIT
 यज्ञा इ(2)न्द्रा(1)मवर्धयात् । य(2)त्भूमिं व्या(2)वा(1) र्क्तयात् । चक्रा(4)णा ओपाश(2)न्दीवि ॥ ७ ॥
@@ -2345,7 +2353,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_136 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_137 ## DO NOT EDIT
-।। वसिष्ठोः मैत्रावरुणिः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। वसिष्ठोः मैत्रावरुणिः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_137 ## DO NOT EDIT
 # Start of Rik Text -- subsection_137 ## DO NOT EDIT
 या(3)दिन्द्राहं(3) या(2)थात्वं(2) । ईशी(1)या वा(2)स्वा ए(2)का ई(2)त् । स्तोता(2) मेगो साखा स्यात् ॥ ८ ॥
@@ -2372,7 +2380,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_138 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_139 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः (अग्नीन्द्रौ) गायत्री।।
 # End of Rik Metadata -- subsection_139 ## DO NOT EDIT
 # Start of Rik Text -- subsection_139 ## DO NOT EDIT
 प(2)न्यं(1)पन्या मि(2)स्तो(1)तरः । आ(2) धा(1)वाता मा(2)द्या(1)या । सो(3)मं(1) वीरा(2)या सूरा(1)या ॥ ९ ॥
@@ -2388,7 +2396,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_139 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_140 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः (9 ऋषिः अग्नीन्द्रौ)।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_140 ## DO NOT EDIT
 # Start of Rik Text -- subsection_140 ## DO NOT EDIT
 ईदं(2) वासो(2) सूताम(2)न्धाः । पीबा सूपू(1)र्णा(1)मू(2)दरं(1) । आनाभ इन्द्रा(2) रीमा ते ॥ १० ॥
@@ -2412,6 +2420,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_15 ## DO NOT EDIT
 द्वितीय खण्डः
 # End of Section Title -- section_15 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_141 ## DO NOT EDIT
+।। कण्वो घौरः इन्द्रः (मरुतः) गायत्री।।
+# End of Rik Metadata -- subsection_141 ## DO NOT EDIT
 # Start of Rik Text -- subsection_141 ## DO NOT EDIT
 उ(2)त्घेदभी(2) श्रूता(2)मा(1)घं । वृषाभ(2) न्नर्या(1)पसं । अस्तारमेळि सूर्या ॥ १ ॥
 # End of Rik Text -- subsection_141 ## DO NOT EDIT
@@ -2431,7 +2442,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_141 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_142 ## DO NOT EDIT
-।। त्रिशोकः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। त्रिशोकः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_142 ## DO NOT EDIT
 # Start of Rik Text -- subsection_142 ## DO NOT EDIT
 यादद्या काच्चा वृत्रहन् । ऊदगा आभी(2) सूर्या(2) । स(2)र्वन्ता(2) दिन्द्रा ते(1) वा(2)शे ॥ २ ॥
@@ -2446,7 +2457,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_142 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_143 ## DO NOT EDIT
-।। वत्सः काण्वः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। वत्सः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_143 ## DO NOT EDIT
 # Start of Rik Text -- subsection_143 ## DO NOT EDIT
 य(2) आ(2)ना(1)य त्पारावा(2)ताः । सू(2)नी(1)ती तूर्वा(2) शं(2)या(2)दुं(1) । इ(2)न्द्रस्सा2 नो यू(1)वा सा(2)खा(1) ॥ ३ ॥
@@ -2467,7 +2478,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_143 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_144 ## DO NOT EDIT
-।। कुसीदी काण्वः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। कुसीदी काण्वः इन्द्रः (विश्वेदेवाः) गायत्री।।
 # End of Rik Metadata -- subsection_144 ## DO NOT EDIT
 # Start of Rik Text -- subsection_144 ## DO NOT EDIT
 मा(2) ना(1) इन्द्राभ्या टट्य दीशः(1) । सू(4)रो अत्तुष्वा या(1)मात् । त्वा(2) यूजा(2) वानेमाता(2)त् ॥ ४ ॥
@@ -2485,7 +2496,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_144 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_145 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः (ब्रह्मणस्पतिः) गायत्री।।
 # End of Rik Metadata -- subsection_145 ## DO NOT EDIT
 # Start of Rik Text -- subsection_145 ## DO NOT EDIT
 ए(2)न्द्रा(1) सानासिं(2) रायिं(2)। सा(2)जी(2)त्वा(1)नं सादासा(2)हं । वर्षी(1)ष्ठा मू(2)ताये(2) भरा ॥ ५ ॥
@@ -2502,7 +2513,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_145 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_146 ## DO NOT EDIT
-।। श्रुतकक्षः (ऋषिः सुकक्षः) आंगिरसः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। श्रुतकक्षः (सुकक्षः) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_146 ## DO NOT EDIT
 # Start of Rik Text -- subsection_146 ## DO NOT EDIT
 इ(3)न्द्रं(2) वाय(2)म्माहाधाने(2) । इन्द्रा(2)मर्भे(1) हवामहे । यूजं(1) वृ(3)त्रे(4)षु व(2)ज्रीण(1)म् ॥ ६ ॥
@@ -2522,7 +2533,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_146 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_147 ## DO NOT EDIT
-।। श्यावाश्व आत्रयेः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। श्यावाश्व आत्रयेः इन्द्रः (सविता) गायत्री।।
 # End of Rik Metadata -- subsection_147 ## DO NOT EDIT
 # Start of Rik Text -- subsection_147 ## DO NOT EDIT
 आपी(1)बत् काद्रू(4)वा(1) स्सुतं(2) । इन्द्रा(3) सा(1)हा(2)स्रा(1)वांभे । तत्रा ददी(1)ष्टा पौं ठ स्यम् ॥ ७ ॥
@@ -2538,7 +2549,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_147 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_148 ## DO NOT EDIT
-।। प्रगाथः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। प्रगाथः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_148 ## DO NOT EDIT
 # Start of Rik Text -- subsection_148 ## DO NOT EDIT
 वा(2)यामिन्द्रा त्वाया(2)वाः(1) । आभि(2) प्रा नो(1)नुमोवृषन् । विद्धीत्वा टट्य स्या(2) नो वसो ॥ ८ ॥
@@ -2573,7 +2584,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_149 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_150 ## DO NOT EDIT
-।। वत्सः काण्वः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। वत्सः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_150 ## DO NOT EDIT
 # Start of Rik Text -- subsection_150 ## DO NOT EDIT
 आ(2) घा ये(2) अग्नी(2)मिन्धा(2)ते । स्तृणन्ती बही(4)रानूषाक् । ए(2)षा(2)मि(2)न्द्रो यूवा साखा(2) ॥ ९ ॥
@@ -2596,7 +2607,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_150 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_151 ## DO NOT EDIT
-।। इरिम्बिठः काण्वः ।। इन्द्रः (ऋषिः 1 मरुतः 4 विश्वेदेवाः 5 ब्रह्मणस्पतिः 7 सविता)।। गायत्री।।
+।। इरिम्बिठः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_151 ## DO NOT EDIT
 # Start of Rik Text -- subsection_151 ## DO NOT EDIT
 भि(2)न्धि(1) विश्वा(2) आप द्वी(2)षाः । पा(1)री बाधो(4) जही(1) मृ(2)धाः(1) । वा(3)सु(1) स्पार्हं तादा भा(1)रा ॥ १० ॥
@@ -2615,7 +2626,7 @@ s2: Thogur Padhati (त)
 तृतीय खण्डः
 # End of Section Title -- section_16 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_152 ## DO NOT EDIT
-।। श्रुतकक्षः (ऋषिः सुकक्षः) आंगिरसः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। श्रुतकक्षः (सुकक्षः) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_152 ## DO NOT EDIT
 # Start of Rik Text -- subsection_152 ## DO NOT EDIT
 ईहे(2)वा(1) शृण्वा एषां । काशा ह(4)स्तेषू यद्वादा(1)न् । नि या(3)मैः चित्रा(2)मृन्जते ॥ १ ॥
@@ -2632,7 +2643,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_152 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_153 ## DO NOT EDIT
-।। मेधातिथिः (ऋषिः शय्युबार्हस्पत्यः) काण्वः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। मेधातिथिः (शय्युबार्हस्पत्यः) काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_153 ## DO NOT EDIT
 # Start of Rik Text -- subsection_153 ## DO NOT EDIT
 ईमा(4) ऊ त्वा वी चा(1)क्षते । सा(2)खा(1)या इन्द्रा सोमीनाः(1) । पुष्टावन्तो या(4)था(1) पाशु(2)म् ॥ २ ॥
@@ -2648,7 +2659,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_153 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_154 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। गौतमो राहूगणः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_154 ## DO NOT EDIT
 # Start of Rik Text -- subsection_154 ## DO NOT EDIT
 सा(2)मा(1)स्या मन्या(2)वे वीशाः(1) । विश्वे(1) नमन्ता कृष्टा(2)याः । समुद्रा(4)ये(1)वा सिन्धावः ॥ ३ ॥
@@ -2662,7 +2673,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_154 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_155 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। भरद्वाजो बार्हस्पत्यः इन्द्रः (इन्द्रापषूणौ) गायत्री।।
 # End of Rik Metadata -- subsection_155 ## DO NOT EDIT
 # Start of Rik Text -- subsection_155 ## DO NOT EDIT
 देवा(2)नामी(4)दा वो(1)माहा(2)त् । ता(2)दा(2) वृणीमहे वायं । वृष्णा(1)मस्मा(4)भ्या(1)मूता(2)ये ॥ ४ ॥
@@ -2693,7 +2704,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_156 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_157 ## DO NOT EDIT
-।। बिन्दुः पूतदक्षो वा आंगिरसः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। बिन्दुः पूतदक्षो वा आंगिरसः मरुतः गायत्री।।
 # End of Rik Metadata -- subsection_157 ## DO NOT EDIT
 # Start of Rik Text -- subsection_157 ## DO NOT EDIT
 सोमानां स्वा(2)रा(1)णां । कृ(2)णू(2)ही(1) ब्रह्मणस्पते । कक्षीवन्तं या(4) औशीजः(2) ॥ ५ ॥
@@ -2709,7 +2720,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_157 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_158 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा (ऋषिः सुकक्षः) आंगिरसः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा (सुकक्षः) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_158 ## DO NOT EDIT
 # Start of Rik Text -- subsection_158 ## DO NOT EDIT
 बोध(2)न्माना(2) इद(2)स्तु नः । वृत्राहा(3) भू(2)र्या(1)सुतिः । श्रृणो(4)तू(1) शक्रा(2)आशी(2)ष(1)म् ॥ ६ ॥
@@ -2725,7 +2736,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_158 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_159 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा (ऋषिः सुकक्षः) आंगिरसः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा (सुकक्षः) आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_159 ## DO NOT EDIT
 # Start of Rik Text -- subsection_159 ## DO NOT EDIT
 अ(2)द्या(2)नो(1) देव सवितः । प्रा(2)जा(2)वा(1)त्सा(2)वी सौ(2)भा(1)गं । पा(3)रा(3)दुष्वा(2)प्न्यिं(1) सुवा ॥ ७ ॥
@@ -2744,7 +2755,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_159 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_160 ## DO NOT EDIT
-।। वत्सः काण्वः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। वत्सः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_160 ## DO NOT EDIT
 # Start of Rik Text -- subsection_160 ## DO NOT EDIT
 क्वा ट्ट्य स्या(4) वृ(1)षाभो यू(1)वा । तुविग्री(2)वो आ(2)नानतः । ब्रह्मा(2) कस्तं सा(2)पर्यति ॥ ८ ॥
@@ -2767,7 +2778,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_160 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_161 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। शुनः शेप आजीर्गितः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_161 ## DO NOT EDIT
 # Start of Rik Text -- subsection_161 ## DO NOT EDIT
 ऊपह्वारे(4) गी(1)रीणां(2) । संगमे(4) चा(1) नादी(2)नां(1) । धी(1)या(2) विप्रो(1) अजायत ॥ ९ ॥
@@ -2788,7 +2799,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_161 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_162 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः वामदेवो वा ।। इन्द्रः (4 ऋषिः इन्द्रापषूणौ) 5 मरुतः।। गायत्री।।
+।। शुनः शेप आजीर्गितः वामदेवो वा इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_162 ## DO NOT EDIT
 # Start of Rik Text -- subsection_162 ## DO NOT EDIT
 प्रा(2) सम्म्रा(2)जं(2) च ऋषाणीनां(2) । इ(3)न्द्रं(1) स्तोता न(4)व्यं गीर्भिः(1) । ना(3)रं नृळा(2)हम्मंही(1)ष्ठम् ॥ १० ॥
@@ -2822,7 +2833,7 @@ s2: Thogur Padhati (त)
 चतुर्थ खण्डः
 # End of Section Title -- section_17 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_164 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा आंगिरसः ।। इन्द्रः।। गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_164 ## DO NOT EDIT
 # Start of Rik Text -- subsection_164 ## DO NOT EDIT
 आपा(1)दूशि प्रि(2)यन्धा(1)साः। सूदक्षा(1)स्या प्राहोषीणाः(1) । इ(2)न्दोरिन्द्रो या(2)वा(1)शिरः ॥ १ ॥
@@ -2842,7 +2853,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_164 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_165 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः।। गायत्री।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_165 ## DO NOT EDIT
 # Start of Rik Text -- subsection_165 ## DO NOT EDIT
 ईमा(2) उत्वापूरोवासो । आ(2)भि प्रा(2)नो(1) ना वुत् गीराः(1)।गा(3)वो(1) वत्स(2)न्ना(2)धेना(2)वाः(1) ॥ २ ॥
@@ -2858,7 +2869,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_165 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_166 ## DO NOT EDIT
-।। मेधातिथिः काण्वः प्रियमेधश्चांगिरसः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः प्रियमेधश्चांगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_166 ## DO NOT EDIT
 # Start of Rik Text -- subsection_166 ## DO NOT EDIT
 अ(2)त्रा(2)हा गो(2)रा(1)मन्वत।नाम त्वष्टू(1)रा(4)पी ठ च्यं । इत्था(2)चन्द्रा(2)मा(1)सो गृ(2)हे ॥ ३ ॥
@@ -2879,7 +2890,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_166 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_167 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा आंगिरसः ।। इन्द्रः।। गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_167 ## DO NOT EDIT
 # Start of Rik Text -- subsection_167 ## DO NOT EDIT
 य(2)दि(2)न्द्रो आ(4)ना(1)यद्रीताः। माही(2)रापो(2)वृ(2)ष(1)न्तमः । तत्रा(1)पूषा(4)भू(1)वत्सा(2)चा ॥ ४ ॥
@@ -2898,7 +2909,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_167 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_168 ## DO NOT EDIT
-।। इरिम्बिठः काण्वः ।। इन्द्रः।। गायत्री।।
+।। इरिम्बिठः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_168 ## DO NOT EDIT
 # Start of Rik Text -- subsection_168 ## DO NOT EDIT
 गौ(2)र्धायती मारुतां(1)।श्रवस्यु(2)र्माता माघो(2)नां(1)।युक्ता(2)व(2)न्ही(3)रा(2)था(1)नाम् ॥ ५ ॥
@@ -2917,7 +2928,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_168 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_169 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_169 ## DO NOT EDIT
 # Start of Rik Text -- subsection_169 ## DO NOT EDIT
 ऊ(2)पा(1)नोहा(2)रीभीस्सू(2)तं।याही(2)मा(2)दानांपते(1)। ऊ(3)पानोहा(2)री(1)भी स्सू(2)तम् ॥ ६ ॥
@@ -2936,7 +2947,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_169 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_170 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_170 ## DO NOT EDIT
 # Start of Rik Text -- subsection_170 ## DO NOT EDIT
 इष्टाहोत्रा असृक्षत।इ(3)न्द्रं(1)वृधन्तो(1) आध्वा(1)रे(2)। अच्छावाभृथमो(2)ज(1)सा ॥ ७ ॥
@@ -2952,7 +2963,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_170 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_171 ## DO NOT EDIT
-।। कुसीदी काण्वः ।। इन्द्रः।। गायत्री।।
+।। कुसीदी काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_171 ## DO NOT EDIT
 # Start of Rik Text -- subsection_171 ## DO NOT EDIT
 अ(2)ह(2)मि(2)द्धि(2) पीतुःपा(1)री।मेधा(2)मृता(4)स्या(1)जग्रा(2)हा(1)।अहं(2) सू(1)र्या(2)इवा(2)जनी ॥ ८ ॥
@@ -2969,7 +2980,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_171 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_172 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। इन्द्रः।। गायत्री।।
+।। शुनः शेप आजीर्गितः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_172 ## DO NOT EDIT
 # Start of Rik Text -- subsection_172 ## DO NOT EDIT
 रेवातीर्ण(1)स्साधामादे(1)। इन्द्रे(1)सन्तूतूवी(2)वा(1)जाः । क्षुम(2)न्तोयाभिर्मा(1)दे(1)मा ॥ ९ ॥
@@ -2985,7 +2996,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_172 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_173 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_173 ## DO NOT EDIT
 # Start of Rik Text -- subsection_173 ## DO NOT EDIT
 सो(4)माः(1)पूषा(2) चा(1)चेततुः।वि(2)श्वा(3)सां सुक्षी(2)तीनां(2)।देवात्रा(2) रथ्योरहितः(1) ॥ १० ॥
@@ -3005,7 +3016,7 @@ s2: Thogur Padhati (त)
 पञ्चम खण्डः
 # End of Section Title -- section_18 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_174 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। विश्वामित्रो गाथिनः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_174 ## DO NOT EDIT
 # Start of Rik Text -- subsection_174 ## DO NOT EDIT
 पा(2)न्तामा(2)वोअ(2)न्धा(1)सः।इ(3)न्द्रा(1)माभिप्रा(2) गा(1)यत।विश्वा(2)सा(4)हं(1) शाता(2)क्रातुं । मंहीं(1)ष्ठं चऋषाणीना(2)म् ॥ १ ॥
@@ -3029,7 +3040,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_174 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_175 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_175 ## DO NOT EDIT
 # Start of Rik Text -- subsection_175 ## DO NOT EDIT
 प्रा(2)वा इ(4)न्द्रा(1)यामा(2)दा(1)नं । ह(2)रीया(1)श्वायगायता । साखा(1)यस्सोमापा(1)व्ने ॥ २ ॥
@@ -3072,7 +3083,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_176 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_177 ## DO NOT EDIT
-।। कुसीदी काण्वः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। कुसीदी काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_177 ## DO NOT EDIT
 # Start of Rik Text -- subsection_177 ## DO NOT EDIT
 वाया(2)मू(1)त्वा तादी(1)दर्थाः । इ(3)न्द्रत्वायन्तस्स(1)खायः । क(3)ण्वा(1) उक्थे(2)(1)भी(1)र्ज(2)रन्ते ॥ ३ ॥
@@ -3091,7 +3102,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_177 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_178 ## DO NOT EDIT
-।। प्रियमेध आंगिरसः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। प्रियमेध आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_178 ## DO NOT EDIT
 # Start of Rik Text -- subsection_178 ## DO NOT EDIT
 इ(3)न्द्राया(1) माद्वा(1)नेसूतं।पा(2)री(1) ष्टोभन्तूनो(2)गी(2)राः। अर्का(2)मा(2)चन्तूका(2)रा(2)वाः ॥ ४ ॥
@@ -3116,7 +3127,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_178 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_179 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_179 ## DO NOT EDIT
 # Start of Rik Text -- subsection_179 ## DO NOT EDIT
 आ(2)य(2)न्ताइन्द्रासो(2)माः । नीपू(1)तोआ(4)धी(1)बर्हीषि । ए(3)ही(1)मास्या(2)द्रावा(2) पी(2)बा ॥ ५ ॥
@@ -3139,7 +3150,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_179 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_180 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षोः वा आंगिरसः ( ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। श्रुतकक्षः सुकक्षोः वा आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_180 ## DO NOT EDIT
 # Start of Rik Text -- subsection_180 ## DO NOT EDIT
 सुरूपकृ(2)त्नूमूता(2)ये । सूदूघा(2)मीवागोदूहे । जुहूमा(2)सी(1)द्यावी(2)द्यवि ॥ ६ ॥
@@ -3167,7 +3178,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_180 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_181 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः (सदसस्पतिः) गायत्री।।
 # End of Rik Metadata -- subsection_181 ## DO NOT EDIT
 # Start of Rik Text -- subsection_181 ## DO NOT EDIT
 आभित्वावृषभासूते(2)।सूतं(2) सृजामीपीताये(1)।तृ(2)म्पा(2) व्याश्नूहीमा(2)दम्(2) ॥ ७ ॥
@@ -3190,7 +3201,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_181 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_182 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_182 ## DO NOT EDIT
 # Start of Rik Text -- subsection_182 ## DO NOT EDIT
 या(2)ई(2)न्द्रचा(2)मा(1)स्सेष्वा । सो(3)मा(1)श्चामू(2)षू(1)तेसूतः । पीबे(2)द(1)स्यत्वा(2)मी(1)शिषे ॥ ८ ॥
@@ -3211,7 +3222,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_182 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_183 ## DO NOT EDIT
-।। ऋषिः सुकक्ष आंगिरसः) ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। श्रुतकक्षः सुकक्षोः वा आंगिरसः (सुकक्ष आंगिरसः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_183 ## DO NOT EDIT
 # Start of Rik Text -- subsection_183 ## DO NOT EDIT
 यो(2)गे(1)योगे तावास्ता(1)रं।वाजेवा(2)जे(1) हवामाहे।साखा(1)या इन्द्रामूता(2)ये ॥ ९ ॥
@@ -3234,7 +3245,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_183 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_184 ## DO NOT EDIT
-।। बिन्दुः पूतदक्षो वा आंगिरसः ।। इन्द्रः (ऋषिः 7 सदसस्पतिः 10 मरुतः)।। गायत्री।।
+।। बिन्दुः पूतदक्षो वा आंगिरसः इन्द्रः (मरुतः) गायत्री।।
 # End of Rik Metadata -- subsection_184 ## DO NOT EDIT
 # Start of Rik Text -- subsection_184 ## DO NOT EDIT
 आ(3) त्वे(1)तानीषी(1)दत।इन्द्रा(1)माभि प्रा(2)गा(1)यता।सा(3)खा(1)य स्तो(2)मा(1)वाहसः ॥ १० ॥
@@ -3254,7 +3265,7 @@ s2: Thogur Padhati (त)
 षष्ठ खण्डः
 # End of Section Title -- section_19 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_185 ## DO NOT EDIT
-।। देवजामय इन्द्रमातरः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। देवजामय इन्द्रमातरः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_185 ## DO NOT EDIT
 # Start of Rik Text -- subsection_185 ## DO NOT EDIT
 ईदं(2)ह्यन्वोज(1)सा । सूतं(2)रा(1)धानांपते । पीबा(2)त्वा टट्य स्या(2)गी(1)र्वणः ॥ १ ॥
@@ -3278,7 +3289,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_185 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_186 ## DO NOT EDIT
-।। गोधा ऋषिका ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। गोधा ऋषिका इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_186 ## DO NOT EDIT
 # Start of Rik Text -- subsection_186 ## DO NOT EDIT
 माहं(4)इ(4)न्द्रा(1) पूराश्चा(1)नः । महित्वामा(2)स्तू(2)वज्री(2)णे(1)। \newline%
@@ -3303,7 +3314,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_186 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_187 ## DO NOT EDIT
-।। दध्यङ्गाथर्वणः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। दध्यङ्गाथर्वणः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_187 ## DO NOT EDIT
 # Start of Rik Text -- subsection_187 ## DO NOT EDIT
 आ(2)तूना(1)इन्द्राक्षूम(2)न्तं(1) । चित्रं(2)रा(1)भंसं(2)गृ(1)भाय । माहा(2)हास्ती(2)द(2)क्षी(2)णेन ॥ ३ ॥
@@ -3335,7 +3346,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_188 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_189 ## DO NOT EDIT
-।। प्रस्कण्वः काण्वः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। प्रस्कण्वः काण्वः इन्द्रः (अश्विनौ) गायत्री।।
 # End of Rik Metadata -- subsection_189 ## DO NOT EDIT
 # Start of Rik Text -- subsection_189 ## DO NOT EDIT
 आभिप्रा(4)गो(4)पा(1)तिङ्गीराः(1) । इन्द्रामश्चाया(4)था(1)वीदे । \newline%
@@ -3355,7 +3366,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_189 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_190 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। गौतमो राहूगणः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_190 ## DO NOT EDIT
 # Start of Rik Text -- subsection_190 ## DO NOT EDIT
 का(2)या(1)नश्चित्रआ(2)भु(1)वात् । ऊतीस्सा(4)दावृ(1)धस्सा(2)खा(1) । का(2)या(2)शाची(1)ष्ठयावृतः ॥ ५ ॥
@@ -3384,7 +3395,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_191 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_192 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_192 ## DO NOT EDIT
 # Start of Rik Text -- subsection_192 ## DO NOT EDIT
 त्या(2)मूवस्सत्रासा(2)हं(1) । विश्वा(1)सूगीरिष्वा(2)यातम् । \newline%
@@ -3407,7 +3418,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_192 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_193 ## DO NOT EDIT
-।। वत्सः काण्वः ।। इन्द्रः (ऋषिः 4 अश्विनौ 10 वायुः)।। गायत्री।।
+।। वत्सः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_193 ## DO NOT EDIT
 # Start of Rik Text -- subsection_193 ## DO NOT EDIT
 एतेप(4)न्थाआथो(1)दीवः । एभीर्व्या(2)श्वामै(2)राया । ऊता(2)श्रो(1)षन्तूनोभुवाः ॥ ८ ॥
@@ -3465,7 +3476,7 @@ s2: Thogur Padhati (त)
 सप्तम खण्डः
 # End of Section Title -- section_20 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_198 ## DO NOT EDIT
-।। कण्वो घौरः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। कण्वो घौरः इन्द्रः (वरुणमित्रा{-}यर्मणः) गायत्री।।
 # End of Rik Metadata -- subsection_198 ## DO NOT EDIT
 # Start of Rik Text -- subsection_198 ## DO NOT EDIT
 ईं(2)ख्या(2)यन्तीरापस्यू(2)वाः(1) । इ(2)न्द्रं(1)जातामू(2)पासते । वन्वाना(4)साः(1)सू(2)वी(1)र्यम् ॥ १ ॥
@@ -3481,7 +3492,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_198 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_199 ## DO NOT EDIT
-।। वशोऽश्वयः) काण्वः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। वत्सः (वशोऽश्वयः) काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_199 ## DO NOT EDIT
 # Start of Rik Text -- subsection_199 ## DO NOT EDIT
 ना(2)की(1)देवाइनीमसि । न(2)क्या(2)यो(1)पयामसि । \newline%
@@ -3498,7 +3509,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_199 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_200 ## DO NOT EDIT
-।। वत्सः (ऋषिः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। वत्सः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_200 ## DO NOT EDIT
 # Start of Rik Text -- subsection_200 ## DO NOT EDIT
 दोषो(4)आ(4)गा(1)त्ब(2)हा(2)त्गा(1)या । द्धूमा(1)द्गमाथर्वणा । स्तू(4)हिदे(1)वंसा(2)वीता(1)रम् ॥ ३ ॥
@@ -3514,7 +3525,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_200 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_201 ## DO NOT EDIT
-।। श्रुतकक्षः सुकक्षो वा आंगिरसः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। श्रुतकक्षः सुकक्षो वा आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_201 ## DO NOT EDIT
 # Start of Rik Text -- subsection_201 ## DO NOT EDIT
 एषो(2)ऊषा(2)आ(1)पूर्व्या । व्यूं ठ(1) च्छतीप्रीया(2)दीवः । स्तू(2)षेवा(1)मश्विनाबृहा(2)त् ॥ ४ ॥
@@ -3530,7 +3541,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_201 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_202 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_202 ## DO NOT EDIT
 # Start of Rik Text -- subsection_202 ## DO NOT EDIT
 इन्द्रो(1)दधीचो(2)अस्था(2)भिः(1) । वृत्रा(2)ण्य(2)प्रा(2)तिष्कृतः । जघा(2)ना(1)नावा(1)तीर्नावा(1) ॥ ५ ॥
@@ -3548,7 +3559,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_202 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_203 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_203 ## DO NOT EDIT
 # Start of Rik Text -- subsection_203 ## DO NOT EDIT
 इ(2)न्द्रे(2)हीम(2)त्स्य(2)न्धा(1)सः । विश्वेभिस्सोमापा(2)वा(1)भीः । मा(4)हं(4)आ(1)भी(2)ष्ठीरोज(1)सा ॥ ६ ॥
@@ -3564,7 +3575,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_203 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_204 ## DO NOT EDIT
-।। इरिम्बिठः काण्वः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। इरिम्बिठः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_204 ## DO NOT EDIT
 # Start of Rik Text -- subsection_204 ## DO NOT EDIT
 आ(2)तू(2)नो(1)इन्द्रवृत्रहन् । अस्मा(2)कामा(2)र्धामाग(1)ही । माहा(2)न्मा(4)ही(4)भी(1)रुतीभीः(1) ॥ ७ ॥
@@ -3580,7 +3591,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_204 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_205 ## DO NOT EDIT
-।। सत्यव्रतबाऱुणिः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। सत्यव्रतबाऱुणिः इन्द्रः (आदित्यः) गायत्री।।
 # End of Rik Metadata -- subsection_205 ## DO NOT EDIT
 # Start of Rik Text -- subsection_205 ## DO NOT EDIT
 ओजस्ता(2)द(1)स्यतिद्विषे । ऊ(2)भेया(2)त्सामा(2)वा(1)र्क्तयात् । इन्द्राश्चर्मेवा(1)रो(2)द(1)सी ॥ ८ ॥
@@ -3599,7 +3610,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_205 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_206 ## DO NOT EDIT
-।। वशोऽश्वयः) काण्वः ।। इन्द्रः (ऋषिः 1 वरुणमित्रा{-}यर्मणः 8 आदित्यः) गायत्री।।
+।। वत्सः (वशोऽश्वयः) काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_206 ## DO NOT EDIT
 # Start of Rik Text -- subsection_206 ## DO NOT EDIT
 आया(2)मू(1)तेसा(2)मा(1)तसि । का(2)पो(1)ताइवगर्भा(1)धिं । वा(2)चस्ता(2)च्चिन्नओहसे(2) ॥ ९ ॥
@@ -3631,7 +3642,7 @@ s2: Thogur Padhati (त)
 अष्टम खण्डः
 # End of Section Title -- section_21 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_208 ## DO NOT EDIT
-।। प्रगाथः काण्वः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। प्रगाथः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_208 ## DO NOT EDIT
 # Start of Rik Text -- subsection_208 ## DO NOT EDIT
 यं(3)रा(1)क्ष(4)न्तिप्रा(2)चे(1)तसःवा(2)रू(1)णोमित्रो(4)अर्यामा(2)।ना(2)कीस्सा(2)दभ्यातेज(2)नाः(1) ॥ १ ॥
@@ -3647,7 +3658,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_208 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_209 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। विश्वामित्रो गाथिनः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_209 ## DO NOT EDIT
 # Start of Rik Text -- subsection_209 ## DO NOT EDIT
 ग(2)व्योषू(2)णो(1)या(4)था(1)पूरा । अश्वायो(4)तारा(1)थाया(2) । वरिवास्या(2)माहो(2)ना(1)म् ॥ २ ॥
@@ -3665,7 +3676,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_209 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_210 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_210 ## DO NOT EDIT
 # Start of Rik Text -- subsection_210 ## DO NOT EDIT
 ईमा(2)स्ता(1)इन्द्रापृ(2)श्ना(1)यः । घृतन्दू(1)हाता(2)आशी(2)रं । एनामृ(4)ता(4)स्या(1)पिष्यूषीः ॥ ३ ॥
@@ -3681,7 +3692,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_210 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_211 ## DO NOT EDIT
-।। सुकक्षोः वा ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। श्रुतकक्षः आंगिरसः (सुकक्षोः वा) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_211 ## DO NOT EDIT
 # Start of Rik Text -- subsection_211 ## DO NOT EDIT
 आ(2)या(2)धीया(2)चर्चा(1)गव्याया(2) । पू(2)रू(1)नामन्पुरूष्ठूत । यत्सो(2)मे(1)सोमआ(2)भू(1)वः ॥ ४ ॥
@@ -3698,7 +3709,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_211 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_212 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_212 ## DO NOT EDIT
 # Start of Rik Text -- subsection_212 ## DO NOT EDIT
 पवाका(2)नस्सा(2)रा(2)स्वती । वा(2)जे(1)भिर्वाजि(1)नीवति । यज्ञां(2)वा(1)ष्टूधीया(2)वा(1)सुः ॥ ५ ॥
@@ -3714,7 +3725,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_212 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_213 ## DO NOT EDIT
-।। सुकक्ष आंगिरसः) ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। श्रुतकक्षः आंगिरसः (सुकक्ष आंगिरसः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_213 ## DO NOT EDIT
 # Start of Rik Text -- subsection_213 ## DO NOT EDIT
 का(2)ईम(4)न्ना(4)हू(1)षीष्वा । इ(2)न्द्रंसो(2)मा(2)स्यतर्पयात् । सा(2)नो(1)वासून्या(2)भा(1)रात् ॥ ६ ॥
@@ -3731,7 +3742,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_213 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_214 ## DO NOT EDIT
-।। गृत्समदः शौनकः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। गृत्समदः शौनकः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_214 ## DO NOT EDIT
 # Start of Rik Text -- subsection_214 ## DO NOT EDIT
 आया(1)हीसूषूमा(2)ही(1)ते(2) । इ(2)न्द्रासो(4)मंपीबा(2)इमं । \newline%
@@ -3748,7 +3759,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_214 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_215 ## DO NOT EDIT
-।। शयुः) बार्हस्पत्यः ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। भरद्वाजः (– शयुः) बार्हस्पत्यः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_215 ## DO NOT EDIT
 # Start of Rik Text -- subsection_215 ## DO NOT EDIT
 माहि(1)त्रीणा(2)मा(2)वा(1)रस्तु । धुक्षंमित्र(4)स्या(1)र्यम्णः । दूराध(2)ऋषंवा(2)रूणस्या ॥ ८ ॥
@@ -3767,7 +3778,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_215 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_216 ## DO NOT EDIT
-।। भरद्वाजः (ऋषिः – ।। इन्द्रः (9 ऋषिः इन्द्रापषूणौ)।। गायत्री।।
+।। भरद्वाजः (–) बार्हस्पत्यः इन्द्रः (इन्द्रापषूणौ) गायत्री।।
 # End of Rik Metadata -- subsection_216 ## DO NOT EDIT
 # Start of Rik Text -- subsection_216 ## DO NOT EDIT
 त्वा(2)वा(1)तःपुरोवसो । वा(2)या(2)मिन्द्रः(1)प्रणेता । अस्मासी(1)स्थातर्हरीणाम् ॥ ९ ॥
@@ -3787,7 +3798,7 @@ s2: Thogur Padhati (त)
 नवम खण्डः
 # End of Section Title -- section_22 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_217 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_217 ## DO NOT EDIT
 # Start of Rik Text -- subsection_217 ## DO NOT EDIT
 ऊत्वा(1)मन्ततूसो(2)माः । कृणुष्वाराथोअद्रिवः । आ(2)व(1)ब्रह्मद्दी(2)षो(1)जहि ॥ १ ॥
@@ -3804,7 +3815,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_217 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_218 ## DO NOT EDIT
-।। मधछु न्दा वैश्वामित्रः ।। इन्द्रः।। गायत्री।।
+।। मधछु न्दा वैश्वामित्रः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_218 ## DO NOT EDIT
 # Start of Rik Text -- subsection_218 ## DO NOT EDIT
 गिर्वा(1)णःपाही(4)ना(1)स्सूतं(2) । माधोर्धारा(1)भीरज्यसे । इन्द्रत्वा(4)दा(1)तामिद्या(4)शाः(1) ॥ २ ॥
@@ -3821,7 +3832,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_218 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_219 ## DO NOT EDIT
-।। वत्सः काण्वः (ऋषिः वशोऽश्वयः) ।। इन्द्रः।। गायत्री।।
+।। वत्सः काण्वः (वशोऽश्वयः) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_219 ## DO NOT EDIT
 # Start of Rik Text -- subsection_219 ## DO NOT EDIT
 सादा(4)वा(1)इन्द्रश्चकृ(2)षात् । ऊ(2)पोनू(4)सा(4)सा(1)पर्यन् । ना(2)दे(2)वा(2)ऋतश्शूराइन्द्राः ॥ ३ ॥
@@ -3836,7 +3847,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_219 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_220 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_220 ## DO NOT EDIT
 # Start of Rik Text -- subsection_220 ## DO NOT EDIT
 आ(2)त्वा(1)वीशन्तू(1)विन्दा(1)वः । समुद्रा(4)मी(1)वासिन्धा(1)वः । \newline%
@@ -3853,7 +3864,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_220 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_221 ## DO NOT EDIT
-।। सुकक्ष आंगिरसः ।। इन्द्रः।। गायत्री।।
+।। सुकक्ष आंगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_221 ## DO NOT EDIT
 # Start of Rik Text -- subsection_221 ## DO NOT EDIT
 इ(2)न्द्रा(3)मित्गा(1)थीनो(1)बृहात् । इ(3)न्द्रा(1)मर्केभीरर्कीणाः(1) । इ(2)न्द्रंवाणी(1)रनूषत ॥ ५ ॥
@@ -3872,7 +3883,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_221 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_222 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_222 ## DO NOT EDIT
 # Start of Rik Text -- subsection_222 ## DO NOT EDIT
 इन्द्राईषे(2)द(1)दातुनः । ऋभुक्षा(4)णा(1)म्भुंरायिं(2) । \newline%
@@ -3892,7 +3903,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_222 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_223 ## DO NOT EDIT
-।। गोषूकश्वसूनूकाण्वायनाै ।। इन्द्रः।। गायत्री।।
+।। गोषूकश्वसूनूकाण्वायनाै इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_223 ## DO NOT EDIT
 # Start of Rik Text -- subsection_223 ## DO NOT EDIT
 ईमा(2)ऊ(1)त्वासूते(2)सू(1)ते । नक्ष(1)न्ते(1) गिर्वा(2)णोगीराः(2) । गा(3)वो(1)वत्सन्नाधे(2)नावाः(1) ॥ ८ ॥
@@ -3908,7 +3919,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_223 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_224 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_224 ## DO NOT EDIT
 # Start of Rik Text -- subsection_224 ## DO NOT EDIT
 इन्द्रानूपूषा(4)णा(1)वायं । सख्या(4)या(1)स्वस्ताये । \newline%
@@ -3940,7 +3951,7 @@ s2: Thogur Padhati (त)
 दशम खण्डः
 # End of Section Title -- section_23 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_226 ## DO NOT EDIT
-।। शुनः शेप आजीर्गितः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। शुनः शेप आजीर्गितः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_226 ## DO NOT EDIT
 # Start of Rik Text -- subsection_226 ## DO NOT EDIT
 ता(4)रा(4)णिवोज(2)ना(1)नां । त्रादं(4)वा(4)ज(1)स्यागो(2)मा(1)तः । समाना(2)मुप्रा(2)शंसिषः ॥ १ ॥
@@ -3956,7 +3967,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_226 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_227 ## DO NOT EDIT
-।। श्रुतकक्ष आंगिरसः (ऋषिः सुकक्षो आंगिरसो वा) ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। श्रुतकक्ष आंगिरसः (सुकक्षो आंगिरसो वा) इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_227 ## DO NOT EDIT
 # Start of Rik Text -- subsection_227 ## DO NOT EDIT
 आसृ(1)ग्रमिन्द्राते(2)गीराः(1) । प्रा(2)तीत्वा(2)मू(2)दा(1)हासता । सा(2)जो(2)षा(1)वृषा(3)भं(2)पा(2)तिम् ॥ २ ॥
@@ -3972,7 +3983,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_227 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_228 ## DO NOT EDIT
-।। त्रिशोकः काण्वः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। त्रिशोकः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_228 ## DO NOT EDIT
 # Start of Rik Text -- subsection_228 ## DO NOT EDIT
 सुनीथोघासामार्त्याः(1) । य(2)म्मा(3)रूतोया(4)मर्यामा । मित्रःपा(2)न्त्यद्रू(2)होआ(2)तीद्वीषाः(1) ॥ ३ ॥
@@ -3988,7 +3999,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_228 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_229 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_229 ## DO NOT EDIT
 # Start of Rik Text -- subsection_229 ## DO NOT EDIT
 य(2)द्वीळा(4)वि(1)न्द्राया(2)त्स्थि(1)रे । य(3)त्प(3)र्शा(1)नेपा(2)रा(1)भृतं । वा(3)सु(1)स्पार्हं(1)ता(2)दा(2)भा(1)रा ॥ ४ ॥
@@ -4006,7 +4017,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_229 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_230 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। गौतमो राहूगणः इन्द्रः (विश्वेदेवाः) गायत्री।।
 # End of Rik Metadata -- subsection_230 ## DO NOT EDIT
 # Start of Rik Text -- subsection_230 ## DO NOT EDIT
 श्रूतं(2)वो(1)वृत्रा(1)ह(2)न्ता(1)मं । प्र(2)श(2)र्धञ्चर्षो(1)णीनां । आ(2)शी(2)षेरा(2)धा(1)सेमाहे ॥ ५ ॥
@@ -4022,7 +4033,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_230 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_231 ## DO NOT EDIT
-।। ब्रहमातिथिः काण्वः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। ब्रहमातिथिः काण्वः अश्विनौ मित्रावरुणौ गायत्री।।
 # End of Rik Metadata -- subsection_231 ## DO NOT EDIT
 # Start of Rik Text -- subsection_231 ## DO NOT EDIT
 आर(1)न्तइन्द्राश्रा(2)वा(1)से । गमे(2)मा(1)शूरत्वा(2)वातः । \newline%
@@ -4038,7 +4049,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_231 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_232 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनो जमदग्निवा ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। विश्वामित्रो गाथिनो जमदग्निवा इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_232 ## DO NOT EDIT
 # Start of Rik Text -- subsection_232 ## DO NOT EDIT
 धानाव(1)न्तंकारंभीणम् । आ(2)पू(2)पाव(1)न्तामुक्थी(2)न(1)म् । इ(3)न्द्राप्राता(2)र्जु(1)षस्वनः ॥ ७ ॥
@@ -4054,7 +4065,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_232 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_233 ## DO NOT EDIT
-।। प्रस्कण्वः काण्वः (ऋषिः कण्वो घौराः) ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। प्रस्कण्वः काण्वः (कण्वो घौराः) मरुतः गायत्री।।
 # End of Rik Metadata -- subsection_233 ## DO NOT EDIT
 # Start of Rik Text -- subsection_233 ## DO NOT EDIT
 आ(2)पांफे(4)ने(1)नानामू(1)चेः । शी(1)रा(1)इ(1)न्द्रोद(1)वर्क्तया । वि(2)श्वा(2)या(4)दजयस्पृधाः(1) ॥ ८ ॥
@@ -4070,7 +4081,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_233 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_234 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः (ऋषिः 5 विश्वेदेवाः) 6 अश्विनौ मित्रावरुणौ 8 मरुतः 9 विष्णुः।। गायत्री।।
+।। मेधातिथिः काण्वः विष्णुः गायत्री।।
 # End of Rik Metadata -- subsection_234 ## DO NOT EDIT
 # Start of Rik Text -- subsection_234 ## DO NOT EDIT
 ईमे(2)ताइन्द्रासो(2)माः । सूता(2)सोयेचासो(2)त्वाः(1) । तेषांमत्स्वप्रभूवसो ॥ ९ ॥
@@ -4092,7 +4103,7 @@ s2: Thogur Padhati (त)
 एकादश खण्डः
 # End of Section Title -- section_24 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_235 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_235 ## DO NOT EDIT
 # Start of Rik Text -- subsection_235 ## DO NOT EDIT
 आ(2)वाइन्द्रङ्कृवींया(2)था(1) । वजय(2)न्ताश्शा(1)ताक्रातुं । मंहीं(1)ष्ठंसिञ्चाइन्दुभिः ॥ १ ॥
@@ -4107,7 +4118,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_235 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_236 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः।। गायत्री।।
+।। वामदेवो गौतमः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_236 ## DO NOT EDIT
 # Start of Rik Text -- subsection_236 ## DO NOT EDIT
 आताश्चिदिन्द्राना(2)ऊ(2)पा(1) । आ(2)या(1)हीसातावा(1)जया । इळा(2)साहा(2)स्रा(1)वाजया ॥ २ ॥
@@ -4122,7 +4133,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_236 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_237 ## DO NOT EDIT
-।। मेधातिथिः काण्वः, प्रियमेधश्चांगिरसः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः, प्रियमेधश्चांगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_237 ## DO NOT EDIT
 # Start of Rik Text -- subsection_237 ## DO NOT EDIT
 आबुन्दं(4)वृ(4)त्राहाददे । जातः(4)प्र(1)च्छद्वीमाता(2)रं । का(2)उग्रःकेहा(1)शृण्विरे(2) ॥ ३ ॥
@@ -4138,7 +4149,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_237 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_238 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः।। गायत्री।।
+।। विश्वामित्रो गाथिनः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_238 ## DO NOT EDIT
 # Start of Rik Text -- subsection_238 ## DO NOT EDIT
 बृबदू(1)क्थंहवा(1)महे । सृप्रा(2)का(1)रस्नामू(2)ता(2)ये । सा(3)धाः(1)कृण्व(2)न्ता(2)मा(2)वा(1)से ॥ ४ ॥
@@ -4154,7 +4165,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_238 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_239 ## DO NOT EDIT
-।। मेधातिथिः काण्वः, प्रियमेधश्चांगिरसः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः, प्रियमेधश्चांगिरसः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_239 ## DO NOT EDIT
 # Start of Rik Text -- subsection_239 ## DO NOT EDIT
 ऋजु(1)नीतीनोवारू(1)णः । मि(2)त्रो(2)नायति(2)विद्वांसः । अर्यामा(1)देवै(2)स्साजो(2)षाः ॥ ५ ॥
@@ -4170,7 +4181,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_239 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_240 ## DO NOT EDIT
-।। दुमित्रः (सुमित्रो वा) कौत्सः ।। इन्द्रः।। गायत्री।।
+।। दुमित्रः (सुमित्रो वा) कौत्सः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_240 ## DO NOT EDIT
 # Start of Rik Text -- subsection_240 ## DO NOT EDIT
 दूरा(2)दीहे(2)वायात्सातः । आरूणा(2)स्पूरा(2)शिश्वीतात् । विभा(4)नूंविश्वाथातनात् ॥ ६ ॥
@@ -4186,7 +4197,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_240 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_241 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_241 ## DO NOT EDIT
 # Start of Rik Text -- subsection_241 ## DO NOT EDIT
 आनो(1)मित्रावरुणा । घृतैः(2)गव्यूतिमुक्षतं । मध्वारा(2)जां(1)सिसुक्रतू ॥ ७ ॥
@@ -4202,7 +4213,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_241 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_242 ## DO NOT EDIT
-।। मेधातिथिः काण्वः ।। इन्द्रः।। गायत्री।।
+।। मेधातिथिः काण्वः इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_242 ## DO NOT EDIT
 # Start of Rik Text -- subsection_242 ## DO NOT EDIT
 ऊ(2)दूत्ये(2)सूना(2)वोगी(2)राः(1) । काष्ठार्यज्ञेष्वात्नता । वा(2)श्रा(4)आ(1)भीजुया(2)ता(1)वे ॥ ८ ॥
@@ -4218,7 +4229,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_242 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_243 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनोऽभीपाद उदलो वा ।। इन्द्रः।। गायत्री।।
+।। विश्वामित्रो गाथिनोऽभीपाद उदलो वा इन्द्रः गायत्री।।
 # End of Rik Metadata -- subsection_243 ## DO NOT EDIT
 # Start of Rik Text -- subsection_243 ## DO NOT EDIT
 ईदंविष्णुर्विचा(1)क्रमे । त्रेधा(2)नी(2)दे(1)थेपादं सा(2)मू(1)ढमस्यपांसूले(2) ॥ ९ ॥
@@ -4237,7 +4248,7 @@ s2: Thogur Padhati (त)
 द्वादश खण्डः
 # End of Section Title -- section_25 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_244 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः 9 मरुतः बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः।।
 # End of Rik Metadata -- subsection_244 ## DO NOT EDIT
 # Start of Rik Text -- subsection_244 ## DO NOT EDIT
 आतीहीमन्यूषावीणं । सूषूवां(2)सामू(2)पै(1)रय । अस्या(1)रा(4)तौ(1)सूतंपी(1)बा ॥ १ ॥
@@ -4253,7 +4264,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_244 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_245 ## DO NOT EDIT
-।। भरद्वाजः (ऋषिः शयुः) बार्हस्पत्यः ।। इन्द्रः 9 मरुतः बृहती।।
+।। भरद्वाजः (शयुः) बार्हस्पत्यः इन्द्रः।।
 # End of Rik Metadata -- subsection_245 ## DO NOT EDIT
 # Start of Rik Text -- subsection_245 ## DO NOT EDIT
 का(2)दूप्रा(2)चे(1)तसेमहे(2) । वा(3)चो(1)देवाया(1)शस्यते । तदी(4)द्ध्या(1)स्यावार्धा(2)नम् ॥ २ ॥
@@ -4269,7 +4280,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_245 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_246 ## DO NOT EDIT
-।। प्रस्कण्वः ।। इन्द्रः 9 मरुतः बृहती।।
+।। प्रस्कण्वः इन्द्रः।।
 # End of Rik Metadata -- subsection_246 ## DO NOT EDIT
 # Start of Rik Text -- subsection_246 ## DO NOT EDIT
 उक्थञ्चाना(2)शस्या(2)मा(1)नं । ना(3)गो(1)रा(2)यिरा(2)ची(1)केता । ना(3)गा(2)यत्रं(1)गीयामानम् ॥ ३ ॥
@@ -4287,7 +4298,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_246 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_247 ## DO NOT EDIT
-।। कलिः प्रागाथः। ।। इन्द्रः 9 मरुतः बृहती।।
+।। कलिः प्रागाथः। इन्द्रः।।
 # End of Rik Metadata -- subsection_247 ## DO NOT EDIT
 # Start of Rik Text -- subsection_247 ## DO NOT EDIT
 ब्र(2)ह्मा(1)णादीन्द्रारा(1)धा(1)साः । पी(2)बा(4)सो(4)मा(1)मृतूंरा(2)नू । तवे(4)दु(1)सख्या(2)मस्तृतम् ॥ ५ ॥
@@ -4305,7 +4316,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_247 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_248 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः 9 मरुतः बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः।।
 # End of Rik Metadata -- subsection_248 ## DO NOT EDIT
 # Start of Rik Text -- subsection_248 ## DO NOT EDIT
 वा(3)यङ्घा(1)तेआपी(1)स्मसि । स्तोता(2)र(1)इन्द्र(3)गिर्वणः । त्व(2)न्नोजिन्वसोमपः ॥ ६ ॥
@@ -4353,7 +4364,7 @@ s2: Thogur Padhati (त)
 प्रथम खण्डः
 # End of Section Title -- section_26 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_252 ## DO NOT EDIT
-।। पुरुहन्मा आंगिरसः ।। इन्द्रः।। बृहती।।
+।। पुरुहन्मा आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_252 ## DO NOT EDIT
 # Start of Rik Text -- subsection_252 ## DO NOT EDIT
 आभित्वा(2)शू(2)र(1)नोनुमः । आदू(3)ग्धाइवाधेना(2)वाः । ई(2)शा(1)ना(2)मा(1)स्याजग(1)तःस्वदृशं । ईशा(1)नमिन्द्रातस्थू(2)षाः(1) ॥ १ ॥
@@ -4374,7 +4385,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_252 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_253 ## DO NOT EDIT
-।। मेधातिथि – मध्येआतिथी काण्वौ ।। इन्द्रः।। बृहती।।
+।। मेधातिथि – मध्येआतिथी काण्वौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_253 ## DO NOT EDIT
 # Start of Rik Text -- subsection_253 ## DO NOT EDIT
 त्वा(2)मि(2)द्धि(2)हा(2)वा(1)महे(1) । सा(2)तौवा(2)ज(1)स्याकारा(2)वाः(1) । त्वांवृ(1)त्रे(2)ष्विन्द्रा(1)सात्पातिन्ना(2)राः(1) । त्वांकाष्ठास्व(1)र्वातः ॥ २ ॥
@@ -4395,7 +4406,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_253 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_254 ## DO NOT EDIT
-।। मेधातिथि – मध्येआतिथी काण्वौ ।। इन्द्रः।। बृहती।।
+।। मेधातिथि – मध्येआतिथी काण्वौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_254 ## DO NOT EDIT
 # Start of Rik Text -- subsection_254 ## DO NOT EDIT
 आभी(4) प्रा(4)वास्सूरा(2)धा(1)सम् । इन्द्रा(1)मर्चाया(4)था(1)वीदे । योज(1)रितृ(4)भ्यो(1) माघा(2)वा(1)पूरो(3)वासूः(4) । सा(2)हा(1)स्रेणेवाशी(2)क्षा(1)ति ॥ ३ ॥
@@ -4425,7 +4436,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_255 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_256 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः।। बृहती।।
+।। विश्वामित्रो गाथिनः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_256 ## DO NOT EDIT
 # Start of Rik Text -- subsection_256 ## DO NOT EDIT
 तं वो(1)दस्मा(4)मृ(1)तीषाहम् । वा(2)सो(1)र्मन्दानमन्धा(1)सा । आ(2)भी(2)वत्स(2)न्नस्वा(2)सारेषु धेना(2)वाः(1) । इ(3)न्द्रं(1)गीर्भि(1)र्ना(1)वामहे ॥ ४ ॥
@@ -4480,7 +4491,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_260 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_261 ## DO NOT EDIT
-।। गौतमो (गौतमो वा) राहूगणः ।। इन्द्रः।। बृहती।।
+।। गौतमो (गौतमो वा) राहूगणः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_261 ## DO NOT EDIT
 # Start of Rik Text -- subsection_261 ## DO NOT EDIT
 ता(2)रो(1)भिर्वोवीद(2)द्वा(1)सुम् । इन्द्रं साबा(4)धा(1)ऊता(2)ये । बृह(2)त्गा(2)यन्तास्सूता(2)सो(2)मेआध्वारे । हूवे(2)भारन्नाकारीण(1)म् ॥ ५ ॥
@@ -4534,7 +4545,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_263 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_264 ## DO NOT EDIT
-।। नमृधे पुरुमेधावांगिरसौ ।। इन्द्रः।। बृहती।।
+।। नमृधे पुरुमेधावांगिरसौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_264 ## DO NOT EDIT
 # Start of Rik Text -- subsection_264 ## DO NOT EDIT
 ता(2)रा(2)णीरित्सी(2)षासती । वाजं(2) पू(2)रन्ध्यायूजा । आ(2)वाइन्द्रं(1) पूरुहूत(2)न्ना(1)मेगीरा(2)। नेमि(2)न्तष्टे(1)वासुद्रू\newline%
@@ -4568,7 +4579,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_265 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_266 ## DO NOT EDIT
-।। मेधातिमध्येआतिथी (ऋषिः मध्येआतिथिः) काण्वः ।। इन्द्रः।। बृहती।।
+।। मेधातिमध्येआतिथी (मध्येआतिथिः) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_266 ## DO NOT EDIT
 # Start of Rik Text -- subsection_266 ## DO NOT EDIT
 पीबा(3)सू(4)तस्या(1)रासी(2)नाः । मत्स्वा(1)न इन्द्रागो(2)मा(1)तः । आपिर्नो बोधीसा(2)धा(1)मा(4)द्ये(1)वृधे(2) । अस्मं आ(1)वन्तूते(2)धी(2)याः(1) ॥ ७ ॥
@@ -4604,7 +4615,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_268 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_269 ## DO NOT EDIT
-।। मेधातिमध्येआतिथी (ऋषिः मध्येआतिथिः) काण्वः ।। इन्द्रः।। बृहती।।
+।। मेधातिमध्येआतिथी (मध्येआतिथिः) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_269 ## DO NOT EDIT
 # Start of Rik Text -- subsection_269 ## DO NOT EDIT
 त्वं(2)ह्ये(2)हीचेरा(2)वे । वीदा(4)भा(1)गं वा(2)सू(1)क्तये । उद्वा(1)वृष(1)स्व मा(1)घावन्ग(1)वी(2)ष्टये । उदि(2)न्द्रो(1) अश्वा(1)मिष्ठ(1)ये ॥ ८ ॥
@@ -4623,7 +4634,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_269 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_270 ## DO NOT EDIT
-।। मेधातिमध्येआतिथी (ऋषिः मध्येआतिथिः) काण्वः ।। इन्द्रः।। बृहती।।
+।। मेधातिमध्येआतिथी (मध्येआतिथिः) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_270 ## DO NOT EDIT
 # Start of Rik Text -- subsection_270 ## DO NOT EDIT
 ना(2)ही(2)वा(1)श्वाराम(2)ञ्चाना(2) । वासी(1)ष्ठः पारीमं(2)सा(1)ते । अस्माका(1)माद्या मारूतस्सूते(2)सा(2)चा(1) । विश्वे(1)पिबन्तूका(2)मी(2)नाः(1) ॥ ९ ॥
@@ -4643,7 +4654,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_270 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_271 ## DO NOT EDIT
-।। देवातिथिः काण्वः ।। इन्द्रः।। बृहती।।
+।। देवातिथिः काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_271 ## DO NOT EDIT
 # Start of Rik Text -- subsection_271 ## DO NOT EDIT
 माची(1)दन्यद्वी(2)शंसता । सा(3)खायोमा(2)रि(1)षण्यत । इ(3)न्द्रामित्स्तो(3)ता(3)वृषाणं सा(4)चा(1)सूते(2) । मुहू(1)रुत्थाचाशंसत ॥ १० ॥
@@ -4664,7 +4675,7 @@ s2: Thogur Padhati (त)
 द्वितीय खण्डः
 # End of Section Title -- section_28 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_272 ## DO NOT EDIT
-।। भगः प्रागाथः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। भगः प्रागाथः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_272 ## DO NOT EDIT
 # Start of Rik Text -- subsection_272 ## DO NOT EDIT
 ना(3)की(3)ष्टंकर्माणानशात् । यश्चाका(3)रा(1)स्सा(2)दावृधं । इ(2)न्द्रन्ना य(4)ज्ञैर्वि(4)श्वा(4)र्गू(1)र्तामृ(1)भ्वा(1)सम् । आधृष्ट(2)न्धृष्णु(2)मोज(1)सा ॥ १ ॥
@@ -4680,7 +4691,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_272 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_273 ## DO NOT EDIT
-।। रेभः कश्यपः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। रेभः कश्यपः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_273 ## DO NOT EDIT
 # Start of Rik Text -- subsection_273 ## DO NOT EDIT
 या(1)ऋते(2)चीदभिश्री(2)षाः(1) । पूरा(2) जत्रु(4)भ्या(1)आतृ(2)दाः(1) । \newline%
@@ -4697,7 +4708,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_273 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_274 ## DO NOT EDIT
-।। जमदग्निभागर्वः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। जमदग्निभागर्वः मित्रावरुणादित्याः बृहती।।
 # End of Rik Metadata -- subsection_274 ## DO NOT EDIT
 # Start of Rik Text -- subsection_274 ## DO NOT EDIT
 आ(3)त्वासाहस्रा(1)मा शात(2)म् । युक्ता(2)राथेहीरण्याये(1) । \newline%
@@ -4715,7 +4726,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_274 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_275 ## DO NOT EDIT
-।। मेधातिथिः काण्वः (ऋषिः मध्येआतिथिः काण्वः) ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। मेधातिथिः काण्वः (मध्येआतिथिः काण्वः) इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_275 ## DO NOT EDIT
 # Start of Rik Text -- subsection_275 ## DO NOT EDIT
 आमन्द्रै(4)रि(1)न्द्राहा(2)री(1)भिः । याही(2)मा(1)यूरा(1)रोम(2)भिः । मा(2)त्वा(1)केचिन्नी(4) ये(1)मुर्वि(2)न्ना(2)पाशी(2)नाः(1) । आतीधन्वेवतंई(1)हि ॥ ४ ॥
@@ -4744,7 +4755,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_275 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_276 ## DO NOT EDIT
-।। नमृधे पुरुमेधावांगिरसौ ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। नमृधे पुरुमेधावांगिरसौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_276 ## DO NOT EDIT
 # Start of Rik Text -- subsection_276 ## DO NOT EDIT
 त्वा(2)मंग प्रा(2)शं(1)सिषः । देवा(2)श्शा(1)वीष्ठमा(2)र्क्त्यम् । न(3)त्वा(1)दन्यो(2) मा(1)घावन्नस्तिमार्डीत । इन्द्रब्रा(2)वी(1)मीतेवा(2)चाः(1) ॥ ५ ॥
@@ -4763,7 +4774,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_276 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_277 ## DO NOT EDIT
-।। नमृधे पुरुमेधावांगिरसौ ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। नमृधे पुरुमेधावांगिरसौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_277 ## DO NOT EDIT
 # Start of Rik Text -- subsection_277 ## DO NOT EDIT
 त्वा(2)मि(2)न्द्रायाशा(2)आ(1)सि । ऋजीषीशावासस्पा(2)तिः । त्वंवृत्रा(2)णी(1) हंस्यप्रातीन्ये(2)काई(2)त्पूरूः(2) । आनूक्तस्चर्षाणिधृ(2)त्तिः ॥ ६ ॥
@@ -4778,7 +4789,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_277 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_278 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_278 ## DO NOT EDIT
 # Start of Rik Text -- subsection_278 ## DO NOT EDIT
 इ(2)न्द्रामीद्देवातातये । इन्द्रं(1)प्रायत्याध्वारे(2) । \newline%
@@ -4815,7 +4826,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_279 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_280 ## DO NOT EDIT
-।। रेभः कश्यपः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। रेभः कश्यपः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_280 ## DO NOT EDIT
 # Start of Rik Text -- subsection_280 ## DO NOT EDIT
 ईमा(2)ऊ(1) त्वापूरोवसो । गी(2)रो(1)वर्धन्तू या(2)मा(2)मा(1) । पवाका(4)व(1)र्णश्शू(2)चा(2)योवीप(2)श्ची(2)ताः(2) । आभी(2)स्तोमै(1)रनूषत ॥ ८ ॥
@@ -4830,7 +4841,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_280 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_281 ## DO NOT EDIT
-।। मेधातिथिः काण्वः (ऋषिः मध्येआतिथिः काण्वः) ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। मेधातिथिः काण्वः (मध्येआतिथिः काण्वः) इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_281 ## DO NOT EDIT
 # Start of Rik Text -- subsection_281 ## DO NOT EDIT
 ऊ(2)दूत्येमाधू(1)मक्तमः । गीरस्तोमा(1)सैरते । स(2)त्राजितो(1)धानासाआक्षी(1)तोतयः । वजय(1)न्तोरा(1)था(1)इवा ॥ ९ ॥
@@ -4851,7 +4862,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_281 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_282 ## DO NOT EDIT
-।। भरद्वाजः (ऋषिः शयुः) बार्हस्पत्यः ।। इन्द्रः 3 मित्रावरुणादित्याः।। बृहती।।
+।। भरद्वाजः (शयुः) बार्हस्पत्यः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_282 ## DO NOT EDIT
 # Start of Rik Text -- subsection_282 ## DO NOT EDIT
 या(3)था(1)गौरो(2)आपा(2)कृ(1)त(2)म्। तृ(2)ष्यन्ने(2)त्यवे(2)रि(2)णम् । आपि(2)त्वे(1)नप्रापित्वेतू(2)या(2)मा(2)ग(1)हि । क(3)ण्वेषूसू(2)साचा(2)पी(2)बा ॥ १० ॥
@@ -4893,7 +4904,7 @@ s2: Thogur Padhati (त)
 तृतीय खण्डः
 # End of Section Title -- section_29 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_284 ## DO NOT EDIT
-।। मेधातिथिः (ऋषिः मध्येआतिथिः) काण्वः ।। इन्द्रः।। बृहती।।
+।। मेधातिथिः (मध्येआतिथिः) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_284 ## DO NOT EDIT
 # Start of Rik Text -- subsection_284 ## DO NOT EDIT
 श(2)ग्धू टट्य षूशा(1)चीपते । इन्द्रावि(1)श्वा(2)भीरू(3)तीभिः । भा(2)गन्न(4)हित्वा(1)याशा(2)सं(1)वासूवी(2)दम् । आनू(1)शूराचा(2)रा(1)मसि ॥ १ ॥
@@ -4918,7 +4929,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_284 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_285 ## DO NOT EDIT
-।। रेभः कश्यपः ।। इन्द्रः।। बृहती।।
+।। रेभः कश्यपः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_285 ## DO NOT EDIT
 # Start of Rik Text -- subsection_285 ## DO NOT EDIT
 या(3) इ(1)न्द्राभू(2)जआ(2)भा(1)रा। \newline%
@@ -4944,7 +4955,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_285 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_286 ## DO NOT EDIT
-।। वत्सः (ऋषिः वशोऽश्वयः) ।। इन्द्रः।। बृहती।।
+।। वत्सः (वशोऽश्वयः) इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_286 ## DO NOT EDIT
 # Start of Rik Text -- subsection_286 ## DO NOT EDIT
 प्रा(2)मित्रा(2)यप्रार्यम्णे(1) । सा(2)चात्थ्याठ(1)मृतावसो । वरु(2)त्थ्ये टट्य(2)वा(4)रूणेछन्द्यंवा(2)चाः(1) । स्तोत्रं(1) रा(2)ज(1)सुगायता ॥ ३ ॥
@@ -4968,7 +4979,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_286 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_287 ## DO NOT EDIT
-।। भरद्वाजः (शयुः) बार्हस्पत्यः ।। इन्द्रः।। बृहती।।
+।। भरद्वाजः (शयुः) बार्हस्पत्यः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_287 ## DO NOT EDIT
 # Start of Rik Text -- subsection_287 ## DO NOT EDIT
 आ(2)भी(4)त्वा(1) पूर्वापी(1)तये । इ(2)न्द्रास्तो(1)मेभीरायावाः । समी(2)चीना(4)सा ऋभा(2)वस्सा(2)मा(2)स्वरन् । रुद्रागृ(1)णन्तापूर्व्यम् ॥ ४ ॥
@@ -4984,7 +4995,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_287 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_288 ## DO NOT EDIT
-।। नमृधे आंगिरसः ।। इन्द्रः।। बृहती।।
+।। नमृधे आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_288 ## DO NOT EDIT
 # Start of Rik Text -- subsection_288 ## DO NOT EDIT
 प्रा(2)वाइ(2)न्द्रा(1)यबृहा(1)ते । मारूतोब्र(2)ह्मा(1)र्च्चता । वृत्रंहा(2)नातिवृत्रा(2)हा शाता(2)क्रा(1)तुः(1) । व(2)ज्ज्रे(1)णा शाता(2)पा(1)र्वणा ॥ ५ ॥
@@ -5001,7 +5012,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_288 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_289 ## DO NOT EDIT
-।। पुरुहन्मा आंगिरसः ।। इन्द्रः।। बृहती।।
+।। पुरुहन्मा आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_289 ## DO NOT EDIT
 # Start of Rik Text -- subsection_289 ## DO NOT EDIT
 बृहा(2)दिन्द्रा(1)यगायत । मारू(1)तोवृ(2)त्राहन्ता(1)मं । ये(2)न ज्यो(2)तीरा(2)ज(1)नयन्नृता(2)वृधाः(1) । देव(2)न्देवा(2)याजा(2)ग्रवीम् ॥ ६ ॥
@@ -5027,7 +5038,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_289 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_290 ## DO NOT EDIT
-।। नमृधे{-} पुरुमेधाषांगिरसौ ।। इन्द्रः।। बृहती।।
+।। नमृधे{-} पुरुमेधाषांगिरसौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_290 ## DO NOT EDIT
 # Start of Rik Text -- subsection_290 ## DO NOT EDIT
 इन्द्राक्रा(4)तुं(1)नआ(2)भा(1)रा । पिता(2)पुत्रे(2)भ्योया(2)था । शिक्षा(1) णोअस्मिन्पु(1)रुहूताया(2)मा(1)नी । जी(2)वाज्ज्योती(1)रशीमहि ॥ ७ ॥
@@ -5050,7 +5061,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_290 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_291 ## DO NOT EDIT
-।। मेधातिथि{-}मध्येआतिथी काण्वौ ।। इन्द्रः।। बृहती।।
+।। मेधातिथि{-}मध्येआतिथी काण्वौ इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_291 ## DO NOT EDIT
 # Start of Rik Text -- subsection_291 ## DO NOT EDIT
 वा(1)य(2)ङ्घात्वा(1)सूता(2)वन्तः । आ(2)पोना(2)वृक्ताब(1)र्हिषः । पा(2)वी(2)त्रास्याप्रस्रा(2)वा(1)णेषुवृत्रहन् । पा(3)रीस्तोता(2)रा(1)आसते ॥ ९ ॥
@@ -5115,7 +5126,7 @@ s2: Thogur Padhati (त)
 चतुर्थ खण्डः
 # End of Section Title -- section_30 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_296 ## DO NOT EDIT
-।। पुरुहन्मा आंगिरसः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। पुरुहन्मा आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_296 ## DO NOT EDIT
 # Start of Rik Text -- subsection_296 ## DO NOT EDIT
 सत्य(2)मित्थावृषेद(1)सि । वृ(2)र्षा(1)जूतिर्नोवीता । \newline%
@@ -5132,7 +5143,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_296 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_297 ## DO NOT EDIT
-।। भगः प्रागाथः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। भगः प्रागाथः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_297 ## DO NOT EDIT
 # Start of Rik Text -- subsection_297 ## DO NOT EDIT
 या(2)च्चाक्रासी(1)पा(1)रावा(2)ति । याद(1)र्वावा(2)तीवृत्रहन् । आ(2)ता(1)स्त्वागीर्भिद्युगदिन्द्राकेशी(2)भीः । सूता(2)वंआ(2)वी(2)वा(1)सति ॥ २ ॥
@@ -5152,7 +5163,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_297 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_298 ## DO NOT EDIT
-।। इरिम्बिठः काण्वः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। इरिम्बिठः काण्वः इन्द्रः (वास्तोष्पतिवा) बृहती।।
 # End of Rik Metadata -- subsection_298 ## DO NOT EDIT
 # Start of Rik Text -- subsection_298 ## DO NOT EDIT
 आभीवो(1)वीर(4)म(2)न्धा(1)सामादेषुगाया । गीरा(2)माहावी(2)चे(1)तसं । इ(2)न्द्रन्नामश्रू(4)त्यंशाकीनं(4)वाचोयाथा ॥ ३ ॥
@@ -5169,7 +5180,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_298 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_299 ## DO NOT EDIT
-।। जमदग्निभागर्वः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। जमदग्निभागर्वः इन्द्रः (सूर्यः) बृहती।।
 # End of Rik Metadata -- subsection_299 ## DO NOT EDIT
 # Start of Rik Text -- subsection_299 ## DO NOT EDIT
 इ(3)न्द्रा(1)त्रीधा(2)तू(1)शाराणं(2) । त्रीवा(2)रू(2)थंस्वस्ताये(4) । छर्दिया(1)च्छामाघा(1)वा(1)भ्या(1)श्चामंह्य(1)न्च ।यावा(4)यादिद्यू(2)मे(1)भ्यः ॥ ४ ॥
@@ -5186,7 +5197,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_299 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_300 ## DO NOT EDIT
-।। देवातिथिः काण्वः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। देवातिथिः काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_300 ## DO NOT EDIT
 # Start of Rik Text -- subsection_300 ## DO NOT EDIT
 श्रा(2)यन्ता(1)ईवासूर्य(1) । विश्वे(2)दिन्द्रा(1)स्यभक्षत । \newline%
@@ -5204,7 +5215,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_300 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_301 ## DO NOT EDIT
-।। पुरुहन्मा आंगिरसः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। पुरुहन्मा आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_301 ## DO NOT EDIT
 # Start of Rik Text -- subsection_301 ## DO NOT EDIT
 ना(2)सीमादे(1)वआपाता(2)त् । ईळन्दी(1)र्घा(1)योमर्क्त्याः । एता(1)ग्वाचिद्या(2)एता(1)शोयूयो\newline%
@@ -5223,7 +5234,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_301 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_302 ## DO NOT EDIT
-।। देवातिथिः काण्वः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। देवातिथिः काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_302 ## DO NOT EDIT
 # Start of Rik Text -- subsection_302 ## DO NOT EDIT
 आ(2)नोवि(3)श्वासुहा(2)व्यं(1) । इ(3)न्द्रं(1)सामात्सू(1)भूषत । \newline%
@@ -5246,7 +5257,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_302 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_303 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_303 ## DO NOT EDIT
 # Start of Rik Text -- subsection_303 ## DO NOT EDIT
 त(3)वेदि(1)न्द्रावा(2)मंवा(2)सू । त्वंपू(1)ष्यसिमाध्यामं । सत्रा(2) विश्वास्यापारामास्या(1)राजसि । ना(3)कीष्ट्वा(3)गोषू(1)वृण्वते ॥ ८ ॥
@@ -5284,7 +5295,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_304 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_305 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। इन्द्रः (ऋषिः 3 वास्तोष्पतिवा4 सूर्यः 9 इन्द्राग्नी)।। बृहती।।
+।। भरद्वाजो बार्हस्पत्यः इन्द्रः (इन्द्राग्नी) बृहती।।
 # End of Rik Metadata -- subsection_305 ## DO NOT EDIT
 # Start of Rik Text -- subsection_305 ## DO NOT EDIT
 क्वे(3)या(1)थक्वे(2)दसि । पुरूत्रा(2)चिद्धितेमानाः । आलाऋषीयुध्मखजकृत्पुरन्दरा ।प्रा(3)गा(1)यत्राआ(1)गासिषुः ॥ ९ ॥
@@ -5312,7 +5323,7 @@ s2: Thogur Padhati (त)
 पञ्चम खण्डः
 # End of Section Title -- section_31 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_306 ## DO NOT EDIT
-।। नमृधे आंगिरसः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। नमृधे आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_306 ## DO NOT EDIT
 # Start of Rik Text -- subsection_306 ## DO NOT EDIT
 योरा(2)जा(1)चर्षा(1)णीनां । या(2)तारा(4)थेभीरा(2)ध्री(1)गुः । वि(2)श्वा(1)सान्तारु(2)तापृ(2)तानानां । जे(2)ष्ठंयो(4)वृत्राहा(2)गृणे ॥ १ ॥
@@ -5337,7 +5348,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_307 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_308 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_308 ## DO NOT EDIT
 # Start of Rik Text -- subsection_308 ## DO NOT EDIT
 याता(1)इन्द्राभाया(1)महे । ता(3)तो(1)नोआ(2)भा(1)यंकृ(1)धि । मा(2)घा(1)वन्शग्धिता(4)वा(1)तन्नाऊता(2)ये(1) । वि(2)द्वि(2)षोविमृधो(1)जहि ॥ २ ॥
@@ -5354,7 +5365,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_308 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_309 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_309 ## DO NOT EDIT
 # Start of Rik Text -- subsection_309 ## DO NOT EDIT
 वास्तो(1)ष्पतेध्रूवा(2)स्थूणां । अंसत्रं(2)सौ(1)म्या(2)नाम् । \newline%
@@ -5384,7 +5395,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_310 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_311 ## DO NOT EDIT
-।। भरद्वाजः (ऋषिः शयुः) बार्हस्पत्यः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। भरद्वाजः (शयुः) बार्हस्पत्यः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_311 ## DO NOT EDIT
 # Start of Rik Text -- subsection_311 ## DO NOT EDIT
 ब(2)ण्माहं(2)आ(1)सीसूर्या । बा(2)ळा(1)दित्यामाहंआसि । \newline%
@@ -5406,7 +5417,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_311 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_312 ## DO NOT EDIT
-।। पुरुच्छेपो देवोदासिः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। पुरुच्छेपो देवोदासिः इन्द्रः (शिवनौ) बृहती।।
 # End of Rik Metadata -- subsection_312 ## DO NOT EDIT
 # Start of Rik Text -- subsection_312 ## DO NOT EDIT
 या(3)दि(1)न्द्राप्रा(2)गपागूद(1)त् । न्या(1)ग्वाहूयासेनृभिः(1) । सीमा(1)पूरूनृ(2)षू(1)तोअस्या(2)ना(3)वे । आ(2)सी(1)प्रशार्धातुर्वा(2)शे ॥ ५ ॥
@@ -5439,7 +5450,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_313 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_314 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। वामदेवो गौतमः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_314 ## DO NOT EDIT
 # Start of Rik Text -- subsection_314 ## DO NOT EDIT
 क(2)स्तामि(1)न्द्रत्वावसो । आ(2)मा(2)र्क्त्यो(1)दधर्षते । \newline%
@@ -5456,7 +5467,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_314 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_315 ## DO NOT EDIT
-।। मध्येआतिथिः काण्वः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। मध्येआतिथिः काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_315 ## DO NOT EDIT
 # Start of Rik Text -- subsection_315 ## DO NOT EDIT
 अश्वीराथीसुरूपायुः(2) । गोम(2)य्यादिन्द्राते(2)साखा । श्वात्राभा(2)जावा(2)या(1)सासचाते(2)सादा(1) । चन्द्रै(2)र्यातीसाभा(2)ऊ(2)पा(1) ॥ ७ ॥
@@ -5472,7 +5483,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_315 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_316 ## DO NOT EDIT
-।। भगः प्रागाथः ।। इन्द्रः (5 ऋषिः शिवनौ)।। बृहती।।
+।। भगः प्रागाथः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_316 ## DO NOT EDIT
 # Start of Rik Text -- subsection_316 ## DO NOT EDIT
 य(2)द्यावा(2)इन्द्रतेशातं(2) । शातं(4)भूमी(1)रूतास्युः । \newline%
@@ -5494,6 +5505,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_32 ## DO NOT EDIT
 षष्ठ खण्डः
 # End of Section Title -- section_32 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_317 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः बृहती।।
+# End of Rik Metadata -- subsection_317 ## DO NOT EDIT
 # Start of Rik Text -- subsection_317 ## DO NOT EDIT
 ई(2)ताऊती(4)वो(1)आज(2)रं(1) । प्रे(2)हेता(2)रामा(2)प्रा(1)हितं । \newline%
 आशू(4)ञ्जे(4)ता(1)रंहोता(1)रंराथी(2)तामं । आ(2)तूर्तन्तूग्रीयावृ(2)धम् ॥ १ ॥
@@ -5515,7 +5529,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_317 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_318 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। वामदेवो गौतमः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_318 ## DO NOT EDIT
 # Start of Rik Text -- subsection_318 ## DO NOT EDIT
 मोषु(2)त्वा(2)वाघा(4)ताः(1)चाना । आ(2)रे(2)आस्मिन्नी(2)री(1)रमन् । आ(2)रा(2)त्ता(2)द्वासाधा(1)मा(4)द(1)न्नाआ(2)गहि । ईहा(2)वासन्नूपा(1)श्रुधि ॥ २ ॥
@@ -5536,7 +5550,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_318 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_319 ## DO NOT EDIT
-।। मेधातिथि{-}मध्येआतिथी काण्वौ, विश्वामित्र इत्यकेे ।। इन्द्रः 7 बहुः।। बृहती।।
+।। मेधातिथि{-}मध्येआतिथी काण्वौ, विश्वामित्र इत्यकेे इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_319 ## DO NOT EDIT
 # Start of Rik Text -- subsection_319 ## DO NOT EDIT
 सू(2)नोता(1)सो(2)मा(2)पाव्ने । सो(2)मामि(2)न्द्रा(1)यावज्रीणे । पा(2)चा(2)तापक्तिरावा(1)सेकृ(1)णुध्वमित्।पृ(4)णन्नि(4)त्पृणातेमायाः(1) ॥ ३ ॥
@@ -5557,7 +5571,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_319 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_320 ## DO NOT EDIT
-।। नोधा गौतमः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। नोधा गौतमः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_320 ## DO NOT EDIT
 # Start of Rik Text -- subsection_320 ## DO NOT EDIT
 य(2)स्सा(1)त्राहा(2)वीच(2)ऋषणिः । इ(2)न्द्रन्तंहू(3)माहेवायं(2) । सा(2)हा(1)स्रमन्योतुविनिर्म(1)णसत्पते ।भा(3)वा(1)सामात्सू(1)नोवृधे(2) ॥ ४ ॥
@@ -5574,7 +5588,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_320 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_321 ## DO NOT EDIT
-।। मेधातिथिः (ऋषिः मध्येआतिथिः) काण्वः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। मेधातिथिः (मध्येआतिथिः) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_321 ## DO NOT EDIT
 # Start of Rik Text -- subsection_321 ## DO NOT EDIT
 शा(2)चिभिर्नश्शची(2)वसू । दीवान(2)क्तंदिशस्यतं । \newline%
@@ -5590,7 +5604,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_321 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_322 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। वामदेवो गौतमः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_322 ## DO NOT EDIT
 # Start of Rik Text -- subsection_322 ## DO NOT EDIT
 यादाकादा(4)चामीढूषे(1) । स्तोता(2)जरेतमार्क्त्याः(1) । आदीद्व(2)न्दे(2)तावारुणंवीपा(2)गीरा(1) । धक्ता(2)रंवि(2)प्रा(2)तानाम् ॥ ६ ॥
@@ -5613,7 +5627,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_322 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_323 ## DO NOT EDIT
-।। वामदेवो गौतमः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। वामदेवो गौतमः बहुः बृहती।।
 # End of Rik Metadata -- subsection_323 ## DO NOT EDIT
 # Start of Rik Text -- subsection_323 ## DO NOT EDIT
 पाहि(2)गाया(4)न्धा(1)सामा(1)दे । इ(2)न्द्रा(3)यमेधियातिथे । \newline%
@@ -5635,7 +5649,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_323 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_324 ## DO NOT EDIT
-।। श्रुष्टिगुः काण्वः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। श्रुष्टिगुः काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_324 ## DO NOT EDIT
 # Start of Rik Text -- subsection_324 ## DO NOT EDIT
 ऊभा(4)यं(2)श्रृणा(2)वा(1)चनः । इ(3)न्द्रो(1)अर्वा(2)गीदं(2)वा(2)चाः । सत्रा(4)च्या(4)मा(1)घावा(2)सो(2)मा(1)पीतये । धीया(4)श्शावी(1)ष्ठआग(1)मात् ॥ ८ ॥
@@ -5652,7 +5666,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_324 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_325 ## DO NOT EDIT
-।। मध्येआतिथिः (मेधातिथिर्वा) काण्वः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। मध्येआतिथिः (मेधातिथिर्वा) काण्वः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_325 ## DO NOT EDIT
 # Start of Rik Text -- subsection_325 ## DO NOT EDIT
 माहे(2)चा(2)ना(2)त्वा(1)आद्रीवः । पा(4)रा(1)शुल्काया(1)दीयसे । \newline%
@@ -5673,7 +5687,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_325 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_326 ## DO NOT EDIT
-।। नमृधे आंगिरसः ।। इन्द्रः 7 बहुः।। बृहती।।
+।। नमृधे आंगिरसः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_326 ## DO NOT EDIT
 # Start of Rik Text -- subsection_326 ## DO NOT EDIT
 व(2)स्य ठ(1) इन्द्रासिमेपीतूः(2) । ऊताभ्रा(2)तूरा(2)भु(1)ञ्जतः । मा(2)ता(2)चा(1)मेछदयथास्सामा(2)वासो । व(2)सुत्वाना(2)यारा(2)धा(1)से ॥ १० ॥
@@ -5694,7 +5708,7 @@ s2: Thogur Padhati (त)
 सप्तम खण्डः
 # End of Section Title -- section_33 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_327 ## DO NOT EDIT
-।। उषा ।। बृहती।।
+।। उषा बृहती।।
 # End of Rik Metadata -- subsection_327 ## DO NOT EDIT
 # Start of Rik Text -- subsection_327 ## DO NOT EDIT
 इमइ(2)न्द्रायसुन्विरे । सो(3)मा(1)सोदध्या(2)शिरः । \newline%
@@ -5712,7 +5726,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_327 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_328 ## DO NOT EDIT
-।। (ऋषिः ।। बृहती।।
+।। अश्विनौ बृहती।।
 # End of Rik Metadata -- subsection_328 ## DO NOT EDIT
 # Start of Rik Text -- subsection_328 ## DO NOT EDIT
 ईमा(4)इ(1)न्द्रामा(2)दा(1)यते । सो(2)मा(1)श्चिकीत्राउक्थी(2)नाः(1) । \newline%
@@ -5729,7 +5743,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_328 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_329 ## DO NOT EDIT
-।। (ऋषिः ।। बृहती।।
+।। अश्विनौ बृहती।।
 # End of Rik Metadata -- subsection_329 ## DO NOT EDIT
 # Start of Rik Text -- subsection_329 ## DO NOT EDIT
 आत्वा टट्य द्या(4)सा(1)बर्दूघां(1) । हूवे(4)गा(1)यत्रावे(1)पसम् । इ(3)न्द्रं(1)धेनुं(2)सूदू(2)घा(1)म(1)न्यामीष(1)म् । ऊरू(2)धारामारंकृ(1)तम् ॥ ३ ॥
@@ -5745,7 +5759,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_329 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_330 ## DO NOT EDIT
-।। ) अश्विनौ ।। बृहती।।
+।। प्रस्कण्वः काण्वः बृहती।।
 # End of Rik Metadata -- subsection_330 ## DO NOT EDIT
 # Start of Rik Text -- subsection_330 ## DO NOT EDIT
 नं(3)त्वा(1)बृह(2)न्तोअ(2)द्रा(1)यः । वा(2)रन्त(1)इन्द्रावीळावाः(1) । य(2)च्छि(2)क्षा(1)सिस्तूवाते(2)मावातेवा(2)सू(1) । नाकीष्ट(2)दा(2)मी(1)नातिते ॥ ४ ॥
@@ -5762,7 +5776,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_330 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_331 ## DO NOT EDIT
-।। मेधातिथि{-}मध्येआतिथी काण्वौ ।। बृहती।।
+।। मेधातिथि{-}मध्येआतिथी काण्वौ बृहती।।
 # End of Rik Metadata -- subsection_331 ## DO NOT EDIT
 # Start of Rik Text -- subsection_331 ## DO NOT EDIT
 का(2)यीं(1)वे(2)दस्सूते(2)सा(2)चा(2) । पी(3)बन्तःकद्वायो(1)दधुः । \newline%
@@ -5780,7 +5794,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_331 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_332 ## DO NOT EDIT
-।। देवातिथिः काण्वः ।। बृहती।।
+।। देवातिथिः काण्वः बृहती।।
 # End of Rik Metadata -- subsection_332 ## DO NOT EDIT
 # Start of Rik Text -- subsection_332 ## DO NOT EDIT
 यादिन्द्राशासो(1)आव्रातं(2) । च्यावा(2)यासा(4)द(1)सस्पारी(1) । अस्मा(4)का(1)मंशुर्म्मा(1)धावन्पूरूस्पृहं(2) । वसव्ये टट्य आ(2)धी(1) बर्हय ॥ ६ ॥
@@ -5796,7 +5810,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_332 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_333 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः बृहती।।
 # End of Rik Metadata -- subsection_333 ## DO NOT EDIT
 # Start of Rik Text -- subsection_333 ## DO NOT EDIT
 त्व(3)ष्टानोदै(2)व्यंवा(2)चाः(1) । पर्ज(2)न्योब्र(4)ह्मा(1)ण(2)स्पा(2)तीः । पुत्रै(4)भ्रा(4)तृ(1)भिरा(4)दीतीर्नूपातु(1)नः । दुष्टा(1)रन्द्रा(4)मा(1)णंवा(2)चाः ॥ ७ ॥
@@ -5812,7 +5826,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_333 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_334 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। बृहती।।
+।। वसिष्ठो मैत्रावरुणिः बृहती।।
 # End of Rik Metadata -- subsection_334 ## DO NOT EDIT
 # Start of Rik Text -- subsection_334 ## DO NOT EDIT
 कादा(2)चाना(2)स्तारी(2)रा(1)सी । नेद्रं(1)सश्वसीदाशू(2)षे । ऊ(3)पो(1)पेन्नूमाघावन्भू(2)याइ(2)न्नूते । दा(3)नन्देवा(2)स्या(1)प्रच्यते ॥ ८ ॥
@@ -5829,7 +5843,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_334 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_335 ## DO NOT EDIT
-।। नमृधे आंगिरसः ।। बृहती।।
+।। नमृधे आंगिरसः बृहती।।
 # End of Rik Metadata -- subsection_335 ## DO NOT EDIT
 # Start of Rik Text -- subsection_335 ## DO NOT EDIT
 युंक्ष्वा(2)हीवृ(1)त्रहन्तमः । हारी(1)इन्द्रापारावा(2)ताः(1) । अर्वाची(2)नो(2)मा(1)घावन्सो(2)मा(1)पीतये । उग्रा(4)रि(4)ष्वाभीरा(2)ग(1)हि ॥ ९ ॥
@@ -5846,7 +5860,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_335 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_336 ## DO NOT EDIT
-।। नोधाः गौतमः इन्द्रः ।। बृहती।।
+।। नोधाः गौतमः इन्द्रः बृहती।।
 # End of Rik Metadata -- subsection_336 ## DO NOT EDIT
 # Start of Rik Text -- subsection_336 ## DO NOT EDIT
 त्वा(2)मीदा(2)ह्योना(2)राः । आ(2)पीप्यन्वज्ज्रिन्भू(1)र्णा(1)यः । \newline%
@@ -5868,7 +5882,7 @@ s2: Thogur Padhati (त)
 अष्टम खण्डः
 # End of Section Title -- section_34 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_337 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_337 ## DO NOT EDIT
 # Start of Rik Text -- subsection_337 ## DO NOT EDIT
 प्रा(2)ती(1)वोदृश्याया(2)ती । उच्छन्ती(1)दूहीता(2)दीवः । \newline%
@@ -5887,7 +5901,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_337 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_338 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_338 ## DO NOT EDIT
 # Start of Rik Text -- subsection_338 ## DO NOT EDIT
 इमा(4)ऊ(1)वा(2)न्दिविष्टयः । उस्रा(2)हा(2)वन्तेअश्विना । \newline%
@@ -5904,7 +5918,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_338 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_339 ## DO NOT EDIT
-।। गातरात्रयेः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। गातरात्रयेः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_339 ## DO NOT EDIT
 # Start of Rik Text -- subsection_339 ## DO NOT EDIT
 कु(2)ष्ठःकोवा(1)मश्विना । तपानो(4)दे(1)वामार्क्त्याः(1) । \newline%
@@ -5922,7 +5936,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_339 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_340 ## DO NOT EDIT
-।। पृतवु्न्यः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। पृतवु्न्यः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_340 ## DO NOT EDIT
 # Start of Rik Text -- subsection_340 ## DO NOT EDIT
 आयं(2)वामा(2)धूमक्तमः । सू(2)तस्सो(2)मोदीवि(1)ष्टिषु । तामा(1)श्विनापीबतन्तीरो(2)अन्हं । धक्तं(1)र(2)त्ना(1)नीदाशू(1)षे ॥ ४ ॥
@@ -5940,7 +5954,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_340 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_341 ## DO NOT EDIT
-।। सप्त्तगुरांगिरसः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। सप्त्तगुरांगिरसः इन्द्रः (इन्द्रो वैकुण्ठः) त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_341 ## DO NOT EDIT
 # Start of Rik Text -- subsection_341 ## DO NOT EDIT
 आत्वासो(4)मा(1)स्याग(2)ल्दा(1)या । सा(2)दाया(4)चन्नाहं(2)ज्या । भू(2)र्णिं(2)मृग(2)न्नासा(2)वा(1)नेषुचुक्रुधं । कै(3)शा(1)नन्नयाचिषात् ॥ ५ ॥
@@ -5957,7 +5971,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_341 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_342 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_342 ## DO NOT EDIT
 # Start of Rik Text -- subsection_342 ## DO NOT EDIT
 अध्वर्यो(4)आ(1)द्रावा(2)यात्वं(2) । सो(2)मामिन्द्राः(1)पिपासति । ऊ(3)पो(1)नूनं(2)यूयूजे(1)वृ(4)षाणाहा(2)रि । आचा(2)जगा(2)मा(1)वृत्राहा(2) ॥ ६ ॥
@@ -5974,7 +5988,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_342 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_343 ## DO NOT EDIT
-।। गौिरवीितः शाक्ः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। गौिरवीितः शाक्ः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_343 ## DO NOT EDIT
 # Start of Rik Text -- subsection_343 ## DO NOT EDIT
 आ(2)भीषादस्ता(2)दा(1)भा(1)रा । इ(2)न्द्रज्यायःकानी(1)यसः । पुरोवा(2)सूहिमाघावन्बभू(2)वी(1)था । भारेभरेचाहा(2)व्याः(1) ॥ ७ ॥
@@ -5990,7 +6004,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_343 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_344 ## DO NOT EDIT
-।। वेनो भागर्वः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। वेनो भागर्वः वेनः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_344 ## DO NOT EDIT
 # Start of Rik Text -- subsection_344 ## DO NOT EDIT
 यादिन्द्राया(3)वा(1)तस्त्वं । एता(4)वा(1)दाह(2)मीशी(2)या । स्तोतारामी(2)द्दधिषेरदावसो । ना(3)पा(1)पात्वा(2)यारंसिषः ॥ ८ ॥
@@ -6011,7 +6025,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_344 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_345 ## DO NOT EDIT
-।। बृहस्पतिकुलो वा ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। बृहस्पतिकुलो वा इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_345 ## DO NOT EDIT
 # Start of Rik Text -- subsection_345 ## DO NOT EDIT
 त्वा(3)मि(1)न्द्राप्रातू(1)र्तिषु । आ(2)भीविश्वा(1)आसिस्पृर्धाः(1) । आशस्ती(4)हाज(1)नीता(4)वृ(1)त्रातूरा(1)सी । त्व(2)न्तू(1)र्यतरूष्यातः ॥ ९ ॥
@@ -6027,7 +6041,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_345 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_346 ## DO NOT EDIT
-।। सुहोत्रो भारद्वाजः ।। इन्द्रः (ऋषिः 5 इन्द्रो वैकुण्ठः) 8 वेनः।। त्रिष्टुप्।।
+।। सुहोत्रो भारद्वाजः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_346 ## DO NOT EDIT
 # Start of Rik Text -- subsection_346 ## DO NOT EDIT
 प्र(3)योरीरिक्षाओ(2)ज(1)सा । दीवः(4)स(4)दो(1) ठ(1) भ्यस्पा(2)री ।  न(2)त्वा(1)विव्या(2)चारा(2)जाइन्द्रापार्थी(1)वम् । आ(2)तीविश्वववक्षिथ ॥ १० ॥
@@ -6051,7 +6065,7 @@ s2: Thogur Padhati (त)
 प्रथम खण्डः
 # End of Section Title -- section_35 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_348 ## DO NOT EDIT
-।। द्युतानो मारुतः (ऋषिः तिरश्चीरांगिरसः) ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। द्युतानो मारुतः (तिरश्चीरांगिरसः) इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_348 ## DO NOT EDIT
 # Start of Rik Text -- subsection_348 ## DO NOT EDIT
 आ(2)सा(1)वीदेवङ्गो(1)ऋ(3)जीका(3)मन्धाः(1) । न्य(2)स्मिन्नि(2)न्द्रो जनु(2)षेमूवोच । बो(2)धा(2)मसित्वाहर्यश्वार्यज्ञैः । \newline%
@@ -6082,7 +6096,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_349 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_350 ## DO NOT EDIT
-।। द्युतानो मारुतः (ऋषिः तिरश्चीरांगिरसः) ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। द्युतानो मारुतः (तिरश्चीरांगिरसः) इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_350 ## DO NOT EDIT
 # Start of Rik Text -- subsection_350 ## DO NOT EDIT
 यो(2)नीष्टइन्द्रासा(2)द(1)नेयकारी । ता(2)मा(2)नृभीः(3)पू(3)रूहूत(2)प्राया(1)हि । आ(2)सोयाथा(2)नोवीता(2)वृधा(1)श्चीत् । ददो(1)वा(2)सू(1)नीमामा(4)दश्चा सो(2)मैः ॥ २ ॥
@@ -6100,7 +6114,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_350 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_351 ## DO NOT EDIT
-।। बृहदुक्तो वामदेव्यः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। बृहदुक्तो वामदेव्यः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_351 ## DO NOT EDIT
 # Start of Rik Text -- subsection_351 ## DO NOT EDIT
 आ(3)द(1)दरुत्सामा(4)सृ(1)जोविखानि । त्वा(2)मर्णावान्बल्बधानं आराम्णः । मा(2)हा(2)न्ता(1)मिन्द्राप(4)र्वातंवीयद्वाः । सृ(2)ज(2)द्धाराआ(2)वाय(4)द(1)दानावान्हन् ॥ ३ ॥
@@ -6121,7 +6135,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_351 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_352 ## DO NOT EDIT
-।। द्युतानो मारुतः (ऋषिः तिरश्चीरांगिरसः) ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। द्युतानो मारुतः (तिरश्चीरांगिरसः) इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_352 ## DO NOT EDIT
 # Start of Rik Text -- subsection_352 ## DO NOT EDIT
 सुष्वाणा(2)सा(1)इन्द्रा(3)स्तुमा(2)सीत्वा। सनिष्य(2)न्ता(1)श्चीत्तुविनृम्णावा(1)जं । आनो(1)भरासूवीतं(4)य(4)स्याकोना(2) । ताना(2)त्मनासह्यामात्वो(2)ताः(1) ॥ ४ ॥
@@ -6142,7 +6156,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_352 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_353 ## DO NOT EDIT
-।। वामदेवोः गोतमः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। वामदेवोः गोतमः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_353 ## DO NOT EDIT
 # Start of Rik Text -- subsection_353 ## DO NOT EDIT
 ज(2)गृ(2)ह्यातेद(2)क्षीणमिन्द्राहा(2)स्तं(1) । वसूया(2)वो(1)वसूपाते वा(2)सूनां । वि(2)द्या(2)हि(2)त्वागो(2)पा(2)तिंसूरागो(2)नां । अस्म(4)भ्य(1)ञ्चित्रं(2)वृ(2)षाणं रायि(2)न्दाः(2) ॥ ५ ॥
@@ -6179,7 +6193,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_354 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_355 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः ऋषि: विराट्।।
 # End of Rik Metadata -- subsection_355 ## DO NOT EDIT
 # Start of Rik Text -- subsection_355 ## DO NOT EDIT
 इ(2)न्द्रन्ना(4)रो(1)नेमा(2)धी(1)ताहवन्ते । यत्पार्यायू(1)ना(4)ज(1)न्ते धीयस्ताः(2) । शू(2)रोनृ(4)षा(1)ताश्रावा(1)साश्चका(2)मे । \newline%
@@ -6197,7 +6211,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_355 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_356 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। विश्वामित्रो गाथिनः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_356 ## DO NOT EDIT
 # Start of Rik Text -- subsection_356 ## DO NOT EDIT
 वायाःसूपर्णाऊपासे(2)दूरिन्द्रं । प्रीयामेधा(2)र्षायोना(2)धा(1)मा(4)नः । आपध्वान्तामूर्णहिपूर्धी(1)चाक्षुः । मुमूग्धा टट्य स्मान्नीधाये(1)वाबदध्नान् ॥ ७ ॥
@@ -6214,7 +6228,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_356 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_357 ## DO NOT EDIT
-।। वसिष्ठो मैत्रावरुणिः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। वसिष्ठो मैत्रावरुणिः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_357 ## DO NOT EDIT
 # Start of Rik Text -- subsection_357 ## DO NOT EDIT
 नाकेसूपर्णा(1)मूपा(1)यत्पा(1)त(1)न्तं । हृ(2)दा(2)वेन(1)न्तो अभ्या(2)चा(1)क्षतत्वा । हिर(1)ण्यपा(3)क्षंवारूणस्यादूतं(2) । यामास्यायो(2)नू(1)शाकूनं(4)भूरण्यूम् ॥ ८ ॥
@@ -6236,7 +6250,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_357 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_358 ## DO NOT EDIT
-।। गौिरवीितः शाक्ः ।। इन्द्रः।।त्रिष्टुप्, 6 ऋषि: विराट्।।
+।। गौिरवीितः शाक्ः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_358 ## DO NOT EDIT
 # Start of Rik Text -- subsection_358 ## DO NOT EDIT
 ब्र(2)ह्मा(1)जज्ञानं(4)प्राथामंपुरास्ता(1)त् । वीसीमातस्सूरुचोवेनआ(1)वात् । सा(2)बुध्न्याऊ(1)पामाआस्याविष्ठाः । \newline%
@@ -6280,7 +6294,7 @@ s2: Thogur Padhati (त)
 द्वितीय खण्डः
 # End of Section Title -- section_37 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_360 ## DO NOT EDIT
-।। अरिष्टनेमिस्ताक्ष्र्यः ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। अरिष्टनेमिस्ताक्ष्र्यः इन्द्रः (ताक्ष्र्यः) त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_360 ## DO NOT EDIT
 # Start of Rik Text -- subsection_360 ## DO NOT EDIT
 आ(2)व(1)द्रप्सो(4)अं(1)शूमा(2)तीमतिष्ठात् । इया(2)नः(2)कृष्णो(2) दशा(4)भीस्साहा(2)स्रैः(1) । आवक्ता(2)मिन्द्र(1)श्शच्या(2)धामन्तं । आ(2)पस्नीही(1)तिंनृमा(2)णा(1)आधद्राः(2) ॥ १ ॥
@@ -6315,7 +6329,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_361 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_362 ## DO NOT EDIT
-।। भरद्वाजः (ऋषिः गर्गो भारद्वाजः) ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। भरद्वाजः (गर्गो भारद्वाजः) इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_362 ## DO NOT EDIT
 # Start of Rik Text -- subsection_362 ## DO NOT EDIT
 वृत्रास्या(2)त्वश्वासाथादीषामाणः । विश्वेदेवा(2)आ(1)जाहुर्ये(2)साखायः । मारू(2)द्धी(1)रिन्द्रासख्य(2)न्ते(1)अस्तु । आ(2)थेमा(2) विश्वाःपृ(2)नाजयासि ॥ २ ॥
@@ -6338,7 +6352,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_362 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_363 ## DO NOT EDIT
-।। विमद ऐन्द्र वसुकृद्वा वासुकः (ऋषिः प्रजापत्यो वा) ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। विमद ऐन्द्र वसुकृद्वा वासुकः (प्रजापत्यो वा) इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_363 ## DO NOT EDIT
 # Start of Rik Text -- subsection_363 ## DO NOT EDIT
 विधु(4)न्दद्रा(1)णंसा(2)मा(2)नेबहूनां । यू(2)वा(2)नंस(2)न्तं(1)पालीतो(2) ज(1)गारा । दे(2)वा(2)स्या(1)पाश्या(1)का(2)व्यं(1)मा(1)हित्वा(1) । \newline%
@@ -6361,7 +6375,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_363 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_364 ## DO NOT EDIT
-।। वामदेवो गौतमः ( ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। वामदेवो गौतमः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_364 ## DO NOT EDIT
 # Start of Rik Text -- subsection_364 ## DO NOT EDIT
 त्वंहत्यस्सप्त(2)भ्योजा(2)या(1)मानः । अ(2)श(2)त्रुभ्यो अभावश्श(2)त्रू(1)रिन्द्रा । गू(2)ढे(2)द्या(2)वा(1)पृथिवीअ(2)न्वा(2)विन्दः । वि(2)भूमा(2)द्भ्यो भू(2)वा(1)नेभ्योरा(2)ण(2)न्धाः(1) ॥ ४ ॥
@@ -6385,7 +6399,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_364 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_365 ## DO NOT EDIT
-।। वामदेवो गौतमः ( ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। वामदेवो गौतमः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_365 ## DO NOT EDIT
 # Start of Rik Text -- subsection_365 ## DO NOT EDIT
 मेळि(4)न्न(4)त्वा(1)वज्रीणं(1)भृष्टीम(2)न्तं । पु(2)रूधा(2)स्मानं(1)वृषाभं स्थीरा(2)प्सु(1)नुं । का(2)रो(1)ष्यर्यस्तारुषीर्दूवस्यूः । डन्द इन्द्र(1)द्युक्षंवृ(1)त्राहा(2)णंगृणीषे ॥ ५ ॥
@@ -6406,7 +6420,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_365 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_366 ## DO NOT EDIT
-।। वामदेवो गौतमः ( ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। वामदेवो गौतमः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_366 ## DO NOT EDIT
 # Start of Rik Text -- subsection_366 ## DO NOT EDIT
 प्रावो(1)माहे(4)मा(1)हेवृ(2)धे(2)भरध्वं । प्रा(2)चे(1)तासेप्रासू(3)मातिं कृ(1)णुध्वम् । वीशःपूर्वीप्रा(2)चा(1)राचर्षाणिप्राः(1) ॥ ६ ॥
@@ -6427,7 +6441,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_366 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_367 ## DO NOT EDIT
-।। विश्वामित्रो गाथिनः ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। विश्वामित्रो गाथिनः इन्द्रः (पर्वतान्द्रौ) त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_367 ## DO NOT EDIT
 # Start of Rik Text -- subsection_367 ## DO NOT EDIT
 शू(2)नं(2)हूवेमामाघा(4)वानामिन्द्रं । अ(2)स्मिन्भा(2)रेनृ(4)तामंवा(2)ज(1)सातौ । श्रृण्वन्ता(2)मुग्रा(2)मूता(4)येसामात्सु(2) । घ्नन्तं(1)वृत्राणि(1)संची(2)तन्धा(2)ना(1)नी ॥ ७ ॥
@@ -6444,7 +6458,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_367 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_368 ## DO NOT EDIT
-।। रेणुर्वैश्वामित्रः ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। रेणुर्वैश्वामित्रः इन्द्रः त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_368 ## DO NOT EDIT
 # Start of Rik Text -- subsection_368 ## DO NOT EDIT
 ऊदुब्र(1)ह्माणैरतश्रवस्या(2) । इन्द्रंसामर्येमाहयावसिष्ठा । आ(3)यो(3)र्विश्वा(1)नीश्रा(2)वासताताना(1) । ऊपश्रो(2)ता(4)मा(2)इवा(2)तो वा(2)चां(1)सि ॥ ८ ॥
@@ -6462,7 +6476,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_368 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_369 ## DO NOT EDIT
-।। ऋषिः यमी वैवस्वती) ।। इन्द्रः (ऋषिः 1 ताक्ष्र्यः 7 पर्वतान्द्रौ 9 यमो वैवस्वतः)।। त्रिष्टुप्।।
+।। वामदेवो गौतमः (यमी वैवस्वती) इन्द्रः (यमो वैवस्वतः) त्रिष्टुप्।।
 # End of Rik Metadata -- subsection_369 ## DO NOT EDIT
 # Start of Rik Text -- subsection_369 ## DO NOT EDIT
 च(2)क्रं(4)याद(1)स्यप्सू(2)आनिषाक्तं । ऊतो(4)ता(4)द(1)स्मै(2) म(2)ध्वी(2)चा(1)च्छद्यात् । पृ(2)थि(2)व्या(1)मा(2)तीषितंया(2)दूधाः । पायोगो(4)ष्वा(4)द(1)धाओ(2)षाधीषु ॥ ९ ॥
@@ -6481,6 +6495,9 @@ s2: Thogur Padhati (त)
 # Start of Section Title -- section_38 ## DO NOT EDIT
 तृतीय खण्डः
 # End of Section Title -- section_38 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_370 ## DO NOT EDIT
+।। मधछु न्दा वैश्वामित्रः इन्द्रः अनुष्टुप्।।
+# End of Rik Metadata -- subsection_370 ## DO NOT EDIT
 # Start of Rik Text -- subsection_370 ## DO NOT EDIT
 त्या(2)मूषुवाजी(2)नन्देवा(2)जू(1)तं । स(2)होवा(2)नं(1)ता(2)रूता(2)रं राथा(1)नाम् । आ(2)री(1)ष्टनेमिंपृतना(4)ज(1)माशू(2)म् । \newline%
 स्व(2)स्ताये(2)ता(4)क्ष्यामीहाहू(1)वेम ॥ १ ॥
@@ -6502,7 +6519,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_370 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_371 ## DO NOT EDIT
-।। त्ा माधछु न्दसः ।। इन्द्रः।। अनुष्टुप्।।
+।। त्ा माधछु न्दसः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_371 ## DO NOT EDIT
 # Start of Rik Text -- subsection_371 ## DO NOT EDIT
 त्रा(2)ता(2)रमि(2)न्द्रामा(2)वीता(2)रामि(2)न्द्रं(1) । हा(2)वे(1)हवेसूहावं शू(2)रामि(1)न्द्रम् । हूवे(2)नूशक्रं(2)पू(1)रुहूतामिन्द्रं । ई(2)दंहा(2)वि(2)र्मा(1)घा(4)वावे(1)त्विन्द्राः(1) ॥ २ ॥
@@ -6519,7 +6536,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_371 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_372 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। इन्द्रः।। अनुष्टुप्।।
+।। गौतमो राहूगणः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_372 ## DO NOT EDIT
 # Start of Rik Text -- subsection_372 ## DO NOT EDIT
 या(2)जा(2)माहाइ(2)न्द्रंव(2)ज्रा(1)दक्षिणं । हा(2)री(1)णांरथ्यां टट्य वि(2)व्रा(1)तानाम् । प्र(3)श्म(3)श्रू(1)भिर्दोधुवदू(2)र्ध्वाधा(1)भुवात् । वी(3)से(3)ना(1)भिर्भा(2)या(1)मानोवीरा(2)धा(1)सा ॥ ३ ॥
@@ -6535,7 +6552,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_372 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_373 ## DO NOT EDIT
-।। अत्रिभर्गः ।। इन्द्रः।। अनुष्टुप्।।
+।। अत्रिभर्गः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_373 ## DO NOT EDIT
 # Start of Rik Text -- subsection_373 ## DO NOT EDIT
 सत्रा(2)हा(1)णंदाधृ(1)षिन्तूम्रामिन्द्रं(1) । मा(2)हामा(1)पारं(4)वृ(1)षाभं(2) सूवा(2)ज्र(1)म् । हन्तायो(2)वृत्रं(4)सानीतोता(4)वा(2)जं(1) । \newline%
@@ -6557,7 +6574,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_373 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_374 ## DO NOT EDIT
-।। तिरश्चीरांगिरसः ।। इन्द्रः।। अनुष्टुप्।।
+।। तिरश्चीरांगिरसः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_374 ## DO NOT EDIT
 # Start of Rik Text -- subsection_374 ## DO NOT EDIT
 यो(2)नो(1)वनूष्य(4)न्ना(2)भीदा(2)तीमा(2)र्क्त्याः(1) । ऊगणावा(4) म(2)न्यामानास्तुरो(2)वा । क्षी(2)धीयूधा(2)शावा(1)सा  \newline%
@@ -6573,7 +6590,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_374 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_375 ## DO NOT EDIT
-।। गौतमो राहूगणः ।। इन्द्रः।। अनुष्टुप्।।
+।। गौतमो राहूगणः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_375 ## DO NOT EDIT
 # Start of Rik Text -- subsection_375 ## DO NOT EDIT
 यं(2)वृत्रे(4)षु(1)क्षीता(2)यास्प(2)र्धा(2)मानः । यं(2)युक्तेषु(1)तूरा(4)य॑(1)न्तो हा(2)व(1)न्ते । यं(2)शू(2)रा(1)सातौयामापा(1)मूपा(1)ज्मन् । \newline%
@@ -6600,7 +6617,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_375 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_376 ## DO NOT EDIT
-।। नोपातिथिः काण्वः ।। इन्द्रः।। अनुष्टुप्।।
+।। नोपातिथिः काण्वः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_376 ## DO NOT EDIT
 # Start of Rik Text -- subsection_376 ## DO NOT EDIT
 इन्द्रा(1)पर्वताबृहा(2)तारा(2)थेना । वा(2)मी(2)रीळआ(2)वाहतंसूवी(2)राः । वी(2)तं(2)हाव्या(4)न्याध्वारेषुदेवाः(2) । वर्धेथांगीर्भि(4)रिळा(1)यामाद(1)न्ताः ॥ ७ ॥
@@ -6658,7 +6675,7 @@ s2: Thogur Padhati (त)
 चतुर्थ खण्डः
 # End of Section Title -- section_39 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_380 ## DO NOT EDIT
-।। भरद्वाजो बार्हस्पत्यः ।। इन्द्रः 5 मरुतः 7 दधिक्रा वा।। अनुष्टुप्।।
+।। भरद्वाजो बार्हस्पत्यः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_380 ## DO NOT EDIT
 # Start of Rik Text -- subsection_380 ## DO NOT EDIT
 गा(2)यन्तित्वागायत्रीणाः(1) । अ(3)र्चन्त्यर्का(2)मर्कीणाः । ब्र(2)ह्मा(2)णस्त्वाशतक्रतो । उ(2)द्वं(1)शामीवयेमिरे ॥ १ ॥
@@ -6681,7 +6698,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_380 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_381 ## DO NOT EDIT
-।। वामदेवो गौतमः, शाकपतूो वा ।। इन्द्रः 5 मरुतः 7 दधिक्रा वा।। अनुष्टुप्।।
+।। वामदेवो गौतमः, शाकपतूो वा इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_381 ## DO NOT EDIT
 # Start of Rik Text -- subsection_381 ## DO NOT EDIT
 इ(2)न्द्रंविश्वा(1)अविवृधन् । समूद्रा(2)व्या(1)चासंगीराः(1) । रा(2)थीता(1)मंराथी(2)नां(1) । वाजानां(2)सात्पा(1)तिंपा(2)तिम् ॥ २ ॥
@@ -6698,7 +6715,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_381 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_382 ## DO NOT EDIT
-।। प्रियमेध आंगिरसः ।। इन्द्रः 5 मरुतः 7 दधिक्रा वा।। अनुष्टुप्।।
+।। प्रियमेध आंगिरसः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_382 ## DO NOT EDIT
 # Start of Rik Text -- subsection_382 ## DO NOT EDIT
 ईमा(2)मिन्द्रासूतंपी(2)बा । ज्ये(1)ष्ठमा(4)मार्त्य(1)म्मादम्(2) । शुक्र(4)स्या(1)त्वाभ्या ठ(1) क्ष(4)रन् । धा(4)रा(1)ऋतस्यासाद(1)ने ॥ ३ ॥
@@ -6754,7 +6771,7 @@ s2: Thogur Padhati (त)
 #End of Mantra Sets -- subsection_384 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_385 ## DO NOT EDIT
-।। प्रगाथः काण्वः ।। इन्द्रः 5 मरुतः 7 दधिक्रा वा।। अनुष्टुप्।।
+।। प्रगाथः काण्वः इन्द्रः अनुष्टुप्।।
 # End of Rik Metadata -- subsection_385 ## DO NOT EDIT
 # Start of Rik Text -- subsection_385 ## DO NOT EDIT
 या(2)दि(1)न्द्रचित्रमाह्याना(2) । अ(2)स्ति(3)त्वादा(1)तमद्रिवः । रा(2)धास्त(2)न्नोवि(2)दद्वसो । उ(2)भ(2)याहस्त्याभा(1)रा ॥ ४ ॥

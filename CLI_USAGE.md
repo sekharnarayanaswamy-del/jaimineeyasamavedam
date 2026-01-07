@@ -101,3 +101,58 @@ python Devanagari_standalone/working_baseline/renderPDF.py Unicode_input_with_FN
 ```bash
 python Devanagari_standalone/working_baseline/renderPDF.py Unicode_input_with_FN_out.json --pdf-font "Siddhanta"
 ```
+
+---
+
+## 3. Footnote Formatting Guide
+
+This section describes how to correctly format footnotes in the source text file.
+
+### Footnote Syntax
+
+Footnotes use the format `(sN)` where N is a number (e.g., `(s1)`, `(s2)`, `(s3)`).
+
+### Placement Rules
+
+> [!IMPORTANT]
+> **Footnote markers must be placed immediately after the swara** with NO space.
+
+**Correct:**
+```
+इ(श)(s1)     ← footnote attaches to इ (correct)
+वा(चा)(s2)   ← footnote attaches to वा (correct)
+```
+
+**Incorrect:**
+```
+इ(श) (s1)    ← space before footnote - may attach to wrong character
+इ (s1)(श)    ← footnote before swara - incorrect placement
+```
+
+### Pattern
+
+The general pattern for a mantra character with swara and footnote is:
+```
+Word(Swara)(sN)
+```
+
+Where:
+- `Word` = The Devanagari character/syllable
+- `(Swara)` = The swara marking in parentheses
+- `(sN)` = The footnote marker (no space before it)
+
+### Footnote Definitions
+
+Footnotes are defined in a separate block in the source file:
+```
+# Start of Footnote -- subsection_1 ## DO NOT EDIT
+s1: Kerala Padhati explanation here
+s2: Thogur Padhati explanation here
+# End of Footnote -- subsection_1 ## DO NOT EDIT
+```
+
+### Invisible Characters Warning
+
+> [!CAUTION]
+> Avoid copying text from PDFs or web pages directly, as invisible Unicode characters (zero-width joiners, etc.) may be introduced. These can break footnote detection. If footnotes aren't rendering correctly, try deleting and retyping the `(sN)` marker.
+

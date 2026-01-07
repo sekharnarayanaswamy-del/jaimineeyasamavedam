@@ -223,6 +223,11 @@ def process_footnotes_latex(text, footnotes_dict, seen_markers=None, subsection_
              # Fallback to stateless replacement (old behavior)
              return f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{footnote_text}}}"
 
+    # Sanitize invisible characters that break footnote matching
+    # These are zero-width chars that can appear around (s1) markers from copy-paste
+    invisible_chars_pattern = r'[\u200b\u200c\u200d\ufeff\u2060\u180e\u00ad]'
+    text = re.sub(invisible_chars_pattern, '', text)
+    
     pattern = r'\((s\d+)\)'
     new_text = re.sub(pattern, replacer, text)
     
@@ -251,6 +256,11 @@ def process_footnotes_html(text, footnotes_dict, local_counter=0, seen_markers_m
     footnotes_list = []
     
     import os
+    
+    # Sanitize invisible characters that break footnote matching
+    invisible_chars_pattern = r'[\u200b\u200c\u200d\ufeff\u2060\u180e\u00ad]'
+    text = re.sub(invisible_chars_pattern, '', text)
+    
     # regex to find (sX)
     matches = list(set(re.findall(r'\(s\d+\)', text))) # set to unique within this text block
     # Sort matches
@@ -328,6 +338,14 @@ def process_footnotes_text(text, footnotes_dict):
         footnotes_list.append((devanagari_num, footnote_text))
     
     return text, footnotes_list
+
+
+def replace_footnote_markers_filter(text, footnotes_dict={}):
+    """Filter to replace footnote markers in text."""
+    if not text:
+        return ""
+    processed_text, _ = process_footnotes_text(text, footnotes_dict)
+    return processed_text
 
 
 def format_dandas(text):
@@ -500,10 +518,12 @@ def escape_for_latex(data):
         latex_special_chars = {
             "&": r"\&", "%": r"\%", "$": r"\$", "#": r"\#", "_": r"\_",
             "{": r"\{", "}": r"\}", "~": r"\textasciitilde{}", "^": r"\^{}",
-            "\\": r"\textbackslash{}", "\n": "\\newline%\n", "-": r"{-}",
+            "\\": r"\textbackslash{}", "\n": " ", "-": r"{-}",
             "\xA0": "~", "[": r"{[}", "]": r"{]}",
         }
         return "".join([latex_special_chars.get(c, c) for c in data])
+
+    return data
 
     return data
 
@@ -573,6 +593,14 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
         # Step D: Format Dandas (Spaces around dandas only)
         s2 = format_dandas(s2)
+        
+        # SAFETY PATCH: Remove any lingering \newline commands that might have snuck in
+        s2 = s2.replace(r'\newline', ' ').replace(r'\textbackslash{}newline', ' ')
+        
+
+        
+
+        
         # Output: Upright (not italics)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
         formatted_output.append(r"\vspace{0.8em}")
@@ -645,6 +673,10 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
             # --- FOOTNOTE TRACKING (Ensure initialized at start of function too) ---
             # Extract footnotes from text_part if present
             # We look for (sX) patterns
+            # First, sanitize invisible characters that can break matching
+            invisible_chars_pattern = r'[\u200b\u200c\u200d\ufeff\u2060\u180e\u00ad]'
+            text_part = re.sub(invisible_chars_pattern, '', text_part)
+            
             if '(' in text_part and ')' in text_part:
                 # Find all markers
                 markers = re.findall(r'\((s\d+)\)', text_part)
@@ -953,10 +985,13 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
                 
     if len(corrected_mantra_array) != 0:
         mantra_array = corrected_mantra_array
+    footnotes = subsection.get('footnotes', {})
     formatted_sets.append(f"#Start of Mantra Sets -- {subsection_title} ## DO NOT EDIT")
     for mantra in mantra_array:
         # Keep mantra content together - replace \newline% with single space or nothing
         clean_mantra = mantra.replace('\\newline%', '').replace('\\newline', '')
+        # Apply footnote application
+        clean_mantra, _ = process_footnotes_text(clean_mantra, footnotes)
         formatted_sets.append(clean_mantra)
     formatted_sets.append(f"#End of Mantra Sets -- {subsection_title} ## DO NOT EDIT")
     return "\n".join(formatted_sets)
@@ -988,6 +1023,8 @@ def format_rik_only_text(subsection, section_title, subsection_title, prev_rik_i
     
     # Rik Text (keep accent markers matching vedic_text.txt encoding)
     if rik_text:
+        footnotes = subsection.get('footnotes', {})
+        rik_text, _ = process_footnotes_text(rik_text, footnotes)
         formatted_output.append(rik_text)
     
     return "\n".join(formatted_output)
@@ -1031,6 +1068,7 @@ def format_samam_only_text(subsection, section_title, subsection_title):
                 mantra += " " + actual_word
             mantra_array.append(mantra.strip())
     
+    footnotes = subsection.get('footnotes', {})
     for mantra in mantra_array:
         # Clean LaTeX formatting for plain text
         clean_mantra = mantra.replace('\\newline%', ' ')
@@ -1038,6 +1076,9 @@ def format_samam_only_text(subsection, section_title, subsection_title):
         clean_mantra = re.sub(r'\\[a-zA-Z]+\{[^}]*\}', '', clean_mantra)  # Remove \command{...}
         clean_mantra = re.sub(r'\\[a-zA-Z]+', '', clean_mantra)  # Remove \command
         clean_mantra = re.sub(r'\s+', ' ', clean_mantra).strip()  # Clean extra spaces
+        
+        # Apply footnote application
+        clean_mantra, _ = process_footnotes_text(clean_mantra, footnotes)
         formatted_output.append(clean_mantra)
     
     return "\n".join(formatted_output)
@@ -1537,6 +1578,8 @@ Examples:
     )
     latex_jinja_env.filters["my_encodeURL"] = my_encodeURL
     latex_jinja_env.filters["escape_for_latex"] = escape_for_latex
+    latex_jinja_env.filters["replace_footnotes"] = replace_footnote_markers_filter
+    latex_jinja_env.filters["format_mantra_sets_text"] = format_mantra_sets_text
     latex_jinja_env.filters["format_mantra_sets"] = format_mantra_sets
     latex_jinja_env.filters["format_mantra_sets_text"] = format_mantra_sets_text
     latex_jinja_env.filters["format_rik_only"] = format_rik_only

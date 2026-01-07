@@ -22,6 +22,7 @@ Version 0.15 1st January 2026
 %- set rik_metadata = subsection.get('rik_metadata', '') 
 %- set rik_text = subsection.get('rik_text', '') 
 %- set saman_metadata = subsection.get('saman_metadata', '') 
+%- set footnotes = subsection.get('footnotes', {}) 
 \BLOCK{ if output_mode == 'rik' }
 \VAR{subsection|format_rik_only_text(j,k,ns.prev_rik_id)}
 \BLOCK{ elif output_mode == 'samam' }
@@ -35,7 +36,7 @@ Version 0.15 1st January 2026
 \BLOCK{ endif }
 \BLOCK{ if show_rik and rik_text }
 # Start of Rik Text -- \VAR{k} ## DO NOT EDIT
-\VAR{ rik_text }
+\VAR{ rik_text | replace_footnotes(footnotes) }
 # End of Rik Text -- \VAR{k} ## DO NOT EDIT
 
 \BLOCK{ endif }
