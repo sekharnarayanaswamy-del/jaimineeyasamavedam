@@ -712,15 +712,23 @@ def convert_corrections_to_json(
                 
                 # --- 1. GET SAMAM METADATA FOR ALL MANTRAS IN THIS SUBSECTION ---
                 # Consume 'num_mantras' entries from sama_rishi_chandas_out.txt
+                # Also collect ALL unique Rik IDs and their text/metadata
                 saman_meta_val = ""
                 rik_id_from_saman = None
+                
+                # Track all unique Riks in this subsection for multi-Rik display
+                rik_ids_in_subsection = []  # Ordered list of unique rik_ids
                 
                 for mantra_idx in range(num_mantras):
                     rik_id, saman_title, saman_meta = saman_meta_parser.get_next_samam()
                     
-                    # Use the first valid rik_id
+                    # Use the first valid rik_id as primary
                     if rik_id is not None and rik_id_from_saman is None:
                         rik_id_from_saman = rik_id
+                    
+                    # Track all unique rik_ids in order of appearance
+                    if rik_id is not None and rik_id not in rik_ids_in_subsection:
+                        rik_ids_in_subsection.append(rik_id)
                     
                     # Concatenate metadata from all samams
                     if saman_meta:
@@ -728,44 +736,59 @@ def convert_corrections_to_json(
 
                 
                 # --- 3. DETERMINE RIK_TEXT AND RIK_METADATA ---
-                if rik_id_from_saman is not None:
-                    # Got valid rik_id from saman metadata (now Local ID per section)
+                # Build combined rik_text and rik_metadata for ALL Riks in this subsection
+                all_rik_texts = []
+                all_rik_metas = []
+                
+                if rik_ids_in_subsection:
+                    for rid in rik_ids_in_subsection:
+                        # Get Rik text
+                        rik_txt = rik_text_parser.get_text_by_rik_id(rid)
+                        # Get Rik metadata
+                        raw_meta = rik_meta_parser.get_metadata_by_rik_id(rid)
+                        cleaned_meta = clean_rik_metadata_format(raw_meta) if rik_txt else ""
+                        
+                        if rik_txt:
+                            all_rik_texts.append(rik_txt)
+                        if cleaned_meta:
+                            all_rik_metas.append(cleaned_meta)
+                        
+                        # Update carry-forward tracking
+                        if rid != last_rik_id:
+                            last_rik_id = rid
+                            last_rik_text = rik_txt
+                            last_rik_meta = raw_meta
                     
-                    # Rik IDs are now local per section, so use directly
+                    # Join all Rik texts with separator for display
+                    display_rik_text = "\n".join(all_rik_texts) if all_rik_texts else None
+                    rik_meta_val = " ".join(all_rik_metas) if all_rik_metas else ""
+                    
+                elif rik_id_from_saman is not None:
+                    # Single Rik case (backward compatibility)
                     local_rik_id = rik_id_from_saman
-                    # print(f"  [DEBUG] Rik Global: {rik_id_from_saman}, Offset: {global_rik_offset} -> Local: {local_rik_id}")
-
                     display_rik_text = rik_text_parser.get_text_by_rik_id(local_rik_id)
-                    
-                    # Rik Metadata seems to work with Global IDs (based on user observation/file content), 
-                    # but if it fails we might need to check if it also needs conversion.
-                    # Assuming Metadata file follows the same numbering as Saman Metadata (Global).
                     raw_rik_meta = rik_meta_parser.get_metadata_by_rik_id(rik_id_from_saman)
                     
-                    # Track for carry-forward (when rik_id changes)
                     if rik_id_from_saman != last_rik_id:
-                        # New Rik ID - update last known values
                         last_rik_id = rik_id_from_saman
                         last_rik_text = display_rik_text
                         last_rik_meta = raw_rik_meta
-                    else:
-                        # Same Rik ID as previous - reuse LAST KNOWN TEXT even if lookup returned None for current sub-part
-                        # (Though mostly we want to display it again if it's the same Rik)
-                        pass
+                    
+                    rik_meta_val = clean_rik_metadata_format(raw_rik_meta)
+                    if not display_rik_text:
+                        rik_meta_val = ""
                 else:
                     # No saman metadata - use carry-forward
                     rik_id_from_saman = last_rik_id
                     display_rik_text = last_rik_text
                     raw_rik_meta = last_rik_meta
                     saman_meta_val = ""
-
-                rik_meta_val = clean_rik_metadata_format(raw_rik_meta)
-                if not display_rik_text:
-                    rik_meta_val = ""
+                    rik_meta_val = clean_rik_metadata_format(raw_rik_meta) if display_rik_text else ""
 
                 current_supersection_sections[section_id]["subsections"][subsection_id] = {
                     "header": { "header": clean_header_text },
                     "rik_id": rik_id_from_saman,
+                    "rik_ids": rik_ids_in_subsection,  # NEW: List of all Rik IDs in this subsection
                     "rik_metadata": rik_meta_val,     
                     "rik_text": display_rik_text,     
                     "saman_metadata": saman_meta_val, 

@@ -536,12 +536,22 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     
     # --- DATA EXTRACTION ---
     current_rik_id = subsection.get('rik_id')
+    current_rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
     string_1 = subsection.get('rik_metadata', '')
     string_2 = subsection.get('rik_text', '')
     string_3 = subsection.get('saman_metadata', '')
     
-    # Determine if we should show rik_metadata and rik_text (only when rik_id changes)
+    # Determine if we should show rik_metadata and rik_text
+    # Show if: first subsection, OR if any rik_id in current rik_ids differs from prev_rik_id
+    # This ensures that when a subsection spans multiple Riks (e.g., [7, 8]) and Rik 7 was already
+    # shown, we still display the combined text that includes Rik 8
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    # Also show if rik_ids contains multiple Riks and the last one differs from prev
+    if not show_rik_info and len(current_rik_ids) > 1:
+        # If we have multiple Riks in this subsection, check if the MAX Rik ID is new
+        max_rik_id = max(current_rik_ids) if current_rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
     
     # Clean titles for Display
     # Clean titles for Display
@@ -1129,6 +1139,30 @@ def format_dandas_html(text):
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
+def handle_consecutive_trikamba_html(text):
+    """
+    Inserts a thin space between consecutive trikamba accent marks (4) in HTML
+    to prevent visual overlap when rendered.
+    
+    This is only needed for HTML rendering; PDF rendering handles spacing correctly.
+    """
+    if not text:
+        return text
+    
+    # Pattern: (4) followed by 1-3 characters (a single Devanagari grapheme cluster) 
+    # and then another (4)
+    # We insert a thin space character after the first character following (4)
+    # when another (4) follows soon after
+    
+    # Match: (4) + short text (1-3 chars) + (4)
+    # Replace with: (4) + short text + thin space + (4)
+    pattern = r'\(4\)([^\(\)]{1,3})\(4\)'
+    replacement = r'(4)\1 (4)'  # Insert a regular space before the second (4)
+    
+    text = re.sub(pattern, replacement, text)
+    
+    return text
+
 def replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
@@ -1171,13 +1205,23 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     
     # --- DATA EXTRACTION ---
     current_rik_id = subsection.get('rik_id')
+    current_rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
     string_1 = subsection.get('rik_metadata', '')
     string_2 = subsection.get('rik_text', '')
     string_3 = subsection.get('saman_metadata', '')
     footnote_data = subsection.get('footnotes', {})
     
-    # Determine if we should show rik_metadata and rik_text (only when rik_id changes)
+    # Determine if we should show rik_metadata and rik_text
+    # Show if: first subsection, OR if any rik_id in current rik_ids differs from prev_rik_id
+    # This ensures that when a subsection spans multiple Riks (e.g., [7, 8]) and Rik 7 was already
+    # shown, we still display the combined text that includes Rik 8
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    # Also show if rik_ids contains multiple Riks and the last one differs from prev
+    if not show_rik_info and len(current_rik_ids) > 1:
+        # If we have multiple Riks in this subsection, check if the MAX Rik ID is new
+        max_rik_id = max(current_rik_ids) if current_rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
     
     # Clean titles
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
@@ -1200,6 +1244,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         
+        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
         s2 = replace_accents_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
@@ -1325,6 +1370,7 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         
+        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
         s2 = replace_accents_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
