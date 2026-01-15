@@ -16,7 +16,7 @@ from requests.models import PreparedRequest
 import grapheme
 
 # --- New import for utility functions ---
-from convert_txt_to_json_1 import (
+from utils import (
     combine_halants, combine_ardhaksharas,
     my_encodeURL, my_format,
     replacecolon, normalize_and_trim,
@@ -417,7 +417,7 @@ def CreateCompilation():
 def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined"):
     data=escape_for_latex(data)
     
-    outputdir="output_text"
+    outputdir="data/output"
     logdir=f"{outputdir}/logs"
     exit_code=0
     
@@ -471,8 +471,8 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
 def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combined"):
     data=escape_for_latex(data)
     
-    outputdir="output_text"
-    logdir=f"{outputdir}/logs"
+    outputdir="data/output"
+    logdir="data/output/logs"
     exit_code=0
     
     TexFileName=f"{name}_{DocfamilyName}_Unicode.tex"
@@ -1537,7 +1537,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiS
         html_font: Font family string for HTML output (e.g., "'AdiShila Vedic', 'Adishila SanVedic'")
         output_mode: 'combined', 'rik', or 'samam' for filtering content
     """
-    outputdir = "output_text"
+    outputdir = "data/output"
     exit_code = 0
     
     HtmlFileName = f"{name}_{DocfamilyName}_Unicode.html"
@@ -1576,8 +1576,8 @@ Examples:
   python renderPDF.py input.json --output-mode separate
         """
     )
-    parser.add_argument('input_file', nargs='?', default='corrections_003_out.json',
-                        help='Input JSON file (default: corrections_003_out.json)')
+    parser.add_argument('input_file', nargs='?', default='data/output/Agneyam-Pavamanam_latest_out.json',
+                        help='Input JSON file (default: data/output/Agneyam-Pavamanam_latest_out.json)')
     parser.add_argument('--output-mode', dest='output_mode',
                         choices=['combined', 'separate'], default='combined',
                         help='Output mode: combined (default) or separate')
@@ -1591,9 +1591,9 @@ Examples:
     output_mode = args.output_mode
     pdf_font = args.pdf_font
     html_font = args.html_font
-    template_dir="pdf_templates"
-    text_template_dir="text_templates"
-    html_template_dir="html_templates"
+    template_dir="templates/pdf"
+    text_template_dir="templates/text"
+    html_template_dir="templates/html"
     
     templateFile_Grantha=f"{template_dir}/Grantha_main.template"
     templateFile_Devanagari=f"{template_dir}/Devanagari_main.template"
@@ -1603,8 +1603,8 @@ Examples:
     text_templateFile_Devanagari=f"{text_template_dir}/Devanagari_main.template"
     html_templateFile_Devanagari=f"{html_template_dir}/Devanagari_main_html.template"
 
-    outputdir="output_text"
-    logdir="pdf_logs"
+    outputdir="data/output"
+    logdir="data/output/logs"
     
     # LaTeX/Text Jinja environment (uses LaTeX-style delimiters)
     latex_jinja_env = jinja2.Environment(

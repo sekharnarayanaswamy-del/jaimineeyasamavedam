@@ -611,10 +611,10 @@ def clean_rik_metadata_format(text):
     return text + "।।"
 
 def convert_corrections_to_json(
-    file_path="corrections_003.txt",
-    rik_meta_file="rishi_devata_chandas_for_rik.txt",
-    saman_meta_file="sama_rishi_chandas_out.txt",
-    rik_text_file="vedic_text.txt"
+    file_path="data/input/Agneyam-Pavamanam_latest.txt",
+    rik_meta_file="data/input/rishi_devata_chandas_for_rik.txt",
+    saman_meta_file="data/input/sama_rishi_chandas_out.txt",
+    rik_text_file="data/input/vedic_text.txt"
 ):
     print(f"--- Step 1: Loading External Datasets ---")
     
@@ -1101,17 +1101,29 @@ Examples:
     
     if args.input_mode == 'initial':
         # Initial mode: use multiple source files
-        rik_meta = "rishi_devata_chandas_for_rik.txt"
-        saman_meta = "sama_rishi_chandas_out.txt"
-        rik_text = "vedic_text.txt"
+        rik_meta = "data/input/rishi_devata_chandas_for_rik.txt"
+        saman_meta = "data/input/sama_rishi_chandas_out.txt"
+        rik_text = "data/input/vedic_text.txt"
         
-        output_file_path = args.output or (Path(input_file).stem + "_out.json")
+        if args.output:
+             output_file_path = args.output
+        else:
+             output_dir = "data/output"
+             Path(output_dir).mkdir(parents=True, exist_ok=True)
+             output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
+             
         print(f"Processing {input_file} in INITIAL mode...")
         output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text)
         
     else:
         # Correction mode: parse Unicode text file
-        output_file_path = args.output or (Path(input_file).stem + "_out.json")
+        if args.output:
+             output_file_path = args.output
+        else:
+             output_dir = "data/output"
+             Path(output_dir).mkdir(parents=True, exist_ok=True)
+             output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
+
         print(f"Processing {input_file} in CORRECTION mode...")
         output_data = parse_unicode_text_file(input_file)
     
