@@ -137,3 +137,8 @@ corrections_003_merged_out.json
 Devanagari_standalone/corrections_003_rishi_chandas.txt
 Devanagari_standalone/Devanagari_main.template
 !html_templates/Devanagari_main_html.template
+!output_text\txt\Devanagari\Full_Samhita_ip_with_FN.txt
+!Full_Samhita_ip_with_FN_out.json
+
+# Allow GitHub Pages website folder
+!docs/
