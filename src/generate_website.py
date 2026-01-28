@@ -1964,7 +1964,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </footer>
         </main>
         
-        {self._get_jump_sidebar_html(kandah.samas)}
     </div>
     <script src="../../js/main.js"></script>
 </body>
