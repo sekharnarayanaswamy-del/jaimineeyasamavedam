@@ -1802,7 +1802,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         mantra_html = f'''
                         <div class="mantra-box">
                             {sama_header_html}
-                            <div class="mantra-label">साम गानम् (SAMA)</div>
                             <div class="mantra-text sanskrit-large">{formatted_mantra}</div>
                         </div>'''
                     
@@ -1884,7 +1883,6 @@ document.addEventListener('DOMContentLoaded', function() {
                          if sama_audio_found:
                              audio_players.append(f'''
                                 <div class="audio-player-container">
-                                    <div class="audio-label">Sama Audio</div>
                                     <audio controls class="audio-player">
                                         <source src="{sama_audio_filename}" type="audio/mpeg">
                                         Your browser does not support the audio element.
