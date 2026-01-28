@@ -1579,13 +1579,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         # Kandah links for current parva (if applicable)
         kandah_section = ""
+        sama_section = ""
+        
         if current_parva_id:
             current_parva = next((p for p in self.parvas if p.id == current_parva_id), None)
             if current_parva:
+                # Kandah Section
                 kandah_links = ""
                 for kandah in current_parva.kandahs:
                     active = 'active' if kandah.id == current_kandah_id else ''
                     kandah_links += f'<a href="{prefix}kandah/{current_parva_id}/{kandah.kandah_number}.html" class="{active}">{kandah.kandah_number}</a>\n'
+                
                 kandah_section = f'''
                 <div class="nav-section">
                     <h3>खण्ड ({len(current_parva.kandahs)})</h3>
@@ -1593,6 +1597,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         {kandah_links}
                     </div>
                 </div>'''
+                
+                # Sama Section (only if a Kandah is selected)
+                if current_kandah_id:
+                    current_kandah = next((k for k in current_parva.kandahs if k.id == current_kandah_id), None)
+                    if current_kandah:
+                        sama_links = ""
+                        for sama in current_kandah.samas:
+                            # Sama links just jump to anchor on current page
+                            sama_links += f'<a href="#sama-{sama.sama_number}">{sama.sama_number}</a>\n'
+                        
+                        sama_section = f'''
+                        <div class="nav-section">
+                            <h3>साम ({len(current_kandah.samas)})</h3>
+                            <div class="nav-links">
+                                {sama_links}
+                            </div>
+                        </div>'''
         
         return f'''<aside class="sidebar-left">
     <div class="logo">
@@ -1609,6 +1630,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
     {kandah_section}
+    {sama_section}
     <div class="nav-section">
         <h3>Jump to</h3>
         <ul class="nav-list">
