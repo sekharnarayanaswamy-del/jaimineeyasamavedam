@@ -1602,14 +1602,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 if current_kandah_id:
                     current_kandah = next((k for k in current_parva.kandahs if k.id == current_kandah_id), None)
                     if current_kandah:
+                        import re
                         sama_links = ""
+                        total_real_samams = 0
+                        current_samam_start = 1
+                        
                         for sama in current_kandah.samas:
-                            # Sama links just jump to anchor on current page
-                            sama_links += f'<a href="#sama-{sama.sama_number}">{sama.sama_number}</a>\n'
+                            # Calculate real Samam count by finding verse delimiters like || 1 || or ॥ १ ॥
+                            cnt = 0
+                            if sama.mantra_text:
+                                matches = re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', sama.mantra_text)
+                                cnt = len(matches)
+                            
+                            # Fallback: if no delimiters found, count as 1
+                            if cnt == 0: cnt = 1
+                            
+                            # Calculate range for label
+                            range_end = current_samam_start + cnt - 1
+                            if cnt > 1:
+                                label_text = f"{current_samam_start}–{range_end}"
+                            else:
+                                label_text = f"{current_samam_start}"
+                            
+                            # Create link
+                            sama_links += f'<a href="#sama-{sama.sama_number}">{label_text}</a>\n'
+                            
+                            # Update counters
+                            total_real_samams += cnt
+                            current_samam_start = range_end + 1
                         
                         sama_section = f'''
                         <div class="nav-section">
-                            <h3>साम ({len(current_kandah.samas)})</h3>
+                            <h3>साम ({total_real_samams})</h3>
                             <div class="nav-links">
                                 {sama_links}
                             </div>
