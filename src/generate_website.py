@@ -21,6 +21,7 @@ import json
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
+from collections import defaultdict
 from datetime import datetime
 
 # --- Import text processing functions from render_pdf ---
@@ -614,6 +615,7 @@ class WebsiteGenerator:
         self._generate_css()
         self._generate_js()
         self._generate_homepage()
+        # self._generate_indices() # Metadata parsing needs refinement
         self._generate_kandah_pages()
         self._generate_metadata_json()
         
@@ -1482,6 +1484,92 @@ sup.footnote-ref a:hover {
         max-width: 100%;
     }
 }
+/* Classification & Index Styles */
+.classification-grid {
+    display: grid;
+    gap: var(--spacing-xl);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.class-section {
+    background: var(--bg-card);
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.class-section h2 {
+    color: var(--accent-orange);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.4rem;
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+.index-btn {
+    display: inline-block;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: #FFF8E1;
+    color: var(--text-primary);
+    border-radius: 4px;
+    border: 1px solid var(--primary-gold);
+    font-family: var(--font-heading);
+    transition: all 0.2s ease;
+}
+
+.index-btn:hover {
+    background: var(--primary-gold);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.index-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.index-entry {
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: var(--spacing-sm);
+}
+
+.index-term {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--primary-maroon);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+}
+
+.index-refs {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.index-refs a {
+    color: var(--text-link);
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.index-char-header {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--primary-gold);
+    margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+    padding-bottom: 4px;
+}
 '''
         with open(self.output_dir / 'css' / 'styles.css', 'w', encoding='utf-8') as f:
             f.write(css)
@@ -1786,6 +1874,166 @@ document.addEventListener('DOMContentLoaded', function() {
 </html>'''
         
         with open(self.output_dir / 'index.html', 'w', encoding='utf-8') as f:
+            f.write(html)
+
+    def _collect_indices(self):
+        """Collect data for all indices"""
+        self.rishi_index = defaultdict(list)
+        self.devata_index = defaultdict(list)
+        self.chandas_index = defaultdict(list)
+        self.header_index = [] 
+        
+        for parva in self.parvas:
+            for kandah in parva.kandahs:
+                for sama in kandah.samas:
+                    # Link relative to classification/ folder
+                    link_rel = f"../kandah/{parva.id}/{kandah.kandah_number}.html#sama-{sama.sama_number}"
+                    location = f"{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}"
+                    
+                    # Sama Header Index
+                    if sama.title:
+                        clean_title = sama.title.strip(' .|॥')
+                        if clean_title:
+                            self.header_index.append({
+                                'text': clean_title,
+                                'link': link_rel,
+                                'location': location
+                            })
+                    
+                    # Metadata Indices
+                    if sama.rik_metadata:
+                        parts = self._parse_metadata(sama.rik_metadata)
+                        ref = {'link': link_rel, 'location': location}
+                        
+                        if parts['rishi']: self.rishi_index[parts['rishi']].append(ref)
+                        if parts['devata']: self.devata_index[parts['devata']].append(ref)
+                        if parts['chandas']: self.chandas_index[parts['chandas']].append(ref)
+
+    def _generate_indices(self):
+        """Generate all index pages"""
+        self._collect_indices()
+        
+        # Create classification dir
+        (self.output_dir / 'classification').mkdir(exist_ok=True)
+        
+        self._generate_classification_home()
+        self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html")
+        self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html")
+        self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html")
+        self._generate_header_index()
+
+    def _generate_classification_home(self):
+        """Generate the main classification landing page"""
+        html = f'''{self._get_html_head("वर्गीकरणम् (Classifications)", depth=1)}
+<body>
+    <div class="page-container">
+        {self._get_sidebar_html(depth=1)}
+        
+        <main class="main-content">
+            <div class="page-header">
+                <h1>सङ्क्रमणिका / वर्गीकरणम्</h1>
+                <p class="page-subtitle">Indices and Classifications</p>
+            </div>
+            
+            <div class="classification-grid">
+                <section class="class-section">
+                    <h2>अन्य वर्गीकरणम्</h2>
+                    <div class="button-row">
+                        <a href="rishi.html" class="index-btn">ऋषयः</a>
+                        <a href="devata.html" class="index-btn">देवताः</a>
+                        <a href="chandas.html" class="index-btn">छन्दांसि</a>
+                    </div>
+                </section>
+                
+                <section class="class-section">
+                    <h2>अनुक्रमणिका:</h2>
+                    <div class="button-row">
+                        <a href="headers.html" class="index-btn">सामानुक्रमणिका (Headers)</a>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>'''
+        with open(self.output_dir / 'classification' / 'index.html', 'w', encoding='utf-8') as f:
+            f.write(html)
+
+    def _generate_index_page_generic(self, title, data_dict, filename):
+        """Generate a generic index page for a dictionary of items"""
+        # Sort keys
+        sorted_keys = sorted(data_dict.keys())
+        
+        items_html = ""
+        for key in sorted_keys:
+            refs = data_dict[key]
+            refs_html = ", ".join([f'<a href="{r["link"]}">{r["location"]}</a>' for r in refs])
+            items_html += f'''
+            <div class="index-entry">
+                <div class="index-term">{key}</div>
+                <div class="index-refs">{refs_html}</div>
+            </div>'''
+            
+        html = f'''{self._get_html_head(title, depth=1)}
+<body>
+    <div class="page-container">
+        {self._get_sidebar_html(depth=1)}
+        <main class="main-content">
+            <div class="page-header">
+                <h1>{title}</h1>
+                <a href="index.html" class="back-link">← Back to Classifications</a>
+            </div>
+            <div class="index-list">
+                {items_html}
+            </div>
+        </main>
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>'''
+        with open(self.output_dir / 'classification' / filename, 'w', encoding='utf-8') as f:
+            f.write(html)
+
+    def _generate_header_index(self):
+        """Generate Alphabetical Header Index"""
+        # Sort by text
+        sorted_items = sorted(self.header_index, key=lambda x: x['text'])
+        
+        items_html = ""
+        current_char = ""
+        
+        for item in sorted_items:
+            # Group by first character (optional, but nice)
+            first_char = item['text'][0] if item['text'] else ''
+            if first_char != current_char:
+                current_char = first_char
+                items_html += f'<div class="index-char-header">{current_char}</div>'
+            
+            items_html += f'''
+            <div class="index-entry simple">
+                <a href="{item["link"]}" class="index-term-link">{item["text"]}</a>
+                <span class="index-loc">({item["location"]})</span>
+            </div>'''
+            
+        html = f'''{self._get_html_head("सामानुक्रमणिका", depth=1)}
+<body>
+    <div class="page-container">
+        {self._get_sidebar_html(depth=1)}
+        <main class="main-content">
+            <div class="page-header">
+                <h1>सामानुक्रमणिका (Alphabetical Headers)</h1>
+                <a href="index.html" class="back-link">← Back to Classifications</a>
+            </div>
+            <div class="index-list">
+                {items_html}
+            </div>
+        </main>
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>'''
+        with open(self.output_dir / 'classification' / 'headers.html', 'w', encoding='utf-8') as f:
             f.write(html)
             
     def _generate_kandah_pages(self):
