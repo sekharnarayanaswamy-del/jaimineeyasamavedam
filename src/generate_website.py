@@ -797,7 +797,7 @@ a:hover {
 }
 
 .nav-section h3 {
-    font-size: 0.9rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -916,7 +916,7 @@ a:hover {
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 1.3rem;
 }
 
 .sama-count {
@@ -958,7 +958,7 @@ a:hover {
 
 .toc h4 {
     margin-bottom: var(--spacing-md);
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .toc-list {
