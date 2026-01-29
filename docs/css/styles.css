@@ -195,6 +195,7 @@ a:hover {
     border-radius: 4px;
     transition: background 0.2s ease;
     font-family: var(--font-sanskrit);
+    font-size: 1.2rem;
 }
 
 .nav-list a:hover {

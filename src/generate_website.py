@@ -843,6 +843,7 @@ a:hover {
     border-radius: 4px;
     transition: background 0.2s ease;
     font-family: var(--font-sanskrit);
+    font-size: 1.2rem;
 }
 
 .nav-list a:hover {
@@ -1702,7 +1703,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 kandah_section = f'''
                 <div class="nav-section">
-                    <h3>खण्ड ({len(current_parva.kandahs)})</h3>
+                            <h3>खण्ड: ({len(current_parva.kandahs)})</h3>
                     <div class="nav-links">
                         {kandah_links}
                     </div>
@@ -1743,7 +1744,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         sama_section = f'''
                         <div class="nav-section">
-                            <h3>साम ({total_real_samams})</h3>
+                            <h3>साम: ({total_real_samams})</h3>
                             <div class="nav-links">
                                 {sama_links}
                             </div>
@@ -1758,7 +1759,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     
     <div class="nav-section">
-        <h3>पर्वा (Parva)</h3>
+        <h3>पर्व:</h3>
         <div class="nav-links">
             {parva_links}
         </div>
@@ -1780,7 +1781,7 @@ document.addEventListener('DOMContentLoaded', function() {
             jump_links += f'<a href="#sama-{sama.sama_number}">{sama.sama_number}</a>\n'
         
         return f'''<aside class="sidebar-right">
-    <h3>साम ({len(samas)})</h3>
+    <h3>साम: ({len(samas)})</h3>
     <div class="jump-links">
         {jump_links}
     </div>
