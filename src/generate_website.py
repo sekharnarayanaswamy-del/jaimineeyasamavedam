@@ -938,6 +938,17 @@ a:hover {
     font-family: var(--font-sanskrit);
 }
 
+.page-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: var(--spacing-sm);
+}
+
+.page-meta .page-subtitle {
+    margin: 0;
+}
+
 .sama-count {
     display: inline-block;
     background: var(--bg-sidebar);
@@ -945,7 +956,6 @@ a:hover {
     border-radius: 20px;
     font-size: 0.9rem;
     color: var(--text-secondary);
-    margin-top: var(--spacing-sm);
 }
 
 /* Breadcrumb */
@@ -2313,8 +2323,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             <header class="page-header">
                 <h1>{parva.title} - {kandah.title}</h1>
-                <p class="page-subtitle">पर्व: {parva.parva_number} | खण्ड: {kandah.kandah_number}</p>
-                <span class="sama-count">साम: {len(kandah.samas)}</span>
+                <div class="page-meta">
+                    <p class="page-subtitle">पर्व: {parva.parva_number} | खण्ड: {kandah.kandah_number}</p>
+                    <span class="sama-count">साम: {len(kandah.samas)}</span>
+                </div>
             </header>
             
             <div class="toc">
