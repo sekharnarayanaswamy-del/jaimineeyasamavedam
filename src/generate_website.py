@@ -1703,20 +1703,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_homepage(self):
         """Generate the homepage"""
+        import re
+        
         total_kandahs = sum(len(p.kandahs) for p in self.parvas)
-        total_samas = sum(sum(len(k.samas) for k in p.kandahs) for p in self.parvas)
+        total_samas = 0
+        
+        # Calculate total samas iterating through all content
+        for p in self.parvas:
+            for k in p.kandahs:
+                for s in k.samas:
+                    c = 0
+                    if s.mantra_text:
+                        c = len(re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', s.mantra_text))
+                    if c == 0: c = 1
+                    total_samas += c
         
         # Generate Parva sections with Kandah grids
         parva_sections = ""
         for parva in self.parvas:
             kandah_cards = ""
             for kandah in parva.kandahs:
-                sama_count = len(kandah.samas)
+                # Calculate real count for this kandah
+                kandah_sama_count = 0
+                for s in kandah.samas:
+                    c = 0
+                    if s.mantra_text:
+                         c = len(re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', s.mantra_text))
+                    if c == 0: c = 1
+                    kandah_sama_count += c
+                
                 kandah_cards += f'''
                 <a href="kandah/{parva.id}/{kandah.kandah_number}.html" class="kandah-card">
                     <div class="number">{kandah.kandah_number}</div>
                     <div class="title">{kandah.title}</div>
-                    <div class="count">{sama_count} साम</div>
+                    <div class="count">{kandah_sama_count} साम</div>
                 </a>'''
             
             parva_sections += f'''
@@ -1740,15 +1760,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="stats-row">
                     <div class="stat-item">
                         <div class="stat-value">{len(self.parvas)}</div>
-                        <div class="stat-label">पाठ (Parvas)</div>
+                        <div class="stat-label">पर्व: (Parva)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_kandahs}</div>
-                        <div class="stat-label">खण्ड (Kandahs)</div>
+                        <div class="stat-label">खण्ड: (Kandah)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_samas}</div>
-                        <div class="stat-label">साम (Samas)</div>
+                        <div class="stat-label">साम: (Sama)</div>
                     </div>
                 </div>
             </div>
