@@ -1480,11 +1480,11 @@ a:hover {
     margin-left: 0;
 }
 
-.footnote-section {
     padding: 10px 0;
     text-align: left;
     font-size: 0.9rem;
     line-height: 1.5;
+    font-family: var(--font-sanskrit);
 }
 
 .footnote-item {
@@ -1498,6 +1498,7 @@ a:hover {
     font-weight: bold;
     margin-right: 0.5em;
     min-width: 1.5em;
+    font-family: var(--font-sanskrit);
 }
 
 .footnote-item .footnote-text {
@@ -2312,8 +2313,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             <header class="page-header">
                 <h1>{parva.title} - {kandah.title}</h1>
-                <p class="page-subtitle">पर्वा {parva.parva_number} | खण्ड {kandah.kandah_number}</p>
-                <span class="sama-count">{len(kandah.samas)} साम</span>
+                <p class="page-subtitle">पर्व: {parva.parva_number} | खण्ड: {kandah.kandah_number}</p>
+                <span class="sama-count">साम: {len(kandah.samas)}</span>
             </header>
             
             <div class="toc">

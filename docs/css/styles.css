@@ -815,11 +815,11 @@ a:hover {
     margin-left: 0;
 }
 
-.footnote-section {
     padding: 10px 0;
     text-align: left;
     font-size: 0.9rem;
     line-height: 1.5;
+    font-family: var(--font-sanskrit);
 }
 
 .footnote-item {
@@ -833,6 +833,7 @@ a:hover {
     font-weight: bold;
     margin-right: 0.5em;
     min-width: 1.5em;
+    font-family: var(--font-sanskrit);
 }
 
 .footnote-item .footnote-text {
