@@ -673,7 +673,7 @@ class WebsiteGenerator:
     --border-light: #F0EBE3;
     
     /* Typography */
-    --font-heading: 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+    --font-heading: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
     --font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
     --font-sanskrit: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
     
@@ -842,6 +842,7 @@ a:hover {
     padding: 6px 10px;
     border-radius: 4px;
     transition: background 0.2s ease;
+    font-family: var(--font-sanskrit);
 }
 
 .nav-list a:hover {
@@ -935,6 +936,7 @@ a:hover {
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
     font-size: 0.9rem;
+    font-family: var(--font-sanskrit);
 }
 
 .breadcrumb a {
