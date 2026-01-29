@@ -282,6 +282,7 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
                     f'<span class="mantra-text"><span class="mantra-number">॥ {num} ॥</span></span>'
                     f'<span class="swara-text">&nbsp;</span>'
                     f'</span>'
+                    f'<div class="mantra-break"></div>'
                 )
                 i += len(number_match.group(0))
             else:
@@ -1339,6 +1340,12 @@ a:hover {
 }
 
 /* Mantra/Swara Stacking Styles - Matching renderPDF.py output */
+.mantra-break {
+    flex-basis: 100%;
+    height: 1rem;
+    width: 100%;
+}
+
 .mantra-word {
     display: inline-flex;
     flex-direction: column;

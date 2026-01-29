@@ -691,6 +691,12 @@ a:hover {
 }
 
 /* Mantra/Swara Stacking Styles - Matching renderPDF.py output */
+.mantra-break {
+    flex-basis: 100%;
+    height: 1rem;
+    width: 100%;
+}
+
 .mantra-word {
     display: inline-flex;
     flex-direction: column;
