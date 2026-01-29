@@ -917,6 +917,7 @@ a:hover {
 .page-subtitle {
     color: var(--text-secondary);
     font-size: 1.3rem;
+    font-family: var(--font-sanskrit);
 }
 
 .sama-count {
@@ -935,7 +936,7 @@ a:hover {
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-lg);
-    font-size: 0.9rem;
+    font-size: 1.25rem;
     font-family: var(--font-sanskrit);
 }
 
