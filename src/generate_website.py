@@ -1757,7 +1757,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     
     <div class="nav-section">
-        <h3>पाठ (Parva)</h3>
+        <h3>पर्वा (Parva)</h3>
         <div class="nav-links">
             {parva_links}
         </div>
@@ -2283,7 +2283,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             <header class="page-header">
                 <h1>{parva.title} - {kandah.title}</h1>
-                <p class="page-subtitle">पाठ {parva.parva_number} | खण्ड {kandah.kandah_number}</p>
+                <p class="page-subtitle">पर्वा {parva.parva_number} | खण्ड {kandah.kandah_number}</p>
                 <span class="sama-count">{len(kandah.samas)} साम</span>
             </header>
             
