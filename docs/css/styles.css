@@ -606,7 +606,7 @@ a:hover {
 
 .kandah-card .title {
     font-family: var(--font-sanskrit);
-    font-size: 1rem;
+    font-size: 1.4rem;
     color: var(--text-primary);
     margin: var(--spacing-xs) 0;
 }
