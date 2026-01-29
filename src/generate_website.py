@@ -675,7 +675,7 @@ class WebsiteGenerator:
     /* Typography */
     --font-heading: 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
     --font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
-    --font-sanskrit: 'Noto Serif Devanagari', 'Siddhanta', serif;
+    --font-sanskrit: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
     
     /* Spacing */
     --spacing-xs: 0.25rem;
@@ -1065,7 +1065,7 @@ a:hover {
 
 /* Rik Metadata - displayed above Rik text in purple */
 .rik-metadata {
-    font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', var(--font-sanskrit), sans-serif;
+    font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     color: #7b1fa2;
     text-align: center;
@@ -1074,7 +1074,7 @@ a:hover {
 
 /* Sama Header Text - displayed above Sama/Mantra text in green */
 .sama-header-text {
-    font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', var(--font-sanskrit), sans-serif;
+    font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     color: #2e7d32;
     text-align: center;
@@ -1100,7 +1100,7 @@ a:hover {
 }
 
 .rik-text {
-    font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', var(--font-sanskrit), sans-serif;
+    font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     line-height: 2;
     color: #1565c0;
@@ -1345,14 +1345,14 @@ a:hover {
 }
 
 .mantra-text {
-    font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', var(--font-sanskrit), sans-serif;
+    font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     line-height: 1.2;
     color: #000000;
 }
 
 .swara-text {
-    font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', var(--font-sanskrit), sans-serif;
+    font-family: var(--font-sanskrit);
     color: #c62828;
     font-size: 1.3rem;
     line-height: 1;
