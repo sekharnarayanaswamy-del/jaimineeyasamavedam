@@ -1859,6 +1859,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="stat-label">साम: (Sama)</div>
                     </div>
                 </div>
+                
+                <div class="quick-links" style="margin-top: 2rem; text-align: center; opacity: 0.7;">
+                    <span class="index-btn" style="cursor: not-allowed; background: #f5f5f5; border-color: #ddd; color: #888;">सङ्क्रमणिका / वर्गीकरणम् (Coming Soon)</span>
+                </div>
             </div>
             
             {parva_sections}
