@@ -2318,7 +2318,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </header>
             
             <div class="toc">
-                <h4>खण्ड {kandah.kandah_number} - सम्पूर्णम्</h4>
+                <h4>खण्ड: {kandah.kandah_number} - सम्पूर्णम्</h4>
                 <ul class="toc-list">
                     {toc_items}
                 </ul>
