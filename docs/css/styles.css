@@ -718,12 +718,15 @@ a:hover {
     color: #c62828;
     font-size: 1.3rem;
     line-height: 1;
-    text-align: justify;
-    text-align-last: justify;
+    text-align: center;
     margin-top: -0.2em;
     min-height: 1em;
     border-right: 1px solid transparent;
     padding-right: 2px;
+}
+
+.swara-left {
+    text-align: left;
 }
 
 .mantra-verse {

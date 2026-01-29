@@ -18,6 +18,7 @@ Version: 2.0.0
 import os
 import re
 import json
+from utils import combine_ardhaksharas
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
@@ -357,17 +358,32 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
                     f'<sup class="footnote-ref"><a href="#{unique_id}">{display_num}</a></sup>'
                 )
             else:
-                # Normal word + swara
-                word = _escape_html(word)
-                swara = _escape_html(swara)
-                
-                # Create stacked element (matching renderPDF.py format)
-                html_parts.append(
-                    f'<span class="mantra-word">'
-                    f'<span class="mantra-text">{word}</span>'
-                    f'<span class="swara-text">{swara}</span>'
-                    f'</span>'
-                )
+                # Normal word + swara - Split using combine_ardhaksharas logic (matching renderPDF.py)
+                clusters = combine_ardhaksharas(word)
+                if len(clusters) > 0:
+                    last_cluster = clusters[-1]
+                    preceding = "".join(clusters[:-1])
+                    
+                    if preceding:
+                        html_parts.append(f'<span class="mantra-word"><span class="mantra-text">{_escape_html(preceding)}</span><span class="swara-text">&nbsp;</span></span>')
+                    
+                    # Logic from renderPDF.py: \stackleft if len > 1, else \stackcenter
+                    align_cls = " swara-left" if len(swara.strip()) > 1 else ""
+                    html_parts.append(
+                        f'<span class="mantra-word">'
+                        f'<span class="mantra-text">{_escape_html(last_cluster)}</span>'
+                        f'<span class="swara-text{align_cls}">{_escape_html(swara)}</span>'
+                        f'</span>'
+                    )
+                else:
+                    # Fallback for empty/invalid
+                    align_cls = " swara-left" if len(swara.strip()) > 1 else ""
+                    html_parts.append(
+                        f'<span class="mantra-word">'
+                        f'<span class="mantra-text">{_escape_html(word)}</span>'
+                        f'<span class="swara-text{align_cls}">{_escape_html(swara)}</span>'
+                        f'</span>'
+                    )
             i += len(match.group(0))
             continue
         
@@ -1367,12 +1383,15 @@ a:hover {
     color: #c62828;
     font-size: 1.3rem;
     line-height: 1;
-    text-align: justify;
-    text-align-last: justify;
+    text-align: center;
     margin-top: -0.2em;
     min-height: 1em;
     border-right: 1px solid transparent;
     padding-right: 2px;
+}
+
+.swara-left {
+    text-align: left;
 }
 
 .mantra-verse {
