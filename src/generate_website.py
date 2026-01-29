@@ -266,7 +266,7 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     
     while i < len(text):
         # Skip whitespace - don't add spaces between mantra words (matching renderPDF.py)
-        if text[i].isspace():
+        if text[i].isspace() or text[i] in '\u200c\u200d\ufeff':
             i += 1
             continue
         
