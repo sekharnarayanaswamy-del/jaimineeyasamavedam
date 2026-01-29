@@ -1315,6 +1315,25 @@ a:hover {
     }
 }
 
+/* Audio Player Styles */
+.audio-section {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.audio-player-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.audio-player {
+    width: 100%;
+}
+
 /* Mantra/Swara Stacking Styles - Matching renderPDF.py output */
 .mantra-word {
     display: inline-flex;
