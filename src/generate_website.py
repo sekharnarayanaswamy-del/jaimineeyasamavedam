@@ -1852,34 +1852,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_homepage(self):
         """Generate the homepage"""
-        import re
+        from samam_utils import count_samams_with_fallback
         
         total_kandahs = sum(len(p.kandahs) for p in self.parvas)
-        total_samas = 0
         
-        # Calculate total samas iterating through all content
-        for p in self.parvas:
-            for k in p.kandahs:
-                for s in k.samas:
-                    c = 0
-                    if s.mantra_text:
-                        c = len(re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', s.mantra_text))
-                    if c == 0: c = 1
-                    total_samas += c
+        # Count total Arsheyams (subsections/Sama objects)
+        total_arsheyams = sum(len(k.samas) for p in self.parvas for k in p.kandahs)
+        
+        # Count all Samam numbers from mantra text
+        total_samas = sum(
+            count_samams_with_fallback(s.mantra_text)
+            for p in self.parvas for k in p.kandahs for s in k.samas
+        )
         
         # Generate Parva sections with Kandah grids
         parva_sections = ""
         for parva in self.parvas:
             kandah_cards = ""
             for kandah in parva.kandahs:
-                # Calculate real count for this kandah
-                kandah_sama_count = 0
-                for s in kandah.samas:
-                    c = 0
-                    if s.mantra_text:
-                         c = len(re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', s.mantra_text))
-                    if c == 0: c = 1
-                    kandah_sama_count += c
+                # Count Samam markers in this Kandah
+                kandah_sama_count = sum(
+                    count_samams_with_fallback(s.mantra_text)
+                    for s in kandah.samas
+                )
                 
                 kandah_cards += f'''
                 <a href="kandah/{parva.id}/{kandah.kandah_number}.html" class="kandah-card">
@@ -1914,6 +1909,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="stat-item">
                         <div class="stat-value">{total_kandahs}</div>
                         <div class="stat-label">खण्ड: (Kandah)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">{total_arsheyams}</div>
+                        <div class="stat-label">आर्षेयम् (Arsheyam)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_samas}</div>
