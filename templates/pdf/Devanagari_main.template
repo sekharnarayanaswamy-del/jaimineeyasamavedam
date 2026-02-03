@@ -117,9 +117,8 @@
 \renewcommand{\headrulewidth}{0.4pt}
 
 % --- FOOTER CONFIG ---
-\fancyfoot[C]{\footnotesize jaimineeyasamavedam.org}
+\fancyfoot[C]{\footnotesize jaimineeyasamavedam.org (v\VAR{version})}
 \renewcommand{\footrulewidth}{0.4pt}
-
 % Jinja helpers
 \newcommand{\VAR}[1]{}
 \newcommand{\BLOCK}[1]{}
@@ -158,6 +157,8 @@
             { \Huge जैमिनीय साम प्रकृति गानम् }
         \end{sanskrit}
         \vfill
+        \large v\VAR{version} \\
+        Generated: \VAR{generated_at} \\
         \date{\today}
     \end{center}
 \end{titlepage}

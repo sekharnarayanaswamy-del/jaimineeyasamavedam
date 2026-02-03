@@ -1,0 +1,25 @@
+JAIMINEEYA SAMAVEDA SAMHITA - JSON CONTINUITY CHECK
+====================================================
+
+Patha: आग्नेयपाठः (supersection_1)
+--------------------------------------------------
+  तृतीय खण्डः: Duplicates found: [18]
+
+Patha: तद्वपाठः (supersection_2)
+--------------------------------------------------
+
+Patha: बृहतिपाठः (supersection_3)
+--------------------------------------------------
+  चतुर्थ खण्डः: Duplicates found: [6]
+  चतुर्थ खण्डः: Gaps found! Missing: [7]
+
+Patha: असाविपाठः (supersection_4)
+--------------------------------------------------
+
+Patha: ऐन्द्रपाठः (supersection_5)
+--------------------------------------------------
+
+Patha: पवमानपाठः (supersection_6)
+--------------------------------------------------
+
+ISSUES FOUND: Please review the list above.

@@ -1,5 +1,6 @@
 ================================================================================
-JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY
+JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY (v3.0)
+Generated: 2026-02-03 14:47:55
 ================================================================================
 
 Counts from JSON output (used by both website and PDF generation)
@@ -86,7 +87,7 @@ PATHA 5: ऐन्द्रपाठः
 PATHA 6: पवमानपाठः
 --------------------------------------------------------------------------------
   Khanda 1: प्रथम खण्डः                    =   69 Samas
-  Khanda 2: द्वितीय खण्डः                  =   18 Samas
+  Khanda 2: द्वितीय खण्डः                  =   19 Samas
   Khanda 3: तृतीय खण्डः                    =   16 Samas
   Khanda 4: चतुर्थ खण्डः                   =   20 Samas
   Khanda 5: पञ्चम खण्डः                    =   76 Samas
@@ -97,10 +98,10 @@ PATHA 6: पवमानपाठः
   Khanda 10: दशम खण्डः                      =   39 Samas
   Khanda 11: एकादश खण्डः                    =   36 Samas
 
-  PATHA 6 TOTAL: 399 Samas (11 Khandas)
+  PATHA 6 TOTAL: 400 Samas (11 Khandas)
 
 ================================================================================
-GRAND TOTAL: 1225 Samas
+GRAND TOTAL: 1226 Samas
 Total Pathas: 6
 Total Khandas: 59
 ================================================================================

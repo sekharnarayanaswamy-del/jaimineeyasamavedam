@@ -11,6 +11,18 @@ from requests.models import PreparedRequest
 # --- End New Imports ---
 
 
+import datetime
+
+# --- Version and Metadata constants ---
+JSV_VERSION = "3.0"
+
+def get_generated_metadata():
+    """Returns a dictionary with version and generation timestamp."""
+    return {
+        "version": JSV_VERSION,
+        "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+
 # --- Functions Moved from renderPDF.py ---
 
 # --- Original code from convert_txt_to_json_1.py starts here ---

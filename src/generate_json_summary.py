@@ -7,10 +7,16 @@ import json
 import csv
 from collections import OrderedDict
 from samam_utils import count_samams_with_fallback
+from utils import get_generated_metadata
 
 INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
 OUTPUT_CSV = r'data\output\JSV_Structure_Summary.csv'
 OUTPUT_TXT = r'data\output\JSV_Structure_Summary.txt'
+
+# Get metadata
+metadata = get_generated_metadata()
+JSV_VERSION = metadata['version']
+GENERATED_AT = metadata['generated_at']
 
 # Load the JSON
 with open(INPUT_FILE, 'r', encoding='utf-8') as f:
@@ -60,7 +66,8 @@ with open(OUTPUT_CSV, 'w', encoding='utf-8', newline='') as csv_file, \
     writer.writerow(['Patha (SuperSection)', 'Khanda (Section)', 'Samas (Subsections)'])
     
     txt_file.write("=" * 80 + "\n")
-    txt_file.write("JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY\n")
+    txt_file.write(f"JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY (v{JSV_VERSION})\n")
+    txt_file.write(f"Generated: {GENERATED_AT}\n")
     txt_file.write("=" * 80 + "\n\n")
     txt_file.write("Counts from JSON output (used by both website and PDF generation)\n\n")
     

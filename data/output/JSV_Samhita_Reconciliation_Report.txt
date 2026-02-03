@@ -2,7 +2,7 @@
 JAIMINEEYA SAMAVEDA SAMHITA - DATA RECONCILIATION REPORT
 ================================================================================
 
-Generated: 2026-02-01 (Updated)
+Generated: 2026-02-02 (Updated)
 
 ================================================================================
 EXECUTIVE SUMMARY
@@ -12,9 +12,9 @@ Overall Structure:
   - Pathas (SuperSections):  6
   - Khandas (Sections):      59
   - Arsheyams (Subsections): 722
-  - Samams:                  1,225
+  - Samams:                  1,224
 
-Data Status: RECONCILED
+Data Status: RECONCILED (Count updated)
 
 ================================================================================
 SECTION 1: PATHA-WISE BREAKDOWN
@@ -22,14 +22,14 @@ SECTION 1: PATHA-WISE BREAKDOWN
 
 Patha               Khandas  Arsheyams  Samams
 --------------------------------------------------------------------------------
-आग्नेयपाठः              12       125       182
-तद्वपाठः               12       124       200
+आग्नेयपाठः              12       125       181
+तद्वपाठः               12       124       199
 बृहतिपाठः               8        95       152
 असाविपाठः               6        64       106
 ऐन्द्रपाठः              10       105       186
-पवमानपाठः              11       209       399
+पवमानपाठः              11       209       400
 --------------------------------------------------------------------------------
-TOTAL                  59       722     1,225
+TOTAL                  59       722     1,224
 
 Notes:
   - Arsheyam = Named sub-unit (e.g., गौतमस्यपर्कः), may contain multiple Samams
@@ -60,7 +60,7 @@ Metric       Website  JSON Summary  Granular Table  Status
 --------------------------------------------------------------------------------
 Khandas         59          59           59         MATCH
 Arsheyams      722         722           -          MATCH
-Samams       1,225       1,225        1,225         MATCH
+Samams       1,224       1,224        1,224         MATCH
 
 ================================================================================
 SECTION 4: OUTPUT FILES GENERATED
@@ -70,7 +70,7 @@ File                            Description                         Records
 --------------------------------------------------------------------------------
 JSV_Structure_Summary.csv       Sama counts by Patha/Khanda        59 rows
 JSV_Structure_Summary.txt       Human-readable summary             -
-JSV_Samam_Granular_Table.csv    Row-per-Samam with all details     1,225 rows
+JSV_Samam_Granular_Table.csv    Row-per-Samam with all details     1,224 rows
 samam_numbering_errors.txt      Numbering issues (if any)          -
 
 ================================================================================
@@ -104,7 +104,7 @@ Check               Status
 Data Integrity      OK - Source text extraction is accurate and complete
 Khandas             OK - All 59 Khandas across 6 Pathas correctly identified
 Arsheyams           OK - All 722 Arsheyams correctly counted
-Samams              OK - 1,225 Samams confirmed (unified counting method)
+Samams              OK - 1,224 Samams confirmed (unified counting method)
 Website             OK - Homepage displays correct statistics
 Consistency         OK - All outputs use same counting methodology
 

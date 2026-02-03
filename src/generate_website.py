@@ -18,7 +18,7 @@ Version: 2.0.0
 import os
 import re
 import json
-from utils import combine_ardhaksharas
+from utils import combine_ardhaksharas, get_generated_metadata
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
@@ -615,7 +615,8 @@ class WebsiteGenerator:
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
-        self.generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.metadata = get_generated_metadata()
+        self.generated_at = self.metadata['generated_at'] # Keep for backward compatibility if needed
         
     def generate(self):
         """Generate all website files"""
@@ -1709,6 +1710,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="जैमिनीय सामवेदम् - Jaimineeya Samavedam digital archive with authentic texts">
     <meta name="keywords" content="Samaveda, Jaimineeya, Vedas, Sanskrit, Hindu scriptures, Vedic chanting">
+    <meta name="version" content="{self.metadata['version']}">
     <title>{title} | जैमिनीय सामवेदम्</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1793,6 +1795,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a href="{prefix}index.html">
             <div class="logo-text">जैमिनीय सामवेदम्</div>
             <div class="logo-subtitle">Jaimineeya Samavedam</div>
+            <div class="logo-version" style="font-size: 0.7em; color: var(--text-secondary); margin-top: 4px;">v{self.metadata['version']}</div>
         </a>
     </div>
     
@@ -2357,6 +2360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         metadata = {
             "title": "जैमिनीय साम प्रकृति गानम्",
             "title_en": "Jaimineeya Sama Prakruti Ganam",
+            "version": self.metadata["version"],
             "generated_at": self.generated_at,
             "hierarchy": "Parva → Kandah → Sama",
             "stats": {

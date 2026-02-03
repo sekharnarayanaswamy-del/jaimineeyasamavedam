@@ -429,7 +429,17 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
     outputdir = f"{outputdir}/pdf/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
-    document = template.render(supersections=data, os=current_os, output_mode=output_mode)
+    
+    from utils import get_generated_metadata
+    meta = get_generated_metadata()
+    
+    document = template.render(
+        supersections=data, 
+        os=current_os, 
+        output_mode=output_mode,
+        version=meta['version'],
+        generated_at=meta['generated_at']
+    )
     
 
     tmpdirname="."

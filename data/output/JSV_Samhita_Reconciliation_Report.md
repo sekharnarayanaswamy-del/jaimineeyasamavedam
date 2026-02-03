@@ -1,6 +1,6 @@
 # Jaimineeya Samaveda Samhita - Data Reconciliation Report
 
-**Generated:** 2026-02-01 (Updated)
+**Generated:** 2026-02-03 12:51:39 (Updated for v3.0)
 
 ---
 
@@ -15,9 +15,9 @@ This report summarizes the data reconciliation analysis performed on the Jaimine
 | **Pathas (SuperSections)** | 6 |
 | **Khandas (Sections)** | 59 |
 | **Arsheyams (Subsections)** | 722 |
-| **Samams** | 1,225 |
+| **Samams** | 1,226 |
 
-**Data Status:** ✅ **RECONCILED**
+**Data Status:** ✅ **RECONCILED** (Count updated)
 
 ---
 
@@ -30,8 +30,8 @@ This report summarizes the data reconciliation analysis performed on the Jaimine
 | बृहतिपाठः | 8 | 95 | 152 |
 | असाविपाठः | 6 | 64 | 106 |
 | ऐन्द्रपाठः | 10 | 105 | 186 |
-| पवमानपाठः | 11 | 209 | 399 |
-| **TOTAL** | **59** | **722** | **1,225** |
+| पवमानपाठः | 11 | 209 | 400 |
+| **TOTAL** | **59** | **722** | **1,226** |
 
 > **Note:** 
 > - **Arsheyam** = Named sub-unit (e.g., ॥गौतमस्यपर्कः॥), each may contain multiple Samams
@@ -64,7 +64,7 @@ Comparison between website, JSON output, and granular table:
 |--------|---------|--------------|----------------|--------|
 | Khandas | 59 | 59 | 59 | ✅ MATCH |
 | Arsheyams | 722 | 722 | - | ✅ MATCH |
-| Samams | 1,225 | 1,225 | 1,225 | ✅ MATCH |
+| Samams | 1,226 | 1,226 | 1,226 | ✅ MATCH |
 
 ---
 
@@ -76,7 +76,7 @@ The following data files have been generated:
 |------|-------------|---------|
 | `JSV_Structure_Summary.csv` | Aggregated Sama counts by Patha/Khanda | 59 rows |
 | `JSV_Structure_Summary.txt` | Human-readable summary | - |
-| `JSV_Samam_Granular_Table.csv` | Row-per-Samam table with all details | 1,225 rows |
+| `JSV_Samam_Granular_Table.csv` | Row-per-Samam table with all details | 1,226 rows |
 | `samam_numbering_errors.txt` | List of any numbering issues found | - |
 
 ---
@@ -110,7 +110,7 @@ The following data files have been generated:
 | **Data Integrity** | ✅ Source text extraction is accurate and complete |
 | **Khandas** | ✅ All 59 Khandas across 6 Pathas correctly identified |
 | **Arsheyams** | ✅ All 722 Arsheyams correctly counted |
-| **Samams** | ✅ 1,225 Samams confirmed (unified counting method) |
+| **Samams** | ✅ 1,226 Samams confirmed (unified counting method) |
 | **Website** | ✅ Homepage displays correct statistics |
 | **Consistency** | ✅ All outputs use same counting methodology |
 

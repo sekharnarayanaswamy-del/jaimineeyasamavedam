@@ -3,6 +3,12 @@ from pathlib import Path
 import json
 import re
 import os
+from utils import get_generated_metadata
+
+# --- Version and Metadata ---
+metadata = get_generated_metadata()
+JSV_VERSION = metadata['version']
+GENERATED_AT = metadata['generated_at']
 
 # --- 1. HELPER: Devanagari Digit Converter ---
 def devanagari_to_int(text):
@@ -634,7 +640,14 @@ def convert_corrections_to_json(
         print(f"Error: The file '{file_path}' was not found.")
         return None
 
-    json_output = {"supersection": {}}
+    json_output = {
+        "meta": {
+            "version": JSV_VERSION,
+            "generated_at": GENERATED_AT,
+            "title": "Jaimineeya Samaveda Samhita Data"
+        },
+        "supersection": {}
+    }
     
     supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
     section_pattern = re.compile(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*(.*?)\s*\((.*?)\)\s*# End of Section Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
@@ -896,7 +909,14 @@ def parse_unicode_text_file(filepath):
         content = f.read()
     
     # Initialize data structure
-    data = {"supersection": {}}
+    data = {
+        "meta": {
+            "version": JSV_VERSION,
+            "generated_at": GENERATED_AT,
+            "title": "Jaimineeya Samaveda Samhita Data"
+        },
+        "supersection": {}
+    }
     
     # Patterns for matching markers
     supersection_pattern = re.compile(

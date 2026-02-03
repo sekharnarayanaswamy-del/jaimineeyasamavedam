@@ -7,9 +7,17 @@ import json
 import csv
 import re
 from samam_utils import SAMAM_PATTERN
+from utils import get_generated_metadata
 
 INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
 OUTPUT_CSV = r'data\output\JSV_Samam_Granular_Table.csv'
+
+# Get metadata
+metadata = get_generated_metadata()
+JSV_VERSION = metadata['version']
+GENERATED_AT = metadata['generated_at']
+
+print(f"Generating Granular Table (v{JSV_VERSION})...")
 
 # Load the JSON
 with open(INPUT_FILE, 'r', encoding='utf-8') as f:
