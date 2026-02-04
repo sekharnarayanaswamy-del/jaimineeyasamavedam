@@ -77,21 +77,34 @@ python src/generate_website.py --source-file data/output/Samhita_with_Rishi_Deva
 python src/render_pdf.py
 ```
 
-## Git Baseline & GitHub Updates
+## Deployment & Publishing
 
-To ensure work is saved and synchronized:
+### How it Works
+The website is hosted using **GitHub Pages**, configured to serve static content from the `docs/` folder on the `main` branch. 
+Any file committed and pushed to `docs/` becomes immediately available on the live site.
 
-1.  **Baseline Locally**:
+### Publishing Steps
+To publish the latest generated website:
+
+1.  **Generate Fresh Artifacts**:
+    Ensure you have run `src/generate_website.py` so the `docs/` folder contains the latest HTML.
+
+2.  **Commit Changes**:
+    Stage the changes in `docs/` (and other source files).
     ```bash
     git add .
-    git commit -m "Baseline: Synchronized CSV correction cycle and updated website"
+    git commit -m "Update website content [v3.0]"
     ```
 
-2.  **Push to GitHub**:
+3.  **Push to GitHub**:
     ```bash
     git push origin main
     ```
-    *Note: GitHub Pages is configured to serve from the `docs/` folder, so pushing these changes automatically updates the live website.*
+
+4.  **Verification**:
+    *   Wait 1-2 minutes for GitHub to deploy.
+    *   Visit the live site to verify changes.
+
 
 ## Running the Generator
 
