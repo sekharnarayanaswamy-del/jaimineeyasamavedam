@@ -411,12 +411,21 @@ class Sama:
     id: str
     title: str = ""
     rik_metadata: str = ""
+    saman_metadata: str = ""
     rik_text: str = ""
     mantra_text: str = ""
     footnotes: List[str] = field(default_factory=list)
     audio_filename: str = ""
     sama_number: int = 0
     global_number: int = 0  # Global sama number across all kandahs
+    
+    # Classification Fields
+    saman_rishi: str = ""
+    saman_devata: str = ""
+    saman_chandas: str = ""
+    rik_rishi: str = ""
+    rik_devata: str = ""
+    rik_chandas: str = ""
 
 @dataclass
 class Kandah:
@@ -445,9 +454,74 @@ class JSVParser:
         self.current_parva: Optional[Parva] = None
         self.current_kandah: Optional[Kandah] = None
         self.current_sama: Optional[Sama] = None
-        
     def parse(self) -> List[Parva]:
-        """Main parsing method"""
+        """Main parsing method - delegates based on file type"""
+        if self.source_file.lower().endswith('.json'):
+            return self._parse_json()
+        else:
+            return self._parse_text_file()
+
+    def _parse_json(self) -> List[Parva]:
+        """Parse JSON source file"""
+        with open(self.source_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        super_keys = sorted(data.get('supersection', {}).keys(), 
+                          key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+                          
+        for ss_key in super_keys:
+            ss_data = data['supersection'][ss_key]
+            title = ss_data.get('supersection_title', ss_key)
+            self._start_new_parva(ss_key, title)
+            
+            sec_keys = sorted(ss_data.get('sections', {}).keys(),
+                            key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+                            
+            for sec_key in sec_keys:
+                sec_data = ss_data['sections'][sec_key]
+                sec_title = sec_data.get('section_title', sec_key)
+                self._start_new_kandah(sec_key, sec_title)
+                
+                sub_keys = sorted(sec_data.get('subsections', {}).keys(),
+                                key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+                                
+                for sub_key in sub_keys:
+                    sub_data = sec_data['subsections'][sub_key]
+                    header_info = sub_data.get('header', {})
+                    sama_title = header_info.get('header', '')
+                    
+                    self._start_new_sama(sub_key, sama_title)
+                    
+                    if self.current_sama:
+                        self.current_sama.rik_metadata = sub_data.get('rik_metadata', '')
+                        self.current_sama.saman_metadata = sub_data.get('saman_metadata', '')
+                        self.current_sama.rik_text = sub_data.get('rik_text', '')
+                        
+                        ms = sub_data.get('corrected-mantra_sets', [])
+                        mantra_list = []
+                        for m in ms:
+                             mantra_list.append(m.get('corrected-mantra', ''))
+                        self.current_sama.mantra_text = '\n'.join(mantra_list)
+                        
+                        fns = sub_data.get('footnotes', {})
+                        fn_list = []
+                        for k, v in fns.items():
+                             fn_list.append(f"{k}: {v}")
+                        self.current_sama.footnotes = fn_list
+                        
+                        # Classification fields
+                        self.current_sama.saman_rishi = sub_data.get('saman_rishi', '')
+                        self.current_sama.saman_devata = sub_data.get('saman_devata', '')
+                        self.current_sama.saman_chandas = sub_data.get('saman_chandas', '')
+                        self.current_sama.rik_rishi = sub_data.get('rik_rishi', '')
+                        self.current_sama.rik_devata = sub_data.get('rik_devata', '')
+                        self.current_sama.rik_chandas = sub_data.get('rik_chandas', '')
+        
+        self._finalize_current_sama()
+        return self.parvas
+
+    def _parse_text_file(self) -> List[Parva]:
+        """Legacy Parsing method (Text File)"""
         content = self._read_file()
         lines = content.split('\n')
         
@@ -633,7 +707,7 @@ class WebsiteGenerator:
         self._generate_css()
         self._generate_js()
         self._generate_homepage()
-        # self._generate_indices() # Metadata parsing needs refinement
+        self._generate_indices()
         self._generate_kandah_pages()
         self._generate_metadata_json()
         
@@ -1104,13 +1178,24 @@ a:hover {
     margin-bottom: var(--spacing-sm);
 }
 
+/* Sama Header Container - Flex row for Title + Metadata */
+.sama-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-sm);
+}
+
 /* Sama Header Text - displayed above Sama/Mantra text in green */
 .sama-header-text {
     font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     color: #2e7d32;
     text-align: center;
-    margin-bottom: var(--spacing-sm);
+    width: auto;
+    max-width: fit-content;
 }
 
 /* Rik Text Box */
@@ -1136,6 +1221,7 @@ a:hover {
     font-size: 1.6rem;
     line-height: 2;
     color: #1565c0;
+    text-align: center;
 }
 
 /* Mantra Text Box */
@@ -1156,11 +1242,12 @@ a:hover {
     font-weight: 600;
 }
 
-.mantra-text {
+.mantra-container {
     font-family: var(--font-sanskrit);
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     line-height: 2.2;
     color: var(--text-primary);
+    text-align: left;
 }
 
 /* Audio Section */
@@ -1924,7 +2011,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 <div class="quick-links" style="margin-top: 2rem; text-align: center; opacity: 0.7;">
-                    <span class="index-btn" style="cursor: not-allowed; background: #f5f5f5; border-color: #ddd; color: #888;">सङ्क्रमणिका / वर्गीकरणम् (Coming Soon)</span>
+                    <a href="classification/index.html" class="index-btn">सङ्क्रमणिका / वर्गीकरणम् (Indices)</a>
                 </div>
             </div>
             
@@ -1942,6 +2029,23 @@ document.addEventListener('DOMContentLoaded', function() {
         
         with open(self.output_dir / 'index.html', 'w', encoding='utf-8') as f:
             f.write(html)
+
+    def _normalize_index_key(self, text: str) -> str:
+        """Normalize metadata keys to merge duplicates (spaces, punctuation)"""
+        if not text:
+            return ""
+        # Aggressive normalization
+        # 1. Remove internal parentheses content if needed? No, user said "(Name" -> "Name"
+        # So we just strip characters from ends.
+        
+        # Remove common surrounding punctuation/whitespace
+        # Including: spaces, dots, dandas, commas, parens, quotes
+        # Also strip Visarga (:) and Devanagari Visarga (ः) to handle case variations
+        text = text.strip(' \t\n\r.|॥,:;()\'"ः')
+        
+        # Collapse multiple spaces
+        text = re.sub(r'\s+', ' ', text)
+        return text.strip()
 
     def _collect_indices(self):
         """Collect data for all indices"""
@@ -1968,13 +2072,30 @@ document.addEventListener('DOMContentLoaded', function() {
                             })
                     
                     # Metadata Indices
-                    if sama.rik_metadata:
+                    # Priority: Explicit Saman Fields > Parsed Text
+                    ref = {'link': link_rel, 'location': location}
+                    
+                    r_val = sama.saman_rishi or sama.rik_rishi
+                    d_val = sama.saman_devata or sama.rik_devata
+                    c_val = sama.saman_chandas or sama.rik_chandas
+                    
+                    # Fallback to parsing if all empty
+                    if not (r_val or d_val or c_val) and sama.rik_metadata:
                         parts = self._parse_metadata(sama.rik_metadata)
-                        ref = {'link': link_rel, 'location': location}
-                        
-                        if parts['rishi']: self.rishi_index[parts['rishi']].append(ref)
-                        if parts['devata']: self.devata_index[parts['devata']].append(ref)
-                        if parts['chandas']: self.chandas_index[parts['chandas']].append(ref)
+                        r_val = parts.get('rishi', '')
+                        d_val = parts.get('devata', '')
+                        c_val = parts.get('chandas', '')
+                    
+                    # Normalize and Add
+                    if r_val:
+                        key = self._normalize_index_key(r_val)
+                        if key: self.rishi_index[key].append(ref)
+                    if d_val:
+                        key = self._normalize_index_key(d_val)
+                        if key: self.devata_index[key].append(ref)
+                    if c_val:
+                        key = self._normalize_index_key(c_val)
+                        if key: self.chandas_index[key].append(ref)
 
     def _generate_indices(self):
         """Generate all index pages"""
@@ -2167,14 +2288,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>'''
                     
                     # Sama title and metadata (displayed above Sama/Mantra text - in green)
-                    sama_header_html = ""
+                    sama_header_items = []
+                    
                     if sama.title:
                         # Clean existing dandas/dots - Added single danda '।'
                         clean_title = sama.title.strip(' .|॥।\n\r\t')
                         if clean_title:
                             # Normalize all internal danda variations
                             clean_title = re.sub(r'\s*[|॥।]+\s*', ' ॥ ', clean_title)
-                            sama_header_html = f'<div class="sama-header-text">॥ {clean_title} ॥</div>'
+                            sama_header_items.append(f'<div class="sama-header-text">॥ {clean_title} ॥</div>')
+                    
+                    # Samam Metadata (render if present, also in green)
+                    if sama.saman_metadata:
+                        clean_smeta = sama.saman_metadata.strip(' .|॥।\n\r\t')
+                        if clean_smeta:
+                            clean_smeta = re.sub(r'\s*[|॥।]+\s*', ' ॥ ', clean_smeta)
+                            sama_header_items.append(f'<div class="sama-header-text">॥ {clean_smeta} ॥</div>')
+                    
+                    sama_header_html = ""
+                    if sama_header_items:
+                        sama_header_html = f'<div class="sama-header-container">{"".join(sama_header_items)}</div>'
+
                     
                     # Mantra text with Sama header above it
                     mantra_html = ""
@@ -2183,7 +2317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         mantra_html = f'''
                         <div class="mantra-box">
                             {sama_header_html}
-                            <div class="mantra-text sanskrit-large">{formatted_mantra}</div>
+                            <div class="mantra-container sanskrit-large">{formatted_mantra}</div>
                         </div>'''
                     
                     # Audio section

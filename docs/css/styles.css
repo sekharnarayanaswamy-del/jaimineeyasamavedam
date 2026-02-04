@@ -438,13 +438,24 @@ a:hover {
     margin-bottom: var(--spacing-sm);
 }
 
+/* Sama Header Container - Flex row for Title + Metadata */
+.sama-header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-sm);
+}
+
 /* Sama Header Text - displayed above Sama/Mantra text in green */
 .sama-header-text {
     font-family: var(--font-sanskrit);
     font-size: 1.6rem;
     color: #2e7d32;
     text-align: center;
-    margin-bottom: var(--spacing-sm);
+    width: auto;
+    max-width: fit-content;
 }
 
 /* Rik Text Box */
@@ -470,6 +481,7 @@ a:hover {
     font-size: 1.6rem;
     line-height: 2;
     color: #1565c0;
+    text-align: center;
 }
 
 /* Mantra Text Box */
@@ -490,11 +502,12 @@ a:hover {
     font-weight: 600;
 }
 
-.mantra-text {
+.mantra-container {
     font-family: var(--font-sanskrit);
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     line-height: 2.2;
     color: var(--text-primary);
+    text-align: left;
 }
 
 /* Audio Section */

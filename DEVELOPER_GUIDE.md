@@ -26,68 +26,72 @@ The script generates the website into the `docs/` folder (configured for GitHub 
     *   When a Parva is selected, it lists its Kandahs.
     *   Inside a Kandah page, it lists **Sama Ranges** (e.g., 1-5, 6-10) for quick scrolling.
 *   **Samam Counting**: The script now counts verses by parsing delimiters (`||` or `॥`) inside the text, rather than just counting headers. This ensures the "Sama Count" reflects the actual chanted verses.
+*   **Unified Counting Logic**: A new shared module `src/samam_utils.py` provides central logic for finding and counting Samams, ensuring consistency across all scripts (`generate_website.py`, `generate_granular_table.py`, etc.).
 
-### Index Generation (Currently Disabled)
-Code has been added to generate classification indices for **Rishi**, **Devata**, and **Chandas**, as well as an alphabetical **Header Index**.
+### Index Generation
+Code is included and **enabled** to generate classification indices for **Rishi**, **Devata**, and **Chandas**, as well as an alphabetical **Header Index**.
 
-**Status**: *Disabled/Hidden* awaiting better metadata parsing.
+**Status**: *Active*. Indices are generated during the build process.
 
 **Code Location**:
 *   `_generate_indices()`: Method to orchestrate index creation.
 *   `_collect_indices()`: Method to parse metadata strings.
 *   `_generate_classification_home()`: Creates `classification/index.html`.
 
-**How to Enable**:
-1.  Open `src/generate_website.py`.
-2.  Go to the `generate()` method (around line 615).
-3.  Uncomment `self._generate_indices()`.
-4.  Go to `_generate_homepage` and change the "Coming Soon" placeholder back to a link.
+**Access**:
+Links to the indices are available on the Homepage under "सङ्क्रमणिका / वर्गीकरणम्".
 
-## Correction Cycle Workflow
+## Correction Cycle Workflow (v3.0 - CSV Enhanced)
+This project uses a CSV-driven correction cycle to manage structural IDs and Metadata (Rishi, Devata, Chandas) independently of the text. This allows for precise data management while preserving the ability to edit the text freely.
 
-This project involves a correction cycle where text is improved using a Unicode text file and then synced back.
-
-**Warning:** The correction cycle (generating text -> editing -> parsing back) **removes** structural Rik IDs ("Rishi/Devata" grouping info). You **must** run the Merge Step to restore this structure.
-
-### 1. Generate Correction File
-To produce a clean text file for editing:
+### 1. Generate Metadata CSV (Baseline)
+Generate the granular CSV table from your current JSON. This file (`data/output/JSV_Samam_Granular_Table.csv`) becomes your **Metadata Source of Truth**.
 ```bash
-# Initial Generation (if starting from scratch)
-python src/generate_json_for_samhita.py data/input/corrections_003.txt --input-mode initial
-
-# Or Generate Text File from existing JSON
-python src/generate_json.py data/output/Samhita_with_Rishi_Devata_Chandas_out.json --export-text
+python src/generate_granular_table.py
 ```
+*Note: This script uses `samam_utils.py` to ensure verse counts match the website exactly.*
 
-### 2. Edit Text
-Edit the generated `.txt` file using any Unicode-compliant editor (e.g., VS Code).
+### 2. Edit Metadata (CSV)
+Copy the generated CSV to your input folder (e.g., `data/input/granular_table.csv`). Open it in a spreadsheet editor (must support UTF-8).
+*   **Edit IDs**: Modify `Rik_ID` if grouping is incorrect.
+*   **Edit Metadata**: Fill in `Saman_Rishi`, `Saman_Devata`, `Saman_Chandas`.
+    *   *Note: These specific fields are what power the Website Indices.*
 
-### 3. Parse Back to JSON
-converts the corrected text back into JSON structure (but loses Rik ID grouping):
+### 3. Edit Text (Txt)
+Edit the mantra text in the Unicode Text File (`data/input/Samhita_with_Rishi_Devata_Chandas.txt`) as usual. You can fix typos, swaras, etc.
+
+### 4. Generate JSON (Fusion)
+Run `generate_json.py` in **correction mode** by passing the CSV. This merges your text corrections with the refined structure and metadata from the CSV.
 ```bash
-python src/generate_json.py data/input/Samhita_with_Rishi_Devata_Chandas.txt
+python src/generate_json.py "data/input/Samhita_with_Rishi_Devata_Chandas.txt" --input-mode correction --metadata-csv "data/input/granular_table.csv"
 ```
-
-### 4. Merge IDs (CRITICAL STEP)
-Restores the correct Rik ID groupings from a "Master" structure file (e.g., `Agneyam-Pavamanam_latest_out.json`):
-```bash
-python src/merge_json_ids.py
-```
-*Note: Ensure `src/merge_json_ids.py` points to the correct "Structure Source" and "Content Target" files.*
+*Result*: `data/output/Samhita_with_Rishi_Devata_Chandas_out.json` is created with perfect structure and metadata.
 
 ### 5. Regenerate Artifacts
-After merging, regenerate all downstream outputs to reflect changes:
+Generate the website directly from the new JSON. The website generator now reads the JSON directly to utilize the specific metadata fields for indexing.
 ```bash
-# Update CSV Tables
-python src/generate_granular_table.py
-python src/generate_json_summary.py
-
 # Update Website
-python src/generate_website.py
+python src/generate_website.py --source-file data/output/Samhita_with_Rishi_Devata_Chandas_out.json
 
-# Update PDF Source (optional)
+# Update PDF Source
 python src/render_pdf.py
 ```
+
+## Git Baseline & GitHub Updates
+
+To ensure work is saved and synchronized:
+
+1.  **Baseline Locally**:
+    ```bash
+    git add .
+    git commit -m "Baseline: Synchronized CSV correction cycle and updated website"
+    ```
+
+2.  **Push to GitHub**:
+    ```bash
+    git push origin main
+    ```
+    *Note: GitHub Pages is configured to serve from the `docs/` folder, so pushing these changes automatically updates the live website.*
 
 ## Running the Generator
 

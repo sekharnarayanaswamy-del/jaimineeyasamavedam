@@ -43,6 +43,9 @@ def merge_ids(structure_source_path, content_source_path, output_path):
                             
                             if "rik_ids" in struct_sub:
                                 sub_val["rik_ids"] = struct_sub["rik_ids"]
+                                
+                            if "rik_metadata" in struct_sub:
+                                sub_val["rik_metadata"] = struct_sub["rik_metadata"]
                             
                             updates_count += 1
 

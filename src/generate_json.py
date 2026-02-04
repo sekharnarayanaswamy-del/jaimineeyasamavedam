@@ -894,17 +894,42 @@ def extract_samam_only_data(combined_data):
 
 
 # --- UNICODE TEXT FILE PARSER (for correction cycle) ---
-def parse_unicode_text_file(filepath):
+def parse_unicode_text_file(filepath, csv_metadata_path=None):
     """
-    Parse the structured Unicode text file back into JSON format.
+    Parses the unicode text file produced by convert_corrections_to_json.
+    Reconstructs the JSON structure.
     Uses # Start/End markers to identify sections.
+    Optionally enriches with metadata from CSV.
     """
-    import re
     
     if not os.path.exists(filepath):
         print(f"[ERROR] Unicode file '{filepath}' not found.")
         return None
     
+    import csv 
+    import re
+    
+    # --- Load CSV Metadata if provided ---
+    csv_data = {}
+    if csv_metadata_path:
+        if os.path.exists(csv_metadata_path):
+            try:
+                with open(csv_metadata_path, 'r', encoding='utf-8-sig') as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        try:
+                            # Map by Global_Samam_Num
+                            key = int(row['Global_Samam_Num'])
+                            csv_data[key] = row
+                        except (ValueError, KeyError):
+                            continue
+                print(f"[INFO] Loaded metadata for {len(csv_data)} samams from CSV.")
+            except Exception as e:
+                print(f"[ERROR] Failed to load CSV metadata: {e}")
+        else:
+             print(f"[ERROR] CSV Metadata file not found: {csv_metadata_path}")
+    # -------------------------------------
+
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -1062,7 +1087,11 @@ def parse_unicode_text_file(filepath):
             subsection_to_section[sub_match.group(1)] = current_section
     
     # Add subsections to their sections
-    for sub_id in sorted(all_subsection_ids, key=lambda x: int(x.replace('subsection_', '')) if x.startswith('subsection_') else 0):
+    # Add subsections to their sections
+    global_samam_count = 0
+    sorted_sub_ids = sorted(all_subsection_ids, key=lambda x: int(x.replace('subsection_', '')) if x.startswith('subsection_') else 0)
+    
+    for sub_id in sorted_sub_ids:
         sec_id = subsection_to_section.get(sub_id, 'section_1')
         
         # Find the supersection containing this section
@@ -1070,19 +1099,79 @@ def parse_unicode_text_file(filepath):
             if sec_id in data["supersection"][ss_id]["sections"]:
                 header_info = subsection_headers.get(sub_id, {"header": "", "saman_metadata": ""})
                 
-                # Extract rik_id from subsection number
+                # Extract rik_id from subsection number (DEFAULT)
                 sub_num = int(sub_id.replace('subsection_', '')) if sub_id.startswith('subsection_') else 0
+                rik_id_to_use = sub_num
+                rik_ids_to_use = None
+                
+                rik_meta_to_use = rik_metadata_map.get(sub_id, "")
+                saman_meta_to_use = header_info["saman_metadata"]
+                
+                # New Metadata Fields
+                rik_rishi_val = ""
+                rik_devata_val = ""
+                rik_chandas_val = ""
+                saman_rishi_val = ""
+                saman_devata_val = ""
+                saman_chandas_val = ""
+                
+                # Calculate how many samams are in this subsection
+                mantra_lines = mantra_sets_map.get(sub_id, [])
+                full_mantra_text = "\n".join(mantra_lines)
+                # Count Devanagari numeral markers inside double dandas
+                mantra_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_mantra_text)
+                num_mantras = len(mantra_markers) if mantra_markers else 1
+                
+                # Use current global counter for CSV lookup
+                current_lookup_index = global_samam_count + 1
+                
+                # Update Global Counter for next iteration (add actual number of mantras)
+                global_samam_count += num_mantras
+                
+                if csv_data and current_lookup_index in csv_data:
+                    csv_row = csv_data[current_lookup_index]
+                    
+                    if csv_row.get('Rik_ID'):
+                         try:
+                             rik_id_to_use = int(csv_row['Rik_ID'])
+                         except ValueError:
+                             pass
+                             
+                    if csv_row.get('Rik_Metadata'):
+                        rik_meta_to_use = csv_row['Rik_Metadata']
+                        
+                    if csv_row.get('Saman_Metadata'):
+                        saman_meta_to_use = csv_row['Saman_Metadata']
+                    
+                    # Map new specific fields
+                    rik_rishi_val = csv_row.get('Rik_Rishi', '')
+                    rik_devata_val = csv_row.get('Rik_Devata', '')
+                    rik_chandas_val = csv_row.get('Rik_Chandas', '')
+                    rik_chandas_val = csv_row.get('Rik_Chandas', '')
+                    saman_rishi_val = csv_row.get('Samam_Rishi', '')
+                    saman_devata_val = csv_row.get('Samam_Devata', '')
+                    saman_chandas_val = csv_row.get('Samam_Chandas', '')
+                    
+
                 
                 # Build subsection entry
                 subsection_entry = {
                     "header": {"header": header_info["header"], "header_number": sub_num},
-                    "rik_id": sub_num,  # Will be corrected by Rik mapping if needed
-                    "rik_metadata": rik_metadata_map.get(sub_id, ""),
+                    "rik_id": rik_id_to_use, 
+                    "rik_metadata": rik_meta_to_use,
                     "rik_text": rik_text_map.get(sub_id, ""),
-                    "saman_metadata": header_info["saman_metadata"],
+                    "saman_metadata": saman_meta_to_use,
                     "mantra_sets": [],
                     "corrected-mantra_sets": [{"corrected-mantra": '\n'.join(mantra_sets_map.get(sub_id, []))}],
-                    "footnotes": footnotes_map.get(sub_id, {})
+                    "footnotes": footnotes_map.get(sub_id, {}),
+                    
+                    # New Fields
+                    "rik_rishi": rik_rishi_val,
+                    "rik_devata": rik_devata_val,
+                    "rik_chandas": rik_chandas_val,
+                    "saman_rishi": saman_rishi_val,
+                    "saman_devata": saman_devata_val,
+                    "saman_chandas": saman_chandas_val,
                 }
                 
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
@@ -1106,6 +1195,7 @@ Input Modes:
 Examples:
   python generate_json_for_samhita.py corrections_003.txt --input-mode initial
   python generate_json_for_samhita.py Full_Samhita_ip_with_FN.txt --input-mode correction --output output.json
+  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-csv data/output/JSV_Samam_Granular_Table.csv
         """
     )
     parser.add_argument('input_file', type=str,
@@ -1114,6 +1204,10 @@ Examples:
                         help='Input mode: initial or correction (default: correction)')
     parser.add_argument('--output', type=str, default=None,
                         help='Output JSON file path (default: auto-generated from input filename)')
+    parser.add_argument('--metadata-csv', type=str, default=None,
+                        help='Optional CSV file to enrich metadata (correction mode only)')
+    parser.add_argument('--initial-json', type=str, default=None,
+                        help='Trusted Initial JSON output to map Rik IDs correctly (correction mode only)')
     
     args = parser.parse_args()
     
@@ -1145,7 +1239,9 @@ Examples:
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
 
         print(f"Processing {input_file} in CORRECTION mode...")
-        output_data = parse_unicode_text_file(input_file)
+        if args.metadata_csv:
+            print(f"Enriching with metadata from: {args.metadata_csv}")
+        output_data = parse_unicode_text_file(input_file, csv_metadata_path=args.metadata_csv)
     
     if output_data:
         try:
