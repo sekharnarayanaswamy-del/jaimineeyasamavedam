@@ -1,6 +1,6 @@
 # Jaimineeya Samaveda Samhita - Data Reconciliation Report
 
-**Generated:** 2026-02-03 12:51:39 (Updated for v3.0)
+**Generated:** 2026-02-04 22:36:18
 
 ---
 
@@ -14,106 +14,50 @@ This report summarizes the data reconciliation analysis performed on the Jaimine
 |--------|-------|
 | **Pathas (SuperSections)** | 6 |
 | **Khandas (Sections)** | 59 |
-| **Arsheyams (Subsections)** | 722 |
 | **Samams** | 1,226 |
 
-**Data Status:** ✅ **RECONCILED** (Count updated)
+**Numbering Continuity:** ✅ **PASS**
 
 ---
 
 ## Section 1: Patha-wise Breakdown
 
-| Patha | Khandas | Arsheyams | Samams |
-|-------|---------|-----------|--------|
-| आग्नेयपाठः | 12 | 125 | 182 |
-| तद्वपाठः | 12 | 124 | 200 |
-| बृहतिपाठः | 8 | 95 | 152 |
-| असाविपाठः | 6 | 64 | 106 |
-| ऐन्द्रपाठः | 10 | 105 | 186 |
-| पवमानपाठः | 11 | 209 | 400 |
-| **TOTAL** | **59** | **722** | **1,226** |
-
-> **Note:** 
-> - **Arsheyam** = Named sub-unit (e.g., ॥गौतमस्यपर्कः॥), each may contain multiple Samams
-> - **Samam** = Individual chant/verse number, counted from the `॥N॥` markers in the text
+| Patha | Samams |
+|-------|--------|
+| आग्नेयपाठः | 182 |
+| तद्वपाठः | 200 |
+| बृहतिपाठः | 152 |
+| असाविपाठः | 106 |
+| ऐन्द्रपाठः | 186 |
+| पवमानपाठः | 400 |
+| **TOTAL** | **1,226** |
 
 ---
 
-## Section 2: Counting Methodology
+## Section 2: Continuity & Integrity Checks
 
-The Samam count is derived using a **unified counting method** implemented in `src/samam_utils.py`:
+Derived from `JSON_Samam_Continuity_Report.txt`.
 
-```python
-# Pattern matches both Devanagari (॥) and ASCII (||) danda markers
-# With both Devanagari (०-९) and Arabic (0-9) numerals
-SAMAM_PATTERN = re.compile(r'(?:॥|\|\|)\s*[\d०-९]+\s*(?:॥|\|\|)')
-```
-
-This ensures consistency between:
-- Website homepage statistics
-- Summary table generation
-- Granular table generation
+### ✅ No Issues Found
+All Khandas have contiguous Samam numbering starting from 1.
 
 ---
 
-## Section 3: Data Source Comparison
+## Section 3: Output Files Generated
 
-Comparison between website, JSON output, and granular table:
-
-| Metric | Website | JSON Summary | Granular Table | Status |
-|--------|---------|--------------|----------------|--------|
-| Khandas | 59 | 59 | 59 | ✅ MATCH |
-| Arsheyams | 722 | 722 | - | ✅ MATCH |
-| Samams | 1,226 | 1,226 | 1,226 | ✅ MATCH |
-
----
-
-## Section 4: Output Files Generated
-
-The following data files have been generated:
-
-| File | Description | Records |
-|------|-------------|---------|
-| `JSV_Structure_Summary.csv` | Aggregated Sama counts by Patha/Khanda | 59 rows |
-| `JSV_Structure_Summary.txt` | Human-readable summary | - |
-| `JSV_Samam_Granular_Table.csv` | Row-per-Samam table with all details | 1,226 rows |
-| `samam_numbering_errors.txt` | List of any numbering issues found | - |
-
----
-
-## Section 5: Terminology Reference
-
-| Term | Also Known As | Description |
-|------|---------------|-------------|
-| **Patha** | SuperSection | The 6 major divisions (आग्नेय, तद्व, बृहति, असावि, ऐन्द्र, पवमान) |
-| **Khanda** | Section | Chapters within each Patha (प्रथम खण्डः, द्वितीय खण्डः, etc.) |
-| **Arsheyam** | Subsection | Named sub-unit, often containing multiple Samams (e.g., ॥गौतमस्यपर्कः॥) |
-| **Samam** | Sama | Individual chant/verse, identified by `॥N॥` markers in mantra text |
-
----
-
-## Section 6: Scripts Reference
-
-| Script | Purpose |
-|--------|---------|
-| `src/samam_utils.py` | Shared utility for consistent Samam counting |
-| `src/generate_website.py` | Generates static website with correct counts |
-| `src/generate_json_summary.py` | Generates structure summary CSV/TXT |
-| `src/generate_granular_table.py` | Generates row-per-Samam CSV |
+| File | Description | Status |
+|------|-------------|--------|
+| `JSV_Structure_Summary.csv` | Aggregated counts | Updated |
+| `JSV_Samam_Granular_Table.csv` | Full Samam list (1226 rows) | Updated |
+| `JSON_Samam_Continuity_Report.txt` | Detailed checks | Updated |
 
 ---
 
 ## Conclusion
 
-| Check | Status |
-|-------|--------|
-| **Data Integrity** | ✅ Source text extraction is accurate and complete |
-| **Khandas** | ✅ All 59 Khandas across 6 Pathas correctly identified |
-| **Arsheyams** | ✅ All 722 Arsheyams correctly counted |
-| **Samams** | ✅ 1,226 Samams confirmed (unified counting method) |
-| **Website** | ✅ Homepage displays correct statistics |
-| **Consistency** | ✅ All outputs use same counting methodology |
+| Check | Status | Note |
+|-------|--------|------|
+| **Total Count** | 1226 | Based on '॥N॥' markers |
+| **Continuity** | ✅ **PASS** | See Section 2 |
 
----
-
-*Report generated as part of the Jaimineeya Samaveda digitization project.*
+*Report generated automatically by `src/generate_reconciliation_report.py`*

@@ -1,17 +1,15 @@
 JAIMINEEYA SAMAVEDA SAMHITA - TEXT INPUT CONTINUITY CHECK (v3.0)
-Generated: 2026-02-03 12:45:27
+Generated: 2026-02-04 22:36:01
 =======================================================
 
 Patha: आग्नेयपाठः
 ----------------------------------------
-  तृतीय खण्डः: Duplicates: [18]
 
 Patha: तद्वपाठः
 ----------------------------------------
 
 Patha: बृहतिपाठः
 ----------------------------------------
-  चतुर्थ खण्डः: Duplicates: [6]; Missing: [7]
 
 Patha: असाविपाठः
 ----------------------------------------
@@ -22,4 +20,4 @@ Patha: ऐन्द्रपाठः
 Patha: पवमानपाठः
 ----------------------------------------
 
-ISSUES FOUND: Please review the list above.
+SUCCESS: No numbering issues found in text input.
