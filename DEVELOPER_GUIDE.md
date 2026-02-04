@@ -80,7 +80,7 @@ python src/render_pdf.py
 ## Deployment & Publishing
 
 ### How it Works
-The website is hosted using **GitHub Pages**, configured to serve static content from the `docs/` folder on the `main` branch. 
+The website is hosted using **GitHub Pages**, configured to serve static content from the `docs/` folder on the `format-mantras` branch. 
 Any file committed and pushed to `docs/` becomes immediately available on the live site.
 
 ### Publishing Steps
@@ -98,12 +98,13 @@ To publish the latest generated website:
 
 3.  **Push to GitHub**:
     ```bash
-    git push origin main
+    git push origin format-mantras
     ```
 
 4.  **Verification**:
     *   Wait 1-2 minutes for GitHub to deploy.
     *   Visit the live site to verify changes.
+
 
 
 ## Running the Generator
