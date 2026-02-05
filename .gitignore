@@ -39,6 +39,8 @@ output_text/lines/
 
 # *.txt
 *.csv
+!data/input/granular_table.csv
+!data/output/JSV_Samam_Granular_Table.csv
 
 # Images
 *.png

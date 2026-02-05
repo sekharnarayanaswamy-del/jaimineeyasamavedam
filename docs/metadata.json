@@ -1,0 +1,4860 @@
+{
+  "title": "जैमिनीय साम प्रकृति गानम्",
+  "title_en": "Jaimineeya Sama Prakruti Ganam",
+  "version": "3.0",
+  "generated_at": "2026-02-05 09:58:06",
+  "hierarchy": "Parva → Kandah → Sama",
+  "stats": {
+    "total_parvas": 6,
+    "total_kandahs": 59,
+    "total_samas": 722
+  },
+  "parvas": [
+    {
+      "id": "supersection_1",
+      "number": 1,
+      "title": "आग्नेयपाठः",
+      "kandahs": [
+        {
+          "id": "section_1",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_1",
+              "number": 1,
+              "title": "॥गौतमस्यपर्कः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_2",
+              "number": 2,
+              "title": "॥कश्यपस्यबर्हिषीयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_3",
+              "number": 3,
+              "title": "॥गौतमस्यचैवपर्कः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_4",
+              "number": 4,
+              "title": "॥सौपर्णञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_5",
+              "number": 5,
+              "title": "॥वैश्वमनसञ्चादित्यसामवा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_6",
+              "number": 6,
+              "title": "॥श्रौतर्षाणित्रीणि॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_7",
+              "number": 7,
+              "title": "॥औशनञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_8",
+              "number": 8,
+              "title": "॥शैरीषेच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_9",
+              "number": 9,
+              "title": "॥इन्द्रस्यसंवर्गौवात्रघ्नेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_10",
+              "number": 10,
+              "title": "॥साकमश्वस्यशौनःशेपेःसामनी द्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_11",
+              "number": 11,
+              "title": "॥वत्सस्यकाण्वस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_12",
+              "number": 12,
+              "title": "॥अग्नेश्चवैश्वानरस्यार्षेयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_12.mp3"
+            },
+            {
+              "id": "subsection_13",
+              "number": 13,
+              "title": "॥सुमित्रस्यचवार्द्धश्वेस्साम॥",
+              "audio_filename": "JSV_आग्नेयपाठः_01_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_2",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_14",
+              "number": 1,
+              "title": "॥अग्नेश्चसंवर्गः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_15",
+              "number": 2,
+              "title": "॥वैश्वमनसञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_16",
+              "number": 3,
+              "title": "॥श्नाभाश्नौष्टेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_17",
+              "number": 4,
+              "title": "॥वैश्वामित्रञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_18",
+              "number": 5,
+              "title": "॥अग्नेश्चजराबोधीये॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_19",
+              "number": 6,
+              "title": "॥मारूतञ्च॥ मरुतो गायत्र्यग्निः ।।",
+              "audio_filename": "JSV_आग्नेयपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_20",
+              "number": 7,
+              "title": "॥भार्गवेच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_21",
+              "number": 8,
+              "title": "॥अग्नेश्चवारवन्तीयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_08.mp3"
+            },
+            {
+              "id": "subsection_22",
+              "number": 9,
+              "title": "॥और्वस्यवैधारेस्सामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_09.mp3"
+            },
+            {
+              "id": "subsection_23",
+              "number": 10,
+              "title": "॥अत्रेश्चासङ्गम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_10.mp3"
+            },
+            {
+              "id": "subsection_24",
+              "number": 11,
+              "title": "॥प्रजापतेश्चनिधनकामम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_02_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_3",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_25",
+              "number": 1,
+              "title": "॥सैन्धुक्षितानित्रीणि॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_26",
+              "number": 2,
+              "title": "॥अग्नेर्हरसीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_27",
+              "number": 3,
+              "title": "॥इहवद्वामदेव्यंतृतीयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_28",
+              "number": 4,
+              "title": "॥यामेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_29",
+              "number": 5,
+              "title": "॥अग्नेराक्षोघ्नेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_30",
+              "number": 6,
+              "title": "॥वैश्वमनसञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_31",
+              "number": 7,
+              "title": "॥अग्नेश्चार्षेयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_32",
+              "number": 8,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_08.mp3"
+            },
+            {
+              "id": "subsection_33",
+              "number": 9,
+              "title": "॥गोपवनञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_09.mp3"
+            },
+            {
+              "id": "subsection_34",
+              "number": 10,
+              "title": "॥सूर्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_10.mp3"
+            },
+            {
+              "id": "subsection_35",
+              "number": 11,
+              "title": "॥कावञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_11.mp3"
+            },
+            {
+              "id": "subsection_36",
+              "number": 12,
+              "title": "॥वसुरोचिषस्सौर्यवर्चस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_12.mp3"
+            },
+            {
+              "id": "subsection_37",
+              "number": 13,
+              "title": "॥गौराङ्गिरसस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_03_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_4",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 15,
+          "samas": [
+            {
+              "id": "subsection_38",
+              "number": 1,
+              "title": "॥भारद्वाजस्यौपहवौद्वौ॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_39",
+              "number": 2,
+              "title": "॥श्रुष्टीगवम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_40",
+              "number": 3,
+              "title": "॥अग्नेश्चयज्ञायज्ञीयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_41",
+              "number": 4,
+              "title": "॥कार्तवेशञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_42",
+              "number": 5,
+              "title": "॥नार्मेधञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_43",
+              "number": 6,
+              "title": "॥महाकार्तवेशञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_44",
+              "number": 7,
+              "title": "॥भारद्वाजस्यपृश्नीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_45",
+              "number": 8,
+              "title": "॥उरोराङ्गिरसस्यसाम॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_46",
+              "number": 9,
+              "title": "॥गौतमस्यपौरुमुद्गेद्वेपुरुमुद्गस्यवाङ्गीरसस्यदेवानांवा ॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_09.mp3"
+            },
+            {
+              "id": "subsection_47",
+              "number": 10,
+              "title": "॥मण्डोर्जामदग्न्यस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_10.mp3"
+            },
+            {
+              "id": "subsection_48",
+              "number": 11,
+              "title": "॥भारद्वाजस्यगाधम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_11.mp3"
+            },
+            {
+              "id": "subsection_49",
+              "number": 12,
+              "title": "॥गौतमेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_12.mp3"
+            },
+            {
+              "id": "subsection_50",
+              "number": 13,
+              "title": "॥अग्नेरायुः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_13.mp3"
+            },
+            {
+              "id": "subsection_51",
+              "number": 14,
+              "title": "॥अग्नेर्हरसीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_14.mp3"
+            },
+            {
+              "id": "subsection_52",
+              "number": 15,
+              "title": "॥दैर्घश्रवसेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_04_15.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_5",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_53",
+              "number": 1,
+              "title": "॥अग्नेराग्नेयेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_54",
+              "number": 2,
+              "title": "॥गौतमस्यमनार्येद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_55",
+              "number": 3,
+              "title": "॥दैवोराजञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_56",
+              "number": 4,
+              "title": "॥गाधिनश्चकौशिकस्यसाम॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_57",
+              "number": 5,
+              "title": "॥बार्हदुत्थेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_58",
+              "number": 6,
+              "title": "॥पौरुमीढञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_59",
+              "number": 7,
+              "title": "॥कार्णश्रवसम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_60",
+              "number": 8,
+              "title": "॥दैवोदासञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_61",
+              "number": 9,
+              "title": "॥सौकृतवञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_09.mp3"
+            },
+            {
+              "id": "subsection_62",
+              "number": 10,
+              "title": "॥काण्वेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_10.mp3"
+            },
+            {
+              "id": "subsection_63",
+              "number": 11,
+              "title": "॥मानवेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_05_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_6",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 8,
+          "samas": [
+            {
+              "id": "subsection_64",
+              "number": 1,
+              "title": "॥अग्नेश्चद्रविणम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_65",
+              "number": 2,
+              "title": "॥बार्हस्पत्यञ्चब्राह्मणस्पत्यंवा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_66",
+              "number": 3,
+              "title": "॥वसिष्ठस्यचवीङ्कम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_67",
+              "number": 4,
+              "title": "॥विस्पर्धञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_68",
+              "number": 5,
+              "title": "॥ऐतवृधञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_69",
+              "number": 6,
+              "title": "॥मनसश्चदोहः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_70",
+              "number": 7,
+              "title": "॥समन्तानित्रिणिअग्नेरेकमिन्द्राग्न्योर्वाप्रजापतेर्वावरुणस्यद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_71",
+              "number": 8,
+              "title": "॥वमृस्यवैखानसस्यसाम॥",
+              "audio_filename": "JSV_आग्नेयपाठः_06_08.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_7",
+          "number": 7,
+          "title": "सप्तम खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_72",
+              "number": 1,
+              "title": "॥श्यावाश्वञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_01.mp3"
+            },
+            {
+              "id": "subsection_73",
+              "number": 2,
+              "title": "॥ऋतुसामनीच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_02.mp3"
+            },
+            {
+              "id": "subsection_74",
+              "number": 3,
+              "title": "॥यामञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_03.mp3"
+            },
+            {
+              "id": "subsection_75",
+              "number": 4,
+              "title": "॥अग्नेश्चाग्नेयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_04.mp3"
+            },
+            {
+              "id": "subsection_76",
+              "number": 5,
+              "title": "॥अग्नेर्वैश्वानरस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_05.mp3"
+            },
+            {
+              "id": "subsection_77",
+              "number": 6,
+              "title": "॥ऐटतेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_06.mp3"
+            },
+            {
+              "id": "subsection_78",
+              "number": 7,
+              "title": "॥वामदेव्यञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_07.mp3"
+            },
+            {
+              "id": "subsection_79",
+              "number": 8,
+              "title": "॥वैश्यज्योतिषेच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_08.mp3"
+            },
+            {
+              "id": "subsection_80",
+              "number": 9,
+              "title": "॥यामेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_09.mp3"
+            },
+            {
+              "id": "subsection_81",
+              "number": 10,
+              "title": "॥प्रजापतेराशिमरायेद्वेमरायराशिनिवा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_07_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_8",
+          "number": 8,
+          "title": "अष्टम खण्डः",
+          "sama_count": 7,
+          "samas": [
+            {
+              "id": "subsection_82",
+              "number": 1,
+              "title": "॥श्येनञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_01.mp3"
+            },
+            {
+              "id": "subsection_83",
+              "number": 2,
+              "title": "॥वासोक्रञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_02.mp3"
+            },
+            {
+              "id": "subsection_84",
+              "number": 3,
+              "title": "॥पौष्णञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_03.mp3"
+            },
+            {
+              "id": "subsection_85",
+              "number": 4,
+              "title": "॥कौत्सञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_04.mp3"
+            },
+            {
+              "id": "subsection_86",
+              "number": 5,
+              "title": "॥काश्यपेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_05.mp3"
+            },
+            {
+              "id": "subsection_87",
+              "number": 6,
+              "title": "॥घृताचेराङ्गिरसस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_06.mp3"
+            },
+            {
+              "id": "subsection_88",
+              "number": 7,
+              "title": "॥भारद्वाजस्यप्रासाहम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_08_07.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_9",
+          "number": 9,
+          "title": "नवम खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_89",
+              "number": 1,
+              "title": "॥पाथेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_01.mp3"
+            },
+            {
+              "id": "subsection_90",
+              "number": 2,
+              "title": "॥बृहच्चाग्नेयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_02.mp3"
+            },
+            {
+              "id": "subsection_91",
+              "number": 3,
+              "title": "॥कौन्मुदम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_03.mp3"
+            },
+            {
+              "id": "subsection_92",
+              "number": 4,
+              "title": "॥बृहचैवाग्नेयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_04.mp3"
+            },
+            {
+              "id": "subsection_93",
+              "number": 5,
+              "title": "॥कौन्मुदञ्चैव॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_05.mp3"
+            },
+            {
+              "id": "subsection_94",
+              "number": 6,
+              "title": "॥अग्नेर्यद्वाहिष्ठीयेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_06.mp3"
+            },
+            {
+              "id": "subsection_95",
+              "number": 7,
+              "title": "॥अग्नेश्चविशोविशीयम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_07.mp3"
+            },
+            {
+              "id": "subsection_96",
+              "number": 8,
+              "title": "॥प्रजापतेःकनीनिकेद्वेअत्रेर्वा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_08.mp3"
+            },
+            {
+              "id": "subsection_97",
+              "number": 9,
+              "title": "॥श्रौतर्वणञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_09.mp3"
+            },
+            {
+              "id": "subsection_98",
+              "number": 10,
+              "title": "॥कश्यपस्यसयोनिः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_09_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_10",
+          "number": 10,
+          "title": "दशम खण्डः",
+          "sama_count": 6,
+          "samas": [
+            {
+              "id": "subsection_99",
+              "number": 1,
+              "title": "॥बार्हस्पत्यञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_01.mp3"
+            },
+            {
+              "id": "subsection_100",
+              "number": 2,
+              "title": "॥ऐषञ्चारूढवदाङ्गिरसम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_02.mp3"
+            },
+            {
+              "id": "subsection_101",
+              "number": 3,
+              "title": "॥आसीतेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_03.mp3"
+            },
+            {
+              "id": "subsection_102",
+              "number": 4,
+              "title": "॥त्वाष्ट्रीसामच॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_04.mp3"
+            },
+            {
+              "id": "subsection_103",
+              "number": 5,
+              "title": "॥मानवञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_05.mp3"
+            },
+            {
+              "id": "subsection_104",
+              "number": 6,
+              "title": "॥अगस्तस्यचराक्षोघ्नम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_10_06.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_11",
+          "number": 11,
+          "title": "एकादश खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_105",
+              "number": 1,
+              "title": "॥तौदेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_01.mp3"
+            },
+            {
+              "id": "subsection_106",
+              "number": 2,
+              "title": "॥दैर्घतमसानित्रीणि॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_02.mp3"
+            },
+            {
+              "id": "subsection_107",
+              "number": 3,
+              "title": "॥श्यावाश्वस्यप्रहितौद्वौ॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_03.mp3"
+            },
+            {
+              "id": "subsection_108",
+              "number": 4,
+              "title": "॥प्रजापतेःश्रुधीयेद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_04.mp3"
+            },
+            {
+              "id": "subsection_109",
+              "number": 5,
+              "title": "॥प्रजापतेःसदोहविर्धानानित्रीणिसदःपूर्वंहविर्धाने उत्तरे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_05.mp3"
+            },
+            {
+              "id": "subsection_110",
+              "number": 6,
+              "title": "॥त्वष्टुश्चातिथ्यम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_06.mp3"
+            },
+            {
+              "id": "subsection_111",
+              "number": 7,
+              "title": "॥अदितेश्चसाम॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_07.mp3"
+            },
+            {
+              "id": "subsection_112",
+              "number": 8,
+              "title": "॥अगस्तस्यचराक्षोघ्नम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_08.mp3"
+            },
+            {
+              "id": "subsection_113",
+              "number": 9,
+              "title": "॥वार्क्जभञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_09.mp3"
+            },
+            {
+              "id": "subsection_114",
+              "number": 10,
+              "title": "॥बृहदाग्नेयञ्चसङ्कृतंवा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_10.mp3"
+            },
+            {
+              "id": "subsection_115",
+              "number": 11,
+              "title": "॥अगस्तस्यचैवराक्षोघ्नम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_11_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_12",
+          "number": 12,
+          "title": "द्वादश खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_116",
+              "number": 1,
+              "title": "॥वसिष्ठस्यप्रमंहिष्ठीयानिचत्वारि॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_01.mp3"
+            },
+            {
+              "id": "subsection_117",
+              "number": 2,
+              "title": "॥भरद्वाजस्यवाजभृत्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_02.mp3"
+            },
+            {
+              "id": "subsection_118",
+              "number": 3,
+              "title": "॥सौभराणित्रीणि॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_03.mp3"
+            },
+            {
+              "id": "subsection_119",
+              "number": 4,
+              "title": "॥पथस्यसौभरस्यसामनीद्वे॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_04.mp3"
+            },
+            {
+              "id": "subsection_120",
+              "number": 5,
+              "title": "॥दैवानीकञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_05.mp3"
+            },
+            {
+              "id": "subsection_121",
+              "number": 6,
+              "title": "॥साध्रञ्च॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_06.mp3"
+            },
+            {
+              "id": "subsection_122",
+              "number": 7,
+              "title": "॥जमदग्नेश्चसंवर्गः॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_07.mp3"
+            },
+            {
+              "id": "subsection_123",
+              "number": 8,
+              "title": "॥अगस्तयस्यचराक्षोघ्नम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_08.mp3"
+            },
+            {
+              "id": "subsection_124",
+              "number": 9,
+              "title": "॥अग्नेश्चश्रैष्ठ्यम्॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_09.mp3"
+            },
+            {
+              "id": "subsection_125",
+              "number": 10,
+              "title": "॥आदित्यस्यचरुचिरोचनंवा॥",
+              "audio_filename": "JSV_आग्नेयपाठः_12_10.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supersection_2",
+      "number": 2,
+      "title": "तद्वपाठः",
+      "kandahs": [
+        {
+          "id": "section_13",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 14,
+          "samas": [
+            {
+              "id": "subsection_127",
+              "number": 1,
+              "title": "॥मर्गीयवञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_128",
+              "number": 2,
+              "title": "॥रौद्रेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_129",
+              "number": 3,
+              "title": "॥मार्गीयवञ्चैव॥",
+              "audio_filename": "JSV_तद्वपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_130",
+              "number": 4,
+              "title": "॥आश्वञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_131",
+              "number": 5,
+              "title": "॥ऐटतेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_132",
+              "number": 6,
+              "title": "॥श्रौतकक्षेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_133",
+              "number": 7,
+              "title": "॥तन्वस्यपाथस्यसामनीद्वे वसोवार्षेः॥",
+              "audio_filename": "JSV_तद्वपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_134",
+              "number": 8,
+              "title": "॥अङगिरसान्निवेष्टौद्वौ इळा",
+              "audio_filename": "JSV_तद्वपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_135",
+              "number": 9,
+              "title": "॥शय्यातानित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_136",
+              "number": 10,
+              "title": "॥इन्द्राण्यास्साम॥",
+              "audio_filename": "JSV_तद्वपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_137",
+              "number": 11,
+              "title": "॥गोषूक्तम्॥",
+              "audio_filename": "JSV_तद्वपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_138",
+              "number": 12,
+              "title": "॥आश्वसूक्तञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_01_12.mp3"
+            },
+            {
+              "id": "subsection_139",
+              "number": 13,
+              "title": "॥गौरीवितम्॥",
+              "audio_filename": "JSV_तद्वपाठः_01_13.mp3"
+            },
+            {
+              "id": "subsection_140",
+              "number": 14,
+              "title": "॥गौराणित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_01_14.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_15",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_141",
+              "number": 1,
+              "title": "॥सौपर्णानि त्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_142",
+              "number": 2,
+              "title": "॥शाकलम्॥",
+              "audio_filename": "JSV_तद्वपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_143",
+              "number": 3,
+              "title": "॥आभरद्वसवेद्वेऐन्द्राग्नेर्वा॥",
+              "audio_filename": "JSV_तद्वपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_144",
+              "number": 4,
+              "title": "॥तान्वेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_145",
+              "number": 5,
+              "title": "॥रौहितकूलियेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_146",
+              "number": 6,
+              "title": "॥इन्द्राण्यास्सामनीद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_147",
+              "number": 7,
+              "title": "॥इन्द्रस्यसहस्रबाहवियम्॥",
+              "audio_filename": "JSV_तद्वपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_148",
+              "number": 8,
+              "title": "॥धॄषतोमारूतस्यसामनीद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_02_08.mp3"
+            },
+            {
+              "id": "subsection_149",
+              "number": 9,
+              "title": "॥भारद्वाजस्यदारसन्तित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_02_09.mp3"
+            },
+            {
+              "id": "subsection_150",
+              "number": 10,
+              "title": "॥ऐध्मवाहानि त्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_02_10.mp3"
+            },
+            {
+              "id": "subsection_151",
+              "number": 11,
+              "title": "॥अहेःपैण्वस्यसाम अहिहनोवाबैल्वस्य॥",
+              "audio_filename": "JSV_तद्वपाठः_02_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_16",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_152",
+              "number": 1,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_153",
+              "number": 2,
+              "title": "॥पौषञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_154",
+              "number": 3,
+              "title": "॥मरूताञ्चसंवेशीयम्॥",
+              "audio_filename": "JSV_तद्वपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_155",
+              "number": 4,
+              "title": "॥हाविष्मतेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_156",
+              "number": 5,
+              "title": "॥हाविष्कृतेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_157",
+              "number": 6,
+              "title": "॥काक्षीवतञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_158",
+              "number": 7,
+              "title": "॥उषसश्च साम॥",
+              "audio_filename": "JSV_तद्वपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_159",
+              "number": 8,
+              "title": "॥भारद्वाजस्यमौक्षेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_03_08.mp3"
+            },
+            {
+              "id": "subsection_160",
+              "number": 9,
+              "title": "॥भारद्वाजानित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_03_09.mp3"
+            },
+            {
+              "id": "subsection_161",
+              "number": 10,
+              "title": "॥शौक्तसामनीद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_03_10.mp3"
+            },
+            {
+              "id": "subsection_162",
+              "number": 11,
+              "title": "॥वार्षाहरेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_03_11.mp3"
+            },
+            {
+              "id": "subsection_163",
+              "number": 12,
+              "title": "॥कूत्सस्यप्रतोदौद्वौ॥",
+              "audio_filename": "JSV_तद्वपाठः_03_12.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_17",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_164",
+              "number": 1,
+              "title": "॥सौश्रवसेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_165",
+              "number": 2,
+              "title": "॥त्वाष्ट्रीसामच॥",
+              "audio_filename": "JSV_तद्वपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_166",
+              "number": 3,
+              "title": "॥त्वष्टुरातिथ्येद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_167",
+              "number": 4,
+              "title": "॥पौष्णेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_168",
+              "number": 5,
+              "title": "॥श्यावाश्वेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_169",
+              "number": 6,
+              "title": "॥प्रजापतेस्सुतंरयिष्ठीयेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_170",
+              "number": 7,
+              "title": "॥आप्सरसञ्च इष्टाहोत्रीयंवा आपांवानिधि॥",
+              "audio_filename": "JSV_तद्वपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_171",
+              "number": 8,
+              "title": "॥प्रजापतेर्निधन कामम्॥",
+              "audio_filename": "JSV_तद्वपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_172",
+              "number": 9,
+              "title": "॥वाजिदापर्यञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_04_09.mp3"
+            },
+            {
+              "id": "subsection_173",
+              "number": 10,
+              "title": "॥सोमापौष्णञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_04_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_18",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_174",
+              "number": 1,
+              "title": "॥वैतहव्यानि त्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_175",
+              "number": 2,
+              "title": "॥शौक्तानित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_176",
+              "number": 3,
+              "title": "॥गौरीवितानित्रीणि॥",
+              "audio_filename": "JSV_तद्वपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_177",
+              "number": 4,
+              "title": "॥काण्वेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_178",
+              "number": 5,
+              "title": "॥सौमित्रेद्वै दैवोदासं तृतीयं श्रौतकक्षाणिवा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_179",
+              "number": 6,
+              "title": "॥वैष्णवानि त्रीणि इहद्वाम दैवोदासन्तृतीयं और्ध्वसद्मनानिवा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_180",
+              "number": 7,
+              "title": "॥औदलेद्वे वैणवेद्वे वैणव औदलइतीवा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_181",
+              "number": 8,
+              "title": "॥दैवोदासानित्रीणिआर्षभाणिवायदिवावार्ध्यश्वानि॥",
+              "audio_filename": "JSV_तद्वपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_182",
+              "number": 9,
+              "title": "॥कौत्सेद्वे पाञ्चवाजेवा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_09.mp3"
+            },
+            {
+              "id": "subsection_183",
+              "number": 10,
+              "title": "॥सौमेधानित्रीणि पौर्वतिथानिवा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_10.mp3"
+            },
+            {
+              "id": "subsection_184",
+              "number": 11,
+              "title": "॥दैवातिथम्मैधातिथं वा॥",
+              "audio_filename": "JSV_तद्वपाठः_05_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_19",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_185",
+              "number": 1,
+              "title": "॥माधूच्छन्दसङ्क्रौञ्चंसौपर्णंवा घृतश्चुन्निधनंआङ्गिरसानिवा॥",
+              "audio_filename": "JSV_तद्वपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_186",
+              "number": 2,
+              "title": "॥प्रैयमेधानित्रीणि शौक्त सामानिवा उत्गातृदमनंवातृतीयम्॥",
+              "audio_filename": "JSV_तद्वपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_187",
+              "number": 3,
+              "title": "॥गौरीवितेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_188",
+              "number": 4,
+              "title": "॥आपालवैणवेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_189",
+              "number": 5,
+              "title": "॥धुरश्शम्येद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_190",
+              "number": 6,
+              "title": "॥महागौरीवितं तृतीयम्॥",
+              "audio_filename": "JSV_तद्वपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_191",
+              "number": 7,
+              "title": "॥वाचस्सामनीद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_192",
+              "number": 8,
+              "title": "॥महावामदेव्यंतृतीयम्॥",
+              "audio_filename": "JSV_तद्वपाठः_06_08.mp3"
+            },
+            {
+              "id": "subsection_193",
+              "number": 9,
+              "title": "॥इन्द्रस्यसत्रासाहीयेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_06_09.mp3"
+            },
+            {
+              "id": "subsection_194",
+              "number": 10,
+              "title": "॥माहावामदेव्यञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_06_10.mp3"
+            },
+            {
+              "id": "subsection_195",
+              "number": 11,
+              "title": "॥वैर्यश्वञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_06_11.mp3"
+            },
+            {
+              "id": "subsection_196",
+              "number": 12,
+              "title": "॥गौतमस्यच भद्रम्॥",
+              "audio_filename": "JSV_तद्वपाठः_06_12.mp3"
+            },
+            {
+              "id": "subsection_197",
+              "number": 13,
+              "title": "॥अश्विनोश्च साम॥",
+              "audio_filename": "JSV_तद्वपाठः_06_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_20",
+          "number": 7,
+          "title": "सप्तम खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_198",
+              "number": 1,
+              "title": "॥त्वाष्ट्रीसामच॥",
+              "audio_filename": "JSV_तद्वपाठः_07_01.mp3"
+            },
+            {
+              "id": "subsection_199",
+              "number": 2,
+              "title": "॥गोधासामच॥",
+              "audio_filename": "JSV_तद्वपाठः_07_02.mp3"
+            },
+            {
+              "id": "subsection_200",
+              "number": 3,
+              "title": "॥सवितुश्चसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_07_03.mp3"
+            },
+            {
+              "id": "subsection_201",
+              "number": 4,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_07_04.mp3"
+            },
+            {
+              "id": "subsection_202",
+              "number": 5,
+              "title": "॥त्वष्टुरातिथ्येद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_07_05.mp3"
+            },
+            {
+              "id": "subsection_203",
+              "number": 6,
+              "title": "॥सौमित्रञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_07_06.mp3"
+            },
+            {
+              "id": "subsection_204",
+              "number": 7,
+              "title": "॥इन्द्रस्यचमाया॥",
+              "audio_filename": "JSV_तद्वपाठः_07_07.mp3"
+            },
+            {
+              "id": "subsection_205",
+              "number": 8,
+              "title": "॥वैश्वामित्रेच॥",
+              "audio_filename": "JSV_तद्वपाठः_07_08.mp3"
+            },
+            {
+              "id": "subsection_206",
+              "number": 9,
+              "title": "॥शौनश्शेपञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_07_09.mp3"
+            },
+            {
+              "id": "subsection_207",
+              "number": 10,
+              "title": "॥प्रतीचीनेषञ्च काशीतम्॥",
+              "audio_filename": "JSV_तद्वपाठः_07_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_21",
+          "number": 8,
+          "title": "अष्टम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_208",
+              "number": 1,
+              "title": "॥सौमित्रञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_08_01.mp3"
+            },
+            {
+              "id": "subsection_209",
+              "number": 2,
+              "title": "॥श्यावाश्वेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_08_02.mp3"
+            },
+            {
+              "id": "subsection_210",
+              "number": 3,
+              "title": "॥शैखण्डिनञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_08_03.mp3"
+            },
+            {
+              "id": "subsection_211",
+              "number": 4,
+              "title": "॥वैतहव्यञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_08_04.mp3"
+            },
+            {
+              "id": "subsection_212",
+              "number": 5,
+              "title": "॥भारद्वाजञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_08_05.mp3"
+            },
+            {
+              "id": "subsection_213",
+              "number": 6,
+              "title": "॥अरूणस्यचवैददश्वेस्साम॥",
+              "audio_filename": "JSV_तद्वपाठः_08_06.mp3"
+            },
+            {
+              "id": "subsection_214",
+              "number": 7,
+              "title": "॥सौभरञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_08_07.mp3"
+            },
+            {
+              "id": "subsection_215",
+              "number": 8,
+              "title": "॥पाष्ठौहेच॥",
+              "audio_filename": "JSV_तद्वपाठः_08_08.mp3"
+            },
+            {
+              "id": "subsection_216",
+              "number": 9,
+              "title": "॥साकमश्वन्धुरांवासाम॥",
+              "audio_filename": "JSV_तद्वपाठः_08_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_22",
+          "number": 9,
+          "title": "नवम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_217",
+              "number": 1,
+              "title": "॥यामञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_09_01.mp3"
+            },
+            {
+              "id": "subsection_218",
+              "number": 2,
+              "title": "॥आङ्गीरसञ्चइन्द्रस्यवा हरिश्रीर्निधनम्॥",
+              "audio_filename": "JSV_तद्वपाठः_09_02.mp3"
+            },
+            {
+              "id": "subsection_219",
+              "number": 3,
+              "title": "॥वैरूपञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_09_03.mp3"
+            },
+            {
+              "id": "subsection_220",
+              "number": 4,
+              "title": "॥असीतञ्चसिन्धुसामवा॥",
+              "audio_filename": "JSV_तद्वपाठः_09_04.mp3"
+            },
+            {
+              "id": "subsection_221",
+              "number": 5,
+              "title": "॥यमस्यार्कौद्वौ॥",
+              "audio_filename": "JSV_तद्वपाठः_09_05.mp3"
+            },
+            {
+              "id": "subsection_222",
+              "number": 6,
+              "title": "॥सौमित्रेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_09_06.mp3"
+            },
+            {
+              "id": "subsection_223",
+              "number": 7,
+              "title": "॥इन्द्रस्याभयम्॥",
+              "audio_filename": "JSV_तद्वपाठः_09_07.mp3"
+            },
+            {
+              "id": "subsection_224",
+              "number": 8,
+              "title": "॥त्वाष्ट्रीसामनीद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_09_08.mp3"
+            },
+            {
+              "id": "subsection_225",
+              "number": 9,
+              "title": "॥इन्द्राण्यास्सामा॥",
+              "audio_filename": "JSV_तद्वपाठः_09_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_23",
+          "number": 10,
+          "title": "दशम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_226",
+              "number": 1,
+              "title": "॥श्यावाश्वञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_01.mp3"
+            },
+            {
+              "id": "subsection_227",
+              "number": 2,
+              "title": "॥वैरूपञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_02.mp3"
+            },
+            {
+              "id": "subsection_228",
+              "number": 3,
+              "title": "॥सौमित्रञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_03.mp3"
+            },
+            {
+              "id": "subsection_229",
+              "number": 4,
+              "title": "॥स्तौभञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_04.mp3"
+            },
+            {
+              "id": "subsection_230",
+              "number": 5,
+              "title": "॥श्रौतञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_05.mp3"
+            },
+            {
+              "id": "subsection_231",
+              "number": 6,
+              "title": "॥आभीशवञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_06.mp3"
+            },
+            {
+              "id": "subsection_232",
+              "number": 7,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_10_07.mp3"
+            },
+            {
+              "id": "subsection_233",
+              "number": 8,
+              "title": "॥इन्द्रस्यचक्षुरपवी॥",
+              "audio_filename": "JSV_तद्वपाठः_10_08.mp3"
+            },
+            {
+              "id": "subsection_234",
+              "number": 9,
+              "title": "॥सौमित्रे॥",
+              "audio_filename": "JSV_तद्वपाठः_10_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_24",
+          "number": 11,
+          "title": "एकादश खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_235",
+              "number": 1,
+              "title": "॥कौत्सञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_11_01.mp3"
+            },
+            {
+              "id": "subsection_236",
+              "number": 2,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_11_02.mp3"
+            },
+            {
+              "id": "subsection_237",
+              "number": 3,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_11_03.mp3"
+            },
+            {
+              "id": "subsection_238",
+              "number": 4,
+              "title": "॥बार्हदुक्थञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_11_04.mp3"
+            },
+            {
+              "id": "subsection_239",
+              "number": 5,
+              "title": "॥वरुणसामच॥",
+              "audio_filename": "JSV_तद्वपाठः_11_05.mp3"
+            },
+            {
+              "id": "subsection_240",
+              "number": 6,
+              "title": "॥उषसश्चैवसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_11_06.mp3"
+            },
+            {
+              "id": "subsection_241",
+              "number": 7,
+              "title": "॥मित्रावरुणयोश्चसंयोजनम्॥",
+              "audio_filename": "JSV_तद्वपाठः_11_07.mp3"
+            },
+            {
+              "id": "subsection_242",
+              "number": 8,
+              "title": "॥ऋतुसामच॥",
+              "audio_filename": "JSV_तद्वपाठः_11_08.mp3"
+            },
+            {
+              "id": "subsection_243",
+              "number": 9,
+              "title": "॥विष्णोश्चसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_11_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_25",
+          "number": 12,
+          "title": "द्वादश खण्डः",
+          "sama_count": 7,
+          "samas": [
+            {
+              "id": "subsection_244",
+              "number": 1,
+              "title": "॥कौत्सञ्च॥",
+              "audio_filename": "JSV_तद्वपाठः_12_01.mp3"
+            },
+            {
+              "id": "subsection_245",
+              "number": 2,
+              "title": "॥काश्यपञ्चआप्सुरसंवा॥",
+              "audio_filename": "JSV_तद्वपाठः_12_02.mp3"
+            },
+            {
+              "id": "subsection_246",
+              "number": 3,
+              "title": "॥बार्हदुक्थेद्वे॥",
+              "audio_filename": "JSV_तद्वपाठः_12_03.mp3"
+            },
+            {
+              "id": "subsection_247",
+              "number": 4,
+              "title": "॥और्ध्वसद्मनेद्वे प्रहितोर्वा संयोजने॥",
+              "audio_filename": "JSV_तद्वपाठः_12_04.mp3"
+            },
+            {
+              "id": "subsection_248",
+              "number": 5,
+              "title": "॥कौत्सानिचत्वारि॥",
+              "audio_filename": "JSV_तद्वपाठः_12_05.mp3"
+            },
+            {
+              "id": "subsection_249",
+              "number": 6,
+              "title": "॥अभिवादस्यचऔदलस्यसाम॥",
+              "audio_filename": "JSV_तद्वपाठः_12_06.mp3"
+            },
+            {
+              "id": "subsection_250",
+              "number": 7,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_तद्वपाठः_12_07.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supersection_3",
+      "number": 3,
+      "title": "बृहतिपाठः",
+      "kandahs": [
+        {
+          "id": "section_26",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 20,
+          "samas": [
+            {
+              "id": "subsection_252",
+              "number": 1,
+              "title": "॥इन्द्रस्यार्कौद्वौ॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_253",
+              "number": 2,
+              "title": "॥भारद्वाजेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_254",
+              "number": 3,
+              "title": "॥सन्नतेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_255",
+              "number": 4,
+              "title": "॥शैतन्त्रृतीयम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_256",
+              "number": 5,
+              "title": "॥नाविकञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_257",
+              "number": 6,
+              "title": "॥प्रजापतेश्चाभीवर्तः॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_258",
+              "number": 7,
+              "title": "॥भागञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_259",
+              "number": 8,
+              "title": "॥इन्द्रस्याभीवर्तः॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_260",
+              "number": 9,
+              "title": "॥नौधसम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_261",
+              "number": 10,
+              "title": "॥लौशेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_262",
+              "number": 11,
+              "title": "॥धानाकेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_263",
+              "number": 12,
+              "title": "॥कालेयानित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_12.mp3"
+            },
+            {
+              "id": "subsection_264",
+              "number": 13,
+              "title": "॥ऐषिरेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_13.mp3"
+            },
+            {
+              "id": "subsection_265",
+              "number": 14,
+              "title": "॥गौश्रृङ्गेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_14.mp3"
+            },
+            {
+              "id": "subsection_266",
+              "number": 15,
+              "title": "॥प्रष्ठमेकम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_15.mp3"
+            },
+            {
+              "id": "subsection_267",
+              "number": 16,
+              "title": "॥शुक्लएकम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_16.mp3"
+            },
+            {
+              "id": "subsection_268",
+              "number": 17,
+              "title": "॥जमदग्नेरभिवर्तएकम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_17.mp3"
+            },
+            {
+              "id": "subsection_269",
+              "number": 18,
+              "title": "॥कौन्मुलबर्हिषेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_18.mp3"
+            },
+            {
+              "id": "subsection_270",
+              "number": 19,
+              "title": "॥वसिष्ठस्यजनित्रेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_19.mp3"
+            },
+            {
+              "id": "subsection_271",
+              "number": 20,
+              "title": "॥मैधातिथम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_01_20.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_28",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_272",
+              "number": 1,
+              "title": "॥वैखानसम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_273",
+              "number": 2,
+              "title": "॥प्राकर्षम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_274",
+              "number": 3,
+              "title": "॥सात्यम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_275",
+              "number": 4,
+              "title": "॥भारद्वाजानिचत्वारि कण्वब्रहद्वाद्वितीयम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_276",
+              "number": 5,
+              "title": "॥वाम्राणित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_277",
+              "number": 6,
+              "title": "॥गौङ्गवम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_278",
+              "number": 7,
+              "title": "॥साध्राणि त्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_279",
+              "number": 8,
+              "title": "॥विरूपस्य समिचीन प्राचीनेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_08.mp3"
+            },
+            {
+              "id": "subsection_280",
+              "number": 9,
+              "title": "॥यौक्तास्रजमिन्द्रस्येन्द्रियंवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_09.mp3"
+            },
+            {
+              "id": "subsection_281",
+              "number": 10,
+              "title": "॥आत्राणित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_10.mp3"
+            },
+            {
+              "id": "subsection_282",
+              "number": 11,
+              "title": "॥वासिष्ठानित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_11.mp3"
+            },
+            {
+              "id": "subsection_283",
+              "number": 12,
+              "title": "॥वत्सस्यकाण्वस्य सामनीद्वे गौतमस्यवामनार्ये॥",
+              "audio_filename": "JSV_बृहतिपाठः_02_12.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_29",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_284",
+              "number": 1,
+              "title": "॥हारायणानि त्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_285",
+              "number": 2,
+              "title": "॥वाम्राणित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_286",
+              "number": 3,
+              "title": "॥वरुणसामानित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_287",
+              "number": 4,
+              "title": "॥वषट्कारनिधनञ्च साकमश्वम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_288",
+              "number": 5,
+              "title": "॥बृहतश्चमारूतस्यसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_289",
+              "number": 6,
+              "title": "॥संश्रवसे वीश्रवसे सत्यश्रवसे श्रवस इतिवार्यानां सामानिचत्वारी सांशानानिवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_290",
+              "number": 7,
+              "title": "॥वासिष्ठानि त्रीणि भार्गवं वा तृतीयम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_291",
+              "number": 8,
+              "title": "॥स्ववस आञ्जीकस्यसामनीद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_08.mp3"
+            },
+            {
+              "id": "subsection_292",
+              "number": 9,
+              "title": "॥काण्वम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_09.mp3"
+            },
+            {
+              "id": "subsection_293",
+              "number": 10,
+              "title": "॥वैष्टम्भेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_10.mp3"
+            },
+            {
+              "id": "subsection_294",
+              "number": 11,
+              "title": "॥काण्वञ्चैव॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_11.mp3"
+            },
+            {
+              "id": "subsection_295",
+              "number": 12,
+              "title": "॥श्रुष्टिगवञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_03_12.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_30",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_296",
+              "number": 1,
+              "title": "॥इन्द्रस्यचवृषकम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_297",
+              "number": 2,
+              "title": "॥द्वैगतेच॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_298",
+              "number": 3,
+              "title": "॥कार्तवेशञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_299",
+              "number": 4,
+              "title": "॥इन्द्रस्यच शरणम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_300",
+              "number": 5,
+              "title": "॥श्रायन्तीयञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_301",
+              "number": 6,
+              "title": "॥आक्षीलन्चबाभ्रंवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_302",
+              "number": 7,
+              "title": "॥शौक्तानि त्रीणि शुक्लानिवा आश्वानिवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_303",
+              "number": 8,
+              "title": "॥प्रजापतेर्निधन कामम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_304",
+              "number": 9,
+              "title": "॥गौतमस्यमनार्याणित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_09.mp3"
+            },
+            {
+              "id": "subsection_305",
+              "number": 10,
+              "title": "॥वैरूपाणित्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_04_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_31",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_306",
+              "number": 1,
+              "title": "॥पौरूहन्मनञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_307",
+              "number": 2,
+              "title": "॥प्राकर्षञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_308",
+              "number": 3,
+              "title": "॥इन्द्रस्यचाभयङ्करम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_309",
+              "number": 4,
+              "title": "॥कावर्षेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_310",
+              "number": 5,
+              "title": "॥सूर्यसामच॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_311",
+              "number": 6,
+              "title": "॥नैपातिथेद्वे वाशेवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_312",
+              "number": 7,
+              "title": "॥कौन्मुदेद्वेस्वर्जोतिषीवा॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_313",
+              "number": 8,
+              "title": "॥अनूपेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_314",
+              "number": 9,
+              "title": "॥वैरूपञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_09.mp3"
+            },
+            {
+              "id": "subsection_315",
+              "number": 10,
+              "title": "॥वाचश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_10.mp3"
+            },
+            {
+              "id": "subsection_316",
+              "number": 11,
+              "title": "॥आक्षीलेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_05_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_32",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_317",
+              "number": 1,
+              "title": "॥गौरीवितेःप्रहितौद्वौ॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_318",
+              "number": 2,
+              "title": "॥आत्रेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_319",
+              "number": 3,
+              "title": "॥गौतमेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_320",
+              "number": 4,
+              "title": "॥वामदेव्यञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_321",
+              "number": 5,
+              "title": "॥अश्विनोश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_322",
+              "number": 6,
+              "title": "॥वसिष्ठस्य वज्राणि त्रीणि॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_323",
+              "number": 7,
+              "title": "॥सौबभ्रवेद्वे॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_324",
+              "number": 8,
+              "title": "॥वैर्यश्वम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_08.mp3"
+            },
+            {
+              "id": "subsection_325",
+              "number": 9,
+              "title": "॥इन्द्रस्यसहस्रायुतेद्वे प्रजापतेर्वा महोविशीये ॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_09.mp3"
+            },
+            {
+              "id": "subsection_326",
+              "number": 10,
+              "title": "॥इन्द्राण्यास्साम॥",
+              "audio_filename": "JSV_बृहतिपाठः_06_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_33",
+          "number": 7,
+          "title": "सप्तम खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_327",
+              "number": 1,
+              "title": "॥सौभरञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_01.mp3"
+            },
+            {
+              "id": "subsection_328",
+              "number": 2,
+              "title": "॥गात्समदञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_02.mp3"
+            },
+            {
+              "id": "subsection_329",
+              "number": 3,
+              "title": "॥वाचश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_03.mp3"
+            },
+            {
+              "id": "subsection_330",
+              "number": 4,
+              "title": "॥बार्हदुक्थञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_04.mp3"
+            },
+            {
+              "id": "subsection_331",
+              "number": 5,
+              "title": "॥नैपातिथञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_05.mp3"
+            },
+            {
+              "id": "subsection_332",
+              "number": 6,
+              "title": "॥तौरश्रवसञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_06.mp3"
+            },
+            {
+              "id": "subsection_333",
+              "number": 7,
+              "title": "॥त्वष्टार्याश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_07.mp3"
+            },
+            {
+              "id": "subsection_334",
+              "number": 8,
+              "title": "॥अदितेश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_08.mp3"
+            },
+            {
+              "id": "subsection_335",
+              "number": 9,
+              "title": "॥आजीक्तञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_09.mp3"
+            },
+            {
+              "id": "subsection_336",
+              "number": 10,
+              "title": "॥माधुच्छन्दसञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_07_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_34",
+          "number": 8,
+          "title": "अष्टम खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_337",
+              "number": 1,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_01.mp3"
+            },
+            {
+              "id": "subsection_338",
+              "number": 2,
+              "title": "॥अश्विनोश्चसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_02.mp3"
+            },
+            {
+              "id": "subsection_339",
+              "number": 3,
+              "title": "॥अश्विनोश्चसंयोजनम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_03.mp3"
+            },
+            {
+              "id": "subsection_340",
+              "number": 4,
+              "title": "॥अश्विनोश्चैवसाम॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_04.mp3"
+            },
+            {
+              "id": "subsection_341",
+              "number": 5,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_05.mp3"
+            },
+            {
+              "id": "subsection_342",
+              "number": 6,
+              "title": "॥आजामायवञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_06.mp3"
+            },
+            {
+              "id": "subsection_343",
+              "number": 7,
+              "title": "॥समुद्रस्यच प्रैयमेधस्य साम॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_07.mp3"
+            },
+            {
+              "id": "subsection_344",
+              "number": 8,
+              "title": "॥वैरूपेच॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_08.mp3"
+            },
+            {
+              "id": "subsection_345",
+              "number": 9,
+              "title": "॥वैश्वदेवञ्च॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_09.mp3"
+            },
+            {
+              "id": "subsection_346",
+              "number": 10,
+              "title": "॥पुरीषञ्चाथर्वणम्॥",
+              "audio_filename": "JSV_बृहतिपाठः_08_10.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supersection_4",
+      "number": 4,
+      "title": "असाविपाठः",
+      "kandahs": [
+        {
+          "id": "section_35",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_348",
+              "number": 1,
+              "title": "॥प्राकर्षञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_349",
+              "number": 2,
+              "title": "॥वसिष्ठस्यचनिन्हवम्॥",
+              "audio_filename": "JSV_असाविपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_350",
+              "number": 3,
+              "title": "॥गृत्समदस्ययोनिनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_351",
+              "number": 4,
+              "title": "॥औरूक्षयेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_352",
+              "number": 5,
+              "title": "॥पाथेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_353",
+              "number": 6,
+              "title": "॥सौमित्रेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_354",
+              "number": 7,
+              "title": "॥वात्सप्राणित्रीणि॥",
+              "audio_filename": "JSV_असाविपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_355",
+              "number": 8,
+              "title": "॥वैदन्वतञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_356",
+              "number": 9,
+              "title": "॥सौपर्णञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_357",
+              "number": 10,
+              "title": "॥यामञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_358",
+              "number": 11,
+              "title": "॥ऋतुसामनिच॥",
+              "audio_filename": "JSV_असाविपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_359",
+              "number": 12,
+              "title": "॥इन्द्रस्यवारवन्तीयम्॥",
+              "audio_filename": "JSV_असाविपाठः_01_12.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_37",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_360",
+              "number": 1,
+              "title": "॥इन्द्रस्यचक्षुरपविनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_361",
+              "number": 2,
+              "title": "॥सौरश्मेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_362",
+              "number": 3,
+              "title": "॥बृहतोमारूतस्यसामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_363",
+              "number": 4,
+              "title": "॥सोमसामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_364",
+              "number": 5,
+              "title": "॥इन्द्रस्यवज्रेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_365",
+              "number": 6,
+              "title": "॥भृष्टिमतस्यस्सौर्यवर्चस्यसामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_366",
+              "number": 7,
+              "title": "॥वसिष्ठस्यां कुशौद्वौ॥",
+              "audio_filename": "JSV_असाविपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_367",
+              "number": 8,
+              "title": "॥भारद्वाजञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_02_08.mp3"
+            },
+            {
+              "id": "subsection_368",
+              "number": 9,
+              "title": "॥वासिष्ठञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_02_09.mp3"
+            },
+            {
+              "id": "subsection_369",
+              "number": 10,
+              "title": "॥पुरीषञ्चाथर्वणम्॥",
+              "audio_filename": "JSV_असाविपाठः_02_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_38",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_370",
+              "number": 1,
+              "title": "॥आदित्याः सामनीद्वे तार्क्ष्यसामनिवा॥",
+              "audio_filename": "JSV_असाविपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_371",
+              "number": 2,
+              "title": "॥इन्द्रस्यचत्रातम्॥",
+              "audio_filename": "JSV_असाविपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_372",
+              "number": 3,
+              "title": "॥वाक्तत्रतुरम्॥",
+              "audio_filename": "JSV_असाविपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_373",
+              "number": 4,
+              "title": "॥द्युतानस्य मारूतस्य सामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_374",
+              "number": 5,
+              "title": "॥आत्रम्॥",
+              "audio_filename": "JSV_असाविपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_375",
+              "number": 6,
+              "title": "॥गृत्समदस्यसमिधौदौ॥",
+              "audio_filename": "JSV_असाविपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_376",
+              "number": 7,
+              "title": "॥वैश्वामित्रम्॥",
+              "audio_filename": "JSV_असाविपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_377",
+              "number": 8,
+              "title": "॥सावित्राणिषट्प्रैय्यमेधानिवा॥",
+              "audio_filename": "JSV_असाविपाठः_03_08.mp3"
+            },
+            {
+              "id": "subsection_378",
+              "number": 9,
+              "title": "॥कूतिवारस्यवैरूपस्यसाम॥",
+              "audio_filename": "JSV_असाविपाठः_03_09.mp3"
+            },
+            {
+              "id": "subsection_379",
+              "number": 10,
+              "title": "॥वामदेव्यम्॥",
+              "audio_filename": "JSV_असाविपाठः_03_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_39",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_380",
+              "number": 1,
+              "title": "॥शैखण्डिनेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_381",
+              "number": 2,
+              "title": "॥उद्वंशीयन्तृतीयम्॥",
+              "audio_filename": "JSV_असाविपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_382",
+              "number": 3,
+              "title": "॥शैखण्डिनीत्रीणि॥",
+              "audio_filename": "JSV_असाविपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_383",
+              "number": 4,
+              "title": "॥आष्टादंष्ट्रेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_384",
+              "number": 5,
+              "title": "॥महावैश्वामित्रेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_385",
+              "number": 6,
+              "title": "॥गृत्समदस्यवींकानिचत्वारिवसिष्ठस्यवाप्रियाणी॥",
+              "audio_filename": "JSV_असाविपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_386",
+              "number": 7,
+              "title": "॥वसिष्ठस्यवींकानिचत्वारिइन्द्रस्यवाप्रियाणिआकूपाराणिवा॥",
+              "audio_filename": "JSV_असाविपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_387",
+              "number": 8,
+              "title": "॥तिरश्चेराङ्गिरसस्यसामनीद्वेदेवानांवादेवपुरे॥",
+              "audio_filename": "JSV_असाविपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_388",
+              "number": 9,
+              "title": "॥वैश्वामित्रम्॥",
+              "audio_filename": "JSV_असाविपाठः_04_09.mp3"
+            },
+            {
+              "id": "subsection_389",
+              "number": 10,
+              "title": "॥काण्वेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_10.mp3"
+            },
+            {
+              "id": "subsection_390",
+              "number": 11,
+              "title": "॥वैश्वामित्रञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_04_11.mp3"
+            },
+            {
+              "id": "subsection_391",
+              "number": 12,
+              "title": "॥इन्द्रस्यशुद्धाशुद्धीयेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_12.mp3"
+            },
+            {
+              "id": "subsection_392",
+              "number": 13,
+              "title": "॥गौतमस्यरयिष्ठेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_04_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_40",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_393",
+              "number": 1,
+              "title": "॥कौल्मलबर्हिषेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_394",
+              "number": 2,
+              "title": "॥नानदन्तृतीयम्॥",
+              "audio_filename": "JSV_असाविपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_395",
+              "number": 3,
+              "title": "॥शाकपूतञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_396",
+              "number": 4,
+              "title": "॥कौल्मलबर्हिषेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_397",
+              "number": 5,
+              "title": "॥मधुश्चुन्निधनञ्च प्राजापत्यम्॥",
+              "audio_filename": "JSV_असाविपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_398",
+              "number": 6,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_असाविपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_399",
+              "number": 7,
+              "title": "॥गौतमम्॥",
+              "audio_filename": "JSV_असाविपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_400",
+              "number": 8,
+              "title": "॥अग्नेश्चदधिक्रम्॥",
+              "audio_filename": "JSV_असाविपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_401",
+              "number": 9,
+              "title": "॥मारूतंवैश्वामित्रंवा आङ्गीरसानांवा साम मैधातिथंवा॥",
+              "audio_filename": "JSV_असाविपाठः_05_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_41",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_402",
+              "number": 1,
+              "title": "॥वामदेव्यञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_403",
+              "number": 2,
+              "title": "॥काश्यपञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_404",
+              "number": 3,
+              "title": "॥अग्नेर्वैश्वानरस्यसामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_405",
+              "number": 4,
+              "title": "॥शाकपूतेद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_406",
+              "number": 5,
+              "title": "॥प्रैय्यमेधञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_407",
+              "number": 6,
+              "title": "॥बार्हदुक्थञ्च॥",
+              "audio_filename": "JSV_असाविपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_408",
+              "number": 7,
+              "title": "॥वरूणान्याश्चसाम॥",
+              "audio_filename": "JSV_असाविपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_409",
+              "number": 8,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_असाविपाठः_06_08.mp3"
+            },
+            {
+              "id": "subsection_410",
+              "number": 9,
+              "title": "॥देवानाञ्चरुचिरोचनंवा॥",
+              "audio_filename": "JSV_असाविपाठः_06_09.mp3"
+            },
+            {
+              "id": "subsection_411",
+              "number": 10,
+              "title": "॥ऋक्सामयोस्सामनीद्वे॥",
+              "audio_filename": "JSV_असाविपाठः_06_10.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supersection_5",
+      "number": 5,
+      "title": "ऐन्द्रपाठः",
+      "kandahs": [
+        {
+          "id": "section_42",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_1413",
+              "number": 1,
+              "title": "॥त्रैशोकम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_1414",
+              "number": 2,
+              "title": "॥शैखण्डिनेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_1415",
+              "number": 3,
+              "title": "॥अत्रेर्विवर्क्तोद्वौ॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_1416",
+              "number": 4,
+              "title": "॥महासावेदसेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_1417",
+              "number": 5,
+              "title": "॥शैरीषेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_1418",
+              "number": 6,
+              "title": "॥इन्द्रस्येन्द्रियाणीत्रिणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_1419",
+              "number": 7,
+              "title": "॥वैरूपाणित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_1420",
+              "number": 8,
+              "title": "॥बार्हदुक्थञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_1421",
+              "number": 9,
+              "title": "॥त्रासदस्यवेच॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_1422",
+              "number": 10,
+              "title": "॥सौभरेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_1423",
+              "number": 11,
+              "title": "॥वरूणसामनीद्वे द्यावापृथिव्योर्वासामनी॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_1424",
+              "number": 12,
+              "title": "॥इन्द्रस्यचश्येनः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_12.mp3"
+            },
+            {
+              "id": "subsection_1425",
+              "number": 13,
+              "title": "॥वैरूपम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_01_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_44",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_1426",
+              "number": 1,
+              "title": "॥यामम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_1427",
+              "number": 2,
+              "title": "॥गृत्समदस्यमदौद्वौ॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_1428",
+              "number": 3,
+              "title": "॥आभीशवेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_1429",
+              "number": 4,
+              "title": "॥आभीकेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_1430",
+              "number": 5,
+              "title": "॥बार्हगिराणित्रीणी॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_1431",
+              "number": 6,
+              "title": "॥इन्द्रस्यचस्वाराज्यम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_1432",
+              "number": 7,
+              "title": "॥कश्यपस्यचधृष्णुम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_1433",
+              "number": 8,
+              "title": "॥वैदन्वतम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_08.mp3"
+            },
+            {
+              "id": "subsection_1434",
+              "number": 9,
+              "title": "॥यामेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_09.mp3"
+            },
+            {
+              "id": "subsection_1435",
+              "number": 10,
+              "title": "॥त्रैतानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_10.mp3"
+            },
+            {
+              "id": "subsection_1436",
+              "number": 11,
+              "title": "॥सौपर्णेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_11.mp3"
+            },
+            {
+              "id": "subsection_1437",
+              "number": 12,
+              "title": "॥लौशम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_02_12.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_45",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 8,
+          "samas": [
+            {
+              "id": "subsection_1438",
+              "number": 1,
+              "title": "॥इन्द्रस्यसञ्चयेद्वे सेनुदेवा वामदेव्येवा॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_1439",
+              "number": 2,
+              "title": "॥अङ्गिरसान्निवेष्टौद्वौ॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_1440",
+              "number": 3,
+              "title": "॥सत्यश्रवसोवार्यश्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_1441",
+              "number": 4,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_1442",
+              "number": 5,
+              "title": "॥लौशञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_1443",
+              "number": 6,
+              "title": "॥यामञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_1444",
+              "number": 7,
+              "title": "॥अङ्गिरसाञ्चैवनिवेष्टः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_1445",
+              "number": 8,
+              "title": "॥गौरयश्चाङ्गिरसस्यसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_03_08.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_46",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_1446",
+              "number": 1,
+              "title": "॥वसिष्ठस्यसङ्क्रमौद्वौसौहविषाणित्रीणि सर्वाणिवासौहविषाणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_1447",
+              "number": 2,
+              "title": "॥वाकानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_1448",
+              "number": 3,
+              "title": "॥प्रजापतेर्धर्मविधर्माणिचत्वारि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_1449",
+              "number": 4,
+              "title": "॥भागञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_1450",
+              "number": 5,
+              "title": "॥वाजिनाञ्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_1451",
+              "number": 6,
+              "title": "॥प्रजापतेर्हिकनिकविकानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_1452",
+              "number": 7,
+              "title": "॥आश्वेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_1453",
+              "number": 8,
+              "title": "॥वाजिनाञ्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_1454",
+              "number": 9,
+              "title": "॥आदित्यानाञ्चपवित्रम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_04_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_47",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_1455",
+              "number": 1,
+              "title": "॥इन्द्रस्यक्रोशानुक्रोशेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_1456",
+              "number": 2,
+              "title": "॥कौत्सन्तृतीयम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_1457",
+              "number": 3,
+              "title": "॥प्रहितोःसंयोजनेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_1458",
+              "number": 4,
+              "title": "॥दैवोदासेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_1459",
+              "number": 5,
+              "title": "॥हारिवर्णानिचत्वारि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_1460",
+              "number": 6,
+              "title": "॥त्रैतानिचत्वारि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_1461",
+              "number": 7,
+              "title": "॥सराधसःप्रराधस्यश्चाङ्गिरसयोस्सामानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_1462",
+              "number": 8,
+              "title": "॥वैश्वमनसम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_1463",
+              "number": 9,
+              "title": "॥सौमित्राणित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_09.mp3"
+            },
+            {
+              "id": "subsection_1464",
+              "number": 10,
+              "title": "॥त्रैककूभानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_10.mp3"
+            },
+            {
+              "id": "subsection_1465",
+              "number": 11,
+              "title": "॥औक्षोरन्धराणित्रीणिऔक्षोनिधनानिवा॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_05_11.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_48",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_1466",
+              "number": 1,
+              "title": "॥इन्द्राण्यास्सामनीद्वेइन्द्रस्यवासांवर्क्ते संवर्तस्यवाङ्गीरसस्य॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_1467",
+              "number": 2,
+              "title": "॥दैवोदासानिचत्वारि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_1468",
+              "number": 3,
+              "title": "॥रेवञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_1469",
+              "number": 4,
+              "title": "॥आक्षारञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_1470",
+              "number": 5,
+              "title": "॥रेवञ्चैव॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_1471",
+              "number": 6,
+              "title": "॥आक्षारञ्चैव॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_1472",
+              "number": 7,
+              "title": "॥यामम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_1473",
+              "number": 8,
+              "title": "॥भारद्वाजस्यशुन्ध्यु॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_08.mp3"
+            },
+            {
+              "id": "subsection_1474",
+              "number": 9,
+              "title": "॥आदित्यानाञ्चापामीवम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_09.mp3"
+            },
+            {
+              "id": "subsection_1475",
+              "number": 10,
+              "title": "॥वसिष्ठस्यचवैराजे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_06_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_49",
+          "number": 7,
+          "title": "सप्तम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_1476",
+              "number": 1,
+              "title": "॥इन्द्रस्याभ्रातृव्यम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_01.mp3"
+            },
+            {
+              "id": "subsection_1477",
+              "number": 2,
+              "title": "॥शार्करेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_02.mp3"
+            },
+            {
+              "id": "subsection_1478",
+              "number": 3,
+              "title": "॥बृहत्कम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_03.mp3"
+            },
+            {
+              "id": "subsection_1479",
+              "number": 4,
+              "title": "॥सौयवसानिचत्वारिपुनरींळवातृतीयम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_04.mp3"
+            },
+            {
+              "id": "subsection_1480",
+              "number": 5,
+              "title": "॥मरुताञ्चसंवेशीयंककूभंवा॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_05.mp3"
+            },
+            {
+              "id": "subsection_1481",
+              "number": 6,
+              "title": "॥इन्द्रस्याभरेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_06.mp3"
+            },
+            {
+              "id": "subsection_1482",
+              "number": 7,
+              "title": "॥ऐषिराणित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_07.mp3"
+            },
+            {
+              "id": "subsection_1483",
+              "number": 8,
+              "title": "॥प्रजापतेस्सीदन्तीयेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_08.mp3"
+            },
+            {
+              "id": "subsection_1484",
+              "number": 9,
+              "title": "॥पथस्यसौभरस्यसामनीद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_07_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_50",
+          "number": 8,
+          "title": "अष्टम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_1485",
+              "number": 1,
+              "title": "॥वसिष्ठस्याभरेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_01.mp3"
+            },
+            {
+              "id": "subsection_1486",
+              "number": 2,
+              "title": "॥वासुमन्देद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_02.mp3"
+            },
+            {
+              "id": "subsection_1487",
+              "number": 3,
+              "title": "॥कावर्षाणित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_03.mp3"
+            },
+            {
+              "id": "subsection_1488",
+              "number": 4,
+              "title": "॥प्रजापतेःश्योकानुश्योकानित्रीणि॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_04.mp3"
+            },
+            {
+              "id": "subsection_1489",
+              "number": 5,
+              "title": "॥वाचस्सामनीद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_05.mp3"
+            },
+            {
+              "id": "subsection_1490",
+              "number": 6,
+              "title": "॥मरुताञ्चसाम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_06.mp3"
+            },
+            {
+              "id": "subsection_1491",
+              "number": 7,
+              "title": "॥वैश्वामित्रञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_07.mp3"
+            },
+            {
+              "id": "subsection_1492",
+              "number": 8,
+              "title": "॥मारूतञ्चैव॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_08.mp3"
+            },
+            {
+              "id": "subsection_1493",
+              "number": 9,
+              "title": "॥उद्वंशपुत्रञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_08_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_51",
+          "number": 9,
+          "title": "नवम खण्डः",
+          "sama_count": 13,
+          "samas": [
+            {
+              "id": "subsection_1494",
+              "number": 1,
+              "title": "॥धुरश्शम्येद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_01.mp3"
+            },
+            {
+              "id": "subsection_1495",
+              "number": 2,
+              "title": "॥प्रजापतेर्गूर्दः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_02.mp3"
+            },
+            {
+              "id": "subsection_1496",
+              "number": 3,
+              "title": "॥विश्वामित्रस्यचार्दः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_03.mp3"
+            },
+            {
+              "id": "subsection_1497",
+              "number": 4,
+              "title": "॥प्रजापतेश्चैवगूर्दः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_04.mp3"
+            },
+            {
+              "id": "subsection_1498",
+              "number": 5,
+              "title": "॥विश्वामित्रस्यचैवात्यर्दः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_05.mp3"
+            },
+            {
+              "id": "subsection_1499",
+              "number": 6,
+              "title": "॥प्रजापतेस्सन्तनीकेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_06.mp3"
+            },
+            {
+              "id": "subsection_1500",
+              "number": 7,
+              "title": "॥प्रजापतेर्धनधर्मेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_07.mp3"
+            },
+            {
+              "id": "subsection_1501",
+              "number": 8,
+              "title": "॥उषसश्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_08.mp3"
+            },
+            {
+              "id": "subsection_1502",
+              "number": 9,
+              "title": "॥वैश्वामित्रञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_09.mp3"
+            },
+            {
+              "id": "subsection_1503",
+              "number": 10,
+              "title": "॥भारद्वाजञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_10.mp3"
+            },
+            {
+              "id": "subsection_1504",
+              "number": 11,
+              "title": "॥इन्द्रस्यचरातिः॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_11.mp3"
+            },
+            {
+              "id": "subsection_1505",
+              "number": 12,
+              "title": "॥भारद्वाजञ्चैव॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_12.mp3"
+            },
+            {
+              "id": "subsection_1506",
+              "number": 13,
+              "title": "॥इन्द्रस्यचवैराजे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_09_13.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_52",
+          "number": 10,
+          "title": "दशम खण्डः",
+          "sama_count": 11,
+          "samas": [
+            {
+              "id": "subsection_1507",
+              "number": 1,
+              "title": "॥प्रजापतेर्वाजसनी॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_01.mp3"
+            },
+            {
+              "id": "subsection_1508",
+              "number": 2,
+              "title": "॥गौराङ्गीरसस्यसामनीद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_02.mp3"
+            },
+            {
+              "id": "subsection_1509",
+              "number": 3,
+              "title": "॥प्रयस्वच्चप्राजापत्यम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_03.mp3"
+            },
+            {
+              "id": "subsection_1510",
+              "number": 4,
+              "title": "॥अक्षय्यञ्चरेवत्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_04.mp3"
+            },
+            {
+              "id": "subsection_1511",
+              "number": 5,
+              "title": "॥सवितुश्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_05.mp3"
+            },
+            {
+              "id": "subsection_1512",
+              "number": 6,
+              "title": "॥वाक्त्रतुरञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_06.mp3"
+            },
+            {
+              "id": "subsection_1513",
+              "number": 7,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_07.mp3"
+            },
+            {
+              "id": "subsection_1514",
+              "number": 8,
+              "title": "॥यामम्मरूताञ्चसाम॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_08.mp3"
+            },
+            {
+              "id": "subsection_1515",
+              "number": 9,
+              "title": "॥भारद्वाजस्यविषमाणित्रीणि इन्वकंवातृतीयम्॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_09.mp3"
+            },
+            {
+              "id": "subsection_1516",
+              "number": 10,
+              "title": "॥पारूच्छेपेद्वे॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_10.mp3"
+            },
+            {
+              "id": "subsection_1517",
+              "number": 11,
+              "title": "॥बार्हस्पत्येद्वेअग्नेर्वाराक्षोघ्ने॥",
+              "audio_filename": "JSV_ऐन्द्रपाठः_10_11.mp3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "supersection_6",
+      "number": 6,
+      "title": "पवमानपाठः",
+      "kandahs": [
+        {
+          "id": "section_53",
+          "number": 1,
+          "title": "प्रथम खण्डः",
+          "sama_count": 43,
+          "samas": [
+            {
+              "id": "subsection_519",
+              "number": 1,
+              "title": "॥आजीकञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_01.mp3"
+            },
+            {
+              "id": "subsection_520",
+              "number": 2,
+              "title": "॥आभीकञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_02.mp3"
+            },
+            {
+              "id": "subsection_521",
+              "number": 3,
+              "title": "॥ऋषभश्पपवमानः॥",
+              "audio_filename": "JSV_पवमानपाठः_01_03.mp3"
+            },
+            {
+              "id": "subsection_522",
+              "number": 4,
+              "title": "॥आभीकञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_04.mp3"
+            },
+            {
+              "id": "subsection_523",
+              "number": 5,
+              "title": "॥बाभ्रवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_05.mp3"
+            },
+            {
+              "id": "subsection_524",
+              "number": 6,
+              "title": "॥इन्द्राण्यास्साम॥",
+              "audio_filename": "JSV_पवमानपाठः_01_06.mp3"
+            },
+            {
+              "id": "subsection_525",
+              "number": 7,
+              "title": "॥शैशवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_07.mp3"
+            },
+            {
+              "id": "subsection_526",
+              "number": 8,
+              "title": "॥प्रजापतेदोर्होदोहीयेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_08.mp3"
+            },
+            {
+              "id": "subsection_527",
+              "number": 9,
+              "title": "॥इन्द्राण्याश्चैवसाम॥",
+              "audio_filename": "JSV_पवमानपाठः_01_09.mp3"
+            },
+            {
+              "id": "subsection_528",
+              "number": 10,
+              "title": "॥आमहीयवञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_10.mp3"
+            },
+            {
+              "id": "subsection_529",
+              "number": 11,
+              "title": "॥आजीकञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_11.mp3"
+            },
+            {
+              "id": "subsection_530",
+              "number": 12,
+              "title": "॥सूरूपेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_12.mp3"
+            },
+            {
+              "id": "subsection_531",
+              "number": 13,
+              "title": "॥जमदग्नेश्शिल्पेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_13.mp3"
+            },
+            {
+              "id": "subsection_532",
+              "number": 14,
+              "title": "॥संहितञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_14.mp3"
+            },
+            {
+              "id": "subsection_533",
+              "number": 15,
+              "title": "॥वसिष्ठस्यशकूनः॥",
+              "audio_filename": "JSV_पवमानपाठः_01_15.mp3"
+            },
+            {
+              "id": "subsection_534",
+              "number": 16,
+              "title": "॥जमदग्नेश्चगम्भीरम्॥",
+              "audio_filename": "JSV_पवमानपाठः_01_16.mp3"
+            },
+            {
+              "id": "subsection_535",
+              "number": 17,
+              "title": "॥संहितञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_17.mp3"
+            },
+            {
+              "id": "subsection_536",
+              "number": 18,
+              "title": "॥सोमसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_18.mp3"
+            },
+            {
+              "id": "subsection_537",
+              "number": 19,
+              "title": "॥आशुभार्गवंतृतीयम्॥",
+              "audio_filename": "JSV_पवमानपाठः_01_19.mp3"
+            },
+            {
+              "id": "subsection_538",
+              "number": 20,
+              "title": "॥वैश्वदेवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_20.mp3"
+            },
+            {
+              "id": "subsection_539",
+              "number": 21,
+              "title": "॥इन्द्रसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_21.mp3"
+            },
+            {
+              "id": "subsection_540",
+              "number": 22,
+              "title": "॥यौक्ताश्वेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_22.mp3"
+            },
+            {
+              "id": "subsection_541",
+              "number": 23,
+              "title": "॥भासञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_23.mp3"
+            },
+            {
+              "id": "subsection_542",
+              "number": 24,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_01_24.mp3"
+            },
+            {
+              "id": "subsection_543",
+              "number": 25,
+              "title": "॥प्रजापतेश्चसहोरयिष्ठीयम्॥",
+              "audio_filename": "JSV_पवमानपाठः_01_25.mp3"
+            },
+            {
+              "id": "subsection_544",
+              "number": 26,
+              "title": "॥मादिलम्॥",
+              "audio_filename": "JSV_पवमानपाठः_01_26.mp3"
+            },
+            {
+              "id": "subsection_545",
+              "number": 27,
+              "title": "॥सोमसामचैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_27.mp3"
+            },
+            {
+              "id": "subsection_546",
+              "number": 28,
+              "title": "॥प्रजपतेश्चैवसहोरयिष्ठीयंसोमसामवा॥",
+              "audio_filename": "JSV_पवमानपाठः_01_28.mp3"
+            },
+            {
+              "id": "subsection_547",
+              "number": 29,
+              "title": "॥वैष्टम्भेद्वे ॥",
+              "audio_filename": "JSV_पवमानपाठः_01_29.mp3"
+            },
+            {
+              "id": "subsection_548",
+              "number": 30,
+              "title": "॥पाष्ठौहेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_30.mp3"
+            },
+            {
+              "id": "subsection_549",
+              "number": 31,
+              "title": "॥वैष्टम्भञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_31.mp3"
+            },
+            {
+              "id": "subsection_550",
+              "number": 32,
+              "title": "॥पाष्ठौहञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_32.mp3"
+            },
+            {
+              "id": "subsection_551",
+              "number": 33,
+              "title": "॥इषोवृधीयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_01_33.mp3"
+            },
+            {
+              "id": "subsection_552",
+              "number": 34,
+              "title": "॥इन्द्रसाम॥",
+              "audio_filename": "JSV_पवमानपाठः_01_34.mp3"
+            },
+            {
+              "id": "subsection_553",
+              "number": 35,
+              "title": "॥वैश्वदेवेच॥",
+              "audio_filename": "JSV_पवमानपाठः_01_35.mp3"
+            },
+            {
+              "id": "subsection_554",
+              "number": 36,
+              "title": "॥इन्द्रसामचैव॥",
+              "audio_filename": "JSV_पवमानपाठः_01_36.mp3"
+            },
+            {
+              "id": "subsection_555",
+              "number": 37,
+              "title": "॥आग्नेयानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_01_37.mp3"
+            },
+            {
+              "id": "subsection_556",
+              "number": 38,
+              "title": "॥आश्वानिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_01_38.mp3"
+            },
+            {
+              "id": "subsection_557",
+              "number": 39,
+              "title": "॥च्यावनानिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_01_39.mp3"
+            },
+            {
+              "id": "subsection_558",
+              "number": 40,
+              "title": "॥प्राजापत्येद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_40.mp3"
+            },
+            {
+              "id": "subsection_559",
+              "number": 41,
+              "title": "॥वैदन्वतानिचत्वारि ऋषभोवावैदन्वतश्चतुर्थः॥",
+              "audio_filename": "JSV_पवमानपाठः_01_41.mp3"
+            },
+            {
+              "id": "subsection_560",
+              "number": 42,
+              "title": "॥रजेराङ्गीरसस्यपदस्तोभौद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_01_42.mp3"
+            },
+            {
+              "id": "subsection_561",
+              "number": 43,
+              "title": "॥और्णायवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_01_43.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_55",
+          "number": 2,
+          "title": "द्वितीय खण्डः",
+          "sama_count": 8,
+          "samas": [
+            {
+              "id": "subsection_562",
+              "number": 1,
+              "title": "॥सौभरेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_02_01.mp3"
+            },
+            {
+              "id": "subsection_563",
+              "number": 2,
+              "title": "॥इन्द्रस्यवृषकाणित्रिणि॥",
+              "audio_filename": "JSV_पवमानपाठः_02_02.mp3"
+            },
+            {
+              "id": "subsection_564",
+              "number": 3,
+              "title": "॥बभ्रोःकुम्भस्यसामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_02_03.mp3"
+            },
+            {
+              "id": "subsection_565",
+              "number": 4,
+              "title": "॥बभ्रोःकार्तवेशानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_02_04.mp3"
+            },
+            {
+              "id": "subsection_566",
+              "number": 5,
+              "title": "॥शार्म्मदे द्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_02_05.mp3"
+            },
+            {
+              "id": "subsection_567",
+              "number": 6,
+              "title": "॥वसिष्ठस्यजनित्रेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_02_06.mp3"
+            },
+            {
+              "id": "subsection_568",
+              "number": 7,
+              "title": "॥मरूताम्प्रकीळास्त्रयःसङ्क्रीळावानिक्रिळावा॥",
+              "audio_filename": "JSV_पवमानपाठः_02_07.mp3"
+            },
+            {
+              "id": "subsection_569",
+              "number": 8,
+              "title": "॥औशनम्॥",
+              "audio_filename": "JSV_पवमानपाठः_02_08.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_56",
+          "number": 3,
+          "title": "तृतीय खण्डः",
+          "sama_count": 10,
+          "samas": [
+            {
+              "id": "subsection_570",
+              "number": 1,
+              "title": "॥यामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_03_01.mp3"
+            },
+            {
+              "id": "subsection_571",
+              "number": 2,
+              "title": "॥अङ्कतेवैररूपस्यसाम॥",
+              "audio_filename": "JSV_पवमानपाठः_03_02.mp3"
+            },
+            {
+              "id": "subsection_572",
+              "number": 3,
+              "title": "॥औशनेच॥",
+              "audio_filename": "JSV_पवमानपाठः_03_03.mp3"
+            },
+            {
+              "id": "subsection_573",
+              "number": 4,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_03_04.mp3"
+            },
+            {
+              "id": "subsection_574",
+              "number": 5,
+              "title": "॥कार्ष्णेच॥",
+              "audio_filename": "JSV_पवमानपाठः_03_05.mp3"
+            },
+            {
+              "id": "subsection_575",
+              "number": 6,
+              "title": "॥भारद्वाजञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_03_06.mp3"
+            },
+            {
+              "id": "subsection_576",
+              "number": 7,
+              "title": "॥वैश्वामित्रञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_03_07.mp3"
+            },
+            {
+              "id": "subsection_577",
+              "number": 8,
+              "title": "॥इन्द्रस्यवात्रघ्नम्॥",
+              "audio_filename": "JSV_पवमानपाठः_03_08.mp3"
+            },
+            {
+              "id": "subsection_578",
+              "number": 9,
+              "title": "॥सोमसामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_03_09.mp3"
+            },
+            {
+              "id": "subsection_579",
+              "number": 10,
+              "title": "॥भारद्वाजञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_03_10.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_57",
+          "number": 4,
+          "title": "चतुर्थ खण्डः",
+          "sama_count": 14,
+          "samas": [
+            {
+              "id": "subsection_580",
+              "number": 1,
+              "title": "॥वार्षाहरम्॥",
+              "audio_filename": "JSV_पवमानपाठः_04_01.mp3"
+            },
+            {
+              "id": "subsection_581",
+              "number": 2,
+              "title": "॥वार्शानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_04_02.mp3"
+            },
+            {
+              "id": "subsection_582",
+              "number": 3,
+              "title": "॥वैरूपेचदेवानांवाञ्जसायिनी॥",
+              "audio_filename": "JSV_पवमानपाठः_04_03.mp3"
+            },
+            {
+              "id": "subsection_583",
+              "number": 4,
+              "title": "॥तरन्तस्यचवैददश्वेस्साम॥",
+              "audio_filename": "JSV_पवमानपाठः_04_04.mp3"
+            },
+            {
+              "id": "subsection_584",
+              "number": 5,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_04_05.mp3"
+            },
+            {
+              "id": "subsection_585",
+              "number": 6,
+              "title": "॥सूर्यसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_04_06.mp3"
+            },
+            {
+              "id": "subsection_586",
+              "number": 7,
+              "title": "॥दार्ढ्यच्युतानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_04_07.mp3"
+            },
+            {
+              "id": "subsection_587",
+              "number": 8,
+              "title": "॥इन्द्रस्यचवृषकम्॥",
+              "audio_filename": "JSV_पवमानपाठः_04_08.mp3"
+            },
+            {
+              "id": "subsection_588",
+              "number": 9,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_04_09.mp3"
+            },
+            {
+              "id": "subsection_589",
+              "number": 10,
+              "title": "॥श्यावाश्वञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_04_10.mp3"
+            },
+            {
+              "id": "subsection_590",
+              "number": 11,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_04_11.mp3"
+            },
+            {
+              "id": "subsection_591",
+              "number": 12,
+              "title": "॥आग्नेयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_04_12.mp3"
+            },
+            {
+              "id": "subsection_592",
+              "number": 13,
+              "title": "॥आयास्येच॥",
+              "audio_filename": "JSV_पवमानपाठः_04_13.mp3"
+            },
+            {
+              "id": "subsection_593",
+              "number": 14,
+              "title": "॥भारद्वाजञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_04_14.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_58",
+          "number": 5,
+          "title": "पञ्चम खण्डः",
+          "sama_count": 46,
+          "samas": [
+            {
+              "id": "subsection_594",
+              "number": 1,
+              "title": "॥आयास्यञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_01.mp3"
+            },
+            {
+              "id": "subsection_595",
+              "number": 2,
+              "title": "॥वसिष्ठस्यचापदासे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_02.mp3"
+            },
+            {
+              "id": "subsection_596",
+              "number": 3,
+              "title": "॥माण्डवञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_03.mp3"
+            },
+            {
+              "id": "subsection_597",
+              "number": 4,
+              "title": "॥उद्वच्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_04.mp3"
+            },
+            {
+              "id": "subsection_598",
+              "number": 5,
+              "title": "॥माण्डवञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_05_05.mp3"
+            },
+            {
+              "id": "subsection_599",
+              "number": 6,
+              "title": "॥प्रजापतेश्चसदोविशीयम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_06.mp3"
+            },
+            {
+              "id": "subsection_600",
+              "number": 7,
+              "title": "॥जमग्नेस्सवासिनी द्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_07.mp3"
+            },
+            {
+              "id": "subsection_601",
+              "number": 8,
+              "title": "॥आयास्येद्वेसोमसामनीवा॥",
+              "audio_filename": "JSV_पवमानपाठः_05_08.mp3"
+            },
+            {
+              "id": "subsection_602",
+              "number": 9,
+              "title": "॥कण्वरथन्तरम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_09.mp3"
+            },
+            {
+              "id": "subsection_603",
+              "number": 10,
+              "title": "॥आयास्यञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_10.mp3"
+            },
+            {
+              "id": "subsection_604",
+              "number": 11,
+              "title": "॥रौरवम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_11.mp3"
+            },
+            {
+              "id": "subsection_605",
+              "number": 12,
+              "title": "॥यौधाजयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_12.mp3"
+            },
+            {
+              "id": "subsection_606",
+              "number": 13,
+              "title": "॥वसिष्ठस्यचप्लवम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_13.mp3"
+            },
+            {
+              "id": "subsection_607",
+              "number": 14,
+              "title": "॥अच्छिद्रञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_14.mp3"
+            },
+            {
+              "id": "subsection_608",
+              "number": 15,
+              "title": "॥रयिष्ठञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_15.mp3"
+            },
+            {
+              "id": "subsection_609",
+              "number": 16,
+              "title": "॥भारद्वाजेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_16.mp3"
+            },
+            {
+              "id": "subsection_610",
+              "number": 17,
+              "title": "॥आभिशवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_17.mp3"
+            },
+            {
+              "id": "subsection_611",
+              "number": 18,
+              "title": "॥अङ्गिरसामधीवासपरीवासौद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_05_18.mp3"
+            },
+            {
+              "id": "subsection_612",
+              "number": 19,
+              "title": "॥माण्डवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_19.mp3"
+            },
+            {
+              "id": "subsection_613",
+              "number": 20,
+              "title": "॥वैनसोमकृतवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_20.mp3"
+            },
+            {
+              "id": "subsection_614",
+              "number": 21,
+              "title": "॥प्रजापतेर्गूर्दौद्वौ गौतमस्यवाप्रतोद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_05_21.mp3"
+            },
+            {
+              "id": "subsection_615",
+              "number": 22,
+              "title": "॥मरूताङ्गोष्ठापुंसिनिद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_22.mp3"
+            },
+            {
+              "id": "subsection_616",
+              "number": 23,
+              "title": "॥महारौरवञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_23.mp3"
+            },
+            {
+              "id": "subsection_617",
+              "number": 24,
+              "title": "॥महायौधाजयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_24.mp3"
+            },
+            {
+              "id": "subsection_618",
+              "number": 25,
+              "title": "॥आश्वानिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_25.mp3"
+            },
+            {
+              "id": "subsection_619",
+              "number": 26,
+              "title": "॥आग्नेयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_05_26.mp3"
+            },
+            {
+              "id": "subsection_620",
+              "number": 27,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_05_27.mp3"
+            },
+            {
+              "id": "subsection_621",
+              "number": 28,
+              "title": "॥द्विहिङ्कारञ्चवामदेव्यम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_28.mp3"
+            },
+            {
+              "id": "subsection_622",
+              "number": 29,
+              "title": "॥अङ्गिरसामुत्सेधनिषेधौ द्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_05_29.mp3"
+            },
+            {
+              "id": "subsection_623",
+              "number": 30,
+              "title": "॥सोमसामानिषट्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_30.mp3"
+            },
+            {
+              "id": "subsection_624",
+              "number": 31,
+              "title": "॥विष्णोररणीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_31.mp3"
+            },
+            {
+              "id": "subsection_625",
+              "number": 32,
+              "title": "॥आङ्गिरसानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_32.mp3"
+            },
+            {
+              "id": "subsection_626",
+              "number": 33,
+              "title": "॥औक्ष्णोरन्ध्राणित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_33.mp3"
+            },
+            {
+              "id": "subsection_627",
+              "number": 34,
+              "title": "॥औक्ष्णोनिधनानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_34.mp3"
+            },
+            {
+              "id": "subsection_628",
+              "number": 35,
+              "title": "॥वाजजिच्चा॥",
+              "audio_filename": "JSV_पवमानपाठः_05_35.mp3"
+            },
+            {
+              "id": "subsection_629",
+              "number": 36,
+              "title": "॥द्वभ्यासञ्चसौहविषंवसिष्ठस्यवापिप्पलि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_36.mp3"
+            },
+            {
+              "id": "subsection_630",
+              "number": 37,
+              "title": "॥वैश्वदेवेच॥",
+              "audio_filename": "JSV_पवमानपाठः_05_37.mp3"
+            },
+            {
+              "id": "subsection_631",
+              "number": 38,
+              "title": "॥इन्द्रसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_05_38.mp3"
+            },
+            {
+              "id": "subsection_632",
+              "number": 39,
+              "title": "॥वैश्वदेवञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_05_39.mp3"
+            },
+            {
+              "id": "subsection_633",
+              "number": 40,
+              "title": "॥इन्द्रसामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_05_40.mp3"
+            },
+            {
+              "id": "subsection_634",
+              "number": 41,
+              "title": "॥स्वःपृष्ठमाङ्गिरसम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_41.mp3"
+            },
+            {
+              "id": "subsection_635",
+              "number": 42,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_05_42.mp3"
+            },
+            {
+              "id": "subsection_636",
+              "number": 43,
+              "title": "॥आदित्यानाञ्चपवित्रम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_43.mp3"
+            },
+            {
+              "id": "subsection_637",
+              "number": 44,
+              "title": "॥सोमसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_05_44.mp3"
+            },
+            {
+              "id": "subsection_638",
+              "number": 45,
+              "title": "॥स्वःपृष्ठञ्चैवाङ्गिरसम्॥",
+              "audio_filename": "JSV_पवमानपाठः_05_45.mp3"
+            },
+            {
+              "id": "subsection_639",
+              "number": 46,
+              "title": "॥सोमसामचैव॥",
+              "audio_filename": "JSV_पवमानपाठः_05_46.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_59",
+          "number": 6,
+          "title": "षष्ठ खण्डः",
+          "sama_count": 15,
+          "samas": [
+            {
+              "id": "subsection_640",
+              "number": 1,
+              "title": "॥औशनानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_06_01.mp3"
+            },
+            {
+              "id": "subsection_641",
+              "number": 2,
+              "title": "॥प्रशस्यजानस्याभीवर्तौद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_06_02.mp3"
+            },
+            {
+              "id": "subsection_642",
+              "number": 3,
+              "title": "॥प्रजापतेर्वाजसनिनीद्वे वाजजितौद्वौ वाराहाणिवा॥",
+              "audio_filename": "JSV_पवमानपाठः_06_03.mp3"
+            },
+            {
+              "id": "subsection_643",
+              "number": 4,
+              "title": "॥अङ्गिरसांसङ्क्रोशास्त्रयः देवानांवा सामसुरसे द्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_06_04.mp3"
+            },
+            {
+              "id": "subsection_644",
+              "number": 5,
+              "title": "॥वेणोर्विशालेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_06_05.mp3"
+            },
+            {
+              "id": "subsection_645",
+              "number": 6,
+              "title": "॥गौतमस्यतन्त्रातन्त्रेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_06_06.mp3"
+            },
+            {
+              "id": "subsection_646",
+              "number": 7,
+              "title": "॥अगस्तयस्ययमिकेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_06_07.mp3"
+            },
+            {
+              "id": "subsection_647",
+              "number": 8,
+              "title": "॥मरूताङ्कालकाक्रन्तौ॥",
+              "audio_filename": "JSV_पवमानपाठः_06_08.mp3"
+            },
+            {
+              "id": "subsection_648",
+              "number": 9,
+              "title": "॥वासिष्ठानिषट्॥",
+              "audio_filename": "JSV_पवमानपाठः_06_09.mp3"
+            },
+            {
+              "id": "subsection_649",
+              "number": 10,
+              "title": "॥आश्वञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_06_10.mp3"
+            },
+            {
+              "id": "subsection_650",
+              "number": 11,
+              "title": "॥सोमसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_06_11.mp3"
+            },
+            {
+              "id": "subsection_651",
+              "number": 12,
+              "title": "॥ऐषञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_06_12.mp3"
+            },
+            {
+              "id": "subsection_652",
+              "number": 13,
+              "title": "॥माधुच्छन्दसम्॥",
+              "audio_filename": "JSV_पवमानपाठः_06_13.mp3"
+            },
+            {
+              "id": "subsection_653",
+              "number": 14,
+              "title": "॥सोमसामानिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_06_14.mp3"
+            },
+            {
+              "id": "subsection_654",
+              "number": 15,
+              "title": "॥मरूतांव्रतोपोहस्सम्पद्वा॥",
+              "audio_filename": "JSV_पवमानपाठः_06_15.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_60",
+          "number": 7,
+          "title": "सप्तम खण्डः",
+          "sama_count": 9,
+          "samas": [
+            {
+              "id": "subsection_655",
+              "number": 1,
+              "title": "॥कूत्सस्याधिरथ्यानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_07_01.mp3"
+            },
+            {
+              "id": "subsection_656",
+              "number": 2,
+              "title": "॥वैश्वज्योतिषाणित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_07_02.mp3"
+            },
+            {
+              "id": "subsection_657",
+              "number": 3,
+              "title": "॥वाचस्सामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_07_03.mp3"
+            },
+            {
+              "id": "subsection_658",
+              "number": 4,
+              "title": "॥दाशस्पत्यानिषट्॥",
+              "audio_filename": "JSV_पवमानपाठः_07_04.mp3"
+            },
+            {
+              "id": "subsection_659",
+              "number": 5,
+              "title": "॥कश्यपस्यचशोभनम्॥",
+              "audio_filename": "JSV_पवमानपाठः_07_05.mp3"
+            },
+            {
+              "id": "subsection_660",
+              "number": 6,
+              "title": "॥आत्रम्॥",
+              "audio_filename": "JSV_पवमानपाठः_07_06.mp3"
+            },
+            {
+              "id": "subsection_661",
+              "number": 7,
+              "title": "॥अपांसाम॥",
+              "audio_filename": "JSV_पवमानपाठः_07_07.mp3"
+            },
+            {
+              "id": "subsection_662",
+              "number": 8,
+              "title": "॥श्नौष्टाणित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_07_08.mp3"
+            },
+            {
+              "id": "subsection_663",
+              "number": 9,
+              "title": "॥वासिष्ठम्॥",
+              "audio_filename": "JSV_पवमानपाठः_07_09.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_61",
+          "number": 8,
+          "title": "अष्टम खण्डः",
+          "sama_count": 17,
+          "samas": [
+            {
+              "id": "subsection_664",
+              "number": 1,
+              "title": "॥नकूलस्यवामदेवस्यप्रेंखौद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_08_01.mp3"
+            },
+            {
+              "id": "subsection_665",
+              "number": 2,
+              "title": "॥महाकार्क्तवेशञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_08_02.mp3"
+            },
+            {
+              "id": "subsection_666",
+              "number": 3,
+              "title": "॥और्ध्वसद्मनञ॥",
+              "audio_filename": "JSV_पवमानपाठः_08_03.mp3"
+            },
+            {
+              "id": "subsection_667",
+              "number": 4,
+              "title": "॥श्यावाश्वञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_08_04.mp3"
+            },
+            {
+              "id": "subsection_668",
+              "number": 5,
+              "title": "॥आन्धीगवञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_08_05.mp3"
+            },
+            {
+              "id": "subsection_669",
+              "number": 6,
+              "title": "॥क्रौञ्चानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_08_06.mp3"
+            },
+            {
+              "id": "subsection_670",
+              "number": 7,
+              "title": "॥गृत्समदस्यसूत्राणि चत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_08_07.mp3"
+            },
+            {
+              "id": "subsection_671",
+              "number": 8,
+              "title": "॥आकुपारम्॥",
+              "audio_filename": "JSV_पवमानपाठः_08_08.mp3"
+            },
+            {
+              "id": "subsection_672",
+              "number": 9,
+              "title": "॥त्वाष्ट्रीसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_08_09.mp3"
+            },
+            {
+              "id": "subsection_673",
+              "number": 10,
+              "title": "॥सोमसामानिचत्वारि वासिष्ठानिवा मदाईनिधनानिवा त्वाष्ट्रीसामानी॥",
+              "audio_filename": "JSV_पवमानपाठः_08_10.mp3"
+            },
+            {
+              "id": "subsection_674",
+              "number": 11,
+              "title": "॥त्वाष्ट्रीसामनीचैव॥",
+              "audio_filename": "JSV_पवमानपाठः_08_11.mp3"
+            },
+            {
+              "id": "subsection_675",
+              "number": 12,
+              "title": "॥क्रौञ्चेद्वेशार्मदेवा॥",
+              "audio_filename": "JSV_पवमानपाठः_08_12.mp3"
+            },
+            {
+              "id": "subsection_676",
+              "number": 13,
+              "title": "॥सोमसामानि त्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_08_13.mp3"
+            },
+            {
+              "id": "subsection_677",
+              "number": 14,
+              "title": "॥क्रौञ्चञ्चैव उद्वद्ववा॥",
+              "audio_filename": "JSV_पवमानपाठः_08_14.mp3"
+            },
+            {
+              "id": "subsection_678",
+              "number": 15,
+              "title": "॥सोमसामचैव॥",
+              "audio_filename": "JSV_पवमानपाठः_08_15.mp3"
+            },
+            {
+              "id": "subsection_679",
+              "number": 16,
+              "title": "॥प्रैय्यमेधानि त्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_08_16.mp3"
+            },
+            {
+              "id": "subsection_680",
+              "number": 17,
+              "title": "॥औशनंवैरूपम्॥",
+              "audio_filename": "JSV_पवमानपाठः_08_17.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_62",
+          "number": 9,
+          "title": "नवम खण्डः",
+          "sama_count": 18,
+          "samas": [
+            {
+              "id": "subsection_681",
+              "number": 1,
+              "title": "॥कावम्॥",
+              "audio_filename": "JSV_पवमानपाठः_09_01.mp3"
+            },
+            {
+              "id": "subsection_682",
+              "number": 2,
+              "title": "॥प्रजापतेर्वाजसनिनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_09_02.mp3"
+            },
+            {
+              "id": "subsection_683",
+              "number": 3,
+              "title": "॥वाजिजितौद्वौ॥",
+              "audio_filename": "JSV_पवमानपाठः_09_03.mp3"
+            },
+            {
+              "id": "subsection_684",
+              "number": 4,
+              "title": "॥कावञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_09_04.mp3"
+            },
+            {
+              "id": "subsection_685",
+              "number": 5,
+              "title": "॥सामराजानित्रीणि विशालानिवा उद्वन्तिवा सम्पद्वा तृतीयम्॥",
+              "audio_filename": "JSV_पवमानपाठः_09_05.mp3"
+            },
+            {
+              "id": "subsection_686",
+              "number": 6,
+              "title": "॥आङ्गीरसानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_09_06.mp3"
+            },
+            {
+              "id": "subsection_687",
+              "number": 7,
+              "title": "॥औशनम्॥",
+              "audio_filename": "JSV_पवमानपाठः_09_07.mp3"
+            },
+            {
+              "id": "subsection_688",
+              "number": 8,
+              "title": "॥प्रवत्भार्गवम्॥",
+              "audio_filename": "JSV_पवमानपाठः_09_08.mp3"
+            },
+            {
+              "id": "subsection_689",
+              "number": 9,
+              "title": "॥विरूपस्यचतन्त्रे॥",
+              "audio_filename": "JSV_पवमानपाठः_09_09.mp3"
+            },
+            {
+              "id": "subsection_690",
+              "number": 10,
+              "title": "॥भार्गवञ्चैव॥",
+              "audio_filename": "JSV_पवमानपाठः_09_10.mp3"
+            },
+            {
+              "id": "subsection_691",
+              "number": 11,
+              "title": "॥यामम्॥",
+              "audio_filename": "JSV_पवमानपाठः_09_11.mp3"
+            },
+            {
+              "id": "subsection_692",
+              "number": 12,
+              "title": "॥दार्शशीर्षेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_09_12.mp3"
+            },
+            {
+              "id": "subsection_693",
+              "number": 13,
+              "title": "॥सैन्धुक्षितानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_09_13.mp3"
+            },
+            {
+              "id": "subsection_694",
+              "number": 14,
+              "title": "॥यामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_09_14.mp3"
+            },
+            {
+              "id": "subsection_695",
+              "number": 15,
+              "title": "॥मरूतान्धेनुनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_09_15.mp3"
+            },
+            {
+              "id": "subsection_696",
+              "number": 16,
+              "title": "॥वसिष्ठस्यापामीवेद्वे वायोर्वाभिकृन्दौ॥",
+              "audio_filename": "JSV_पवमानपाठः_09_16.mp3"
+            },
+            {
+              "id": "subsection_697",
+              "number": 17,
+              "title": "॥अञ्जतेव्यञ्जतेस्समञ्जतइति काक्षीवतानांसामानि त्रीणि शार्ङ्गाणिवा॥",
+              "audio_filename": "JSV_पवमानपाठः_09_17.mp3"
+            },
+            {
+              "id": "subsection_698",
+              "number": 18,
+              "title": "॥आदित्यस्यार्कपुष्पे देवानांवा॥",
+              "audio_filename": "JSV_पवमानपाठः_09_18.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_63",
+          "number": 10,
+          "title": "दशम खण्डः",
+          "sama_count": 17,
+          "samas": [
+            {
+              "id": "subsection_699",
+              "number": 1,
+              "title": "॥वसिष्ठस्यपदेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_01.mp3"
+            },
+            {
+              "id": "subsection_700",
+              "number": 2,
+              "title": "॥वसिष्ठस्यानुपदेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_02.mp3"
+            },
+            {
+              "id": "subsection_701",
+              "number": 3,
+              "title": "॥पौष्कलम्॥",
+              "audio_filename": "JSV_पवमानपाठः_10_03.mp3"
+            },
+            {
+              "id": "subsection_702",
+              "number": 4,
+              "title": "॥ऐषिराणिपञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_10_04.mp3"
+            },
+            {
+              "id": "subsection_703",
+              "number": 5,
+              "title": "॥शौक्तानिपञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_10_05.mp3"
+            },
+            {
+              "id": "subsection_704",
+              "number": 6,
+              "title": "॥कार्णश्रवसानित्रीणिगौलोमानिवा॥",
+              "audio_filename": "JSV_पवमानपाठः_10_06.mp3"
+            },
+            {
+              "id": "subsection_705",
+              "number": 7,
+              "title": "॥वैश्वदेवेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_07.mp3"
+            },
+            {
+              "id": "subsection_706",
+              "number": 8,
+              "title": "॥इन्द्रसामनीद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_08.mp3"
+            },
+            {
+              "id": "subsection_707",
+              "number": 9,
+              "title": "॥मरूताम्प्रेङ्खःवसिष्ठस्यवा॥",
+              "audio_filename": "JSV_पवमानपाठः_10_09.mp3"
+            },
+            {
+              "id": "subsection_708",
+              "number": 10,
+              "title": "॥आग्नेयञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_10_10.mp3"
+            },
+            {
+              "id": "subsection_709",
+              "number": 11,
+              "title": "॥सोमसामच॥",
+              "audio_filename": "JSV_पवमानपाठः_10_11.mp3"
+            },
+            {
+              "id": "subsection_710",
+              "number": 12,
+              "title": "॥सुज्ञानेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_12.mp3"
+            },
+            {
+              "id": "subsection_711",
+              "number": 13,
+              "title": "॥द्यौतेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_13.mp3"
+            },
+            {
+              "id": "subsection_712",
+              "number": 14,
+              "title": "॥आतीषातीयेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_10_14.mp3"
+            },
+            {
+              "id": "subsection_713",
+              "number": 15,
+              "title": "॥सोमसामानिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_10_15.mp3"
+            },
+            {
+              "id": "subsection_714",
+              "number": 16,
+              "title": "॥सोमस्ययशांसित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_10_16.mp3"
+            },
+            {
+              "id": "subsection_715",
+              "number": 17,
+              "title": "॥औशनंवासिष्ठंवा॥",
+              "audio_filename": "JSV_पवमानपाठः_10_17.mp3"
+            }
+          ]
+        },
+        {
+          "id": "section_64",
+          "number": 11,
+          "title": "एकादश खण्डः",
+          "sama_count": 12,
+          "samas": [
+            {
+              "id": "subsection_716",
+              "number": 1,
+              "title": "॥वासिष्ठेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_11_01.mp3"
+            },
+            {
+              "id": "subsection_717",
+              "number": 2,
+              "title": "॥सभानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_02.mp3"
+            },
+            {
+              "id": "subsection_718",
+              "number": 3,
+              "title": "॥ऐषिराणिचत्वारिच्यावनानिवा॥",
+              "audio_filename": "JSV_पवमानपाठः_11_03.mp3"
+            },
+            {
+              "id": "subsection_719",
+              "number": 4,
+              "title": "॥शौक्तानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_04.mp3"
+            },
+            {
+              "id": "subsection_720",
+              "number": 5,
+              "title": "॥वाचस्सामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_05.mp3"
+            },
+            {
+              "id": "subsection_721",
+              "number": 6,
+              "title": "॥कौन्मलबर्हिषाणिपञ्च",
+              "audio_filename": "JSV_पवमानपाठः_11_06.mp3"
+            },
+            {
+              "id": "subsection_722",
+              "number": 7,
+              "title": "॥दीर्घेद्वे॥",
+              "audio_filename": "JSV_पवमानपाठः_11_07.mp3"
+            },
+            {
+              "id": "subsection_723",
+              "number": 8,
+              "title": "॥सोमसामानित्रिणि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_08.mp3"
+            },
+            {
+              "id": "subsection_724",
+              "number": 9,
+              "title": "॥शैतेष्याणिचत्वारि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_09.mp3"
+            },
+            {
+              "id": "subsection_725",
+              "number": 10,
+              "title": "॥सोमसामानित्रीणि॥",
+              "audio_filename": "JSV_पवमानपाठः_11_10.mp3"
+            },
+            {
+              "id": "subsection_726",
+              "number": 11,
+              "title": "॥गायत्रपार्श्वञ्च॥",
+              "audio_filename": "JSV_पवमानपाठः_11_11.mp3"
+            },
+            {
+              "id": "subsection_727",
+              "number": 12,
+              "title": "॥सन्तनिच॥",
+              "audio_filename": "JSV_पवमानपाठः_11_12.mp3"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
