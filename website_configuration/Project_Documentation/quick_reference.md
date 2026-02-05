@@ -15,12 +15,13 @@
 ## 🎨 Design System
 
 ### Color Palette
+### Color Palette
 ```css
-Primary (Saffron): #FF6B35
-Secondary (Dark Gray): #2C3E50
-Background (Cream): #FEFAE0
-Accent (Gold): #FFD700
-Text: #2C3E50
+Background (Eggshell): #F9F4E8
+Cards (Antique White): #EFE6D5
+Text (Charcoal): #2C2C2C
+Accent (Saffron): #FF6B35  /* Headings, Links, Active States */
+Gold (Earthy): #C08535     /* Borders, Tints */
 ```
 
 ### Typography
