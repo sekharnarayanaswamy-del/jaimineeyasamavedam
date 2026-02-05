@@ -19,6 +19,7 @@ def generate_report():
     # 1. Read Granular Table for counts
     rows = []
     with open(GRANULAR_TABLE, 'r', encoding='utf-8-sig') as f:
+        f.readline() # Skip metadata line
         reader = csv.DictReader(f)
         for row in reader:
             rows.append(row)
