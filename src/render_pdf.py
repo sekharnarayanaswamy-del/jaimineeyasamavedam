@@ -494,7 +494,16 @@ def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combi
     outputdir = f"{outputdir}/txt/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
-    document = template.render(supersections=data, output_mode=output_mode)
+    
+    from utils import get_generated_metadata
+    meta = get_generated_metadata()
+    
+    document = template.render(
+        supersections=data, 
+        output_mode=output_mode,
+        version=meta['version'],
+        generated_at=meta['generated_at']
+    )
     
 
     tmpdirname="."
@@ -1561,7 +1570,16 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiS
     # PRE-PROCESS DATA
     preprocess_html_data(data, output_mode)
     
-    document = template.render(supersections=data, html_font=html_font, output_mode=output_mode)
+    from utils import get_generated_metadata
+    meta = get_generated_metadata()
+    
+    document = template.render(
+        supersections=data, 
+        html_font=html_font, 
+        output_mode=output_mode,
+        version=meta['version'],
+        generated_at=meta['generated_at']
+    )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
     with open(output_path, "w", encoding="utf-8") as f:

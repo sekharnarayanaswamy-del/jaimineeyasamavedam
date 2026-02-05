@@ -231,6 +231,8 @@ for ss_key in ss_keys:
                             global_samam_num += 1
                             
                             rows.append({
+                                'Dataset_Version': JSV_VERSION,
+                                'Generated_At': GENERATED_AT,
                                 'Global_Samam_Num': global_samam_num,
                                 'Global_Rik_Num': global_rik_counter,
                                 'Arsheyam_Num': arsheyam_num,
@@ -254,6 +256,8 @@ for ss_key in ss_keys:
                  # Fallback for no markers
                  global_samam_num += 1
                  rows.append({
+                    'Dataset_Version': JSV_VERSION,
+                    'Generated_At': GENERATED_AT,
                     'Global_Samam_Num': global_samam_num,
                     'Global_Rik_Num': global_rik_counter,
                     'Arsheyam_Num': arsheyam_num,
@@ -280,7 +284,8 @@ with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as f:
         'Rik_ID', 'Samam_Num', 'Arsheyam_Name', 
         'Rik_Rishi', 'Rik_Devata', 'Rik_Chandas', 'Rik_Metadata',
         'Samam_Rishi', 'Samam_Devata', 'Samam_Chandas', 
-        'Saman_Metadata'
+        'Saman_Metadata',
+        'Dataset_Version', 'Generated_At'
     ]
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()

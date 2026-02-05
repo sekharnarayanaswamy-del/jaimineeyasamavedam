@@ -755,10 +755,10 @@ class WebsiteGenerator:
 
 /* Backgrounds */
 --bg-main: var(--color-bg-main);
---bg-sidebar: #F4EBD9;
+--bg-sidebar: #FCF9F0;
 --bg-hover: #E8DCC0;
 --bg-card: var(--color-bg-card);
---bg-verse: #FDFBF7;
+--bg-verse: var(--bg-card);
 
 /* Text */
 --text-primary: var(--color-text);

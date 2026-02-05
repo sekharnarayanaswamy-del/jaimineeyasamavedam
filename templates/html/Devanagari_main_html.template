@@ -12,6 +12,7 @@
             --accent-purple: #7b1fa2;
             --swara-red: #c62828;
             --bg-light: #f8f9fa;
+            --bg-card: #EFE6D5;
             --border-color: #dee2e6;
         }
         
@@ -139,7 +140,7 @@
         .subsection {
             margin: 0;
             padding: 3px 10px;
-            background: white;
+            background: var(--bg-card);
             border-left: 4px solid var(--accent-blue);
             text-align: center;
         }
@@ -474,6 +475,9 @@
         <!-- Title Page -->
         <div class="title-page">
             <h1>॥ जैमिनीयसामप्रकृतिगानम् ॥</h1>
+            <p style="font-size: 1.2rem; margin-top: 10px; color: var(--accent-blue);">
+                संस्करणम्: \VAR{version} | निर्मितम्: \VAR{generated_at}
+            </p>
         </div>
         
         <!-- Table of Contents -->

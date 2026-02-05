@@ -338,7 +338,14 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
         print(f"Error: The file '{file_path}' was not found. Please ensure it is in the same directory.")
         return None
 
-    json_output = {"supersection": {}}
+    meta = get_generated_metadata()
+    json_output = {
+        "meta": {
+            "version": meta["version"],
+            "generated_at": meta["generated_at"]
+        },
+        "supersection": {}
+    }
     
     # --- 0. Helper to Extract Subsection-level Aux Data ---
     aux_data = {} # subsection_id -> {Key: Value}

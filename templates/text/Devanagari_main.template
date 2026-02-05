@@ -1,6 +1,6 @@
 जैमिनीय  साम  प्रकृति  गानम्
 
-Version 0.15 1st January 2026
+Version \VAR{version} \VAR{generated_at}
 
 \BLOCK{ for i, supersection in supersections.items() }
 %- set supersection_title = supersection.get("supersection_title", "Untitled Supersection") 
