@@ -66,6 +66,7 @@ def handle_consecutive_accents(text):
 # ----------------------------------------------------
 def add_enhanced_linebreaks(text):
     # --- STEP 0: NORMALIZE ---
+    text = text.replace('\ufeff', '') # Remove BOM if present
     text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
     text = text.replace('|', r'।\ ').replace('।', r'।\ ')
     text = text.strip()
@@ -73,30 +74,41 @@ def add_enhanced_linebreaks(text):
 
     # --- STEP 1: DE-FRAGMENTATION (Fix Broken Headers) ---
     # Merge "||" + "Atha/Iti" if split across lines
-    text = re.sub(r'॥\s+((?:अथ|इति|समाप्तः))', r'॥ \1', text)
+    # FIX: Only merge if "||" is at the start of the line (isolated),
+    # to avoid merging the previous line's closing danda with the next line's start.
+    text = re.sub(r'(?m)^\s*॥\s+((?:अथ|इति|समाप्तः))', r'॥ \1', text)
     # Merge "Text..." + "||" (Orphan closing danda)
     text = re.sub(r'(समाप्तः|खण्डः|प्रारम्भः)\s*\n\s*॥', r'\1 ॥', text)
 
     # --- STEP 2: GLUE MANTRA NUMBERS TO PRECEDING TEXT ---
     # Finds: (Any Space/Newline) + (|| Digits ||)
-    # Replaces with: (Space) + (|| Digits ||)
+    # Replaces with: (Tilde/NBSP) + (|| Digits ||)
     mantra_block_pattern = r'॥\s*[\d\u0966-\u096F]+\s*॥'
-    text = re.sub(r'\s+(' + mantra_block_pattern + ')', r' \1', text)
+    text = re.sub(r'\s+(' + mantra_block_pattern + ')', r'~\1', text)
 
     # --- STEP 3: WRAP SPECIAL BLOCKS IN \mbox{} ---
     
-    # 3a. MANTRA NUMBERS: Force Spaces & Protect
-    # || 10 ||  ->  \mbox{॥ 10 ॥}
-    text = re.sub(r'॥\s*([\d\u0966-\u096F]+)\s*॥', r'\\mbox{॥ \1 ॥}', text)
-    
-    # 3b. HEADERS: Protect & Add Clearpage for Atha
-    # We use a single pass to handle Iti, Samaptah, and Atha blocks.
+    # 3a. HEADERS FIRST: Protect & Add Clearpage for Atha
+    # We match headers first to consume any trailing numerals (e.g. अथ ... खण्डः ॥ २ ॥)
+    # into the same \mbox so they stay on the same line.
     def mbox_wrapper_headers(match):
-        content = match.group(0)
+        content = match.group(1).strip()
         # Normalize internal spaces to single space
         content = re.sub(r'\s+', ' ', content)
         
-        # Create the wrapped block
+        # 1. Main Title: || Atha Uttararchikam ||
+        if 'उत्तरार्चिकम्' in content:
+             # Main Title Style: Centered, Large, Green, Own Page
+             return r'\clearpage\thispagestyle{empty}\vspace*{2in}{\centering\Huge\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vfill\clearpage'
+        
+        # 2. Khandah/Kandah (Section): || Atha ... Khandah ||
+        if 'खण्डः' in content:
+            # Section Style: New Page, Large, Bold, Green
+            # We use \phantomsection so hyperref can link to it (if we add TOC later)
+            # Using \addcontentsline{toc}{section}{...} to mimic \section* behavior in TOC
+            return r'\clearpage\phantomsection\addcontentsline{toc}{section}{' + content + r'}\vspace*{1em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+
+        # Create the wrapped block for standard headers
         wrapped_block = r'\mbox{' + content + r'}'
         
         # CHECK: If this block contains "Atha", prepend \clearpage
@@ -105,9 +117,21 @@ def add_enhanced_linebreaks(text):
             
         return wrapped_block
 
-    # Regex matches: || ... (Atha OR Iti OR Samaptah) ... ||
-    pat_headers = r'॥[^॥]*?(?:अथ|इति|समाप्तः)[^॥]*?॥'
-    text = re.sub(pat_headers, mbox_wrapper_headers, text, flags=re.DOTALL)
+    # Regex matches: 
+    # 1. Optional leading danda
+    # 2. Atha/Iti/Samaptah
+    # 3. Content until...
+    # 4. Closing danda OR "Khanda" OR "Kandah" OR "Uttararchikam"
+    # 5. Optional suffix: EITHER a full numeral block (|| N ||) OR just a closing danda (||)
+    # (Removed single danda option to force capture of numbers if present)
+    # UPDATED: Accept [~\s]* before suffix to handle the glue tilde added in Step 2.
+    # FIX: Added |[~\s]*॥ to capture trailing danda for main titles without numbers.
+    pat_headers = r'^\s*((?:॥\s*)?(?:अथ|इति|समाप्तः).*?(?:॥|खण्डः|काण्डः|उत्तरार्चिकम्)(?:[~\s]*॥\s*[\d\u0966-\u096F]+\s*॥|[~\s]*॥)?)'
+    text = re.sub(pat_headers, mbox_wrapper_headers, text, flags=re.DOTALL | re.MULTILINE)
+
+    # 3b. MANTRA NUMBERS: Force Spaces & Protect (standalone)
+    # || 10 ||  ->  \mbox{॥ 10 ॥}
+    text = re.sub(r'॥\s*([\d\u0966-\u096F]+)\s*॥', r'\\mbox{॥ \1 ॥}', text)
 
     # --- STEP 4: ADD LINE BREAKS (\\) ---
     # Add a LaTeX break ` \\` after every protected block (\mbox)
@@ -175,6 +199,7 @@ def remove_mantra_spaces(text):
     Preserves spaces in:
     1. Colophons (lines containing 'इति', 'अथ', 'समाप्तः')
     """
+    text = text.replace('\ufeff', '') # Remove BOM if present
     lines = text.split('\n')
     processed_lines = []
     
@@ -303,6 +328,8 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 \usepackage{fontspec}
 \usepackage[margin=1in]{geometry}
 \usepackage{setspace}
+\usepackage[dvipsnames]{xcolor} % Added for colors
+\usepackage[hidelinks]{hyperref} % Added for phantomsection/toc support
 \onehalfspacing
 
 % Set the main font to Adishila Vedic with Devanagari script support
@@ -320,6 +347,12 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     {\fontsize{#1pt}{#1pt}\selectfont\bfseries\addfontfeature{FakeBold=3}#2}%
 }
 
+% --- CUSTOM COLORS (Matching HTML color scheme) ---
+\definecolor{AccentBlue}{HTML}{1565c0}
+\definecolor{AccentPurple}{HTML}{7b1fa2}
+\definecolor{AccentGreen}{HTML}{2e7d32}
+\definecolor{SwaraRed}{HTML}{c62828}
+
 % --- ACCENT OVERLAP ADJUSTMENT ---
 % Defines a small negative space (kerning) to pull the next character closer
 % Used when two "danger" accents (Anudatta/Kampa) appear consecutively.
@@ -333,7 +366,7 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 \pretolerance=10000 % Allow high pretolerance
 \emergencystretch=1in % Allow emergency stretching to fit text
 \setlength{\parindent}{0pt} % Removes the indentation at start of paragraphs
-\raggedright                % Forces text to align left, ignoring right margin evenness
+\centering                % Forces text to be CENTERED (as requested)
 
 \begin{document}
 \fontsize{18pt}{27pt}\selectfont
@@ -365,19 +398,441 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+# ----------------------------------------------------
+# 8. HTML GENERATION (NEW)
+# ----------------------------------------------------
+def replace_accents_html(text):
+    """
+    Replaces ASCII markers with HTML Unicode entities wrapped in spans for positioning.
+    Matches the style of Rik_Devanagari_Unicode.html
+    """
+    replacements = [
+        ('(1)', '<span class="accent-swarita">&#x0951;</span>'),  # Swarita
+        ('(2)', '<span class="accent-anudatta">&#x1CD2;</span>'),  # Anudatta
+        ('(3)', '<span class="accent-kampa">&#x1CF8;</span>'),  # Kampa
+        ('(4)', '<span class="accent-trikampa">&#x1CF9;</span>'),  # Trikampa
+    ]
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
+    return text
+
+def format_text_html(text):
+    toc_entries = []
+
+    # Normalize dandas
+    text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
+    text = text.replace('|', '।').replace('।', '। ') # Add space after single danda
+    
+    # Handle Headers (Pattern: || ... Atha/Iti ... ||)
+    # We strip the dandas for the title output and wrap in section-title
+    # Regex finds: || [Content] ||
+    def header_replacer(match):
+        content = match.group(1).strip()
+        # Remove leading dandas
+        content = re.sub(r'^[॥\s]+', '', content)
+        # Remove trailing dandas ONLY if NOT part of a numeral block (text ending in digits + close danda)
+        # Check if content ends with something like "॥ १ ॥" or "|| 1 ||" (normalized to ॥)
+        # Regex: Ends with ॥ then space then digits then space then ॥
+        if not re.search(r'॥\s*[\d\u0966-\u096F]+\s*॥$', content):
+             content = re.sub(r'[॥\s]+$', '', content)
+             
+        # Normalize internal spaces
+        content = re.sub(r'\s+', ' ', content).strip()
+        
+        # ID creation for TOC
+        header_id = f"header-{len(toc_entries)}"
+        is_chapter = 'उत्तरार्चिकम्' in content
+        
+        toc_entries.append({
+            'title': content,
+            'id': header_id,
+            'is_chapter': is_chapter
+        })
+             
+        # Close previous subsection and rik-text divs (</div></div>)
+        # Insert independent Section Header block
+        # Open new subsection and rik-text divs
+        if is_chapter:
+             return f'</div></div><div class="section"><h1 id="{header_id}" class="chapter-title">{content}</h1></div><div class="subsection"><div class="rik-text">'
+        return f'</div></div><div class="section"><h2 id="{header_id}" class="section-title">{content}</h2></div><div class="subsection"><div class="rik-text">'
+
+    # Regex matches: 
+    # 1. Optional leading danda
+    # 2. Atha/Iti/Samaptah
+    # 3. Content until...
+    # 4. Closing danda OR "Khanda" OR "Kandah" OR "Uttararchikam"
+    # 5. Optional suffix: EITHER a full numeral block (|| N ||) OR just a danda (||)
+    # UPDATED: Added |काण्डः|उत्तरार्चिकम् to match LaTeX logic.
+    # UPDATED: Accept [~\s]* before suffix to be robust.
+    pat_headers = r'^\s*((?:॥\s*)?(?:अथ|इति|समाप्तः).*?(?:॥|खण्डः|काण्डः|उत्तरार्चिकम्)(?:[~\s]*॥\s*[\d\u0966-\u096F]+\s*॥|[~\s]*॥)?)'
+    text = re.sub(pat_headers, header_replacer, text, flags=re.DOTALL | re.MULTILINE)
+    
+    # Handle Mantra numbers (|| 1 ||)
+    # Wrap in span to prevent breaking and style, then add <br> for new line after each Rik
+    # Enforce spaces around the number: ॥ N ॥
+    text = re.sub(r'॥\s*([\d\u0966-\u096F]+)\s*॥', r'<span class="mantra-number">॥ \1 ॥</span><br>', text)
+    
+    # Replace newlines with <br> for text content
+    text = text.replace('\n', '<br>\n')
+    
+    # Wrap initial content.
+    # We assume the text starts with mantra content. 
+    # If the text immediately starts with a header, the regex replacement above will have put 
+    # two closing divs at the very start (</div></div><div class="section"...).
+    # To handle this cleanly, we simply prepend the opening tags. 
+    # Modern parsers will ignore the initial orphan closing tags if they occur.
+    text = '<div class="subsection"><div class="rik-text">' + text
+        
+    text += '</div></div>' # Close last tags
+    
+    return text, toc_entries
+
+def generate_html(input_text, base_filename):
+    """
+    Generates an HTML version of the Vedic text.
+    """
+    # Ensure output directory exists (replicate logic from latex function)
+    # We assume run from root
+    output_dir = os.path.join("data", "output")
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Prepend output directory to base_filename if not already present
+    # Check if it looks like a path
+    if os.sep not in base_filename and '/' not in base_filename:
+         base_filename = os.path.join(output_dir, base_filename)
+    
+    # Pipeline
+    
+    # NEW: Extract Main Title (Line 1) if present
+    subtitle_html = ""
+    lines = input_text.splitlines()
+    if lines:
+        first_line = lines[0].replace('\ufeff', '').strip()
+        # if 'उत्तरार्चिकम्' in first_line:
+        subtitle_html = f'<h2 class="chapter-title">{first_line}</h2>'
+        # Reconstruct text without the first line
+        input_text = '\n'.join(lines[1:])
+
+    # 1. Remove spaces (Continuous Script)
+    processed_text = remove_mantra_spaces(input_text)
+    
+    # 2. Replace Accents
+    processed_text = replace_accents_html(processed_text)
+    
+    # 3. Formatting
+    processed_text, toc_entries = format_text_html(processed_text)
+    
+    # Build TOC HTML
+    toc_html = '<div class="toc"><h2>अनुक्रमणिका</h2><ul>'
+    for entry in toc_entries:
+        # Skip the main chapter titles (like Uttararchikam) in the TOC as requested
+        if entry['is_chapter']:
+            continue
+        cls = "toc-chapter" if entry['is_chapter'] else "toc-section"
+        toc_html += f'<li class="{cls}"><a href="#{entry["id"]}">{entry["title"]}</a></li>'
+    toc_html += '</ul></div>'
+    
+    # HTML Template
+    html_content = f'''<!DOCTYPE html>
+<html lang="sa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>॥ सामसंहिता ॥</title>
+    <style>
+        :root {{
+            --primary-color: #2d3a4a;
+            --accent-blue: #1565c0;
+            --accent-green: #2e7d32;
+            --accent-skyblue: #039BE5;
+            --accent-purple: #7b1fa2;
+            --swara-red: #c62828;
+            --bg-light: #f8f9fa;
+            --border-color: #dee2e6;
+        }}
+        
+        * {{
+            box-sizing: border-box;
+        }}
+
+        body {{
+            font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--primary-color);
+            background: var(--bg-light);
+            margin: 0;
+            padding: 0;
+        }}
+        
+        .container {{
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }}
+        
+        /* Header Styles */
+        .title-page {{
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 40px;
+        }}
+        
+        .title-page h1 {{
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }}
+        
+        /* Chapter/Section Styles */
+        .section {{
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }}
+        
+        .section-title {{
+            text-align: center;
+            font-size: 2.0rem;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }}
+
+        .chapter-title {{
+            text-align: center;
+            font-size: 2.25rem;
+            color: var(--accent-skyblue);
+            margin-bottom: 20px;
+        }}
+        
+        /* Mantra Styles */
+        .subsection {{
+            margin: 0;
+            padding: 3px 10px;
+            background: white;
+            border-left: 4px solid var(--accent-blue);
+            text-align: center;
+            margin-bottom: 15px;
+        }}
+        
+        .rik-text {{
+            text-align: center;
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }}
+        
+        .mantra-number {{
+            display: inline-block;
+            white-space: nowrap;
+            color: var(--primary-color);
+            font-weight: bold;
+        }}
+        
+        /* Accent marks - zero-width positioning for fonts without native Vedic support */
+        .accent-swarita {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }}
+        
+        .accent-anudatta {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }}
+        
+        .accent-kampa {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }}
+        
+        .accent-trikampa {{
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: var(--accent-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: -0.1em;
+            top: -0.15em;
+        }}
+        
+        /* TOC Styles */
+        .toc {{
+            background: #f1f3f5;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }}
+        .toc h2 {{
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }}
+        .toc ul {{
+            list-style: none;
+            padding: 0;
+        }}
+        .toc li {{
+            margin-bottom: 8px;
+        }}
+        .toc a {{
+            text-decoration: none;
+            color: var(--accent-blue);
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }}
+        .toc a:hover {{
+            color: var(--accent-green);
+            text-decoration: underline;
+        }}
+        .toc-chapter {{
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-top: 15px;
+            text-align: center;
+        }}
+        .toc-section {{
+            padding-left: 20px;
+        }}
+        
+        /* TOC Styles */
+        .toc {{
+            background: #f1f3f5;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }}
+        .toc h2 {{
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }}
+        .toc ul {{
+            list-style: none;
+            padding: 0;
+            columns: 2;
+            column-gap: 40px;
+        }}
+        @media (max-width: 600px) {{
+            .toc ul {{
+                columns: 1;
+            }}
+        }}
+        .toc li {{
+            margin-bottom: 8px;
+            break-inside: avoid;
+        }}
+        .toc a {{
+            text-decoration: none;
+            color: var(--accent-blue);
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }}
+        .toc a:hover {{
+            color: var(--accent-green);
+            text-decoration: underline;
+        }}
+        .toc-chapter {{
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-top: 15px;
+            text-align: center;
+        }}
+        .toc-section {{
+            padding-left: 20px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title-page">
+            <h1>॥ सामसंहिता ॥</h1>
+            {subtitle_html}
+        </div>
+        {toc_html}
+        {processed_text}
+    </div>
+</body>
+</html>'''
+
+    html_filename = f"{base_filename}.html"
+    try:
+        with open(html_filename, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print(f"✓ HTML created successfully: {html_filename}")
+    except Exception as e:
+        print(f"Error creating HTML: {e}")
+
+
 if __name__ == "__main__":
+    import argparse
+    
     # Use relative path for portability
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    input_file = os.path.join(base_dir, "data", "input", "vedic_text.txt")
+    default_input = os.path.join(base_dir, "data", "input", "vedic_text.txt")
+    
+    parser = argparse.ArgumentParser(description='Generate Rik for Samhita with PDF output.')
+    parser.add_argument('-i', '--input', default=default_input,
+                        help=f'Path to input text file (default: {default_input})')
+    parser.add_argument('-o', '--output', default='vedic_output',
+                        help='Base name for output files (default: vedic_output)')
+    parser.add_argument('-f', '--format', choices=['pdf', 'html', 'all'], default='all',
+                        help='Output format: pdf, html, or all (default: all)')
+    
+    args = parser.parse_args()
+    
+    input_file = args.input
+    output_base = args.output
+    output_format = args.format
     
     if os.path.exists(input_file):
         try:
+            print(f"Reading input from: {input_file}")
             with open(input_file, 'r', encoding='UTF-8') as f:
                 text = f.read()                      
-            generate_and_compile_latex(text, 'vedic_output')
+            
+            # Generate LaTeX/PDF if requested
+            if output_format in ['pdf', 'all']:
+                generate_and_compile_latex(text, output_base)
+            
+            # Generate HTML if requested
+            if output_format in ['html', 'all']:
+                generate_html(text, output_base)
+            
         except Exception as e:
             print(f"Error: {e}")
     else:
-        print(f"File not found: {input_file}")
+        print(f"Error: Input file not found: {input_file}")
 
 #

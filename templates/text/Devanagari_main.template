@@ -27,6 +27,24 @@ Version \VAR{version} \VAR{generated_at}
 \VAR{subsection|format_rik_only_text(j,k,ns.prev_rik_id)}
 \BLOCK{ elif output_mode == 'samam' }
 \VAR{subsection|format_samam_only_text(j,k)}
+\BLOCK{ elif output_mode == 'rik_nometa' }
+\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) }
+\BLOCK{ if show_rik and rik_text }
+%- set current_rik_id = subsection.get('rik_id', 1) 
+# Start of Rik Text -- rik_\VAR{current_rik_id} ## DO NOT EDIT
+\VAR{ rik_text | replace_footnotes(footnotes) }
+# End of Rik Text -- rik_\VAR{current_rik_id} ## DO NOT EDIT
+
+\BLOCK{ endif }
+
+\BLOCK{ elif output_mode == 'samam_nometa' }
+# Start of SubSection Title -- \VAR{k} ## DO NOT EDIT
+\VAR{ header }
+# End of SubSection Title -- \VAR{k} ## DO NOT EDIT
+#Start of Mantra Sets -- \VAR{k} ## DO NOT EDIT
+\VAR{subsection|format_samam_nometa_text(j,k)}
+#End of Mantra Sets -- \VAR{k} ## DO NOT EDIT
+
 \BLOCK{ else }
 \BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) }
 \BLOCK{ if show_rik and rik_metadata }
@@ -43,7 +61,9 @@ Version \VAR{version} \VAR{generated_at}
 # Start of SubSection Title -- \VAR{k} ## DO NOT EDIT
 \VAR{ header }  \VAR{ saman_metadata }
 # End of SubSection Title -- \VAR{k} ## DO NOT EDIT
+#Start of Mantra Sets -- \VAR{k} ## DO NOT EDIT
 \VAR{subsection|format_mantra_sets_text(j,k)}
+#End of Mantra Sets -- \VAR{k} ## DO NOT EDIT
 %- set footnotes = subsection.get('footnotes', {}) 
 \BLOCK{ if footnotes }
 # Start of Footnote -- \VAR{k} ## DO NOT EDIT

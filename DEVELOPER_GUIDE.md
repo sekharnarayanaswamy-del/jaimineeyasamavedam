@@ -41,39 +41,76 @@ Code is included and **enabled** to generate classification indices for **Rishi*
 **Access**:
 Links to the indices are available on the Homepage under "सङ्क्रमणिका / वर्गीकरणम्".
 
-## Correction Cycle Workflow (v3.0 - CSV Enhanced)
-This project uses a CSV-driven correction cycle to manage structural IDs and Metadata (Rishi, Devata, Chandas) independently of the text. This allows for precise data management while preserving the ability to edit the text freely.
+## Correction Cycle Workflow (v4.0 - Excel Enhanced)
 
-### 1. Generate Metadata CSV (Baseline)
-Generate the granular CSV table from your current JSON. This file (`data/output/JSV_Samam_Granular_Table.csv`) becomes your **Metadata Source of Truth**.
+This project supports two correction workflows for managing metadata. Both use the JSON as the single source of truth.
+
+### Option A: Excel-Based Workflow (Recommended)
+
+This workflow allows editing metadata directly in Excel and applying changes back to JSON.
+
+#### Step 1: Generate Excel from JSON
 ```bash
 python src/generate_granular_table.py
 ```
-*Note: This script uses `samam_utils.py` to ensure verse counts match the website exactly.*
+*Output: `data/output/JSV_Samam_Granular_Table.xlsx`*
 
-### 2. Edit Metadata (CSV)
-Copy the generated CSV to your input folder (e.g., `data/input/granular_table.csv`). Open it in a spreadsheet editor (must support UTF-8).
-*   **Edit IDs**: Modify `Rik_ID` if grouping is incorrect.
-*   **Edit Metadata**: Fill in `Saman_Rishi`, `Saman_Devata`, `Saman_Chandas`.
-    *   *Note: These specific fields are what power the Website Indices.*
+#### Step 2: Edit Metadata in Excel
+Open the Excel file and edit these columns:
+- **Individual Fields**: `Rik_Rishi`, `Rik_Devata`, `Rik_Chandas`, `Samam_Rishi`, `Samam_Devata`, `Samam_Chandas`
+- **Full Metadata Strings**: `Rik_Metadata`, `Saman_Metadata`
 
-### 3. Edit Text (Txt)
-Edit the mantra text in the Unicode Text File (`data/input/Samhita_with_Rishi_Devata_Chandas.txt`) as usual. You can fix typos, swaras, etc.
+Save and close the file when done.
 
-### 4. Generate JSON (Fusion)
-Run `generate_json.py` in **correction mode** by passing the CSV. This merges your text corrections with the refined structure and metadata from the CSV.
+#### Step 3: Preview Changes (Dry Run)
 ```bash
-python src/generate_json.py "data/input/Samhita_with_Rishi_Devata_Chandas.txt" --input-mode correction --metadata-csv "data/input/granular_table.csv"
+python src/apply_excel_corrections.py --dry-run
 ```
-*Result*: `data/output/Samhita_with_Rishi_Devata_Chandas_out.json` is created with perfect structure and metadata.
+*Review the changes that would be applied.*
 
-### 5. Regenerate Artifacts
-Generate the website directly from the new JSON. The website generator now reads the JSON directly to utilize the specific metadata fields for indexing.
+#### Step 4: Apply Corrections to JSON
 ```bash
-# Update Website
-python src/generate_website.py --source-file data/output/Samhita_with_Rishi_Devata_Chandas_out.json
+python src/apply_excel_corrections.py
+```
+*Creates automatic backup before modifying JSON.*
 
-# Update PDF Source
+#### Step 5: Regenerate All Outputs
+```bash
+# Regenerate PDF/HTML/Text
+python src/render_pdf.py
+
+# Regenerate Website
+python src/generate_website.py --source-file data/output/Samhita_with_Rishi_Devata_Chandas_out.json
+```
+
+---
+
+### Option B: CSV-Based Workflow (Legacy)
+
+This workflow uses CSV files passed to `generate_json.py` for metadata enrichment.
+
+#### Step 1: Generate Metadata CSV (Baseline)
+```bash
+python src/generate_granular_table.py
+```
+*Output: `data/output/JSV_Samam_Granular_Table.csv`*
+
+#### Step 2: Edit Metadata (CSV)
+Copy the CSV to your input folder and edit in a spreadsheet editor (must support UTF-8).
+
+#### Step 3: Edit Text (Txt)
+Edit the mantra text in the Unicode Text File as needed.
+
+#### Step 4: Generate JSON (Fusion)
+```bash
+python src/generate_json.py "data/input/Samhita_with_Rishi_Devata_Chandas.txt" \
+    --input-mode correction \
+    --metadata-csv "data/input/granular_table.csv"
+```
+
+#### Step 5: Regenerate Artifacts
+```bash
+python src/generate_website.py --source-file data/output/Samhita_with_Rishi_Devata_Chandas_out.json
 python src/render_pdf.py
 ```
 
@@ -122,6 +159,33 @@ python src/render_pdf.py data/output/Samhita_with_Rishi_Devata_Chandas_out.json
 *   Generates HTML/LaTeX friendly text segments in `data/output/html/Devanagari/`.
 *   These files are used as source material for typesetting the physical book/PDF using LaTeX.
 
+## Samhita Generation (Rik Text)
+
+### 1. `src/generate_Rik_for_samhita.py`
+
+This script is a specialized generator for creating the **Rik Samhita** document, which presents the text in `scriptio continua` (continuous text without spaces between words), primarily for traditional recitation verification.
+
+### Key Logic Pipeline
+
+1.  **Text Normalization (Scriptio Continua)**:
+    *   The `remove_mantra_spaces()` function strips spaces within mantra lines to create continuous text.
+    *   **Crucially**, it preserves spaces in "structure lines" (Headers, Colophons) identified by keywords like `अथ`, `इति`, `समाप्तः`.
+
+2.  **Accent Handling**:
+    *   **Replacement**: Converts ASCII markers `(1)`, `(2)`, `(3)` into proper Swara markers.
+        *   **LaTeX**: Uses custom `\accentmark{}` commands.
+        *   **HTML**: Uses `<span class="accent-...">` with Unicode entities.
+    *   **Collision Avoidance**: The `handle_consecutive_accents()` function detects problematic sequences (e.g., Anudatta followed by Anudatta) and inserts small kerns `\kern0.15em` to prevent visual overlap.
+
+3.  **Layout & Formatting**:
+    *   **Gluing Numerals**: Mantra numbers (e.g., `|| 1 ||`) are "glued" to the preceding text using a non-breaking space (tilde `~` in LaTeX) to prevent them from being orphaned on a new line.
+    *   **Header Protection**: Headers and their associated section numbers are wrapped in `\mbox{...}` to enforce that they stay on a single line.
+    *   **Line Breaks**: Explicit line breaks (`\\`) are inserted after headers and mantra blocks to force the desired flow.
+
+4.  **Output Generation**:
+    *   **PDF**: Uses **LuaLaTeX** for high-quality font rendering (HarfBuzz). It generates a `.tex` file and compiles it.
+    *   **HTML**: Generates a self-contained HTML file with embedded CSS for accent positioning, useful for quick previews without LaTeX.
+
 ## Running the Generator
 
 ```bash
@@ -156,32 +220,41 @@ python src/generate_json.py <input_file> [OPTIONS]
 | `input_file` | Input text file to process (positional, required). | - |
 | `--input-mode` | Processing mode: `initial` or `correction`. | `correction` |
 | `--output` | Path for the generated JSON output file. | Auto-generated: `data/output/<input_basename>_out.json` |
+| `--metadata-csv` | CSV file to enrich metadata (correction mode only). | None |
+| `--initial-json` | Trusted Initial JSON output to map Rik IDs correctly (correction mode only). | None |
 
 #### Modes
 
 *   **Initial Mode (`--input-mode initial`)**:
-    *   Reads from the input file.
+    *   Reads from the input file (expects text with structural markers).
     *   Also reads auxiliary metadata files:
-        *   `data/input/rishi_devata_chandas_for_rik.txt`
-        *   `data/input/sama_rishi_chandas_out.txt`
-        *   `data/input/vedic_text.txt`
-    *   Used for the first pass of processing.
+        *   `data/input/rishi_devata_chandas_for_rik.txt` - Rik metadata (Rishi, Devata, Chandas)
+        *   `data/input/sama_rishi_chandas_out.txt` - Samam metadata
+        *   `data/input/vedic_text.txt` - Rik text content
+    *   Used for the first pass of processing from raw input.
+    *   Input file must contain structural markers (SuperSection, Section, SubSection, Mantra Sets).
 
 *   **Correction Mode (`--input-mode correction`)** *(default)*:
     *   Reads from the input file (expects processed Unicode text with embedded metadata).
     *   **Does NOT** read auxiliary files. It expects all metadata to be present in the input file itself.
     *   Used for subsequent passes after manual edits.
+    *   Optionally enriches with metadata from CSV file using `--metadata-csv`.
 
 #### Examples
 
 **Run in Correction Mode (default):**
 ```bash
-python src/generate_json.py data/input/Agneyam-Pavamanam_latest.txt
+python src/generate_json.py data\input\Samhita_with_Rishi_Devata_Chandas.txt
 ```
 
 **Run in Initial Mode:**
 ```bash
-python src/generate_json.py data/input/Agneyam-Pavamanam_latest.txt --input-mode initial
+python src/generate_json.py data\input\Samhita_with_Rishi_Devata_Chandas.txt --input-mode initial
+```
+
+**Run in Correction Mode with CSV Metadata Enrichment:**
+```bash
+python src/generate_json.py data\input\Samhita_with_Rishi_Devata_Chandas.txt --metadata-csv data/output/JSV_Samam_Granular_Table.csv
 ```
 
 ---
@@ -202,10 +275,18 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 
 | Argument | Description | Default |
 | :--- | :--- | :--- |
-| `input_file` | The input JSON file path (Positional). | `data/output/Agneyam-Pavamanam_latest_out.json` |
-| `--output-mode` | Output style: `combined` (Rik+Samam) or `separate` (Rik/Samam files). | `combined` |
+| `input_file` | The input JSON file path (Positional). | `data/output/Samhita_with_Rishi_Devata_Chandas_out.json` |
+| `--output-mode` | Output style: `combined`, `separate`, or `nometa`. | `combined` |
 | `--pdf-font` | Font name to use for PDF generation. | `AdiShila Vedic` |
 | `--html-font` | Font family string for HTML output. | `'AdiShila Vedic', 'Adishila SanVedic'` |
+
+#### Output Modes
+
+| Mode | Description | Generated Files |
+| :--- | :--- | :--- |
+| `combined` | Single output with both Rik and Samam content together (default). | `Devanagari_Devanagari_Unicode.*` |
+| `separate` | Two separate outputs: Rik-only and Samam-only files **with metadata** (rik_metadata, saman_metadata included). | `Rik_Devanagari_Unicode.*`, `Samam_Devanagari_Unicode.*` |
+| `nometa` | Two separate outputs: Rik-only and Samam-only files **without metadata** (cleaner output, text only). | `Rik_NoMeta_Devanagari_Unicode.*`, `Samam_NoMeta_Devanagari_Unicode.*` |
 
 #### Examples
 
@@ -214,10 +295,22 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 python src/render_pdf.py
 ```
 
-**Generate Separate Rik and Samam Files:**
+**Generate Separate Rik and Samam Files (with metadata):**
 ```bash
-python src/render_pdf.py data/output/Agneyam-Pavamanam_latest_out.json --output-mode separate
+python src/render_pdf.py data/output/Samhita_with_Rishi_Devata_Chandas_out.json --output-mode separate
 ```
+
+**Generate Separate Rik and Samam Files (without metadata):**
+```bash
+python src/render_pdf.py data/output/Samhita_with_Rishi_Devata_Chandas_out.json --output-mode nometa
+```
+
+#### Output Locations
+
+Files are generated in the following directories:
+- **PDF/LaTeX**: `data/output/pdf/Devanagari/`
+- **Text**: `data/output/txt/Devanagari/`
+- **HTML**: `data/output/html/Devanagari/`
 
 ---
 

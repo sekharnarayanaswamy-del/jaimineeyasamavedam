@@ -988,6 +988,176 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     return "\n\n".join(formatted_output)
 
 
+# ----------------------------------------------------
+# RIK NO-METADATA FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_rik_nometa(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None):
+    """
+    Format only Rik text (without rik_metadata) for nometa output mode.
+    Skips all Samam-related content and metadata.
+    """
+    formatted_output = []
+    
+    # --- FOOTNOTE TRACKING ---
+    seen_markers = set()
+    
+    current_rik_id = subsection.get('rik_id')
+    string_2 = subsection.get('rik_text', '')
+    
+    # Skip if no Rik content
+    if not string_2:
+        return ""
+    
+    # Only show if rik_id changed (avoid duplicates)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info:
+        return ""
+    
+    # Page Break / Indexing
+    formatted_output.append(r"\par\filbreak")
+    formatted_output.append(r"\phantomsection")
+    
+    rik_id_display = f"ऋक् {to_devanagari_numeral(current_rik_id)}" if current_rik_id else ""
+    if rik_id_display:
+        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{rik_id_display}}}")
+
+    # Rik Text (with Vedic Accents) - NO METADATA
+    if string_2:
+        s2 = remove_mantra_spaces(string_2)
+        s2 = handle_consecutive_accents(s2)
+        s2 = replace_accents(s2)
+        # Apply footnotes
+        s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
+        s2 = format_dandas(s2)
+        formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(r"\vspace{0.8em}")
+
+    return "\n\n".join(formatted_output)
+
+
+# ----------------------------------------------------
+# SAMAM NO-METADATA FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_samam_nometa(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None):
+    """
+    Format only Samam content (header, mantra text) for nometa output mode.
+    Skips all Rik-related content and saman_metadata.
+    """
+    formatted_output = []
+    
+    # --- FOOTNOTE TRACKING ---
+    seen_markers = set()
+    
+    # Clean titles - skip saman_metadata
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ""
+    index_title = re.sub(r'[|॥]', '', subsection_title).strip() if subsection_title else ""
+
+    # Page Break / Indexing
+    formatted_output.append(r"\par\filbreak")
+    formatted_output.append(r"\phantomsection")
+    if subsection_title:
+        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{display_sub_title}}}")
+        formatted_output.append(f"\\index{{{index_title}}}")
+
+    # Header only (NO saman_metadata)
+    header_part = display_sub_title.strip()
+    if header_part:
+        header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}"
+        formatted_output.append(f"{{\\centering \\textbf{{{header_part}}} \\par}}")
+
+    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\vspace{0.5em}")
+    formatted_output.append(r"\nopagebreak")
+
+    # Mantra Content Rendering (Samam text only - no metadata)
+    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
+        subsection, 
+        supersection_title, 
+        section_title, 
+        subsection_title
+    )
+    
+    paragraph_buffer = []
+    
+    footnotes_map = {}
+    raw_footnotes = subsection.get('footnotes', []) 
+    for note in raw_footnotes:
+        if 'word' in note and 'content' in note:
+            footnotes_map[note['word']] = note['content']
+
+    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
+        
+        is_verse_end = False
+        if mantra_row:
+            for token in reversed(mantra_row):
+                if "SPACE_TOKEN" in token: continue
+                if "॥" in token or "||" in token:
+                    is_verse_end = True
+                break 
+
+        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
+            text_part = mantra_chunk.strip().replace(":", "ः")
+            text_part = clean_stack_arg(text_part)
+            text_part = format_dandas(text_part)
+            swara_part = swara_chunk.strip().replace('{}', '')
+            swara_part = clean_stack_arg(swara_part)
+
+            if "SPACE_TOKEN" in text_part:
+                paragraph_buffer.append("")
+                continue 
+
+            extras = "" 
+            
+            if '(' in text_part and ')' in text_part:
+                markers = re.findall(r'\((s\d+)\)', text_part)
+                footnote_data = subsection.get('footnotes', {})
+                for marker in markers:
+                    text_part = text_part.replace(f'({marker})', '')
+                    safe_key = subsection_key if subsection_key else "unknown"
+                    label = f"fn:{safe_key}:{marker}"
+                    
+                    if marker in seen_markers:
+                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
+                    else:
+                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
+                        extras += f"\\vphantom{{\\char\"0951}}\\footnote{{{fn_text}\\label{{{label}}}}}"
+                        seen_markers.add(marker)
+
+            if swara_part:
+                clean_swara = swara_part.replace('{', '').replace('}', '')
+                if len(clean_swara) > 1:
+                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
+                    spacing = "\\hspace{0.05em}"
+                else:
+                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
+                    spacing = ""
+            else:
+                stack_base = text_part
+                spacing = ""
+                      
+            if (not text_part.strip() or text_part.strip() == '{}') and extras:
+                token = extras
+            else:
+                token = stack_base + extras + spacing
+
+            if token and token != '{}':
+                paragraph_buffer.append(token)
+                paragraph_buffer.append("\\allowbreak")
+
+        if is_verse_end:
+            full_paragraph = "".join(paragraph_buffer)
+            formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
+            formatted_output.append(r"\par\vspace{0.5em}") 
+            paragraph_buffer = [] 
+
+    if paragraph_buffer:
+        full_paragraph = "".join(paragraph_buffer)
+        formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
+        formatted_output.append(r"\par\vspace{0.5em}")
+
+    return "\n\n".join(formatted_output)
+
+
 def format_mantra_sets_text(subsection,section_title,subsection_title):
     
     formatted_sets = []
@@ -1015,14 +1185,14 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
     if len(corrected_mantra_array) != 0:
         mantra_array = corrected_mantra_array
     footnotes = subsection.get('footnotes', {})
-    formatted_sets.append(f"#Start of Mantra Sets -- {subsection_title} ## DO NOT EDIT")
+    # Note: #Start/#End of Mantra Sets markers are added by the Jinja2 template
+    # Do not add them here to avoid duplication
     for mantra in mantra_array:
         # Keep mantra content together - replace \newline% with single space or nothing
         clean_mantra = mantra.replace('\\newline%', '').replace('\\newline', '')
         # Apply footnote application
         clean_mantra, _ = process_footnotes_text(clean_mantra, footnotes)
         formatted_sets.append(clean_mantra)
-    formatted_sets.append(f"#End of Mantra Sets -- {subsection_title} ## DO NOT EDIT")
     return "\n".join(formatted_sets)
 
 
@@ -1076,6 +1246,81 @@ def format_samam_only_text(subsection, section_title, subsection_title):
         formatted_output.append(header)
     elif saman_metadata:
         formatted_output.append(saman_metadata)
+    
+    # Mantra content
+    mantra_sets = subsection.get('mantra_sets', [])
+    corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
+    
+    # Use corrected mantras if available
+    mantra_array = []
+    if corrected_mantra_sets:
+        for corrected in corrected_mantra_sets:
+            corrected_mantra = corrected.get('corrected-mantra', '')
+            if corrected_mantra:
+                mantra_array.append(corrected_mantra)
+    else:
+        for mantra_set in mantra_sets:
+            mantra_words = mantra_set.get('mantra-words', [])
+            mantra = ""
+            for word in mantra_words:
+                actual_word = word.get('word', '')
+                mantra += " " + actual_word
+            mantra_array.append(mantra.strip())
+    
+    footnotes = subsection.get('footnotes', {})
+    for mantra in mantra_array:
+        # Clean LaTeX formatting for plain text
+        clean_mantra = mantra.replace('\\newline%', ' ')
+        clean_mantra = clean_mantra.replace('\\newline', ' ')
+        clean_mantra = re.sub(r'\\[a-zA-Z]+\{[^}]*\}', '', clean_mantra)  # Remove \command{...}
+        clean_mantra = re.sub(r'\\[a-zA-Z]+', '', clean_mantra)  # Remove \command
+        clean_mantra = re.sub(r'\s+', ' ', clean_mantra).strip()  # Clean extra spaces
+        
+        # Apply footnote application
+        clean_mantra, _ = process_footnotes_text(clean_mantra, footnotes)
+        formatted_output.append(clean_mantra)
+    
+    return "\n".join(formatted_output)
+
+
+# ----------------------------------------------------
+# RIK NO-METADATA TEXT FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_rik_nometa_text(subsection, section_title, subsection_title, prev_rik_id=None):
+    """Format only Rik text (without metadata) for plain text output."""
+    formatted_output = []
+    
+    current_rik_id = subsection.get('rik_id')
+    rik_text = subsection.get('rik_text', '')
+    
+    # Skip if no Rik content or if this Rik was already shown
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info or not rik_text:
+        return ""
+    
+    # Rik ID header
+    if current_rik_id:
+        formatted_output.append(f"॥ ऋक् {to_devanagari_numeral(current_rik_id)} ॥")
+    
+    # Rik Text only (NO metadata)
+    if rik_text:
+        footnotes = subsection.get('footnotes', {})
+        rik_text, _ = process_footnotes_text(rik_text, footnotes)
+        formatted_output.append(rik_text)
+    
+    return "\n".join(formatted_output)
+
+
+# ----------------------------------------------------
+# SAMAM NO-METADATA TEXT FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_samam_nometa_text(subsection, section_title, subsection_title):
+    """Format only Samam mantra text (without header or metadata) for plain text output.
+    
+    Note: The header is output separately by the template's SubSection Title section,
+    so we do NOT include it here to avoid duplication.
+    """
+    formatted_output = []
     
     # Mantra content
     mantra_sets = subsection.get('mantra_sets', [])
@@ -1479,6 +1724,123 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
             
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
+
+# ----------------------------------------------------
+# RIK NO-METADATA HTML FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_rik_nometa_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+                           footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
+    """
+    Format only Rik text (without rik_metadata) for HTML nometa output mode.
+    Skips all Samam-related content and metadata.
+    """
+    # Use passed state
+    HTML_FOOTNOTE_COUNTER = footnote_counter
+    formatted_output = []
+    collected_footnotes = []
+    footnote_data = subsection.get('footnotes', {})
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+    
+    current_rik_id = subsection.get('rik_id')
+    string_2 = subsection.get('rik_text', '')
+    
+    # Skip if no Rik content
+    if not string_2:
+        return "", HTML_FOOTNOTE_COUNTER
+    
+    # Only show if rik_id changed (avoid duplicates)
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info:
+        return "", HTML_FOOTNOTE_COUNTER
+    
+    # Rik Text (with accents) - NO METADATA
+    if string_2:
+        s2 = remove_mantra_spaces(string_2)
+        # Remove LaTeX newline commands that shouldn't appear in HTML
+        s2 = s2.replace('\\newline%', '').replace('\\newline', '')
+        s2 = escape_for_html(s2)
+        
+        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+        collected_footnotes.extend(fnotes)
+        
+        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
+        s2 = replace_accents_html(s2)
+        s2 = format_dandas_html(s2)
+        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+
+    # Accumulate footnotes for section-level rendering (don't render inline)
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
+
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
+
+
+# ----------------------------------------------------
+# SAMAM NO-METADATA HTML FORMATTING (for nometa output mode)
+# ----------------------------------------------------
+def format_samam_nometa_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+                             footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
+    """
+    Format only Samam content (header, mantra text) for HTML nometa output mode.
+    Skips all Rik-related content and saman_metadata.
+    """
+    # Use passed state
+    HTML_FOOTNOTE_COUNTER = footnote_counter
+    formatted_output = []
+    collected_footnotes = []
+    footnote_data = subsection.get('footnotes', {})
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+    
+    # Clean titles - NO saman_metadata
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+
+    # Header only (NO saman_metadata)
+    if display_sub_title:
+        formatted_output.append(f'<div class="subsection-header"><span class="header-title">{escape_for_html(display_sub_title)}</span></div>')
+
+    # Mantra Content
+    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
+        subsection, 
+        supersection_title, 
+        section_title, 
+        subsection_title
+    )
+    
+    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
+        word_elements = []
+        
+        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
+            text_part = mantra_chunk.strip().replace(":", "ः")
+            text_part = text_part.replace('{', '').replace('}', '').strip()
+            
+            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
+            # Remove LaTeX formatting commands from swara
+            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').replace('\\smallredfont ', '').strip()
+
+            if "SPACE_TOKEN" in text_part:
+                continue
+
+            text_part = escape_for_html(text_part)
+            text_part = format_dandas_html(text_part)
+            
+            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+            collected_footnotes.extend(fnotes)
+
+            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
+            
+            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
+            word_elements.append(word_html)
+
+        if word_elements:
+            verse_html = ''.join(word_elements)
+            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
+
+    # Accumulate footnotes for section-level rendering (don't render inline)
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
+            
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
+
 def preprocess_html_data(supersections, output_mode):
     """
     Pre-processes the data structure to generate HTML for subsections and footnotes
@@ -1512,6 +1874,18 @@ def preprocess_html_data(supersections, output_mode):
                     )
                 elif output_mode == 'samam':
                      html_content, footnote_counter = format_samam_only_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                elif output_mode == 'rik_nometa':
+                    html_content, footnote_counter = format_rik_nometa_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                elif output_mode == 'samam_nometa':
+                    html_content, footnote_counter = format_samam_nometa_html(
                         subsection, None, None, subsection.get('header', {}).get('header'), {}, 
                         prev_rik_id, unique_key, 
                         footnote_counter, footnotes_accumulator, seen_content_map
@@ -1597,18 +1971,20 @@ def main():
         epilog="""
 Output Modes:
   combined  - Single output with both Rik and Samam content (default)
-  separate  - Two separate outputs: Rik-only and Samam-only
+  separate  - Two separate outputs: Rik-only and Samam-only (with metadata)
+  nometa    - Two separate outputs: Rik-only and Samam-only (without metadata)
 
 Examples:
   python renderPDF.py input.json
   python renderPDF.py input.json --output-mode separate
+  python renderPDF.py input.json --output-mode nometa
         """
     )
     parser.add_argument('input_file', nargs='?', default='data/output/Agneyam-Pavamanam_latest_out.json',
                         help='Input JSON file (default: data/output/Agneyam-Pavamanam_latest_out.json)')
     parser.add_argument('--output-mode', dest='output_mode',
-                        choices=['combined', 'separate'], default='combined',
-                        help='Output mode: combined (default) or separate')
+                        choices=['combined', 'separate', 'nometa'], default='combined',
+                        help='Output mode: combined (default), separate, or nometa')
     parser.add_argument('--pdf-font', dest='pdf_font', default='AdiShila Vedic',
                         help='Font for PDF output (default: AdiShila Vedic)')
     parser.add_argument('--html-font', dest='html_font', default="'AdiShila Vedic', 'Adishila SanVedic'",
@@ -1660,6 +2036,10 @@ Examples:
     latex_jinja_env.filters["format_samam_only"] = format_samam_only
     latex_jinja_env.filters["format_rik_only_text"] = format_rik_only_text
     latex_jinja_env.filters["format_samam_only_text"] = format_samam_only_text
+    latex_jinja_env.filters["format_rik_nometa"] = format_rik_nometa
+    latex_jinja_env.filters["format_samam_nometa"] = format_samam_nometa
+    latex_jinja_env.filters["format_rik_nometa_text"] = format_rik_nometa_text
+    latex_jinja_env.filters["format_samam_nometa_text"] = format_samam_nometa_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
     
     # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
@@ -1681,6 +2061,8 @@ Examples:
     html_jinja_env.filters["format_mantra_sets_html"] = format_mantra_sets_html
     html_jinja_env.filters["format_rik_only_html"] = format_rik_only_html
     html_jinja_env.filters["format_samam_only_html"] = format_samam_only_html
+    html_jinja_env.filters["format_rik_nometa_html"] = format_rik_nometa_html
+    html_jinja_env.filters["format_samam_nometa_html"] = format_samam_nometa_html
     html_jinja_env.filters["escape_for_html"] = escape_for_html
     html_jinja_env.filters["replacecolon"] = replacecolon
     html_jinja_env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
@@ -1708,25 +2090,45 @@ Examples:
         CreateHtmlFile(html_template_file, f"Devanagari", "Devanagari", supersections, html_font=html_font, output_mode='combined')
         print("Success! Generated combined output files.")
         
-    else:
-        # Separate mode: Generate Rik-only and Samam-only files
+    elif output_mode == 'separate':
+        # Separate mode: Generate Rik-only and Samam-only files (with metadata)
         template_file = latex_jinja_env.get_template(templateFile_Devanagari)
         text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
         html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
         
         # Rik-only output: Pass output_mode='rik' to template
-        print("Generating Rik-only output...")
+        print("Generating Rik-only output (with metadata)...")
         CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik')
         CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik')
         CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik')
         
         # Samam-only output: Pass output_mode='samam' to template
-        print("Generating Samam-only output...")
+        print("Generating Samam-only output (with metadata)...")
         CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam')
         CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam')
         CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam')
         
         print("Success! Generated separate Rik and Samam output files.")
+        
+    else:
+        # Nometa mode: Generate Rik-only and Samam-only files (without metadata)
+        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
+        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
+        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        
+        # Rik-only output (no metadata): Pass output_mode='rik_nometa' to template
+        print("Generating Rik-only output (without metadata)...")
+        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa')
+        CreateTextFile(text_template_file, f"Rik_NoMeta", "Devanagari", supersections, output_mode='rik_nometa')
+        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa')
+        
+        # Samam-only output (no metadata): Pass output_mode='samam_nometa' to template
+        print("Generating Samam-only output (without metadata)...")
+        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa')
+        CreateTextFile(text_template_file, f"Samam_NoMeta", "Devanagari", supersections, output_mode='samam_nometa')
+        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa')
+        
+        print("Success! Generated separate Rik and Samam output files without metadata.")
 
 if __name__ == "__main__":
     main()

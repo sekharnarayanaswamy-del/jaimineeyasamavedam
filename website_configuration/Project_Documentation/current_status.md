@@ -3,10 +3,10 @@
 ## Overview
 This document tracks the current implementation progress of jaimineeyasamavedam.org.
 
-**Last Updated**: January 5, 2026  
+**Last Updated**: February 5, 2026  
 **Domain**: jaimineeyasamavedam.org  
 **Hosting**: Hostinger Single Plan  
-**CMS**: WordPress with Astra Theme
+**CMS**: WordPress + Static HTML Generator (Python)
 
 ---
 
@@ -28,28 +28,34 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 | Google Analytics | Configured |
 | Project documentation | In `Project_Documentation/` |
 | WordPress backup | `jaimineeyasamavedamorg.WordPress.2025-12-30.xml` |
+| **Static Website Generator** | `src/generate_website.py` (v2.0) |
+| **Text Library (Static)** | `docs/` folder populated with Parvas/Kandahs |
+| **Design System** | Verified Colors (`#EFE6D5`, `#FCF9F0`) & Fonts |
+| **Versioning** | Implemented across all outputs (HTML, PDF, CSV) |
 
 ### 🔄 To Verify
 
 | Item | Notes |
 |------|-------|
-| Page structure | Check if pages created in WP Admin |
-| Navigation menu | Verify menu setup |
+| **Deployment** | Upload `docs/` folder to Hostinger file manager |
+| **Integration** | Link Main WP Menu to Static `docs/index.html` |
+| **Mobile Responsiveness** | Test new static layout on actual mobile devices |
+| **Audio Mapping** | Verify mapping of MP3 filenames to generated placeholders |
 
 ### 📋 Not Started (Release 1)
 
 | Item | Priority | Persona |
 |------|----------|---------|
-| Text Library page | High | 📚 Student/Teacher |
-| Padhathi Guide page | High | 📚 Student/Teacher |
-| Gurukulam Finder map | High | 🔍 Seeker |
-| Getting Started page | Medium | 🔍 Seeker |
-| Audio Archives | Medium | Shared |
-| Video Archives | Medium | Shared |
-| Contact form | Medium | Shared |
-| FAQ page | Low | 🔍 Seeker |
-| Articles section | Low | 👥 Community |
-| Newsletter placeholder | Low | 👥 Community |
+| **Gurukulam Finder** | High | 🔍 Seeker |
+| **Getting Started Page** | Medium | 🔍 Seeker |
+| **Audio Content Population** | Medium | Shared |
+| **PDF Downloads Section** | High | 📚 Student |
+| **WordPress Integration** | High | Shared |
+| **Contact Form** | Low | Shared |
+| **Newsletter Placeholder** | Low | 👥 Community |
+| **Search Functionality** | High | 📚 Student |
+| **Video Integration & Hosting** | Medium | Shared |
+| **Audio Cloud Integration** | Medium | Shared |
 
 ---
 
@@ -66,9 +72,11 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 
 ## Recommended Next Steps
 
-1. Verify current pages in WordPress Admin
-2. Create core pages (Home, Texts, Learn, Contact)
-3. Set up navigation menu
+1. **Audio Integration**: Determine cloud hosting strategy (e.g., Cloudflare R2) and organize MP3s.
+2. **Metadata Refinement**: Update Rishi, Devata, and Chandas metadata to enable advanced classification and ordering.
+3. **Deploy Text Library**: Upload the generated `docs/` folder to the web host.
+4. **Configure Navigation**: Link WP to Static Library and implement Search functionality.
+5. **Video Strategy**: Decide on video hosting platform (YouTube vs. Self-hosted vs. Vimeo) and integrate.
 
 ---
 

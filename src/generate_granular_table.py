@@ -6,6 +6,7 @@ Updated Schema (v3.0) with Global Rik Counting.
 """
 import json
 import csv
+import os
 import re
 from samam_utils import SAMAM_PATTERN
 from utils import get_generated_metadata
@@ -231,8 +232,7 @@ for ss_key in ss_keys:
                             global_samam_num += 1
                             
                             rows.append({
-                                'Dataset_Version': JSV_VERSION,
-                                'Generated_At': GENERATED_AT,
+
                                 'Global_Samam_Num': global_samam_num,
                                 'Global_Rik_Num': global_rik_counter,
                                 'Arsheyam_Num': arsheyam_num,
@@ -256,8 +256,7 @@ for ss_key in ss_keys:
                  # Fallback for no markers
                  global_samam_num += 1
                  rows.append({
-                    'Dataset_Version': JSV_VERSION,
-                    'Generated_At': GENERATED_AT,
+
                     'Global_Samam_Num': global_samam_num,
                     'Global_Rik_Num': global_rik_counter,
                     'Arsheyam_Num': arsheyam_num,
@@ -277,21 +276,76 @@ for ss_key in ss_keys:
                     'Saman_Metadata': saman_metadata
                 })
 
+
 # Write CSV with UTF-8 BOM for Excel compatibility
 with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as f:
+    # Line 1: <Filename> <Version> <Timestamp>
+    filename = os.path.basename(OUTPUT_CSV)
+    f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
+
     fieldnames = [
         'Global_Samam_Num', 'Global_Rik_Num', 'Arsheyam_Num', 'Patha_Num', 'Patha_Name', 'Khanda', 
         'Rik_ID', 'Samam_Num', 'Arsheyam_Name', 
         'Rik_Rishi', 'Rik_Devata', 'Rik_Chandas', 'Rik_Metadata',
         'Samam_Rishi', 'Samam_Devata', 'Samam_Chandas', 
-        'Saman_Metadata',
-        'Dataset_Version', 'Generated_At'
+        'Saman_Metadata'
     ]
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
     writer.writerows(rows)
 
 print(f"CSV saved to: {OUTPUT_CSV}")
+
+# --- Generate Excel (.xlsx) ---
+OUTPUT_XLSX = OUTPUT_CSV.replace('.csv', '.xlsx')
+try:
+    import openpyxl
+    print(f"Generating Excel file: {OUTPUT_XLSX}...")
+    
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Samam Granular Table"
+    
+    # Write Metadata in first row? 
+    # Usually Excel tables prefer headers in row 1.
+    # Let's put metadata in a separate sheet or just above? 
+    # Users often want a clean table for filtering.
+    # Let's put the Table in Row 1. Metadata in the file properties or specific sheet?
+    # Let's stick to just the table for usability.
+    
+    # Write Metadata in first row
+    filename = os.path.basename(OUTPUT_XLSX)
+    metadata_text = f"{filename} {JSV_VERSION} {GENERATED_AT}"
+    ws.append([metadata_text])
+    
+    # Merge first row to look like a title
+    ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(fieldnames))
+    
+    # Style the metadata row (optional but nice)
+    from openpyxl.styles import Font, Alignment
+    cell = ws.cell(row=1, column=1)
+    cell.font = Font(bold=True, size=12)
+    cell.alignment = Alignment(horizontal="left")
+
+    # Write Header (Now in Row 2)
+    ws.append(fieldnames)
+    
+    # Write Rows
+    for r in rows:
+        row_values = [r.get(key, '') for key in fieldnames]
+        ws.append(row_values)
+        
+    wb.save(OUTPUT_XLSX)
+    print(f"Excel file saved to: {OUTPUT_XLSX}")
+    
+except ImportError:
+    print("Warning: 'openpyxl' library not found. Skipping Excel generation.")
+except PermissionError:
+    print(f"ERROR: Could not save '{OUTPUT_XLSX}'. It is likely open in Excel.")
+    print("Please close the file and run the script again.")
+except Exception as e:
+    print(f"Error generating Excel file: {e}")
+
 print(f"Total Samam entries: {len(rows)}")
 print(f"Total Unique Riks Detected: {global_rik_counter}")
 
@@ -301,3 +355,4 @@ from collections import Counter
 patha_counts = Counter(r['Patha_Name'] for r in rows)
 for patha, count in patha_counts.items():
     print(f"  {patha}: {count}")
+

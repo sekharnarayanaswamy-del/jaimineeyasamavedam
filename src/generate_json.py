@@ -650,57 +650,63 @@ def convert_corrections_to_json(
     }
     
     supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
-    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*(.*?)\s*\((.*?)\)\s*# End of Section Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
+    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
     subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1 ## DO NOT EDIT\s*#Start of Mantra Sets -- \1 ## DO NOT EDIT\s*(.*?)\s*#End of Mantra Sets -- \1 ## DO NOT EDIT', re.DOTALL)
 
+    print(f"--- Step 2a: Extracting SuperSections ---")
     supersections_data = supersection_pattern.findall(file_content)
     
     if not supersections_data:
         print("[ERROR] No SuperSections found.")
         return None
+    
+    print(f"[INFO] Found {len(supersections_data)} SuperSection(s)")
 
     global_rik_offset = 0
     global_subsection_offset = 0
 
-    for supersection_id, title_content, supersection_content in supersections_data:
+    for ss_idx, (supersection_id, title_content, supersection_content) in enumerate(supersections_data, 1):
         supersection_id = supersection_id.strip()
         title_content = re.sub(r'<[^>]+>', '', title_content, flags=re.DOTALL)
         supersection_title = re.sub(r'[|॥\s]', '', title_content).strip()
+        
+        print(f"\n--- Processing SuperSection {ss_idx}/{len(supersections_data)}: {supersection_title[:30]}... ---")
         
         json_output["supersection"][supersection_id] = {
             "supersection_title": supersection_title,
             "sections": {}
         }
         current_supersection_sections = json_output["supersection"][supersection_id]["sections"]
+        
+        print(f"  Extracting sections...")
         sections_data = section_pattern.findall(supersection_content)
+        print(f"  Found {len(sections_data)} section(s)")
         
         section_count = len(sections_data)
         current_supersection_sections["count"] = { "prev_count": 0, "current_count": section_count, "total_count": section_count }
         
-        for section_id, section_title, section_count_str, section_content in sections_data:
+        for sec_idx, (section_id, section_title, section_content) in enumerate(sections_data, 1):
             # Update offset based on the section we are about to leave (if any)
-            # But wait - we are about to advance to a NEW section.
-            # So the offset should be incremented by the size of the previous section?
-            # Actually, rik_text_parser is currently at the END of the previous section.
             if rik_text_parser.current_section_idx >= 0:
                  section_max = rik_text_parser.get_current_section_max_id()
                  global_rik_offset += section_max
-                 print(f"[DEBUG] Finished Section {rik_text_parser.current_section_idx+1}. Max ID: {section_max}. New Offset: {global_rik_offset}")
 
             # Advance ALL external parsers - they all use local Rik IDs per section now
             rik_meta_parser.advance_section()
             rik_text_parser.advance_section()
             saman_meta_parser.advance_section()  # Now advances per section (local Rik IDs)
+            
+            print(f"    Section {sec_idx}/{len(sections_data)}: {section_title.strip()[:40]}...", end=" ")
 
             
             clean_section_title = section_title.strip()
             current_supersection_sections[section_id] = {
                 "section_title": clean_section_title,
-                "section_count": section_count_str.strip(),
                 "subsections": {}
             }
             
             subsections_data = subsection_pattern.findall(section_content)
+            print(f"({len(subsections_data)} subsections)")
             
             current_section_subsection_count = 0
             
@@ -814,6 +820,8 @@ def convert_corrections_to_json(
             
             global_subsection_offset += current_section_subsection_count
 
+    print(f"\n--- Step 3: Processing Complete ---")
+    print(f"[INFO] Total subsections processed: {global_subsection_offset}")
     return json_output
 
 def extract_rik_only_data(combined_data):
@@ -915,6 +923,15 @@ def parse_unicode_text_file(filepath, csv_metadata_path=None):
         if os.path.exists(csv_metadata_path):
             try:
                 with open(csv_metadata_path, 'r', encoding='utf-8-sig') as f:
+                    # Check first line for custom header
+                    first_line = f.readline()
+                    if not first_line.startswith('Global_Samam_Num'):
+                        # If first line is metadata (e.g. "JSV_Samam..."), the NEXT line is the header
+                        pass 
+                    else:
+                        # If first line IS the header, seek back to start
+                        f.seek(0)
+                    
                     reader = csv.DictReader(f)
                     for row in reader:
                         try:

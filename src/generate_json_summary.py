@@ -59,7 +59,7 @@ for ss_key in ss_keys:
         structure[ss_title][sec_title] = section_sama_count
 
 # Write to CSV and TXT
-with open(OUTPUT_CSV, 'w', encoding='utf-8', newline='') as csv_file, \
+with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as csv_file, \
      open(OUTPUT_TXT, 'w', encoding='utf-8') as txt_file:
     
     writer = csv.writer(csv_file)

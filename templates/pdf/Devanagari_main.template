@@ -207,6 +207,10 @@
                 \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ elif output_mode == 'samam' }
                 \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \BLOCK{ elif output_mode == 'rik_nometa' }
+                \VAR{subsection | format_rik_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \BLOCK{ elif output_mode == 'samam_nometa' }
+                \VAR{subsection | format_samam_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ else }
                 \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
                 \BLOCK{ endif }

@@ -7,7 +7,42 @@ A WordPress-based website on Hostinger Single Plan for preserving and sharing Ja
 **Hosting**: Hostinger Single Plan  
 **CMS**: WordPress
 
+**CMS**: WordPress (Main Site) + Custom Static HTML (Text Library)
+
 ---
+
+## Technical Architecture Update (Feb 2026)
+
+### ⚙️ Static Site Generation (Text Library)
+To ensure precise rendering of Vedic accents and layout, the "Text Library" section is generated statically using custom Python scripts rather than dynamic WordPress pages.
+
+- **Component**: `generate_website.py` (Custom Python SSG)
+- **Output**: Static HTML5/CSS3 files in `docs/`
+- **Structure**: Parva → Kandah → Sama hierarchy
+- **Key Features**:
+    - **Bit-perfect Rendering**: Uses the same logic as PDF generation for accurate Swara positioning.
+    - **Versioning**: Automated insertion of `Version` and `Generated At` timestamps across all files.
+    - **Performance**: Zero-dependency static HTML for instant loading.
+
+### 🎨 Design System (Baseline v3.0)
+A custom verified color palette has been applied to ensure readability and aesthetic appeal.
+
+| Element | Color | Hex | Description |
+|---------|-------|-----|-------------|
+| **Background** | Eggshell | `#F9F4E8` | Warm, readable main background |
+| **Cards/Verses** | Antique White | `#EFE6D5` | Card containers and Samam text boxes |
+| **Sidebar** | Light Cream | `#FCF9F0` | Navigation sidebar (Lighter than cards) |
+| **Accents** | Saffron | `#FF6B35` | Primary actions and highlights |
+| **Headings** | Maroon | `var(--color-accent)` | Section headers |
+
+### 🔄 Versioning Strategy
+All generated artifacts (PDF, HTML, JSON, CSV) now include synchronized metadata:
+- **Source**: `JSV_VERSION` in `utils.py`
+- **Fields**: `Version` (e.g., 3.0) and `Generated At` (Timestamp)
+- **Placement**: 
+    - **PDF**: Footer/Header
+    - **HTML**: Sidebar v-tag and Footer
+    - **CSV**: Dedicated columns `Dataset_Version`, `Generated_At`
 
 ## Release 1 Scope (MVP)
 
