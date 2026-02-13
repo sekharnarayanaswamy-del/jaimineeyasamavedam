@@ -44,6 +44,23 @@ except ImportError:
 # --- Configuration ---
 AUDIO_FILENAME_FORMAT = "JSV_{parva}_{kandah}_{sama}.mp3"
 
+SITE_CONFIG = {
+    'prakruti': {
+        'title_sa': 'जैमिनीय साम प्रकृति गानम्',
+        'title_en': 'Jaimineeya Sama Prakruti Ganam',
+        'footer_sa': 'जैमिनीय सामवेद प्रकृति गानम्',
+        'meta_desc': 'Jaimineeya Sama Prakruti Ganam digital archive',
+        'keywords': 'Samaveda, Jaimineeya, Prakruti, Ganam, Vedas, Sanskrit'
+    },
+    'aranam': {
+        'title_sa': 'जैमिनीय साम आरण्य गानम्',
+        'title_en': 'Jaimineeya Sama Aranam', 
+        'footer_sa': 'जैमिनीय सामवेद आरण्य गानम्',
+        'meta_desc': 'Jaimineeya Sama Aranam digital archive',
+        'keywords': 'Samaveda, Jaimineeya, Aranam, Aranya, Ganam, Vedas, Sanskrit'
+    }
+}
+
 
 # --- Local fallback functions if imports fail ---
 def local_escape_for_html(text):
@@ -692,12 +709,18 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'prakruti'):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
-        self.metadata = get_generated_metadata()
-        self.generated_at = self.metadata['generated_at'] # Keep for backward compatibility if needed
+        self.mode = mode
+        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['prakruti'])
+        
+        self.metadata = {
+            "version": "2.0.0",
+            "last_updated": datetime.now().strftime("%Y-%m-%d")
+        }
+        self.generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Keep for backward compatibility if needed
         
     def generate(self):
         """Generate all website files"""
@@ -1820,15 +1843,17 @@ document.addEventListener('DOMContentLoaded', function() {
     def _get_html_head(self, title: str, depth: int = 0) -> str:
         """Generate HTML head section"""
         prefix = '../' * depth
+        full_title = f"{title} | {self.config['title_sa']}" if title != self.config['title_sa'] else title
+        
         return f'''<!DOCTYPE html>
 <html lang="sa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="जैमिनीय सामवेदम् - Jaimineeya Samavedam digital archive with authentic texts">
-    <meta name="keywords" content="Samaveda, Jaimineeya, Vedas, Sanskrit, Hindu scriptures, Vedic chanting">
+    <meta name="description" content="{self.config['meta_desc']}">
+    <meta name="keywords" content="{self.config['keywords']}">
     <meta name="version" content="{self.metadata['version']}">
-    <title>{title} | जैमिनीय सामवेदम्</title>
+    <title>{full_title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1910,8 +1935,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return f'''<aside class="sidebar-left">
     <div class="logo">
         <a href="{prefix}index.html">
-            <div class="logo-text">जैमिनीय सामवेदम्</div>
-            <div class="logo-subtitle">Jaimineeya Samavedam</div>
+            <div class="logo-text">{self.config['title_sa']}</div>
+            <div class="logo-subtitle">{self.config['title_en']}</div>
             <div class="logo-version" style="font-size: 0.7em; color: var(--text-secondary); margin-top: 4px;">v{self.metadata['version']}</div>
         </a>
     </div>
@@ -2018,15 +2043,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </section>'''
         
-        html = f'''{self._get_html_head("मुख्यपृष्ठम्")}
+        html = f'''{self._get_html_head(self.config['title_sa'])}
 <body>
     <div class="page-container">
         {self._get_sidebar_html()}
         
         <main class="main-content">
             <div class="home-hero">
-                <h1>जैमिनीय साम प्रकृति गानम्</h1>
-                <p class="subtitle">Jaimineeya Sama Prakruti Ganam</p>
+                <h1>{self.config['title_sa']}</h1>
+                <p class="subtitle">{self.config['title_en']}</p>
                 
                 <div class="stats-row">
                     <div class="stat-item">
@@ -2055,7 +2080,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {parva_sections}
             
             <footer class="footer">
-                जैमिनीय सामवेद प्रकृति गानम्<br>
+                {self.config['footer_sa']}<br>
                 Generated on {self.generated_at}
             </footer>
         </main>
@@ -2514,7 +2539,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {kandah_footnotes_html}
             
             <footer class="footer">
-                जैमिनीय सामवेद प्रकृति गानम्
+                {self.config['footer_sa']}
             </footer>
         </main>
         
@@ -2529,8 +2554,8 @@ document.addEventListener('DOMContentLoaded', function() {
     def _generate_metadata_json(self):
         """Generate metadata.json for reference"""
         metadata = {
-            "title": "जैमिनीय साम प्रकृति गानम्",
-            "title_en": "Jaimineeya Sama Prakruti Ganam",
+            "title": self.config['title_sa'],
+            "title_en": self.config['title_en'],
             "version": self.metadata["version"],
             "generated_at": self.generated_at,
             "hierarchy": "Parva → Kandah → Sama",
@@ -2583,8 +2608,8 @@ def main():
         epilog='''
 Example usage:
   python generate_website.py
-  python generate_website.py --source-file custom_input.txt
-  python generate_website.py --output-dir ./my_website
+  python generate_website.py -p --source-file prakruti.json
+  python generate_website.py -a --source-file aranam.json
         '''
     )
     
@@ -2614,10 +2639,24 @@ Example usage:
     )
     
     parser.add_argument(
-        '--audio-dir', '-a',
+        '--audio-dir', '-d', # Changed to -d to avoid conflict with -a
         type=str,
         default=str(default_audio),
         help='Directory for audio placeholder folders (default: data/input/Audio_Placeholders)'
+    )
+    
+    # Mode selection group
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        '-p', '--prakruti',
+        action='store_true',
+        default=True,
+        help='Generate for Prakruti Ganam (Default)'
+    )
+    group.add_argument(
+        '-a', '--aranam',
+        action='store_true',
+        help='Generate for Aranam'
     )
     
     args = parser.parse_args()
@@ -2655,9 +2694,13 @@ Example usage:
         print(f"\n   {parva.parva_number}. {parva.title}")
         print(f"      └─ {len(parva.kandahs)} Kandahs, {sum(len(k.samas) for k in parva.kandahs)} Samas")
     
+    # Determine mode
+    mode = 'aranam' if args.aranam else 'prakruti'
+    print(f"ℹ️  Generating for: {mode.upper()}")
+    
     # Generate website
     print("\n🏗️ Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, args.output_dir, args.audio_dir)
+    generator = WebsiteGenerator(parvas, args.output_dir, args.audio_dir, mode=mode)
     generator.generate()
     
     print("\n" + "=" * 60)
