@@ -73,15 +73,23 @@
             text-align: center;
             color: var(--primary-color);
             margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .toc-content {
+            columns: 2 300px;
+            column-gap: 40px;
+        }
+        
+        .toc-group {
+            break-inside: avoid;
+            margin-bottom: 20px;
         }
         
         .toc ul {
             list-style: none;
             padding-left: 0;
-        }
-        
-        .toc li {
-            padding: 5px 0;
+            margin: 0;
         }
         
         .toc a {
@@ -95,17 +103,15 @@
         
         .toc-chapter {
             font-weight: bold;
-            font-size: 1.1em;
-            margin-top: 15px;
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
         }
         
         .toc-section {
-            padding-left: 20px;
-        }
-        
-        .toc-subsection {
-            padding-left: 40px;
-            font-size: 0.95em;
+            padding: 3px 0 3px 20px;
+            font-size: 1.5rem;
+            line-height: 1.4;
         }
         
         /* Chapter/Section Styles */
@@ -483,20 +489,24 @@
         <!-- Table of Contents -->
         <div class="toc" id="toc">
             <h2>॥ अनुक्रमणिका ॥</h2>
-            <ul>
+            <div class="toc-content">
             \BLOCK{ for key, supersection in supersections.items() }
-                <li class="toc-chapter">
-                    <a href="#\VAR{key}">\VAR{supersection.supersection_title}</a>
-                </li>
-                \BLOCK{ for section_key, section in supersection.sections.items() }
-                    \BLOCK{ if section_key != 'count' }
-                    <li class="toc-section">
-                        <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')}</a>
-                    </li>
-                    \BLOCK{ endif }
-                \BLOCK{ endfor }
+                <div class="toc-group">
+                    <div class="toc-chapter">
+                        <a href="#\VAR{key}">\VAR{supersection.supersection_title}</a>
+                    </div>
+                    <ul>
+                    \BLOCK{ for section_key, section in supersection.sections.items() }
+                        \BLOCK{ if section_key != 'count' }
+                        <li class="toc-section">
+                            <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')}</a>
+                        </li>
+                        \BLOCK{ endif }
+                    \BLOCK{ endfor }
+                    </ul>
+                </div>
             \BLOCK{ endfor }
-            </ul>
+            </div>
         </div>
         
         <!-- Content -->

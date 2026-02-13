@@ -3,9 +3,10 @@
 ## Overview
 This document tracks the current implementation progress of jaimineeyasamavedam.org.
 
-**Last Updated**: February 5, 2026  
-**Domain**: jaimineeyasamavedam.org  
-**Hosting**: Hostinger Single Plan  
+**Last Updated**: February 13, 2026
+**Domain**: jaimineeyasamavedam.org (WordPress)
+**Static Library**: sekharnarayanaswamy-del.github.io/jaimineeyasamavedam/ (GitHub Pages)
+**Hosting**: Hostinger (Main) + GitHub Pages (Texts)
 **CMS**: WordPress + Static HTML Generator (Python)
 
 ---
@@ -29,16 +30,16 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 | Project documentation | In `Project_Documentation/` |
 | WordPress backup | `jaimineeyasamavedamorg.WordPress.2025-12-30.xml` |
 | **Static Website Generator** | `src/generate_website.py` (v2.0) |
-| **Text Library (Static)** | `docs/` folder populated with Parvas/Kandahs |
+| **Text Library (Static)** | Published to GitHub Pages (`docs/`) |
 | **Design System** | Verified Colors (`#EFE6D5`, `#FCF9F0`) & Fonts |
 | **Versioning** | Implemented across all outputs (HTML, PDF, CSV) |
+| **Integration** | "Sacred Texts" menu linked to GitHub Pages URL |
 
 ### 🔄 To Verify
 
 | Item | Notes |
 |------|-------|
-| **Deployment** | Upload `docs/` folder to Hostinger file manager |
-| **Integration** | Link Main WP Menu to Static `docs/index.html` |
+| **Deployment** | Verify GitHub Pages update frequency |
 | **Mobile Responsiveness** | Test new static layout on actual mobile devices |
 | **Audio Mapping** | Verify mapping of MP3 filenames to generated placeholders |
 

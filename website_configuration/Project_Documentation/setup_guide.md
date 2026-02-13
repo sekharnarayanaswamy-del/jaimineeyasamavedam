@@ -309,13 +309,17 @@ Create these pages in WordPress:
 3. **Add Pages to Menu**:
    - Check these pages from the left sidebar:
      - Home
-     - Sacred Texts (with sub-items: Padhathi Guide)
      - Audio Archives
      - Video Archives
      - Learn Sama Veda (with sub-items: Getting Started, Find Gurukulam, FAQ)
      - Community (with sub-items: Articles, Newsletter, Agraharams)
      - Contact
-   - Click "Add to Menu"
+   - **For Sacred Texts (Library)**:
+     - Click "Custom Links" arrow
+     - URL: `https://sekharnarayanaswamy-del.github.io/jaimineeyasamavedam/index.html`
+     - Link Text: "Sacred Texts"
+     - Click "Add to Menu"
+   - Click "Add to Menu" for the other checked pages
 
 4. **Drag to organize**:
    - Drag items to create hierarchy

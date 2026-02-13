@@ -175,6 +175,19 @@ To publish the latest generated website:
     *   Wait 1-2 minutes for GitHub to deploy.
     *   Visit the live site to verify changes.
 
+### Linking from Main Website (jaimineeyasamavedam.org)
+
+To link the "Sacred Texts" menu item on the main WordPress site to the generated GitHub Pages deployment:
+
+1.  **Log in to WordPress Admin** (`jaimineeyasamavedam.org/wp-admin`).
+2.  Go to **Appearance > Menus**.
+3.  Select the **Primary Menu**.
+4.  Add a **Custom Link**:
+    *   **URL**: `https://sekharnarayanaswamy-del.github.io/jaimineeyasamavedam/index.html`
+    *   **Link Text**: `Sacred Texts`
+5.  Click **Add to Menu** and save.
+
+
 
 
 ## PDF Generation (Vedic Compilation)
