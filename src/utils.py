@@ -130,6 +130,13 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
     for mantra_set in mantra_sets:
         full_mantra_string += mantra_set.get('corrected-mantra', "") + " "
     
+    # --- Normalize Dandas for Parsing ---
+    # Convert various forms (ASCII pipes, spaced pipes, double singles) to Standard Devanagari
+    full_mantra_string = re.sub(r'\|\|', '॥', full_mantra_string)
+    full_mantra_string = re.sub(r'\|\s*\|', '॥', full_mantra_string)
+    full_mantra_string = re.sub(r'।।', '॥', full_mantra_string)
+    full_mantra_string = full_mantra_string.replace('|', '।')
+    
     # --- Main Parsing Logic ---
     all_mantra_rows = []
     all_swara_rows = []
@@ -241,14 +248,25 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
                     # 1. Get the last entry from current_mantra_row     
                     existing_string = current_mantra_row[-1]
                     
-                    # 2. Clean it: Remove { and } to get raw text
-                    raw_text = existing_string.replace('{', '').replace('}', '')
+                    # CHECK: Don't merge if the previous entry has a Swara!
+                    # If it has a swara, we want the new text to be a separate token
+                    # so the swara stays aligned only with its specific syllable.
+                    prev_swara = current_swara_row[-1]
+                    has_swara = prev_swara and prev_swara != '{}' and prev_swara != ''
                     
-                    # 3. Combine raw text with new tail
-                    new_combined_string = raw_text + continuous_text
-                    
-                    # 4. Overwrite the last element
-                    current_mantra_row[-1] = f'{{{new_combined_string}}}'
+                    if has_swara:
+                         # Append as a NEW separate token
+                         current_mantra_row.append(f'{{{continuous_text}}}')
+                         current_swara_row.append('{}')
+                    else:
+                        # 2. Clean it: Remove { and } to get raw text
+                        raw_text = existing_string.replace('{', '').replace('}', '')
+                        
+                        # 3. Combine raw text with new tail
+                        new_combined_string = raw_text + continuous_text
+                        
+                        # 4. Overwrite the last element
+                        current_mantra_row[-1] = f'{{{new_combined_string}}}'
                     
                 else:
                     # Fallback: Start of line OR previous item was a Danda 

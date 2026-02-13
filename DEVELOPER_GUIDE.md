@@ -17,7 +17,17 @@ The script generates the website into the `docs/` folder (configured for GitHub 
 *   `css/`: Stylesheets.
 *   `js/`: JavaScript files.
 
-## Recent Features & Changes
+## Recent Features & Changes (Feb 2026)
+
+### Data Normalization & Formatting
+*   **Danda Standardization**: The codebase now enforces strict normalization of Danda characters. All variations of pipes (`||`, `| |`, `।।`) in the input text are automatically converted to standard Devanagari Dandas (`॥` and `।`) during parsing. This ensures consistent regex matching for verse numbers and structural breaks across both PDF and Website generation.
+    *   *Affected Files*: `src/utils.py`, `src/generate_website.py`, `src/render_pdf.py`
+    *   *Visuals*: Headers and TOC entries in the PDF now correctly use `\enspace` sized spacing for single dandas (`\enspace । `).
+
+### Website Generator Improvements
+*   **Module Structure**: Fixed import issues where `samam_utils` was not being correctly resolved from the `src/tools` directory. The script now dynamically adjusts `sys.path`.
+*   **Stability**: resolved scope issues (UnboundLocalError) related to the `re` module in the Kandah page generation logic.
+*   **Audio Handling**: Audio placeholder generation is now robust, creating directories for each Parva.
 
 ### Layout & Navigation
 *   **Layout**: The website uses a **two-column layout** (Left Sidebar + Main Content). The Right Sidebar (Jump Links) has been removed.
@@ -26,20 +36,43 @@ The script generates the website into the `docs/` folder (configured for GitHub 
     *   When a Parva is selected, it lists its Kandahs.
     *   Inside a Kandah page, it lists **Sama Ranges** (e.g., 1-5, 6-10) for quick scrolling.
 *   **Samam Counting**: The script now counts verses by parsing delimiters (`||` or `॥`) inside the text, rather than just counting headers. This ensures the "Sama Count" reflects the actual chanted verses.
-*   **Unified Counting Logic**: A new shared module `src/samam_utils.py` provides central logic for finding and counting Samams, ensuring consistency across all scripts (`generate_website.py`, `generate_granular_table.py`, etc.).
+*   **Unified Counting Logic**: A new shared module `src/tools/samam_utils.py` provides central logic for finding and counting Samams.
 
 ### Index Generation
 Code is included and **enabled** to generate classification indices for **Rishi**, **Devata**, and **Chandas**, as well as an alphabetical **Header Index**.
 
 **Status**: *Active*. Indices are generated during the build process.
 
-**Code Location**:
-*   `_generate_indices()`: Method to orchestrate index creation.
-*   `_collect_indices()`: Method to parse metadata strings.
-*   `_generate_classification_home()`: Creates `classification/index.html`.
-
 **Access**:
 Links to the indices are available on the Homepage under "सङ्क्रमणिका / वर्गीकरणम्".
+
+## Verified Workflow: Aaranam Processing
+
+For processing the `Aaranam_input.txt` file, use the following command sequence:
+
+1.  **Generate JSON (Correction Mode)**
+    ```bash
+    python src/generate_json.py data/input/Aaranam_input.txt
+    ```
+    *Output*: `data/output/Aaranam_input_out.json`
+
+2.  **Generate PDF**
+    ```bash
+    python src/render_pdf.py data/output/Aaranam_input_out.json
+    lualatex data/output/pdf/Devanagari/Devanagari_Devanagari_Unicode.tex
+    ```
+
+3.  **Generate Website**
+    ```bash
+    python src/generate_website.py --source-file data/output/Aaranam_input_out.json
+    ```
+    *Output*: `docs/` folder (Parvas, Kandahs, Indices)
+
+4.  **Preview Website**
+    ```bash
+    python -m http.server 8080 --directory docs
+    ```
+
 
 ## Correction Cycle Workflow (v4.0 - Excel Enhanced)
 

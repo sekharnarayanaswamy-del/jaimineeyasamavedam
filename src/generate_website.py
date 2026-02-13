@@ -265,6 +265,13 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     i = 0
     text = mantra_text.replace('\n', ' ').replace('\r', '').strip()
     
+    # --- Normalize Dandas for Parsing ---
+    # Convert various forms (ASCII pipes, spaced pipes, double singles) to Standard Devanagari
+    text = re.sub(r'\|\|', '॥', text)
+    text = re.sub(r'\|\s*\|', '॥', text)
+    text = re.sub(r'।।', '॥', text)
+    text = text.replace('|', '।')
+    
     while i < len(text):
         # Skip whitespace - don't add spaces between mantra words (matching renderPDF.py)
         if text[i].isspace() or text[i] in '\u200c\u200d\ufeff':
@@ -1965,6 +1972,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_homepage(self):
         """Generate the homepage"""
+        # Add tools directory to path to import samam_utils
+        import sys
+        current_dir = Path(__file__).parent
+        tools_dir = current_dir / 'tools'
+        if str(tools_dir) not in sys.path:
+            sys.path.append(str(tools_dir))
+            
         from samam_utils import count_samams_with_fallback
         
         total_kandahs = sum(len(p.kandahs) for p in self.parvas)
@@ -2273,7 +2287,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if sama.footnotes:
                         for fn in sama.footnotes:
                             # Parse "sN - text" or "sN : text"
-                            import re
+                            # Removed local 'import re' to avoid UnboundLocalError
                             parts = re.match(r'(s\d+)\s*[-–—:]\s*(.*)', fn)
                             if parts:
                                 current_footnotes_dict[parts.group(1)] = parts.group(2)
@@ -2296,7 +2310,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         if clean_meta:
                             # Normalize all internal danda variations (| || । ॥) to single '॥'
                             # Also handles spacing around them
-                            import re
+                            # Removed local 'import re'
                             clean_meta = re.sub(r'\s*[|॥।]+\s*', ' ॥ ', clean_meta)
                             rik_metadata_html = f'<div class="rik-metadata">॥ {clean_meta} ॥</div>'
                     

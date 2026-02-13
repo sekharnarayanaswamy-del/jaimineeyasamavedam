@@ -386,7 +386,7 @@ def format_dandas(text):
     # Rule A: Single Danda (।) -> Add \enspace BEFORE it
     # \enspace is 0.5em, roughly the width of a digit, very visible.
     # We also keep a normal space after it.
-    text = text.replace('।', r' । ')
+    text = text.replace('।', r'\enspace । ')
 
     return text
     
@@ -598,7 +598,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     formatted_output.append(r"\phantomsection")
     if subsection_title:
         # Use Clean Header for TOC and Index
-        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{samam_header_only}}}")
+        # Ensure TOC entry has proper danda formatting
+        toc_title = format_dandas(samam_header_only)
+        formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
         formatted_output.append(f"\\index{{{index_title}}}")
 
     # 2. String 1: Rik Metadata (Plain Centered) - Only if rik_id changed
@@ -636,6 +638,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     # 4. Combined Header: || Subsection header || || samam_metadata ||
     header_part = display_sub_title.strip()
+    header_part = format_dandas(header_part)
     header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}"  
     
     # COLOR: Samam Metadata -> BROWN
