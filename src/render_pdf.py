@@ -21,7 +21,8 @@ from utils import (
     my_encodeURL, my_format,
     replacecolon, normalize_and_trim,
     parse_mantra_for_latex, 
-    sanitize_data_structure
+    sanitize_data_structure,
+    step_preprocess_visarga_accent
 )
 # --- End new import ---
 
@@ -180,7 +181,7 @@ def remove_mantra_spaces(text):
     text = text.replace('\uFEFF', '')  # Byte order mark
     
     return text
-
+    
 # ----------------------------------------------------
 # FOOTNOTE PROCESSING UTILITIES
 # ----------------------------------------------------
@@ -421,10 +422,10 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
     logdir=f"{outputdir}/logs"
     exit_code=0
     
-    TexFileName=f"{name}_{DocfamilyName}_Unicode.tex"
-    PdfFileName=f"{name}_{DocfamilyName}_Unicode.pdf"
-    TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
-    LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
+    TexFileName=f"{name}_{DocfamilyName}.tex"
+    PdfFileName=f"{name}_{DocfamilyName}.pdf"
+    TocFileName=f"{name}_{DocfamilyName}.toc"
+    LogFileName=f"{name}_{DocfamilyName}.log"
     template = templateFileName
     outputdir = f"{outputdir}/pdf/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
@@ -616,6 +617,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     if string_2 and show_rik_info:
         # Step A: Remove Spaces (Samhita Mode)
         s2 = remove_mantra_spaces(string_2)
+        # Step A.1: Fix Visarga-Accent Order
+        s2 = step_preprocess_visarga_accent(s2)
         # Step B: Handle Consecutive Accent Kerning
         s2 = handle_consecutive_accents(s2)
         # Step C: Replace Accents with LaTeX commands (with adjusted sizes)
@@ -821,6 +824,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     # Rik Text (with Vedic Accents)
     if string_2:
         s2 = remove_mantra_spaces(string_2)
+        s2 = step_preprocess_visarga_accent(s2)
         s2 = handle_consecutive_accents(s2)
         s2 = replace_accents(s2)
         # Apply footnotes
@@ -1936,7 +1940,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiS
     outputdir = "data/output"
     exit_code = 0
     
-    HtmlFileName = f"{name}_{DocfamilyName}_Unicode.html"
+    HtmlFileName = f"{name}_{DocfamilyName}.html"
     template = templateFileName
     outputdir = f"{outputdir}/html/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
@@ -2088,9 +2092,9 @@ Examples:
         text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
         html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
         
-        CreatePdf(template_file, f"Devanagari", "Devanagari", supersections, current_os=current_os, output_mode='combined')
-        CreateTextFile(text_template_file, f"Devanagari", "Devanagari", supersections, output_mode='combined')
-        CreateHtmlFile(html_template_file, f"Devanagari", "Devanagari", supersections, html_font=html_font, output_mode='combined')
+        CreatePdf(template_file, f"Samhita", "Devanagari", supersections, current_os=current_os, output_mode='combined')
+        CreateTextFile(text_template_file, f"Samhita", "Devanagari", supersections, output_mode='combined')
+        CreateHtmlFile(html_template_file, f"Samhita", "Devanagari", supersections, html_font=html_font, output_mode='combined')
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':

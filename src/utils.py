@@ -102,6 +102,23 @@ def normalize_and_trim(text):
     text = re.sub(r'^[\s\|\u0964\u0965]+|[\s\|\u0964\u0965]+$', '', text)
     return text
 
+def step_preprocess_visarga_accent(text):
+    """
+    Swaps Visarga (ः) with immediately following accent marker (1)/(2)/(3) etc.
+    so the accent is applied to the preceding character (vowel) instead of the Visarga.
+    
+    Input: "Wordः(1)" -> "Word(1)ः"
+    Output: Rendered accent will now appear on 'd' (or implicit vowel), followed by Visarga.
+    """
+    if not text:
+        return text
+    
+    # Pattern: Capture Visarga (group 1) and the Accent Marker (group 2)
+    # accents are like (1), (2), (3), (4)
+    pattern = r'([ः])(\(\d+\))'
+    # Replace with: Accent Marker first, then Visarga
+    return re.sub(pattern, r'\2\1', text)
+
 # --- End of Moved Functions ---
 
 # --- NEW FUNCTION (Moved Logic from Step 2) ---

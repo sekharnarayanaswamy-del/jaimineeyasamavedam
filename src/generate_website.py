@@ -18,7 +18,7 @@ Version: 2.0.0
 import os
 import re
 import json
-from utils import combine_ardhaksharas, get_generated_metadata
+from utils import combine_ardhaksharas, get_generated_metadata, step_preprocess_visarga_accent
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
@@ -203,6 +203,8 @@ def local_handle_consecutive_trikamba(text):
         return text
     pattern = r'\(4\)([^\(\)]{1,3})\(4\)'
     replacement = r'(4)\1 (4)'
+    pattern = r'\(4\)([^\(\)]{1,3})\(4\)'
+    replacement = r'(4)\1 (4)'
     return re.sub(pattern, replacement, text)
 
 # Choose functions based on import success
@@ -235,6 +237,9 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     
     # Step 2: Handle consecutive trikamba
     text = _handle_trikamba(text)
+    
+    # Step 2a: Fix Visarga-Accent Order
+    text = step_preprocess_visarga_accent(text)
     
     # Step 3: Escape HTML special characters (before adding our HTML)
     text = _escape_html(text)

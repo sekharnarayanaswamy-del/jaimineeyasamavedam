@@ -1,6 +1,7 @@
 import subprocess
 import os
 import re
+from utils import step_preprocess_visarga_accent
 
 
 # ----------------------------------------------------
@@ -276,6 +277,7 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     processed_text = remove_mantra_spaces(input_text)
     
     # 1. First, detect consecutive accents and inject \kern ONLY for those cases
+    processed_text = step_preprocess_visarga_accent(processed_text)
     processed_text = handle_consecutive_accents(processed_text)
     
     # 2. Then replace all accents with LaTeX commands
@@ -518,6 +520,7 @@ def generate_html(input_text, base_filename):
     processed_text = remove_mantra_spaces(input_text)
     
     # 2. Replace Accents
+    processed_text = step_preprocess_visarga_accent(processed_text)
     processed_text = replace_accents_html(processed_text)
     
     # 3. Formatting
