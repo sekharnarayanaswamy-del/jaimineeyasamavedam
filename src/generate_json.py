@@ -902,7 +902,7 @@ def extract_samam_only_data(combined_data):
 
 
 # --- UNICODE TEXT FILE PARSER (for correction cycle) ---
-def parse_unicode_text_file(filepath, csv_metadata_path=None):
+def parse_unicode_text_file(filepath, metadata_file_path=None):
     """
     Parses the unicode text file produced by convert_corrections_to_json.
     Reconstructs the JSON structure.
@@ -917,34 +917,103 @@ def parse_unicode_text_file(filepath, csv_metadata_path=None):
     import csv 
     import re
     
-    # --- Load CSV Metadata if provided ---
-    csv_data = {}
-    if csv_metadata_path:
-        if os.path.exists(csv_metadata_path):
+    # --- Load Metadata (XLSX, TXT, or CSV) ---
+    metadata_data = {}
+    if metadata_file_path:
+        if os.path.exists(metadata_file_path):
             try:
-                with open(csv_metadata_path, 'r', encoding='utf-8-sig') as f:
-                    # Check first line for custom header
-                    first_line = f.readline()
-                    if not first_line.startswith('Global_Samam_Num'):
-                        # If first line is metadata (e.g. "JSV_Samam..."), the NEXT line is the header
-                        pass 
-                    else:
-                        # If first line IS the header, seek back to start
-                        f.seek(0)
-                    
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        try:
-                            # Map by Global_Samam_Num
-                            key = int(row['Global_Samam_Num'])
-                            csv_data[key] = row
-                        except (ValueError, KeyError):
-                            continue
-                print(f"[INFO] Loaded metadata for {len(csv_data)} samams from CSV.")
+                # 1. Excel (.xlsx) - Recommended for editing
+                if metadata_file_path.lower().endswith('.xlsx'):
+                    try:
+                        import openpyxl
+                        wb = openpyxl.load_workbook(metadata_file_path, data_only=True)
+                        ws = wb.active
+                        
+                        # Find Header Row (Scan first 5 rows)
+                        header_row_idx = 1
+                        headers = {}
+                        found_header = False
+                        
+                        for r_idx, row in enumerate(ws.iter_rows(max_row=5, values_only=True), 1):
+                            if row and 'Global_Samam_Num' in row:
+                                header_row_idx = r_idx
+                                for c_idx, val in enumerate(row):
+                                    if val: headers[val] = c_idx
+                                found_header = True
+                                break
+                        
+                        if found_header:
+                            for row in ws.iter_rows(min_row=header_row_idx+1, values_only=True):
+                                if not row: continue
+                                try:
+                                    gsn_idx = headers.get('Global_Samam_Num')
+                                    if gsn_idx is not None and row[gsn_idx] is not None:
+                                        key = int(row[gsn_idx])
+                                        row_data = {}
+                                        for h_name, h_idx in headers.items():
+                                            val = row[h_idx]
+                                            row_data[h_name] = str(val) if val is not None else ''
+                                        metadata_data[key] = row_data
+                                except (ValueError, IndexError):
+                                    continue
+                            print(f"[INFO] Loaded metadata for {len(metadata_data)} samams from Excel (.xlsx).")
+                        else:
+                            print("[ERROR] Could not find header 'Global_Samam_Num' in first 5 rows of Excel file.")
+                    except ImportError:
+                        print("[ERROR] 'openpyxl' library missing. Install it to read .xlsx files, or save as .txt.")
+
+                # 2. Text (.txt) - Excel "Unicode Text" (Tab-delimited, likely UTF-16)
+                elif metadata_file_path.lower().endswith('.txt'):
+                    encoding = 'utf-16'
+                    delimiter = '\t'
+                    # Try UTF-16 first (standard for Excel Unicode Text)
+                    try:
+                        with open(metadata_file_path, 'r', encoding=encoding) as f:
+                            # Verify if readable
+                            f.readline()
+                            f.seek(0)
+                            reader = csv.DictReader(f, delimiter=delimiter)
+                            for row in reader:
+                                try:
+                                    k_str = row.get('Global_Samam_Num', '').strip()
+                                    if k_str:
+                                        metadata_data[int(k_str)] = row
+                                except ValueError: continue
+                    except UnicodeError:
+                         # Fallback to UTF-8
+                         print("[INFO] UTF-16 read failed for .txt, trying UTF-8...")
+                         with open(metadata_file_path, 'r', encoding='utf-8') as f:
+                            reader = csv.DictReader(f, delimiter=delimiter)
+                            for row in reader:
+                                try:
+                                    k_str = row.get('Global_Samam_Num', '').strip()
+                                    if k_str:
+                                        metadata_data[int(k_str)] = row
+                                except ValueError: continue
+                    print(f"[INFO] Loaded metadata for {len(metadata_data)} samams from Text file (.txt).")
+
+                # 3. CSV (.csv) - Legacy/Programmatic
+                else:
+                    with open(metadata_file_path, 'r', encoding='utf-8-sig') as f:
+                        first_line = f.readline()
+                        if not first_line.startswith('Global_Samam_Num'):
+                             pass # Skip non-header first line if present
+                        else:
+                             f.seek(0)
+                        
+                        reader = csv.DictReader(f)
+                        for row in reader:
+                            try:
+                                key = int(row['Global_Samam_Num'])
+                                metadata_data[key] = row
+                            except (ValueError, KeyError):
+                                continue
+                    print(f"[INFO] Loaded metadata for {len(metadata_data)} samams from CSV.")
+
             except Exception as e:
-                print(f"[ERROR] Failed to load CSV metadata: {e}")
+                print(f"[ERROR] Failed to load Metadata file: {e}")
         else:
-             print(f"[ERROR] CSV Metadata file not found: {csv_metadata_path}")
+             print(f"[ERROR] Metadata file not found: {metadata_file_path}")
     # -------------------------------------
 
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -1145,29 +1214,28 @@ def parse_unicode_text_file(filepath, csv_metadata_path=None):
                 # Update Global Counter for next iteration (add actual number of mantras)
                 global_samam_count += num_mantras
                 
-                if csv_data and current_lookup_index in csv_data:
-                    csv_row = csv_data[current_lookup_index]
+                if metadata_data and current_lookup_index in metadata_data:
+                    meta_row = metadata_data[current_lookup_index]
                     
-                    if csv_row.get('Rik_ID'):
+                    if meta_row.get('Rik_ID'):
                          try:
-                             rik_id_to_use = int(csv_row['Rik_ID'])
+                             rik_id_to_use = int(meta_row['Rik_ID'])
                          except ValueError:
                              pass
                              
-                    if csv_row.get('Rik_Metadata'):
-                        rik_meta_to_use = csv_row['Rik_Metadata']
+                    if meta_row.get('Rik_Metadata'):
+                        rik_meta_to_use = meta_row['Rik_Metadata']
                         
-                    if csv_row.get('Saman_Metadata'):
-                        saman_meta_to_use = csv_row['Saman_Metadata']
+                    if meta_row.get('Saman_Metadata'):
+                        saman_meta_to_use = meta_row['Saman_Metadata']
                     
                     # Map new specific fields
-                    rik_rishi_val = csv_row.get('Rik_Rishi', '')
-                    rik_devata_val = csv_row.get('Rik_Devata', '')
-                    rik_chandas_val = csv_row.get('Rik_Chandas', '')
-                    rik_chandas_val = csv_row.get('Rik_Chandas', '')
-                    saman_rishi_val = csv_row.get('Samam_Rishi', '')
-                    saman_devata_val = csv_row.get('Samam_Devata', '')
-                    saman_chandas_val = csv_row.get('Samam_Chandas', '')
+                    rik_rishi_val = meta_row.get('Rik_Rishi', '')
+                    rik_devata_val = meta_row.get('Rik_Devata', '')
+                    rik_chandas_val = meta_row.get('Rik_Chandas', '')
+                    saman_rishi_val = meta_row.get('Samam_Rishi', '')
+                    saman_devata_val = meta_row.get('Samam_Devata', '')
+                    saman_chandas_val = meta_row.get('Samam_Chandas', '')
                     
 
                 
@@ -1212,7 +1280,8 @@ Input Modes:
 Examples:
   python generate_json_for_samhita.py corrections_003.txt --input-mode initial
   python generate_json_for_samhita.py Full_Samhita_ip_with_FN.txt --input-mode correction --output output.json
-  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-csv data/output/JSV_Samam_Granular_Table.csv
+  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-file data/output/JSV_Samam_Granular_Table.xlsx
+  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-file data/output/JSV_Samam_Granular_Table.txt
         """
     )
     parser.add_argument('input_file', type=str,
@@ -1221,8 +1290,8 @@ Examples:
                         help='Input mode: initial or correction (default: correction)')
     parser.add_argument('--output', type=str, default=None,
                         help='Output JSON file path (default: auto-generated from input filename)')
-    parser.add_argument('--metadata-csv', type=str, default=None,
-                        help='Optional CSV file to enrich metadata (correction mode only)')
+    parser.add_argument('--metadata-file', type=str, default=None,
+                        help='Optional .xlsx, .txt, or .csv file to enrich metadata (correction mode only)')
     parser.add_argument('--initial-json', type=str, default=None,
                         help='Trusted Initial JSON output to map Rik IDs correctly (correction mode only)')
     
@@ -1256,9 +1325,9 @@ Examples:
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
 
         print(f"Processing {input_file} in CORRECTION mode...")
-        if args.metadata_csv:
-            print(f"Enriching with metadata from: {args.metadata_csv}")
-        output_data = parse_unicode_text_file(input_file, csv_metadata_path=args.metadata_csv)
+        if args.metadata_file:
+            print(f"Enriching with metadata from: {args.metadata_file}")
+        output_data = parse_unicode_text_file(input_file, metadata_file_path=args.metadata_file)
     
     if output_data:
         try:
