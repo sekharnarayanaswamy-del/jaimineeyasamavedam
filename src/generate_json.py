@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import re
 import os
-from utils import get_generated_metadata
+from utils import get_generated_metadata, step_preprocess_visarga_accent
 
 # --- Version and Metadata ---
 metadata = get_generated_metadata()
@@ -52,6 +52,7 @@ def sanitize_invisible_chars(text):
         '\u2060',  # Word joiner
         '\u180e',  # Mongolian vowel separator
         '\u00ad',  # Soft hyphen
+        '\u00a0',  # No-Break Space (NBSP) - The likely culprit for subsection titles
     ]
     for char in invisible_chars:
         text = text.replace(char, '')
@@ -444,6 +445,10 @@ class RikTextParser:
                 raw_text = re.sub(r'^\s*\d+:\s*', '', raw_text)
                 
                 clean_text = f"{raw_text} ॥ {rik_num_str} ॥"
+                
+                # Apply Visarga/Accent corrections
+                clean_text = step_preprocess_visarga_accent(clean_text)
+                
                 # Store by rik_id (overwrite if duplicate - take last occurrence)
                 section_map[rik_id_int] = clean_text
             
@@ -722,6 +727,10 @@ def convert_corrections_to_json(
                 current_section_subsection_count += 1
                 
                 clean_header_text = re.sub(r'<[^>]+>', '', raw_header_text.strip()).strip().rstrip('…|').replace(':', 'ः')
+                
+                # Apply Visarga/Accent corrections BEFORE parsing
+                mantra_set_content = step_preprocess_visarga_accent(mantra_set_content)
+                
                 mantra_list, full_saman_text = parse_mantra_set(mantra_set_content)
                 
                 # Count how many mantras (samams) are in this subsection by finding mantra number markers (॥N॥)
@@ -803,6 +812,14 @@ def convert_corrections_to_json(
                     raw_rik_meta = last_rik_meta
                     saman_meta_val = ""
                     rik_meta_val = clean_rik_metadata_format(raw_rik_meta) if display_rik_text else ""
+
+                # --- NEW: Apply Visarga Preprocessing globally ---
+                clean_header_text = step_preprocess_visarga_accent(clean_header_text)
+                rik_meta_val = step_preprocess_visarga_accent(rik_meta_val)
+                display_rik_text = step_preprocess_visarga_accent(display_rik_text)
+                saman_meta_val = step_preprocess_visarga_accent(saman_meta_val)
+                full_saman_text = step_preprocess_visarga_accent(full_saman_text)
+                # -----------------------------------------------
 
                 current_supersection_sections[section_id]["subsections"][subsection_id] = {
                     "header": { "header": clean_header_text },
@@ -1019,6 +1036,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
+    # GLOBAL SANITIZATION: Remove invisible characters from the entire file content
+    content = sanitize_invisible_chars(content)
+    
     # Initialize data structure
     data = {
         "meta": {
@@ -1031,27 +1051,27 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
     
     # Patterns for matching markers
     supersection_pattern = re.compile(
-        r'# Start of SuperSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of SuperSection Title', 
+        r'#\s*Start of SuperSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of SuperSection Title', 
         re.MULTILINE
     )
     section_pattern = re.compile(
-        r'# Start of Section Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of Section Title', 
+        r'#\s*Start of Section Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of Section Title', 
         re.MULTILINE
     )
     rik_metadata_pattern = re.compile(
-        r'# Start of Rik Metadata -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Rik Metadata', 
+        r'#\s*Start of Rik Metadata -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Rik Metadata', 
         re.MULTILINE | re.DOTALL
     )
     rik_text_pattern = re.compile(
-        r'# Start of Rik Text -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Rik Text', 
+        r'#\s*Start of Rik Text -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Rik Text', 
         re.MULTILINE | re.DOTALL
     )
     subsection_pattern = re.compile(
-        r'# Start of SubSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n# End of SubSection Title', 
+        r'#\s*Start of SubSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of SubSection Title', 
         re.MULTILINE
     )
     mantra_pattern = re.compile(
-        r'#Start of Mantra Sets -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#End of Mantra Sets', 
+        r'#\s*Start of Mantra Sets -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Mantra Sets', 
         re.MULTILINE | re.DOTALL
     )
     
@@ -1106,6 +1126,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
         # Sanitize Rik text: remove newlines, carriage returns, backslashes, and literal \newline commands
         rik_text = rt_match.group(2).strip().replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
         rik_text = rik_text.replace('\\newline%', ' ').replace('\\newline', ' ').replace('\\', '')
+        # Normalize pipes for Rik text as well (as per "visarga handling" pattern)
+        rik_text = rik_text.replace('||', '॥').replace('|', '।')
+        # Apply Visarga Accent Preprocessing
+        rik_text = step_preprocess_visarga_accent(rik_text)
         rik_text_map[sub_id] = rik_text
     
     # Extract subsection headers (Samam header + metadata)
@@ -1113,6 +1137,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
     for sub_match in subsection_pattern.finditer(content):
         sub_id = sub_match.group(1)
         header_line = sub_match.group(2).strip()
+        # Sanitize header line to remove NBSP
+        header_line = sanitize_invisible_chars(header_line)
         # Split header and saman_metadata (they're separated by double space)
         parts = header_line.split('  ', 1)
         header = parts[0].strip()
@@ -1125,11 +1151,18 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
     mantra_sets_map = {}
     for m_match in mantra_pattern.finditer(content):
         sub_id = m_match.group(1)
-        mantra_text = m_match.group(2).strip()
-        # Sanitize invisible characters that break footnote pattern matching
-        mantra_text = sanitize_invisible_chars(mantra_text)
+        # Capture raw mantra text first
+        mantra_text_raw = m_match.group(2)
+        
+        # Sanitize invisible characters (Redundant if global is done, but keeps logic localized/independent)
+        # Also normalize pipes/dandas as requested ("visarga handling" interpreted as punctuation normalization)
+        mantra_text = sanitize_invisible_chars(mantra_text_raw.strip())
+        mantra_text = mantra_text.replace('||', '॥').replace('|', '।')
+        # Apply Visarga Accent Preprocessing
+        mantra_text = step_preprocess_visarga_accent(mantra_text)
+        
         # Parse mantras - each line is part of the mantra content
-        mantras = [sanitize_invisible_chars(line) for line in mantra_text.split('\n') if line.strip()]
+        mantras = [line.strip() for line in mantra_text.split('\n') if line.strip()]
         mantra_sets_map[sub_id] = mantras
     
     # Extract footnotes

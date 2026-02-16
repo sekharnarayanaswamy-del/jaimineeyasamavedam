@@ -265,6 +265,10 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     """
     if not mantra_text:
         return "", []
+
+    # --- Preprocess Visarga/Accents ---
+    mantra_text = step_preprocess_visarga_accent(mantra_text)
+
     
     if footnotes_dict is None:
         footnotes_dict = {}
@@ -354,10 +358,15 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
             continue
         
         # Match pattern: [Word](Swara) - but NOT (sN) which is a footnote
-        match = re.match(r'([^\s()।॥]+)\s*\(([^)]+)\)', text[i:])
+        match = re.match(r'([^\s()।॥]+)\s*\(([^)]+)\)\s*([:ः]?)', text[i:])
         if match:
             word = match.group(1)
             swara = match.group(2)
+            trailing_visarga = match.group(3)
+            
+            # Attach trailing visarga to word if present
+            if trailing_visarga:
+                word += trailing_visarga
             
         # Check if swara is actually a footnote marker like 's1'
             if re.match(r's\d+$', swara):

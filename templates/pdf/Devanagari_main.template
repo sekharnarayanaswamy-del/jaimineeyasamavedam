@@ -12,16 +12,22 @@
     Scale=1.5, 
     Script=Devanagari,
     Ligatures=TeX,
-    AutoFakeSlant
-]{AdiShila Vedic}
+    AutoFakeSlant\BLOCK{ if font_path },
+    Path = \VAR{font_path},
+    Extension = .ttf,
+    UprightFont = *\BLOCK{ endif }
+]{\VAR{font_family}}
 
 \newfontfamily\smallredfont[
     Scale=1.0,  
     Script=Devanagari,
     Ligatures=TeX,
     Color=red,
-    AutoFakeSlant
-]{AdiShila Vedic}
+    AutoFakeSlant\BLOCK{ if font_path },
+    Path = \VAR{font_path},
+    Extension = .ttf,
+    UprightFont = *\BLOCK{ endif }
+]{\VAR{font_family}}
 \setcounter{tocdepth}{3}
 
 % --- PACKAGES ---

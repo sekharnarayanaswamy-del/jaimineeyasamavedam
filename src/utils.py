@@ -106,16 +106,27 @@ def step_preprocess_visarga_accent(text):
     """
     Swaps Visarga (ः) with immediately following accent marker (1)/(2)/(3) etc.
     so the accent is applied to the preceding character (vowel) instead of the Visarga.
+    Also ensures Visarga is attached to the preceding character.
     
+    Input: "Word : (1)" -> "Word(1)ः"
+    Input: "Word: (1)" -> "Word(1)ः" 
+    Input: "Word ः (1)" -> "Word(1)ः"
     Input: "Wordः(1)" -> "Word(1)ः"
     Output: Rendered accent will now appear on 'd' (or implicit vowel), followed by Visarga.
     """
     if not text:
         return text
     
-    # Pattern: Capture Visarga (group 1) and the Accent Marker (group 2)
-    # accents are like (1), (2), (3), (4)
-    pattern = r'([ः])(\(\d+\))'
+    # 1. Normalize colon to Visarga
+    text = text.replace(':', 'ः')
+    
+    # 2. Remove space before Visarga (attach to preceding char)
+    text = re.sub(r'\s+ः', 'ः', text)
+    
+    # 3. Swap Visarga and Accent (handling potential space between them)
+    # Pattern: Visarga + optional space + (Accent)
+    # accents are like (1), (2), (3), (4) or (cha), (ki) etc in Samam
+    pattern = r'([ः])\s*(\([^)]+\))'
     # Replace with: Accent Marker first, then Visarga
     return re.sub(pattern, r'\2\1', text)
 
@@ -208,14 +219,22 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
             i += len(fn_match.group(0))
             continue
             
-        # 3. Check for pattern: [Word] + (Swara)
+        # 3. Check for pattern: [Word] + (Swara) + Optional [Visarga/Colon]
         string_chk = full_mantra_string[i:]
         # Strict Regex: NO Parens in Word part
-        match = re.match(r'\s*([^\s()।॥]+)\s*\(([^)]+)\)', string_chk)
+        # Updated to capture optional trailing Visarga/Colon (Group 3)
+        match = re.match(r'\s*([^\s()।॥]+)\s*\(([^)]+)\)\s*([:ः]?)', string_chk)
 
         if match:
             mantra_word = match.group(1)
             swara_word = match.group(2)
+            trailing_visarga = match.group(3)
+            
+            # Attach trailing visarga to the word if present
+            if trailing_visarga:
+                # Normalize just in case, though preprocessing should have done it
+                trailing_visarga = trailing_visarga.replace(':', 'ः')
+                mantra_word += trailing_visarga
             
             # (Removed the "Is logic Footnote" block since we handle (sN) separately now)
             
@@ -354,6 +373,10 @@ def parse_mantra_set(mantra_set_text):
             # The entire line is placed in 'corrected-mantra', including inline swara markings.
             # Replacing danda characters with spaced versions for consistency
             mantra = mantra.replace('।', r' । ')
+            
+            # Apply Visarga/Accent corrections
+            mantra = step_preprocess_visarga_accent(mantra)
+            
             mantra_sets.append({
                 "corrected-mantra": mantra,
                 "corrected-swara": ""   

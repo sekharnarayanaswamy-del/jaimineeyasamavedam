@@ -1,4 +1,4 @@
-# Jaimineeya Sama Vedam Website Implementation Plan
+# Jaimineeya Sama Vedam Website Implementation Plan (jaimineeyasamavedam.org)
 
 ## Overview
 A WordPress-based website on Hostinger Single Plan for preserving and sharing Jaimineeya Sama Veda artifacts, designed around **three distinct visitor personas** to maximize engagement and utility.
