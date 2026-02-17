@@ -131,7 +131,7 @@ def replace_accents(text):
 def handle_consecutive_accents(text):
     r"""
     Previously inserted \kern to separate specific accent transitions 
-    that were prone to visual overlap with AdiShila Vedic font.
+    that were prone to visual overlap with AdishilaVedic font.
     
     With Noto Sans Devanagari, this kerning is not needed and causes
     unwanted spacing. Returning text unchanged.
@@ -415,7 +415,7 @@ def CreateCompilation():
             prasnaInfo=prasna['id']
             CreateMd(templateFileName_md,f"TS_{kandaInfo}_{prasnaInfo}","Compilation",prasna)
                        
-def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdiShila Vedic", doc_title_sa="जैमिनीय साम संहिता"):
+def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता"):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -1441,7 +1441,7 @@ def handle_consecutive_trikamba_html(text):
 def replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    AdiShila Vedic font properly supports these characters.
+    AdishilaVedic font properly supports these characters.
     """
     if not text:
         return text
@@ -1932,13 +1932,13 @@ def preprocess_html_data(supersections, output_mode):
 
 
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdiShila Vedic', 'Adishila SanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता"):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता"):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
     
     Args:
-        html_font: Font family string for HTML output (e.g., "'AdiShila Vedic', 'Adishila SanVedic'")
+        html_font: Font family string for HTML output (e.g., "'AdishilaVedic', 'AdishilaSanVedic'")
         output_mode: 'combined', 'rik', or 'samam' for filtering content
         doc_title_sa: Sanskrit title for the document
     """
@@ -1993,20 +1993,19 @@ Examples:
   python renderPDF.py input.json --output-mode nometa
         """
     )
-    parser.add_argument('input_file', nargs='?', default='data/output/Agneyam-Pavamanam_latest_out.json',
-                        help='Input JSON file (default: data/output/Agneyam-Pavamanam_latest_out.json)')
+    parser.add_argument('input_file', nargs='?', default=None,
+                        help='Input JSON file (auto-selected based on --type if not specified)')
     parser.add_argument('--output-mode', dest='output_mode',
                         choices=['combined', 'separate', 'nometa'], default='combined',
                         help='Output mode: combined (default), separate, or nometa')
-    parser.add_argument('--pdf-font', dest='pdf_font', default='AdiShila Vedic',
-                        help='Font for PDF output (default: AdiShila Vedic)')
-    parser.add_argument('--html-font', dest='html_font', default="'AdiShila Vedic', 'Adishila SanVedic'",
-                        help="Font for HTML output (default: 'AdiShila Vedic', 'Adishila SanVedic')")
+    parser.add_argument('--pdf-font', dest='pdf_font', default='AdishilaVedic',
+                        help='Font for PDF output (default: AdishilaVedic)')
+    parser.add_argument('--html-font', dest='html_font', default="'AdishilaVedic', 'AdishilaSanVedic'",
+                        help="Font for HTML output (default: 'AdishilaVedic', 'AdishilaSanVedic')")
     parser.add_argument('--type', choices=['samhita', 'grameya', 'aaranam', 'prakruti'], default='samhita',
                         help='Type of Samaveda text: samhita (formerly grameya/prakruti) or aaranam')
     
     args = parser.parse_args()
-    input_file = args.input_file
     output_mode = args.output_mode
     pdf_font = args.pdf_font
     html_font = args.html_font
@@ -2015,7 +2014,15 @@ Examples:
     mode_type = args.type
     if mode_type in ['prakruti', 'grameya']:
         mode_type = 'samhita'
-        
+    
+    # Auto-select default input file based on --type if not explicitly provided
+    if args.input_file is not None:
+        input_file = args.input_file
+    elif mode_type == 'aaranam':
+        input_file = 'data/output/Aaranam_latest_out.json'
+    else:
+        input_file = 'data/output/Agneyam-Pavamanam_latest_out.json'
+    
     # Determine file prefix based on type
     file_prefix = "Aaranam" if mode_type == 'aaranam' else "Samhita"
     template_dir="templates/pdf"

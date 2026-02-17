@@ -60,7 +60,7 @@ This workflow covers the full lifecycle of the Samhita data: from importing new 
 Use this mode when you have a fresh text file (containing `SuperSection` / `Section` markers) and want to generate the baseline JSON. This mode combines your main text with the auxiliary data files.
 
 **Prerequisites**:
-*   Main input text file (e.g., `data/input/Agneyam_New.txt`)
+*   Main input text file (e.g., `data/input/Agneyam-Pavamanam_corrected.txt`)
 *   Auxiliary files present in `data/input/`:
     *   `vedic_text.txt` (Rik text source)
     *   `rishi_devata_chandas_for_rik.txt` (Rik metadata)
@@ -69,17 +69,17 @@ Use this mode when you have a fresh text file (containing `SuperSection` / `Sect
 **Command**:
 ```bash
 # 1. Generate JSON (Baseline)
-python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode initial
+python src/generate_json.py "data/input/Agneyam-Pavamanam_corrected.txt" --input-mode initial
 
 # 2. Generate Master Correction File (Unicode Text)
-python src/render_pdf.py data/output/Agneyam_New_out.json
+python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json
 ```
 *Outputs*: 
-*   **JSON**: `data/output/Agneyam_New_out.json`
+*   **JSON**: `data/output/Agneyam-Pavamanam_corrected_out.json`
 *   **Correction File**: `data/output/txt/Devanagari/Samhita_Devanagari_Unicode.txt`
 *   **LaTeX Source**: `data/output/pdf/Devanagari/Samhita_Devanagari.tex`
 
-> **Next Step**: Move the generated `..._Unicode.txt` file to your `data/input/` folder (e.g., rename to `Agneyam_New.txt`) to use it as the source for Phase 2.
+> **Next Step**: Move the generated `..._Unicode.txt` file to your `data/input/` folder (e.g., rename to `Agneyam-Pavamanam_corrected.txt`) to use it as the source for Phase 2.
 
 #### Phase 2: The Correction Cycle (Iterative Updates)
 
@@ -91,12 +91,12 @@ The generated Unicode text from Phase 1 is taken up for further corrections by V
 
 **Option A: Direct Correction (Text & Metadata) - *Primary Workflow***
 1.  **Edit the Text File**:
-    *   Open `data/input/Agneyam_New.txt` (or your renamed correction file) in an editor of your choice.
+    *   Open `data/input/Agneyam-Pavamanam_corrected.txt` (or your renamed correction file) in an editor of your choice.
     *   Fix mantra text errors, Rik headers, or metadata (lines starting with `(s1)...`).
     *   The text file should be in UTF-8 encoded text format.   
 2.  **Regenerate JSON**:
     ```bash
-    python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction
+    python src/generate_json.py "data/input/Agneyam-Pavamanam_corrected.txt" --input-mode correction
     ```
 
 **Option B: Bulk Metadata Correction (Excel / CSV) - *Additional Workflow***
@@ -109,20 +109,20 @@ The generated Unicode text from Phase 1 is taken up for further corrections by V
 3.  **Regenerate JSON (with Metadata overlay)**:
     ```bash
     # Using Excel
-    python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.xlsx"
+    python src/generate_json.py "data/input/Agneyam-Pavamanam_corrected.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.xlsx"
     
     # Or using CSV
-    python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.csv"
+    python src/generate_json.py "data/input/Agneyam-Pavamanam_corrected.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.csv"
     ```
 
 **Final Step (Common): Regenerate Artifacts**
 Update the Website, PDF, HTML, and Text outputs to reflect the changes.
 ```bash
 # Website
-python src/generate_website.py --source-file data/output/Agneyam_New_out.json
+python src/generate_website.py --source-file data/output/Agneyam-Pavamanam_corrected_out.json
 
 # PDF, HTML, and Unicode Text
-python src/render_pdf.py data/output/Agneyam_New_out.json
+python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json
 ```
 *   *PDF Source*: `data/output/pdf/Devanagari/Samhita_Devanagari.tex`
 *   *HTML Output*: `data/output/html/Devanagari/Samhita_Devanagari.html`
@@ -232,8 +232,8 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 | :--- | :--- |
 | `--output-mode` | `combined` (default), `separate` (split Rik/Samam), or `nometa`. |
 | `--type` | Type of Samaveda text: `samhita` (default), `aaranam`, `grameya`, or `prakruti`. `grameya`/`prakruti` map to `samhita` for backward compatibility. |
-| `--pdf-font` | Custom font name for LaTeX (default: `AdiShila Vedic`). |
-| `--html-font` | Font family string for HTML output (default: `'AdiShila Vedic', 'Adishila SanVedic'`). |
+| `--pdf-font` | Custom font name for LaTeX (default: `AdishilaVedic`). |
+| `--html-font` | Font family string for HTML output (default: `'AdishilaVedic', 'AdishilaSanVedic'`). |
 
 > **Dynamic Title**: The document title on the PDF title page, HTML header, and text output is determined by `--type`:
 > *   `samhita` → **जैमिनीय साम संहिता**

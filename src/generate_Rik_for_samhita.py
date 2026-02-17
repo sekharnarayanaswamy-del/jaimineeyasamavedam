@@ -334,8 +334,8 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 \usepackage[hidelinks]{hyperref} % Added for phantomsection/toc support
 \onehalfspacing
 
-% Set the main font to Adishila Vedic with Devanagari script support
-\setmainfont{Adishila Vedic}[
+% Set the main font to AdishilaVedic with Devanagari script support
+\setmainfont{AdishilaVedic}[
     Path = ''' + font_path + r''',
     Extension = .ttf,
     UprightFont = AdishilaVedic,
@@ -560,7 +560,7 @@ def generate_html(input_text, base_filename):
         }}
 
         body {{
-            font-family: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
+            font-family: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
             font-size: 1.3rem;
             line-height: 1.8;
             color: var(--primary-color);

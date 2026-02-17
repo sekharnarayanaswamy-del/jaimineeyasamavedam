@@ -815,9 +815,9 @@ class WebsiteGenerator:
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
 --font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdiShila Vedic', 'Adishila SanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
