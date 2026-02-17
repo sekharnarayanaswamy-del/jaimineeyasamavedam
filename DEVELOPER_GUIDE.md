@@ -132,19 +132,46 @@ python src/render_pdf.py data/output/Agneyam_New_out.json
 
 This workflow generates the static HTML site for `jaimineeyasamavedam.org`.
 
-1.  **Generate Website**:
-    ```bash
-    python src/generate_website.py --source-file <path_to_json>
-    ```
-    *Output*: `docs/` folder.
+#### Site Architecture
 
-2.  **Preview Locally**:
+The website uses a **common landing page** (`docs/index.html`) that links to two independent sub-sites:
+
+```
+docs/
+├── index.html              ← Common landing page (gateway)
+├── prakruti/               ← Samhita (Prakruti Ganam) sub-site
+│   ├── index.html
+│   ├── css/, js/, kandah/
+│   ├── classification/
+│   └── metadata.json
+└── aranam/                 ← Aaranam (Aranya Ganam) sub-site
+    ├── index.html
+    ├── css/, js/, kandah/
+    ├── classification/
+    └── metadata.json
+```
+
+The landing page is a static HTML file maintained manually. Each sub-site is generated independently using `generate_website.py` with the appropriate mode flag.
+
+#### Steps
+
+1.  **Generate Samhita (Prakruti) Website**:
+    ```bash
+    python src/generate_website.py --source-file data/output/Agneyam-Pavamanam_latest_out.json -o docs/prakruti
+    ```
+
+2.  **Generate Aaranam Website**:
+    ```bash
+    python src/generate_website.py --source-file data/output/Aaranam_latest_out.json -o docs/aranam -a
+    ```
+
+3.  **Preview Locally**:
     ```bash
     python -m http.server 8080 --directory docs
     ```
-    Visit `http://localhost:8080` to verify changes.
+    Visit `http://localhost:8080` — the landing page will link to both sub-sites.
 
-3.  **Publish (Deploy)**:
+4.  **Publish (Deploy)**:
     Commit and push the `docs/` folder to the `format-mantras` branch. GitHub Pages will automatically deploy it.
     ```bash
     git add docs/
@@ -215,18 +242,18 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 > The output file prefix also changes accordingly (`Samhita_` vs `Aaranam_`).
 
 ### `src/generate_website.py`
-*Generates the static website.*
+*Generates the static website. Each mode generates an independent sub-site; the common landing page (`docs/index.html`) is maintained manually.*
 
 ```bash
 python src/generate_website.py [OPTIONS]
 ```
 | Option | Description |
 | :--- | :--- |
-| `--source-file` | Path to the input JSON file. |
-| `--output-dir` | Output directory (default: `docs`). |
-| `--audio-dir` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
-| `--prakruti` / `-p` | Generate for Prakruti Ganam (Default). |
-| `--aranam` / `-a` | Generate for Aranam mode. |
+| `--source-file`, `-s` | Path to the input JSON file. |
+| `--output-dir`, `-o` | Output directory (default: `docs`). Use `docs/prakruti` or `docs/aranam` for the dual-site layout. |
+| `--audio-dir`, `-d` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
+| `--samhita`, `-m` | Generate for Samhita / Prakruti Ganam (default). |
+| `--aranam`, `-a` | Generate for Aaranam / Aranya Ganam mode. |
 
 ### `src/generate_Rik_for_samhita.py`
 *Generates continuous Rik text document.*
