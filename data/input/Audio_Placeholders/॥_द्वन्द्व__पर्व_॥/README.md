@@ -1,6 +1,6 @@
-# ॥ द्वन्द्व - पर्व ॥
+# ॥ द्वन्द्व – पर्व ॥
 
-Place audio files for ॥ द्वन्द्व - पर्व ॥ here.
+Place audio files for ॥ द्वन्द्व – पर्व ॥ here.
 
 ## Expected Filename Format
 `JSV_{ParvaName}_{KandahNum}_{SamaNum}.mp3`

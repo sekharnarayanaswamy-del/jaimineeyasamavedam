@@ -193,6 +193,7 @@ python src/generate_json.py <input_file> [OPTIONS]
 | `--input-mode` | `initial` (raw text) or `correction` (default). |
 | `--metadata-file` | Path to `.xlsx`, `.csv`, or `.txt` file to enrich metadata. |
 | `--output` | Custom output path (optional). |
+| `--initial-json` | Path to a trusted initial JSON file (for re-mapping Rik IDs). |
 
 ### `src/render_pdf.py`
 *Generates PDF, HTML, and Unicode Text from JSON.*
@@ -215,6 +216,9 @@ python src/generate_website.py [OPTIONS]
 | :--- | :--- |
 | `--source-file` | Path to the input JSON file. |
 | `--output-dir` | Output directory (default: `docs`). |
+| `--audio-dir` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
+| `--prakruti` / `-p` | Generate for Prakruti Ganam (Default). |
+| `--aranam` / `-a` | Generate for Aranam mode. |
 
 ### `src/generate_Rik_for_samhita.py`
 *Generates continuous Rik text document.*
