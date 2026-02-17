@@ -204,7 +204,15 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--output-mode` | `combined` (default), `separate` (split Rik/Samam), or `nometa`. |
-| `--pdf-font` | Custom font name for LaTeX. |
+| `--type` | Type of Samaveda text: `samhita` (default), `aaranam`, `grameya`, or `prakruti`. `grameya`/`prakruti` map to `samhita` for backward compatibility. |
+| `--pdf-font` | Custom font name for LaTeX (default: `AdiShila Vedic`). |
+| `--html-font` | Font family string for HTML output (default: `'AdiShila Vedic', 'Adishila SanVedic'`). |
+
+> **Dynamic Title**: The document title on the PDF title page, HTML header, and text output is determined by `--type`:
+> *   `samhita` → **जैमिनीय साम संहिता**
+> *   `aaranam` → **जैमिनीय साम आरण्य गानम्**
+>
+> The output file prefix also changes accordingly (`Samhita_` vs `Aaranam_`).
 
 ### `src/generate_website.py`
 *Generates the static website.*
