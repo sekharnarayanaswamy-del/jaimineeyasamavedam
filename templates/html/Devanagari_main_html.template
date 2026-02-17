@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>॥ जैमिनीयसामप्रकृतिगानम् ॥</title>
+    <title>॥ \VAR{doc_title_sa} ॥</title>
     <style>
         :root {
             --primary-color: #2d3a4a;
@@ -421,7 +421,7 @@
         <nav class="nav-bar">
             <a href="#toc">॥ अनुक्रमणिका ॥</a>
             <div class="nav-titles">
-                <span class="nav-main-title">॥ जैमिनीयसामप्रकृतिगानम् ॥</span>
+                <span class="nav-main-title">॥ \VAR{doc_title_sa} ॥</span>
                 <span id="nav-title" class="nav-section-title"></span>
             </div>
         </nav>
@@ -430,7 +430,7 @@
         // Dynamic nav bar title based on scroll position
         document.addEventListener('DOMContentLoaded', function() {
             const navTitle = document.getElementById('nav-title');
-            const defaultTitle = '॥ जैमिनीयसामप्रकृतिगानम् ॥';
+            const defaultTitle = '॥ \VAR{doc_title_sa} ॥';
             
             // Build section data for tracking
             const sections = [];
@@ -480,7 +480,7 @@
         
         <!-- Title Page -->
         <div class="title-page">
-            <h1>॥ जैमिनीयसामप्रकृतिगानम् ॥</h1>
+            <h1>॥ \VAR{doc_title_sa} ॥</h1>
             <p style="font-size: 1.2rem; margin-top: 10px; color: var(--accent-blue);">
                 संस्करणम्: \VAR{version} | निर्मितम्: \VAR{generated_at}
             </p>

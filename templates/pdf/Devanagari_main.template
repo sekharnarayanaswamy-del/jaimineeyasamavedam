@@ -160,7 +160,7 @@
 \begin{titlepage}
     \begin{center}
         \begin{sanskrit}
-            { \Huge जैमिनीय साम प्रकृति गानम् }
+            { \Huge \VAR{doc_title_sa} }
         \end{sanskrit}
         \vfill
         \large v\VAR{version} \\

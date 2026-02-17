@@ -45,12 +45,12 @@ except ImportError:
 AUDIO_FILENAME_FORMAT = "JSV_{parva}_{kandah}_{sama}.mp3"
 
 SITE_CONFIG = {
-    'prakruti': {
-        'title_sa': 'जैमिनीय साम प्रकृति गानम्',
-        'title_en': 'Jaimineeya Sama Prakruti Ganam',
-        'footer_sa': 'जैमिनीय सामवेद प्रकृति गानम्',
-        'meta_desc': 'Jaimineeya Sama Prakruti Ganam digital archive',
-        'keywords': 'Samaveda, Jaimineeya, Prakruti, Ganam, Vedas, Sanskrit'
+    'samhita': {
+        'title_sa': 'जैमिनीय साम संहिता',
+        'title_en': 'Jaimineeya Sama Samhita',
+        'footer_sa': 'जैमिनीय सामवेद संहिता',
+        'meta_desc': 'Jaimineeya Sama Samhita digital archive',
+        'keywords': 'Samaveda, Jaimineeya, Samhita, Ganam, Vedas, Sanskrit'
     },
     'aranam': {
         'title_sa': 'जैमिनीय साम आरण्य गानम्',
@@ -2622,7 +2622,8 @@ def main():
         epilog='''
 Example usage:
   python generate_website.py
-  python generate_website.py -p --source-file prakruti.json
+  python generate_website.py
+  python generate_website.py --samhita --source-file samhita.json
   python generate_website.py -a --source-file aranam.json
         '''
     )
@@ -2662,10 +2663,10 @@ Example usage:
     # Mode selection group
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        '-p', '--prakruti',
+        '-m', '--samhita',
         action='store_true',
         default=True,
-        help='Generate for Prakruti Ganam (Default)'
+        help='Generate for Samhita (Default)'
     )
     group.add_argument(
         '-a', '--aranam',
@@ -2709,7 +2710,7 @@ Example usage:
         print(f"      └─ {len(parva.kandahs)} Kandahs, {sum(len(k.samas) for k in parva.kandahs)} Samas")
     
     # Determine mode
-    mode = 'aranam' if args.aranam else 'prakruti'
+    mode = 'aranam' if args.aranam else 'samhita'
     print(f"ℹ️  Generating for: {mode.upper()}")
     
     # Generate website

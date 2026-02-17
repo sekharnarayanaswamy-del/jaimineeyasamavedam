@@ -1,0 +1,5 @@
+  NEW: s1
+  SEEN: s1
+  NEW: s2
+  NEW: s1
+  NEW: s2

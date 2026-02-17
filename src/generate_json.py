@@ -625,7 +625,8 @@ def convert_corrections_to_json(
     file_path="data/input/Agneyam-Pavamanam_latest.txt",
     rik_meta_file="data/input/rishi_devata_chandas_for_rik.txt",
     saman_meta_file="data/input/sama_rishi_chandas_out.txt",
-    rik_text_file="data/input/vedic_text.txt"
+    rik_text_file="data/input/vedic_text.txt",
+    title="Jaimineeya Samaveda Samhita Data"
 ):
     print(f"--- Step 1: Loading External Datasets ---")
     
@@ -649,14 +650,14 @@ def convert_corrections_to_json(
         "meta": {
             "version": JSV_VERSION,
             "generated_at": GENERATED_AT,
-            "title": "Jaimineeya Samaveda Samhita Data"
+            "title": title
         },
         "supersection": {}
     }
     
     supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
     section_pattern = re.compile(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
-    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1 ## DO NOT EDIT\s*#Start of Mantra Sets -- \1 ## DO NOT EDIT\s*(.*?)\s*#End of Mantra Sets -- \1 ## DO NOT EDIT', re.DOTALL)
+    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1 ## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1 ## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1 ## DO NOT EDIT', re.DOTALL)
 
     print(f"--- Step 2a: Extracting SuperSections ---")
     supersections_data = supersection_pattern.findall(file_content)
@@ -821,19 +822,60 @@ def convert_corrections_to_json(
                 full_saman_text = step_preprocess_visarga_accent(full_saman_text)
                 # -----------------------------------------------
 
-                current_supersection_sections[section_id]["subsections"][subsection_id] = {
-                    "header": { "header": clean_header_text },
-                    "rik_id": rik_id_from_saman,
-                    "rik_ids": rik_ids_in_subsection,  # NEW: List of all Rik IDs in this subsection
-                    "rik_metadata": rik_meta_val,     
-                    "rik_text": display_rik_text,     
-                    "saman_metadata": saman_meta_val, 
-                    "corrected-mantra_sets": [{
+                # --- CHECK FOR EXISTING SUBSECTION (MERGE MODE) ---
+                if subsection_id in current_supersection_sections[section_id]["subsections"]:
+                    existing_entry = current_supersection_sections[section_id]["subsections"][subsection_id]
+                    
+                    # 1. Append mantra set
+                    existing_entry["corrected-mantra_sets"].append({
                         "corrected-mantra": full_saman_text, 
                         "corrected-swara": ""
-                    }],
-                    "mantra_sets": []
-                }
+                    })
+                    
+                    # 2. Merge Rik IDs (preserve order, unique)
+                    for rid in rik_ids_in_subsection:
+                        if rid not in existing_entry["rik_ids"]:
+                            existing_entry["rik_ids"].append(rid)
+                            
+                    # 3. Update Rik Metadata and Text (Re-generate based on merged IDs)
+                    # Note: This is slightly expensive but safe. Or we can just append if we trust the order.
+                    # Let's just append the new text/metadata if it's new.
+                    
+                    # Simple Append Strategy for Metadata strings
+                    if rik_meta_val and rik_meta_val not in existing_entry["rik_metadata"]:
+                         existing_entry["rik_metadata"] = (existing_entry["rik_metadata"] + " " + rik_meta_val).strip()
+                         
+                    if display_rik_text:
+                        # For text, we might want to be careful not to duplicate if it's the exact same Rik
+                        # But if it's a new Rik, we append.
+                        # Since we re-generated display_rik_text for the current block, we can append it.
+                        if existing_entry["rik_text"]:
+                            existing_entry["rik_text"] += "\n" + display_rik_text
+                        else:
+                            existing_entry["rik_text"] = display_rik_text
+
+                    # 4. Merge Saman Metadata
+                    if saman_meta_val:
+                        if existing_entry["saman_metadata"]:
+                            existing_entry["saman_metadata"] += " " + saman_meta_val
+                        else:
+                            existing_entry["saman_metadata"] = saman_meta_val
+                            
+                else:
+                    # --- NEW ENTRY ---
+                    current_supersection_sections[section_id]["subsections"][subsection_id] = {
+                        "header": { "header": clean_header_text },
+                        "rik_id": rik_id_from_saman,
+                        "rik_ids": rik_ids_in_subsection,  
+                        "rik_metadata": rik_meta_val,     
+                        "rik_text": display_rik_text,     
+                        "saman_metadata": saman_meta_val, 
+                        "corrected-mantra_sets": [{
+                            "corrected-mantra": full_saman_text, 
+                            "corrected-swara": ""
+                        }],
+                        "mantra_sets": []
+                    }
             
             global_subsection_offset += current_section_subsection_count
 
@@ -919,7 +961,7 @@ def extract_samam_only_data(combined_data):
 
 
 # --- UNICODE TEXT FILE PARSER (for correction cycle) ---
-def parse_unicode_text_file(filepath, metadata_file_path=None):
+def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya Samaveda Samhita Data"):
     """
     Parses the unicode text file produced by convert_corrections_to_json.
     Reconstructs the JSON structure.
@@ -1044,7 +1086,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
         "meta": {
             "version": JSV_VERSION,
             "generated_at": GENERATED_AT,
-            "title": "Jaimineeya Samaveda Samhita Data"
+            "title": title
         },
         "supersection": {}
     }
@@ -1163,7 +1205,12 @@ def parse_unicode_text_file(filepath, metadata_file_path=None):
         
         # Parse mantras - each line is part of the mantra content
         mantras = [line.strip() for line in mantra_text.split('\n') if line.strip()]
-        mantra_sets_map[sub_id] = mantras
+        
+        # Append to existing mantras if subsection already encountered (handle split blocks)
+        if sub_id in mantra_sets_map:
+            mantra_sets_map[sub_id].extend(mantras)
+        else:
+            mantra_sets_map[sub_id] = mantras
     
     # Extract footnotes
     # Extract footnotes
@@ -1328,10 +1375,24 @@ Examples:
     parser.add_argument('--initial-json', type=str, default=None,
                         help='Trusted Initial JSON output to map Rik IDs correctly (correction mode only)')
     
+    parser.add_argument('--type', choices=['samhita', 'grameya', 'aaranam', 'prakruti'], default='samhita',
+                        help='Type of Samaveda text: samhita (formerly grameya/prakruti) or aaranam')
+    
     args = parser.parse_args()
     
     input_file = args.input_file
     
+    # Map 'prakruti'/'grameya' to 'samhita' for backward compatibility
+    mode_type = args.type
+    if mode_type in ['prakruti', 'grameya']:
+        mode_type = 'samhita'
+        
+    # Determine title based on type
+    if mode_type == 'aaranam':
+        title = "Jaimineeya Samam Aranam"
+    else:
+        title = "Jaimineeya Sama Samhita Patha"
+
     if args.input_mode == 'initial':
         # Initial mode: use multiple source files
         rik_meta = "data/input/rishi_devata_chandas_for_rik.txt"
@@ -1345,8 +1406,8 @@ Examples:
              Path(output_dir).mkdir(parents=True, exist_ok=True)
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
              
-        print(f"Processing {input_file} in INITIAL mode...")
-        output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text)
+        print(f"Processing {input_file} in INITIAL mode ({mode_type})...")
+        output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text, title=title)
         
     else:
         # Correction mode: parse Unicode text file
@@ -1357,10 +1418,10 @@ Examples:
              Path(output_dir).mkdir(parents=True, exist_ok=True)
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
 
-        print(f"Processing {input_file} in CORRECTION mode...")
+        print(f"Processing {input_file} in CORRECTION mode ({mode_type})...")
         if args.metadata_file:
             print(f"Enriching with metadata from: {args.metadata_file}")
-        output_data = parse_unicode_text_file(input_file, metadata_file_path=args.metadata_file)
+        output_data = parse_unicode_text_file(input_file, metadata_file_path=args.metadata_file, title=title)
     
     if output_data:
         try:
