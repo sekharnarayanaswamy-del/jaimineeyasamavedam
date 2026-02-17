@@ -23,7 +23,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 
 ### 2.2 `src/generate_website.py`
 **Role**: Generates the static HTML website for GitHub Pages.
-*   **`JSVParser` (Class)**: A robust parser that reads the JSON output and hydrates python objects (`Parva`, `Kandah`, `Sama`). It abstracts the JSON structure into a workable Object Model.
+*   **`JSVParser` (Class)**: A robust parser that reads the JSON output and populates python objects (`Parva`, `Kandah`, `Sama`). It abstracts the JSON structure into a workable Object Model.
 *   **`WebsiteGenerator` (Class)**: Takes the `JSVParser` objects and orchestrates the HTML creation. It handles:
     *   Template rendering (Jinja2).
     *   Navigation generation (Left Sidebar).
@@ -83,33 +83,36 @@ python src/render_pdf.py data/output/Agneyam_New_out.json
 
 #### Phase 2: The Correction Cycle (Iterative Updates)
 
-This is the daily maintenance workflow. It allows you to fix metadata (Rishi, Devata, Chandas) or text errors using Excel, CSV, or by editing the text file, and then feed those changes back into the system.
+The generated Unicode text from Phase 1 is taken up for further corrections by Vedic scholars. This is the daily maintenance workflow. It allows one to fix Rik/Samam text errors or metadata (Rishi, Devata, Chandas) by editing the text file or Excel/csv files and then feed those changes back into the system.
 
-**Prerequisite**: You have the Unicode Text File generated in Phase 1 (and moved to `data/input/`).
+**Prerequisite**: You have the updated Unicode Text File in `data/input/`.
 
 **Steps:**
 
 **Option A: Direct Correction (Text & Metadata) - *Primary Workflow***
 1.  **Edit the Text File**:
-    *   Open `data/input/Agneyam_New.txt` (or your renamed correction file) in VS Code.
+    *   Open `data/input/Agneyam_New.txt` (or your renamed correction file) in an editor of your choice.
     *   Fix mantra text errors, Rik headers, or metadata (lines starting with `(s1)...`).
+    *   The text file should be in UTF-8 encoded text format.   
 2.  **Regenerate JSON**:
     ```bash
     python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction
     ```
 
-**Option B: Bulk Metadata Correction (Excel) - *Additional Workflow***
+**Option B: Bulk Metadata Correction (Excel / CSV) - *Additional Workflow***
 1.  **Generate Editable Table**:
     ```bash
     python src/generate_granular_table.py
     ```
-    *Output*: `data/output/JSV_Samam_Granular_Table.xlsx`
-2.  **Edit Excel**: Update `Rik_Rishi`, `Samam_Devata`, etc. in the `.xlsx` file.
+    *Output*: `data/output/JSV_Samam_Granular_Table.xlsx` and `data/output/JSV_Samam_Granular_Table.csv`
+2.  **Edit Table**: Update `Rik_Rishi`, `Samam_Devata`, etc. in the `.xlsx` or `.csv` file.
 3.  **Regenerate JSON (with Metadata overlay)**:
     ```bash
-    python src/generate_json.py "data/input/Agneyam_New.txt" \
-        --input-mode correction \
-        --metadata-file "data/output/JSV_Samam_Granular_Table.xlsx"
+    # Using Excel
+    python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.xlsx"
+    
+    # Or using CSV
+    python src/generate_json.py "data/input/Agneyam_New.txt" --input-mode correction --metadata-file "data/output/JSV_Samam_Granular_Table.csv"
     ```
 
 **Final Step (Common): Regenerate Artifacts**
