@@ -433,8 +433,13 @@ class RikTextParser:
                 rik_num_str = match.group(2)
                 rik_id_int = devanagari_to_int(rik_num_str)
                 
-                # Skip if no swara markers (header lines)
-                if '(' not in raw_text and ')' not in raw_text:
+                # Skip header lines (e.g. patha/section titles).
+                # Valid Riks usually have '।' (danda) as pada separators OR 
+                # '(' swara markers. Headers have neither.
+                # using OR ensures we catch:
+                # 1. Unaccented Riks (have dandas)
+                # 2. Short single-pada Riks (no internal dandas, but have accents)
+                if '।' not in raw_text and '(' not in raw_text:
                     continue
                 
                 # Use raw_text as-is - no truncation needed

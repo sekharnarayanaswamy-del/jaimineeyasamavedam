@@ -1,7 +1,21 @@
 """
 Generate a Rik-level table listing every unique Rik.
 This table contains one row per Rik, avoiding n:1 Samam-to-Rik duplication issues.
+
+Usage:
+    python src/generate_rik_table.py [input_json] [-o output_csv]
+
+Examples:
+    # Use defaults:
+    python src/generate_rik_table.py
+
+    # Specify input file:
+    python src/generate_rik_table.py data/output/Samhita_Devanagari_Unicode_out.json
+
+    # Specify both input and output:
+    python src/generate_rik_table.py data/output/Samhita_Devanagari_Unicode_out.json -o data/output/My_Rik_Table.csv
 """
+import argparse
 import json
 import csv
 import os
@@ -11,23 +25,28 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
 from utils import get_generated_metadata
 
-INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
-OUTPUT_CSV = r'data\output\JSV_Rik_Table.csv'
+DEFAULT_INPUT = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
+DEFAULT_OUTPUT = r'data\output\JSV_Rik_Table.csv'
 
-def main():
+def main(input_file=None, output_csv=None):
+    input_file = input_file or DEFAULT_INPUT
+    output_csv = output_csv or DEFAULT_OUTPUT
+
     # Get metadata
     metadata = get_generated_metadata()
     JSV_VERSION = metadata['version']
     GENERATED_AT = metadata['generated_at']
 
     print(f"Generating Rik Table (v{JSV_VERSION})...")
+    print(f"Input  : {input_file}")
+    print(f"Output : {output_csv}")
 
     # Load the JSON
-    if not os.path.exists(INPUT_FILE):
-        print(f"Error: Input file '{INPUT_FILE}' not found.")
+    if not os.path.exists(input_file):
+        print(f"Error: Input file '{input_file}' not found.")
         return
 
-    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
+    with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     # CSV rows
@@ -92,9 +111,9 @@ def main():
                     })
 
     # Write CSV with UTF-8 BOM for Excel compatibility
-    with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as f:
+    with open(output_csv, 'w', encoding='utf-8-sig', newline='') as f:
         # Line 1: <Filename> <Version> <Timestamp>
-        filename = os.path.basename(OUTPUT_CSV)
+        filename = os.path.basename(output_csv)
         f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
 
         fieldnames = [
@@ -111,8 +130,17 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"CSV saved to: {OUTPUT_CSV}")
+    print(f"CSV saved to: {output_csv}")
     print(f"Total Unique Riks: {len(rows)}")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        description="Generate a Rik-level table listing every unique Rik."
+    )
+    parser.add_argument("input", nargs="?", default=DEFAULT_INPUT,
+                        help=f"Input JSON file (default: {DEFAULT_INPUT})")
+    parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT,
+                        help=f"Output CSV file (default: {DEFAULT_OUTPUT})")
+
+    args = parser.parse_args()
+    main(input_file=args.input, output_csv=args.output)

@@ -1,0 +1,26 @@
+﻿M  DEVELOPER_GUIDE.md
+ M data/output/html/Devanagari/Aaranam_Devanagari.html
+ M data/output/txt/Devanagari/Aaranam_Devanagari_Unicode.txt
+ M docs/aranam/css/styles.css
+ M docs/css/styles.css
+ M docs/index.html
+ M docs/prakruti/css/styles.css
+ M src/generate_Rik_for_samhita.py
+ M src/generate_website.py
+ M src/render_pdf.py
+?? .agent/
+?? fonts/AdishilaSanVedic.ttf
+?? fonts/AdishilaSanVedicBold.ttf
+?? fonts/AdishilaSanVedicBoldItalic.ttf
+?? fonts/AdishilaSanVedicItalic.ttf
+?? fonts/AdishilaVedic.ttf
+?? fonts/AdishilaVedicBold.ttf
+?? fonts/AdishilaVedicBoldItalic.ttf
+?? fonts/AdishilaVedicHeavy.ttf
+?? fonts/AdishilaVedicHeavyItalic.ttf
+?? fonts/AdishilaVedicItalic.ttf
+?? fonts/AdishilaVedicSemiBold.ttf
+?? fonts/AdishilaVedicSemiBoldItalic.ttf
+?? fonts/NotoSerifDevanagari-Regular.ttf
+?? git_status.txt
+?? search_output.txt

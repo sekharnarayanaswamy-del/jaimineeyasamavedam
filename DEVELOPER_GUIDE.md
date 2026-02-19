@@ -279,13 +279,29 @@ python src/generate_Rik_for_samhita.py [OPTIONS]
 | `-i`, `--input` | Input text file. |
 | `-f`, `--format` | Output format: `pdf`, `html`, or `all`. |
 
+### `src/generate_granular_table.py`
+*Generates a fine granular table listing every individual Samam with Rik mapping.*
+
+```bash
+python src/generate_granular_table.py [OPTIONS]
+```
+| Option | Description |
+| :--- | :--- |
+| `-i`, `--input` | Path to the input JSON file (default: `data\output\Samhita_with_Rishi_Devata_Chandas_out.json`). |
+| `-o`, `--output` | Path to the output CSV file (default: `data\output\JSV_Samam_Granular_Table.csv`). |
+*Output*: CSV and XLSX files with per-Samam rows including Global_Rik_Num, Patha, Khanda, metadata fields.
+
 ### `src/generate_rik_table.py`
 *Generates a deduplicated Rik-level CSV table.*
 
 ```bash
-python src/generate_rik_table.py
+python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
 ```
-*Output*: `data/output/JSV_Rik_Table.csv`
+| Option | Description |
+| :--- | :--- |
+| `INPUT_JSON` | Path to the input JSON file (optional, default: `data\output\Samhita_with_Rishi_Devata_Chandas_out.json`). |
+| `-o`, `--output` | Path to the output CSV file (default: `data\output\JSV_Rik_Table.csv`). |
+*Output*: CSV file deduplicated by (Patha, Khanda, Rik_ID).
 
 ### `src/generate_missing_metadata_report.py`
 *Generates a report of missing Rik and Samam metadata.*
@@ -296,6 +312,22 @@ python src/generate_missing_metadata_report.py [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--mode` | `rik` (Rik issues only), `samam` (Samam issues only), or `combined` (default, both). |
+
+### `src/tools/copy_rik_ids.py`
+*Utility to transfer validated Rik IDs/Metadata from one JSON file to another (e.g., from a corrected baseline to a freshly parsed version).*
+
+```bash
+python src/tools/copy_rik_ids.py <source_json> <target_json> [OPTIONS]
+```
+| Option | Description |
+| :--- | :--- |
+| `source_json` | Source JSON file path (contains correct IDs). |
+| `target_json` | Target JSON file path (IDs will be updated here). |
+| `-o`, `--output` | Optional output file path. If omitted, updates `target_json` in-place. |
+| `--copy-metadata` | Also copy `rik_metadata` field. |
+| `--copy-text` | Also copy `rik_text` field. |
+| `--dry-run` | Preview changes without modifying files. |
+| `--no-backup` | Skip creating a backup of the target file. |
 
 ---
 

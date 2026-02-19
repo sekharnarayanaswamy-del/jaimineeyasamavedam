@@ -9,6 +9,7 @@ import csv
 import os
 import re
 import sys
+import argparse
 try:
     from samam_utils import SAMAM_PATTERN
 except ImportError:
@@ -16,8 +17,18 @@ except ImportError:
     from samam_utils import SAMAM_PATTERN
 from utils import get_generated_metadata
 
-INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
-OUTPUT_CSV = r'data\output\JSV_Samam_Granular_Table.csv'
+# --- CLI Arguments ---
+parser = argparse.ArgumentParser(description='Generate a fine granular table listing every individual Samam.')
+parser.add_argument('-i', '--input', dest='input_file',
+                    default=r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json',
+                    help='Path to the input JSON file (default: data\\output\\Samhita_with_Rishi_Devata_Chandas_out.json)')
+parser.add_argument('-o', '--output', dest='output_csv',
+                    default=r'data\output\JSV_Samam_Granular_Table.csv',
+                    help='Path to the output CSV file (default: data\\output\\JSV_Samam_Granular_Table.csv)')
+args = parser.parse_args()
+
+INPUT_FILE = args.input_file
+OUTPUT_CSV = args.output_csv
 
 # --- Helper Functions ---
 
