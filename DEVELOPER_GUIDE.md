@@ -47,6 +47,19 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`parse_metadata_str`**: A smart parser that breaks down raw metadata strings (e.g., "Rishi... Devata... Chandas") into structured fields.
 *   **`normalize_key`**: logic to clean up inconsistencies in Rishi/Devata names (whitespace, punctuation) to ensure better grouping in the CSV export.
 
+### 2.6 `src/generate_rik_table.py`
+**Role**: Generates a deduplicated Rik-level CSV table from the JSON data.
+*   Extracts all unique Riks with columns: `Global_Rik_Num`, `Patha_Name`, `Khanda`, `Rik_ID`, `Rik_Text`, `Rik_Metadata`.
+*   Handles n:1 Samam-to-Rik mappings by deduplicating on `(Patha, Khanda, Rik_ID)` to avoid false positives.
+*   Output: `data/output/JSV_Rik_Table.csv` (UTF-8 with BOM).
+
+### 2.7 `src/generate_missing_metadata_report.py`
+**Role**: Data quality validation tool that identifies missing metadata.
+*   Checks for Riks without metadata or metadata without associated Rik text.
+*   Checks for Samams without metadata.
+*   Supports configurable modes (`rik`, `samam`, `combined`) via CLI arguments.
+*   Output: `data/output/JSV_Missing_Metadata_Report.md` and `.csv`.
+
 ---
 
 ## 3. Workflows (Main Use Cases)
@@ -265,6 +278,24 @@ python src/generate_Rik_for_samhita.py [OPTIONS]
 | :--- | :--- |
 | `-i`, `--input` | Input text file. |
 | `-f`, `--format` | Output format: `pdf`, `html`, or `all`. |
+
+### `src/generate_rik_table.py`
+*Generates a deduplicated Rik-level CSV table.*
+
+```bash
+python src/generate_rik_table.py
+```
+*Output*: `data/output/JSV_Rik_Table.csv`
+
+### `src/generate_missing_metadata_report.py`
+*Generates a report of missing Rik and Samam metadata.*
+
+```bash
+python src/generate_missing_metadata_report.py [OPTIONS]
+```
+| Option | Description |
+| :--- | :--- |
+| `--mode` | `rik` (Rik issues only), `samam` (Samam issues only), or `combined` (default, both). |
 
 ---
 

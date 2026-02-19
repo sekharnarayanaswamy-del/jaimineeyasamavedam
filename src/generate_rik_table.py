@@ -1,0 +1,118 @@
+"""
+Generate a Rik-level table listing every unique Rik.
+This table contains one row per Rik, avoiding n:1 Samam-to-Rik duplication issues.
+"""
+import json
+import csv
+import os
+import sys
+
+# Add tools directory to path for imports if needed
+sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
+from utils import get_generated_metadata
+
+INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
+OUTPUT_CSV = r'data\output\JSV_Rik_Table.csv'
+
+def main():
+    # Get metadata
+    metadata = get_generated_metadata()
+    JSV_VERSION = metadata['version']
+    GENERATED_AT = metadata['generated_at']
+
+    print(f"Generating Rik Table (v{JSV_VERSION})...")
+
+    # Load the JSON
+    if not os.path.exists(INPUT_FILE):
+        print(f"Error: Input file '{INPUT_FILE}' not found.")
+        return
+
+    with open(INPUT_FILE, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # CSV rows
+    rows = []
+
+    # Get the supersection container
+    supersection_container = data.get('supersection', {})
+
+    # Sort supersection keys numerically
+    ss_keys = sorted(supersection_container.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+
+    global_rik_counter = 0
+
+    # Track previous Rik ID to detect changes for Global Rik Num increment
+    prev_rik_id_global_context = None
+
+    for ss_key in ss_keys:
+        ss_data = supersection_container[ss_key]
+        ss_title = ss_data.get('supersection_title', ss_key)
+        
+        # Get sections
+        sections = ss_data.get('sections', {})
+        sec_keys = sorted(sections.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+        
+        for sec_key in sec_keys:
+            sec_data = sections[sec_key]
+            sec_title = sec_data.get('section_title', sec_key)
+            
+            # Get subsections (Arsheyams/Riks)
+            subsections = sec_data.get('subsections', {})
+            sub_keys = sorted(subsections.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
+            
+            for sub_key in sub_keys:
+                sub_data = subsections[sub_key]
+                
+                # Get Rik info
+                try:
+                    rik_id = int(sub_data.get('rik_id', 0))
+                except ValueError:
+                    rik_id = 0
+                    
+                rik_metadata = sub_data.get('rik_metadata', '')
+                rik_text = sub_data.get('rik_text', '')
+                
+                # Logic for Global Rik Num:
+                # We identify unique Riks by their context (Supersection, Section, Rik_ID)
+                # If this unique key changes, it's a new Rik.
+                current_rik_key = (ss_key, sec_key, rik_id)
+                
+                if current_rik_key != prev_rik_id_global_context:
+                    global_rik_counter += 1
+                    prev_rik_id_global_context = current_rik_key
+                    
+                    # Add row for this unique Rik
+                    rows.append({
+                        'Global_Rik_Num': global_rik_counter,
+                        'Patha_Name': ss_title,
+                        'Khanda': sec_title,
+                        'Rik_ID': rik_id,
+                        'Rik_Text': rik_text,
+                        'Rik_Metadata': rik_metadata
+                    })
+
+    # Write CSV with UTF-8 BOM for Excel compatibility
+    with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as f:
+        # Line 1: <Filename> <Version> <Timestamp>
+        filename = os.path.basename(OUTPUT_CSV)
+        f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
+
+        fieldnames = [
+            'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rik_Text', 'Rik_Metadata'
+        ]
+        
+        # Note: If we use DictWriter, we need to handle the header writing carefully
+        # if we already wrote a metadata line.
+        # But for CSV compliance with standard tools, having a metadata line first is technically breaking the CSV structure
+        # for some parsers provided they expect header on line 1.
+        # However, the previous script did it, so we follow the pattern.
+        
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"CSV saved to: {OUTPUT_CSV}")
+    print(f"Total Unique Riks: {len(rows)}")
+
+if __name__ == "__main__":
+    main()

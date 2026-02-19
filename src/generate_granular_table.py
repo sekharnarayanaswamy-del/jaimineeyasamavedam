@@ -8,7 +8,12 @@ import json
 import csv
 import os
 import re
-from samam_utils import SAMAM_PATTERN
+import sys
+try:
+    from samam_utils import SAMAM_PATTERN
+except ImportError:
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
+    from samam_utils import SAMAM_PATTERN
 from utils import get_generated_metadata
 
 INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
@@ -167,14 +172,9 @@ for ss_key in ss_keys:
             rik_parts = parse_metadata_str(rik_metadata)
             saman_parts = parse_metadata_str(saman_metadata)
             
-            # Normalize
-            rik_rishi = normalize_key(rik_parts['rishi'])
-            rik_devata = normalize_key(rik_parts['devata'])
-            rik_chandas = normalize_key(rik_parts['chandas'])
-            
-            samam_rishi = normalize_key(saman_parts['rishi'])
-            samam_devata = normalize_key(saman_parts['devata'])
-            samam_chandas = normalize_key(saman_parts['chandas'])
+            # Normalize (SKIPPED as per user request to focus on full metadata)
+            # rik_rishi = normalize_key(rik_parts['rishi'])
+            # ...
             
             # Logic for Global Rik Num:
             # We assume sequential processing. 
@@ -232,23 +232,17 @@ for ss_key in ss_keys:
                             global_samam_num += 1
                             
                             rows.append({
-
                                 'Global_Samam_Num': global_samam_num,
                                 'Global_Rik_Num': global_rik_counter,
-                                'Arsheyam_Num': arsheyam_num,
-                                'Patha_Num': patha_num,
                                 'Patha_Name': ss_title,
                                 'Khanda': sec_title,
                                 'Rik_ID': rik_id,
+                                'Rik_Text': sub_data.get('rik_text', ''),
+                                'Rik_Metadata': rik_metadata,
+                                'Arsheyam_Num': arsheyam_num,
+                                'Patha_Num': patha_num,
                                 'Samam_Num': samam_num,
                                 'Arsheyam_Name': arsheyam_name,
-                                'Rik_Rishi': rik_rishi, 
-                                'Rik_Devata': rik_devata, 
-                                'Rik_Chandas': rik_chandas,
-                                'Rik_Metadata': rik_metadata,
-                                'Samam_Rishi': samam_rishi,
-                                'Samam_Devata': samam_devata, 
-                                'Samam_Chandas': samam_chandas,
                                 'Saman_Metadata': saman_metadata
                             })
             
@@ -259,20 +253,15 @@ for ss_key in ss_keys:
 
                     'Global_Samam_Num': global_samam_num,
                     'Global_Rik_Num': global_rik_counter,
-                    'Arsheyam_Num': arsheyam_num,
-                    'Patha_Num': patha_num,
                     'Patha_Name': ss_title,
                     'Khanda': sec_title,
                     'Rik_ID': rik_id,
+                    'Rik_Text': sub_data.get('rik_text', ''),
+                    'Rik_Metadata': rik_metadata,
+                    'Arsheyam_Num': arsheyam_num,
+                    'Patha_Num': patha_num,
                     'Samam_Num': arsheyam_num, # Fallback
                     'Arsheyam_Name': arsheyam_name,
-                    'Rik_Rishi': '',   # Placeholder
-                    'Rik_Devata': '',  # Placeholder
-                    'Rik_Chandas': '', # Placeholder
-                    'Rik_Metadata': rik_metadata,
-                    'Samam_Rishi': '',   # Placeholder
-                    'Samam_Devata': '',  # Placeholder
-                    'Samam_Chandas': '', # Placeholder
                     'Saman_Metadata': saman_metadata
                 })
 
@@ -284,10 +273,8 @@ with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as f:
     f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
 
     fieldnames = [
-        'Global_Samam_Num', 'Global_Rik_Num', 'Arsheyam_Num', 'Patha_Num', 'Patha_Name', 'Khanda', 
-        'Rik_ID', 'Samam_Num', 'Arsheyam_Name', 
-        'Rik_Rishi', 'Rik_Devata', 'Rik_Chandas', 'Rik_Metadata',
-        'Samam_Rishi', 'Samam_Devata', 'Samam_Chandas', 
+        'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rik_Text', 'Rik_Metadata',
+        'Global_Samam_Num', 'Arsheyam_Num', 'Patha_Num', 'Samam_Num', 'Arsheyam_Name', 
         'Saman_Metadata'
     ]
     writer = csv.DictWriter(f, fieldnames=fieldnames)

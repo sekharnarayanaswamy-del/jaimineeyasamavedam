@@ -10,6 +10,7 @@
             --accent-blue: #1565c0;
             --accent-green: #2e7d32;
             --accent-purple: #7b1fa2;
+            --accent-brown: #8B4513;
             --swara-red: #c62828;
             --bg-light: #f8f9fa;
             --bg-card: #EFE6D5;
@@ -167,17 +168,17 @@
         
         .subsection-header {
             text-align: center;
-            font-weight: bold;
             font-size: 1.5rem;
             margin-bottom: 5px;
         }
         
         .subsection-header .header-title {
             color: var(--accent-green);
+            font-weight: bold;
         }
         
         .subsection-header .header-meta {
-            color: var(--accent-purple);
+            color: var(--accent-brown);
         }
         
         /* Mantra display - flexbox for no whitespace and natural wrapping */

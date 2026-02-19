@@ -1265,6 +1265,16 @@ background: var(--bg-sidebar);
     max-width: fit-content;
 }
 
+/* Sama Metadata Text - displayed above Sama/Mantra text in Brown */
+.sama-metadata-text {
+    font-family: var(--font-sanskrit);
+    font-size: 1.6rem;
+    color: #8B4513;
+    text-align: center;
+    width: auto;
+    max-width: fit-content;
+}
+
 /* Rik Text Box */
 .rik-box {
     background: #FFF8DC;
@@ -2379,7 +2389,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         clean_smeta = sama.saman_metadata.strip(' .|॥।\n\r\t')
                         if clean_smeta:
                             clean_smeta = re.sub(r'\s*[|॥।]+\s*', ' ॥ ', clean_smeta)
-                            sama_header_items.append(f'<div class="sama-header-text">॥ {clean_smeta} ॥</div>')
+                            sama_header_items.append(f'<div class="sama-metadata-text">॥ {clean_smeta} ॥</div>')
                     
                     sama_header_html = ""
                     if sama_header_items:

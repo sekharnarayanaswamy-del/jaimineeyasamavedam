@@ -646,13 +646,13 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     # 4. Combined Header: || Subsection header || || samam_metadata ||
     header_part = display_sub_title.strip()
     header_part = format_dandas(header_part)
-    header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}"  
+    header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}"  
     
     # COLOR: Samam Metadata -> BROWN
     meta_part = format_dandas(string_3).strip()
     meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
     if meta_part:
-        meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
+        meta_part = f"\\textcolor{{AccentBrown}}{{{meta_part}}}"
     
     combined_header = ""
     if header_part and meta_part:
@@ -663,7 +663,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         combined_header = meta_part
         
     if combined_header:
-         formatted_output.append(f"{{\\centering \\textbf{{{combined_header}}} \\par}}")
+         formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
     formatted_output.append(r"\nopagebreak")                
     formatted_output.append(r"\vspace{0.5em}")
@@ -868,12 +868,12 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
     # Combined Header: Subsection header + samam_metadata
     header_part = display_sub_title.strip()
-    header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}" if header_part else ""
+    header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}" if header_part else ""
     
     meta_part = format_dandas(string_3).strip()
     meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
     if meta_part:
-        meta_part = f"\\textcolor{{AccentPurple}}{{{meta_part}}}"
+        meta_part = f"\\textcolor{{AccentBrown}}{{{meta_part}}}"
     
     combined_header = ""
     if header_part and meta_part:
@@ -884,7 +884,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
         combined_header = meta_part
         
     if combined_header:
-        formatted_output.append(f"{{\\centering \\textbf{{{combined_header}}} \\par}}")
+        formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
     formatted_output.append(r"\nopagebreak")
     formatted_output.append(r"\vspace{0.5em}")
