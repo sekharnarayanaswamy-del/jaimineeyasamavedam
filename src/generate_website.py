@@ -723,12 +723,12 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'prakruti'):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita'):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
         self.mode = mode
-        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['prakruti'])
+        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita'])
         
         self.metadata = {
             "version": "2.0.0",

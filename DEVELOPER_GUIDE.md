@@ -28,6 +28,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Template rendering (Jinja2).
     *   Navigation generation (Left Sidebar).
     *   Audio filename mapping.
+    *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`). Note that `prakruti` defaults to `samhita` configuration keys internally.
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
@@ -265,8 +266,8 @@ python src/generate_website.py [OPTIONS]
 | `--source-file`, `-s` | Path to the input JSON file. |
 | `--output-dir`, `-o` | Output directory (default: `docs`). Use `docs/prakruti` or `docs/aranam` for the dual-site layout. |
 | `--audio-dir`, `-d` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
-| `--samhita`, `-m` | Generate for Samhita / Prakruti Ganam (default). |
-| `--aranam`, `-a` | Generate for Aaranam / Aranya Ganam mode. |
+| `--samhita`, `-m` | Generate for Samhita / Prakruti Ganam. This is the default and uses the `samhita` configuration key. |
+| `--aranam`, `-a` | Generate for Aaranam / Aranya Ganam mode (uses `aranam` configuration key). |
 
 ### `src/generate_Rik_for_samhita.py`
 *Generates continuous Rik text document.*

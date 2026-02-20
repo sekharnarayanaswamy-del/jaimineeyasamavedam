@@ -6,6 +6,7 @@ Place audio files for पवमानपाठः here.
 `JSV_{ParvaName}_{KandahNum}_{SamaNum}.mp3`
 
 ## Kandahs in this Parva
+- count (0 Samas)
 - प्रथम खण्डः (43 Samas)
 - द्वितीय खण्डः (8 Samas)
 - तृतीय खण्डः (10 Samas)
