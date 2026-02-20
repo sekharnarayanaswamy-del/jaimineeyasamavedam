@@ -28,7 +28,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Template rendering (Jinja2).
     *   Navigation generation (Left Sidebar).
     *   Audio filename mapping.
-    *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`). Note that `prakruti` defaults to `samhita` configuration keys internally.
+    *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
@@ -153,7 +153,7 @@ The website uses a **common landing page** (`docs/index.html`) that links to two
 ```
 docs/
 ├── index.html              ← Common landing page (gateway)
-├── prakruti/               ← Samhita (Prakruti Ganam) sub-site
+├── samhita/                ← Samhita sub-site
 │   ├── index.html
 │   ├── css/, js/, kandah/
 │   ├── classification/
@@ -169,9 +169,9 @@ The landing page is a static HTML file maintained manually. Each sub-site is gen
 
 #### Steps
 
-1.  **Generate Samhita (Prakruti) Website**:
+1.  **Generate Samhita Website**:
     ```bash
-    python src/generate_website.py --source-file data/output/Agneyam-Pavamanam_latest_out.json -o docs/prakruti
+    python src/generate_website.py --source-file data/output/Agneyam-Pavamanam_latest_out.json -o docs/samhita
     ```
 
 2.  **Generate Aaranam Website**:
@@ -245,7 +245,7 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--output-mode` | `combined` (default), `separate` (split Rik/Samam), or `nometa`. |
-| `--type` | Type of Samaveda text: `samhita` (default), `aaranam`, `grameya`, or `prakruti`. `grameya`/`prakruti` map to `samhita` for backward compatibility. |
+| `--type` | Type of Samaveda text: `samhita` (default) or `aaranam`. |
 | `--pdf-font` | Custom font name for LaTeX (default: `AdishilaVedic`). |
 | `--html-font` | Font family string for HTML output (default: `'AdishilaVedic', 'AdishilaSanVedic'`). |
 
@@ -264,7 +264,7 @@ python src/generate_website.py [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--source-file`, `-s` | Path to the input JSON file. |
-| `--output-dir`, `-o` | Output directory (default: `docs`). Use `docs/prakruti` or `docs/aranam` for the dual-site layout. |
+| `--output-dir`, `-o` | Output directory (default: `docs`). Use `docs/samhita` or `docs/aranam` for the dual-site layout. |
 | `--audio-dir`, `-d` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
 | `--samhita`, `-m` | Generate for Samhita / Prakruti Ganam. This is the default and uses the `samhita` configuration key. |
 | `--aranam`, `-a` | Generate for Aaranam / Aranya Ganam mode (uses `aranam` configuration key). |

@@ -2002,18 +2002,15 @@ Examples:
                         help='Font for PDF output (default: AdishilaVedic)')
     parser.add_argument('--html-font', dest='html_font', default="'AdishilaVedic', 'AdishilaSanVedic'",
                         help="Font for HTML output (default: 'AdishilaVedic', 'AdishilaSanVedic')")
-    parser.add_argument('--type', choices=['samhita', 'grameya', 'aaranam', 'prakruti'], default='samhita',
-                        help='Type of Samaveda text: samhita (formerly grameya/prakruti) or aaranam')
+    parser.add_argument('--type', choices=['samhita', 'aaranam'], default='samhita',
+                        help='Type of Samaveda text: samhita or aaranam')
     
     args = parser.parse_args()
     output_mode = args.output_mode
     pdf_font = args.pdf_font
     html_font = args.html_font
     
-    # Map 'prakruti'/'grameya' to 'samhita' for backward compatibility
     mode_type = args.type
-    if mode_type in ['prakruti', 'grameya']:
-        mode_type = 'samhita'
     
     # Auto-select default input file based on --type if not explicitly provided
     if args.input_file is not None:

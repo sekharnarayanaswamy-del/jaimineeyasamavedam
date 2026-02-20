@@ -1380,19 +1380,14 @@ Examples:
     parser.add_argument('--initial-json', type=str, default=None,
                         help='Trusted Initial JSON output to map Rik IDs correctly (correction mode only)')
     
-    parser.add_argument('--type', choices=['samhita', 'grameya', 'aaranam', 'prakruti'], default='samhita',
-                        help='Type of Samaveda text: samhita (formerly grameya/prakruti) or aaranam')
+    parser.add_argument('--type', choices=['samhita', 'aaranam'], default='samhita',
+                        help='Type of Samaveda text: samhita or aaranam')
     
     args = parser.parse_args()
     
     input_file = args.input_file
     
-    # Map 'prakruti'/'grameya' to 'samhita' for backward compatibility
     mode_type = args.type
-    if mode_type in ['prakruti', 'grameya']:
-        mode_type = 'samhita'
-        
-    # Determine title based on type
     if mode_type == 'aaranam':
         title = "Jaimineeya Samam Aranam"
     else:
