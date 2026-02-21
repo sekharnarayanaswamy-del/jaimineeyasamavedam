@@ -84,31 +84,51 @@ def main(input_file=None, output_csv=None):
                 
                 # Get Rik info
                 try:
-                    rik_id = int(sub_data.get('rik_id', 0))
+                    base_rik_id = int(sub_data.get('rik_id', 0))
                 except ValueError:
-                    rik_id = 0
+                    base_rik_id = 0
                     
                 rik_metadata = sub_data.get('rik_metadata', '')
-                rik_text = sub_data.get('rik_text', '')
+                rik_text_full = sub_data.get('rik_text', '')
                 
-                # Logic for Global Rik Num:
-                # We identify unique Riks by their context (Supersection, Section, Rik_ID)
-                # If this unique key changes, it's a new Rik.
-                current_rik_key = (ss_key, sec_key, rik_id)
+                # Split rik text by new line to handle multiple Riks in the same Arsheyam
+                rik_lines = [line.strip() for line in rik_text_full.split('\n') if line.strip()]
                 
-                if current_rik_key != prev_rik_id_global_context:
-                    global_rik_counter += 1
-                    prev_rik_id_global_context = current_rik_key
+                for line in rik_lines:
+                    # Attempt to extract Rik ID from end of line (e.g. ॥ ९ ॥)
+                    import re
+                    match = re.search(r'॥\s*([०-९\d]+)\s*॥\s*$', line)
+                    if match:
+                        num_str = match.group(1)
+                        # convert devanagari to int
+                        devanagari_digits = '०१२३४५६७८९'
+                        for i, char in enumerate(devanagari_digits):
+                            num_str = num_str.replace(char, str(i))
+                        try:
+                            line_rik_id = int(num_str)
+                        except ValueError:
+                            line_rik_id = base_rik_id
+                    else:
+                        line_rik_id = base_rik_id
+
+                    # Logic for Global Rik Num:
+                    # We identify unique Riks by their context (Supersection, Section, Rik_ID)
+                    # If this unique key changes, it's a new Rik.
+                    current_rik_key = (ss_key, sec_key, line_rik_id)
                     
-                    # Add row for this unique Rik
-                    rows.append({
-                        'Global_Rik_Num': global_rik_counter,
-                        'Patha_Name': ss_title,
-                        'Khanda': sec_title,
-                        'Rik_ID': rik_id,
-                        'Rik_Text': rik_text,
-                        'Rik_Metadata': rik_metadata
-                    })
+                    if current_rik_key != prev_rik_id_global_context:
+                        global_rik_counter += 1
+                        prev_rik_id_global_context = current_rik_key
+                        
+                        # Add row for this unique Rik
+                        rows.append({
+                            'Global_Rik_Num': global_rik_counter,
+                            'Patha_Name': ss_title,
+                            'Khanda': sec_title,
+                            'Rik_ID': line_rik_id,
+                            'Rik_Text': line,
+                            'Rik_Metadata': rik_metadata
+                        })
 
     # Write CSV with UTF-8 BOM for Excel compatibility
     with open(output_csv, 'w', encoding='utf-8-sig', newline='') as f:
