@@ -28,6 +28,26 @@ from utils import get_generated_metadata
 DEFAULT_INPUT = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
 DEFAULT_OUTPUT = r'data\output\JSV_Rik_Table.csv'
 
+def replace_accents_unicode(text):
+    """
+    Replaces ASCII parenthesis accent markers with actual Unicode accents.
+    (1): Swarita (U+0951)
+    (2): Anudatta (U+1CD2)
+    (3): Kampa (U+1CF8)
+    (4): Trikampa (U+1CF9)
+    """
+    if not text:
+        return text
+    replacements = [
+        ('(1)', '\u0951'),
+        ('(2)', '\u1CD2'),
+        ('(3)', '\u1CF8'),
+        ('(4)', '\u1CF9'),
+    ]
+    for marker, unicode_val in replacements:
+        text = text.replace(marker, unicode_val)
+    return text
+
 def main(input_file=None, output_csv=None):
     input_file = input_file or DEFAULT_INPUT
     output_csv = output_csv or DEFAULT_OUTPUT
@@ -120,13 +140,16 @@ def main(input_file=None, output_csv=None):
                         global_rik_counter += 1
                         prev_rik_id_global_context = current_rik_key
                         
+                        # Replace ASCII markers with Unicode accents
+                        clean_text = replace_accents_unicode(line)
+
                         # Add row for this unique Rik
                         rows.append({
                             'Global_Rik_Num': global_rik_counter,
                             'Patha_Name': ss_title,
                             'Khanda': sec_title,
                             'Rik_ID': line_rik_id,
-                            'Rik_Text': line,
+                            'Rik_Text': clean_text,
                             'Rik_Metadata': rik_metadata
                         })
 
