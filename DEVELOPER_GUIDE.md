@@ -51,6 +51,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 ### 2.6 `src/generate_rik_table.py`
 **Role**: Generates a deduplicated Rik-level CSV table from the JSON data.
 *   Extracts all unique Riks with columns: `Global_Rik_Num`, `Patha_Name`, `Khanda`, `Rik_ID`, `Rik_Text`, `Rik_Metadata`.
+*   Splits multi-line Arsheyam texts into individual Rik rows, extracting the embedded Rik positional numbers (e.g., `॥ ९ ॥`).
 *   Handles n:1 Samam-to-Rik mappings by deduplicating on `(Patha, Khanda, Rik_ID)` to avoid false positives.
 *   Output: `data/output/JSV_Rik_Table.csv` (UTF-8 with BOM).
 
@@ -293,7 +294,7 @@ python src/generate_granular_table.py [OPTIONS]
 *Output*: CSV and XLSX files with per-Samam rows including Global_Rik_Num, Patha, Khanda, metadata fields.
 
 ### `src/generate_rik_table.py`
-*Generates a deduplicated Rik-level CSV table.*
+*Generates a deduplicated Rik-level CSV table. Multi-line Arsheyam entries are split into discrete Rik rows.*
 
 ```bash
 python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
@@ -302,7 +303,7 @@ python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
 | :--- | :--- |
 | `INPUT_JSON` | Path to the input JSON file (optional, default: `data\output\Samhita_with_Rishi_Devata_Chandas_out.json`). |
 | `-o`, `--output` | Path to the output CSV file (default: `data\output\JSV_Rik_Table.csv`). |
-*Output*: CSV file deduplicated by (Patha, Khanda, Rik_ID).
+*Output*: CSV file deduplicated by `(Patha, Khanda, Rik_ID)`.
 
 ### `src/generate_missing_metadata_report.py`
 *Generates a report of missing Rik and Samam metadata.*
