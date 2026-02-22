@@ -1,418 +1,125 @@
 <!DOCTYPE html>
-<html lang="sa">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jaimineeya Sama Samhita digital archive">
-    <meta name="keywords" content="Samaveda, Jaimineeya, Samhita, Ganam, Vedas, Sanskrit">
-    <meta name="version" content="2.0.0">
-    <title>जैमिनीय साम संहिता</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div class="page-container">
-        <aside class="sidebar-left">
-    <div class="logo">
-        <a href="index.html">
-            <div class="logo-text">जैमिनीय साम संहिता</div>
-            <div class="logo-subtitle">Jaimineeya Sama Samhita</div>
-            <div class="logo-version" style="font-size: 0.7em; color: var(--text-secondary); margin-top: 4px;">v2.0.0</div>
-        </a>
-    </div>
-    
-    <div class="nav-section">
-        <h3>पर्व:</h3>
-        <div class="nav-links">
-            <a href="kandah/1/1.html" class="">1</a>
-<a href="kandah/2/1.html" class="">2</a>
-<a href="kandah/3/1.html" class="">3</a>
-<a href="kandah/4/1.html" class="">4</a>
-<a href="kandah/5/1.html" class="">5</a>
-<a href="kandah/6/1.html" class="">6</a>
+    <title>Jaimineeya Samavedam</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Serif+Devanagari:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-maroon: #800000;
+            --primary-gold: #C08535;
+            --bg-main: #F9F4E8;
+            --text-primary: #2C2C2C;
+            --font-heading: 'Noto Serif Devanagari', 'AdishilaSanVedic', serif;
+            --font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
+        }
 
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            color: var(--primary-maroon);
+            font-size: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #E0E0E0;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-gold);
+        }
+
+        .card h2 {
+            color: var(--primary-maroon);
+            font-family: var(--font-heading);
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        .subtext {
+            display: block;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: var(--primary-gold);
+            font-weight: bold;
+            font-family: var(--font-heading);
+        }
+
+        footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Jaimineeya Samavedam</h1>
+
+        <div class="card-container">
+            <a href="samhita/index.html" class="card">
+                <h2>Prakruti Ganam</h2>
+                <span class="subtext">प्रकृति गानम्</span>
+                <p>Browse the Samhita text and chants for the Prakruti Ganam section.</p>
+            </a>
+
+            <a href="aranam/index.html" class="card">
+                <h2>Aranyam</h2>
+                <span class="subtext">अरण्य गानम्</span>
+                <p>Access the specialized Aranyam Ganam texts and chants.</p>
+            </a>
         </div>
+
+        <footer>
+            <p>&copy; 2026 Jaimineeya Samavedam Project</p>
+        </footer>
     </div>
-    
-    
-    <div class="nav-section">
-        <h3>Jump to</h3>
-        <ul class="nav-list">
-            <li><a href="index.html">मुख्यपृष्ठम् (Home)</a></li>
-        </ul>
-    </div>
-</aside>
-        
-        <main class="main-content">
-            <div class="home-hero">
-                <h1>जैमिनीय साम संहिता</h1>
-                <p class="subtitle">Jaimineeya Sama Samhita</p>
-                
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <div class="stat-value">6</div>
-                        <div class="stat-label">पर्व: (Parva)</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">59</div>
-                        <div class="stat-label">खण्ड: (Kandah)</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">722</div>
-                        <div class="stat-label">आर्षेयम् (Arsheyam)</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">1226</div>
-                        <div class="stat-label">साम: (Sama)</div>
-                    </div>
-                </div>
-                
-                <div class="quick-links" style="margin-top: 2rem; text-align: center; opacity: 0.7;">
-                    <a href="classification/index.html" class="index-btn">सङ्क्रमणिका / वर्गीकरणम् (Indices)</a>
-                </div>
-            </div>
-            
-            
-            <section class="parva-section">
-                <h2>1. आग्नेयपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/1/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">19 साम</div>
-                </a>
-                <a href="kandah/1/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">15 साम</div>
-                </a>
-                <a href="kandah/1/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">21 साम</div>
-                </a>
-                <a href="kandah/1/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">22 साम</div>
-                </a>
-                <a href="kandah/1/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                <a href="kandah/1/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">10 साम</div>
-                </a>
-                <a href="kandah/1/7.html" class="kandah-card">
-                    <div class="number">7</div>
-                    <div class="title">सप्तम खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                <a href="kandah/1/8.html" class="kandah-card">
-                    <div class="number">8</div>
-                    <div class="title">अष्टम खण्डः</div>
-                    <div class="count">9 साम</div>
-                </a>
-                <a href="kandah/1/9.html" class="kandah-card">
-                    <div class="number">9</div>
-                    <div class="title">नवम खण्डः</div>
-                    <div class="count">13 साम</div>
-                </a>
-                <a href="kandah/1/10.html" class="kandah-card">
-                    <div class="number">10</div>
-                    <div class="title">दशम खण्डः</div>
-                    <div class="count">7 साम</div>
-                </a>
-                <a href="kandah/1/11.html" class="kandah-card">
-                    <div class="number">11</div>
-                    <div class="title">एकादश खण्डः</div>
-                    <div class="count">18 साम</div>
-                </a>
-                <a href="kandah/1/12.html" class="kandah-card">
-                    <div class="number">12</div>
-                    <div class="title">द्वादश खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                </div>
-            </section>
-            <section class="parva-section">
-                <h2>2. तद्वपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/2/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">23 साम</div>
-                </a>
-                <a href="kandah/2/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">22 साम</div>
-                </a>
-                <a href="kandah/2/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">20 साम</div>
-                </a>
-                <a href="kandah/2/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">15 साम</div>
-                </a>
-                <a href="kandah/2/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">30 साम</div>
-                </a>
-                <a href="kandah/2/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">24 साम</div>
-                </a>
-                <a href="kandah/2/7.html" class="kandah-card">
-                    <div class="number">7</div>
-                    <div class="title">सप्तम खण्डः</div>
-                    <div class="count">12 साम</div>
-                </a>
-                <a href="kandah/2/8.html" class="kandah-card">
-                    <div class="number">8</div>
-                    <div class="title">अष्टम खण्डः</div>
-                    <div class="count">11 साम</div>
-                </a>
-                <a href="kandah/2/9.html" class="kandah-card">
-                    <div class="number">9</div>
-                    <div class="title">नवम खण्डः</div>
-                    <div class="count">12 साम</div>
-                </a>
-                <a href="kandah/2/10.html" class="kandah-card">
-                    <div class="number">10</div>
-                    <div class="title">दशम खण्डः</div>
-                    <div class="count">10 साम</div>
-                </a>
-                <a href="kandah/2/11.html" class="kandah-card">
-                    <div class="number">11</div>
-                    <div class="title">एकादश खण्डः</div>
-                    <div class="count">9 साम</div>
-                </a>
-                <a href="kandah/2/12.html" class="kandah-card">
-                    <div class="number">12</div>
-                    <div class="title">द्वादश खण्डः</div>
-                    <div class="count">12 साम</div>
-                </a>
-                </div>
-            </section>
-            <section class="parva-section">
-                <h2>3. बृहतिपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/3/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">31 साम</div>
-                </a>
-                <a href="kandah/3/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">25 साम</div>
-                </a>
-                <a href="kandah/3/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">25 साम</div>
-                </a>
-                <a href="kandah/3/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">17 साम</div>
-                </a>
-                <a href="kandah/3/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                <a href="kandah/3/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">17 साम</div>
-                </a>
-                <a href="kandah/3/7.html" class="kandah-card">
-                    <div class="number">7</div>
-                    <div class="title">सप्तम खण्डः</div>
-                    <div class="count">10 साम</div>
-                </a>
-                <a href="kandah/3/8.html" class="kandah-card">
-                    <div class="number">8</div>
-                    <div class="title">अष्टम खण्डः</div>
-                    <div class="count">11 साम</div>
-                </a>
-                </div>
-            </section>
-            <section class="parva-section">
-                <h2>4. असाविपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/4/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">19 साम</div>
-                </a>
-                <a href="kandah/4/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">17 साम</div>
-                </a>
-                <a href="kandah/4/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">18 साम</div>
-                </a>
-                <a href="kandah/4/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">28 साम</div>
-                </a>
-                <a href="kandah/4/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">11 साम</div>
-                </a>
-                <a href="kandah/4/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">13 साम</div>
-                </a>
-                </div>
-            </section>
-            <section class="parva-section">
-                <h2>5. ऐन्द्रपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/5/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">24 साम</div>
-                </a>
-                <a href="kandah/5/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">21 साम</div>
-                </a>
-                <a href="kandah/5/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">10 साम</div>
-                </a>
-                <a href="kandah/5/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">21 साम</div>
-                </a>
-                <a href="kandah/5/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">28 साम</div>
-                </a>
-                <a href="kandah/5/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">15 साम</div>
-                </a>
-                <a href="kandah/5/7.html" class="kandah-card">
-                    <div class="number">7</div>
-                    <div class="title">सप्तम खण्डः</div>
-                    <div class="count">18 साम</div>
-                </a>
-                <a href="kandah/5/8.html" class="kandah-card">
-                    <div class="number">8</div>
-                    <div class="title">अष्टम खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                <a href="kandah/5/9.html" class="kandah-card">
-                    <div class="number">9</div>
-                    <div class="title">नवम खण्डः</div>
-                    <div class="count">17 साम</div>
-                </a>
-                <a href="kandah/5/10.html" class="kandah-card">
-                    <div class="number">10</div>
-                    <div class="title">दशम खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                </div>
-            </section>
-            <section class="parva-section">
-                <h2>6. पवमानपाठः</h2>
-                <div class="kandah-grid">
-                    
-                <a href="kandah/6/1.html" class="kandah-card">
-                    <div class="number">1</div>
-                    <div class="title">प्रथम खण्डः</div>
-                    <div class="count">69 साम</div>
-                </a>
-                <a href="kandah/6/2.html" class="kandah-card">
-                    <div class="number">2</div>
-                    <div class="title">द्वितीय खण्डः</div>
-                    <div class="count">19 साम</div>
-                </a>
-                <a href="kandah/6/3.html" class="kandah-card">
-                    <div class="number">3</div>
-                    <div class="title">तृतीय खण्डः</div>
-                    <div class="count">16 साम</div>
-                </a>
-                <a href="kandah/6/4.html" class="kandah-card">
-                    <div class="number">4</div>
-                    <div class="title">चतुर्थ खण्डः</div>
-                    <div class="count">20 साम</div>
-                </a>
-                <a href="kandah/6/5.html" class="kandah-card">
-                    <div class="number">5</div>
-                    <div class="title">पञ्चम खण्डः</div>
-                    <div class="count">76 साम</div>
-                </a>
-                <a href="kandah/6/6.html" class="kandah-card">
-                    <div class="number">6</div>
-                    <div class="title">षष्ठ खण्डः</div>
-                    <div class="count">36 साम</div>
-                </a>
-                <a href="kandah/6/7.html" class="kandah-card">
-                    <div class="number">7</div>
-                    <div class="title">सप्तम खण्डः</div>
-                    <div class="count">21 साम</div>
-                </a>
-                <a href="kandah/6/8.html" class="kandah-card">
-                    <div class="number">8</div>
-                    <div class="title">अष्टम खण्डः</div>
-                    <div class="count">33 साम</div>
-                </a>
-                <a href="kandah/6/9.html" class="kandah-card">
-                    <div class="number">9</div>
-                    <div class="title">नवम खण्डः</div>
-                    <div class="count">35 साम</div>
-                </a>
-                <a href="kandah/6/10.html" class="kandah-card">
-                    <div class="number">10</div>
-                    <div class="title">दशम खण्डः</div>
-                    <div class="count">39 साम</div>
-                </a>
-                <a href="kandah/6/11.html" class="kandah-card">
-                    <div class="number">11</div>
-                    <div class="title">एकादश खण्डः</div>
-                    <div class="count">36 साम</div>
-                </a>
-                </div>
-            </section>
-            
-            <footer class="footer">
-                जैमिनीय सामवेद संहिता<br>
-                Generated on 2026-02-22 09:46:56
-            </footer>
-        </main>
-    </div>
-    <script src="js/main.js"></script>
 </body>
+
 </html>
