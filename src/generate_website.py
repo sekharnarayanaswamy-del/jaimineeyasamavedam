@@ -512,7 +512,7 @@ class JSVParser:
             title = ss_data.get('supersection_title', ss_key)
             self._start_new_parva(ss_key, title)
             
-            sec_keys = sorted(ss_data.get('sections', {}).keys(),
+            sec_keys = sorted([k for k in ss_data.get('sections', {}).keys() if k != 'count'],
                             key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
                             
             for sec_key in sec_keys:
