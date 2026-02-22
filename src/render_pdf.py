@@ -1856,12 +1856,17 @@ def preprocess_html_data(supersections, output_mode):
     """
     Pre-processes the data structure to generate HTML for subsections and footnotes
     BEFORE template rendering. This avoids global state issues in Jinja.
+    Returns: A list of dicts for the alphabetical index.
     """
     print("DEBUG: Starting HTML Pre-processing...")
+    
+    # Store index entries as (title, anchor_id)
+    index_entries = []
     
     for super_key, supersection in supersections.items():
         for section_key, section in supersection.get('sections', {}).items():
             if section_key == 'count': continue
+
             
             # --- SECTION STATE ---
             footnote_counter = 0
@@ -1908,6 +1913,19 @@ def preprocess_html_data(supersections, output_mode):
                         footnote_counter, footnotes_accumulator, seen_content_map
                     )
                 
+                # INDEX COLLECT
+                header = subsection.get('header', {}).get('header', '')
+                if header:
+                    # Same logic used in PDF generation
+                    index_title = re.sub(r'[|॥]', '', header).strip()
+                    if index_title:
+                        # Convert space separated title parts to a cleaner string if needed
+                        # but standard title is fine.
+                        index_entries.append({
+                            'title': index_title,
+                            'anchor': f"{super_key}-{section_key}-{subsection_key}"
+                        })
+
                 section['html_subsections'].append({
                     'id': f"{super_key}-{section_key}-{subsection_key}",
                     'content': html_content
@@ -1929,6 +1947,19 @@ def preprocess_html_data(supersections, output_mode):
                  section['html_footer'] = ""
                  print(f"DEBUG: No footnotes for {section_key}.")
 
+    # Deduplicate and sort index alphabetically
+    # To properly sort devanagari we can just use python sorted, it works decently.
+    # Group by title to remove duplicates pointing to different anchors (or keep them?)
+    # Usually index groups by title and lists pages. For HTML we'll just link to the first occurrence
+    unique_index = {}
+    for entry in index_entries:
+        if entry['title'] not in unique_index:
+            unique_index[entry['title']] = entry['anchor']
+    
+    sorted_index = [{'title': k, 'anchor': v} for k, v in sorted(unique_index.items(), key=lambda x: x[0])]
+    print(f"DEBUG: Generated {len(sorted_index)} index entries.")
+    
+    return sorted_index
 
 
 
@@ -1954,7 +1985,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     HTML_FOOTNOTE_COUNTER = 0 # Not used in pre-process mode but kept for safety
     
     # PRE-PROCESS DATA
-    preprocess_html_data(data, output_mode)
+    html_index = preprocess_html_data(data, output_mode)
     
     from utils import get_generated_metadata
     meta = get_generated_metadata()
@@ -1965,7 +1996,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         output_mode=output_mode,
         doc_title_sa=doc_title_sa,
         version=meta['version'],
-        generated_at=meta['generated_at']
+        generated_at=meta['generated_at'],
+        html_index=html_index
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")

@@ -78,8 +78,10 @@
         }
         
         .toc-content {
-            columns: 2 300px;
-            column-gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px 40px;
+            align-items: start;
         }
         
         .toc-group {
@@ -107,12 +109,14 @@
             font-size: 1.75rem;
             margin-bottom: 8px;
             color: var(--primary-color);
+            text-align: center;
         }
         
         .toc-section {
-            padding: 3px 0 3px 20px;
+            padding: 3px 0;
             font-size: 1.5rem;
             line-height: 1.4;
+            text-align: center;
         }
         
         /* Chapter/Section Styles */
@@ -420,7 +424,12 @@
     <div class="container">
         <!-- Navigation -->
         <nav class="nav-bar">
-            <a href="#toc">॥ अनुक्रमणिका ॥</a>
+            <div class="nav-left-links" style="display: flex; flex-direction: column; align-items: flex-start;">
+                <a href="#toc">॥ अनुक्रमणिका ॥</a>
+                \BLOCK{ if html_index }
+                <a href="#index">॥ वर्णानुक्रमणिका ॥</a>
+                \BLOCK{ endif }
+            </div>
             <div class="nav-titles">
                 <span class="nav-main-title">॥ \VAR{doc_title_sa} ॥</span>
                 <span id="nav-title" class="nav-section-title"></span>
@@ -534,6 +543,22 @@
             \BLOCK{ endfor }
         </div>
         \BLOCK{ endfor }
+        
+        \BLOCK{ if html_index }
+        <!-- Index -->
+        <div class="chapter" id="index">
+            <h1 class="chapter-title">॥ वर्णानुक्रमणिका ॥</h1>
+            <div class="toc-content" style="display: block; columns: 3 200px; padding: 0 20px;">
+                <ul style="list-style: none; padding-left: 0; margin: 0;">
+                \BLOCK{ for entry in html_index }
+                    <li style="margin-bottom: 5px; text-align: center;">
+                        <a href="#\VAR{entry.anchor}" style="text-decoration: none; color: var(--accent-blue); font-size: 1.1rem; word-break: break-word; display: inline-block;">\VAR{entry.title}</a>
+                    </li>
+                \BLOCK{ endfor }
+                </ul>
+            </div>
+        </div>
+        \BLOCK{ endif }
         
     </div>
     

@@ -238,7 +238,8 @@ python src/generate_json.py <input_file> [OPTIONS]
 | `--initial-json` | Path to a trusted initial JSON file (for re-mapping Rik IDs). |
 
 ### `src/render_pdf.py`
-*Generates PDF, HTML, and Unicode Text from JSON.*
+*Generates LaTeX (PDF), single-page HTML, and Unicode Text from JSON.*
+Note: The HTML output automatically generates both a Table of Contents (Anukramanika) and an Alphabetical Index (Varnanukramanika).
 
 ```bash
 python src/render_pdf.py [INPUT_JSON] [OPTIONS]
@@ -294,7 +295,7 @@ python src/generate_granular_table.py [OPTIONS]
 *Output*: CSV and XLSX files with per-Samam rows including Global_Rik_Num, Patha, Khanda, metadata fields.
 
 ### `src/generate_rik_table.py`
-*Generates a deduplicated Rik-level CSV table. Multi-line Arsheyam entries are split into discrete Rik rows.*
+*Generates a Rik ID wise CSV table.  
 
 ```bash
 python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
