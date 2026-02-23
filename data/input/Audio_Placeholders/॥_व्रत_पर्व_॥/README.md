@@ -6,7 +6,7 @@ Place audio files for ॥ व्रत पर्व ॥ here.
 `JSV_{ParvaName}_{KandahNum}_{SamaNum}.mp3`
 
 ## Kandahs in this Parva
-- ॥ प्रथम खण्डः ॥ (8 Samas)
+- प्रथम खण्डः (8 Samas)
 - ॥ द्वितीय खण्डः ॥ (4 Samas)
 - ॥ तृतीयः खण्डः ॥ (5 Samas)
 - ॥  चतुर्थ खण्डः ॥ (3 Samas)

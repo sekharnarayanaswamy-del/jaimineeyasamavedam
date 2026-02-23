@@ -200,14 +200,22 @@ This workflow creates the high-quality PDF for the physical book.
 
 1.  **Generate LaTeX Source**:
     ```bash
-    python src/render_pdf.py <path_to_json> --output-mode combined
+    # For Samhita (default)
+    python src/render_pdf.py data/output/Agneyam-Pavamanam_latest_out.json --output-mode combined
+    
+    # For Aaranam
+    python src/render_pdf.py data/output/Aaranam_latest_out.json --output-mode combined --type aaranam
     ```
-    *Output*: `data/output/html/Devanagari/Samhita_Devanagari.tex` (and associated files).
+    *Output*: `data/output/pdf/Devanagari/Samhita_Devanagari.tex` or `data/output/pdf/Devanagari/Aaranam_Devanagari.tex` (and associated HTML/text files).
 
 2.  **Compile PDF**:
-    Use LuaLaTeX (required for HarfBuzz font rendering).
+    Use LuaLaTeX (required for HarfBuzz font rendering). Run from the project root.
     ```bash
-    lualatex data/output/html/Devanagari/Samhita_Devanagari.tex
+    # For Samhita
+    lualatex data/output/pdf/Devanagari/Samhita_Devanagari.tex
+    
+    # For Aaranam
+    lualatex data/output/pdf/Devanagari/Aaranam_Devanagari.tex
     ```
 
 ### 3.4 Workflow D: Rik Samhita Generation
