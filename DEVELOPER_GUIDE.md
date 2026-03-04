@@ -200,13 +200,14 @@ This workflow creates the high-quality PDF for the physical book.
 
 1.  **Generate LaTeX Source**:
     ```bash
-    # For Samhita (default)
+    # For Samhita (default bw)
     python src/render_pdf.py data/output/Agneyam-Pavamanam_latest_out.json --output-mode combined
     
-    # For Aaranam
-    python src/render_pdf.py data/output/Aaranam_latest_out.json --output-mode combined --type aaranam
+    # For Aaranam (color printout)
+    python src/render_pdf.py data/output/Aaranam_latest_out.json --output-mode combined --type aaranam --pdf-color-mode color
     ```
-    *Output*: `data/output/pdf/Devanagari/Samhita_Devanagari.tex` or `data/output/pdf/Devanagari/Aaranam_Devanagari.tex` (and associated HTML/text files).
+    *Output*: `data/output/pdf/Devanagari/Samhita_Devanagari.tex` or `data/output/pdf/Devanagari/Aaranam_Devanagari.tex` (and associated HTML/text files). 
+    *Note*: Use `--pdf-color-mode color` to enable colored metadata and Swara marks, or let it default to `bw` (black/white) for book typesetting.
 
 2.  **Compile PDF**:
     Use LuaLaTeX (required for HarfBuzz font rendering). Run from the project root.
@@ -227,6 +228,52 @@ This extracts the "Rik" (verses) in a continuous format (*scriptio continua*) fo
     # Generates both PDF and HTML
     python src/generate_Rik_for_samhita.py -i data/input/vedic_text.txt
     ```
+
+### 3.5 Workflow E: Collection Generation (Sooktam / Sūkta Māla)
+
+This workflow handles publishing a **curated collection** of samams from a Unicode Devanagari text input. Unlike the Samhita/Aaranam workflows, a collection is a standalone selection of mantras with its own sequential numbering.
+
+#### Input Format
+
+The input file (e.g., `data/input/Sooktam.txt`) uses the same markup conventions:
+*   `# SuperSection Title` / `# End of SuperSection Title` — Top-level grouping
+*   `# Section Title` / `# End of Section Title` — Khanda-level grouping (e.g., Sūktam names)
+*   `# SubSection Title` / `# End of SubSection Title` — Samam headers (Atha/Iti)
+*   `# Start of Mantra Sets` / `# End of Mantra Sets` — Mantra content
+*   `# Closing Mantras` / `# End of Closing Mantras` — Optional closing prayers (centered in output)
+
+#### Closing Mantras
+
+A special section at the end of the input file enclosed in `# Closing Mantras` / `# End of Closing Mantras` markers. Each line becomes a centered mantra in the output:
+*   **HTML**: Rendered in a `subsection`-styled card (beige background, blue left border) with centered text
+*   **PDF**: Rendered contiguously on the last content page in bold centered text (no separate page)
+*   **Text**: Preserved with round-trip markers for re-editing
+
+#### Steps
+
+1.  **Parse Input to JSON**:
+    ```bash
+    python src/generate_json.py data/input/Sooktam.txt --input-mode initial --output data/output/Sooktam_out.json
+    ```
+
+2.  **Generate Outputs** (HTML, LaTeX, Text):
+    ```bash
+    python src/render_pdf.py data/output/Sooktam_out.json --type collection --pdf-color-mode color
+    ```
+
+3.  **Compile PDF** (optional):
+    ```bash
+    lualatex data/output/pdf/Devanagari/Collection_Devanagari.tex
+    ```
+
+*Outputs*:
+*   **HTML**: `data/output/html/Devanagari/Collection_Devanagari.html`
+*   **LaTeX**: `data/output/pdf/Devanagari/Collection_Devanagari.tex`
+*   **Text**: `data/output/txt/Devanagari/Collection_Devanagari_Unicode.txt`
+
+#### Utility Scripts
+
+*   **`data/input/renumber_sooktam.py`**: Renumbers all samam numbers (`॥N॥`) sequentially across the entire file. Useful after reordering or adding samams.
 
 ---
 
@@ -255,15 +302,17 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--output-mode` | `combined` (default), `separate` (split Rik/Samam), or `nometa`. |
-| `--type` | Type of Samaveda text: `samhita` (default) or `aaranam`. |
+| `--type` | Type of Samaveda text: `samhita` (default), `aaranam`, or `collection`. |
 | `--pdf-font` | Custom font name for LaTeX (default: `AdishilaVedic`). |
 | `--html-font` | Font family string for HTML output (default: `'AdishilaVedic', 'AdishilaSanVedic'`). |
+| `--pdf-color-mode` | `color` (colored metadata/swara marks) or `bw` (default, black/white for book typesetting). |
 
 > **Dynamic Title**: The document title on the PDF title page, HTML header, and text output is determined by `--type`:
 > *   `samhita` → **जैमिनीय साम संहिता**
 > *   `aaranam` → **जैमिनीय साम आरण्य गानम्**
+> *   `collection` → **जैमिनीय साम सूक्त माला**
 >
-> The output file prefix also changes accordingly (`Samhita_` vs `Aaranam_`).
+> The output file prefix also changes accordingly (`Samhita_`, `Aaranam_`, vs `Collection_`).
 
 ### `src/generate_website.py`
 *Generates the static website. Each mode generates an independent sub-site; the common landing page (`docs/index.html`) is maintained manually.*
