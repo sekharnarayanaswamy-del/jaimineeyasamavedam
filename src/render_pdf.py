@@ -21,8 +21,7 @@ from utils import (
     my_encodeURL, my_format,
     replacecolon, normalize_and_trim,
     parse_mantra_for_latex, 
-    sanitize_data_structure,
-    step_preprocess_visarga_accent
+    sanitize_data_structure
 )
 # --- End new import ---
 
@@ -87,8 +86,31 @@ def render_section_footnotes(dummy=None):
 
 
 
+CURRENT_PDF_FONT = "AdishilaVedic"
+
 # ----------------------------------------------------
-# 1. NEW UTILITY: Accent Replacements (RAISED ZERO-WIDTH)
+# 1. NEW UTILITY: Local Visarga Accent Ordering
+# ----------------------------------------------------
+def fix_visarga_accent_order_local(text):
+    if not text: return text
+    
+    # Normalize colons
+    text = text.replace(':', 'ः')
+    text = re.sub(r'\s+ः', 'ः', text)
+    
+    if 'Adishila' in CURRENT_PDF_FONT:
+        # Adishila needs Accent FIRST, then Visarga: (1)ः
+        pattern = r'([ः])\s*(\([^)]+\))'
+        text = re.sub(pattern, r'\2\1', text)
+    else:
+        # Standard OpenType (Noto) needs Visarga FIRST, then Accent: ः(1)
+        pattern = r'(\([^)]+\))\s*([ः])'
+        text = re.sub(pattern, r'\2\1', text)
+        
+    return text
+
+# ----------------------------------------------------
+# 2. NEW UTILITY: Accent Replacements (RAISED ZERO-WIDTH)
 # ----------------------------------------------------
 def replace_accents(text):
     r"""
@@ -106,19 +128,28 @@ def replace_accents(text):
     """
     if not text: return text
     
-    replacements = [
-        # Swarita (Vertical line above) - all accents at same level
-        ('(1)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}'),  
-        
-        # Anudatta (Horizontal line below) - same level  
-        ('(2)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}'),  
-        
-        # Kampa (Curve) - same level
-        ('(3)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}'),  
-        
-        # Trikampa - same level
-        ('(4)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}'),  
-    ]
+    if 'Adishila' in CURRENT_PDF_FONT:
+        replacements = [
+            # Swarita (Vertical line above) - all accents at same level
+            ('(1)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"0951}}}'),  
+            
+            # Anudatta (Horizontal line below) - same level  
+            ('(2)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{15}{\char"1CD2}}}'),  
+            
+            # Kampa (Curve) - same level
+            ('(3)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF8}}}'),  
+            
+            # Trikampa - same level
+            ('(4)', r'\makebox[0pt][l]{\raisebox{0.6ex}{\accentmark{12}{\char"1CF9}}}'),  
+        ]
+    else:
+        # For standard OpenType fonts like Noto Sans Devanagari, output native combining characters
+        replacements = [
+            ('(1)', '\u0951'),  
+            ('(2)', '\u1CD2'),  
+            ('(3)', '\u1CF8'),  
+            ('(4)', '\u1CF9'),  
+        ]
   
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
@@ -415,7 +446,7 @@ def CreateCompilation():
             prasnaInfo=prasna['id']
             CreateMd(templateFileName_md,f"TS_{kandaInfo}_{prasnaInfo}","Compilation",prasna)
                        
-def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता"):
+def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -442,6 +473,8 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
         generated_at=meta['generated_at'],
         font_family=font_family,
         doc_title_sa=doc_title_sa,
+        pdf_color_mode=pdf_color_mode,
+        closing_mantras=closing_mantras or [],
         font_path=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fonts").replace("\\", "/") + "/"
     )
     
@@ -482,7 +515,7 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
 
     return exit_code
 
-def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combined", doc_title_sa="जैमिनीय साम संहिता"):
+def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -507,7 +540,8 @@ def CreateTextFile (templateFileName,name,DocfamilyName,data, output_mode="combi
         output_mode=output_mode,
         doc_title_sa=doc_title_sa,
         version=meta['version'],
-        generated_at=meta['generated_at']
+        generated_at=meta['generated_at'],
+        closing_mantras=closing_mantras or []
     )
     
 
@@ -622,7 +656,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Step A: Remove Spaces (Samhita Mode)
         s2 = remove_mantra_spaces(string_2)
         # Step A.1: Fix Visarga-Accent Order
-        s2 = step_preprocess_visarga_accent(s2)
+        s2 = fix_visarga_accent_order_local(s2)
         # Step B: Handle Consecutive Accent Kerning
         s2 = handle_consecutive_accents(s2)
         # Step C: Replace Accents with LaTeX commands (with adjusted sizes)
@@ -828,7 +862,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     # Rik Text (with Vedic Accents)
     if string_2:
         s2 = remove_mantra_spaces(string_2)
-        s2 = step_preprocess_visarga_accent(s2)
+        s2 = fix_visarga_accent_order_local(s2)
         s2 = handle_consecutive_accents(s2)
         s2 = replace_accents(s2)
         # Apply footnotes
@@ -1963,7 +1997,7 @@ def preprocess_html_data(supersections, output_mode):
 
 
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता"):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -1972,6 +2006,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         html_font: Font family string for HTML output (e.g., "'AdishilaVedic', 'AdishilaSanVedic'")
         output_mode: 'combined', 'rik', or 'samam' for filtering content
         doc_title_sa: Sanskrit title for the document
+        closing_mantras: List of closing mantra lines to render at the end
     """
     outputdir = "data/output"
     exit_code = 0
@@ -1997,7 +2032,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         doc_title_sa=doc_title_sa,
         version=meta['version'],
         generated_at=meta['generated_at'],
-        html_index=html_index
+        html_index=html_index,
+        closing_mantras=closing_mantras or []
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
@@ -2034,13 +2070,22 @@ Examples:
                         help='Font for PDF output (default: AdishilaVedic)')
     parser.add_argument('--html-font', dest='html_font', default="'AdishilaVedic', 'AdishilaSanVedic'",
                         help="Font for HTML output (default: 'AdishilaVedic', 'AdishilaSanVedic')")
-    parser.add_argument('--type', choices=['samhita', 'aaranam'], default='samhita',
-                        help='Type of Samaveda text: samhita or aaranam')
+    parser.add_argument('--type', choices=['samhita', 'aaranam', 'collection'], default='samhita',
+                        help='Type of Samaveda text: samhita, aaranam, or collection')
+    
+    # NEW CLI OPTION
+    parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
+                        choices=['bw', 'color'], default='bw',
+                        help='Color mode for PDF output: bw (default) or color')
     
     args = parser.parse_args()
     output_mode = args.output_mode
     pdf_font = args.pdf_font
     html_font = args.html_font
+    pdf_color_mode = args.pdf_color_mode
+    
+    global CURRENT_PDF_FONT
+    CURRENT_PDF_FONT = pdf_font
     
     mode_type = args.type
     
@@ -2049,11 +2094,18 @@ Examples:
         input_file = args.input_file
     elif mode_type == 'aaranam':
         input_file = 'data/output/Aaranam_latest_out.json'
+    elif mode_type == 'collection':
+        input_file = 'data/output/Collection_latest_out.json'
     else:
         input_file = 'data/output/Agneyam-Pavamanam_latest_out.json'
     
     # Determine file prefix based on type
-    file_prefix = "Aaranam" if mode_type == 'aaranam' else "Samhita"
+    if mode_type == 'aaranam':
+        file_prefix = "Aaranam"
+    elif mode_type == 'collection':
+        file_prefix = "Collection"
+    else:
+        file_prefix = "Samhita"
     template_dir="templates/pdf"
     text_template_dir="templates/text"
     html_template_dir="templates/html"
@@ -2133,10 +2185,16 @@ Examples:
     
     supersections = data_Devanagari.get('supersection', {})
     supersections = sanitize_data_structure(supersections)
+    closing_mantras = data_Devanagari.get('closing_mantras', [])
     
     
     # Define Sanskrit title based on type (for PDF generation)
-    doc_title_sa = "जैमिनीय साम आरण्य गानम्" if mode_type == 'aaranam' else "जैमिनीय साम संहिता"
+    if mode_type == 'aaranam':
+        doc_title_sa = "जैमिनीय साम आरण्य गानम्"
+    elif mode_type == 'collection':
+        doc_title_sa = "जैमिनीय साम सूक्त माला"
+    else:
+        doc_title_sa = "जैमिनीय साम संहिता"
     
     current_os = platform.system()
     
@@ -2149,9 +2207,9 @@ Examples:
         text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
         html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
         
-        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa)
-        CreateTextFile(text_template_file, f"{file_prefix}", "Devanagari", supersections, output_mode='combined', doc_title_sa=doc_title_sa)
-        CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa)
+        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras)
+        CreateTextFile(text_template_file, f"{file_prefix}", "Devanagari", supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
+        CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':
@@ -2162,15 +2220,15 @@ Examples:
         
         # Rik-only output: Pass output_mode='rik' to template
         print("Generating Rik-only output (with metadata)...")
-        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa)
-        CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik', doc_title_sa=doc_title_sa)
-        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa)
+        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras)
+        CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
+        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
         
         # Samam-only output: Pass output_mode='samam' to template
         print("Generating Samam-only output (with metadata)...")
-        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa)
-        CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam', doc_title_sa=doc_title_sa)
-        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa)
+        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras)
+        CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
+        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
         
         print("Success! Generated separate Rik and Samam output files.")
         
@@ -2182,15 +2240,15 @@ Examples:
         
         # Rik-only output (no metadata): Pass output_mode='rik_nometa' to template
         print("Generating Rik-only output (without metadata)...")
-        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa)
-        CreateTextFile(text_template_file, f"Rik_NoMeta", "Devanagari", supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa)
-        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa)
+        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras)
+        CreateTextFile(text_template_file, f"Rik_NoMeta", "Devanagari", supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
+        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
         
         # Samam-only output (no metadata): Pass output_mode='samam_nometa' to template
         print("Generating Samam-only output (without metadata)...")
-        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa)
-        CreateTextFile(text_template_file, f"Samam_NoMeta", "Devanagari", supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa)
-        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa)
+        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras)
+        CreateTextFile(text_template_file, f"Samam_NoMeta", "Devanagari", supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
+        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras)
         
         print("Success! Generated separate Rik and Samam output files without metadata.")
 

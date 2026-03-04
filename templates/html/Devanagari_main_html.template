@@ -6,12 +6,12 @@
     <title>॥ \VAR{doc_title_sa} ॥</title>
     <style>
         :root {
-            --primary-color: #2d3a4a;
-            --accent-blue: #1565c0;
-            --accent-green: #2e7d32;
-            --accent-purple: #7b1fa2;
-            --accent-brown: #8B4513;
-            --swara-red: #c62828;
+            --primary-color:  #000000 % #1a232c;
+            --accent-blue: #0d47a1;
+            --accent-green: #1b5e20;
+            --accent-purple: #4a148c;
+            --accent-brown: #4e342e;
+            --swara-red: #b71c1c;
             --bg-light: #f8f9fa;
             --bg-card: #EFE6D5;
             --border-color: #dee2e6;
@@ -143,7 +143,7 @@
         .section-title {
             text-align: center;
             font-size: 1.5rem;
-            color: var(--accent-green);
+            color: var(--primary-color); % var(--accent-green);
             margin-bottom: 8px;
         }
         
@@ -544,6 +544,16 @@
         </div>
         \BLOCK{ endfor }
         
+        \BLOCK{ if closing_mantras }
+        <!-- Closing Mantras -->
+        <div class="section" id="closing-mantras">
+            <div class="subsection" style="padding: 30px 20px; margin: 20px 0;">
+                \BLOCK{ for line in closing_mantras }
+                <p style="font-size: 1.5rem; margin: 8px 0; text-align: center;">\VAR{line}</p>
+                \BLOCK{ endfor }
+            </div>
+        </div>
+        \BLOCK{ endif }
         \BLOCK{ if html_index }
         <!-- Index -->
         <div class="chapter" id="index">

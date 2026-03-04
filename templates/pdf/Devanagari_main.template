@@ -8,6 +8,24 @@
 \usepackage{polyglossia}
 \setdefaultlanguage{sanskrit}
 
+% --- COLOR SETUP ---
+\usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
+
+% --- CUSTOM COLORS (Matching HTML color scheme conditionally) ---
+\BLOCK{ if pdf_color_mode == 'color' }
+\definecolor{AccentBlue}{HTML}{1565c0}      % Rik text - matches HTML --accent-blue
+\definecolor{AccentPurple}{HTML}{7b1fa2}    % Metadata - matches HTML --accent-purple
+\definecolor{AccentGreen}{HTML}{2e7d32}     % Headers - matches HTML --accent-green
+\definecolor{AccentBrown}{HTML}{8B4513}     % Samam Metadata - matches HTML
+\definecolor{SwaraRed}{HTML}{c62828}        % Swara marks - matches HTML --swara-red
+\BLOCK{ else }
+\definecolor{AccentBlue}{HTML}{000000}      
+\definecolor{AccentPurple}{HTML}{000000}    
+\definecolor{AccentGreen}{HTML}{000000}     
+\definecolor{AccentBrown}{HTML}{000000}     
+\definecolor{SwaraRed}{HTML}{000000}        
+\BLOCK{ endif }
+
 \setmainfont[
     Scale=1.5, 
     Script=Devanagari,
@@ -22,7 +40,7 @@
     Scale=1.0,  
     Script=Devanagari,
     Ligatures=TeX,
-    Color=red,
+    Color=SwaraRed,
     AutoFakeSlant\BLOCK{ if font_path },
     Path = \VAR{font_path},
     Extension = .ttf,
@@ -31,14 +49,6 @@
 \setcounter{tocdepth}{3}
 
 % --- PACKAGES ---
-\usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
-
-% --- CUSTOM COLORS (Matching HTML color scheme) ---
-\definecolor{AccentBlue}{HTML}{1565c0}      % Rik text - matches HTML --accent-blue
-\definecolor{AccentPurple}{HTML}{7b1fa2}    % Metadata - matches HTML --accent-purple
-\definecolor{AccentGreen}{HTML}{2e7d32}     % Headers - matches HTML --accent-green
-\definecolor{AccentBrown}{HTML}{8B4513}     % Samam Metadata - matches HTML
-\definecolor{SwaraRed}{HTML}{c62828}        % Swara marks - matches HTML --swara-red
 \usepackage{ragged2e} 
 \usepackage{stackengine} 
 \usepackage{fancyhdr}    
@@ -193,9 +203,15 @@
     % GLUE FIX: Prevent page break between Chapter and First Section
     \nopagebreak
 
+    \BLOCK{ set ns_sec = namespace(first_section=true) }
     \BLOCK{ for section_key, section in supersection.sections.items() }
         \BLOCK{ if section_key != 'count' }
         
+            \BLOCK{ if not ns_sec.first_section }
+            \clearpage
+            \BLOCK{ endif }
+            \BLOCK{ set ns_sec.first_section = false }
+
             % --- SECTION ---
             
             \phantomsection  
@@ -225,14 +241,21 @@
                
                                 
             \BLOCK{ endfor }
-            % MOVED \clearpage TO HERE
-            % This ensures the NEXT section starts on a new page, 
-            % but the FIRST section stays glued to the Chapter.
-            \clearpage
         \BLOCK{ endif }
     \BLOCK{ endfor }
 
 \BLOCK{ endfor }
+
+\BLOCK{ if closing_mantras }
+% --- Closing Mantras ---
+\vspace{1.5cm}
+\begin{center}
+\BLOCK{ for line in closing_mantras }
+{\normalsize \bfseries \VAR{line}}\\[0.3em]
+\BLOCK{ endfor }
+\end{center}
+\BLOCK{ endif }
+\clearpage
 
   \printindex
 

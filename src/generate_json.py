@@ -884,6 +884,16 @@ def convert_corrections_to_json(
             
             global_subsection_offset += current_section_subsection_count
 
+    # --- Extract Closing Mantras ---
+    closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)
+    closing_match = closing_pattern.search(file_content)
+    if closing_match:
+        closing_lines = [line.strip() for line in closing_match.group(1).strip().split('\n') if line.strip()]
+        json_output["closing_mantras"] = closing_lines
+        print(f"[INFO] Extracted {len(closing_lines)} closing mantra lines.")
+    else:
+        json_output["closing_mantras"] = []
+
     print(f"\n--- Step 3: Processing Complete ---")
     print(f"[INFO] Total subsections processed: {global_subsection_offset}")
     return json_output
@@ -1347,6 +1357,16 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
                 break
     
+    # --- Extract Closing Mantras ---
+    closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)
+    closing_match = closing_pattern.search(content)
+    if closing_match:
+        closing_lines = [line.strip() for line in closing_match.group(1).strip().split('\n') if line.strip()]
+        data["closing_mantras"] = closing_lines
+        print(f"[INFO] Extracted {len(closing_lines)} closing mantra lines.")
+    else:
+        data["closing_mantras"] = []
+
     return data
 
 

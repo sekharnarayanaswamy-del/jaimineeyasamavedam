@@ -79,3 +79,10 @@ Version \VAR{version} \VAR{generated_at}
 \BLOCK{ endif }
 \BLOCK{ endfor }
 \BLOCK{ endfor }
+\BLOCK{ if closing_mantras }
+# Closing Mantras
+\BLOCK{ for line in closing_mantras }
+\VAR{line}
+\BLOCK{ endfor }
+# End of Closing Mantras
+\BLOCK{ endif }
