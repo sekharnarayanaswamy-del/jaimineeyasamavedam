@@ -56,6 +56,7 @@
 \usepackage{imakeidx}    
 \usepackage{emoji}       
 \usepackage{needspace}
+\usepackage{longtable}
 \usepackage[perpage]{footmisc} % Resets footnote numbering on every page
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
@@ -198,7 +199,7 @@
     \phantomsection              
     \chapter*{\centering \VAR{supersection.supersection_title}}
     \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title}}
-    \markboth{\VAR{supersection.supersection_title}}{\VAR{supersection.supersection_title.replace}}
+    \markboth{\VAR{supersection.supersection_title}}{\VAR{supersection.supersection_title}}
     
     % GLUE FIX: Prevent page break between Chapter and First Section
     \nopagebreak
@@ -216,7 +217,7 @@
             
             \phantomsection  
                 
-            \section*{\centering \VAR{section.section_title.replace(':', 'ः')}}
+            \section*{\centering \VAR{section.section_title.replace(':', 'ः')}\quad(\VAR{section.Count})}
             \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')}} 
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
@@ -245,6 +246,51 @@
     \BLOCK{ endfor }
 
 \BLOCK{ endfor }
+
+\BLOCK{ if summary_table }
+% --- Summary Table ---
+\cleardoublepage
+\phantomsection
+\markboth{\VAR{summary_title}}{\VAR{summary_title}}
+\fancyhead[LO]{\VAR{summary_title}}
+\fancyhead[RE]{\VAR{summary_title}}
+\chapter*{\centering ॥ \VAR{summary_title} ॥}
+\addcontentsline{toc}{chapter}{\VAR{summary_title}}
+
+\begin{center}
+{\small % Reduce font size for the table
+\renewcommand{\arraystretch}{1.3} % Increase vertical spacing between rows
+\begin{longtable}{|p{6cm}|c|c|}
+\hline
+\textbf{खण्डः} & \textbf{ऋक् सङ्ख्या} & \textbf{साम सङ्ख्या} \\
+\hline\hline
+\endfirsthead
+
+\hline
+\textbf{खण्डः} & \textbf{ऋक् सङ्ख्या} & \textbf{साम सङ्ख्या} \\
+\hline\hline
+\endhead
+
+\hline
+\endfoot
+
+\BLOCK{ for patha_data in summary_table }
+\textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha}}} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_riks}}} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_samams}}} \\
+\hline
+\BLOCK{ for row in patha_data.khandas }
+\VAR{row.khanda} & \VAR{row.riks} & \VAR{row.samams} \\
+\BLOCK{ endfor }
+\hline
+\BLOCK{ endfor }
+\textbf{आहत्य} & \textbf{\VAR{total_riks}} & \textbf{\VAR{total_samams}} \\
+\hline
+\end{longtable}
+}
+\end{center}
+\clearpage
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+\BLOCK{ endif }
 
 \BLOCK{ if closing_mantras }
 % --- Closing Mantras ---

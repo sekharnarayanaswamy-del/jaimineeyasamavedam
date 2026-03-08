@@ -711,13 +711,30 @@ def convert_corrections_to_json(
 
             
             clean_section_title = section_title.strip()
-            current_supersection_sections[section_id] = {
-                "section_title": clean_section_title,
-                "subsections": {}
-            }
             
             subsections_data = subsection_pattern.findall(section_content)
             print(f"({len(subsections_data)} subsections)")
+            
+            # Count the total number of samams (mantras) in this section
+            section_mantra_count = 0
+            for _, _, mantra_set_content in subsections_data:
+                # Need to use the same logic as the inner loop but just for counting
+                m_list, full_text = parse_mantra_set(mantra_set_content)
+                m_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_text)
+                section_mantra_count += len(m_markers) if m_markers else 1
+                
+            def int_to_devanagari_local(n):
+                mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
+                return "".join(mapping[c] for c in str(n))
+                
+            # Remove any manually appended count like "(२)" from title string if present
+            clean_section_title = re.sub(r'\s*\([०-९\d]+\)$', '', clean_section_title).strip()
+            
+            current_supersection_sections[section_id] = {
+                "section_title": clean_section_title,
+                "Count": int_to_devanagari_local(section_mantra_count),
+                "subsections": {}
+            }
             
             current_section_subsection_count = 0
             
@@ -1356,6 +1373,21 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
                 break
+    
+    # Calculate Samam counts per section
+    def int_to_devanagari_local(n):
+        mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
+        return "".join(mapping[c] for c in str(n))
+
+    for ss_id, ss_data in data["supersection"].items():
+        for sec_id, sec_data in ss_data["sections"].items():
+            mantra_count = 0
+            for sub_id, sub_data in sec_data["subsections"].items():
+                for mantra_set in sub_data.get("corrected-mantra_sets", []):
+                    text = mantra_set.get("corrected-mantra", "")
+                    m_markers = re.findall(r'॥\s*[०-९]+\s*॥', text)
+                    mantra_count += len(m_markers) if m_markers else 1
+            sec_data["Count"] = int_to_devanagari_local(mantra_count)
     
     # --- Extract Closing Mantras ---
     closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)

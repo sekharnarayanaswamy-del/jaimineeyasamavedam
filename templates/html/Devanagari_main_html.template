@@ -6,7 +6,7 @@
     <title>॥ \VAR{doc_title_sa} ॥</title>
     <style>
         :root {
-            --primary-color:  #000000 % #1a232c;
+            --primary-color:  #000000;
             --accent-blue: #0d47a1;
             --accent-green: #1b5e20;
             --accent-purple: #4a148c;
@@ -78,21 +78,20 @@
         }
         
         .toc-content {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px 40px;
-            align-items: start;
+            display: block;
         }
         
         .toc-group {
             break-inside: avoid;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .toc ul {
             list-style: none;
             padding-left: 0;
             margin: 0;
+            columns: 3;
+            column-gap: 40px;
         }
         
         .toc a {
@@ -107,16 +106,17 @@
         .toc-chapter {
             font-weight: bold;
             font-size: 1.75rem;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--primary-color);
-            text-align: center;
+            text-align: left;
+            white-space: nowrap;
         }
         
         .toc-section {
             padding: 3px 0;
             font-size: 1.5rem;
             line-height: 1.4;
-            text-align: center;
+            text-align: left;
         }
         
         /* Chapter/Section Styles */
@@ -143,7 +143,7 @@
         .section-title {
             text-align: center;
             font-size: 1.5rem;
-            color: var(--primary-color); % var(--accent-green);
+            color: var(--primary-color); 
             margin-bottom: 8px;
         }
         
@@ -444,15 +444,34 @@
             
             // Build section data for tracking
             const sections = [];
-            document.querySelectorAll('.section').forEach(section => {
-                const chapter = section.closest('.chapter');
-                const chapterTitle = chapter ? chapter.querySelector('.chapter-title')?.textContent : '';
-                const sectionTitle = section.querySelector('.section-title')?.textContent || '';
-                sections.push({
-                    element: section,
-                    chapterTitle: chapterTitle,
-                    sectionTitle: sectionTitle
-                });
+            document.querySelectorAll('.chapter, .section').forEach(el => {
+                if (el.classList.contains('section')) {
+                    const chapter = el.closest('.chapter');
+                    const chapterTitle = chapter ? chapter.querySelector('.chapter-title')?.textContent : '';
+                    
+                    let sectionTitle = '';
+                    const sectionTitleNode = el.querySelector('.section-title');
+                    if (sectionTitleNode) {
+                        const clone = sectionTitleNode.cloneNode(true);
+                        const countNode = clone.querySelector('.section-samam-count');
+                        if (countNode) clone.removeChild(countNode);
+                        sectionTitle = clone.textContent.trim();
+                    }
+                    
+                    sections.push({
+                        element: el,
+                        chapterTitle: chapterTitle,
+                        sectionTitle: sectionTitle
+                    });
+                } else if (el.classList.contains('chapter') && !el.querySelector('.section')) {
+                    // Standalone chapter without sections (like summary table, index)
+                    const chapterTitle = el.querySelector('.chapter-title')?.textContent || '';
+                    sections.push({
+                        element: el,
+                        chapterTitle: chapterTitle,
+                        sectionTitle: ''
+                    });
+                }
             });
             
             // Use IntersectionObserver for efficient scroll tracking
@@ -470,8 +489,11 @@
                         const sectionData = sections.find(s => s.element === entry.target);
                         if (sectionData) {
                             currentSection = sectionData;
-                            // Format: Supersection › Section
-                            navTitle.textContent = sectionData.chapterTitle + ' › ' + sectionData.sectionTitle;
+                            if (sectionData.sectionTitle) {
+                                navTitle.textContent = sectionData.chapterTitle + ' › ' + sectionData.sectionTitle;
+                            } else {
+                                navTitle.textContent = sectionData.chapterTitle;
+                            }
                         }
                     }
                 });
@@ -527,7 +549,7 @@
             \BLOCK{ for section_key, section in supersection.sections.items() }
                 \BLOCK{ if section_key != 'count' }
                 <div class="section" id="\VAR{key}-\VAR{section_key}">
-                    <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')}</h2>
+                    <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')}<span class="section-samam-count">&emsp;&emsp;(\VAR{section.Count})</span></h2>
                     
                     <!-- Pre-rendered Subsections -->
                     \BLOCK{ for sub_html in section.html_subsections }
@@ -554,6 +576,48 @@
             </div>
         </div>
         \BLOCK{ endif }
+        
+        \BLOCK{ if summary_table }
+        <!-- Summary Table -->
+        <div class="chapter" id="summary-table">
+            <h1 class="chapter-title">॥ \VAR{summary_title} ॥</h1>
+            <div style="overflow-x: auto; padding: 10px; display: flex; justify-content: center;">
+                <table style="width: 80%; max-width: 800px; border-collapse: collapse; margin-bottom: 20px; text-align: center; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background-color: var(--bg-card); border-bottom: 2px solid var(--accent-purple);">
+                            <th style="padding: 8px; border: 1px solid var(--border-color);">खण्डः</th>
+                            <th style="padding: 8px; border: 1px solid var(--border-color);">ऋक् सङ्ख्या</th>
+                            <th style="padding: 8px; border: 1px solid var(--border-color);">साम सङ्ख्या</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        \BLOCK{ for patha_data in summary_table }
+                            <tr style="background-color: var(--bg-light); font-weight: bold;">
+                                <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha}</td>
+                                <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha_riks}</td>
+                                <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha_samams}</td>
+                            </tr>
+                            \BLOCK{ for row in patha_data.khandas }
+                            <tr>
+                                <td style="padding: 6px; border: 1px solid var(--border-color); text-align: left; padding-left: 20px;">\VAR{row.khanda}</td>
+                                <td style="padding: 6px; border: 1px solid var(--border-color);">\VAR{row.riks}</td>
+                                <td style="padding: 6px; border: 1px solid var(--border-color);">\VAR{row.samams}</td>
+                            </tr>
+                            \BLOCK{ endfor }
+                        \BLOCK{ endfor }
+                    </tbody>
+                    <tfoot>
+                        <tr style="background-color: var(--bg-light); font-weight: bold; border-top: 2px solid var(--accent-blue);">
+                            <td style="padding: 8px; border: 1px solid var(--border-color); text-align: center;">आहत्य (Total)</td>
+                            <td style="padding: 8px; border: 1px solid var(--border-color);">\VAR{total_riks}</td>
+                            <td style="padding: 8px; border: 1px solid var(--border-color);">\VAR{total_samams}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        \BLOCK{ endif }
+        
         \BLOCK{ if html_index }
         <!-- Index -->
         <div class="chapter" id="index">
@@ -561,7 +625,7 @@
             <div class="toc-content" style="display: block; columns: 3 200px; padding: 0 20px;">
                 <ul style="list-style: none; padding-left: 0; margin: 0;">
                 \BLOCK{ for entry in html_index }
-                    <li style="margin-bottom: 5px; text-align: center;">
+                    <li style="margin-bottom: 5px; text-align: left;">
                         <a href="#\VAR{entry.anchor}" style="text-decoration: none; color: var(--accent-blue); font-size: 1.1rem; word-break: break-word; display: inline-block;">\VAR{entry.title}</a>
                     </li>
                 \BLOCK{ endfor }

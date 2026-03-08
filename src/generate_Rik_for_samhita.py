@@ -1,8 +1,33 @@
 import subprocess
 import os
 import re
-from utils import step_preprocess_visarga_accent
+# ----------------------------------------------------
+# Globals for Configuration
+# ----------------------------------------------------
+CURRENT_PDF_FONT = "NotoSansDevanagari"
+CURRENT_PDF_COLOR_MODE = "color"
+CURRENT_PDF_DRAFT_MODE = False
 
+# ----------------------------------------------------
+# 0. NEW UTILITY: Local Visarga Accent Ordering
+# ----------------------------------------------------
+def fix_visarga_accent_order_local(text):
+    if not text: return text
+    
+    # Normalize colons
+    text = text.replace(':', 'ः')
+    text = re.sub(r'\s+ः', 'ः', text)
+    
+    if 'Adishila' in CURRENT_PDF_FONT:
+        # Adishila needs Accent FIRST, then Visarga: (1)ः
+        pattern = r'([ः])\s*(\([^)]+\))'
+        text = re.sub(pattern, r'\2\1', text)
+    else:
+        # Standard OpenType (Noto) needs Visarga FIRST, then Accent: ः(1)
+        pattern = r'(\([^)]+\))\s*([ः])'
+        text = re.sub(pattern, r'\2\1', text)
+        
+    return text
 
 # ----------------------------------------------------
 # 1. Utility function: Accent Replacements
@@ -12,12 +37,20 @@ def replace_accents(text):
     Replaces ASCII markers (1), (2), etc., with LaTeX commands.
     We do NOT add any extra spacing or breaks here.
     """
-    replacements = [
-        ('(1)', r'\accentmark{22}{\char"0951}'),  # Swarita
-        ('(2)', r'\accentmark{27}{\char"1CD2}'),  # Anudatta
-        ('(3)', r'\accentmark{20}{\char"1CF8}'),  # Kampa
-        ('(4)', r'\accentmark{20}{\char"1CF9}'),  # Trikampa
-    ]
+    if 'Adishila' in CURRENT_PDF_FONT:
+        replacements = [
+            ('(1)', r'\makebox[0pt][l]{\raisebox{0.2ex}{\accentmark{22}{\char"0951}}}'),  # Swarita
+            ('(2)', r'\makebox[0pt][l]{\raisebox{0.2ex}{\accentmark{27}{\char"1CD2}}}'),  # Anudatta
+            ('(3)', r'\makebox[0pt][l]{\raisebox{0.2ex}{\accentmark{20}{\char"1CF8}}}'),  # Kampa
+            ('(4)', r'\makebox[0pt][l]{\raisebox{0.2ex}{\accentmark{20}{\char"1CF9}}}'),  # Trikampa
+        ]
+    else:
+        replacements = [
+            ('(1)', '\u0951'),  
+            ('(2)', '\u1CD2'),  
+            ('(3)', '\u1CF8'),  
+            ('(4)', '\u1CF9'),  
+        ]
   
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
@@ -104,17 +137,26 @@ def add_enhanced_linebreaks(text):
         
         # 2. Khandah/Kandah (Section): || Atha ... Khandah ||
         if 'खण्डः' in content:
-            # Section Style: New Page, Large, Bold, Green
-            # We use \phantomsection so hyperref can link to it (if we add TOC later)
-            # Using \addcontentsline{toc}{section}{...} to mimic \section* behavior in TOC
-            return r'\clearpage\phantomsection\addcontentsline{toc}{section}{' + content + r'}\vspace*{1em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+            if 'अथ' in content and not CURRENT_PDF_DRAFT_MODE:
+                prefix = r'\clearpage\phantomsection'
+            else:
+                prefix = r'\vspace*{1em}\phantomsection'
+            return prefix + r'\addcontentsline{toc}{section}{' + content + r'}\vspace*{1em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
 
         # Create the wrapped block for standard headers
         wrapped_block = r'\mbox{' + content + r'}'
         
-        # CHECK: If this block contains "Atha", prepend \clearpage
+        # CHECK: If this block contains "Atha", prepend \clearpage, else just vspace
         if 'अथ' in content:
-            return r'\clearpage' + '\n' + wrapped_block
+            if not CURRENT_PDF_DRAFT_MODE:
+                return r'\clearpage\vspace*{1em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+            else:
+                return r'\vspace*{2em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+        elif 'इति' in content or 'समाप्तः' in content:
+            if 'संहिता' in content:
+                # Make the Samhita title Huge!
+                return r'\vspace*{2em}{\centering\Huge\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+            return r'\vspace*{1em}{\centering\Large\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
             
         return wrapped_block
 
@@ -197,29 +239,31 @@ def reduce_trailing_whitespace(text):
 def remove_mantra_spaces(text):
     """
     Removes all spaces within mantra lines to create continuous text.
-    Preserves spaces in:
-    1. Colophons (lines containing 'इति', 'अथ', 'समाप्तः')
+    Preserves spaces in Colophons (lines containing 'इति', 'अथ', 'समाप्तः')
+    and preserves blanks in Title blocks completely.
     """
     text = text.replace('\ufeff', '') # Remove BOM if present
     lines = text.split('\n')
     processed_lines = []
     
-    # Keywords that indicate a footer/header line where spaces should remain
-    # We check for these to avoid collapsing "Iti Prathamah..." into "ItiPrathamah..."
-    preserve_keywords = ['इति', 'अथ', 'समाप्तः']
+    preserve_keywords = ['इति', 'अथ', 'समाप्तः', 'संहिता', 'पर्वः', 'पर्वा', 'प्रारम्भः']
     
-    for i, line in enumerate(lines):
-        # 2. Check if this line is a Colophon/Structure line
-        if any(keyword in line for keyword in preserve_keywords):
+    in_preserve_block = False
+    
+    for line in lines:
+        if '# Title #' in line or '# Supersection' in line:
+            in_preserve_block = True
+            
+        if in_preserve_block or any(keyword in line for keyword in preserve_keywords):
             processed_lines.append(line)
-            continue
-        
-        # 3. It is a Mantra line: Remove all spaces and tabs
-        # This turns "अग्निमीळे पुरोहितं" into "अग्निमीळेपुरोहितं"
-        clean_line = line.replace(' ', '').replace('\t', '')
-        
-        processed_lines.append(clean_line)
-        
+        else:
+            # It is a Mantra line: Remove all spaces and tabs
+            clean_line = line.replace(' ', '').replace('\t', '')
+            processed_lines.append(clean_line)
+            
+        if '# End of Title' in line or '# End of Supersection' in line:
+            in_preserve_block = False
+            
     return '\n'.join(processed_lines)
 
 
@@ -271,13 +315,24 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     base_filename = get_writable_filename(base_filename)
     tex_filename = f'{base_filename}.tex'
 
-    #-- FIX: Corrected processing pipeline ---
-    # 2. NEW: Remove spaces (Create Continuous Script)
-    # We do this BEFORE adding LaTeX commands to avoid breaking code.
+    # 1. NEW: Remove spaces (Create Continuous Script)
+    # We do this BEFORE regex conversions so it can see `# Title #` tags!
     processed_text = remove_mantra_spaces(input_text)
+
+    #-- FIX: Corrected processing pipeline ---
+    # NEW: Handle Markdown-style Title and Supersection markers BEFORE latex linebreaking mechanics
+    def replace_main_title_latex(match):
+        content = match.group(1).strip()
+        return r'\clearpage\thispagestyle{empty}\vspace*{2in}{\centering\Huge\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vfill\clearpage'
+    processed_text = re.sub(r'#\s*Title\s*#(.*?)#\s*End of Title\s*#', replace_main_title_latex, processed_text, flags=re.DOTALL | re.IGNORECASE)
+
+    def replace_supersection_latex(match):
+        content = match.group(1).strip()
+        return r'\clearpage\phantomsection\addcontentsline{toc}{part}{' + content + r'}\vspace*{1em}{\centering\huge\bfseries\textcolor{AccentGreen}{' + content + r'}\par}\vspace*{1em}'
+    processed_text = re.sub(r'#\s*Supersection title\s*#(.*?)#\s*End of Supersection title.*?#', replace_supersection_latex, processed_text, flags=re.DOTALL | re.IGNORECASE)
     
-    # 1. First, detect consecutive accents and inject \kern ONLY for those cases
-    processed_text = step_preprocess_visarga_accent(processed_text)
+    # 1. First, fix visarga ordering
+    processed_text = fix_visarga_accent_order_local(processed_text)
     processed_text = handle_consecutive_accents(processed_text)
     
     # 2. Then replace all accents with LaTeX commands
@@ -323,7 +378,7 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
     # Pointing to the root fonts directory as requested
     # Note: AdishilaVedic font files were not found in the repository. 
     # Please ensure they are located in the 'fonts' directory.
-    font_path = os.path.join(base_dir, "fonts") + os.sep
+    font_path = os.path.join(base_dir, "fonts").replace("\\", "/") + "/"
     
     # Create LaTeX document
     latex_content = r'''\documentclass[12pt,a4paper]{article}
@@ -334,15 +389,15 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 \usepackage[hidelinks]{hyperref} % Added for phantomsection/toc support
 \onehalfspacing
 
-% Set the main font to AdishilaVedic with Devanagari script support
-\setmainfont{AdishilaVedic}[
+% Set the main font
+\setmainfont[
     Path = ''' + font_path + r''',
     Extension = .ttf,
-    UprightFont = AdishilaVedic,
-    BoldFont = AdishilaVedicBold,
+    UprightFont = *,
+    AutoFakeBold=1.5,
     Script=Devanagari,
     Renderer=HarfBuzz,
-]
+]{''' + CURRENT_PDF_FONT + r'''}
 
 % Command to format accent marks with larger size and bold
 \newcommand{\accentmark}[2]{%
@@ -350,10 +405,17 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 }
 
 % --- CUSTOM COLORS (Matching HTML color scheme) ---
-\definecolor{AccentBlue}{HTML}{1565c0}
+''' + (r'''
+\definecolor{AccentBlue}{HTML}{062b66}
 \definecolor{AccentPurple}{HTML}{7b1fa2}
-\definecolor{AccentGreen}{HTML}{2e7d32}
+\definecolor{AccentGreen}{HTML}{0a3b11}
 \definecolor{SwaraRed}{HTML}{c62828}
+''' if CURRENT_PDF_COLOR_MODE == 'color' else r'''
+\definecolor{AccentBlue}{HTML}{000000}
+\definecolor{AccentPurple}{HTML}{000000}
+\definecolor{AccentGreen}{HTML}{000000}
+\definecolor{SwaraRed}{HTML}{000000}
+''') + r'''
 
 % --- ACCENT OVERLAP ADJUSTMENT ---
 % Defines a small negative space (kerning) to pull the next character closer
@@ -372,6 +434,7 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 
 \begin{document}
 \fontsize{18pt}{27pt}\selectfont
+\color{''' + ('AccentBlue' if CURRENT_PDF_COLOR_MODE == 'color' else 'black') + r'''}
 
 ''' + processed_text + r'''
 
@@ -387,8 +450,10 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
         
         # Compile with LuaLaTeX
         print("Compiling with LuaLaTeX...")
-        result = subprocess.run(['lualatex', '-interaction=nonstopmode', tex_filename], 
-                              capture_output=True, text=True, check=True, encoding='utf-8')
+        latex_dir = os.path.dirname(os.path.abspath(tex_filename))
+        for i in range(2): # 2 passes for TOC if ever needed, though Rik table doesn't have TOC
+            result = subprocess.run(['lualatex', '-interaction=nonstopmode', f'-output-directory={latex_dir}', tex_filename], 
+                                  capture_output=True, text=True, check=True, encoding='utf-8')
         
         print(f"✓ PDF created successfully: {base_filename}.pdf")
         
@@ -425,6 +490,18 @@ def format_text_html(text):
     text = text.replace('II.', '॥').replace('II', '॥').replace('||', '॥')
     text = text.replace('|', '।').replace('।', '। ') # Add space after single danda
     
+    # Handle Supersections
+    def supersection_replacer(match):
+        content = match.group(1).strip()
+        header_id = f"supersection-{len(toc_entries)}"
+        toc_entries.append({
+            'title': content,
+            'id': header_id,
+            'is_chapter': True
+        })
+        return f'</div></div><div class="section"><h1 id="{header_id}" class="chapter-title" style="color: var(--accent-green)">{content}</h1></div><div class="subsection"><div class="rik-text">'
+    text = re.sub(r'<SUPERSECTION>(.*?)</SUPERSECTION>', supersection_replacer, text, flags=re.DOTALL)
+    
     # Handle Headers (Pattern: || ... Atha/Iti ... ||)
     # We strip the dandas for the title output and wrap in section-title
     # Regex finds: || [Content] ||
@@ -443,7 +520,7 @@ def format_text_html(text):
         
         # ID creation for TOC
         header_id = f"header-{len(toc_entries)}"
-        is_chapter = 'उत्तरार्चिकम्' in content
+        is_chapter = 'उत्तरार्चिकम्' in content or 'संहिता' in content
         
         toc_entries.append({
             'title': content,
@@ -506,21 +583,25 @@ def generate_html(input_text, base_filename):
     
     # Pipeline
     
-    # NEW: Extract Main Title (Line 1) if present
-    subtitle_html = ""
-    lines = input_text.splitlines()
-    if lines:
-        first_line = lines[0].replace('\ufeff', '').strip()
-        # if 'उत्तरार्चिकम्' in first_line:
-        subtitle_html = f'<h2 class="chapter-title">{first_line}</h2>'
-        # Reconstruct text without the first line
-        input_text = '\n'.join(lines[1:])
-
-    # 1. Remove spaces (Continuous Script)
+    # 1. Remove spaces (Continuous Script) BEFORE parsing markdown titles
     processed_text = remove_mantra_spaces(input_text)
     
+    # NEW: Handle Markdown-style Title and Supersection markers BEFORE html linebreaking mechanics
+    def replace_main_title_html(match):
+        content = match.group(1).strip()
+        return f'<div class="title-page"><h1 class="chapter-title">{content}</h1></div>'
+    processed_text = re.sub(r'#\s*Title\s*#(.*?)#\s*End of Title\s*#', replace_main_title_html, processed_text, flags=re.DOTALL | re.IGNORECASE)
+
+    # Tag supersections to parse in format_html
+    def replace_supersection_html(match):
+        content = match.group(1).strip()
+        return f'<SUPERSECTION>{content}</SUPERSECTION>'
+    processed_text = re.sub(r'#\s*Supersection title\s*#(.*?)#\s*End of Supersection title.*?#', replace_supersection_html, processed_text, flags=re.DOTALL | re.IGNORECASE)
+    
+    subtitle_html = ""
+    
     # 2. Replace Accents
-    processed_text = step_preprocess_visarga_accent(processed_text)
+    processed_text = fix_visarga_accent_order_local(processed_text)
     processed_text = replace_accents_html(processed_text)
     
     # 3. Formatting
@@ -529,21 +610,12 @@ def generate_html(input_text, base_filename):
     # Build TOC HTML
     toc_html = '<div class="toc"><h2>अनुक्रमणिका</h2><ul>'
     for entry in toc_entries:
-        # Skip the main chapter titles (like Uttararchikam) in the TOC as requested
-        if entry['is_chapter']:
-            continue
         cls = "toc-chapter" if entry['is_chapter'] else "toc-section"
         toc_html += f'<li class="{cls}"><a href="#{entry["id"]}">{entry["title"]}</a></li>'
     toc_html += '</ul></div>'
     
-    # HTML Template
-    html_content = f'''<!DOCTYPE html>
-<html lang="sa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>॥ सामसंहिता ॥</title>
-    <style>
+    # Choose color CSS based on flag
+    html_colors = f'''
         :root {{
             --primary-color: #2d3a4a;
             --accent-blue: #1565c0;
@@ -553,7 +625,27 @@ def generate_html(input_text, base_filename):
             --swara-red: #c62828;
             --bg-light: #f8f9fa;
             --border-color: #dee2e6;
-        }}
+        }}''' if CURRENT_PDF_COLOR_MODE == 'color' else f'''
+        :root {{
+            --primary-color: #000000;
+            --accent-blue: #000000;
+            --accent-green: #000000;
+            --accent-skyblue: #000000;
+            --accent-purple: #000000;
+            --swara-red: #000000;
+            --bg-light: #ffffff;
+            --border-color: #dddddd;
+        }}'''
+        
+    # HTML Template
+    html_content = f'''<!DOCTYPE html>
+<html lang="sa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>॥ सामसंहिता ॥</title>
+    <style>
+        {html_colors}
         
         * {{
             box-sizing: border-box;
@@ -812,12 +904,23 @@ if __name__ == "__main__":
                         help='Base name for output files (default: vedic_output)')
     parser.add_argument('-f', '--format', choices=['pdf', 'html', 'all'], default='all',
                         help='Output format: pdf, html, or all (default: all)')
+    parser.add_argument('--pdf-font', dest='pdf_font', default='NotoSansDevanagari',
+                        help='Font for PDF output (default: NotoSansDevanagari)')
+    parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
+                        choices=['bw', 'color'], default='color',
+                        help='Color mode for PDF output: bw or color (default: color)')
+    parser.add_argument('--draft', action='store_true',
+                        help='Enable draft mode (no new pages for each Khandah and Atha)')
     
     args = parser.parse_args()
     
     input_file = args.input
     output_base = args.output
     output_format = args.format
+    
+    CURRENT_PDF_FONT = args.pdf_font
+    CURRENT_PDF_COLOR_MODE = args.pdf_color_mode
+    CURRENT_PDF_DRAFT_MODE = args.draft
     
     if os.path.exists(input_file):
         try:
