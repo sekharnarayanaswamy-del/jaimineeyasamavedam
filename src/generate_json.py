@@ -412,12 +412,18 @@ class RikTextParser:
             print(f"[WARNING] Rik Text file '{filepath}' not found.")
             return
         
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, 'r', encoding='utf-8-sig') as f:
             content = f.read()
 
-        # Split by section markers like "॥ इति प्रथमः खण्डः ॥"
-        raw_sections = re.split(r'॥\s*इति[^॥]+॥', content)
-        
+        # Strip Title and Supersection title markup blocks
+        content = re.sub(r'#\s*Title\s*#.*?#\s*End of Title\s*#', '', content, flags=re.DOTALL)
+        content = re.sub(r'#\s*Supersection title\s*#.*?#\s*End of Supersection title\s*#?', '', content, flags=re.DOTALL)
+        # Also strip Iti (patha-end) markers so they don't produce false Rik matches
+        content = re.sub(r'॥\s*इति[^॥]*॥', '', content)
+
+        # Split by khanda/parva start markers (e.g. "॥ अथ प्रथमः खण्डः ॥" or "॥ अथ शाक्वर पर्वा ॥")
+        # Handles single/double pipe variations used in Uttararchikam
+        raw_sections = re.split(r'(?:॥|\|\|)?\s*अथ\s+[^॥|]+(?:खण्डः|पर्वा)\s*(?:\|\||॥)', content)
         # Pattern to match Rik text ending with ॥ num ॥
         # Captures text before the number and the Devanagari/Arabic numeral
         rik_pattern = re.compile(r'([^॥]+?)॥\s*([०-९\d]+)\s*॥')
