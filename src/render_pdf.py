@@ -2224,8 +2224,12 @@ Examples:
             
             # Using basic unique Rik logic + Samam regex counting
             for sub_key, sub_data in sec_data.get('subsections', {}).items():
-                rik_id = sub_data.get('rik_id', 0)
-                seen_riks.add(rik_id)
+                rik_ids = sub_data.get('rik_ids', [])
+                if rik_ids:
+                    seen_riks.update(rik_ids)
+                else:
+                    seen_riks.add(sub_data.get('rik_id', 0))
+                
                 for ms in sub_data.get('corrected-mantra_sets', []):
                     mantra = ms.get('corrected-mantra', '')
                     m_markers = re.findall(r'॥\s*[०-९]+\s*॥', mantra)
