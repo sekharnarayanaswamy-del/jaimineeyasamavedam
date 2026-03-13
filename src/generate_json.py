@@ -56,6 +56,9 @@ def sanitize_invisible_chars(text):
     ]
     for char in invisible_chars:
         text = text.replace(char, '')
+    
+    # 2.5 B. Globally replace colons with Devanagari visargas
+    text = text.replace(':', 'ः')
     return text
 
 def parse_mantra_set(mantra_set_text):
@@ -165,7 +168,7 @@ class RikMetadataParser:
             # 2. Overrides (Number Val)
             overrides = {}
             pattern = re.compile(
-                r'((?:\d+(?:\s*[,–-]\s*\d+)*(?:,\s*)?)+)\s+([^\d,]+?)(?=\s*\d+(?:\s*[,–-]\s*\d+)*\s+[^\d]|$)'
+                r'((?:\d+(?:\s*[,–-]\s*\d+)*(?:,\s*)?)+)\s+([^\d]+?)(?=\s*\d+(?:\s*[,–-]\s*\d+)*\s+[^\d]|$)'
             )
             # Use strict finditer on the inner content
             for m in pattern.finditer(content):
@@ -202,7 +205,8 @@ class RikMetadataParser:
             print(f"[WARNING] Rik Metadata file '{filepath}' not found.")
             return
         with open(filepath, 'r', encoding='utf-8-sig') as f:
-            self.section_lines = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
+            # Also globally replace colons with Devanagari visargas during load
+            self.section_lines = [line.strip().replace(':', 'ः') for line in f if line.strip() and not line.strip().startswith('#')]
 
     def parse_range_string(self, range_str):
         """Parse a range string like '1, 3, 5-8' into list of integers."""
@@ -231,7 +235,7 @@ class RikMetadataParser:
         if not section_text:
             return "", {}
         
-        section_text = section_text.strip().strip('।|,').strip()
+        section_text = section_text.strip().strip('।|॥,').strip()
         if not section_text:
             return "", {}
         
@@ -289,13 +293,13 @@ class RikMetadataParser:
             rik_range = self.parse_range_string(range_match.group(1))
             line = re.sub(r'^\s*\([\d\s–-]+\)', '', line).strip()
         
-        # 2. Split by ।। to separate Rishi, Devata, Chandas sections
-        parts = line.split('।।')
+        # 2. Split by any multiple danda or pipe variant to separate Rishi, Devata, Chandas sections
+        parts = re.split(r'\s*(?:[|॥।]\s*)+', line)
         
-        # First part is Rishi section (before first ।।)
+        # First part is Rishi section (before first danda group)
         rishi_section = parts[0] if parts else ""
         
-        # Remaining parts are Devata and Chandas (after first ।।)
+        # Remaining parts are Devata and Chandas (after first danda group)
         suffix_parts = parts[1:] if len(parts) > 1 else []
         
         # 3. Parse Rishi section (numbers before names)
@@ -333,7 +337,7 @@ class RikMetadataParser:
         chandas_default, chandas_specific = "", {}
         
         # Clean and filter non-empty parts
-        clean_suffix_parts = [p.strip().strip('।|') for p in suffix_parts if p.strip().strip('।|')]
+        clean_suffix_parts = [p.strip().strip('।|॥') for p in suffix_parts if p.strip().strip('।|॥')]
         
         if len(clean_suffix_parts) == 0:
             # No Devata or Chandas
@@ -509,7 +513,7 @@ class SamanMetadataParser:
             return
         
         with open(filepath, 'r', encoding='utf-8') as f:
-            lines = [line.strip() for line in f if line.strip()]
+            lines = [line.strip().replace(':', 'ः') for line in f if line.strip()]
         
         current_section = []  # List of (rik_id, title, metadata) tuples in order
         prev_rik_id = 0
@@ -539,10 +543,10 @@ class SamanMetadataParser:
             title = ""
             metadata = ""
             if rest:
-                # Split at first danda sequence
-                split_pattern = r'\s*(?:\|{2}|॥|।{2})+\s*'
+                # Split at first danda or pipe sequence (single or multiple, ASCII or Devanagari)
+                split_pattern = r'\s*(?:[|॥।]\s*)+'
                 parts = re.split(split_pattern, rest, maxsplit=1)
-                # Title is the part before ।।
+                # Title is the part before the delimiter
                 title = parts[0].strip() if parts else ""
                 if len(parts) > 1:
                     meta_part = parts[1].strip()
@@ -843,10 +847,8 @@ def convert_corrections_to_json(
                     rik_meta_val = clean_rik_metadata_format(raw_rik_meta) if display_rik_text else ""
 
                 # --- NEW: Apply Visarga Preprocessing globally ---
-                clean_header_text = step_preprocess_visarga_accent(clean_header_text)
-                rik_meta_val = step_preprocess_visarga_accent(rik_meta_val)
+                # Only process text fields, skip metadata fields to preserve parens as requested
                 display_rik_text = step_preprocess_visarga_accent(display_rik_text)
-                saman_meta_val = step_preprocess_visarga_accent(saman_meta_val)
                 full_saman_text = step_preprocess_visarga_accent(full_saman_text)
                 # -----------------------------------------------
 

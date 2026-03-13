@@ -790,8 +790,7 @@ Version 3.0 2026-03-08 23:13:30
 #End of Mantra Sets -- subsection_102 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_103 ## DO NOT EDIT
-॥ प्रैय्यमेधञ्च ॥  
-# End of SubSection Title -- subsection_103 ## DO NOT EDIT
+॥ प्रैय्यमेधञ्च ॥  # End of SubSection Title -- subsection_103 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_103 ## DO NOT EDIT
 अर्चतप्रार्चता(षू) ना(ख) रा(प्ल)ः । प्रियमेधा(खी) सोआ(चा) र्चाता(फा)  । अर्चन्तुपू(खी)  त्राका(चा) ऊ(क)  ता(फ)  । पू(क)  रमिद्धा(टि)  ष्णुवार्चा(खि)  । ता(त्र) ॥ १६७ ॥
 #End of Mantra Sets -- subsection_103 ## DO NOT EDIT
@@ -804,8 +803,13 @@ Version 3.0 2026-03-08 23:13:30
 #End of Mantra Sets -- subsection_104 ## DO NOT EDIT
 
 # Start of Section Title -- section_24 ## DO NOT EDIT
-२४. ॥ नवग्रह सुक्तम ॥
+२४. ॥ नवग्रह  सूक्तम ॥
 # End of Section Title -- section_24 ## DO NOT EDIT
+
+# Start of Rik Text -- subsection_105 ## DO NOT EDIT
+ऊदूत्यं(2) जाता(2)वे(1)दसम् । दे(2) वं(2)वाहन्तीं केता(2)वाः(1) । दृशे(4)वि(4)श्वा(1)यासूर्यम्  
+# End of Rik Text -- subsection_105 ## DO NOT EDIT
+
 # Start of SubSection Title -- subsection_105 ## DO NOT EDIT
 ॥ सूर्यसामच् ॥  
 # End of SubSection Title -- subsection_105 ## DO NOT EDIT
@@ -813,6 +817,9 @@ Version 3.0 2026-03-08 23:13:30
 उदुत्यमो(ती) हा(त) इ(श) ।जातावे(कि) दा(ख) स(ण) म् ।दे(क) वंवहन्तीके(कु) ता(ख) वा(ण)ः ।दार्शे(पा) हा(ण) इ(श) ।वाइ श्वा(किच्) या(क) सूर्यामौ(पि) होबा(प्ला) ।हो(प्ल) इळा(शा)॥ १६९ ॥
 #End of Mantra Sets -- subsection_105 ## DO NOT EDIT
 
+# Start of Rik Text -- subsection_106 ## DO NOT EDIT
+ 
+# End of Rik Text -- subsection_106 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_106 ## DO NOT EDIT
 ॥ त्रैतानि चत्वारि ॥  
 # End of SubSection Title -- subsection_106 ## DO NOT EDIT
@@ -820,6 +827,9 @@ Version 3.0 2026-03-08 23:13:30
 चन्द्रमाया(ती) ।प्सू(त) आन्ता(पा) रा(श) । सुपणोर्धा(कीच्) वा(क) ता(ट) इदी(चा) विया(ता) । नवो(टाच्) हिर(का) ण्यने(का) मयःपादंविन्द(कू)  न्तिविद्युतो(पी) हा(ण) इ(श) ।विक्तंहोइमाया(टू)  हो(कथ्) स्यारोदा(टि) सा(खण्) इ(श) ।ओ(प) इळा(शा) ॥ १७० ॥
 #End of Mantra Sets -- subsection_106 ## DO NOT EDIT
 
+# Start of Rik Text -- subsection_107 ## DO NOT EDIT
+
+# End of Rik Text -- subsection_107 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_107 ## DO NOT EDIT
 ॥ अग्नेश्चार्षेयम् ॥  
 # End of SubSection Title -- subsection_107 ## DO NOT EDIT
@@ -827,48 +837,63 @@ Version 3.0 2026-03-08 23:13:30
 अग्निर्मूर्धादी(तु) वःककू(ति) त् ।पाती(टा) पार्त्थी(टा) व्याअया(चि) म् ।आपां(टा) राइतां(टि) सी(क) जिन्वा(टा) ता(खण्) इ(श) ।ओ(प) इळा(प्ला) ॥ १७१ ॥
 #End of Mantra Sets -- subsection_107 ## DO NOT EDIT
 
+# Start of Rik Text -- subsection_108 ## DO NOT EDIT
+
+# End of Rik Text -- subsection_108 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_108 ## DO NOT EDIT
 ॥ ऋतुसामनिच ॥  
 # End of SubSection Title -- subsection_108 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_108 ## DO NOT EDIT
 ब्रह्माब्रा(टि) ह्मा(त)   ।  जज्ञानं(चि) प्राथामं(कि)  पुरास्ता(भि) त्  । वीसाइवा(टि)  इसी(ता)   ।  मतस्सुरू(की)  चोवे(था) नआवा(भि) त्। साबूसा(टि) बू(त)  । ध्न्याउपा(चि)  मा(क) आ(ट) स्यवाइष्ठा(भी)ः। सातास्सा(टि) ता(त)ः  । चयोनीमासा(चु)  ताश्चवा(कि)  इवा(पाण्)ः । ओ(प)  इळा(प्ला)  ॥ १७२ ॥
-#End of Mantra Sets -- subsection_108 ## DO NOT EDIT
+#End of Mantra Sets -- subsection_108   ## DO NOT EDIT
+# Start of Rik Text -- subsection_109 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_109 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_109 ## DO NOT EDIT
 ॥ बार्हस्पत्यञ्च ॥  
 # End of SubSection Title -- subsection_109 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_109 ## DO NOT EDIT
 सोमंराजा(षी) नंवरुणा(ती) म् । अग्नीमन्वा(की) रभाम हे(ची) होवा(टा) हा(त) इ(श) । आ(थ) दित्यंविष्णुं(की) सूर्यं(का) होवा(टा) हा(त) इ(श) । ब्रह्मा णा(टि) ञ्चा(त) होवा(टा) हा(त) इ(श) । बृहा(टा) उवा(ता) ।स्पा(ख) ति(श) म् ॥ १७३ ॥
 #End of Mantra Sets -- subsection_109 ## DO NOT EDIT
+# Start of Rik Text -- subsection_110 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_110 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_110 ## DO NOT EDIT
 ॥ बभ्रोःकुंभस्य साम ॥  
 # End of SubSection Title -- subsection_110 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_110 ## DO NOT EDIT
 इन्दू(खा) रौहोवाहाइपावी(शृ)। ष्टचा(टा) ईत नो(खि) हा(ण) इ(श)। हा(क) होए(टा) हो(ट) वा(त)। प्रीयाःकवी(की) नाम्मतिरो(पी) हा(ण) इ(श)। हा(क) होए(टा) हो(ट) वा(त)। सृजा(टा) दश्वां(खा) हा(ण) इ(श)।हा(क) होए(टा) हो(ट) वा(त)। रा(ट) था(ख) औहोवा(शि)। ई(ख) वा(श) ॥ १७४ ॥
 #End of Mantra Sets -- subsection_110 ## DO NOT EDIT
+# Start of Rik Text -- subsection_111 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_111 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_111 ## DO NOT EDIT
 ॥ वसूरोचिशस्सौर्यवचस्य सामानि द्वे ॥  
 # End of SubSection Title -- subsection_111 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_111 ## DO NOT EDIT
 शन्नोदेवी(ती) ।आभीष्टा(टि) या(ख) इशन्नोभुवा(शु) म् । तूपीता(टि) या(ख) इशय्योरभी(शु)ः ।श्रावान्तू(टिट्) ना(ख) औहोवा(शि) ।ऊ(ख) पा(श)॥१८ हुवा(ता) हो(प) इशन्नोदेवी(प्लु) रभिष्टया(ङि) इ(श) । हुवा(ता) हो(प) इशन्नोभुवा(प्लु) न्तूपीताया(ङी) इ(श) । हुवा(ता) हो(प) इशय्योरभी(प्लु) स्रवन्तु(ङि) ना(श)ः। हुवा(ता) हो(ट) या(ख) औहोवा(शि) ।ऊ(ख) पा(श) ॥ १७५ ॥
 #End of Mantra Sets -- subsection_111 ## DO NOT EDIT
+# Start of Rik Text -- subsection_112 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_112 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_112 ## DO NOT EDIT
 ॥ वाचस्सामनि द्वे ॥  
 # End of SubSection Title -- subsection_112 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_112 ## DO NOT EDIT
 कयानश्ची(ती)  । त्रा(त)  याभू(पा) वा(श) त् । ऊ(क)  ताइ सदावा(कु)  र्धस्सा(खा) खा(ण)   ।  कयाशा(टि)  चा(त)  इ(श)   । ष्ठा(प)  या(श)  वा(ख)  र्तो(प्ल) । हाइ(शा)॥ १७६ ॥ होवाइ होवाइ(षू) कयानश्ची(ती)  । त्रा(त)  याभू(पा)  वा(श) त्    । होवाइहोवाइ(षू) ऊती(चा)  स्सादा(काच्)  वृधा(का)  स्सा(प)  खा(श) । होवाइ होवाइ(षू)  कया(ता)  शचा(ता) इ(श)   ।  ष्ठाया वा(टिट्) र्ता(ख) औहोवा(शि)   ।  ऊ(ख)  पा(श) ॥ १७७ ॥
 #End of Mantra Sets -- subsection_112 ## DO NOT EDIT
+# Start of Rik Text -- subsection_113 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_113 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_113 ## DO NOT EDIT
 ॥ बार्हस्पत्यञ्चब्राह्मणस्पत्यंवा ॥  
 # End of SubSection Title -- subsection_113 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_113 ## DO NOT EDIT
 प्रैतूब्रा(खि)  ह्माणास्पाती(प्ली)ः  । प्रादाइ व्ये(टीच्)  तू(क)  सूनृता(कि)  अच्छा(टा)  वा(ख)  इर(णा) म्  । नर्यंप(तिच्) न्तीरा(चा)   धा(य) सा(ट) म् । देवा(टा) या(ख) ज्ञ(ण) म् । ना(ट)  या(ख)  औहो वा(शि)  । तू(ख)  ना(श)ः॥ १७८ ॥
 #End of Mantra Sets -- subsection_113 ## DO NOT EDIT
+# Start of Rik Text -- subsection_114 ## DO NOT EDIT
 
+# End of Rik Text -- subsection_114 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_114 ## DO NOT EDIT
 ॥ आदित्यस्य रुचिरोचनंवा ॥  
 # End of SubSection Title -- subsection_114 ## DO NOT EDIT

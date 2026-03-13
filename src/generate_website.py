@@ -15,17 +15,40 @@ Author: JSV Project
 Version: 2.0.0
 """
 
+# --- Path Setup and Imports ---
 import os
 import re
 import json
-from utils import combine_ardhaksharas, get_generated_metadata, step_preprocess_visarga_accent
+import sys
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from collections import defaultdict
 from datetime import datetime
 
-# --- Import text processing functions from render_pdf ---
+# Add current and tools directory to path
+current_dir = Path(__file__).parent
+if str(current_dir) not in sys.path:
+    sys.path.append(str(current_dir))
+tools_dir = current_dir / 'tools'
+if tools_dir.exists() and str(tools_dir) not in sys.path:
+    sys.path.append(str(tools_dir))
+
+# --- Local Imports ---
+try:
+    from utils import (
+        combine_ardhaksharas, 
+        get_generated_metadata, 
+        step_preprocess_visarga_accent,
+        parse_mantra_for_latex
+    )
+except ImportError:
+    # Fallback/Dummy versions for linting/missing files
+    def combine_ardhaksharas(s): return list(s)
+    def get_generated_metadata(f): return {}
+    def step_preprocess_visarga_accent(s): return s
+    def parse_mantra_for_latex(s): return s
+
 try:
     from render_pdf import (
         replace_accents_html,
@@ -35,11 +58,17 @@ try:
         handle_consecutive_trikamba_html,
         process_footnotes_html
     )
-    from utils import parse_mantra_for_latex, combine_ardhaksharas
     HAS_RENDER_IMPORTS = True
 except ImportError:
-    # Fallback if imports fail - define local versions
     HAS_RENDER_IMPORTS = False
+
+# Import samam_utils for counting
+try:
+    from samam_utils import count_samams_with_fallback
+except ImportError:
+    def count_samams_with_fallback(text): 
+        # Very simple fallback: count (1), (2) etc.
+        return len(re.findall(r'\(\d+\)', text))
 
 # --- Configuration ---
 AUDIO_FILENAME_FORMAT = "JSV_{parva}_{kandah}_{sama}.mp3"
@@ -531,31 +560,34 @@ class JSVParser:
                     
                     self._start_new_sama(sub_key, sama_title)
                     
-                    if self.current_sama:
-                        self.current_sama.rik_metadata = sub_data.get('rik_metadata', '')
-                        self.current_sama.saman_metadata = sub_data.get('saman_metadata', '')
-                        self.current_sama.rik_text = sub_data.get('rik_text', '')
+                    s: Optional[Sama] = self.current_sama
+                    if s is not None:
+                        s.rik_metadata = sub_data.get('rik_metadata', '')
+                        s.saman_metadata = sub_data.get('saman_metadata', '')
+                        s.rik_text = sub_data.get('rik_text', '')
                         
                         ms = sub_data.get('corrected-mantra_sets', [])
                         mantra_list = []
                         for m in ms:
-                             mantra_list.append(m.get('corrected-mantra', ''))
-                        self.current_sama.mantra_text = '\n'.join(mantra_list)
+                             if isinstance(m, dict):
+                                 mantra_list.append(m.get('corrected-mantra', ''))
+                        s.mantra_text = '\n'.join(mantra_list)
                         
                         fns = sub_data.get('footnotes', {})
                         fn_list = []
-                        for k, v in fns.items():
-                             fn_list.append(f"{k}: {v}")
-                        self.current_sama.footnotes = fn_list
+                        if isinstance(fns, dict):
+                            for k, v in fns.items():
+                                 fn_list.append(f"{k}: {v}")
+                        s.footnotes = fn_list
                         
                         # Classification fields
-                        self.current_sama.saman_rishi = sub_data.get('saman_rishi', '')
-                        self.current_sama.saman_devata = sub_data.get('saman_devata', '')
-                        self.current_sama.saman_chandas = sub_data.get('saman_chandas', '')
-                        self.current_sama.rik_rishi = sub_data.get('rik_rishi', '')
-                        self.current_sama.rik_devata = sub_data.get('rik_devata', '')
-                        self.current_sama.rik_chandas = sub_data.get('rik_chandas', '')
-                        self.current_sama.rik_classifications = sub_data.get('rik_classifications', [])
+                        s.saman_rishi = sub_data.get('saman_rishi', '')
+                        s.saman_devata = sub_data.get('saman_devata', '')
+                        s.saman_chandas = sub_data.get('saman_chandas', '')
+                        s.rik_rishi = sub_data.get('rik_rishi', '')
+                        s.rik_devata = sub_data.get('rik_devata', '')
+                        s.rik_chandas = sub_data.get('rik_chandas', '')
+                        s.rik_classifications = sub_data.get('rik_classifications', [])
         
         self._finalize_current_sama()
         return self.parvas
@@ -755,6 +787,9 @@ class WebsiteGenerator:
         
         # Create audio placeholder directories
         self._create_audio_directories()
+        
+        # Collect index data early so counts are available for homepage
+        self._collect_indices()
         
         # Generate files
         self._generate_css()
@@ -1917,17 +1952,17 @@ sup.footnote-ref a:hover {
 .index-section-header {
     font-family: var(--font-heading);
     color: var(--primary-maroon);
-    margin: 3rem 0 1.5rem 0;
-    font-size: 1.8rem;
-    border-bottom: 3px solid var(--primary-gold);
-    padding-bottom: 8px;
+    margin: 2rem 0 1rem 0;
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--primary-gold);
+    padding-bottom: 6px;
 }
 
 .top-20-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 3rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
 @media (max-width: 1100px) {
@@ -1988,35 +2023,75 @@ sup.footnote-ref a:hover {
     font-weight: 500;
 }
 
-.index-items-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 2rem;
+.index-list-container {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid var(--border-light);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+    overflow: hidden;
 }
 
-@media (max-width: 1200px) {
+.index-items-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* Maintain equal heights for the Headers Index only on home page */
+.header-index-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 1rem;
+    column-count: auto;
+}
+
+@media (max-width: 1100px) {
     .index-items-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+    .header-index-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
     .index-items-grid {
         grid-template-columns: 1fr;
+    }
+    .header-index-grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
 .index-item-card {
-    background: #fdfdfd;
-    border: 1px solid var(--border-light);
+    background: #eeeeee;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 1rem;
+    padding: 0.6rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    justify-content: center;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    box-sizing: border-box;
+}
+
+/* New compact list entry for Rishi/Devata/Chandas indices */
+.index-list-item {
+    padding: 0.4rem 0.5rem;
+    background: transparent;
+    border-bottom: 1px solid #eee;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.index-list-item:hover {
+    background: #fdfdfd;
 }
 
 .index-item-card:hover {
@@ -2026,67 +2101,111 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
+/* Compact version for Headers Index */
+.simple-card {
+    padding: 0.6rem 1rem;
+    min-height: 48px;
+}
+
+.simple-card .item-main {
+    align-items: center;
+    overflow: hidden;
+    min-width: 0;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.simple-card .item-name {
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+.simple-card .item-count-badge {
+    padding: 1px 8px;
+    font-size: 0.75rem;
+}
+
 .item-main {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
 }
 
 .item-name {
     font-family: var(--font-sanskrit);
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     color: var(--text-primary);
-    font-weight: 500;
-    line-height: 1.4;
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .item-count-badge {
     background: #eeeeee;
     color: #555555;
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-size: 0.85rem;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.75rem;
     font-weight: 600;
     flex-shrink: 0;
 }
 
 .item-refs {
-    font-size: 0.85rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    padding-top: 0.5rem;
-    border-top: 1px dashed var(--border-light);
+    margin-top: 0.2rem;
+    display: block;
+    line-height: 1.8;
+}
+
+/* Custom scrollbar for compact view */
+.item-refs::-webkit-scrollbar {
+    width: 3px;
+}
+.item-refs::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
 }
 
 .item-refs a {
+    font-size: 1.1rem;
     color: var(--text-link);
-    background: rgba(192, 133, 53, 0.05); /* Light gold bg */
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 1px solid rgba(192, 133, 53, 0.1);
+    text-decoration: none;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.item-refs a::after {
+    content: ',';
+    color: #999;
+}
+
+.item-refs a:last-child::after {
+    content: '';
 }
 
 .item-refs a:hover {
-    background: var(--primary-gold);
-    color: white;
-    border-color: var(--primary-gold);
+    text-decoration: underline;
+    color: var(--primary-maroon);
 }
 
 .index-char-group {
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     scroll-margin-top: 2rem;
 }
 
 .index-char-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color: var(--primary-maroon);
     font-family: var(--font-sanskrit);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
 }
 
 .index-char-title::after {
@@ -2141,15 +2260,15 @@ sup.footnote-ref a:hover {
 .rishi-rank {
     background: var(--primary-maroon);
     color: white;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    font-size: 0.8rem;
-    margin-right: 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-right: 1.25rem;
     flex-shrink: 0;
 }
 
@@ -2160,56 +2279,17 @@ sup.footnote-ref a:hover {
 .rishi-name {
     font-family: var(--font-sanskrit);
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     display: block;
 }
 
 .rishi-count {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     text-align: right;
+    font-weight: 500;
 }
 
-.alphabet-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    background: #fdfdfd;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    border: 1px solid var(--border-light);
-}
-
-.alpha-btn {
-    display: flex;
-    align-items: center;
-    padding: 0.4rem 0.8rem;
-    background: white;
-    border: 1px solid var(--border-light);
-    border-radius: 4px;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-size: 0.9rem;
-    transition: all 0.2s;
-}
-
-.alpha-btn:hover {
-    border-color: var(--primary-maroon);
-    background: var(--primary-cream);
-}
-
-.alpha-char {
-    font-family: var(--font-sanskrit);
-    font-weight: bold;
-    margin-right: 6px;
-    font-size: 1.1rem;
-}
-
-.alpha-count {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
 
 .count-tag {
     font-size: 0.8rem;
@@ -2218,24 +2298,6 @@ sup.footnote-ref a:hover {
     margin-left: 8px;
 }
 
-.index-list {
-    column-count: 3;
-    column-gap: 2.5rem;
-    column-rule: 1px solid var(--border-light);
-    margin-top: 2rem;
-}
-
-@media (max-width: 1200px) {
-    .index-list {
-        column-count: 2;
-    }
-}
-
-@media (max-width: 800px) {
-    .index-list {
-        column-count: 1;
-    }
-}
 
 .index-char-group {
     break-inside: avoid-column;
@@ -2442,15 +2504,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_homepage(self):
         """Generate the homepage"""
-        # Add tools directory to path to import samam_utils
-        import sys
-        current_dir = Path(__file__).parent
-        tools_dir = current_dir / 'tools'
-        if str(tools_dir) not in sys.path:
-            sys.path.append(str(tools_dir))
-            
-        from samam_utils import count_samams_with_fallback
-        
         total_kandahs = sum(len(p.kandahs) for p in self.parvas)
         
         # Count total Arsheyams (subsections/Sama objects)
@@ -2493,7 +2546,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="page-container">
         {self._get_sidebar_html()}
         
-        <main class="main-content">
+        <main class="main-content" style="max-width: 1200px;">
             <div class="home-hero">
                 <h1>{self.config['title_sa']}</h1>
                 <p class="subtitle">{self.config['title_en']}</p>
@@ -2512,13 +2565,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="stat-label">आर्षेयम् (Arsheyam)</div>
                     </div>
                     <div class="stat-item">
+                        <div class="stat-value">{self.total_riks_classified}</div>
+                        <div class="stat-label">ऋक् (Rik)</div>
+                    </div>
+                    <div class="stat-item">
                         <div class="stat-value">{total_samas}</div>
                         <div class="stat-label">साम: (Sama)</div>
                     </div>
                 </div>
                 
                 <div class="quick-links" style="margin-top: 2rem; text-align: center; opacity: 0.7;">
-                    <a href="classification/index.html" class="index-btn">सङ्क्रमणिका / वर्गीकरणम् (Indices)</a>
+                    <a href="classification/index.html" class="index-btn"> अन्य सङ्क्रमणिका / वर्गीकरणम् (Indices)</a>
                 </div>
             </div>
             
@@ -2536,6 +2593,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         with open(self.output_dir / 'index.html', 'w', encoding='utf-8') as f:
             f.write(html)
+
+    def _to_devanagari_num(self, n: Any) -> str:
+        """Convert a number to Devanagari numerals"""
+        devanagari_digits = '०१२३४५६७८९'
+        return "".join(devanagari_digits[int(d)] for d in str(n) if d.isdigit())
 
     def _normalize_index_key(self, text: str) -> str:
         """Normalize metadata keys to merge duplicates (spaces, punctuation)"""
@@ -2599,7 +2661,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_indices(self):
         """Generate all index pages"""
-        self._collect_indices()
+        # (Already collected by generate())
         
         # Create classification dir
         (self.output_dir / 'classification').mkdir(exist_ok=True)
@@ -2608,7 +2670,6 @@ document.addEventListener('DOMContentLoaded', function() {
         self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html", show_top_20=True)
         self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html", show_top_20=True)
         self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html", show_top_20=True)
-        self._generate_header_index()
 
     def _generate_classification_home(self):
         """Generate the main 3-column classification landing page"""
@@ -2617,7 +2678,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="page-container">
         {self._get_sidebar_html(depth=1)}
         
-        <main class="main-content">
+        <main class="main-content" style="max-width: 1200px;">
             <div class="page-header">
                 <h1>सङ्क्रमणिका / वर्गीकरणम्</h1>
                 <p class="page-subtitle">Indices and Classifications</p>
@@ -2642,11 +2703,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </a>
             </div>
             
-            <section class="class-section" style="margin-top: 4rem;">
-                <h2 class="index-section-header">अनुक्रमणिका:</h2>
-                <div class="button-row">
-                    <a href="headers.html" class="index-btn">सामानुक्रमणिका (Headers Index)</a>
-                </div>
+            <section style="margin-top: 4rem;">
+                <h2 class="index-section-header">सामानुक्रमणिका (Alphabetical Headers Index)</h2>
+                {self._get_header_index_html()}
             </section>
         </main>
     </div>
@@ -2738,10 +2797,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 term_id = f"term-{key.replace(' ', '_')}"
                 
                 grid_items_html += f'''
-                <div class="index-item-card" id="{term_id}">
-                    <div class="item-main">
-                        <div class="item-name">{key}</div>
-                        <div class="item-count-badge">{len(refs)}</div>
+                <div class="index-list-item" id="{term_id}">
+                    <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem; margin-bottom: 0.2rem;">
+                        <span class="item-name" style="color: var(--primary-maroon); min-width: fit-content;">{key}</span>
+                        <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">({len(refs)})</span>
                     </div>
                     <div class="item-refs">
                         {refs_links}
@@ -2760,7 +2819,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <body>
     <div class="page-container">
         {self._get_sidebar_html(depth=1)}
-        <main class="main-content">
+        <main class="main-content" style="max-width: 1200px;">
             <div class="page-header">
                 <h1>{title}</h1>
                 <a href="index.html" class="back-link">← Back to Classifications</a>
@@ -2789,46 +2848,56 @@ document.addEventListener('DOMContentLoaded', function() {
         with open(self.output_dir / 'classification' / filename, 'w', encoding='utf-8') as f:
             f.write(html)
 
-    def _generate_header_index(self):
-        """Generate Alphabetical Header Index"""
-        # Sort by text
-        sorted_items = sorted(self.header_index, key=lambda x: x['text'])
-        
-        items_html = ""
-        current_char = ""
-        
-        for item in sorted_items:
-            # Group by first character (optional, but nice)
-            first_char = item['text'][0] if item['text'] else ''
-            if first_char != current_char:
-                current_char = first_char
-                items_html += f'<div class="index-char-header">{current_char}</div>'
+    def _get_header_index_html(self):
+        """Generate common HTML for Headers Index (nav + list)"""
+        # Group by starting letter
+        alpha_groups = defaultdict(list)
+        for item in sorted(self.header_index, key=lambda x: x['text']):
+            char = item['text'][0] if item['text'] else '?'
+            alpha_groups[char].append(item)
             
-            items_html += f'''
-            <div class="index-entry simple">
-                <a href="{item["link"]}" class="index-term-link">{item["text"]}</a>
-                <span class="index-loc">({item["location"]})</span>
+        # 1. Alphabet Nav
+        alpha_nav_html = ""
+        for char in sorted(alpha_groups.keys()):
+            count = len(alpha_groups[char])
+            alpha_nav_html += f'''
+            <a href="#char-{char}" class="alpha-btn">
+                <span class="alpha-char">{char}</span>
+                <span class="alpha-count">{count}</span>
+            </a>'''
+            
+        alpha_nav_section = f'''
+        <div class="alphabet-nav">
+            {alpha_nav_html}
+        </div>'''
+        
+        # 2. List Grid
+        list_html = ""
+        for char in sorted(alpha_groups.keys()):
+            grid_items_html = ""
+            for item in alpha_groups[char]:
+                grid_items_html += f'''
+                <a href="{item["link"]}" class="index-item-card simple-card">
+                    <div class="item-main">
+                        <div class="item-name">{item["text"]}</div>
+                        <div class="item-count-badge">{item["location"]}</div>
+                    </div>
+                </a>'''
+            
+            list_html += f'''
+            <div class="index-char-group" id="char-{char}">
+                <div class="index-char-title">{char}</div>
+                <div class="index-items-grid header-index-grid">
+                    {grid_items_html}
+                </div>
             </div>'''
             
-        html = f'''{self._get_html_head("सामानुक्रमणिका", depth=1)}
-<body>
-    <div class="page-container">
-        {self._get_sidebar_html(depth=1)}
-        <main class="main-content">
-            <div class="page-header">
-                <h1>सामानुक्रमणिका (Alphabetical Headers)</h1>
-                <a href="index.html" class="back-link">← Back to Classifications</a>
-            </div>
-            <div class="index-list">
-                {items_html}
-            </div>
-        </main>
-    </div>
-    <script src="../js/main.js"></script>
-</body>
-</html>'''
-        with open(self.output_dir / 'classification' / 'headers.html', 'w', encoding='utf-8') as f:
-            f.write(html)
+        return f'''
+        {alpha_nav_section}
+        <div class="index-list-container">
+            {list_html}
+        </div>'''
+
             
     def _generate_kandah_pages(self):
         """Generate individual Kandah pages with Samas (like Sukta pages in Rig Veda)"""

@@ -88,7 +88,7 @@ def my_format(my_number):
 
 def replacecolon(data):
     if isinstance(data,str):
-        data=data.replace(":","ः")
+        data=data.replace(":", "ः")
     return data
 
 def normalize_and_trim(text):

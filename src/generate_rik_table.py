@@ -21,12 +21,19 @@ import csv
 import os
 import sys
 
-# Add tools directory to path for imports if needed
-sys.path.append(os.path.join(os.path.dirname(__file__), 'tools'))
 from utils import get_generated_metadata
 
-DEFAULT_INPUT = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
-DEFAULT_OUTPUT = r'data\output\JSV_Rik_Table.csv'
+# Try to import openpyxl for Excel handling
+try:
+    import openpyxl
+    HAS_OPENPYXL = True
+except ImportError:
+    HAS_OPENPYXL = False
+
+DEFAULT_INPUT = r'data\output\Samhita_corrected_out.json'
+DEFAULT_OUTPUT_CSV = r'data\output\JSV_Rik_Table.csv'
+DEFAULT_RECON_EXCEL = r'data\output\Rik Reconciliation table (JSV-KSV).xlsx'
+DEFAULT_VARGEEKARAN_JSON = r'data\output\Vargeekaran.json'
 
 def replace_accents_unicode(text):
     """
@@ -48,9 +55,64 @@ def replace_accents_unicode(text):
         text = text.replace(marker, unicode_val)
     return text
 
-def main(input_file=None, output_csv=None):
+def load_reconciliation_data(excel_path):
+    """Load Rishi, Chandas, Devata mapping from Excel."""
+    mapping = {} # Global_Rik_Num -> (Rishi, Chandas, Devata)
+    if not excel_path or not os.path.exists(excel_path):
+        print(f"[WARNING] Reconciliation Excel not found at: {excel_path}")
+        return mapping
+    
+    if not HAS_OPENPYXL:
+        print("[ERROR] 'openpyxl' is required to read Excel files. Please install it.")
+        return mapping
+
+    print(f"Loading reconciliation data from {excel_path}...")
+    try:
+        wb = openpyxl.load_workbook(excel_path, data_only=True)
+        ws = wb.active
+        
+        # We expect: 
+        # Column A: Global_Rik_Num (Index 0)
+        # Column I: Rishi (Index 8)
+        # Column J: Chandas (Index 9)
+        # Column K: Devata (Index 10)
+        
+        row_count = 0
+        # Data starts from row 3 (Row 1: Metadata, Row 2: Headers)
+        for row in ws.iter_rows(min_row=3, values_only=True):
+            if not row or len(row) < 11:
+                continue
+            
+            try:
+                # Row index 0 is Column A
+                if row[0] is not None:
+                    # Handle both integer and string (in case Excel formatted it weirdly)
+                    rik_num = int(row[0])
+                    # Row index 8 is I (Rishi), 9 is J (Chandas), 10 is K (Devata)
+                    rishi = str(row[8]).strip() if row[8] is not None else ""
+                    chandas = str(row[9]).strip() if row[9] is not None else ""
+                    devata = str(row[10]).strip() if row[10] is not None else ""
+                    
+                    mapping[rik_num] = {
+                        "rishi": rishi,
+                        "chandas": chandas,
+                        "devata": devata
+                    }
+                    row_count += 1
+            except (ValueError, TypeError):
+                continue
+                
+        print(f"Successfully loaded {row_count} classification entries from Excel.")
+    except Exception as e:
+        print(f"[ERROR] Failed to read Excel: {e}")
+        
+    return mapping
+
+def main(input_file=None, output_csv=None, recon_excel=None, v_json=None):
     input_file = input_file or DEFAULT_INPUT
-    output_csv = output_csv or DEFAULT_OUTPUT
+    output_csv = output_csv or DEFAULT_OUTPUT_CSV
+    recon_excel = recon_excel or DEFAULT_RECON_EXCEL
+    v_json = v_json or DEFAULT_VARGEEKARAN_JSON
 
     # Get metadata
     metadata = get_generated_metadata()
@@ -58,8 +120,10 @@ def main(input_file=None, output_csv=None):
     GENERATED_AT = metadata['generated_at']
 
     print(f"Generating Rik Table (v{JSV_VERSION})...")
-    print(f"Input  : {input_file}")
-    print(f"Output : {output_csv}")
+    print(f"Input JSON : {input_file}")
+    print(f"Output CSV : {output_csv}")
+    print(f"Recon Excel: {recon_excel}")
+    print(f"V-JSON Out : {v_json}")
 
     # Load the JSON
     if not os.path.exists(input_file):
@@ -69,8 +133,14 @@ def main(input_file=None, output_csv=None):
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+    # Load Excel Reconciliation Data
+    recon_data = load_reconciliation_data(recon_excel)
+
     # CSV rows
     rows = []
+    
+    # Vargeekaran JSON data
+    vargeekaran_data = []
 
     # Get the supersection container
     supersection_container = data.get('supersection', {})
@@ -79,8 +149,10 @@ def main(input_file=None, output_csv=None):
     ss_keys = sorted(supersection_container.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
 
     global_rik_counter = 0
-
-    # Track previous Rik ID to detect changes for Global Rik Num increment
+    # Track unique Riks to assign Global_Rik_Num and classification
+    # Key: (supersection_key, section_key, rik_id)
+    # Value: { 'Global_Rik_Num': ..., 'classification': ... }
+    unique_riks = {}
     prev_rik_id_global_context = None
 
     for ss_key in ss_keys:
@@ -141,24 +213,42 @@ def main(input_file=None, output_csv=None):
                         combined_text = ' '.join(current_rik_parts)
                         current_rik_key = (ss_key, sec_key, line_rik_id)
                         
-                        # We identify unique Riks by their context (Supersection, Section, Rik_ID)
-                        # If this unique key changes, it's a new Rik.
-                        if current_rik_key != prev_rik_id_global_context:
+                        # Check if we've seen this unique Rik before
+                        if current_rik_key not in unique_riks:
                             global_rik_counter += 1
-                            prev_rik_id_global_context = current_rik_key
+                            classification = recon_data.get(global_rik_counter, {"rishi": "", "chandas": "", "devata": ""})
+                            unique_riks[current_rik_key] = {
+                                'Global_Rik_Num': global_rik_counter,
+                                'classification': classification
+                            }
                             
+                            # Add row for this unique Rik to the CSV (unique list)
                             # Replace ASCII markers with Unicode accents
                             clean_text = replace_accents_unicode(combined_text)
-
-                            # Add row for this unique Rik
-                            rows.append({
+                            row_entry = {
                                 'Global_Rik_Num': global_rik_counter,
                                 'Patha_Name': ss_title,
                                 'Khanda': sec_title,
                                 'Rik_ID': line_rik_id,
+                                'Rishi': classification['rishi'],
+                                'Chandas': classification['chandas'],
+                                'Devata': classification['devata'],
                                 'Rik_Text': clean_text,
                                 'Rik_Metadata': rik_metadata
-                            })
+                            }
+                            rows.append(row_entry)
+
+                        # Always inject into sub_data for Vargeekaran JSON
+                        res = unique_riks[current_rik_key]
+                        if 'rik_classifications' not in sub_data:
+                            sub_data['rik_classifications'] = []
+                        
+                        sub_data['rik_classifications'].append({
+                            "Global_Rik_Num": res['Global_Rik_Num'],
+                            "Rishi": res['classification']['rishi'],
+                            "Chandas": res['classification']['chandas'],
+                            "Devata": res['classification']['devata']
+                        })
                             
                         # Reset for next Rik group
                         current_rik_parts = []
@@ -170,20 +260,27 @@ def main(input_file=None, output_csv=None):
         f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
 
         fieldnames = [
-            'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rik_Text', 'Rik_Metadata'
+            'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rishi', 'Chandas', 'Devata', 'Rik_Text', 'Rik_Metadata'
         ]
-        
-        # Note: If we use DictWriter, we need to handle the header writing carefully
-        # if we already wrote a metadata line.
-        # But for CSV compliance with standard tools, having a metadata line first is technically breaking the CSV structure
-        # for some parsers provided they expect header on line 1.
-        # However, the previous script did it, so we follow the pattern.
         
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
 
     print(f"CSV saved to: {output_csv}")
+    
+    # Write Enhanced Vargeekaran JSON (Full Samhita structure with injected info)
+    with open(v_json, 'w', encoding='utf-8') as f:
+        # Update meta if needed or keep original
+        if 'meta' not in data:
+            data['meta'] = {}
+        data['meta']['description'] = "Enhanced Samhita with Rishi, Devata, Chandas classification"
+        data['meta']['generated_at'] = GENERATED_AT
+        data['meta']['version'] = JSV_VERSION
+
+        json.dump(data, f, indent=4, ensure_ascii=False)
+    print(f"Vargeekaran JSON saved to: {v_json}")
+    
     print(f"Total Unique Riks: {len(rows)}")
 
 if __name__ == "__main__":
@@ -192,8 +289,12 @@ if __name__ == "__main__":
     )
     parser.add_argument("input", nargs="?", default=DEFAULT_INPUT,
                         help=f"Input JSON file (default: {DEFAULT_INPUT})")
-    parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT,
-                        help=f"Output CSV file (default: {DEFAULT_OUTPUT})")
+    parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT_CSV,
+                        help=f"Output CSV file (default: {DEFAULT_OUTPUT_CSV})")
+    parser.add_argument("-e", "--excel", default=DEFAULT_RECON_EXCEL,
+                        help=f"Reconciliation Excel file (default: {DEFAULT_RECON_EXCEL})")
+    parser.add_argument("-j", "--json_out", default=DEFAULT_VARGEEKARAN_JSON,
+                        help=f"Output Vargeekaran JSON file (default: {DEFAULT_VARGEEKARAN_JSON})")
 
     args = parser.parse_args()
-    main(input_file=args.input, output_csv=args.output)
+    main(input_file=args.input, output_csv=args.output, recon_excel=args.excel, v_json=args.json_out)

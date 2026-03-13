@@ -9,7 +9,13 @@ The goal of this project is to digitize the Jaimineeya Samavedam Samhita, provid
 2.  **Print-ready PDF** documents (LaTeX-based) for physical publication.
 3.  **Specialized Views** like the *Rik* or *Samam* of Samhita for traditional chanting verification.
 
-The system is built on a custom text-to-JSON parsing engine that handles the specific structural requirements of the Samaveda (Parva > Kandah > Sama) and supports a robust **Correction Cycle** for iterative data improvement.
+The system is built on a custom text-to-JSON parsing engine that handles the specific structural requirements of the Samaveda (Parva > Kandah > Arsheyam > Samam) and supports a robust **Correction Cycle** for iterative data improvement.
+
+*   **Parva**: Top-level super-section.
+*   **Kandah**: Section level.
+*   **Arsheyam**: The titular grouping (Subsection header), which can contain one or more Samams.
+*   **Samam**: The actual mantra unit containing text with swara markings.
+*   **Rik**: Individual verses associated with an Arsheyam/Samam (extracted and classified individually).
 
 ## 2. Architecture & Core Components
 
@@ -23,13 +29,13 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 
 ### 2.2 `src/generate_website.py`
 **Role**: Generates the static HTML website for GitHub Pages.
-*   **`JSVParser` (Class)**: A robust parser that reads the JSON output and populates python objects (`Parva`, `Kandah`, `Sama`). It abstracts the JSON structure into a workable Object Model.
+*   **`JSVParser` (Class)**: A robust parser that reads the JSON output and populates python objects (`Parva`, `Kandah`, `Arsheyam`). It abstracts the JSON structure into a workable Object Model.
 *   **`WebsiteGenerator` (Class)**: Takes the `JSVParser` objects and orchestrates the HTML creation. It handles:
     *   Template rendering (Jinja2).
     *   Navigation generation (Left Sidebar).
     *   Audio filename mapping.
     *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
-    *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a 3-column alphabetical index (**वर्णानुक्रमण**). Includes aggregate unique Rik counting (currently ~587 Riks).
+    *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a single-column, horizontal-flowing alphabetical index (**वर्णानुक्रमण**) designed for maximum density and readability. Includes aggregate unique Rik counting (currently ~587 Riks).
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
@@ -54,7 +60,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **Unique Rik Extraction**: Iterates through the hierarchical JSON and extracts unique Riks, splitting multi-verse Arsheyams into individual rows using positional markers (e.g., `॥ ९ ॥`).
 *   **Classification Integration**: Loads mapping data from the **Reconciliation Excel** (`Rik Reconciliation table (JSV-KSV).xlsx`). It maps each unique verse to its <Rishi, Devata, Chandas> tuple using the `Global_Rik_Num`.
 *   **Accent Normalization**: Converts ASCII markers (e.g., `(1)`) into literal Unicode Swaras (e.g., `U+0951`) for clean CSV representation.
-*   **Structure Injection**: Dynamically injects a `rik_classifications` list into each Samam subsection in the JSON. This list identifies the Riks associated with that Samam and their respective classifications.
+*   **Structure Injection**: Dynamically injects a `rik_classifications` list into each Arsheyam (Subsection) in the JSON. This list identifies the Riks associated with that Arsheyam and their respective classifications.
 *   **Output**:
     *   `JSV_Rik_Table.csv`: A flattened, deduplicated verse-level table.
     *   `Vargeekaran.json`: The **Enhanced Source of Truth** used by the website generator for classification-based navigation.
@@ -430,7 +436,7 @@ Footnotes in the source text must follow the `(sN)` pattern **immediately follow
 The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which acts as the **Enriched Source of Truth** for the website.
 *   **Sequential verse numbering**: It maintains a global counter as it traverses the Samhita hierarchy. This counter matches the row index in the Reconciliation Excel and becomes the `Global_Rik_Num` used for classification lookups.
 *   **Verse Extraction**: The parser looks for Devanagari verse numbers (e.g., `॥ ७ ॥`) within Arsheyam text blocks. It converts these Devanagari digits to standard integers to determine the relative `Rik_ID`.
-*   **Classification Injection**: Instead of modifying the core JSON schema, it adds a `rik_classifications` list to each Samam subsection.
+*   **Classification Injection**: Instead of modifying the core JSON schema, it adds a `rik_classifications` list to each Arsheyam (Subsection).
     *   **Structure**: Each entry in `rik_classifications` contains: `Global_Rik_Num`, `Rishi`, `Devata`, and `Chandas`.
-    *   **Purpose**: This allow the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
+    *   **Purpose**: This allows the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
 *   **Sorting**: All data is processed using a strict numerical sort on SuperSection and Section keys to ensure the global counter remains stable across runs.
