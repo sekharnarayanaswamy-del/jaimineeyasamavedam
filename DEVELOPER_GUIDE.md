@@ -29,6 +29,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Navigation generation (Left Sidebar).
     *   Audio filename mapping.
     *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
+    *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a 3-column alphabetical index (**वर्णानुक्रमण**). Includes aggregate unique Rik counting (currently ~587 Riks).
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
@@ -49,11 +50,14 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`normalize_key`**: logic to clean up inconsistencies in Rishi/Devata names (whitespace, punctuation) to ensure better grouping in the CSV export.
 
 ### 2.6 `src/generate_rik_table.py`
-**Role**: Generates a deduplicated Rik-level CSV table from the JSON data.
-*   Extracts all unique Riks with columns: `Global_Rik_Num`, `Patha_Name`, `Khanda`, `Rik_ID`, `Rik_Text`, `Rik_Metadata`.
-*   Splits multi-line Arsheyam texts into individual Rik rows, extracting the embedded Rik positional numbers (e.g., `॥ ९ ॥`).
-*   Handles n:1 Samam-to-Rik mappings by deduplicating on `(Patha, Khanda, Rik_ID)` to avoid false positives.
-*   Output: `data/output/JSV_Rik_Table.csv` (UTF-8 with BOM).
+**Role**: The "Bridge Builder" that integrates external classification (Rishi, Devata, Chandas) into the Samhita.
+*   **Unique Rik Extraction**: Iterates through the hierarchical JSON and extracts unique Riks, splitting multi-verse Arsheyams into individual rows using positional markers (e.g., `॥ ९ ॥`).
+*   **Classification Integration**: Loads mapping data from the **Reconciliation Excel** (`Rik Reconciliation table (JSV-KSV).xlsx`). It maps each unique verse to its <Rishi, Devata, Chandas> tuple using the `Global_Rik_Num`.
+*   **Accent Normalization**: Converts ASCII markers (e.g., `(1)`) into literal Unicode Swaras (e.g., `U+0951`) for clean CSV representation.
+*   **Structure Injection**: Dynamically injects a `rik_classifications` list into each Samam subsection in the JSON. This list identifies the Riks associated with that Samam and their respective classifications.
+*   **Output**:
+    *   `JSV_Rik_Table.csv`: A flattened, deduplicated verse-level table.
+    *   `Vargeekaran.json`: The **Enhanced Source of Truth** used by the website generator for classification-based navigation.
 
 ### 2.7 `src/generate_missing_metadata_report.py`
 **Role**: Data quality validation tool that identifies missing metadata.
@@ -132,13 +136,21 @@ The generated Unicode text from Phase 1 is taken up for further corrections by V
 
 **Final Step (Common): Regenerate Artifacts**
 Update the Website, PDF, HTML, and Text outputs to reflect the changes.
-```bash
-# Website
-python src/generate_website.py --source-file data/output/Agneyam-Pavamanam_corrected_out.json
 
-# PDF, HTML, and Unicode Text
-python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json
-```
+1. **Integrate Classifications** (Required for Website):
+   This step maps the Riks to their Rishi, Devata, and Chandas from the Excel sheet and generates the `Vargeekaran.json`.
+   ```bash
+   python src/generate_rik_table.py data/output/Agneyam-Pavamanam_corrected_out.json
+   ```
+
+2. **Regenerate Site & Book**:
+   ```bash
+   # Website (uses the Vargeekaran JSON generated above)
+   python src/generate_website.py --source-file data/output/Vargeekaran.json
+   
+   # PDF, HTML, and Unicode Text
+   python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json
+   ```
 *   *PDF Source*: `data/output/pdf/Devanagari/Samhita_Devanagari.tex`
 *   *HTML Output*: `data/output/html/Devanagari/Samhita_Devanagari.html`
 *   *Text Output*: `data/output/txt/Devanagari/Samhita_Devanagari_Unicode.txt`
@@ -352,16 +364,19 @@ python src/generate_granular_table.py [OPTIONS]
 *Output*: CSV and XLSX files with per-Samam rows including Global_Rik_Num, Patha, Khanda, metadata fields.
 
 ### `src/generate_rik_table.py`
-*Generates a Rik ID wise CSV table.  
+*Generates the Rik-level CSV and the Vargeekaran JSON.*
 
 ```bash
 python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
 ```
 | Option | Description |
 | :--- | :--- |
-| `INPUT_JSON` | Path to the input JSON file (optional, default: `data\output\Samhita_with_Rishi_Devata_Chandas_out.json`). |
-| `-o`, `--output` | Path to the output CSV file (default: `data\output\JSV_Rik_Table.csv`). |
-*Output*: CSV file deduplicated by `(Patha, Khanda, Rik_ID)`.
+| `INPUT_JSON` | Path to the source JSON file (default: `data\output\Samhita_corrected_out.json`). |
+| `-o`, `--output` | Path to the output CSV table (default: `data\output\JSV_Rik_Table.csv`). |
+| `-e`, `--excel` | Path to the Reconciliation Excel (mapping Riks to R/D/C). (default: `data\output\Rik Reconciliation table (JSV-KSV).xlsx`) |
+| `-j`, `--json_out` | Path to save the enriched/Vargeekaran JSON (default: `data\output\Vargeekaran.json`). |
+
+*Output*: A UTF-8-sig CSV for metadata reconciliation and the **Vargeekaran JSON** required for the website's classification logic.
 
 ### `src/generate_missing_metadata_report.py`
 *Generates a report of missing Rik and Samam metadata.*
@@ -394,7 +409,8 @@ python src/tools/copy_rik_ids.py <source_json> <target_json> [OPTIONS]
 ## 5. Technical Reference
 
 ### Data Normalization
-*   **Danda Standardization**: All pipe variations (`||`, `| |`, `||`) are normalized to standard Devanagari Dandas (`॥`, `।`).
+*   **Danda Standardization**: All pipe variations (`||`, `| |`, `॥`) are normalized to standard Devanagari Dandas (`॥`, `।`). Specifically, double pipes (`||`) are explicitly replaced with double dandas (`॥`) in the input source for uniformity.
+*   **Section Markers**: The `RikTextParser` supports both `खण्डः` (Khanda) and `पर्वा` (Parva) markers as section boundaries, ensuring accurate extraction across different Samaveda portions.
 *   **Continuous Text**: `remove_mantra_spaces()` creates continuous text for Samhita views, preserving structure lines (Colophons).
 
 ### Visual Rendering Logic
@@ -402,9 +418,19 @@ python src/tools/copy_rik_ids.py <source_json> <target_json> [OPTIONS]
     *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering.
     *   *Applied In*: PDF, Website, and Rik Samhita generators.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
+*   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection, ensuring that subsections containing multiple grouped Riks are counted accurately.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
 
 ### Footnote Syntax
 Footnotes in the source text must follow the `(sN)` pattern **immediately following** the swara, with no space.
 *   **Correct**: `इ(श)(s1)`
 *   **Incorrect**: `इ(श) (s1)` (Space creates detachment)
+
+### 5.4 Rik Identification & Global Mapping (Vargeekaran.json)
+The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which acts as the **Enriched Source of Truth** for the website.
+*   **Sequential verse numbering**: It maintains a global counter as it traverses the Samhita hierarchy. This counter matches the row index in the Reconciliation Excel and becomes the `Global_Rik_Num` used for classification lookups.
+*   **Verse Extraction**: The parser looks for Devanagari verse numbers (e.g., `॥ ७ ॥`) within Arsheyam text blocks. It converts these Devanagari digits to standard integers to determine the relative `Rik_ID`.
+*   **Classification Injection**: Instead of modifying the core JSON schema, it adds a `rik_classifications` list to each Samam subsection.
+    *   **Structure**: Each entry in `rik_classifications` contains: `Global_Rik_Num`, `Rishi`, `Devata`, and `Chandas`.
+    *   **Purpose**: This allow the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
+*   **Sorting**: All data is processed using a strict numerical sort on SuperSection and Section keys to ensure the global counter remains stable across runs.

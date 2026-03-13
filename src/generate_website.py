@@ -464,6 +464,7 @@ class Sama:
     rik_rishi: str = ""
     rik_devata: str = ""
     rik_chandas: str = ""
+    rik_classifications: List[Dict] = field(default_factory=list)
 
 @dataclass
 class Kandah:
@@ -554,6 +555,7 @@ class JSVParser:
                         self.current_sama.rik_rishi = sub_data.get('rik_rishi', '')
                         self.current_sama.rik_devata = sub_data.get('rik_devata', '')
                         self.current_sama.rik_chandas = sub_data.get('rik_chandas', '')
+                        self.current_sama.rik_classifications = sub_data.get('rik_classifications', [])
         
         self._finalize_current_sama()
         return self.parvas
@@ -734,7 +736,14 @@ class WebsiteGenerator:
             "version": "2.0.0",
             "last_updated": datetime.now().strftime("%Y-%m-%d")
         }
-        self.generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Keep for backward compatibility if needed
+        self.generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Initialize indices and counts (populated later by _collect_indices)
+        self.rishi_index = {}
+        self.devata_index = {}
+        self.chandas_index = {}
+        self.header_index = []
+        self.total_riks_classified = 0
         
     def generate(self):
         """Generate all website files"""
@@ -1334,7 +1343,31 @@ background: var(--bg-sidebar);
 
 .audio-player {
     width: 100%;
-    max-width: 400px;
+    margin-top: 5px;
+}
+
+.index-list {
+    column-count: 3;
+    column-gap: 2.5rem;
+    column-rule: 1px solid var(--border-light);
+    margin-top: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .index-list {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 800px) {
+    .index-list {
+        column-count: 1;
+    }
+}
+
+.index-char-group {
+    break-inside: avoid-column;
+    margin-bottom: 2rem;
 }
 
 .audio-pending {
@@ -1790,11 +1823,423 @@ sup.footnote-ref a:hover {
 }
 
 .index-char-header {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    border-bottom: 2px solid var(--primary-gold);
-    margin: var(--spacing-xl) 0 var(--spacing-md) 0;
     padding-bottom: 4px;
+}
+
+/* Classification Table */
+.classification-table {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.classification-table th, .classification-table td {
+    padding: 6px 10px;
+    text-align: left;
+    border: 1px solid var(--border-light);
+}
+
+.classification-table th {
+    background-color: var(--primary-gold);
+    color: white;
+    font-weight: 500;
+}
+
+.class-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-family: var(--font-heading);
+}
+
+.class-value {
+    font-family: var(--font-sanskrit);
+    font-size: 1.1rem;
+    color: var(--primary-maroon);
+}
+
+/* Classification Grid Home */
+.classification-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+@media (max-width: 900px) {
+    .classification-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .classification-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.class-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-light);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: var(--primary-maroon);
+}
+
+.class-card h2 {
+    color: var(--primary-maroon);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.class-card .count {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* Index Summarization */
+
+/* Index Summarization */
+.index-section-header {
+    font-family: var(--font-heading);
+    color: var(--primary-maroon);
+    margin: 3rem 0 1.5rem 0;
+    font-size: 1.8rem;
+    border-bottom: 3px solid var(--primary-gold);
+    padding-bottom: 8px;
+}
+
+.top-20-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 1100px) {
+    .top-20-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .top-20-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.alphabet-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-light);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.alpha-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #eeeeee; /* Match image light gray */
+    border: 1px solid transparent;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--primary-maroon);
+    transition: all 0.2s ease;
+    min-width: 4.5rem;
+    justify-content: center;
+}
+
+.alpha-btn:hover {
+    background: #e0e0e0;
+    border-color: var(--primary-maroon);
+    transform: translateY(-2px);
+}
+
+.alpha-char {
+    font-family: var(--font-sanskrit);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-right: 8px;
+    color: #b03a2e; /* Slightly brighter red for letters */
+}
+
+.alpha-count {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.index-items-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .index-items-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .index-items-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.index-item-card {
+    background: #fdfdfd;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.index-item-card:hover {
+    background: white;
+    border-color: var(--primary-gold);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+
+.item-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.item-name {
+    font-family: var(--font-sanskrit);
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.item-count-badge {
+    background: #eeeeee;
+    color: #555555;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.item-refs {
+    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border-light);
+}
+
+.item-refs a {
+    color: var(--text-link);
+    background: rgba(192, 133, 53, 0.05); /* Light gold bg */
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(192, 133, 53, 0.1);
+}
+
+.item-refs a:hover {
+    background: var(--primary-gold);
+    color: white;
+    border-color: var(--primary-gold);
+}
+
+.index-char-group {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+}
+
+.index-char-title {
+    font-size: 2.2rem;
+    color: var(--primary-maroon);
+    font-family: var(--font-sanskrit);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.index-char-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 3px;
+    background: var(--primary-gold);
+    border-radius: 2px;
+}
+
+.rishi-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-light);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.rishi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-color: var(--primary-maroon);
+}
+
+.rest-card {
+    background: #f8f8f8;
+    border: 2px dashed var(--border-light);
+    justify-content: center;
+    background-image: linear-gradient(135deg, rgba(0,0,0,0.02) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.02) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+}
+
+.rest-card .rishi-rank {
+    background: var(--text-muted);
+}
+
+.rest-card .rishi-name {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.rest-card:hover {
+    background-color: #f1f1f1;
+    border-color: var(--primary-gold);
+}
+
+.rishi-rank {
+    background: var(--primary-maroon);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.rishi-info {
+    flex-grow: 1;
+}
+
+.rishi-name {
+    font-family: var(--font-sanskrit);
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.rishi-count {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: right;
+}
+
+.alphabet-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: #fdfdfd;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-light);
+}
+
+.alpha-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.alpha-btn:hover {
+    border-color: var(--primary-maroon);
+    background: var(--primary-cream);
+}
+
+.alpha-char {
+    font-family: var(--font-sanskrit);
+    font-weight: bold;
+    margin-right: 6px;
+    font-size: 1.1rem;
+}
+
+.alpha-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.count-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+.index-list {
+    column-count: 3;
+    column-gap: 2.5rem;
+    column-rule: 1px solid var(--border-light);
+    margin-top: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .index-list {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 800px) {
+    .index-list {
+        column-count: 1;
+    }
+}
+
+.index-char-group {
+    break-inside: avoid-column;
+    margin-bottom: 2rem;
 }
 '''
         with open(self.output_dir / 'css' / 'styles.css', 'w', encoding='utf-8') as f:
@@ -1994,30 +2439,6 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </aside>'''
 
-    def _parse_metadata(self, metadata_str: str) -> dict:
-        """Parse metadata string into Rishi, Devata, Chandas"""
-        result = {'rishi': '', 'devata': '', 'chandas': ''}
-        if not metadata_str:
-            return result
-        
-        # Remove outer markers like ।। and ॥
-        cleaned = re.sub(r'^[।॥\s]+|[।॥\s]+$', '', metadata_str)
-        
-        # Split by ।। or spaces and try to identify parts
-        parts = re.split(r'\s*।।\s*|\s+', cleaned)
-        parts = [p.strip() for p in parts if p.strip()]
-        
-        if len(parts) >= 3:
-            result['rishi'] = parts[0]
-            result['devata'] = parts[1]
-            result['chandas'] = parts[2]
-        elif len(parts) == 2:
-            result['rishi'] = parts[0]
-            result['devata'] = parts[1]
-        elif len(parts) == 1:
-            result['rishi'] = parts[0]
-        
-        return result
 
     def _generate_homepage(self):
         """Generate the homepage"""
@@ -2120,25 +2541,24 @@ document.addEventListener('DOMContentLoaded', function() {
         """Normalize metadata keys to merge duplicates (spaces, punctuation)"""
         if not text:
             return ""
-        # Aggressive normalization
-        # 1. Remove internal parentheses content if needed? No, user said "(Name" -> "Name"
-        # So we just strip characters from ends.
         
         # Remove common surrounding punctuation/whitespace
-        # Including: spaces, dots, dandas, commas, parens, quotes
-        # Also strip Visarga (:) and Devanagari Visarga (ः) to handle case variations
-        text = text.strip(' \t\n\r.|॥,:;()\'"ः')
+        # Keep the Devanagari Visarga (ः) as it's part of the name
+        text = text.strip(' \t\n\r.|॥,:;()\'"')
         
         # Collapse multiple spaces
         text = re.sub(r'\s+', ' ', text)
         return text.strip()
 
     def _collect_indices(self):
-        """Collect data for all indices"""
+        """Collect data for all indices and track unique Rik counts"""
         self.rishi_index = defaultdict(list)
         self.devata_index = defaultdict(list)
         self.chandas_index = defaultdict(list)
         self.header_index = [] 
+        
+        self.total_riks_classified = 0
+        all_rik_nums = set()
         
         for parva in self.parvas:
             for kandah in parva.kandahs:
@@ -2158,30 +2578,24 @@ document.addEventListener('DOMContentLoaded', function() {
                             })
                     
                     # Metadata Indices
-                    # Priority: Explicit Saman Fields > Parsed Text
-                    ref = {'link': link_rel, 'location': location}
-                    
-                    r_val = sama.saman_rishi or sama.rik_rishi
-                    d_val = sama.saman_devata or sama.rik_devata
-                    c_val = sama.saman_chandas or sama.rik_chandas
-                    
-                    # Fallback to parsing if all empty
-                    if not (r_val or d_val or c_val) and sama.rik_metadata:
-                        parts = self._parse_metadata(sama.rik_metadata)
-                        r_val = parts.get('rishi', '')
-                        d_val = parts.get('devata', '')
-                        c_val = parts.get('chandas', '')
-                    
-                    # Normalize and Add
-                    if r_val:
-                        key = self._normalize_index_key(r_val)
-                        if key: self.rishi_index[key].append(ref)
-                    if d_val:
-                        key = self._normalize_index_key(d_val)
-                        if key: self.devata_index[key].append(ref)
-                    if c_val:
-                        key = self._normalize_index_key(c_val)
-                        if key: self.chandas_index[key].append(ref)
+                    if sama.rik_classifications:
+                        for c in sama.rik_classifications:
+                            rik_num = c.get('Global_Rik_Num')
+                            if rik_num: all_rik_nums.add(rik_num)
+                            
+                            ref = {'link': link_rel, 'location': location, 'rik_num': rik_num}
+                            
+                            if c.get('Rishi'):
+                                key = self._normalize_index_key(c['Rishi'])
+                                if key: self.rishi_index[key].append(ref)
+                            if c.get('Devata'):
+                                key = self._normalize_index_key(c['Devata'])
+                                if key: self.devata_index[key].append(ref)
+                            if c.get('Chandas'):
+                                key = self._normalize_index_key(c['Chandas'])
+                                if key: self.chandas_index[key].append(ref)
+        
+        self.total_riks_classified = len(all_rik_nums)
 
     def _generate_indices(self):
         """Generate all index pages"""
@@ -2191,13 +2605,13 @@ document.addEventListener('DOMContentLoaded', function() {
         (self.output_dir / 'classification').mkdir(exist_ok=True)
         
         self._generate_classification_home()
-        self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html")
-        self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html")
-        self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html")
+        self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html", show_top_20=True)
+        self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html", show_top_20=True)
+        self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html", show_top_20=True)
         self._generate_header_index()
 
     def _generate_classification_home(self):
-        """Generate the main classification landing page"""
+        """Generate the main 3-column classification landing page"""
         html = f'''{self._get_html_head("वर्गीकरणम् (Classifications)", depth=1)}
 <body>
     <div class="page-container">
@@ -2207,25 +2621,33 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="page-header">
                 <h1>सङ्क्रमणिका / वर्गीकरणम्</h1>
                 <p class="page-subtitle">Indices and Classifications</p>
+                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); font-size: 1.1rem; display: flex; gap: 2rem;">
+                    <div>Total Samas: <strong style="color: var(--primary-maroon);">{sum(sum(len(k.samas) for k in p.kandahs) for p in self.parvas)}</strong></div>
+                    <div>Classified Riks: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong></div>
+                </div>
             </div>
             
             <div class="classification-grid">
-                <section class="class-section">
-                    <h2>अन्य वर्गीकरणम्</h2>
-                    <div class="button-row">
-                        <a href="rishi.html" class="index-btn">ऋषयः</a>
-                        <a href="devata.html" class="index-btn">देवताः</a>
-                        <a href="chandas.html" class="index-btn">छन्दांसि</a>
-                    </div>
-                </section>
-                
-                <section class="class-section">
-                    <h2>अनुक्रमणिका:</h2>
-                    <div class="button-row">
-                        <a href="headers.html" class="index-btn">सामानुक्रमणिका (Headers)</a>
-                    </div>
-                </section>
+                <a href="rishi.html" class="class-card">
+                    <h2>ऋषयः</h2>
+                    <div class="count">{len(self.rishi_index)} Rishis</div>
+                </a>
+                <a href="devata.html" class="class-card">
+                    <h2>देवताः</h2>
+                    <div class="count">{len(self.devata_index)} Devatas</div>
+                </a>
+                <a href="chandas.html" class="class-card">
+                    <h2>छन्दांसि</h2>
+                    <div class="count">{len(self.chandas_index)} Chandas</div>
+                </a>
             </div>
+            
+            <section class="class-section" style="margin-top: 4rem;">
+                <h2 class="index-section-header">अनुक्रमणिका:</h2>
+                <div class="button-row">
+                    <a href="headers.html" class="index-btn">सामानुक्रमणिका (Headers Index)</a>
+                </div>
+            </section>
         </main>
     </div>
     <script src="../js/main.js"></script>
@@ -2234,21 +2656,106 @@ document.addEventListener('DOMContentLoaded', function() {
         with open(self.output_dir / 'classification' / 'index.html', 'w', encoding='utf-8') as f:
             f.write(html)
 
-    def _generate_index_page_generic(self, title, data_dict, filename):
-        """Generate a generic index page for a dictionary of items"""
-        # Sort keys
-        sorted_keys = sorted(data_dict.keys())
-        
-        items_html = ""
-        for key in sorted_keys:
-            refs = data_dict[key]
-            refs_html = ", ".join([f'<a href="{r["link"]}">{r["location"]}</a>' for r in refs])
-            items_html += f'''
-            <div class="index-entry">
-                <div class="index-term">{key}</div>
-                <div class="index-refs">{refs_html}</div>
-            </div>'''
+    def _generate_index_page_generic(self, title, data_dict, filename, show_top_20=False):
+        """Generate an enhanced index page with 3-column row grid layout"""
+        # 1. Calculate Aggregate Unique Rik Count for this page
+        page_rik_nums = set()
+        for refs in data_dict.values():
+            for r in refs:
+                rn = r.get('rik_num')
+                if rn is not None:
+                    page_rik_nums.add(int(rn) if isinstance(rn, (int, str)) and str(rn).isdigit() else rn)
+        page_total_riks = len(page_rik_nums)
+
+        # 2. Prepare Top 20 (Prominent Items)
+        top_20_html = ""
+        if show_top_20:
+            # Sort by count descending
+            sorted_by_count = sorted(data_dict.items(), key=lambda x: len(x[1]), reverse=True)[:20]
             
+            cards_html = ""
+            for i, (name, refs) in enumerate(sorted_by_count, 1):
+                safe_id = f"term-{name.replace(' ', '_')}" 
+                cards_html += f'''
+                <a href="#{safe_id}" class="rishi-card">
+                    <div class="rishi-rank">{i}</div>
+                    <div class="rishi-info">
+                        <span class="rishi-name">{name}</span>
+                        <div class="rishi-count">{len(refs)} ऋचः</div>
+                    </div>
+                </a>'''
+            
+            top_20_html = ""
+            if len(data_dict) > 20:
+                cards_html += f'''
+                <a href="#char-rest" class="rishi-card rest-card">
+                    <div class="rishi-rank">...</div>
+                    <div class="rishi-info">
+                        <span class="rishi-name">शिष्टाः / वर्णानुक्रमण</span>
+                        <div class="rishi-count">Alphabetical Rest ↓</div>
+                    </div>
+                </a>'''
+            
+            top_20_html = f'''
+            <section class="index-summary-section">
+                <h2 class="index-section-header">प्रमुखाः {title.split(' ')[0]} (Top 20)</h2>
+                <div class="top-20-grid">
+                    {cards_html}
+                </div>
+            </section>'''
+
+        # 3. Prepare Alphabetical Rest
+        alpha_groups = defaultdict(list)
+        for key in sorted(data_dict.keys()):
+            char = key[0] if key else '?'
+            alpha_groups[char].append(key)
+            
+        alpha_nav_html = ""
+        for char in sorted(alpha_groups.keys()):
+            count = len(alpha_groups[char])
+            alpha_nav_html += f'''
+            <a href="#char-{char}" class="alpha-btn">
+                <span class="alpha-char">{char}</span>
+                <span class="alpha-count">{count}</span>
+            </a>'''
+            
+        # 4. List Items in Grid
+        list_html = ""
+        for char in sorted(alpha_groups.keys()):
+            grid_items_html = ""
+            for key in alpha_groups[char]:
+                refs = data_dict[key]
+                
+                # Deduplicate locations
+                unique_refs = []
+                seen_locs = set()
+                for r in refs:
+                    if r['location'] not in seen_locs:
+                        unique_refs.append(r)
+                        seen_locs.add(r['location'])
+                
+                refs_links = " ".join([f'<a href="{r["link"]}">{r["location"]}</a>' for r in unique_refs])
+                term_id = f"term-{key.replace(' ', '_')}"
+                
+                grid_items_html += f'''
+                <div class="index-item-card" id="{term_id}">
+                    <div class="item-main">
+                        <div class="item-name">{key}</div>
+                        <div class="item-count-badge">{len(refs)}</div>
+                    </div>
+                    <div class="item-refs">
+                        {refs_links}
+                    </div>
+                </div>'''
+            
+            list_html += f'''
+            <div class="index-char-group" id="char-{char}">
+                <div class="index-char-title">{char}</div>
+                <div class="index-items-grid">
+                    {grid_items_html}
+                </div>
+            </div>'''
+
         html = f'''{self._get_html_head(title, depth=1)}
 <body>
     <div class="page-container">
@@ -2257,10 +2764,23 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="page-header">
                 <h1>{title}</h1>
                 <a href="index.html" class="back-link">← Back to Classifications</a>
+                <div class="stats-summary" style="margin-top: 0.5rem; color: var(--text-muted);">
+                    Aggregate Rik Count: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong>
+                </div>
             </div>
-            <div class="index-list">
-                {items_html}
-            </div>
+            
+            {top_20_html}
+            
+            <section class="alphabetical-section" id="char-rest">
+                <h2 class="index-section-header">वर्णानुक्रमण (Varnanukraman)</h2>
+                <div class="alphabet-nav">
+                    {alpha_nav_html}
+                </div>
+                
+                <div class="index-list-container">
+                    {list_html}
+                </div>
+            </section>
         </main>
     </div>
     <script src="../js/main.js"></script>
@@ -2347,8 +2867,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 if parts:
                                     current_footnotes_dict[parts.group(1)] = parts.group(2)
                     
-                    # Parse metadata
-                    meta = self._parse_metadata(sama.rik_metadata)
                     
                     # Rik metadata (displayed above Rik text - in purple like renderPDF.py)
                     rik_metadata_html = ""
@@ -2509,6 +3027,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <a href="#sama-{sama.sama_number}">{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}</a>
                             </span>
                         </div>
+                        
+                        <!-- Classification / Vargeekaran Section -->
+                        {f"""<div class="classification-container">
+                            <table class="classification-table">
+                                <thead>
+                                    <tr>
+                                        <th>Global #</th>
+                                        <th>ऋषिः (Rishi)</th>
+                                        <th>देवता (Devata)</th>
+                                        <th>छन्दः (Chandas)</th>
+                                    </tr>
+                                </thead>
+                                {"".join([f'''
+                                    <tr>
+                                        <td>{c['Global_Rik_Num']}</td>
+                                        <td class="class-value">{c['Rishi']}</td>
+                                        <td class="class-value">{c['Devata']}</td>
+                                        <td class="class-value">{c['Chandas']}</td>
+                                    </tr>''' for c in sama.rik_classifications])}
+                            </table>
+                        </div>""" if sama.rik_classifications else ""}
+
                         {rik_html}
                         {mantra_html}
                         {audio_html}
@@ -2644,7 +3184,7 @@ Example usage:
     
     # Default paths
     # Default paths
-    default_source = project_root / 'data' / 'input' / 'Samhita_with_Rishi_Devata_Chandas.txt'
+    default_source = project_root / 'data' / 'output' / 'Vargeekaran.json'
     # Changed default output to 'docs' for GitHub Pages support
     default_output = project_root / 'docs'
     default_audio = project_root / 'data' / 'input' / 'Audio_Placeholders'
