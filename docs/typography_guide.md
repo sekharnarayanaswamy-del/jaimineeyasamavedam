@@ -11,6 +11,46 @@ This document outlines the font mapping and typography rules applied across the 
 
 ---
 
+## 📊 Master Typography Table
+
+This table provides a comprehensive summary of UI elements, their fonts, and current sizes.
+
+| Page Type | UI Element | Font Family | Size | Example | CSS Selector |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **🌍 Global** | Sidebar Logo Title | Adishila Vedic (Serif) | 1.8rem | **जैमिनीय साम संहिता** | `.logo-text` |
+| | Sidebar Logo Subtitle| Adishila Vedic (Serif) | 1rem | **JAIMINEEYA SAMA...** | `.logo-subtitle` |
+| | Sidebar Labels | Adishila Vedic (Serif) | 1.15rem | **पर्व:, खण्ड:, साम:** | `.nav-section h3` |
+| | Sidebar Pills | Adishila San (Sans) | 0.7rem | **1, 2, 3** | `.nav-links a` |
+| | Jump to Input | Adishila San (Sans) | 0.9rem | **e.g. 1.1.1** | `.jump-input` |
+| | Search Button | Adishila Vedic (Serif) | 1.0rem | **अन्वेषणम् (Search)** | `.search-btn` |
+| | Footer Nav Buttons| Adishila Vedic (Serif) | 1.0rem | **ऋषयः, देवताः** | `.footer-btn` |
+| | Jump Nav Labels | Adishila Vedic (Serif) | 0.85rem | **साम: (19)** | `.sidebar-right h3` |
+| | Jump Nav Icons | Adishila San (Sans) | 0.7rem | **[1] [2] [3]** | `.jump-links a` |
+| **🏠 Home** | Page Title | Adishila Vedic (Serif) | 2.4rem | **जैमिनीयसामवेद: (Jaimineeya Samavedam)** | `h1` |
+| | Stats Values | Adishila San (Sans) | 2.2rem | **6, 125, 1222** | `.stat-value` |
+| | Stats Labels | Adishila Vedic (Serif) | 0.9rem | **पर्व: (Parva)** | `.stat-label` |
+| | Other Indices Title| Adishila Vedic (Serif) | 1.5rem | **ऋषि-वरगीकरणम् (Rishi Index)** | `.index-link-item .title` |
+| | Other Indices Count| Adishila San (Sans) | 0.8rem | **(172)** | `.index-link-item .stats` |
+| **📖 Kandah** | Page Title | Adishila Vedic (Serif) | 1.8rem | **अर्चिकपर्व - प्रथमः खण्डः** | `h1` |
+| | Header Metadata | Adishila Vedic (Serif) | 1.1rem | **पर्व: १, खण्ड: १ | साम: १९** | `.page-subtitle`, `.sama-count` |
+| | Metadata Numerals | Adishila San (Sans) | 0.8rem | **1, 12, 19** | `.page-meta .number` |
+| | TOC Header | Adishila Vedic (Serif) | 1.2rem | **खण्ड: 1 - सम्पूर्णम्** | `.toc h4` |
+| | TOC Pills | Adishila San (Sans) | 0.9rem | **१.१.१, १.१.२** | `.toc-list li a` |
+| **🕉️ Mantra** | Sama ID Badge | Adishila San (Sans) | 0.9rem | **1.1.1** | `.sama-id` |
+| | Metadata Line | Adishila Vedic (Serif) | 0.9rem | **॥ भरद्वाजो बार्हस्पत्यः ... ॥** | `.rik-metadata` |
+| | Class. Table Head | Adishila Vedic (Serif) | 0.9rem | **Global #, ऋषिः, देवता** | `.classification-table th` |
+| | Class. Table Values| Adishila Vedic (Serif) | 1.1rem | **अग्निः, त्रिष्टुप्** | `.class-value` |
+| | Table Numerals | Adishila San (Sans) | 0.9rem | **1, 2, 3** | `.sama-entry .number` |
+| | Sanskrit Verse | Adishila Vedic (Serif) | 1.2rem | **इ॒षे त्वो॒र्जे त्वा॑...** | `.sanskrit-text` |
+| | Mantra Numbering | Adishila Vedic (Serif) | 1.1rem | **॥ १ ॥** | `.mantra-number` |
+| **🗂️ Index** | Letter Heading | Adishila Vedic (Serif) | 1.2rem | **अ, आ, इ** | `.alpha-char` |
+| | Item Name | Adishila Vedic (Serif) | 1.15rem | **वसिष्ठः, अग्निः** | `.rishi-name`, `.item-name` |
+| | Item Count | Adishila San (Sans) | 0.8rem | **(172), (5)** | `.rishi-count`, `.item-count` |
+| | Location Refs | Adishila San (Sans) | 0.8rem | **1.1.1, 1.1.2** | `.item-refs a` |
+| | Top 20 Ranking | Adishila San (Sans) | 0.85rem | **1, 2, 3** | `.rishi-rank` |
+
+---
+
 ## 🎨 Element Specific Mappings
 
 ### 1. Traditional Elements (Serif Look)
@@ -25,13 +65,19 @@ These elements use the traditional **Adishila Vedic** font for a classical appea
 | **Navigation Headers** | `.classification-table th` | Headers in the Mantra classification table |
 | **Traditional Values** | `.class-value` | Values inside classification tables |
 | **Kandah Metadata** | `.page-subtitle`, `.sama-count` | Labels on the Kandah page: "पर्व: ... खण्ड: ...", "साम: ..." |
+| **Sidebar Headers** | `.nav-section h3`, `.sidebar-right h3` | Labels in the navigation: "पर्व:", "खण्ड:", "साम:" |
 
 **Code Location:** `src/generate_website.py` around lines 921-923.
 ```css
-.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, 
-.classification-table th, .classification-table td, .class-value, .class-label, 
-.page-subtitle, .sama-count {
+.nav-section h3, .sidebar-right h3 {
+    font-size: 1.15rem;
+    text-transform: none; /* Allows "Jump to" instead of forced caps */
+    letter-spacing: normal; /* Important: keeps Devanagari characters connected */
     font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
+}
+
+.nav-section h3 .number, .sidebar-right h3 .number {
+    font-size: 0.85rem; /* Smaller size for bracketed counts */
 }
 ```
 
@@ -45,26 +91,36 @@ These elements use the modern **Adishila San Vedic** font for maximum clarity an
 | **Large Stats Values** | `.stat-value` | Large numbers on the homepage (e.g., "6", "125") |
 | **Rank Indices** | `.rishi-rank` | The orange circles with numbers in Top 20 lists |
 | **ToC / Nav Links** | `.toc-list li a`, `.nav-links a` | All numeric references in menus |
-| **Summary Counts** | `.stats-summary` | Page header stats: "१७२ ऋषयः • ७१९ आर्षेयम्" |
+| **Summary Counts** | `.stats-summary` | Page header stats: "23 देवताः • 719 आर्षेयम्" (AdishilaVedic + English Numerals) |
 | **Alphabetical Counts** | `.alpha-count` | Small numbers in alphabet navigation buttons |
 | **Pill Counts** | `.index-link-item .stats` | Numbers in indices pills: "(172)", "(23)" |
+| **Sama ID (Badge)** | `.sama-id` | Top-left badge on mantra entries: "1.1.1" |
+| **Table Numerals** | `.number` (inside tables) | The "Global #" column values in classification tables |
 
 **Code Location:** `src/generate_website.py` around lines 917-919.
 ```css
 .stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, 
 .footnote-ref, .stats-summary, .stats-summary strong, .count, 
-.rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge {
+.rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a {
     font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
 }
 ```
 
 ---
 
-## 📐 Fine-Tuning Guide
+### Sidebar Logo & Title
+To adjust the size of the branding section in the sidebar:
+**Location:** `src/generate_website.py` around lines 983-996.
 
-### Homepage "Anya Vargeekaran" Pills
-To adjust the size of the "Other Indices" pills on the homepage:
-**Location:** `src/generate_website.py` around lines 1918-1928.
+```css
+.logo-text {
+    font-size: 1.8rem; /* Increased from 1.5rem */
+}
+
+.logo-subtitle {
+    font-size: 1rem; /* Increased from 0.85rem */
+}
+```
 
 ```css
 .index-link-item .title {
@@ -116,6 +172,26 @@ To adjust the second line of text on Kandah pages (labels and numbers):
 .page-meta .number {
     font-size: 0.8rem; /* Fine-tune only the numerals here */
     font-weight: 400;
+}
+```
+
+### Mantra Classification & ID
+To unify sizes for the Sama ID badge and the classification table:
+**Location:** `src/generate_website.py` around lines 1261-1270 and 1977-1986.
+
+```css
+.sama-id, .classification-table, .sama-entry .number {
+    font-size: 0.9rem; /* Unified size for metadata area */
+}
+```
+
+### Alphabetical Index (Anukramanika) References
+To adjust the density of the location numerals in the index:
+**Location:** `src/generate_website.py` around line 2286.
+
+```css
+.item-refs a {
+    font-size: 0.8rem; /* Smaller size for dense linking */
 }
 ```
 

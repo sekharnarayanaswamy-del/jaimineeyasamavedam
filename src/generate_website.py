@@ -914,11 +914,11 @@ h3 { font-size: 1.4rem; }
 h4 { font-size: 1.2rem; }
 
 /* Numerals and Counts in Adishila San Vedic (Sans Look) */
-.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge {
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a {
     font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
 }
 
-.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count {
+.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {
     font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
 }
 
@@ -982,13 +982,13 @@ text-align: center;
 
 .logo-text {
 font-family: var(--font-heading);
-font-size: 1.5rem;
+font-size: 1.8rem;
 color: var(--color-primary);
 font-weight: 700;
 }
 
 .logo-subtitle {
-font-size: 0.85rem;
+font-size: 1rem;
 color: var(--text-muted);
 margin-top: 4px;
 text-transform: uppercase;
@@ -1000,13 +1000,18 @@ margin-bottom: var(--spacing-xl);
 }
 
 .nav-section h3 {
-font-size: 1.3rem;
+font-size: 1.15rem;
 color: var(--color-secondary);
-text-transform: uppercase;
-letter-spacing: 0.1em;
+text-transform: none;
+letter-spacing: normal;
 margin-bottom: var(--spacing-sm);
-font-weight: 700;
+font-weight: normal; 
 border-bottom: none;
+}
+
+.nav-section h3 .number, .sidebar-right h3 .number {
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .nav-links {
@@ -1021,9 +1026,10 @@ padding: 4px 10px;
 background: var(--bg-card);
 border: 1px solid var(--border-color);
 border-radius: 4px;
-font-size: 0.9rem;
+font-size: 0.7rem;
 transition: all 0.2s ease;
 color: var(--text-secondary);
+font-weight: 500;
 }
 
 .nav-links a:hover,
@@ -1036,6 +1042,78 @@ box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
 
 .nav-list {
 list-style: none;
+}
+
+.jump-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    margin-top: 4px;
+    background: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.jump-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+}
+
+.search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    background: #FFFDF8;
+    border: 1px solid #C08535;
+    border-radius: 10px;
+    color: #8B4513;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 10px;
+    font-family: var(--font-sanskrit);
+}
+
+.search-btn:hover {
+    background: white;
+    box-shadow: 0 4px 12px rgba(192, 133, 53, 0.15);
+    transform: translateY(-1px);
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.8rem;
+    background: #F4F1EA;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    font-family: var(--font-sanskrit);
+    min-width: 70px;
+    flex: 1 1 calc(33.33% - 0.5rem);
+}
+
+.footer-btn:hover {
+    background: #E8DCC0;
+    color: var(--primary-maroon);
 }
 
 .nav-list li {
@@ -1084,9 +1162,10 @@ background: var(--bg-sidebar);
 .sidebar-right h3 {
     font-size: 0.85rem;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: normal;
     margin-bottom: var(--spacing-md);
+    font-weight: normal; /* Explicitly regular */
     border-bottom: none;
 }
 
@@ -1100,14 +1179,15 @@ background: var(--bg-sidebar);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     transition: all 0.2s ease;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
 .jump-links a:hover {
@@ -1260,12 +1340,17 @@ background: var(--bg-sidebar);
 
 .sama-id {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--primary-maroon);
     font-weight: 600;
     background: var(--bg-sidebar);
-    padding: 4px 12px;
+    padding: 6px 12px;
     border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    line-height: normal;
 }
 
 .sama-id a {
@@ -1274,6 +1359,11 @@ background: var(--bg-sidebar);
 
 .sama-id a:hover {
     text-decoration: none;
+}
+
+.sama-id-row {
+    margin-bottom: 0rem;
+    margin-top: 0.5rem;
 }
 
 /* Metadata Links (Rishi, Devata, Chandas) */
@@ -1888,13 +1978,13 @@ sup.footnote-ref a:hover {
 }
 
 .anya-vargeekaran-card h2 {
-    color: #FF6B35;
+    color: var(--color-secondary);
     font-size: 2.2rem;
     margin-bottom: 2rem;
     border-bottom: none;
     padding-bottom: 0;
     text-transform: none;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .index-grid-homepage {
@@ -1927,7 +2017,8 @@ sup.footnote-ref a:hover {
 .index-link-item .stats {
     font-size: 0.8rem;
     color: #888;
-    margin-top: 0.2rem;
+    position: relative;
+    top: 3px; /* Align with Devanagari midline */
 }
 
 .index-link-item:hover {
@@ -1976,13 +2067,17 @@ sup.footnote-ref a:hover {
 /* Classification Table */
 .classification-table {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 2px;
     margin-bottom: 15px;
     border-collapse: collapse;
     font-size: 0.9rem;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
     overflow: hidden;
+}
+
+.sama-entry .number {
+    font-size: 0.9rem;
 }
 
 .classification-table th, .classification-table td {
@@ -2116,8 +2211,9 @@ sup.footnote-ref a:hover {
 }
 
 .alpha-btn:hover {
-    background: #e0e0e0;
-    border-color: var(--primary-maroon);
+    background: white;
+    border-color: var(--primary-gold);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transform: translateY(-2px);
 }
 
@@ -2133,6 +2229,8 @@ sup.footnote-ref a:hover {
     font-size: 0.75rem;
     color: #666;
     font-weight: 500;
+    position: relative;
+    top: 2px; /* Pull down to align with Devanagari midline */
 }
 
 .index-list-container {
@@ -2204,6 +2302,7 @@ sup.footnote-ref a:hover {
 
 .index-list-item:hover {
     background: #fdfdfd;
+    color: var(--color-primary);
 }
 
 .index-item-card:hover {
@@ -2259,8 +2358,8 @@ sup.footnote-ref a:hover {
 }
 
 .item-count-badge {
-    background: #eeeeee;
-    color: #555555;
+    background: transparent;
+    color: #777;
     padding: 1px 6px;
     border-radius: 3px;
     font-size: 0.75rem;
@@ -2284,11 +2383,17 @@ sup.footnote-ref a:hover {
 }
 
 .item-refs a {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     color: var(--text-link);
     text-decoration: none;
     margin-right: 0.5rem;
     display: inline-block;
+}
+
+.item-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 .item-refs a::after {
@@ -2475,6 +2580,55 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(entry);
     });
 
+    // Sidebar Jump Logic
+    const jumpInput = document.getElementById('sidebar-jump');
+    const searchBtn = document.querySelector('.search-btn');
+
+    const handleJump = () => {
+        const val = jumpInput.value.trim();
+        if (!val) return;
+        
+        const path = window.location.pathname;
+        let depth = 0;
+        if (path.includes('/kandah/')) depth = 2;
+        else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
+        
+        const prefix = '../'.repeat(depth);
+        const parts = val.split('.');
+        
+        console.log('Jump attempt:', val, 'Parts:', parts, 'Depth:', depth, 'Prefix:', prefix);
+
+        if (parts.length >= 2) {
+            const parvaId = `supersection_${parts[0]}`;
+            const kandahId = parts[1];
+            let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
+            if (parts.length === 3) {
+                url += `#sama-${parts[2]}`;
+            }
+            window.location.assign(url);
+        }
+    };
+
+    if (jumpInput) {
+        jumpInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleJump();
+        });
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleJump();
+        });
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleJump();
+        });
+    }
+
     // Audio error handling
     document.querySelectorAll('audio').forEach(audio => {
         audio.addEventListener('error', function() {
@@ -2548,7 +2702,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 kandah_section = f'''
                 <div class="nav-section">
-                            <h3>खण्ड: ({len(current_parva.kandahs)})</h3>
+                            <h3>खण्ड: <span class="number">({len(current_parva.kandahs)})</span></h3>
                     <div class="nav-links">
                         {kandah_links}
                     </div>
@@ -2589,7 +2743,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         sama_section = f'''
                         <div class="nav-section">
-                            <h3>साम: ({total_real_samams})</h3>
+                            <h3>साम: <span class="number">({total_real_samams})</span></h3>
                             <div class="nav-links">
                                 {sama_links}
                             </div>
@@ -2600,7 +2754,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <a href="{prefix}index.html">
             <div class="logo-text">{self.config['title_sa']}</div>
             <div class="logo-subtitle">{self.config['title_en']}</div>
-            <div class="logo-version" style="font-size: 0.7em; color: var(--text-secondary); margin-top: 4px;">v{self.metadata['version']}</div>
+            <div class="logo-version" style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">v{self.metadata['version']}</div>
         </a>
     </div>
     
@@ -2612,11 +2766,23 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     {kandah_section}
     {sama_section}
+    
     <div class="nav-section">
         <h3>Jump to</h3>
-        <ul class="nav-list">
-            <li><a href="{prefix}index.html">मुख्यपृष्ठम् (Home)</a></li>
-        </ul>
+        <input type="text" class="jump-input" id="sidebar-jump" placeholder="e.g. 1.1.1 or 1.45">
+    </div>
+
+    <div class="nav-section">
+        <a href="#" class="search-btn">
+            🔍 अन्वेषणम् (Search)
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="{prefix}index.html" class="footer-btn">मुख्यपृष्ठम्</a>
+        <a href="{prefix}classification/rishi.html" class="footer-btn">ऋषयः</a>
+        <a href="{prefix}classification/devata.html" class="footer-btn">देवताः</a>
+        <a href="{prefix}classification/chandas.html" class="footer-btn">छन्दांसि</a>
     </div>
 </aside>'''
 
@@ -2627,7 +2793,7 @@ document.addEventListener('DOMContentLoaded', function() {
             jump_links += f'<a href="#sama-{sama.sama_number}">{sama.sama_number}</a>\n'
         
         return f'''<aside class="sidebar-right">
-    <h3>साम: ({len(samas)})</h3>
+    <h3>साम: <span class="number">({len(samas)})</span></h3>
     <div class="jump-links">
         {jump_links}
     </div>
@@ -2834,8 +3000,8 @@ document.addEventListener('DOMContentLoaded', function() {
             {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>सामानुक्रमणिका (Alphabetical Index)</h1>
-                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: var(--font-sanskrit);">
-                    {self._to_devanagari_num(total_arsheyams)} आर्षेयम् • {self._to_devanagari_num(total_samas)} साम • {self._to_devanagari_num(self.total_riks_classified)} ऋचः
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: 'AdishilaVedic', serif;">
+                    {total_arsheyams} आर्षेयम् • {total_samas} साम • {self.total_riks_classified} ऋचः
                 </div>
             </div>
             
@@ -2941,7 +3107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="index-list-item" id="{term_id}">
                     <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem; margin-bottom: 0.2rem;">
                         <span class="item-name" style="color: var(--primary-maroon); min-width: fit-content;">{key}</span>
-                        <span class="item-count" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">({len(refs)})</span>
+                        <span class="item-count">({len(refs)})</span>
                     </div>
                     <div class="item-refs">
                         {refs_links}
@@ -2964,8 +3130,8 @@ document.addEventListener('DOMContentLoaded', function() {
             {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>{title}</h1>
-                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: var(--font-sanskrit);">
-                    {self._to_devanagari_num(total_items)} {item_trans} • {self._to_devanagari_num(total_arsheyams)} आर्षेयम्
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: 'AdishilaVedic', serif;">
+                    {total_items} {item_trans} • {total_arsheyams} आर्षेयम्
                 </div>
             </div>
             
@@ -3251,7 +3417,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </thead>
                                 {"".join([f'''
                                     <tr>
-                                        <td>{c['Global_Rik_Num']}</td>
+                                        <td><span class="number">{c['Global_Rik_Num']}</span></td>
                                         <td class="class-value">{c['Rishi']}</td>
                                         <td class="class-value">{c['Devata']}</td>
                                         <td class="class-value">{c['Chandas']}</td>
