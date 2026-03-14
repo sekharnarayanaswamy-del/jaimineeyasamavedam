@@ -1003,6 +1003,82 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
+/* Anya Vargeekaran Homepage Card */
+.anya-vargeekaran-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-light);
+    max-width: 900px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.anya-vargeekaran-card h2 {
+    color: var(--primary-maroon);
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--primary-gold);
+    padding-bottom: 8px;
+    display: block;
+    width: 100%;
+}
+
+.index-grid-homepage {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+    .index-grid-homepage {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .index-grid-homepage {
+        grid-template-columns: 1fr;
+    }
+}
+
+.index-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--bg-sidebar);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-height: 100px;
+}
+
+.index-link-item:hover {
+    border-color: var(--primary-maroon);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.15);
+    text-decoration: none;
+    background: white;
+}
+
+.index-link-item span.title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-maroon);
+    margin-bottom: 4px;
+}
+
+.index-link-item span.stats {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
 .index-list {
     max-width: 800px;
     margin: 0 auto;

@@ -1831,6 +1831,82 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
+/* Anya Vargeekaran Homepage Card */
+.anya-vargeekaran-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-light);
+    max-width: 900px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.anya-vargeekaran-card h2 {
+    color: var(--primary-maroon);
+    font-size: 1.6rem;
+    margin-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--primary-gold);
+    padding-bottom: 8px;
+    display: block;
+    width: 100%;
+}
+
+.index-grid-homepage {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+    .index-grid-homepage {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .index-grid-homepage {
+        grid-template-columns: 1fr;
+    }
+}
+
+.index-link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--bg-sidebar);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    min-height: 100px;
+}
+
+.index-link-item:hover {
+    border-color: var(--primary-maroon);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.15);
+    text-decoration: none;
+    background: white;
+}
+
+.index-link-item span.title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-maroon);
+    margin-bottom: 4px;
+}
+
+.index-link-item span.stats {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
 .index-list {
     max-width: 800px;
     margin: 0 auto;
@@ -2578,8 +2654,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 
-                <div class="quick-links" style="margin-top: 2rem; text-align: center; opacity: 0.7;">
-                    <a href="classification/index.html" class="index-btn"> अन्य सङ्क्रमणिका / वर्गीकरणम् (Indices)</a>
+                <div class="anya-vargeekaran-card">
+                    <h2>अन्य वर्गीकरणम् (Indices)</h2>
+                    <div class="index-grid-homepage">
+                        <a href="classification/rishi.html" class="index-link-item">
+                            <span class="title">ऋषयः</span>
+                            <span class="stats">{len(self.rishi_index)} Rishis</span>
+                            <span class="stats">{sum(len(v) for v in self.rishi_index.values())} Samas</span>
+                        </a>
+                        <a href="classification/devata.html" class="index-link-item">
+                            <span class="title">देवताः</span>
+                            <span class="stats">{len(self.devata_index)} Devatas</span>
+                            <span class="stats">{sum(len(v) for v in self.devata_index.values())} Samas</span>
+                        </a>
+                        <a href="classification/chandas.html" class="index-link-item">
+                            <span class="title">छन्दांसि</span>
+                            <span class="stats">{len(self.chandas_index)} Chandas</span>
+                            <span class="stats">{sum(len(v) for v in self.chandas_index.values())} Samas</span>
+                        </a>
+                        <a href="classification/anukramanika.html" class="index-link-item">
+                            <span class="title">अनुक्रमणिका</span>
+                            <span class="stats">{self.total_riks_classified} Riks</span>
+                            <span class="stats">{len(self.header_index)} Samas</span>
+                        </a>
+                    </div>
                 </div>
             </div>
             
@@ -2671,9 +2769,10 @@ document.addEventListener('DOMContentLoaded', function() {
         (self.output_dir / 'classification').mkdir(exist_ok=True)
         
         self._generate_classification_home()
-        self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html", show_top_20=True)
-        self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html", show_top_20=True)
-        self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html", show_top_20=True)
+        self._generate_anukramanika_page()
+        self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html", item_label="Rishis", show_top_20=True)
+        self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html", item_label="Devatas", show_top_20=True)
+        self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html", item_label="Chandas", show_top_20=True)
 
     def _generate_classification_home(self):
         """Generate the main 3-column classification landing page"""
@@ -2683,34 +2782,34 @@ document.addEventListener('DOMContentLoaded', function() {
         {self._get_sidebar_html(depth=1)}
         
         <main class="main-content" style="max-width: 1200px;">
-            <div class="page-header">
-                <h1>सङ्क्रमणिका / वर्गीकरणम्</h1>
-                <p class="page-subtitle">Indices and Classifications</p>
-                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); font-size: 1.1rem; display: flex; gap: 2rem;">
-                    <div>Total Samas: <strong style="color: var(--primary-maroon);">{sum(sum(len(k.samas) for k in p.kandahs) for p in self.parvas)}</strong></div>
-                    <div>Classified Riks: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong></div>
+                <h1>Indices and Classifications</h1>
+                <p class="page-subtitle">सङ्क्रमणिका / वर्गीकरणम्</p>
+            </div>
+            
+            <div class="anya-vargeekaran-card" style="margin-top: 0; max-width: 100%;">
+                <div class="index-grid-homepage">
+                    <a href="rishi.html" class="index-link-item">
+                        <span class="title">ऋषयः</span>
+                        <span class="stats">{len(self.rishi_index)} Rishis</span>
+                        <span class="stats">{sum(len(v) for v in self.rishi_index.values())} Samas</span>
+                    </a>
+                    <a href="devata.html" class="index-link-item">
+                        <span class="title">देवताः</span>
+                        <span class="stats">{len(self.devata_index)} Devatas</span>
+                        <span class="stats">{sum(len(v) for v in self.devata_index.values())} Samas</span>
+                    </a>
+                    <a href="chandas.html" class="index-link-item">
+                        <span class="title">छन्दांसि</span>
+                        <span class="stats">{len(self.chandas_index)} Chandas</span>
+                        <span class="stats">{sum(len(v) for v in self.chandas_index.values())} Samas</span>
+                    </a>
+                    <a href="anukramanika.html" class="index-link-item">
+                        <span class="title">अनुक्रमणिका</span>
+                        <span class="stats">{self.total_riks_classified} Riks</span>
+                        <span class="stats">{len(self.header_index)} Samas</span>
+                    </a>
                 </div>
             </div>
-            
-            <div class="classification-grid">
-                <a href="rishi.html" class="class-card">
-                    <h2>ऋषयः</h2>
-                    <div class="count">{len(self.rishi_index)} Rishis</div>
-                </a>
-                <a href="devata.html" class="class-card">
-                    <h2>देवताः</h2>
-                    <div class="count">{len(self.devata_index)} Devatas</div>
-                </a>
-                <a href="chandas.html" class="class-card">
-                    <h2>छन्दांसि</h2>
-                    <div class="count">{len(self.chandas_index)} Chandas</div>
-                </a>
-            </div>
-            
-            <section style="margin-top: 4rem;">
-                <h2 class="index-section-header">सामानुक्रमणिका (Alphabetical Headers Index)</h2>
-                {self._get_header_index_html()}
-            </section>
         </main>
     </div>
     <script src="../js/main.js"></script>
@@ -2719,16 +2818,38 @@ document.addEventListener('DOMContentLoaded', function() {
         with open(self.output_dir / 'classification' / 'index.html', 'w', encoding='utf-8') as f:
             f.write(html)
 
-    def _generate_index_page_generic(self, title, data_dict, filename, show_top_20=False):
+    def _generate_anukramanika_page(self):
+        """Generate a dedicated page for the Alphabetical Headers Index"""
+        html = f'''{self._get_html_head("सामानुक्रमणिका (Alphabetical Index)", depth=1)}
+<body>
+    <div class="page-container">
+        {self._get_sidebar_html(depth=1)}
+        <main class="main-content" style="max-width: 1200px;">
+            <div class="page-header">
+                <h1>सामानुक्रमणिका (Alphabetical Index)</h1>
+                <a href="index.html" class="back-link">← Back to Classifications</a>
+                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); display: flex; gap: 2rem;">
+                    <div>Aggregate Riks: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong></div>
+                    <div>Aggregate Samas: <strong style="color: var(--primary-maroon);">{len(self.header_index)}</strong></div>
+                </div>
+            </div>
+            
+            <section class="alphabetical-section">
+                {self._get_header_index_html()}
+            </section>
+        </main>
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>'''
+        with open(self.output_dir / 'classification' / 'anukramanika.html', 'w', encoding='utf-8') as f:
+            f.write(html)
+
+    def _generate_index_page_generic(self, title, data_dict, filename, item_label="Items", show_top_20=False):
         """Generate an enhanced index page with 3-column row grid layout"""
-        # 1. Calculate Aggregate Unique Rik Count for this page
-        page_rik_nums = set()
-        for refs in data_dict.values():
-            for r in refs:
-                rn = r.get('rik_num')
-                if rn is not None:
-                    page_rik_nums.add(int(rn) if isinstance(rn, (int, str)) and str(rn).isdigit() else rn)
-        page_total_riks = len(page_rik_nums)
+        # 1. Calculate Aggregate Stats
+        total_items = len(data_dict)
+        total_samams = sum(len(refs) for refs in data_dict.values())
 
         # 2. Prepare Top 20 (Prominent Items)
         top_20_html = ""
@@ -2827,8 +2948,9 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="page-header">
                 <h1>{title}</h1>
                 <a href="index.html" class="back-link">← Back to Classifications</a>
-                <div class="stats-summary" style="margin-top: 0.5rem; color: var(--text-muted);">
-                    Aggregate Rik Count: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong>
+                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); display: flex; gap: 2rem;">
+                    <div>Aggregate {item_label}: <strong style="color: var(--primary-maroon);">{total_items}</strong></div>
+                    <div>Aggregate Samas: <strong style="color: var(--primary-maroon);">{total_samams}</strong></div>
                 </div>
             </div>
             
