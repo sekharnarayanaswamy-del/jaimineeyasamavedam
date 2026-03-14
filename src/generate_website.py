@@ -862,7 +862,7 @@ class WebsiteGenerator:
 
 /* Typography */
 --font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
---font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
+--font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
 --font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
@@ -904,15 +904,23 @@ font-weight: 600;
 line-height: 1.4;
 margin-bottom: var(--spacing-md);
 color: var(--color-secondary); /* Headings in Dark Gray */
-border-bottom: 2px solid var(--color-primary); /* Saffron underline */
-padding-bottom: 0.25rem;
+padding-bottom: 0.1rem;
 display: inline-block;
 }
 
-h1 { font-size: 1.8rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1.1rem; }
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
+
+/* Numerals and Counts in Adishila San Vedic (Sans Look) */
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge {
+    font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
+}
+
+.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count {
+    font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
+}
 
 .sanskrit-text {
 font-family: var(--font-sanskrit);
@@ -936,7 +944,6 @@ transition: all 0.2s ease;
 a:hover {
 color: var(--text-link-hover);
 text-decoration: none;
-border-bottom: 1px dotted var(--text-link-hover);
 }
 
 /* Main Layout - 3 Column */
@@ -993,7 +1000,7 @@ margin-bottom: var(--spacing-xl);
 }
 
 .nav-section h3 {
-font-size: 1rem;
+font-size: 1.3rem;
 color: var(--color-secondary);
 text-transform: uppercase;
 letter-spacing: 0.1em;
@@ -1058,7 +1065,7 @@ border-color: var(--color-primary);
 .main-content {
 flex: 1;
 margin-left: var(--sidebar-width);
-padding: var(--spacing-xl) var(--spacing-2xl);
+padding: var(--spacing-md) var(--spacing-2xl);
 max-width: 900px;
 }
 
@@ -1113,18 +1120,19 @@ background: var(--bg-sidebar);
 
 /* Page Header */
 .page-header {
-    margin-bottom: var(--spacing-2xl);
-    padding-bottom: var(--spacing-lg);
-    border-bottom: 2px solid var(--primary-maroon);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .page-header h1 {
-    margin-bottom: var(--spacing-sm);
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
 }
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-family: var(--font-sanskrit);
 }
 
@@ -1141,11 +1149,40 @@ background: var(--bg-sidebar);
 
 .sama-count {
     display: inline-block;
-    background: var(--bg-sidebar);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
+}
+
+.page-meta .number {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+/* Top Nav Links (Mukhyaprshtam / Anveshanam) */
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-heading);
+}
+
+.top-nav a {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    padding: 2px 4px;
+}
+
+.top-nav a:hover {
+    color: var(--color-accent);
+    transform: translateY(-1px);
+}
+
+.top-nav .nav-icon {
+    margin-right: 4px;
+    font-style: normal;
 }
 
 /* Breadcrumb */
@@ -1445,18 +1482,18 @@ background: var(--bg-sidebar);
 /* Homepage Styles */
 .home-hero {
     text-align: center;
-    padding: var(--spacing-2xl) 0;
-    margin-bottom: var(--spacing-2xl);
-    border-bottom: 2px solid var(--primary-maroon);
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .home-hero h1 {
-    font-size: 2.2rem;
+    font-size: 3rem;
     margin-bottom: var(--spacing-sm);
 }
 
 .home-hero .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: var(--text-secondary);
 }
 
@@ -1472,25 +1509,25 @@ background: var(--bg-sidebar);
 }
 
 .stat-value {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary-maroon);
 }
 
 .stat-label {
-    font-size: 0.9rem;
+    font-size: 1.3rem;
     color: var(--text-muted);
 }
 
 /* Parva Grid */
 .parva-section {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
 }
 
 .parva-section h2 {
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: 4px;
+    border-bottom: none;
 }
 
 .kandah-grid {
@@ -1711,7 +1748,8 @@ background: var(--bg-sidebar);
     display: inline-block;
     white-space: nowrap;
     color: var(--primary-maroon);
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 1.6rem;
 }
 
 /* Footnote Section Styles - matching renderPDF.py */
@@ -1831,81 +1869,75 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
-/* Anya Vargeekaran Homepage Card */
+.index-btn:hover {
+    border-color: var(--primary-maroon);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    color: var(--text-primary);
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
 .anya-vargeekaran-card {
-    background: white;
-    padding: var(--spacing-xl);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-light);
+    background: transparent;
+    padding: 2.5rem 0;
+    border-top: 3px solid #C08535;
+    border-bottom: 3px solid #C08535;
     max-width: 900px;
-    margin: 2rem auto;
+    margin: 4rem auto;
     text-align: center;
 }
 
 .anya-vargeekaran-card h2 {
-    color: var(--primary-maroon);
-    font-size: 1.6rem;
-    margin-bottom: var(--spacing-lg);
-    border-bottom: 2px solid var(--primary-gold);
-    padding-bottom: 8px;
-    display: block;
-    width: 100%;
+    color: #FF6B35;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    text-transform: none;
+    font-weight: 600;
 }
 
 .index-grid-homepage {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-@media (max-width: 900px) {
-    .index-grid-homepage {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 500px) {
-    .index-grid-homepage {
-        grid-template-columns: 1fr;
-    }
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 .index-link-item {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background: var(--bg-sidebar);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    padding: 0.5rem 1.5rem;
+    background: #FFFDF8;
+    border-radius: 40px;
+    border: 1px solid #D8CCB8;
     text-decoration: none;
-    transition: all 0.3s ease;
-    min-height: 100px;
+    transition: all 0.2s ease;
+    color: #FF6B35;
+    font-family: var(--font-sanskrit);
+    font-weight: 600;
+    gap: 0.6rem;
+}
+
+.index-link-item .title {
+    font-size: 1.5rem;
+}
+
+.index-link-item .stats {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.2rem;
 }
 
 .index-link-item:hover {
     border-color: var(--primary-maroon);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.15);
-    text-decoration: none;
     background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    text-decoration: none;
+    transform: translateY(-1px);
 }
 
-.index-link-item span.title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--primary-maroon);
-    margin-bottom: 4px;
-}
-
-.index-link-item span.stats {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.2;
-}
 
 .index-list {
     max-width: 800px;
@@ -2300,18 +2332,19 @@ sup.footnote-ref a:hover {
     display: flex;
     align-items: center;
     background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     border: 1px solid var(--border-light);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     color: inherit;
+    min-height: 54px;
 }
 
 .rishi-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     border-color: var(--primary-maroon);
 }
 
@@ -2340,34 +2373,44 @@ sup.footnote-ref a:hover {
 .rishi-rank {
     background: var(--primary-maroon);
     color: white;
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-right: 1.25rem;
+    font-weight: 500; /* Medium instead of bold */
+    font-size: 0.85rem;
+    margin-right: 0.8rem;
     flex-shrink: 0;
 }
 
 .rishi-info {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .rishi-name {
     font-family: var(--font-sanskrit);
-    font-weight: 600;
-    font-size: 1.35rem;
+    font-weight: 400; /* Regular instead of semi-bold */
+    font-size: 1.15rem;
     display: block;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rishi-count {
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
     text-align: right;
-    font-weight: 500;
+    font-weight: 400; /* Regular instead of semi-bold */
+    margin-left: 1rem;
+    white-space: nowrap;
 }
 
 
@@ -2470,6 +2513,15 @@ document.addEventListener('DOMContentLoaded', function() {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{prefix}css/styles.css">
 </head>'''
+
+    def _get_top_nav_html(self, depth=0):
+        """Get HTML for top-right navigation links"""
+        prefix = '../' * depth
+        return f'''
+            <nav class="top-nav">
+                <a href="{prefix}index.html"><i class="nav-icon">🏠</i>मुख्यपृष्ठम् (Home)</a>
+                <a href="#"><i class="nav-icon">🔍</i>अन्वेषणम् (Search)</a>
+            </nav>'''
 
     def _get_sidebar_html(self, current_parva_id: str = "", current_kandah_id: str = "", depth: int = 0) -> str:
         """Generate left sidebar with navigation"""
@@ -2659,23 +2711,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="index-grid-homepage">
                         <a href="classification/rishi.html" class="index-link-item">
                             <span class="title">ऋषयः</span>
-                            <span class="stats">{len(self.rishi_index)} Rishis</span>
-                            <span class="stats">{sum(len(v) for v in self.rishi_index.values())} Samas</span>
+                            <span class="stats">({len(self.rishi_index)})</span>
                         </a>
                         <a href="classification/devata.html" class="index-link-item">
                             <span class="title">देवताः</span>
-                            <span class="stats">{len(self.devata_index)} Devatas</span>
-                            <span class="stats">{sum(len(v) for v in self.devata_index.values())} Samas</span>
+                            <span class="stats">({len(self.devata_index)})</span>
                         </a>
                         <a href="classification/chandas.html" class="index-link-item">
                             <span class="title">छन्दांसि</span>
-                            <span class="stats">{len(self.chandas_index)} Chandas</span>
-                            <span class="stats">{sum(len(v) for v in self.chandas_index.values())} Samas</span>
+                            <span class="stats">({len(self.chandas_index)})</span>
                         </a>
                         <a href="classification/anukramanika.html" class="index-link-item">
                             <span class="title">अनुक्रमणिका</span>
-                            <span class="stats">{self.total_riks_classified} Riks</span>
-                            <span class="stats">{len(self.header_index)} Samas</span>
+                            <span class="stats">({len(self.header_index)})</span>
                         </a>
                     </div>
                 </div>
@@ -2768,69 +2816,26 @@ document.addEventListener('DOMContentLoaded', function() {
         # Create classification dir
         (self.output_dir / 'classification').mkdir(exist_ok=True)
         
-        self._generate_classification_home()
         self._generate_anukramanika_page()
         self._generate_index_page_generic("ऋषयः (Rishis)", self.rishi_index, "rishi.html", item_label="Rishis", show_top_20=True)
         self._generate_index_page_generic("देवताः (Devatas)", self.devata_index, "devata.html", item_label="Devatas", show_top_20=True)
         self._generate_index_page_generic("छन्दांसि (Chandas)", self.chandas_index, "chandas.html", item_label="Chandas", show_top_20=True)
 
-    def _generate_classification_home(self):
-        """Generate the main 3-column classification landing page"""
-        html = f'''{self._get_html_head("वर्गीकरणम् (Classifications)", depth=1)}
-<body>
-    <div class="page-container">
-        {self._get_sidebar_html(depth=1)}
-        
-        <main class="main-content" style="max-width: 1200px;">
-                <h1>Indices and Classifications</h1>
-                <p class="page-subtitle">सङ्क्रमणिका / वर्गीकरणम्</p>
-            </div>
-            
-            <div class="anya-vargeekaran-card" style="margin-top: 0; max-width: 100%;">
-                <div class="index-grid-homepage">
-                    <a href="rishi.html" class="index-link-item">
-                        <span class="title">ऋषयः</span>
-                        <span class="stats">{len(self.rishi_index)} Rishis</span>
-                        <span class="stats">{sum(len(v) for v in self.rishi_index.values())} Samas</span>
-                    </a>
-                    <a href="devata.html" class="index-link-item">
-                        <span class="title">देवताः</span>
-                        <span class="stats">{len(self.devata_index)} Devatas</span>
-                        <span class="stats">{sum(len(v) for v in self.devata_index.values())} Samas</span>
-                    </a>
-                    <a href="chandas.html" class="index-link-item">
-                        <span class="title">छन्दांसि</span>
-                        <span class="stats">{len(self.chandas_index)} Chandas</span>
-                        <span class="stats">{sum(len(v) for v in self.chandas_index.values())} Samas</span>
-                    </a>
-                    <a href="anukramanika.html" class="index-link-item">
-                        <span class="title">अनुक्रमणिका</span>
-                        <span class="stats">{self.total_riks_classified} Riks</span>
-                        <span class="stats">{len(self.header_index)} Samas</span>
-                    </a>
-                </div>
-            </div>
-        </main>
-    </div>
-    <script src="../js/main.js"></script>
-</body>
-</html>'''
-        with open(self.output_dir / 'classification' / 'index.html', 'w', encoding='utf-8') as f:
-            f.write(html)
-
     def _generate_anukramanika_page(self):
         """Generate a dedicated page for the Alphabetical Headers Index"""
+        total_samas = sum(count_samams_with_fallback(s.mantra_text) for p in self.parvas for k in p.kandahs for s in k.samas)
+        total_arsheyams = sum(len(k.samas) for p in self.parvas for k in p.kandahs)
+
         html = f'''{self._get_html_head("सामानुक्रमणिका (Alphabetical Index)", depth=1)}
 <body>
     <div class="page-container">
         {self._get_sidebar_html(depth=1)}
         <main class="main-content" style="max-width: 1200px;">
+            {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>सामानुक्रमणिका (Alphabetical Index)</h1>
-                <a href="index.html" class="back-link">← Back to Classifications</a>
-                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); display: flex; gap: 2rem;">
-                    <div>Aggregate Riks: <strong style="color: var(--primary-maroon);">{self.total_riks_classified}</strong></div>
-                    <div>Aggregate Samas: <strong style="color: var(--primary-maroon);">{len(self.header_index)}</strong></div>
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: var(--font-sanskrit);">
+                    {self._to_devanagari_num(total_arsheyams)} आर्षेयम् • {self._to_devanagari_num(total_samas)} साम • {self._to_devanagari_num(self.total_riks_classified)} ऋचः
                 </div>
             </div>
             
@@ -2847,9 +2852,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     def _generate_index_page_generic(self, title, data_dict, filename, item_label="Items", show_top_20=False):
         """Generate an enhanced index page with 3-column row grid layout"""
-        # 1. Calculate Aggregate Stats
         total_items = len(data_dict)
-        total_samams = sum(len(refs) for refs in data_dict.values())
+        # Use a set to count unique arsheyam containers covered by this classification
+        unique_arsheyams = {r['location'] for refs in data_dict.values() for r in refs}
+        total_arsheyams = len(unique_arsheyams)
+        
+        # Determine Sanskrit label for items
+        item_trans = item_label
+        if "rishi" in title.lower(): item_trans = "ऋषयः"
+        elif "devata" in title.lower(): item_trans = "देवताः"
+        elif "chanda" in title.lower(): item_trans = "छन्दांसि"
+        
+        # We also want to show the global Arsheyam count if needed, 
+        # but the request says show 722 if it's the global count.
+        global_arsheyams = sum(len(k.samas) for p in self.parvas for k in p.kandahs)
 
         # 2. Prepare Top 20 (Prominent Items)
         top_20_html = ""
@@ -2865,8 +2881,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="rishi-rank">{i}</div>
                     <div class="rishi-info">
                         <span class="rishi-name">{name}</span>
-                        <div class="rishi-count">{len(refs)} ऋचः</div>
                     </div>
+                    <div class="rishi-count">{len(refs)} ऋचः</div>
                 </a>'''
             
             top_20_html = ""
@@ -2925,7 +2941,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="index-list-item" id="{term_id}">
                     <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem; margin-bottom: 0.2rem;">
                         <span class="item-name" style="color: var(--primary-maroon); min-width: fit-content;">{key}</span>
-                        <span style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">({len(refs)})</span>
+                        <span class="item-count" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">({len(refs)})</span>
                     </div>
                     <div class="item-refs">
                         {refs_links}
@@ -2945,12 +2961,11 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="page-container">
         {self._get_sidebar_html(depth=1)}
         <main class="main-content" style="max-width: 1200px;">
+            {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>{title}</h1>
-                <a href="index.html" class="back-link">← Back to Classifications</a>
-                <div class="stats-summary" style="margin-top: 1rem; color: var(--text-muted); display: flex; gap: 2rem;">
-                    <div>Aggregate {item_label}: <strong style="color: var(--primary-maroon);">{total_items}</strong></div>
-                    <div>Aggregate Samas: <strong style="color: var(--primary-maroon);">{total_samams}</strong></div>
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: var(--font-sanskrit);">
+                    {self._to_devanagari_num(total_items)} {item_trans} • {self._to_devanagari_num(total_arsheyams)} आर्षेयम्
                 </div>
             </div>
             
@@ -3270,6 +3285,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {self._get_sidebar_html(current_parva_id=parva.id, current_kandah_id=kandah.id, depth=2)}
         
         <main class="main-content">
+            {self._get_top_nav_html(depth=2)}
             <nav class="breadcrumb">
                 <a href="../../index.html">मुख्यपृष्ठम्</a>
                 <span class="breadcrumb-separator">›</span>
@@ -3281,8 +3297,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <header class="page-header">
                 <h1>{parva.title} - {kandah.title}</h1>
                 <div class="page-meta">
-                    <p class="page-subtitle">पर्व: {parva.parva_number} | खण्ड: {kandah.kandah_number}</p>
-                    <span class="sama-count">साम: {len(kandah.samas)}</span>
+                    <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span></p>
+                    <span class="sama-count">साम: <span class="number">{len(kandah.samas)}</span></span>
                 </div>
             </header>
             

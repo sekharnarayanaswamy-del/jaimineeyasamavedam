@@ -34,7 +34,7 @@
 
 /* Typography */
 --font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
---font-body: 'Noto Sans Devanagari', 'Inter', sans-serif;
+--font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
 --font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
@@ -76,15 +76,14 @@ font-weight: 600;
 line-height: 1.4;
 margin-bottom: var(--spacing-md);
 color: var(--color-secondary); /* Headings in Dark Gray */
-border-bottom: 2px solid var(--color-primary); /* Saffron underline */
-padding-bottom: 0.25rem;
+padding-bottom: 0.1rem;
 display: inline-block;
 }
 
-h1 { font-size: 1.8rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
-h4 { font-size: 1.1rem; }
+h1 { font-size: 2.4rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.2rem; }
 
 .sanskrit-text {
 font-family: var(--font-sanskrit);
@@ -108,7 +107,6 @@ transition: all 0.2s ease;
 a:hover {
 color: var(--text-link-hover);
 text-decoration: none;
-border-bottom: 1px dotted var(--text-link-hover);
 }
 
 /* Main Layout - 3 Column */
@@ -230,7 +228,7 @@ border-color: var(--color-primary);
 .main-content {
 flex: 1;
 margin-left: var(--sidebar-width);
-padding: var(--spacing-xl) var(--spacing-2xl);
+padding: var(--spacing-md) var(--spacing-2xl);
 max-width: 900px;
 }
 
@@ -285,18 +283,19 @@ background: var(--bg-sidebar);
 
 /* Page Header */
 .page-header {
-    margin-bottom: var(--spacing-2xl);
-    padding-bottom: var(--spacing-lg);
-    border-bottom: 2px solid var(--primary-maroon);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .page-header h1 {
-    margin-bottom: var(--spacing-sm);
+    margin-top: 0;
+    margin-bottom: var(--spacing-xs);
 }
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-family: var(--font-sanskrit);
 }
 
@@ -617,9 +616,9 @@ background: var(--bg-sidebar);
 /* Homepage Styles */
 .home-hero {
     text-align: center;
-    padding: var(--spacing-2xl) 0;
-    margin-bottom: var(--spacing-2xl);
-    border-bottom: 2px solid var(--primary-maroon);
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .home-hero h1 {
@@ -644,25 +643,25 @@ background: var(--bg-sidebar);
 }
 
 .stat-value {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
     color: var(--primary-maroon);
 }
 
 .stat-label {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--text-muted);
 }
 
 /* Parva Grid */
 .parva-section {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
 }
 
 .parva-section h2 {
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-sm);
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: 4px;
+    border-bottom: none;
 }
 
 .kandah-grid {
@@ -1003,80 +1002,74 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
+.index-btn:hover {
+    border-color: var(--primary-maroon);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    color: var(--text-primary);
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
 /* Anya Vargeekaran Homepage Card */
 .anya-vargeekaran-card {
-    background: white;
-    padding: var(--spacing-xl);
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-light);
+    background: transparent;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
     max-width: 900px;
-    margin: 2rem auto;
+    margin: 3rem auto;
     text-align: center;
 }
 
 .anya-vargeekaran-card h2 {
-    color: var(--primary-maroon);
-    font-size: 1.6rem;
-    margin-bottom: var(--spacing-lg);
-    border-bottom: 2px solid var(--primary-gold);
-    padding-bottom: 8px;
-    display: block;
-    width: 100%;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 500;
 }
 
 .index-grid-homepage {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-@media (max-width: 900px) {
-    .index-grid-homepage {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 500px) {
-    .index-grid-homepage {
-        grid-template-columns: 1fr;
-    }
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 .index-link-item {
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    padding: 0.4rem 1.1rem;
     background: var(--bg-sidebar);
-    border-radius: 8px;
+    border-radius: 30px;
     border: 1px solid var(--border-color);
     text-decoration: none;
-    transition: all 0.3s ease;
-    min-height: 100px;
+    transition: all 0.2s ease;
 }
 
 .index-link-item:hover {
     border-color: var(--primary-maroon);
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.15);
-    text-decoration: none;
     background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    text-decoration: none;
+    transform: translateY(-1px);
 }
 
 .index-link-item span.title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--primary-maroon);
-    margin-bottom: 4px;
+    margin-right: 5px;
 }
 
 .index-link-item span.stats {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    line-height: 1.2;
+    font-weight: 500;
 }
 
 .index-list {

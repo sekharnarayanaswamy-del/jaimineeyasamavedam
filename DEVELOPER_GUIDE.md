@@ -440,3 +440,10 @@ The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which a
     *   **Structure**: Each entry in `rik_classifications` contains: `Global_Rik_Num`, `Rishi`, `Devata`, and `Chandas`.
     *   **Purpose**: This allows the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
 *   **Sorting**: All data is processed using a strict numerical sort on SuperSection and Section keys to ensure the global counter remains stable across runs.
+
+### 5.5 Typography System
+The website's visual hierarchy is driven by a two-font system designed to balance traditional aesthetics with modern readability.
+*   **Adishila Vedic (Serif)**: Used for all traditional Sanskrit content, mantra text, and metadata labels.
+*   **Adishila San Vedic (Sans-serif)**: Used for numerals, counts, and interactive navigation elements.
+
+Detailed mapping of CSS classes to font families and fine-tuning instructions can be found in the **[Typography Guide](docs/typography_guide.md)**. Changes to the typography are made in the CSS fragments within `src/generate_website.py`.
