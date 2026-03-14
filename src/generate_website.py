@@ -835,6 +835,8 @@ class WebsiteGenerator:
 --color-bg-card: #EFE6D5;   /* Antique White */
 --color-text: #2C2C2C;      /* Charcoal */
 --color-accent: #FF6B35;    /* Saffron (Restored) */
+--color-primary: var(--color-accent);
+--color-secondary: var(--color-text);
 
 /* Theme Semantic Mapping */
 --primary-maroon: var(--color-accent); /* Headings/Links = Saffron */
@@ -1047,8 +1049,9 @@ border: 1px solid transparent;
 .nav-list a:hover {
 background: var(--color-primary);
 color: white;
-box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+box-shadow: 0 2px 6px rgba(255, 107, 53, 0.3);
 transform: translateX(4px);
+border-color: var(--color-primary);
 }
 
 /* Main Content */
@@ -1105,6 +1108,7 @@ background: var(--bg-sidebar);
     color: white;
     border-color: var(--color-primary);
     text-decoration: none;
+    box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
 }
 
 /* Page Header */
