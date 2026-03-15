@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css?v=1773595446">
 </head>
 <body>
     <div class="page-container">
@@ -19,7 +19,7 @@
         <a href="../../index.html">
             <div class="logo-text">जैमिनीय साम संहिता</div>
             <div class="logo-subtitle">Jaimineeya Sama Samhita</div>
-            <div class="logo-version" style="font-size: 0.7em; color: var(--text-secondary); margin-top: 4px;">v2.0.0</div>
+            <div class="logo-version" style="font-size: 0.85em; color: var(--text-secondary); margin-top: 4px;">v2.0.0</div>
         </a>
     </div>
     
@@ -37,7 +37,7 @@
     </div>
     
                 <div class="nav-section">
-                            <h3>खण्ड: (8)</h3>
+                            <h3>खण्ड: <span class="number">(8)</span></h3>
                     <div class="nav-links">
                         <a href="../../kandah/supersection_3/1.html" class="">1</a>
 <a href="../../kandah/supersection_3/2.html" class="">2</a>
@@ -52,7 +52,7 @@
                 </div>
     
                         <div class="nav-section">
-                            <h3>साम: (11)</h3>
+                            <h3>साम: <span class="number">(11)</span></h3>
                             <div class="nav-links">
                                 <a href="#sama-1">1</a>
 <a href="#sama-2">2</a>
@@ -67,15 +67,32 @@
 
                             </div>
                         </div>
+    
     <div class="nav-section">
         <h3>Jump to</h3>
-        <ul class="nav-list">
-            <li><a href="../../index.html">मुख्यपृष्ठम् (Home)</a></li>
-        </ul>
+        <input type="text" class="jump-input" id="sidebar-jump" placeholder="e.g. 1.1.1 or 1.45">
+    </div>
+
+    <div class="nav-section">
+        <a href="#" class="search-btn">
+            🔍 अन्वेषणम् (Search)
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="../../index.html" class="footer-btn">मुख्यपृष्ठम्</a>
+        <a href="../../classification/rishi.html" class="footer-btn">ऋषयः</a>
+        <a href="../../classification/devata.html" class="footer-btn">देवताः</a>
+        <a href="../../classification/chandas.html" class="footer-btn">छन्दांसि</a>
     </div>
 </aside>
         
         <main class="main-content">
+            
+            <nav class="top-nav">
+                <a href="../../index.html"><i class="nav-icon">🏠</i>मुख्यपृष्ठम् (Home)</a>
+                <a href="#"><i class="nav-icon">🔍</i>अन्वेषणम् (Search)</a>
+            </nav>
             <nav class="breadcrumb">
                 <a href="../../index.html">मुख्यपृष्ठम्</a>
                 <span class="breadcrumb-separator">›</span>
@@ -87,8 +104,8 @@
             <header class="page-header">
                 <h1>बृहतिपाठः - अष्टम खण्डः</h1>
                 <div class="page-meta">
-                    <p class="page-subtitle">पर्व: 3 | खण्ड: 8</p>
-                    <span class="sama-count">साम: 10</span>
+                    <p class="page-subtitle">पर्व: <span class="number">3</span> | खण्ड: <span class="number">8</span></p>
+                    <span class="sama-count">साम: <span class="number">10</span></span>
                 </div>
             </header>
             
@@ -130,7 +147,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>305</td>
+                                        <td><span class="number">305</span></td>
                                         <td class="class-value">वसिष्ठो मैत्रावरुणिः</td>
                                         <td class="class-value">उषाः</td>
                                         <td class="class-value">बृहती</td>
@@ -176,7 +193,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>306</td>
+                                        <td><span class="number">306</span></td>
                                         <td class="class-value">वसिष्ठो मैत्रावरुणिः</td>
                                         <td class="class-value">अश्विनौ</td>
                                         <td class="class-value">बृहती</td>
@@ -222,7 +239,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>307</td>
+                                        <td><span class="number">307</span></td>
                                         <td class="class-value">अश्विनौ वैवस्वतौ</td>
                                         <td class="class-value">अश्विनौ</td>
                                         <td class="class-value">बृहती</td>
@@ -268,7 +285,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>308</td>
+                                        <td><span class="number">308</span></td>
                                         <td class="class-value">प्रस्कण्वः काण्वः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -314,7 +331,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>309</td>
+                                        <td><span class="number">309</span></td>
                                         <td class="class-value">मेधातिथि-मेध्यातिथि काण्वौ</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -360,7 +377,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>310</td>
+                                        <td><span class="number">310</span></td>
                                         <td class="class-value">देवातिथिः काण्वः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -406,7 +423,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>311</td>
+                                        <td><span class="number">311</span></td>
                                         <td class="class-value">वसिष्ठो मैत्रावरुणिः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -452,7 +469,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>312</td>
+                                        <td><span class="number">312</span></td>
                                         <td class="class-value">वसिष्ठो मैत्रावरुणिः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -498,7 +515,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>313</td>
+                                        <td><span class="number">313</span></td>
                                         <td class="class-value">नृमेध आङ्गिरसः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>
@@ -544,7 +561,7 @@
                                 </thead>
                                 
                                     <tr>
-                                        <td>314</td>
+                                        <td><span class="number">314</span></td>
                                         <td class="class-value">नोधा गौतमः</td>
                                         <td class="class-value">इन्द्रः</td>
                                         <td class="class-value">बृहती</td>

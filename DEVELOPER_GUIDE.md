@@ -427,10 +427,18 @@ python src/tools/copy_rik_ids.py <source_json> <target_json> [OPTIONS]
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection, ensuring that subsections containing multiple grouped Riks are counted accurately.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
 
-### Footnote Syntax
+### 5.3 Footnote Syntax
 Footnotes in the source text must follow the `(sN)` pattern **immediately following** the swara, with no space.
 *   **Correct**: `इ(श)(s1)`
 *   **Incorrect**: `इ(श) (s1)` (Space creates detachment)
+
+### 5.4 Sidebar "Jump to" Logic
+The website includes a "Jump to" input field in the sidebar that allows users to navigate directly to a specific Parva, Kandah, or Sama.
+*   **Input Formats**:
+    *   `P.K` — Navigates to Parva `P`, Kandah `K`.
+    *   `P.K.S` — Navigates to Parva `P`, Kandah `K`, and scrolls to Sama `S`.
+*   **Implementation**: This is handled by a client-side JavaScript function `handleJump()` in `js/main.js`. It dynamically calculates the relative path prefix (`../`) based on the current page's depth (e.g., if the user is in a Kandah page, it uses `../../` to reach the root before navigating to the target).
+*   **Dynamic Path Resolution**: The logic checks `window.location.pathname` to determine the depth, ensuring correctly resolved links from both the homepage, classification indices, and specific content pages.
 
 ### 5.4 Rik Identification & Global Mapping (Vargeekaran.json)
 The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which acts as the **Enriched Source of Truth** for the website.

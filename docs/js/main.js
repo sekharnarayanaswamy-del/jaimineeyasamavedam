@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sidebar Jump Logic
     const jumpInput = document.getElementById('sidebar-jump');
     const searchBtn = document.querySelector('.search-btn');
-
+    
     const handleJump = () => {
-        const val = jumpInput.value.trim();
+        const val = jumpInput ? jumpInput.value.trim() : '';
         if (!val) return;
         
         const path = window.location.pathname;
@@ -57,8 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const prefix = '../'.repeat(depth);
         const parts = val.split('.');
         
-        console.log('Jump attempt:', val, 'Parts:', parts, 'Depth:', depth, 'Prefix:', prefix);
-
         if (parts.length >= 2) {
             const parvaId = `supersection_${parts[0]}`;
             const kandahId = parts[1];
@@ -72,7 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (jumpInput) {
         jumpInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleJump();
+            if (e.key === 'Enter') {
+                handleJump();
+            }
         });
     }
 
@@ -82,9 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             handleJump();
         });
     }
-
-    }
-
+    
     // Audio error handling
     document.querySelectorAll('audio').forEach(audio => {
         audio.addEventListener('error', function() {

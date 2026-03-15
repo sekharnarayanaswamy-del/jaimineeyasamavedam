@@ -85,6 +85,15 @@ h2 { font-size: 1.8rem; }
 h3 { font-size: 1.4rem; }
 h4 { font-size: 1.2rem; }
 
+/* Numerals and Counts in Adishila San Vedic (Sans Look) */
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {
+    font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
+}
+
+.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {
+    font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
+}
+
 .sanskrit-text {
 font-family: var(--font-sanskrit);
 font-size: 1.2rem;
@@ -145,17 +154,17 @@ text-align: center;
 
 .logo-text {
 font-family: var(--font-heading);
-font-size: 1.5rem;
+font-size: 1.8rem;
 color: var(--color-primary);
 font-weight: 700;
 }
 
 .logo-subtitle {
-font-size: 0.85rem;
+font-size: 1rem;
 color: var(--text-muted);
 margin-top: 4px;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+text-transform: capitalize !important;
+letter-spacing: 0.02em;
 }
 
 .nav-section {
@@ -163,13 +172,18 @@ margin-bottom: var(--spacing-xl);
 }
 
 .nav-section h3 {
-font-size: 1rem;
+font-size: 1.15rem;
 color: var(--color-secondary);
-text-transform: uppercase;
-letter-spacing: 0.1em;
+text-transform: none;
+letter-spacing: normal;
 margin-bottom: var(--spacing-sm);
-font-weight: 700;
+font-weight: normal; 
 border-bottom: none;
+}
+
+.nav-section h3 .number, .sidebar-right h3 .number {
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .nav-links {
@@ -184,9 +198,10 @@ padding: 4px 10px;
 background: var(--bg-card);
 border: 1px solid var(--border-color);
 border-radius: 4px;
-font-size: 0.9rem;
+font-size: 0.7rem;
 transition: all 0.2s ease;
 color: var(--text-secondary);
+font-weight: 500;
 }
 
 .nav-links a:hover,
@@ -199,6 +214,78 @@ box-shadow: 0 2px 4px rgba(255, 107, 53, 0.3);
 
 .nav-list {
 list-style: none;
+}
+
+.jump-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'AdishilaSanVedic', 'Adishila San Vedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    background: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.jump-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.1);
+}
+
+.search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    background: #FFFDF8;
+    border: 1px solid #C08535;
+    border-radius: 10px;
+    color: #8B4513;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 10px;
+    font-family: var(--font-sanskrit);
+}
+
+.search-btn:hover {
+    background: white;
+    box-shadow: 0 4px 12px rgba(192, 133, 53, 0.15);
+    transform: translateY(-1px);
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.8rem;
+    background: #F4F1EA;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    font-family: var(--font-sanskrit);
+    min-width: 70px;
+    flex: 1 1 calc(33.33% - 0.5rem);
+}
+
+.footer-btn:hover {
+    background: #E8DCC0;
+    color: var(--primary-maroon);
 }
 
 .nav-list li {
@@ -247,9 +334,10 @@ background: var(--bg-sidebar);
 .sidebar-right h3 {
     font-size: 0.85rem;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    text-transform: none;
+    letter-spacing: normal;
     margin-bottom: var(--spacing-md);
+    font-weight: normal; /* Explicitly regular */
     border-bottom: none;
 }
 
@@ -263,14 +351,15 @@ background: var(--bg-sidebar);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     transition: all 0.2s ease;
     color: var(--text-secondary);
+    font-weight: 500;
 }
 
 .jump-links a:hover {
@@ -295,7 +384,7 @@ background: var(--bg-sidebar);
 
 .page-subtitle {
     color: var(--text-secondary);
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-family: var(--font-sanskrit);
 }
 
@@ -312,11 +401,40 @@ background: var(--bg-sidebar);
 
 .sama-count {
     display: inline-block;
-    background: var(--bg-sidebar);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
+}
+
+.page-meta .number {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+/* Top Nav Links (Mukhyaprshtam / Anveshanam) */
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-heading);
+}
+
+.top-nav a {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    padding: 2px 4px;
+}
+
+.top-nav a:hover {
+    color: var(--color-accent);
+    transform: translateY(-1px);
+}
+
+.top-nav .nav-icon {
+    margin-right: 4px;
+    font-style: normal;
 }
 
 /* Breadcrumb */
@@ -394,12 +512,18 @@ background: var(--bg-sidebar);
 
 .sama-id {
     font-family: var(--font-heading);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--primary-maroon);
     font-weight: 600;
     background: var(--bg-sidebar);
-    padding: 4px 12px;
+    padding: 2px 10px;
     border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    line-height: normal;
+    transform: translateY(5px);
 }
 
 .sama-id a {
@@ -408,6 +532,11 @@ background: var(--bg-sidebar);
 
 .sama-id a:hover {
     text-decoration: none;
+}
+
+.sama-id-row {
+    margin-bottom: 0rem;
+    margin-top: 0.5rem;
 }
 
 /* Metadata Links (Rishi, Devata, Chandas) */
@@ -622,12 +751,12 @@ background: var(--bg-sidebar);
 }
 
 .home-hero h1 {
-    font-size: 2.2rem;
+    font-size: 3rem;
     margin-bottom: var(--spacing-sm);
 }
 
 .home-hero .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     color: var(--text-secondary);
 }
 
@@ -643,13 +772,13 @@ background: var(--bg-sidebar);
 }
 
 .stat-value {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary-maroon);
 }
 
 .stat-label {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: var(--text-muted);
 }
 
@@ -882,7 +1011,8 @@ background: var(--bg-sidebar);
     display: inline-block;
     white-space: nowrap;
     color: var(--primary-maroon);
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 1.6rem;
 }
 
 /* Footnote Section Styles - matching renderPDF.py */
@@ -1010,26 +1140,24 @@ sup.footnote-ref a:hover {
     transform: translateY(-2px);
 }
 
-/* Anya Vargeekaran Homepage Card */
 .anya-vargeekaran-card {
     background: transparent;
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--border-light);
-    border-bottom: 1px solid var(--border-light);
+    padding: 2.5rem 0;
+    border-top: 3px solid #C08535;
+    border-bottom: 3px solid #C08535;
     max-width: 900px;
-    margin: 3rem auto;
+    margin: 4rem auto;
     text-align: center;
 }
 
 .anya-vargeekaran-card h2 {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-bottom: 1.25rem;
+    color: var(--color-secondary);
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
     border-bottom: none;
     padding-bottom: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-weight: 500;
+    text-transform: none;
+    font-weight: 700;
 }
 
 .index-grid-homepage {
@@ -1043,12 +1171,27 @@ sup.footnote-ref a:hover {
 .index-link-item {
     display: inline-flex;
     align-items: center;
-    padding: 0.4rem 1.1rem;
-    background: var(--bg-sidebar);
-    border-radius: 30px;
-    border: 1px solid var(--border-color);
+    padding: 0.5rem 1.5rem;
+    background: #FFFDF8;
+    border-radius: 40px;
+    border: 1px solid #D8CCB8;
     text-decoration: none;
     transition: all 0.2s ease;
+    color: #FF6B35;
+    font-family: var(--font-sanskrit);
+    font-weight: 600;
+    gap: 0.6rem;
+}
+
+.index-link-item .title {
+    font-size: 1.5rem;
+}
+
+.index-link-item .stats {
+    font-size: 0.8rem;
+    color: #888;
+    position: relative;
+    top: 3px; /* Align with Devanagari midline */
 }
 
 .index-link-item:hover {
@@ -1059,18 +1202,6 @@ sup.footnote-ref a:hover {
     transform: translateY(-1px);
 }
 
-.index-link-item span.title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--primary-maroon);
-    margin-right: 5px;
-}
-
-.index-link-item span.stats {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-}
 
 .index-list {
     max-width: 800px;
@@ -1109,13 +1240,17 @@ sup.footnote-ref a:hover {
 /* Classification Table */
 .classification-table {
     width: 100%;
-    margin-top: 10px;
+    margin-top: 2px;
     margin-bottom: 15px;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
     overflow: hidden;
+}
+
+.sama-entry .number {
+    font-size: 0.9rem;
 }
 
 .classification-table th, .classification-table td {
@@ -1138,8 +1273,8 @@ sup.footnote-ref a:hover {
 
 .class-value {
     font-family: var(--font-sanskrit);
-    font-size: 1.1rem;
-    color: var(--primary-maroon);
+    font-size: 1.3rem;
+    color: var(--color-secondary);
 }
 
 /* Classification Grid Home */
@@ -1249,8 +1384,9 @@ sup.footnote-ref a:hover {
 }
 
 .alpha-btn:hover {
-    background: #e0e0e0;
-    border-color: var(--primary-maroon);
+    background: white;
+    border-color: var(--primary-gold);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     transform: translateY(-2px);
 }
 
@@ -1266,6 +1402,8 @@ sup.footnote-ref a:hover {
     font-size: 0.75rem;
     color: #666;
     font-weight: 500;
+    position: relative;
+    top: 2px; /* Pull down to align with Devanagari midline */
 }
 
 .index-list-container {
@@ -1337,6 +1475,7 @@ sup.footnote-ref a:hover {
 
 .index-list-item:hover {
     background: #fdfdfd;
+    color: var(--color-primary);
 }
 
 .index-item-card:hover {
@@ -1392,8 +1531,8 @@ sup.footnote-ref a:hover {
 }
 
 .item-count-badge {
-    background: #eeeeee;
-    color: #555555;
+    background: transparent;
+    color: #777;
     padding: 1px 6px;
     border-radius: 3px;
     font-size: 0.75rem;
@@ -1417,11 +1556,17 @@ sup.footnote-ref a:hover {
 }
 
 .item-refs a {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     color: var(--text-link);
     text-decoration: none;
     margin-right: 0.5rem;
     display: inline-block;
+}
+
+.item-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 .item-refs a::after {
@@ -1465,18 +1610,19 @@ sup.footnote-ref a:hover {
     display: flex;
     align-items: center;
     background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
     border: 1px solid var(--border-light);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     color: inherit;
+    min-height: 54px;
 }
 
 .rishi-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     border-color: var(--primary-maroon);
 }
 
@@ -1505,34 +1651,44 @@ sup.footnote-ref a:hover {
 .rishi-rank {
     background: var(--primary-maroon);
     color: white;
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.95rem;
-    margin-right: 1.25rem;
+    font-weight: 500; /* Medium instead of bold */
+    font-size: 0.85rem;
+    margin-right: 0.8rem;
     flex-shrink: 0;
 }
 
 .rishi-info {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .rishi-name {
     font-family: var(--font-sanskrit);
-    font-weight: 600;
-    font-size: 1.35rem;
+    font-weight: 400; /* Regular instead of semi-bold */
+    font-size: 1.15rem;
     display: block;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rishi-count {
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
     text-align: right;
-    font-weight: 500;
+    font-weight: 400; /* Regular instead of semi-bold */
+    margin-left: 1rem;
+    white-space: nowrap;
 }
 
 
