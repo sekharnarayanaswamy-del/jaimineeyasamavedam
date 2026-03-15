@@ -39,8 +39,8 @@ This table provides a comprehensive summary of UI elements, their fonts, and cur
 | | TOC Pills | Adishila San (Sans) | 0.9rem | Dark Gray (#4A4A4A) | **१.१.१, १.१.२** | `.toc-list li a` |
 | **🕉️ Mantra** | Sama ID Badge | Adishila San (Sans) | 0.9rem | Saffron (#FF6B35) | **1.1.1** | `.sama-id` |
 | | Metadata Line | Adishila Vedic (Serif) | 1.6rem | Purple (#7B1FA2) | **॥ भरद्वाजो बार्हस्पत्यः ... ॥** | `.rik-metadata` |
-| | Class. Table Head | Adishila Vedic (Serif) | 0.9rem | White (#FFFFFF) | **Global #, ऋषिः, देवता** | `.classification-table th` |
-| | Class. Table Values| Adishila Vedic (Serif) | 1.1rem | Saffron (#FF6B35) | **अग्निः, त्रिष्टुप्** | `.class-value` |
+| | Class. Table Head | Adishila Vedic (Serif) | 1.1rem | White (#FFFFFF) | **Global #, ऋषिः, देवता** | `.classification-table th` |
+| | Class. Table Values| Adishila Vedic (Serif) | 1.3rem | Charcoal (#2C2C2C) | **अग्निः, त्रिष्टुप्** | `.class-value` |
 | | Table Numerals | Adishila San (Sans) | 0.9rem | Dark Gray (#4A4A4A) | **1, 10, 20** | `.sama-entry .number` |
 | | Rik Text (Blue) | Adishila Vedic (Serif) | 1.6rem | Blue (#1565C0) | **इ॒षे त्वो॒र्जे त्वा॑...** | `.rik-text` |
 | | Mantra Text | Adishila Vedic (Serif) | 1.6rem | Charcoal (#2C2C2C) | **इ॒षे त्वो॒र्जे त्वा॑...** | `.mantra-container` |
@@ -182,8 +182,12 @@ To unify sizes for the Sama ID badge and the classification table:
 **Location:** `src/generate_website.py` around lines 1261-1270 and 1977-1986.
 
 ```css
-.sama-id, .classification-table, .sama-entry .number {
-    font-size: 0.9rem; /* Unified size for metadata area */
+.sama-id, .sama-entry .number {
+    font-size: 0.9rem; /* Compact metadata badges */
+}
+
+.classification-table {
+    font-size: 1.1rem; /* Clearer table structure */
 }
 ```
 

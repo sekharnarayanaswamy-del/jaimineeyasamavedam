@@ -1344,13 +1344,14 @@ background: var(--bg-sidebar);
     color: var(--primary-maroon);
     font-weight: 600;
     background: var(--bg-sidebar);
-    padding: 6px 12px;
+    padding: 2px 10px;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 28px;
+    height: 22px;
     line-height: normal;
+    transform: translateY(5px);
 }
 
 .sama-id a {
@@ -2070,7 +2071,7 @@ sup.footnote-ref a:hover {
     margin-top: 2px;
     margin-bottom: 15px;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
     overflow: hidden;
@@ -2100,8 +2101,8 @@ sup.footnote-ref a:hover {
 
 .class-value {
     font-family: var(--font-sanskrit);
-    font-size: 1.1rem;
-    color: var(--primary-maroon);
+    font-size: 1.3rem;
+    color: var(--color-secondary);
 }
 
 /* Classification Grid Home */
