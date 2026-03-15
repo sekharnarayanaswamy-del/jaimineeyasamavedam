@@ -83,11 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            handleJump();
-        });
     }
 
     // Audio error handling

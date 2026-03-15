@@ -914,7 +914,7 @@ h3 { font-size: 1.4rem; }
 h4 { font-size: 1.2rem; }
 
 /* Numerals and Counts in Adishila San Vedic (Sans Look) */
-.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a {
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {
     font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
 }
 
@@ -991,8 +991,8 @@ font-weight: 700;
 font-size: 1rem;
 color: var(--text-muted);
 margin-top: 4px;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+text-transform: capitalize !important;
+letter-spacing: 0.02em;
 }
 
 .nav-section {
@@ -1049,7 +1049,7 @@ list-style: none;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    font-family: var(--font-body);
+    font-family: 'AdishilaSanVedic', 'Adishila San Vedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
     font-size: 0.9rem;
     margin-top: 4px;
     background: white;
@@ -2622,11 +2622,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            handleJump();
-        });
     }
 
     // Audio error handling
@@ -2665,7 +2660,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{prefix}css/styles.css">
+    <link rel="stylesheet" href="{prefix}css/styles.css?v={int(datetime.now().timestamp())}">
 </head>'''
 
     def _get_top_nav_html(self, depth=0):

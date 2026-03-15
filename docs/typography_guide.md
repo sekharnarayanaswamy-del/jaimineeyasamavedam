@@ -15,39 +15,41 @@ This document outlines the font mapping and typography rules applied across the 
 
 This table provides a comprehensive summary of UI elements, their fonts, and current sizes.
 
-| Page Type | UI Element | Font Family | Size | Example | CSS Selector |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **🌍 Global** | Sidebar Logo Title | Adishila Vedic (Serif) | 1.8rem | **जैमिनीय साम संहिता** | `.logo-text` |
-| | Sidebar Logo Subtitle| Adishila Vedic (Serif) | 1rem | **JAIMINEEYA SAMA...** | `.logo-subtitle` |
-| | Sidebar Labels | Adishila Vedic (Serif) | 1.15rem | **पर्व:, खण्ड:, साम:** | `.nav-section h3` |
-| | Sidebar Pills | Adishila San (Sans) | 0.7rem | **1, 2, 3** | `.nav-links a` |
-| | Jump to Input | Adishila San (Sans) | 0.9rem | **e.g. 1.1.1** | `.jump-input` |
-| | Search Button | Adishila Vedic (Serif) | 1.0rem | **अन्वेषणम् (Search)** | `.search-btn` |
-| | Footer Nav Buttons| Adishila Vedic (Serif) | 1.0rem | **ऋषयः, देवताः** | `.footer-btn` |
-| | Jump Nav Labels | Adishila Vedic (Serif) | 0.85rem | **साम: (19)** | `.sidebar-right h3` |
-| | Jump Nav Icons | Adishila San (Sans) | 0.7rem | **[1] [2] [3]** | `.jump-links a` |
-| **🏠 Home** | Page Title | Adishila Vedic (Serif) | 2.4rem | **जैमिनीयसामवेद: (Jaimineeya Samavedam)** | `h1` |
-| | Stats Values | Adishila San (Sans) | 2.2rem | **6, 125, 1222** | `.stat-value` |
-| | Stats Labels | Adishila Vedic (Serif) | 0.9rem | **पर्व: (Parva)** | `.stat-label` |
-| | Other Indices Title| Adishila Vedic (Serif) | 1.5rem | **ऋषि-वरगीकरणम् (Rishi Index)** | `.index-link-item .title` |
-| | Other Indices Count| Adishila San (Sans) | 0.8rem | **(172)** | `.index-link-item .stats` |
-| **📖 Kandah** | Page Title | Adishila Vedic (Serif) | 1.8rem | **अर्चिकपर्व - प्रथमः खण्डः** | `h1` |
-| | Header Metadata | Adishila Vedic (Serif) | 1.1rem | **पर्व: १, खण्ड: १ | साम: १९** | `.page-subtitle`, `.sama-count` |
-| | Metadata Numerals | Adishila San (Sans) | 0.8rem | **1, 12, 19** | `.page-meta .number` |
-| | TOC Header | Adishila Vedic (Serif) | 1.2rem | **खण्ड: 1 - सम्पूर्णम्** | `.toc h4` |
-| | TOC Pills | Adishila San (Sans) | 0.9rem | **१.१.१, १.१.२** | `.toc-list li a` |
-| **🕉️ Mantra** | Sama ID Badge | Adishila San (Sans) | 0.9rem | **1.1.1** | `.sama-id` |
-| | Metadata Line | Adishila Vedic (Serif) | 0.9rem | **॥ भरद्वाजो बार्हस्पत्यः ... ॥** | `.rik-metadata` |
-| | Class. Table Head | Adishila Vedic (Serif) | 0.9rem | **Global #, ऋषिः, देवता** | `.classification-table th` |
-| | Class. Table Values| Adishila Vedic (Serif) | 1.1rem | **अग्निः, त्रिष्टुप्** | `.class-value` |
-| | Table Numerals | Adishila San (Sans) | 0.9rem | **1, 2, 3** | `.sama-entry .number` |
-| | Sanskrit Verse | Adishila Vedic (Serif) | 1.2rem | **इ॒षे त्वो॒र्जे त्वा॑...** | `.sanskrit-text` |
-| | Mantra Numbering | Adishila Vedic (Serif) | 1.1rem | **॥ १ ॥** | `.mantra-number` |
-| **🗂️ Index** | Letter Heading | Adishila Vedic (Serif) | 1.2rem | **अ, आ, इ** | `.alpha-char` |
-| | Item Name | Adishila Vedic (Serif) | 1.15rem | **वसिष्ठः, अग्निः** | `.rishi-name`, `.item-name` |
-| | Item Count | Adishila San (Sans) | 0.8rem | **(172), (5)** | `.rishi-count`, `.item-count` |
-| | Location Refs | Adishila San (Sans) | 0.8rem | **1.1.1, 1.1.2** | `.item-refs a` |
-| | Top 20 Ranking | Adishila San (Sans) | 0.85rem | **1, 2, 3** | `.rishi-rank` |
+| Page Type | UI Element | Font Family | Size | Color | Example String | CSS Selector |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **🌍 Global** | Sidebar Logo Title | Adishila Vedic (Serif) | 1.8rem | Saffron (#FF6B35) | **जैमिनीय साम संहिता** | `.logo-text` |
+| | Sidebar Logo Subtitle| Adishila Vedic (Serif) | 1rem | Muted Gray (#6B6B6B) | **Jaimineeya Sama...** | `.logo-subtitle` |
+| | Sidebar Labels | Adishila Vedic (Serif) | 1.15rem | Charcoal (#2C2C2C) | **पर्व:, खण्ड:, साम:** | `.nav-section h3` |
+| | Sidebar Pills | Adishila San (Sans) | 0.7rem | Dark Gray (#4A4A4A) | **1, 10, 20** | `.nav-links a` |
+| | Jump to Input | Adishila San (Sans) | 0.9rem | Charcoal (#2C2C2C) | **e.g. 1.1.1** | `.jump-input` |
+| | Search Button | Adishila Vedic (Serif) | 1.0rem | Brown (#8B4513) | **अन्वेषणम् (Search)** | `.search-btn` |
+| | Footer Nav Buttons| Adishila Vedic (Serif) | 1.0rem | Saffron (#FF6B35) | **ऋषयः, देवताः** | `.footer-btn` |
+| | Jump Nav Labels | Adishila Vedic (Serif) | 0.85rem | Muted Gray (#6B6B6B) | **साम: (19)** | `.sidebar-right h3` |
+| | Jump Nav Icons | Adishila San (Sans) | 0.7rem | Dark Gray (#4A4A4A) | **1, 10, 20** | `.jump-links a` |
+| **🏠 Home** | Hero Page Title | Adishila Vedic (Serif) | 3.0rem | Charcoal (#2C2C2C) | **जैमिनीयसामवेद: (Jaimineeya Samavedam)** | `.home-hero h1` |
+| | Stats Values | Adishila San (Sans) | 2.2rem | Saffron (#FF6B35) | **6, 125, 1222** | `.stat-value` |
+| | Stats Labels | Adishila Vedic (Serif) | 1.3rem | Muted Gray (#6B6B6B) | **पर्व: (Parva)** | `.stat-label` |
+| | Indices Section Title| Adishila Vedic (Serif) | 2.2rem | Charcoal (#2C2C2C) | **अन्य वर्गीकरणम् (Indices)** | `.anya-vargeekaran-card h2` |
+| | Index Pill Title | Adishila Vedic (Serif) | 1.5rem | Saffron (#FF6B35) | **ऋषयः (Rishi)** | `.index-link-item .title` |
+| | Index Pill Count| Adishila San (Sans) | 0.8rem | Gray (#888) | **(172)** | `.index-link-item .stats` |
+| **📖 Kandah** | Page Title | Adishila Vedic (Serif) | 1.8rem | Charcoal (#2C2C2C) | **अर्चिकपर्व - प्रथमः खण्डः** | `h1` |
+| | Header Metadata | Adishila Vedic (Serif) | 1.1rem | Dark Gray (#4A4A4A) | **पर्व: १, खण्ड: १ | साम: १९** | `.page-subtitle` |
+| | Metadata Numerals | Adishila San (Sans) | 0.8rem | Dark Gray (#4A4A4A) | **1, 12, 19** | `.page-meta .number` |
+| | TOC Header | Adishila Vedic (Serif) | 1.2rem | Charcoal (#2C2C2C) | **खण्ड: 1 - सम्पूर्णम्** | `.toc h4` |
+| | TOC Pills | Adishila San (Sans) | 0.9rem | Dark Gray (#4A4A4A) | **१.१.१, १.१.२** | `.toc-list li a` |
+| **🕉️ Mantra** | Sama ID Badge | Adishila San (Sans) | 0.9rem | Saffron (#FF6B35) | **1.1.1** | `.sama-id` |
+| | Metadata Line | Adishila Vedic (Serif) | 1.6rem | Purple (#7B1FA2) | **॥ भरद्वाजो बार्हस्पत्यः ... ॥** | `.rik-metadata` |
+| | Class. Table Head | Adishila Vedic (Serif) | 0.9rem | White (#FFFFFF) | **Global #, ऋषिः, देवता** | `.classification-table th` |
+| | Class. Table Values| Adishila Vedic (Serif) | 1.1rem | Saffron (#FF6B35) | **अग्निः, त्रिष्टुप्** | `.class-value` |
+| | Table Numerals | Adishila San (Sans) | 0.9rem | Dark Gray (#4A4A4A) | **1, 10, 20** | `.sama-entry .number` |
+| | Rik Text (Blue) | Adishila Vedic (Serif) | 1.6rem | Blue (#1565C0) | **इ॒षे त्वो॒र्जे त्वा॑...** | `.rik-text` |
+| | Mantra Text | Adishila Vedic (Serif) | 1.6rem | Charcoal (#2C2C2C) | **इ॒षे त्वो॒र्जे त्वा॑...** | `.mantra-container` |
+| | Mantra Numbering | Adishila Vedic (Serif) | 1.1rem | Charcoal (#2C2C2C) | **॥ १ ॥** | `.mantra-number` |
+| **🗂️ Index** | Letter Heading | Adishila Vedic (Serif) | 1.2rem | Red (#B03A2E) | **अ, आ, इ** | `.alpha-char` |
+| | Item Name | Adishila Vedic (Serif) | 1.3rem | Charcoal (#2C2C2C) | **वसिष्ठः, अग्निः** | `.item-name` |
+| | Item Count Badge | Adishila San (Sans) | 0.75rem | Dark Gray (#777) | **(172), (5)** | `.item-count-badge` |
+| | Location Refs | Adishila San (Sans) | 0.8rem | Saffron (#FF6B35) | **1.1.1, 1.1.2** | `.item-refs a` |
+| | Top 20 Ranking | Adishila San (Sans) | 0.85rem | White (#FFFFFF) | **1, 2, 3** | `.rishi-rank` |
 
 ---
 
