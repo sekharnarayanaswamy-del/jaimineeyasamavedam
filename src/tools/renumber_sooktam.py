@@ -4,85 +4,52 @@ sequentially starting from 1.
 Uses line-by-line processing with regex to avoid encoding/matching issues.
 """
 import re
+import argparse
+from pathlib import Path
 
-input_file = r"c:\Users\sekha\OneDrive\Documents\GitHub\jaimineeyasamavedam\data\input\Sooktam.txt"
+parser = argparse.ArgumentParser(description="Renumber supersections, sections, subsets, and samams in a text file.")
+parser.add_argument('input_file', nargs='?', default=r"c:\Users\sekha\OneDrive\Documents\GitHub\jaimineeyasamavedam\data\input\Sooktam.txt", help="Path to the input text file")
+args = parser.parse_args()
+
+input_file = args.input_file
+
+print(f"Processing file: {input_file}")
 
 with open(input_file, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
-# Pass 1: Collect all unique IDs in order of first appearance
-supersection_ids = []
-section_ids = []
-subsection_ids = []
-
-for line in lines:
-    # Find subsection IDs
-    for m in re.finditer(r'subsection_(\d+)', line):
-        old_id = m.group(1)
-        if old_id not in subsection_ids:
-            subsection_ids.append(old_id)
-    
-    # Find section IDs (not super/sub) - use word boundary approach
-    # Match "section_" that is NOT preceded by "super" or "sub"
-    for m in re.finditer(r'(?<!super)(?<!sub)section_(\d+)', line):
-        old_id = m.group(1)
-        if old_id not in section_ids:
-            section_ids.append(old_id)
-    
-    # Find supersection IDs
-    for m in re.finditer(r'supersection_(\d+)', line):
-        old_id = m.group(1)
-        if old_id not in supersection_ids:
-            supersection_ids.append(old_id)
-
-# Build mappings
-supersection_map = {old: str(i+1) for i, old in enumerate(supersection_ids)}
-section_map = {old: str(i+1) for i, old in enumerate(section_ids)}
-subsection_map = {old: str(i+1) for i, old in enumerate(subsection_ids)}
-
-print(f"=== SuperSections: {len(supersection_map)} ===")
-for old, new in supersection_map.items():
-    status = "" if old == new else " <-- CHANGED"
-    print(f"  supersection_{old} -> supersection_{new}{status}")
-
-print(f"\n=== Sections: {len(section_map)} ===")
-for old, new in section_map.items():
-    status = "" if old == new else " <-- CHANGED"
-    print(f"  section_{old} -> section_{new}{status}")
-
-print(f"\n=== SubSections: {len(subsection_map)} ===")
-for old, new in subsection_map.items():
-    status = "" if old == new else " <-- CHANGED"
-    print(f"  subsection_{old} -> subsection_{new}{status}")
-
-# Pass 2: Replace in each line
-# Strategy: Process each line, replace subsection_ first, then section_, then supersection_
-# Use a function-based regex replacement to look up the mapping
+current_sup = 0
+current_sec = 0
+current_sub = 1
 
 new_lines = []
 for line in lines:
-    # Replace subsection_NNN
-    def replace_subsection(m):
-        old_id = m.group(1)
-        new_id = subsection_map.get(old_id, old_id)
-        return f'subsection_{new_id}'
-    line = re.sub(r'subsection_(\d+)', replace_subsection, line)
-    
-    # Replace section_NNN (not preceded by super or sub)
-    def replace_section(m):
-        old_id = m.group(1)
-        new_id = section_map.get(old_id, old_id)
-        return f'section_{new_id}'
-    line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', replace_section, line)
-    
-    # Replace supersection_NNN
+    if '# Start of SuperSection Title' in line:
+        current_sup += 1
+    if '# Start of Section Title' in line:
+        current_sec += 1
+
+    # Apply replacements using current counters
     def replace_supersection(m):
-        old_id = m.group(1)
-        new_id = supersection_map.get(old_id, old_id)
-        return f'supersection_{new_id}'
+        return f'supersection_{current_sup}' if current_sup > 0 else m.group(0)
+    def replace_section(m):
+        return f'section_{current_sec}' if current_sec > 0 else m.group(0)
+    def replace_subsection(m):
+        return f'subsection_{current_sub}'
+
+    line = re.sub(r'subsection_(\d+)', replace_subsection, line)
+    line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', replace_section, line)
     line = re.sub(r'supersection_(\d+)', replace_supersection, line)
     
     new_lines.append(line)
+
+    # Increment subsection counter AFTER the end of the mantra sets block
+    if '#End of Mantra Sets' in line or '# End of Mantra Sets' in line:
+        current_sub += 1
+
+print(f"=== SuperSections: {current_sup} ===")
+print(f"=== Sections: {current_sec} ===")
+print(f"=== SubSections: {current_sub - 1} ===")
 
 def int_to_devanagari(n):
     mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', 
@@ -170,5 +137,5 @@ with open(input_file, 'w', encoding='utf-8') as f:
     f.writelines(final_lines)
 
 print(f"\nDone! File updated successfully.")
-print(f"Total: {len(supersection_map)} supersections, {len(section_map)} sections, {len(subsection_map)} subsections")
+print(f"Total: {current_sup} supersections, {current_sec} sections, {current_sub - 1} subsections")
 print(f"Total Samams Renumbered: {samam_counter - 1}")

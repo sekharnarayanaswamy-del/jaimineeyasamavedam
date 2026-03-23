@@ -72,6 +72,11 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   Supports configurable modes (`rik`, `samam`, `combined`) via CLI arguments.
 *   Output: `data/output/JSV_Missing_Metadata_Report.md` and `.csv`.
 
+### 2.8 Collection Utilities (`src/curate_jsv.py`, `src/tools/build_collection.py`)
+**Role**: Utilities to create curated selections (सूक्तमाला) from existing Samhita or Aaranam datasets.
+*   **`curate_jsv.py`**: Merges data from multiple JSON sources based on a text filter containing Parva.Kandah.Samam (P.K.S) identifiers.
+*   **`build_collection.py`**: Extracts specific Samams using P.K.S identifiers from a single source JSON and bundles them into a structured Collection format.
+
 ---
 
 ## 3. Workflows (Main Use Cases)
@@ -393,6 +398,33 @@ python src/generate_missing_metadata_report.py [OPTIONS]
 | Option | Description |
 | :--- | :--- |
 | `--mode` | `rik` (Rik issues only), `samam` (Samam issues only), or `combined` (default, both). |
+
+### `src/curate_jsv.py`
+*Curates a subset of JSV JSON (Samhita/Aaranam) by combining sources based on P.K.S filters.*
+
+```bash
+python src/curate_jsv.py --sources <file1> <file2> --filter <txt_file> --output <json_file>
+```
+| Option | Description |
+| :--- | :--- |
+| `--sources` | Source JSON files to look up identifiers from. |
+| `--filter` | Filter text file containing P.K.S identifiers. |
+| `--output` | Curated JSON output file. |
+| `--title` | Collection title (default: जैमिनीय साम सूक्तमाला). |
+
+### `src/tools/build_collection.py`
+*Extracts Samams by P.K.S IDs from a JSON file and constructs a standalone Collection JSON.*
+
+```bash
+python src/tools/build_collection.py [OPTIONS]
+```
+| Option | Description |
+| :--- | :--- |
+| `--ids` | List of IDs (e.g., 1.1.1 1.1.2). |
+| `--file` | Plain text file containing IDs to extract. |
+| `--source` | Source JSON file (default: `data/output/Vargeekaran.json`). |
+| `--output` | Output JSON file (default: `data/output/Collection_latest_out.json`). |
+| `--title` | Title for the collection (default: जैमिनीय साम सूक्तमाला). |
 
 ### `src/tools/copy_rik_ids.py`
 *Utility to transfer validated Rik IDs/Metadata from one JSON file to another (e.g., from a corrected baseline to a freshly parsed version).*
