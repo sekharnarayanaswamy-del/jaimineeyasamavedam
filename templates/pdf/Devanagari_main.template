@@ -218,7 +218,9 @@
             \phantomsection  
                 
             \section*{\centering \VAR{section.section_title.replace(':', 'ः')}\quad(\VAR{section.Count})}
+            \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
             \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')}} 
+            \BLOCK{ endif }
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
 
@@ -228,15 +230,15 @@
                 
                 % Conditional rendering based on output_mode
                 \BLOCK{ if output_mode == 'rik' }
-                \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
                 \BLOCK{ elif output_mode == 'samam' }
-                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
                 \BLOCK{ elif output_mode == 'rik_nometa' }
-                \VAR{subsection | format_rik_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \VAR{subsection | format_rik_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
                 \BLOCK{ elif output_mode == 'samam_nometa' }
-                \VAR{subsection | format_samam_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \VAR{subsection | format_samam_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
                 \BLOCK{ else }
-                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key)}
+                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                

@@ -530,9 +530,18 @@
                     <ul>
                     \BLOCK{ for section_key, section in supersection.sections.items() }
                         \BLOCK{ if section_key != 'count' }
+                        \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
                         <li class="toc-section">
                             <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')}</a>
                         </li>
+                        \BLOCK{ endif }
+                        \BLOCK{ if toc_level == 'subsection' or toc_level == 'both' }
+                            \BLOCK{ for subsection_key, subsection in section.subsections.items() }
+                            <li class="toc-section" style="margin-left: \VAR{'20px' if toc_level == 'both' else '0px'}; font-size: 1.3rem;">
+                                <a href="#\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">\VAR{subsection.header.header | replace(':', 'ः') | replace('|', '') | replace('॥', '')}</a>
+                            </li>
+                            \BLOCK{ endfor }
+                        \BLOCK{ endif }
                         \BLOCK{ endif }
                     \BLOCK{ endfor }
                     </ul>

@@ -43,6 +43,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`CreatePdf`**: The main orchestration function. It loads the JSON and applies templates to generate `.tex` files for compilation.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
 *   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`).
+*   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.
 
 ### 2.4 `src/generate_Rik_for_samhita.py`
@@ -329,6 +330,7 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 | `--pdf-font` | Custom font name for LaTeX (default: `AdishilaVedic`). |
 | `--html-font` | Font family string for HTML output (default: `'AdishilaVedic', 'AdishilaSanVedic'`). |
 | `--pdf-color-mode` | `color` (colored metadata/swara marks) or `bw` (default, black/white for book typesetting). |
+| `--toc-level` | TOC hierarchy: `section` (default), `subsection`, or `both`. Controls both PDF and HTML TOC. |
 
 > **Dynamic Title**: The document title on the PDF title page, HTML header, and text output is determined by `--type`:
 > *   `samhita` → **जैमिनीय साम संहिता**
