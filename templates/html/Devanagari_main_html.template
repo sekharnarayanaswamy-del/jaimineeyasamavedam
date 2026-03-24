@@ -83,7 +83,7 @@
         
         .toc-group {
             break-inside: avoid;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .toc ul {
@@ -91,12 +91,16 @@
             padding-left: 0;
             margin: 0;
             columns: 3;
-            column-gap: 40px;
+            column-gap: 20px;
         }
         
         .toc a {
             color: var(--accent-blue);
             text-decoration: none;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            display: inline-block;
+            max-width: 100%;
         }
         
         .toc a:hover {
@@ -105,18 +109,21 @@
         
         .toc-chapter {
             font-weight: bold;
-            font-size: 1.75rem;
-            margin-bottom: 12px;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
             color: var(--primary-color);
             text-align: left;
-            white-space: nowrap;
+            break-after: avoid;
         }
         
         .toc-section {
-            padding: 3px 0;
-            font-size: 1.5rem;
-            line-height: 1.4;
+            padding: 2px 0;
+            font-size: 1.2rem;
+            line-height: 1.2;
             text-align: left;
+            break-inside: avoid;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         /* Chapter/Section Styles */
@@ -537,7 +544,7 @@
                         \BLOCK{ endif }
                         \BLOCK{ if toc_level == 'subsection' or toc_level == 'both' }
                             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
-                            <li class="toc-section" style="margin-left: \VAR{'20px' if toc_level == 'both' else '0px'}; font-size: 1.3rem;">
+                            <li class="toc-section" \VAR{'style="margin-left: 20px;"' if toc_level == 'both' else ''}>
                                 <a href="#\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">\VAR{subsection.header.header | replace(':', 'ः') | replace('|', '') | replace('॥', '')}</a>
                             </li>
                             \BLOCK{ endfor }

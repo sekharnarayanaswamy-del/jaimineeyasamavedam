@@ -1678,12 +1678,12 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
     
     # Skip if no Rik content
     if not string_1 and not string_2:
-        return ""
+        return "", HTML_FOOTNOTE_COUNTER
     
     # Only show if rik_id changed (avoid duplicates)
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
     if not show_rik_info:
-        return ""
+        return "", HTML_FOOTNOTE_COUNTER
     
     # Rik Metadata
     if string_1:
