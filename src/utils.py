@@ -331,25 +331,38 @@ def parse_mantra_for_latex(subsection, supersection_title, section_title, subsec
 def sanitize_data_structure(supersections):
     """
     Recursively cleans titles in the dictionary structure.
-    Replaces ':' with 'ः' in Supersection and Section titles.
+    - Replaces ':' with 'ः' in all titles.
+    - Unifies various danda forms (||, ।।) to standard '॥'.
     """
+    def normalize_header(text):
+        if not text: return text
+        # Normalize Visarga
+        text = text.replace(':', 'ः')
+        # Normalize Double Dandas
+        text = re.sub(r'\|\|', '॥', text)       
+        text = re.sub(r'\|\s*\|', '॥', text)    
+        text = re.sub(r'।।', '॥', text)
+        # Normalize Single Danda
+        text = text.replace('|', '।')
+        return text
+
     for ss_key, ss_val in supersections.items():
         # Clean Supersection Title
         if 'supersection_title' in ss_val:
-            ss_val['supersection_title'] = ss_val['supersection_title'].replace(':', 'ः')
+            ss_val['supersection_title'] = normalize_header(ss_val['supersection_title'])
 
         # Clean Section Titles
         if 'sections' in ss_val:
-            for s_key, s_val in ss_val['sections'].items():
-                if 'section_title' in s_val:
-                    s_val['section_title'] = s_val['section_title'].replace(':', 'ः')
+            for s_key, s_data in ss_val['sections'].items():
+                if s_key == 'count': continue
+                if 'section_title' in s_data:
+                    s_data['section_title'] = normalize_header(s_data['section_title'])
                     
-                # Note: Subsections are handled by format_mantra_sets, 
-                # but cleaning them here doesn't hurt.
-                if 'subsections' in s_val:
-                    for sub_key, sub_val in s_val['subsections'].items():
+                # Clean Subsection headers
+                if 'subsections' in s_data:
+                    for sub_key, sub_val in s_data['subsections'].items():
                         if 'header' in sub_val and 'header' in sub_val['header']:
-                             sub_val['header']['header'] = sub_val['header']['header'].replace(':', 'ः')
+                             sub_val['header']['header'] = normalize_header(sub_val['header']['header'])
 
     return supersections
 

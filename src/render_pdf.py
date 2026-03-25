@@ -47,13 +47,8 @@ def reset_html_footnote_counter(dummy=None):
     Returns empty string so it doesn't output anything in the template.
     """
     global HTML_FOOTNOTE_COUNTER, HTML_FOOTNOTES_ACCUMULATOR, HTML_SEEN_CONTENT_MAP
-    import os
     HTML_FOOTNOTES_ACCUMULATOR.clear()
     HTML_SEEN_CONTENT_MAP.clear()
-    with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
-         f.write(f"RESET_CALL\n")
-         f.flush()
-         os.fsync(f.fileno())
     return ""
 
 def accumulate_footnotes(footnotes_list):
@@ -61,12 +56,7 @@ def accumulate_footnotes(footnotes_list):
     Called by formatting functions instead of rendering inline.
     """
     global HTML_FOOTNOTES_ACCUMULATOR, HTML_SEEN_CONTENT_MAP
-    import os
     HTML_FOOTNOTES_ACCUMULATOR.extend(footnotes_list)
-    with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
-         f.write(f"ACCUM_CALL: Added {len(footnotes_list)}. Total {len(HTML_FOOTNOTES_ACCUMULATOR)}\n")
-         f.flush()
-         os.fsync(f.fileno())
 
 def render_section_footnotes(dummy=None):
     """Render all accumulated footnotes for this section.
@@ -74,8 +64,10 @@ def render_section_footnotes(dummy=None):
     Returns HTML for the footnote section, or empty string if no footnotes.
     """
     global HTML_FOOTNOTES_ACCUMULATOR
-    return f"<!-- DEBUG_FOOTNOTES_HERE Total={len(HTML_FOOTNOTES_ACCUMULATOR)} -->"
     
+    if not HTML_FOOTNOTES_ACCUMULATOR:
+        return ""
+        
     output = ['<hr class="footnote-separator"/>']
     output.append('<div class="footnote-section">')
     for unique_id, display_num, text in HTML_FOOTNOTES_ACCUMULATOR:
@@ -310,20 +302,12 @@ def process_footnotes_html(text, footnotes_dict, local_counter=0, seen_markers_m
              
              # Check if CONTENT has been seen in the broader context
              if seen_markers_map is not None and footnote_text in seen_markers_map:
-                 with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
-                      f.write(f"  SEEN: {marker}\n")
-                      f.flush()
-                      os.fsync(f.fileno())
                  # Reuse existing number and ID
                  unique_id, dev_num = seen_markers_map[footnote_text]
                  # For duplicates, link to existing ID
                  replacement = f'<sup class="footnote-ref"><a href="#{unique_id}">{dev_num}</a></sup>'
                  text = text.replace(marker_full, replacement)
              else:
-                 with open("trace_debug_verified.txt", "a", encoding="utf-8") as f:
-                      f.write(f"  NEW: {marker}\n")
-                      f.flush()
-                      os.fsync(f.fileno())
                  # New footnote
                  local_counter += 1
                  # footnote_text already fetched above
@@ -1585,7 +1569,9 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     # 3. Combined Header
     header_parts = []
     if display_sub_title:
-        header_parts.append(f'<span class="header-title">{escape_for_html(display_sub_title)}</span>')
+        header_title = escape_for_html(display_sub_title)
+        header_title = format_dandas_html(header_title)
+        header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
         meta = format_dandas_html(meta)
@@ -1739,7 +1725,9 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
     # Combined Header: subsection title + samam metadata
     header_parts = []
     if display_sub_title:
-        header_parts.append(f'<span class="header-title">{escape_for_html(display_sub_title)}</span>')
+        header_title = escape_for_html(display_sub_title)
+        header_title = format_dandas_html(header_title)
+        header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
         meta = format_dandas_html(meta)
@@ -1865,7 +1853,9 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
 
     # Header only (NO saman_metadata)
     if display_sub_title:
-        formatted_output.append(f'<div class="subsection-header"><span class="header-title">{escape_for_html(display_sub_title)}</span></div>')
+        header_title = escape_for_html(display_sub_title)
+        header_title = format_dandas_html(header_title)
+        formatted_output.append(f'<div class="subsection-header"><span class="header-title">{header_title}</span></div>')
 
     # Mantra Content
     all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
@@ -1916,7 +1906,6 @@ def preprocess_html_data(supersections, output_mode):
     BEFORE template rendering. This avoids global state issues in Jinja.
     Returns: A list of dicts for the alphabetical index.
     """
-    print("DEBUG: Starting HTML Pre-processing...")
     
     # Store index entries as (title, anchor_id)
     index_entries = []
@@ -1974,11 +1963,10 @@ def preprocess_html_data(supersections, output_mode):
                 # INDEX COLLECT
                 header = subsection.get('header', {}).get('header', '')
                 if header:
-                    # Same logic used in PDF generation
+                    # Consistent logic with PDF: strip dandas and spaces
                     index_title = re.sub(r'[|॥]', '', header).strip()
                     if index_title:
-                        # Convert space separated title parts to a cleaner string if needed
-                        # but standard title is fine.
+                        # Append to list; we'll deduplicate by adding disambiguation if needed
                         index_entries.append({
                             'title': index_title,
                             'anchor': f"{super_key}-{section_key}-{subsection_key}"
@@ -2000,22 +1988,37 @@ def preprocess_html_data(supersections, output_mode):
                      output.append(f'<div class="footnote-item" id="{unique_id}"><sup class="footnote-ref">{display_num}</sup> {text}</div>')
                  output.append('</div>')
                  section['html_footer'] = '\n'.join(output)
-                 print(f"DEBUG: Generated footer for {section_key} with {len(footnotes_accumulator)} items.")
             else:
                  section['html_footer'] = ""
-                 print(f"DEBUG: No footnotes for {section_key}.")
 
     # Deduplicate and sort index alphabetically
     # To properly sort devanagari we can just use python sorted, it works decently.
     # Group by title to remove duplicates pointing to different anchors (or keep them?)
     # Usually index groups by title and lists pages. For HTML we'll just link to the first occurrence
     unique_index = {}
-    for entry in index_entries:
-        if entry['title'] not in unique_index:
-            unique_index[entry['title']] = entry['anchor']
+    title_counts = {}
     
-    sorted_index = [{'title': k, 'anchor': v} for k, v in sorted(unique_index.items(), key=lambda x: x[0])]
-    print(f"DEBUG: Generated {len(sorted_index)} index entries.")
+    # Sort by anchor to maintain document order before deduplication/suffixing
+    index_entries.sort(key=lambda x: x['anchor'])
+    
+    for entry in index_entries:
+        title = entry['title']
+        if title in unique_index:
+            # Duplicate title found! Add a numeric suffix to make it unique in the index
+            title_counts[title] = title_counts.get(title, 1) + 1
+            unique_title = f"{title} ({title_counts[title]})"
+            unique_index[unique_title] = entry['anchor']
+        else:
+            unique_index[title] = entry['anchor']
+            title_counts[title] = 1
+            
+    # Sorted list for template
+    sorted_index = []
+    for title in sorted(unique_index.keys()):
+        sorted_index.append({
+            'title': title,
+            'anchor': unique_index[title]
+        })
     
     return sorted_index
 
@@ -2255,12 +2258,24 @@ Examples:
                 if rik_ids:
                     seen_riks.update(rik_ids)
                 else:
-                    seen_riks.add(sub_data.get('rik_id', 0))
+                    r_id = sub_data.get('rik_id')
+                    if r_id is not None:
+                        seen_riks.add(r_id)
                 
+                # Samam count logic
+                sub_samam_count = 0
                 for ms in sub_data.get('corrected-mantra_sets', []):
                     mantra = ms.get('corrected-mantra', '')
+                    # Count all ॥ N ॥ markers
                     m_markers = re.findall(r'॥\s*[०-९]+\s*॥', mantra)
-                    samam_count += len(m_markers) if m_markers else 1
+                    if m_markers:
+                        sub_samam_count += len(m_markers)
+                
+                # If no markers found but mantra sets exist, count as 1
+                if sub_samam_count == 0 and sub_data.get('corrected-mantra_sets'):
+                    sub_samam_count = 1
+                
+                samam_count += sub_samam_count
                     
             sec_riks = len(seen_riks)
             if sec_riks > 0 or samam_count > 0:
