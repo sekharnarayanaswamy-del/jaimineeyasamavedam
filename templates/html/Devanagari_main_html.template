@@ -539,16 +539,16 @@
                         \BLOCK{ if section_key != 'count' }
                         \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
                         <li class="toc-section">
-                            <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')}</a>
+                            <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')} <span class="section-samam-count">(\VAR{section.Count})</span></a>
                         </li>
                         \BLOCK{ endif }
-                        \BLOCK{ if toc_level == 'subsection' or toc_level == 'both' }
-                            \BLOCK{ for subsection_key, subsection in section.subsections.items() }
-                            <li class="toc-section" \VAR{'style="margin-left: 20px;"' if toc_level == 'both' else ''}>
-                                <a href="#\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">\VAR{subsection.header.header | replace(':', 'ः') | replace('|', '') | replace('॥', '')}</a>
-                            </li>
-                            \BLOCK{ endfor }
-                        \BLOCK{ endif }
+                    \BLOCK{ if toc_level == 'subsection' or toc_level == 'both' }
+                        \BLOCK{ for subsection_key, subsection in section.subsections.items() }
+                        <li class="toc-section" \VAR{'style="margin-left: 20px;"' if toc_level == 'both' else ''}>
+                            <a href="#\VAR{key}-\VAR{section_key}-\VAR{subsection_key}">\VAR{subsection.header.header | clean_toc_title | replace(':', 'ः') | replace('|', '') | replace('॥', '')}</a>
+                        </li>
+                        \BLOCK{ endfor }
+                    \BLOCK{ endif }
                         \BLOCK{ endif }
                     \BLOCK{ endfor }
                     </ul>
@@ -565,7 +565,7 @@
             \BLOCK{ for section_key, section in supersection.sections.items() }
                 \BLOCK{ if section_key != 'count' }
                 <div class="section" id="\VAR{key}-\VAR{section_key}">
-                    <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')}<span class="section-samam-count">&emsp;&emsp;(\VAR{section.Count})</span></h2>
+                    <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')} <span class="section-samam-count">(\VAR{section.Count})</span></h2>
                     
                     <!-- Pre-rendered Subsections -->
                     \BLOCK{ for sub_html in section.html_subsections }
@@ -595,6 +595,8 @@
         
         \BLOCK{ if summary_table }
         <!-- Summary Table -->
+        \BLOCK{ set show_rik = ('rik' in output_mode or 'combined' in output_mode) and has_riks }
+        \BLOCK{ set show_samam = ('samam' in output_mode or 'combined' in output_mode) and has_samams }
         <div class="chapter" id="summary-table">
             <h1 class="chapter-title">॥ \VAR{summary_title} ॥</h1>
             <div style="overflow-x: auto; padding: 10px; display: flex; justify-content: center;">
@@ -602,22 +604,34 @@
                     <thead>
                         <tr style="background-color: var(--bg-card); border-bottom: 2px solid var(--accent-purple);">
                             <th style="padding: 8px; border: 1px solid var(--border-color);">खण्डः</th>
+                            \BLOCK{ if show_rik }
                             <th style="padding: 8px; border: 1px solid var(--border-color);">ऋक् सङ्ख्या</th>
+                            \BLOCK{ endif }
+                            \BLOCK{ if show_samam }
                             <th style="padding: 8px; border: 1px solid var(--border-color);">साम सङ्ख्या</th>
+                            \BLOCK{ endif }
                         </tr>
                     </thead>
                     <tbody>
                         \BLOCK{ for patha_data in summary_table }
                             <tr style="background-color: var(--bg-light); font-weight: bold;">
                                 <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha}</td>
+                                \BLOCK{ if show_rik }
                                 <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha_riks}</td>
+                                \BLOCK{ endif }
+                                \BLOCK{ if show_samam }
                                 <td style="padding: 8px; border: 1px solid var(--border-color); color: var(--accent-blue);">\VAR{patha_data.patha_samams}</td>
+                                \BLOCK{ endif }
                             </tr>
                             \BLOCK{ for row in patha_data.khandas }
                             <tr>
                                 <td style="padding: 6px; border: 1px solid var(--border-color); text-align: left; padding-left: 20px;">\VAR{row.khanda}</td>
+                                \BLOCK{ if show_rik }
                                 <td style="padding: 6px; border: 1px solid var(--border-color);">\VAR{row.riks}</td>
+                                \BLOCK{ endif }
+                                \BLOCK{ if show_samam }
                                 <td style="padding: 6px; border: 1px solid var(--border-color);">\VAR{row.samams}</td>
+                                \BLOCK{ endif }
                             </tr>
                             \BLOCK{ endfor }
                         \BLOCK{ endfor }
@@ -625,8 +639,12 @@
                     <tfoot>
                         <tr style="background-color: var(--bg-light); font-weight: bold; border-top: 2px solid var(--accent-blue);">
                             <td style="padding: 8px; border: 1px solid var(--border-color); text-align: center;">आहत्य (Total)</td>
+                            \BLOCK{ if show_rik }
                             <td style="padding: 8px; border: 1px solid var(--border-color);">\VAR{total_riks}</td>
+                            \BLOCK{ endif }
+                            \BLOCK{ if show_samam }
                             <td style="padding: 8px; border: 1px solid var(--border-color);">\VAR{total_samams}</td>
+                            \BLOCK{ endif }
                         </tr>
                     </tfoot>
                 </table>

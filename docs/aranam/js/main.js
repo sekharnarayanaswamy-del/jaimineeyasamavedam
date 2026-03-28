@@ -41,6 +41,48 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(entry);
     });
 
+    // Sidebar Jump Logic
+    const jumpInput = document.getElementById('sidebar-jump');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    const handleJump = () => {
+        const val = jumpInput ? jumpInput.value.trim() : '';
+        if (!val) return;
+        
+        const path = window.location.pathname;
+        let depth = 0;
+        if (path.includes('/kandah/')) depth = 2;
+        else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
+        
+        const prefix = '../'.repeat(depth);
+        const parts = val.split('.');
+        
+        if (parts.length >= 2) {
+            const parvaId = `supersection_${parts[0]}`;
+            const kandahId = parts[1];
+            let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
+            if (parts.length === 3) {
+                url += `#sama-${parts[2]}`;
+            }
+            window.location.assign(url);
+        }
+    };
+
+    if (jumpInput) {
+        jumpInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                handleJump();
+            }
+        });
+    }
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleJump();
+        });
+    }
+    
     // Audio error handling
     document.querySelectorAll('audio').forEach(audio => {
         audio.addEventListener('error', function() {

@@ -23,6 +23,29 @@ def get_generated_metadata():
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
+def load_pipeline_config(config_path="src/pipeline_config.yaml"):
+    """Loads the centralized YAML configuration file."""
+    import yaml
+    from pathlib import Path
+    
+    # Try to find config file relative to project root or current dir
+    potential_paths = [
+        Path(config_path),
+        Path("src/pipeline_config.yaml"),
+        Path(__file__).parent / "pipeline_config.yaml"
+    ]
+    
+    for p in potential_paths:
+        if p.exists():
+            try:
+                with open(p, 'r', encoding='utf-8') as f:
+                    return yaml.safe_load(f)
+            except Exception as e:
+                print(f"[ERROR] Found config at {p} but failed to load: {e}")
+    
+    print(f"[WARNING] Centralized config file '{config_path}' not found. Using defaults.")
+    return {}
+
 # --- Functions Moved from renderPDF.py ---
 
 # --- Original code from convert_txt_to_json_1.py starts here ---

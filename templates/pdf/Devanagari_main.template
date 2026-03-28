@@ -217,9 +217,9 @@
             
             \phantomsection  
                 
-            \section*{\centering \VAR{section.section_title.replace(':', 'ः')}\quad(\VAR{section.Count})}
+            \section*{\centering \VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})}
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
-            \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')}} 
+            \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})} 
             \BLOCK{ endif }
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
@@ -259,17 +259,19 @@
 \chapter*{\centering ॥ \VAR{summary_title} ॥}
 \addcontentsline{toc}{chapter}{\VAR{summary_title}}
 
+\BLOCK{ set show_rik = ('rik' in output_mode or 'combined' in output_mode) and has_riks }
+\BLOCK{ set show_samam = ('samam' in output_mode or 'combined' in output_mode) and has_samams }
 \begin{center}
 {\small % Reduce font size for the table
 \renewcommand{\arraystretch}{1.3} % Increase vertical spacing between rows
-\begin{longtable}{|p{6cm}|c|c|}
+\begin{longtable}{|p{6cm}|\BLOCK{if show_rik}c|\BLOCK{endif}\BLOCK{if show_samam}c|\BLOCK{endif}}
 \hline
-\textbf{खण्डः} & \textbf{ऋक् सङ्ख्या} & \textbf{साम सङ्ख्या} \\
+\textbf{खण्डः} \BLOCK{if show_rik} & \textbf{ऋक् सङ्ख्या} \BLOCK{endif} \BLOCK{if show_samam} & \textbf{साम सङ्ख्या} \BLOCK{endif} \\
 \hline\hline
 \endfirsthead
 
 \hline
-\textbf{खण्डः} & \textbf{ऋक् सङ्ख्या} & \textbf{साम सङ्ख्या} \\
+\textbf{खण्डः} \BLOCK{if show_rik} & \textbf{ऋक् सङ्ख्या} \BLOCK{endif} \BLOCK{if show_samam} & \textbf{साम सङ्ख्या} \BLOCK{endif} \\
 \hline\hline
 \endhead
 
@@ -277,14 +279,14 @@
 \endfoot
 
 \BLOCK{ for patha_data in summary_table }
-\textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha}}} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_riks}}} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_samams}}} \\
+\textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha}}} \BLOCK{if show_rik} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_riks}}} \BLOCK{endif} \BLOCK{if show_samam} & \textbf{\textcolor{AccentBlue}{\VAR{patha_data.patha_samams}}} \BLOCK{endif} \\
 \hline
 \BLOCK{ for row in patha_data.khandas }
-\VAR{row.khanda} & \VAR{row.riks} & \VAR{row.samams} \\
+\VAR{row.khanda} \BLOCK{if show_rik} & \VAR{row.riks} \BLOCK{endif} \BLOCK{if show_samam} & \VAR{row.samams} \BLOCK{endif} \\
 \BLOCK{ endfor }
 \hline
 \BLOCK{ endfor }
-\textbf{आहत्य} & \textbf{\VAR{total_riks}} & \textbf{\VAR{total_samams}} \\
+\textbf{आहत्य} \BLOCK{if show_rik} & \textbf{\VAR{total_riks}} \BLOCK{endif} \BLOCK{if show_samam} & \textbf{\VAR{total_samams}} \BLOCK{endif} \\
 \hline
 \end{longtable}
 }

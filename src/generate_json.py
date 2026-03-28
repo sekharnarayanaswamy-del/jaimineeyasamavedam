@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import re
 import os
-from utils import get_generated_metadata, step_preprocess_visarga_accent
+from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config
 
 # --- Version and Metadata ---
 metadata = get_generated_metadata()
@@ -1412,7 +1412,14 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
 
 if __name__ == "__main__":
     import argparse
+    import sys
+    from pathlib import Path
     
+    # 0. Load Configuration
+    pipeline_cfg = load_pipeline_config()
+    config = pipeline_cfg.get('generate_json', {})
+    sources_cfg = config.get('sources', {})
+
     parser = argparse.ArgumentParser(
         description='Generate JSON for Samhita rendering',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1423,18 +1430,16 @@ Input Modes:
   correction  - Reads processed Unicode text file with embedded metadata
 
 Examples:
-  python generate_json_for_samhita.py corrections_003.txt --input-mode initial
-  python generate_json_for_samhita.py Full_Samhita_ip_with_FN.txt --input-mode correction --output output.json
-  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-file data/output/JSV_Samam_Granular_Table.xlsx
-  python generate_json_for_samhita.py input.txt --input-mode correction --metadata-file data/output/JSV_Samam_Granular_Table.txt
+  python generate_json.py --type samhita --input-mode initial
+  python generate_json.py input.txt --input-mode correction
         """
     )
-    parser.add_argument('input_file', type=str,
+    parser.add_argument('input_file', type=str, nargs='?', default=None,
                         help='Input text file to process')
-    parser.add_argument('--input-mode', choices=['initial', 'correction'], default='correction',
-                        help='Input mode: initial or correction (default: correction)')
+    parser.add_argument('--input-mode', choices=['initial', 'correction'], default=None,
+                        help='Input mode: initial or correction (priority: CLI > Config > default: correction)')
     parser.add_argument('--output', type=str, default=None,
-                        help='Output JSON file path (default: auto-generated from input filename)')
+                        help='Output JSON file path')
     parser.add_argument('--metadata-file', type=str, default=None,
                         help='Optional .xlsx, .txt, or .csv file to enrich metadata (correction mode only)')
     parser.add_argument('--initial-json', type=str, default=None,
@@ -1445,23 +1450,31 @@ Examples:
     
     args = parser.parse_args()
     
-    input_file = args.input_file
-    
     mode_type = args.type
+    type_cfg = config.get(mode_type, {})
+
+    # Priority: CLI > Config > Default
+    input_file = args.input_file or type_cfg.get('input')
+    if not input_file:
+        print(f"Error: No input file provided for type '{mode_type}'. Please specify via CLI or config.")
+        parser.print_help()
+        sys.exit(1)
+
+    input_mode = args.input_mode or type_cfg.get('mode') or 'correction'
+    
     if mode_type == 'aaranam':
-        title = "Jaimineeya Samam Aranam"
+        title = "Jaimineeya Samam Aaranam"
     else:
         title = "Jaimineeya Sama Samhita Patha"
 
-    if args.input_mode == 'initial':
+    if input_mode == 'initial':
         # Initial mode: use multiple source files
-        rik_meta = "data/input/rishi_devata_chandas_for_rik.txt"
-        saman_meta = "data/input/sama_rishi_chandas_out.txt"
-        rik_text = "data/input/vedic_text.txt"
+        rik_meta = sources_cfg.get('rik_meta', "data/input/rishi_devata_chandas_for_rik.txt")
+        saman_meta = sources_cfg.get('saman_meta', "data/input/sama_rishi_chandas_out.txt")
+        rik_text = sources_cfg.get('rik_text', "data/input/vedic_text.txt")
         
-        if args.output:
-             output_file_path = args.output
-        else:
+        output_file_path = args.output or type_cfg.get('output')
+        if not output_file_path:
              output_dir = "data/output"
              Path(output_dir).mkdir(parents=True, exist_ok=True)
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
@@ -1471,13 +1484,12 @@ Examples:
         
     else:
         # Correction mode: parse Unicode text file
-        if args.output:
-             output_file_path = args.output
-        else:
+        output_file_path = args.output or type_cfg.get('output')
+        if not output_file_path:
              output_dir = "data/output"
              Path(output_dir).mkdir(parents=True, exist_ok=True)
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
-
+             
         print(f"Processing {input_file} in CORRECTION mode ({mode_type})...")
         if args.metadata_file:
             print(f"Enriching with metadata from: {args.metadata_file}")

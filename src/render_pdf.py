@@ -12,6 +12,7 @@ import tempfile
 import os
 import json
 import urllib.parse
+import yaml
 from requests.models import PreparedRequest
 import grapheme
 
@@ -21,7 +22,8 @@ from utils import (
     my_encodeURL, my_format,
     replacecolon, normalize_and_trim,
     parse_mantra_for_latex, 
-    sanitize_data_structure
+    sanitize_data_structure,
+    load_pipeline_config
 )
 # --- End new import ---
 
@@ -431,7 +433,7 @@ def CreateCompilation():
             prasnaInfo=prasna['id']
             CreateMd(templateFileName_md,f"TS_{kandaInfo}_{prasnaInfo}","Compilation",prasna)
                        
-def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section'):
+def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -465,7 +467,9 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
         total_riks=total_riks,
         total_samams=total_samams,
         summary_title=summary_title,
-        toc_level=toc_level
+        toc_level=toc_level,
+        has_riks=has_riks,
+        has_samams=has_samams
     )
     
 
@@ -2023,8 +2027,21 @@ def preprocess_html_data(supersections, output_mode):
     return sorted_index
 
 
+def clean_toc_title(raw_title):
+    """
+    Cleans the raw subsection title to extract just the first block of text 
+    wrapped in dandas (e.g., extracting just the Samam header and removing metadata).
+    """
+    if not raw_title: return ""
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', raw_title)
+    m_split = re.match(r'([|॥]+\s*.*?[|॥]+)', display_sub_title)
+    if m_split:
+        return m_split.group(1).strip()
+    return display_sub_title.strip()
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section'):
+
+
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -2065,7 +2082,9 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         total_riks=total_riks,
         total_samams=total_samams,
         summary_title=summary_title,
-        toc_level=toc_level
+        toc_level=toc_level,
+        has_riks=has_riks,
+        has_samams=has_samams
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
@@ -2077,6 +2096,14 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
 
 
 def main():
+    # 0. Load Configuration from centralized pipeline_config.yaml
+    pipeline_cfg = load_pipeline_config()
+    config = pipeline_cfg.get('render', {})
+    
+    cfg_defaults = config.get('defaults', {})
+    cfg_types = config.get('types', {})
+    cfg_paths = config.get('paths', {})
+
     # Parse command line arguments
     parser = argparse.ArgumentParser(
         description='Generate PDF, HTML, and Text from Vedic text JSON',
@@ -2096,69 +2123,72 @@ Examples:
     parser.add_argument('input_file', nargs='?', default=None,
                         help='Input JSON file (auto-selected based on --type if not specified)')
     parser.add_argument('--output-mode', dest='output_mode',
-                        choices=['combined', 'separate', 'nometa'], default='combined',
+                        choices=['combined', 'separate', 'nometa'], default=None,
                         help='Output mode: combined (default), separate, or nometa')
-    parser.add_argument('--pdf-font', dest='pdf_font', default='AdishilaVedic',
-                        help='Font for PDF output (default: AdishilaVedic)')
-    parser.add_argument('--html-font', dest='html_font', default="'AdishilaVedic', 'AdishilaSanVedic'",
-                        help="Font for HTML output (default: 'AdishilaVedic', 'AdishilaSanVedic')")
+    parser.add_argument('--pdf-font', dest='pdf_font', default=None,
+                        help='Font for PDF output')
+    parser.add_argument('--html-font', dest='html_font', default=None,
+                        help="Font for HTML output")
     parser.add_argument('--type', choices=['samhita', 'aaranam', 'collection'], default='samhita',
                         help='Type of Samaveda text: samhita, aaranam, or collection')
     
     # NEW CLI OPTION
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
-                        choices=['bw', 'color'], default='bw',
-                        help='Color mode for PDF output: bw (default) or color')
+                        choices=['bw', 'color'], default=None,
+                        help='Color mode for PDF output: bw or color')
                         
     parser.add_argument('--toc-level', dest='toc_level',
-                        choices=['section', 'subsection', 'both'], default='section',
-                        help='Determines which headers appear in the TOC. Default: section')
+                        choices=['section', 'subsection', 'both'], default=None,
+                        help='Determines which headers appear in the TOC.')
     
     args = parser.parse_args()
-    output_mode = args.output_mode
-    pdf_font = args.pdf_font
-    html_font = args.html_font
-    pdf_color_mode = args.pdf_color_mode
-    toc_level = args.toc_level
+    mode_type = args.type
+    type_settings = cfg_types.get(mode_type, {})
+
+    # Priority Merging: CLI > Config Type > Config Default > Hardcoded fallback
+    output_mode = args.output_mode or type_settings.get('output_mode') or cfg_defaults.get('output_mode', 'combined')
+    pdf_font = args.pdf_font or type_settings.get('pdf_font') or cfg_defaults.get('pdf_font', 'AdishilaVedic')
+    html_font = args.html_font or type_settings.get('html_font') or cfg_defaults.get('html_font', "'AdishilaVedic', 'AdishilaSanVedic'")
+    pdf_color_mode = args.pdf_color_mode or type_settings.get('pdf_color_mode') or cfg_defaults.get('pdf_color_mode', 'bw')
+    toc_level = args.toc_level or type_settings.get('toc_level') or cfg_defaults.get('toc_level', 'section')
     
     global CURRENT_PDF_FONT
     CURRENT_PDF_FONT = pdf_font
     global CURRENT_TOC_LEVEL
     CURRENT_TOC_LEVEL = toc_level
     
-    mode_type = args.type
+    # Auto-select default input file
+    input_file = args.input_file or type_settings.get('input_file')
+    if not input_file:
+         # Fallback to historical hardcoded defaults
+         if mode_type == 'aaranam':
+             input_file = 'data/output/Aaranam_latest_out.json'
+         elif mode_type == 'collection':
+             input_file = 'data/output/Collection_latest_out.json'
+         else:
+             input_file = 'data/output/Agneyam-Pavamanam_latest_out.json'
     
-    # Auto-select default input file based on --type if not explicitly provided
-    if args.input_file is not None:
-        input_file = args.input_file
-    elif mode_type == 'aaranam':
-        input_file = 'data/output/Aaranam_latest_out.json'
-    elif mode_type == 'collection':
-        input_file = 'data/output/Collection_latest_out.json'
-    else:
-        input_file = 'data/output/Agneyam-Pavamanam_latest_out.json'
-    
-    # Determine file prefix based on type
-    if mode_type == 'aaranam':
-        file_prefix = "Aaranam"
-    elif mode_type == 'collection':
-        file_prefix = "Collection"
-    else:
-        file_prefix = "Samhita"
-    template_dir="templates/pdf"
-    text_template_dir="templates/text"
-    html_template_dir="templates/html"
-    
-    templateFile_Grantha=f"{template_dir}/Grantha_main.template"
-    templateFile_Devanagari=f"{template_dir}/Devanagari_main.template"
-    templateFile_Tamil=f"{template_dir}/Tamil_main.template"
-    templateFile_Malayalam=f"{template_dir}/Malayalam_main.template"
-    
-    text_templateFile_Devanagari=f"{text_template_dir}/Devanagari_main.template"
-    html_templateFile_Devanagari=f"{html_template_dir}/Devanagari_main_html.template"
+    file_prefix = type_settings.get('file_prefix') or (
+        "Aaranam" if mode_type == 'aaranam' else 
+        "Collection" if mode_type == 'collection' else "Samhita"
+    )
 
-    outputdir="data/output"
-    logdir="data/output/logs"
+    # Path configuration
+    tpl_paths = cfg_paths.get('templates', {})
+    template_dir = tpl_paths.get('pdf', "templates/pdf")
+    text_template_dir = tpl_paths.get('text', "templates/text")
+    html_template_dir = tpl_paths.get('html', "templates/html")
+    
+    templateFile_Grantha = f"{template_dir}/Grantha_main.template"
+    templateFile_Devanagari = f"{template_dir}/Devanagari_main.template"
+    templateFile_Tamil = f"{template_dir}/Tamil_main.template"
+    templateFile_Malayalam = f"{template_dir}/Malayalam_main.template"
+    
+    text_templateFile_Devanagari = f"{text_template_dir}/Devanagari_main.template"
+    html_templateFile_Devanagari = f"{html_template_dir}/Devanagari_main_html.template"
+
+    outputdir = cfg_paths.get('output_root', "data/output")
+    logdir = cfg_paths.get('logs', "data/output/logs")
     
     # LaTeX/Text Jinja environment (uses LaTeX-style delimiters)
     latex_jinja_env = jinja2.Environment(
@@ -2190,6 +2220,7 @@ Examples:
     latex_jinja_env.filters["format_rik_nometa_text"] = format_rik_nometa_text
     latex_jinja_env.filters["format_samam_nometa_text"] = format_samam_nometa_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
+    latex_jinja_env.filters["clean_toc_title"] = clean_toc_title
     
     # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
     html_jinja_env = jinja2.Environment(
@@ -2216,6 +2247,7 @@ Examples:
     html_jinja_env.filters["replacecolon"] = replacecolon
     html_jinja_env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
     html_jinja_env.filters["render_section_footnotes"] = render_section_footnotes
+    html_jinja_env.filters["clean_toc_title"] = clean_toc_title
 
     # Load input JSON data
     ts_string_Devanagari = Path(input_file).read_text(encoding="utf-8")
@@ -2225,15 +2257,12 @@ Examples:
     supersections = sanitize_data_structure(supersections)
     closing_mantras = data_Devanagari.get('closing_mantras', [])
     
-    # Pre-process section titles to include continuous numbering
-    global_section_count = 1
+    # Pre-processing section titles (if needed)
     for ss_key, ss_data in supersections.items():
         for sec_key, sec_data in ss_data.get('sections', {}).items():
             if sec_key == 'count': continue
-            original_title = sec_data.get('section_title', '')
-            sec_num_dev = to_devanagari_numeral(global_section_count)
-            sec_data['section_title'] = f"{sec_num_dev}. {original_title}"
-            global_section_count += 1
+            # Keep original title without prepended continuous numbering
+            pass
     
     # Generate Summary Table
     summary_table = []
@@ -2252,27 +2281,34 @@ Examples:
             seen_riks = set()
             samam_count = 0
             
-            # Using basic unique Rik logic + Samam regex counting
+            # Smart count: only count if displayable text exists
             for sub_key, sub_data in sec_data.get('subsections', {}).items():
+                rik_text = sub_data.get('rik_text', '').strip()
                 rik_ids = sub_data.get('rik_ids', [])
-                if rik_ids:
-                    seen_riks.update(rik_ids)
-                else:
-                    r_id = sub_data.get('rik_id')
-                    if r_id is not None:
-                        seen_riks.add(r_id)
+                
+                # Only count Rik if there is Rik text to display
+                if rik_text:
+                    if rik_ids:
+                        seen_riks.update(rik_ids)
+                    else:
+                        r_id = sub_data.get('rik_id')
+                        if r_id is not None:
+                            seen_riks.add(r_id)
                 
                 # Samam count logic
                 sub_samam_count = 0
+                has_samam_text = False
                 for ms in sub_data.get('corrected-mantra_sets', []):
                     mantra = ms.get('corrected-mantra', '')
+                    if mantra.strip():
+                        has_samam_text = True
                     # Count all ॥ N ॥ markers
                     m_markers = re.findall(r'॥\s*[०-९]+\s*॥', mantra)
                     if m_markers:
                         sub_samam_count += len(m_markers)
                 
-                # If no markers found but mantra sets exist, count as 1
-                if sub_samam_count == 0 and sub_data.get('corrected-mantra_sets'):
+                # If no markers found but mantra sets exist, count as 1 if there's text
+                if sub_samam_count == 0 and has_samam_text:
                     sub_samam_count = 1
                 
                 samam_count += sub_samam_count
@@ -2288,6 +2324,12 @@ Examples:
                 patha_samams += samam_count
                 total_riks += sec_riks
                 total_samams += samam_count
+            
+            # Ensure the count is available for the section header in templates
+            sec_data['Count'] = to_devanagari_numeral(samam_count)
+        
+        # Add total count for the supersection
+        ss_data['Count'] = to_devanagari_numeral(patha_samams)
         
         if khanda_rows:
             summary_table.append({
@@ -2300,16 +2342,24 @@ Examples:
     total_riks_dev = to_devanagari_numeral(total_riks)
     total_samams_dev = to_devanagari_numeral(total_samams)
     
-    # Define Sanskrit title based on type (for PDF generation)
-    if mode_type == 'aaranam':
-        doc_title_sa = "जैमिनीय साम आरण्य गानम्"
-        summary_title_sa = "आरण्यम् सङ्ख्या"
-    elif mode_type == 'collection':
-        doc_title_sa = "जैमिनीय साम सूक्त माला"
-        summary_title_sa = "सूक्तम् सङ्ख्या"
-    else:
-        doc_title_sa = "जैमिनीय साम संहिता"
-        summary_title_sa = "संहिता सङ्ख्या"
+    # Define Sanskrit title based on type (for PDF/html generation)
+    # Priority: CLI > JSON Meta > Type Setting > Default
+    doc_title_sa = type_settings.get('doc_title')
+    if not doc_title_sa:
+        doc_title_sa = data_Devanagari.get('meta', {}).get('title')
+        
+    summary_title_sa = type_settings.get('summary_title')
+    
+    if not doc_title_sa:
+        if mode_type == 'aaranam':
+            doc_title_sa = "जैमिनीय साम आरण्य गानम्"
+            summary_title_sa = "आरण्यम् सङ्ख्या"
+        elif mode_type == 'collection':
+            doc_title_sa = "जैमिनीय साम सूक्त माला"
+            summary_title_sa = "सूक्तम् सङ्ख्या"
+        else:
+            doc_title_sa = "जैमिनीय साम संहिता"
+            summary_title_sa = "संहिता सङ्ख्या"
     
     current_os = platform.system()
     
@@ -2322,9 +2372,9 @@ Examples:
         text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
         html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
         
-        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"{file_prefix}", "Devanagari", supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
-        CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':
@@ -2335,15 +2385,15 @@ Examples:
         
         # Rik-only output: Pass output_mode='rik' to template
         print("Generating Rik-only output (with metadata)...")
-        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
-        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         
         # Samam-only output: Pass output_mode='samam' to template
         print("Generating Samam-only output (with metadata)...")
-        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
-        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         
         print("Success! Generated separate Rik and Samam output files.")
         
@@ -2355,15 +2405,15 @@ Examples:
         
         # Rik-only output (no metadata): Pass output_mode='rik_nometa' to template
         print("Generating Rik-only output (without metadata)...")
-        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Rik_NoMeta", "Devanagari", supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
-        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         
         # Samam-only output (no metadata): Pass output_mode='samam_nometa' to template
         print("Generating Samam-only output (without metadata)...")
-        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Samam_NoMeta", "Devanagari", supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
-        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level)
+        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         
         print("Success! Generated separate Rik and Samam output files without metadata.")
 

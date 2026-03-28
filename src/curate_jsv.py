@@ -1,3 +1,4 @@
+import sys
 import json
 import re
 import argparse
@@ -41,21 +42,75 @@ def parse_p_k_s(content):
     return [(int(p), int(k), int(s)) for p, k, s in matches]
 
 
+def extract_specific_samam(mantra_text, target_s_val):
+    """
+    Extract only the part of the mantra text that corresponds to a specific Samam number.
+    Assumes Samams end with ॥N॥.
+    """
+    if not mantra_text:
+        return ""
+    # Match ॥ followed by optional spaces, Devanagari digits, optional spaces, followed by ॥
+    pattern = r'॥\s*([०-९]+)\s*॥'
+    matches = list(re.finditer(pattern, mantra_text))
+    
+    prev_end = 0
+    for m in matches:
+        # Convert Devanagari digits to int
+        deva_num = m.group(1)
+        arabic = deva_num.translate(str.maketrans('०१२३४५६७८९', '0123456789'))
+        try:
+            current_val = int(arabic)
+        except ValueError:
+            continue
+            
+        if current_val == target_s_val:
+            # We found our Samam. It starts after the previous Samam's marker (or at 0)
+            # and ends at the end of its own marker.
+            return mantra_text[prev_end:m.end()].strip()
+        
+        prev_end = m.end()
+    
+    return None
+
+
 def main():
+    # 0. Load Configuration
+    from utils import load_pipeline_config
+    pipeline_cfg = load_pipeline_config()
+    curate_cfg = pipeline_cfg.get('curate_jsv', {})
+
     parser = argparse.ArgumentParser(
         description='Curate a subset of JSV JSON (Samhita/Aaranam) based on P.K.S filters.\n'
                     'P = Parva, K = Kandah (ordinal), S = Samam number (from mantra text ॥N॥).'
     )
-    parser.add_argument('--sources', nargs='+', required=True, help='Source JSON files (e.g., data/output/Vargeekaran.json data/output/Aaranam.json)')
-    parser.add_argument('--filter', required=True, help='Filter text file with P.K.S identifiers')
-    parser.add_argument('--output', required=True, help='Output JSON file')
-    parser.add_argument('--title', default='जैमिनीय साम सूक्तमाला', help='Title for the curated collection')
+    parser.add_argument('--sources', nargs='+', default=None, help='Source JSON files')
+    parser.add_argument('--filter', default=None, help='Filter text file with P.K.S identifiers')
+    parser.add_argument('--output', default=None, help='Output JSON file')
+    parser.add_argument('--title', default=None, help='Title for the curated collection')
 
     args = parser.parse_args()
 
+    # Priority: CLI > Config > Defaults
+    sources = args.sources or curate_cfg.get('sources')
+    if not sources:
+        print("Error: No source files provided. Use --sources or configure in pipeline_config.yaml")
+        sys.exit(1)
+
+    filter_file = args.filter or curate_cfg.get('filter')
+    if not filter_file:
+        print("Error: No filter file provided. Use --filter or configure in pipeline_config.yaml")
+        sys.exit(1)
+
+    output_file = args.output or curate_cfg.get('output')
+    if not output_file:
+        print("Error: No output file provided. Use --output or configure in pipeline_config.yaml")
+        sys.exit(1)
+
+    title = args.title or curate_cfg.get('title', 'जैमिनीय साम सूक्तमाला')
+
     # 1. Load and Merge Source JSONs
     source_data = {"supersection": {}, "closing_mantras": []}
-    for src in args.sources:
+    for src in sources:
         source_path = Path(src)
         if not source_path.exists():
             print(f"Error: Source file {src} not found.")
@@ -86,9 +141,9 @@ def main():
     print("All sources loaded and merged.", flush=True)
 
     # 2. Parse Filter File
-    filter_path = Path(args.filter)
+    filter_path = Path(filter_file)
     if not filter_path.exists():
-        print(f"Error: Filter file {args.filter} not found.")
+        print(f"Error: Filter file {filter_file} not found.")
         return
 
     print(f"Reading filter: {filter_path}", flush=True)
@@ -96,7 +151,6 @@ def main():
         content = f.read()
 
     # Try to extract title from filter file (between # Title and #End Title markers)
-    title = args.title
     title_match = re.search(r'#\s*Title\s*\n(.+?)\n\s*#\s*End\s*Title', content, re.IGNORECASE)
     if title_match:
         extracted_title = title_match.group(1).strip()
@@ -106,7 +160,7 @@ def main():
 
     id_list = parse_p_k_s(content)
     if not id_list:
-        print(f"Warning: No valid P.K.S identifiers found in {args.filter}")
+        print(f"Warning: No valid P.K.S identifiers found in {filter_file}")
         return
     print(f"Found {len(id_list)} identifiers in filter file.", flush=True)
 
@@ -116,8 +170,8 @@ def main():
         "meta": {
             "version": "1.1",
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "source_file": ", ".join(args.sources),
-            "filter_file": str(args.filter),
+            "source_file": ", ".join(sources),
+            "filter_file": str(filter_file),
             "title": title
         },
         "supersection": {
@@ -143,7 +197,7 @@ def main():
         if not isinstance(ss_data, dict):
             continue
         sec_keys = sorted(
-            [k for k in ss_data.get('sections', {}).keys() if k != 'count'],
+            [k for k in ss_data.get('sections', {}).keys() if k.lower() != 'count'],
             key=lambda x: int(x.split('_')[1]) if '_' in x else 0
         )
         parva_section_map[ss_key] = sec_keys
@@ -173,8 +227,9 @@ def main():
 
     found_count = 0
     missing_ids = []
-    # Track already-added subsections to avoid duplicates (e.g., 1.8.7 and 1.8.8 both in subsection_87)
     added_subsections = set()
+    last_source_id = None
+    current_target_sub = None
 
     for p, k_ord, s_val in id_list:
         print(f"Processing ID: {p}.{k_ord}.{s_val}", flush=True)
@@ -210,23 +265,75 @@ def main():
             missing_ids.append(f"{p}.{k_ord}.{s_val}")
             continue
 
-        # Avoid duplicate subsection entries
-        full_key = (ss_key, sec_key, sub_key)
+        # Avoid duplicate Samam entries
+        full_key = (ss_key, sec_key, sub_key, s_val)
         if full_key in added_subsections:
-            print(f"  Samam {s_val} -> {sub_key} (already added, skipping duplicate)", flush=True)
+            print(f"  Samam {s_val} (already added, skipping duplicate)", flush=True)
             continue
 
         added_subsections.add(full_key)
+        
+        current_source_id = (ss_key, sec_key, sub_key)
+        
+        # Grouping Logic
+        if current_source_id == last_source_id and current_target_sub is not None:
+            print(f"  Grouping Samam {s_val} into existing Arsheyam {sub_key}", flush=True)
+            source_sub_data = sec_data["subsections"][sub_key]
+            if "corrected-mantra_sets" in source_sub_data:
+                for mset in source_sub_data["corrected-mantra_sets"]:
+                    if not isinstance(mset, dict): continue
+                    raw_text = mset.get("corrected-mantra", "")
+                    specific_text = extract_specific_samam(raw_text, s_val)
+                    if specific_text:
+                        import copy
+                        mset_copy = copy.deepcopy(mset)
+                        mset_copy["corrected-mantra"] = specific_text
+                        current_target_sub["corrected-mantra_sets"].append(mset_copy)
+            continue
+
+        # New Arsheyam Entry
         sub_data = sec_data["subsections"][sub_key]
         samam_nums_in_sub = get_samam_numbers(sub_data)
-        print(f"  Samam {s_val} -> {sub_key} (contains Samams {samam_nums_in_sub})", flush=True)
+        print(f"  New Arsheyam: {p}.{k_ord}.{s_val} -> {sub_key} (contains Samams {samam_nums_in_sub})", flush=True)
 
+        import copy
         found_count += 1
         target_sub_key = f"subsection_{found_count}"
-        target_subsections[target_sub_key] = sub_data
+        sub_copy = copy.deepcopy(sub_data)
+        
+        # Extract target Samam
+        new_mantra_sets = []
+        if "corrected-mantra_sets" in sub_copy:
+            for mset in sub_copy["corrected-mantra_sets"]:
+                if not isinstance(mset, dict): continue
+                raw_text = mset.get("corrected-mantra", "")
+                specific_text = extract_specific_samam(raw_text, s_val)
+                if specific_text:
+                    mset["corrected-mantra"] = specific_text
+                    new_mantra_sets.append(mset)
+        
+        sub_copy["corrected-mantra_sets"] = new_mantra_sets
+        
+        # Drop Rik and metadata
+        keys_to_drop = [
+            'rik_text', 'rik_metadata', 'saman_metadata', 
+            'rik_classifications', 'rik_id', 'rik_ids', 'mantra_sets'
+        ]
+        for k in keys_to_drop:
+            if k in sub_copy:
+                del sub_copy[k]
+
+        if "header" not in sub_copy or not isinstance(sub_copy["header"], dict):
+            sub_copy["header"] = {"header": ""}
+            
+        sub_copy["header"]["header_number"] = found_count
+        target_subsections[target_sub_key] = sub_copy
+        
+        last_source_id = current_source_id
+        current_target_sub = sub_copy
 
     # 4. Save Output
-    output_path = Path(args.output)
+    output_path = Path(output_file)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:

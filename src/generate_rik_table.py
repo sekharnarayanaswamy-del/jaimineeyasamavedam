@@ -109,10 +109,15 @@ def load_reconciliation_data(excel_path):
     return mapping
 
 def main(input_file=None, output_csv=None, recon_excel=None, v_json=None):
-    input_file = input_file or DEFAULT_INPUT
-    output_csv = output_csv or DEFAULT_OUTPUT_CSV
-    recon_excel = recon_excel or DEFAULT_RECON_EXCEL
-    v_json = v_json or DEFAULT_VARGEEKARAN_JSON
+    # 0. Load Configuration
+    from utils import load_pipeline_config
+    pipeline_cfg = load_pipeline_config()
+    table_cfg = pipeline_cfg.get('generate_rik_table', {})
+
+    input_file = input_file or table_cfg.get('input') or DEFAULT_INPUT
+    output_csv = output_csv or table_cfg.get('output_csv') or DEFAULT_OUTPUT_CSV
+    recon_excel = recon_excel or table_cfg.get('recon_excel') or DEFAULT_RECON_EXCEL
+    v_json = v_json or table_cfg.get('v_json') or DEFAULT_VARGEEKARAN_JSON
 
     # Get metadata
     metadata = get_generated_metadata()

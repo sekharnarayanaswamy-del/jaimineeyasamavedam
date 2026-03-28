@@ -20,6 +20,7 @@ import os
 import re
 import json
 import sys
+import argparse
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any
@@ -40,7 +41,8 @@ try:
         combine_ardhaksharas, 
         get_generated_metadata, 
         step_preprocess_visarga_accent,
-        parse_mantra_for_latex
+        parse_mantra_for_latex,
+        load_pipeline_config
     )
 except ImportError:
     # Fallback/Dummy versions for linting/missing files
@@ -48,6 +50,7 @@ except ImportError:
     def get_generated_metadata(f): return {}
     def step_preprocess_visarga_accent(s): return s
     def parse_mantra_for_latex(s): return s
+    def load_pipeline_config(): return {}
 
 try:
     from render_pdf import (
@@ -81,12 +84,12 @@ SITE_CONFIG = {
         'meta_desc': 'Jaimineeya Sama Samhita digital archive',
         'keywords': 'Samaveda, Jaimineeya, Samhita, Ganam, Vedas, Sanskrit'
     },
-    'aranam': {
+    'aaranam': {
         'title_sa': 'जैमिनीय साम आरण्य गानम्',
-        'title_en': 'Jaimineeya Sama Aranam', 
+        'title_en': 'Jaimineeya Sama Aaranam', 
         'footer_sa': 'जैमिनीय सामवेद आरण्य गानम्',
-        'meta_desc': 'Jaimineeya Sama Aranam digital archive',
-        'keywords': 'Samaveda, Jaimineeya, Aranam, Aranya, Ganam, Vedas, Sanskrit'
+        'meta_desc': 'Jaimineeya Sama Aaranam digital archive',
+        'keywords': 'Samaveda, Jaimineeya, Aaranam, Aranya, Ganam, Vedas, Sanskrit'
     }
 }
 
@@ -2811,12 +2814,14 @@ document.addEventListener('DOMContentLoaded', function() {
         parva_sections = ""
         for parva in self.parvas:
             kandah_cards = ""
+            parva_sama_count = 0
             for kandah in parva.kandahs:
                 # Count Samam markers in this Kandah
                 kandah_sama_count = sum(
                     count_samams_with_fallback(s.mantra_text)
                     for s in kandah.samas
                 )
+                parva_sama_count += kandah_sama_count
                 
                 kandah_cards += f'''
                 <a href="kandah/{parva.id}/{kandah.kandah_number}.html" class="kandah-card">
@@ -3439,6 +3444,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>'''
                 
+                header_count = f"({self._to_devanagari_num(len(kandah.samas))}) " if len(kandah.samas) > 0 else ""
+                
                 html = f'''{self._get_html_head(f"{parva.title} - {kandah.title}", depth=2)}
 <body>
     <div class="page-container">
@@ -3455,10 +3462,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </nav>
             
             <header class="page-header">
-                <h1>{parva.title} - {kandah.title}</h1>
+                <h1>{parva.title} - {kandah.title} <span class="sama-count">{header_count}</span></h1>
                 <div class="page-meta">
                     <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span></p>
-                    <span class="sama-count">साम: <span class="number">{len(kandah.samas)}</span></span>
                 </div>
             </header>
             
@@ -3535,16 +3541,16 @@ document.addEventListener('DOMContentLoaded', function() {
 # --- Main Entry Point ---
 def main():
     """Main function to run the website generator"""
-    import argparse
-    
+    # 0. Load Configuration
+    pipeline_cfg = load_pipeline_config()
+    web_cfg = pipeline_cfg.get('generate_website', {})
+
     parser = argparse.ArgumentParser(
-        description='Generate static website for Jaimineeya Samavedam',
+        description='Jaimineeya Samavedam Website Generator (v2.0)',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
-Example usage:
-  python generate_website.py
-  python generate_website.py
-  python generate_website.py --samhita --source-file samhita.json
+Examples:
+  python generate_website.py --samhita
   python generate_website.py -a --source-file aranam.json
         '''
     )
@@ -3553,32 +3559,30 @@ Example usage:
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     
-    # Default paths
-    # Default paths
+    # Default paths (used if not specified by CLI or config)
     default_source = project_root / 'data' / 'output' / 'Vargeekaran.json'
-    # Changed default output to 'docs' for GitHub Pages support
     default_output = project_root / 'docs'
     default_audio = project_root / 'data' / 'input' / 'Audio_Placeholders'
     
     parser.add_argument(
         '--source-file', '-s',
         type=str,
-        default=str(default_source),
-        help='Path to the source text file (default: data/input/Samhita_with_Rishi_Devata_Chandas.txt)'
+        default=None,
+        help='Path to the source text file'
     )
     
     parser.add_argument(
         '--output-dir', '-o',
         type=str,
-        default=str(default_output),
-        help='Output directory for generated website (default: docs)'
+        default=None,
+        help='Output directory for generated website'
     )
     
     parser.add_argument(
-        '--audio-dir', '-d', # Changed to -d to avoid conflict with -a
+        '--audio-dir', '-d',
         type=str,
-        default=str(default_audio),
-        help='Directory for audio placeholder folders (default: data/input/Audio_Placeholders)'
+        default=None,
+        help='Directory for audio placeholder folders'
     )
     
     # Mode selection group
@@ -3586,34 +3590,49 @@ Example usage:
     group.add_argument(
         '-m', '--samhita',
         action='store_true',
-        default=True,
-        help='Generate for Samhita (Default)'
+        help='Generate for Samhita'
     )
     group.add_argument(
-        '-a', '--aranam',
+        '-a', '--aaranam',
         action='store_true',
-        help='Generate for Aranam'
+        help='Generate for Aaranam'
     )
     
     args = parser.parse_args()
     
+    # Determine mode: Priority CLI flags > Config (default: aaranam)
+    if args.aaranam:
+        mode = 'aaranam'
+    elif args.samhita:
+        mode = 'samhita'
+    else:
+        mode = web_cfg.get('type', 'aaranam')
+
+    type_cfg = web_cfg.get(mode, {})
+    
+    # Priority: CLI > Config Type > Config Global > Hardcoded Default
+    source_file = args.source_file or type_cfg.get('source') or web_cfg.get('source') or str(default_source)
+    output_dir = args.output_dir or type_cfg.get('output_dir') or web_cfg.get('output_dir') or str(default_output)
+    audio_dir = args.audio_dir or type_cfg.get('audio_dir') or web_cfg.get('audio_dir') or str(default_audio)
+    
     # Validate source file exists
-    source_path = Path(args.source_file)
+    source_path = Path(source_file)
     if not source_path.exists():
-        print(f"❌ Error: Source file not found: {source_path}")
+        print(f"[ERROR] Source file not found: {source_path}")
         return 1
     
     print("=" * 60)
     print("  Jaimineeya Samavedam Website Generator (v2.0)")
     print("  Design: Inspired by rigveda.sanatana.in")
     print("=" * 60)
-    print(f"\n📄 Source file: {source_path}")
-    print(f"📁 Output directory: {args.output_dir}")
-    print(f"🎵 Audio placeholders: {args.audio_dir}")
+    print(f"\n[INFO] Source file: {source_path}")
+    print(f"[INFO] Output directory: {output_dir}")
+    print(f"[INFO] Audio placeholders: {audio_dir}")
+    print(f"[INFO] Mode: {mode.upper()}")
     print()
     
     # Parse the source file
-    print("🔍 Parsing source file...")
+    print("[INFO] Parsing source file...")
     parser_obj = JSVParser(str(source_path))
     parvas = parser_obj.parse()
     
@@ -3621,28 +3640,24 @@ Example usage:
     total_kandahs = sum(len(p.kandahs) for p in parvas)
     total_samas = sum(sum(len(k.samas) for k in p.kandahs) for p in parvas)
     
-    print(f"\n📊 Parsed Structure:")
-    print(f"   • {len(parvas)} Parvas (पाठ)")
-    print(f"   • {total_kandahs} Kandahs (खण्ड)")
-    print(f"   • {total_samas} Samas (साम)")
+    print(f"\n[STATS] Parsed Structure:")
+    print(f"   - {len(parvas)} Parvas (Patha)")
+    print(f"   - {total_kandahs} Kandahs (Khanda)")
+    print(f"   - {total_samas} Samas (Sama)")
     
     for parva in parvas:
         print(f"\n   {parva.parva_number}. {parva.title}")
         print(f"      └─ {len(parva.kandahs)} Kandahs, {sum(len(k.samas) for k in parva.kandahs)} Samas")
     
-    # Determine mode
-    mode = 'aranam' if args.aranam else 'samhita'
-    print(f"ℹ️  Generating for: {mode.upper()}")
-    
     # Generate website
-    print("\n🏗️ Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, args.output_dir, args.audio_dir, mode=mode)
+    print("\n[INFO] Generating website (Rig Veda style)...")
+    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode)
     generator.generate()
     
     print("\n" + "=" * 60)
     print("  ✨ Website generation complete!")
     print("=" * 60)
-    print(f"\nOpen {args.output_dir}/index.html to view the website.")
+    print(f"\nOpen {output_dir}/index.html to view the website.")
     
     return 0
 

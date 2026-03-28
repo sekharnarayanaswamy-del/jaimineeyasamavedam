@@ -1,0 +1,107 @@
+# ----------------------------------------------------
+# Jaimineeya Samavedam Pipeline Master Configuration
+# ----------------------------------------------------
+# This file centralizes all paths and settings for the JSV processing pipeline.
+
+# --- GLOBAL SETTINGS ---
+project:
+  name: "Jaimineeya Samavedam"
+  version: "3.0"
+  output_root: "data/output"
+  input_root: "data/input"
+
+# --- JSON GENERATION (src/generate_json.py) ---
+generate_json:
+  # Metadata source files used in INITIAL mode
+  sources:
+    rik_meta: "data/input/rishi_devata_chandas_for_rik.txt"
+    saman_meta: "data/input/sama_rishi_chandas_out.txt"
+    rik_text: "data/input/vedic_text.txt"
+  
+  # Type-specific input/output paths
+  samhita:
+    input: "data/input/Samhita_corrected.txt"
+    output: "data/output/Samhita_corrected_out.json"
+    type: "samhita"
+    mode: "correction"
+  aaranam:
+    input: "data/input/Aaranam_latest.txt"
+    output: "data/output/Aaranam_latest_out.json"
+    type: "aaranam"
+    mode: "correction"
+
+# --- RIK TABLE GENERATION (src/generate_rik_table.py) ---
+generate_rik_table:
+  input: "data/output/Samhita_corrected_out.json"
+  output_csv: "data/output/JSV_Rik_Table.csv"
+  recon_excel: "data/output/Rik Reconciliation table (JSV-KSV).xlsx"
+  v_json: "data/output/Vargeekaran.json"
+
+# --- JSV CURATION (src/curate_jsv.py) ---
+curate_jsv:
+  sources:
+    - "data/output/Vargeekaran.json"
+    - "data/output/Aaranam_latest_out.json"
+  filter: "data/input/Ritu-shanti.txt"
+  output: "data/output/Collection_latest_out.json"
+  title: "ऋतु शान्ति जपम्"
+
+# --- COLLECTION BUILDING (src/tools/build_collection.py) ---
+build_collection:
+  source: "data/output/Vargeekaran.json"
+  output: "data/output/Collection_latest_out.json"
+  title: "जैमिनीय साम सङ्ग्रहः"
+
+# --- WEBSITE GENERATION (src/generate_website.py) ---
+generate_website:
+  # General website settings
+  output_dir: "docs"
+  audio_dir: "data/input/Audio_Placeholders"
+  
+  type: "aaranam"
+  
+  # Type-specific sources
+  samhita:
+    source: "data/output/Vargeekaran.json"
+  aaranam:
+    source: "data/output/Aaranam_latest_out.json"
+
+# --- PDF & HTML RENDERING (src/render_pdf.py) ---
+render:
+  defaults:
+    output_mode: "combined"    # 'combined', 'separate', 'nometa'
+    pdf_font: "AdishilaVedic"
+    html_font: "'AdishilaVedic', 'AdishilaSanVedic'"
+    pdf_color_mode: "bw"
+    toc_level: "section"       # 'section', 'subsection', 'both'
+  
+  types:
+    samhita:
+      input_file: "data/output/Samhita_corrected_out.json"
+      doc_title: "जैमिनीय साम संहिता"
+      summary_title: "संहिता सङ्ख्या"
+      file_prefix: "Samhita"
+    aaranam:
+      input_file: "data/output/Aaranam_latest_out.json"
+      doc_title: "जैमिनीय साम आरण्य गानम्"
+      summary_title: "आरण्यम् सङ्ख्या"
+      file_prefix: "Aaranam"
+    collection:
+      input_file: "data/output/Collection_latest_out.json"
+      doc_title: "जैमिनीय साम सङ्ग्रहः"
+      summary_title: "जैमिनीय साम सङ्ग्रहः सङ्ख्या"
+      file_prefix: "Collection"
+
+  paths:
+    templates:
+      pdf: "templates/pdf"
+      html: "templates/html"
+      text: "templates/text"
+    output_root: "data/output"
+    logs: "data/output/logs"
+
+  advanced:
+    generate_summary_table: true
+    enable_footnote_consolidation: true
+    replace_colons_with_visarga: true
+    sanitize_invisible_chars: true
