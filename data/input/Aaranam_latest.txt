@@ -4,7 +4,7 @@
 Version 3.1 23rd February 2026
 
 # Start of SuperSection Title -- supersection_7 ## DO NOT EDIT
-॥ व्रत पर्व ॥ 
+व्रत पर्व  
 # End of SuperSection Title -- supersection_7 ## DO NOT EDIT
         
 # Start of Section Title -- section_65 ## DO NOT EDIT
@@ -63,7 +63,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_735 ## DO NOT EDIT
 
 # Start of Section Title -- section_66 ## DO NOT EDIT
-॥ द्वितीय खण्डः ॥
+द्वितीय खण्डः 
 # End of Section Title -- section_66 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_736 ## DO NOT EDIT
 || त्रीणि सोमस्य च व्रतानि ||
@@ -98,7 +98,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_739 ## DO NOT EDIT
 
 # Start of Section Title -- section_67 ## DO NOT EDIT
-॥ तृतीयः खण्डः ॥
+तृतीयः खण्डः 
 # End of Section Title -- section_67 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_740 ## DO NOT EDIT
 || अपां व्रते द्वे ||
@@ -139,7 +139,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_744 ## DO NOT EDIT
 
 # Start of Section Title -- section_68 ## DO NOT EDIT
-॥  चतुर्थ खण्डः ॥
+चतुर्थ खण्डः
 # End of Section Title -- section_68 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_745 ## DO NOT EDIT
 || कृष्णगौतमयो व्रतेद्वे ||  
@@ -176,7 +176,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_747 ## DO NOT EDIT
 
 # Start of Section Title -- section_69 ## DO NOT EDIT
-॥  पञ्चमः खण्डः ॥
+पञ्चमः खण्डः 
 # End of Section Title -- section_69 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_748 ## DO NOT EDIT
 || अहो रात्रयो व्रते द्वे पूर्वं वा घर्मस्य रोचनम् ||
@@ -230,7 +230,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_755 ## DO NOT EDIT
 # Start of Section Title -- section_70 ## DO NOT EDIT
 
-॥  षष्ठः खण्डः ॥
+षष्ठः खण्डः
 # End of Section Title -- section_70 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_756 ## DO NOT EDIT
 || कूत्स व्रते द्वे ||
@@ -271,7 +271,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_760 ## DO NOT EDIT
 
 # Start of Section Title -- section_71 ## DO NOT EDIT
-॥  सप्तम खण्डः ॥
+सप्तम खण्डः
 # End of Section Title -- section_71 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_761 ## DO NOT EDIT
 || इन्द्रस्य महा व्रतम् ||
@@ -294,7 +294,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_763 ## DO NOT EDIT
 
 # Start of Section Title -- section_72 ## DO NOT EDIT
-॥  अष्टम खण्डः ॥
+अष्टम खण्डः
 # End of Section Title -- section_72 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_764 ## DO NOT EDIT
 || निन्हवाभि निन्हवौ द्वौ ||
@@ -356,7 +356,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_771 ## DO NOT EDIT
 
 # Start of Section Title -- section_73 ## DO NOT EDIT
-॥  नवम खण्डः ॥
+नवम खण्डः
 # End of Section Title -- section_73 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_772 ## DO NOT EDIT
 || त्रीणि रेवस्य(देवस्य) व्रतानि ||
@@ -402,7 +402,7 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_776 ## DO NOT EDIT
 
 # Start of Section Title -- section_74 ## DO NOT EDIT
-||  दशमः खण्डः ॥ 
+दशमः खण्डः
 # End of Section Title -- section_74 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_777 ## DO NOT EDIT
 || पुरुषव्रतन्नव ||
@@ -429,10 +429,10 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_778 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_8 ## DO NOT EDIT
-|| अर्काणि पाठ: ||
+अर्काणि पाठ:
 # End of SuperSection Title -- supersection_8 ## DO NOT EDIT
 # Start of Section Title -- section_75 ## DO NOT EDIT
-||  एकादश खण्डः ||
+एकादश खण्डः
 # End of Section Title -- section_75 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_779 ## DO NOT EDIT
 || अञ्जश्च वैरूपम् ||
@@ -498,7 +498,7 @@ Version 3.1 23rd February 2026
 # End of Mantra Sets -- subsection_788 ## DO NOT EDIT
 
 # Start of Section Title -- section_76 ## DO NOT EDIT
-||  द्वादश खण्डः ||
+द्वादश खण्डः
 # End of Section Title -- section_76 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_789 ## DO NOT EDIT
 ॥ बृहती देवस्थाने ॥
@@ -569,7 +569,7 @@ Version 3.1 23rd February 2026
 औहोइ त्वामिद्धी(षू) हवामहा(ती) ए(त) । सातौ वाजास्याका(कु) रा(ख) वाः(ण) । तू वा(पा) औ(क) होवा(था) ।वृत्राइषुवा(षु) वा इन्द्रा सा(टी) ओ त्पाति न्ना(ख)राः(ण) । तूवङ्काष्ठा(पी) औ(क) हो वा(था)। सू(ट) वर्वा(खा) ता होवा(शि)  हा उवा(ति) हा(च)स् ॥ १५ ॥
 #End of Mantra Sets -- subsection_798 ## DO NOT EDIT
 # Start of Section Title -- section_77 ## DO NOT EDIT
-॥ त्रयोदश खण्डः ॥
+त्रयोदश खण्डः
 # End of Section Title -- section_77 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_799 ## DO NOT EDIT
@@ -660,7 +660,7 @@ Version 3.1 23rd February 2026
 आगस्त्या(टि) हो(ट) आगस्त्या(चि) ।आगस्त्या(टि) हो(ट) आगस्त्या(चि)। आगस्त्या(टि) हो(ट) आगस्त्या(चि) । पीबा(षा) सोमामिन्द्रा मा(कु) न्दतुत्वा(कि) । य(क) न्ते सुषा वहर्या(कि) श्राद्रीः(चा) । सो(क)तू र्बाहुभ्यां(की) सूयतो नार्वा(कू) ।आगस्त्या(टि) हो(ट) आगस्त्या(चि) ।आगस्त्या(टि) हो(ट) आगस्त्या(चि) ।आगस्त्या(टि) हो(ट) अगा(टा) स्ति या(खा) औ हो वा(शि) । ई(ख) ॥ १६ ॥
 #End of Mantra Sets -- subsection_812 ## DO NOT EDIT
 # Start of Section Title -- section_78 ## DO NOT EDIT
-॥ चतुर्दशः खण्डः ॥
+चतुर्दशः खण्डः
 # End of Section Title -- section_78 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_813 ## DO NOT EDIT
@@ -697,7 +697,7 @@ Version 3.1 23rd February 2026
 आ(त) औ हो वा(ति) हा(त) । ए औ हो औ होवा(टू) हा उवा(टि)  । धर्त्ता दी(टि)वः पा(का)वा(ट) ते कृत्वी(कि) यो रसाः(चि) । दक्षो दे(कि) वानामा(कि) नु माद्यो(कि) नृभी(का) ई(च)ळा(श) । हारी सृजा(टी) नो आ(का) त्यो(ट) ना(क) सत्वभा(टि) इः(श) । वृथा(का) पाजां सि कुणुषे(कूच्) नादी(का) षूवा(टा) ।आ(त) औ हो वा(ति) हा(त) । ए औ हो औ होवा(टू) हा उवा(टि)   । ई(च)ळा(श)  ॥ १३ ॥
 #End of Mantra Sets -- subsection_816 ## DO NOT EDIT
 # Start of Section Title -- section_79 ## DO NOT EDIT
-॥ पञ्चदशः खण्डः ॥
+पञ्चदशः खण्डः
 # End of Section Title -- section_79 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_817 ## DO NOT EDIT
 ॥ बाभ्रवाणि त्रीणि ॥
@@ -730,7 +730,7 @@ Version 3.1 23rd February 2026
 स्वादो(षा)रित्था विषूवता(चू) एहा(टा) बु(श) । मधोः पिबन्ति गौ(कू)रीया(था) एहा(टा)बु(श)। याइ(षा)न्द्रेण सया वरा(चू) एहा(टा)बु(श)  । वृष्णा(षा) मदन्ति शोभया(चू) एहा(टा)बु(श)  । वस्वी(षा)रनुस्व राजिया(चू) मो(ट) हा(ख) औहोवा(शि)  । उददि(षि)शो विदिशः कल्पा(कू)न्ता(ख) औहोवा(शि) । विरा(चा) जंगमेमा(की) स्वारा जंगमे(कु)मा(ख) ॥ १० ॥
 #End of Mantra Sets -- subsection_820 ## DO NOT EDIT
 # Start of Section Title -- section_80 ## DO NOT EDIT
-॥ षोडशः खण्डः ॥
+षोडशः खण्डः
 # End of Section Title -- section_80 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_821 ## DO NOT EDIT
 ॥ त्रिसन्धि च ॥
@@ -818,10 +818,10 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_832 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_9 ## DO NOT EDIT
-॥ द्वन्द्व – पर्व ॥
+द्वन्द्व – पर्व
 # End of SuperSection Title -- supersection_9 ## DO NOT EDIT
 # Start of Section Title -- section_81 ## DO NOT EDIT
-॥ सप्तदशः खण्डः ॥
+सप्तदशः खण्डः
 # End of Section Title -- section_81 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_833 ## DO NOT EDIT
 ॥ वसिष्ठस्य प्राणापानौ ॥
@@ -859,7 +859,7 @@ Version 3.1 23rd February 2026
 ओवा ओवा ओवा(तू) । हा उपत्वाजा(खु) मा(श)  यो गिराः(खि) । देदी शती(खि) र्हा(श) विष्कृताः(खि) । वयोरनी(खी) के(श) अस्थिरा(खि)न् । ओवा ओवा ओवा(तू) हा(ख) औ होवा(शि) । ई(ख) ॥ १० ॥
 #End of Mantra Sets -- subsection_837 ## DO NOT EDIT
 # Start of Section Title -- section_82 ## DO NOT EDIT
-॥ अष्टादशः खण्डः ॥
+अष्टादशः खण्डः
 # End of Section Title -- section_82 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_838 ## DO NOT EDIT
@@ -898,7 +898,7 @@ Version 3.1 23rd February 2026
 आभि नवन्तया(टू) आ उवा(टि) । द्रू(ख)हाः(ण) । होइ होवा(की) हा(य) उवा(टा) । ई(ख)ळा(ण)। प्रियमिन्द्रस्य का(टू) आ उवा(टि) । मी(ख)य(ण)म् । होइ होवा(की) हा(य) उवा(टा) । ई(ख)ळा(ण) । वात्स न्न पूर्व आ(टू) आउवा(टि) यू(ख)नी(ण) । होइ होवा(की) हा(य) उवा(टा) । ई(ख)ळा(ण) । जातं रिहन्तिमा(टू) आ उवा(टि) । ता(ख)राः(ण) । होइ होवा(की) हा(य) उवा(टा) । ई(ख)ळा(ण)॥ १० ॥
 #End of Mantra Sets -- subsection_842 ## DO NOT EDIT
 # Start of Section Title -- section_83 ## DO NOT EDIT
-॥ एकोनविंशः खण्डः ॥
+एकोनविंशः खण्डः
 # End of Section Title -- section_83 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_843 ## DO NOT EDIT
@@ -933,7 +933,7 @@ Version 3.1 23rd February 2026
 प्राथाः(का) । चाय(षा)सस्यप्रथश्चना(टू) मा(य) उवा(टा)। इहा(चा) इहा इहा(शी) । उहुवा यो(खि) वा(ण) ई(ख)ळा(श)  । आनु(षा)ष्टुभस्य हविषो(कू) हवा(टा) इर्या(या) उवा(टा) । इहा(चा) इहा इहा(शी) । उहुवा यो(खि) वा(ण) ई(ख)ळा(श) ।  धा(क) तु र्द्यु ता(कि) ना(च)त्सवि तु श्चवा(टू) इष्णा(या) उवा(टा) । इहा(चा) इहा इहा(शी) । उहुवा यो(खि) वा(ण) ई(ख)ळा(श)  । रा(क)थ(थ)न्तार मा(जि) ज(श) भरा(था) वसा(टा) इष्ठा(या) उवा(टा) । इहा(चा) इहा इहा(शी) । उहुवा यो(खि) वा(ण) ई(ख)ळा(श)  । ए(त) द्यू(च)त् ॥ ११ ॥
 #End of Mantra Sets -- subsection_846 ## DO NOT EDIT
 # Start of Section Title -- section_84 ## DO NOT EDIT
-॥ विंशः खण्डः ॥
+विंशः खण्डः
 # End of Section Title -- section_84 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_847 ## DO NOT EDIT
@@ -972,7 +972,7 @@ Version 3.1 23rd February 2026
 ॥ हाबु(षा) हाबु हाबु उच्चा(कू) तेजा(था) तमा(टा) न्धसा(का) । हाबुहाबु(षी) हाबु दिविसत्भू(कू)मिया(टा) ददा(ता)इ(श) । हाबु(षा) हाबु हाबु उग्रं(कू) शर्मा(था) महा(टा) इ श्रवा उवा(शु) । ई(ख)ळा(ण)  । हाबु(षा) हाबु हाबु सना(कू) इन्द्रा(था) यया(टा) ज्यावा(ता)इ(श) । हाबुहा(षि)बु हाबु वरूणा(चू) यामरु(टि) त्भियाः(ता) । हाबु(षा) हाबु हाबु वरी(कू) वो(थ) वित्परा(टि) इस्रवा उवा(शु) ।ई(ख)ळा(ण) । हाबुहाबु(षी) हाबु येना विश्वा(चू) निया(टा)र्यया(ता) । हाबु हाबु(षी) हाबु द्युम्ना निमा(चू) नूषा(टा)णा(त)म् । हाबु(षा) हाबु हाबु सिषा(कू) सन्तो(था) वना(टा) मा हा उवा(की) । इट् इळा(टिख्)  ॥ १० ॥
 #End of Mantra Sets -- subsection_851 ## DO NOT EDIT
 # Start of Section Title -- section_85 ## DO NOT EDIT
-॥ एकविंशः खण्डः ॥
+एकविंशः खण्डः
 # End of Section Title -- section_85 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_852 ## DO NOT EDIT
 ॥ यामे ॥
@@ -1010,7 +1010,7 @@ Version 3.1 23rd February 2026
 हा(ष)बु हाबु हा उवा(तू) । विश्वतोदा(ती) व(श) न्विश्वतो(चि) ना आ(चा) भरा(शा) ।हा(ष)बु हाबु हा उवा(तू) । यन्त्वा(चा) शवी(का) ष्ठामी(चा) महे(शा) ।हा(ष)बु हाबु हा उवा(तू)  । ईळा(टा)  । हा(ष)बु हाबु हा उवा(तू) । सूवाः(टा) । हा(ष)बु हाबु हा उवा(तू) । ज्योतीः(टा) । हा(ष)बु हाबु हा उवा(तू) । ई(ख) ॥ १० ॥
 #End of Mantra Sets -- subsection_856 ## DO NOT EDIT
 # Start of Section Title -- section_86 ## DO NOT EDIT
-॥ द्वाविंशः खण्डः ॥
+द्वाविंशः खण्डः
 # End of Section Title -- section_86 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_857 ## DO NOT EDIT
@@ -1051,10 +1051,10 @@ Version 3.1 23rd February 2026
 
 # End of Section Title -- section_87 ## DO NOT EDIT
 # Start of SuperSection Title -- supersection_10 ## DO NOT EDIT
-॥  शुक्रिय पर्व ॥
+शुक्रिय पर्व
 # End of SuperSection Title -- supersection_10 ## DO NOT EDIT
 # Start of Section Title -- section_87 ## DO NOT EDIT
-॥ त्रयोविंशः खण्डः ॥
+त्रयोविंशः खण्डः
 #End of Section Title -- section_87 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_862 ## DO NOT EDIT
 ॥ मार्तवे द्वे ॥
@@ -1112,10 +1112,10 @@ Version 3.1 23rd February 2026
 #End of Mantra Sets -- subsection_867 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_11 ## DO NOT EDIT
-॥ शाक्वर्यः ॥
+शाक्वर्य पर्व
 # End of SuperSection Title -- supersection_11 ## DO NOT EDIT
 # Start of Section Title -- section_88 ## DO NOT EDIT
-॥ चतुर्विंशः खण्डः ॥
+चतुर्विंशः खण्डः
 #End of Section Title -- section_88 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_868 ## DO NOT EDIT
 ॥ ऐन्द्रा महा नाम्नयः सिमाश्शक्वर्यः माटवीर्वा  ॥
@@ -1128,10 +1128,10 @@ Version 3.1 23rd February 2026
 # End of Mantra Sets -- subsection_868 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_12 ## DO NOT EDIT
-॥ औपनिषद पर्व ॥
+औपनिषद पर्व
 # End of SuperSection Title -- supersection_12 ## DO NOT EDIT
 # Start of Section Title -- section_89 ## DO NOT EDIT
-॥ प्रथम खण्डः ॥
+प्रथम खण्डः
 # End of Section Title -- section_89 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_869 ## DO NOT EDIT
 ॥ ऐन्द्र षोडशी तवश्शाव्यं ज्येष्ठ साम सुभेषजं वा ॥ 

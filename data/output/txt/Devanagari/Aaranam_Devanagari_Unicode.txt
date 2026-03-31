@@ -1,9 +1,9 @@
 जैमिनीय साम आरण्य गानम्
 
-Version 3.0 2026-03-30 16:09:17
+Version 3.0 2026-03-31 21:12:58
 
 # Start of SuperSection Title -- supersection_7 ## DO NOT EDIT
-॥ व्रत पर्व ॥
+व्रत पर्व
 # End of SuperSection Title -- supersection_7 ## DO NOT EDIT
 
 # Start of Section Title -- section_65 ## DO NOT EDIT
@@ -66,7 +66,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_735 ## DO NOT EDIT
 
 # Start of Section Title -- section_66 ## DO NOT EDIT
-॥ द्वितीय खण्डः ॥
+द्वितीय खण्डः
 # End of Section Title -- section_66 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_736 ## DO NOT EDIT
 ॥ त्रीणि सोमस्य च व्रतानि ॥  
@@ -97,7 +97,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_739 ## DO NOT EDIT
 
 # Start of Section Title -- section_67 ## DO NOT EDIT
-॥ तृतीयः खण्डः ॥
+तृतीयः खण्डः
 # End of Section Title -- section_67 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_740 ## DO NOT EDIT
 ॥ अपां व्रते द्वे ॥  
@@ -135,7 +135,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_744 ## DO NOT EDIT
 
 # Start of Section Title -- section_68 ## DO NOT EDIT
-॥  चतुर्थ खण्डः ॥
+चतुर्थ खण्डः
 # End of Section Title -- section_68 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_745 ## DO NOT EDIT
 ॥ कृष्णगौतमयो व्रतेद्वे ॥  
@@ -159,7 +159,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_747 ## DO NOT EDIT
 
 # Start of Section Title -- section_69 ## DO NOT EDIT
-॥  पञ्चमः खण्डः ॥
+पञ्चमः खण्डः
 # End of Section Title -- section_69 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_748 ## DO NOT EDIT
 ॥ अहो रात्रयो व्रते द्वे पूर्वं वा घर्मस्य रोचनम् ॥  
@@ -218,7 +218,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_755 ## DO NOT EDIT
 
 # Start of Section Title -- section_70 ## DO NOT EDIT
-॥  षष्ठः खण्डः ॥
+षष्ठः खण्डः
 # End of Section Title -- section_70 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_756 ## DO NOT EDIT
 ॥ कूत्स व्रते द्वे ॥  
@@ -256,7 +256,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_760 ## DO NOT EDIT
 
 # Start of Section Title -- section_71 ## DO NOT EDIT
-॥  सप्तम खण्डः ॥
+सप्तम खण्डः
 # End of Section Title -- section_71 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_761 ## DO NOT EDIT
 ॥ इन्द्रस्य महा व्रतम् ॥  
@@ -280,7 +280,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_763 ## DO NOT EDIT
 
 # Start of Section Title -- section_72 ## DO NOT EDIT
-॥  अष्टम खण्डः ॥
+अष्टम खण्डः
 # End of Section Title -- section_72 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_764 ## DO NOT EDIT
 ॥ निन्हवाभि निन्हवौ द्वौ ॥  
@@ -339,7 +339,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_771 ## DO NOT EDIT
 
 # Start of Section Title -- section_73 ## DO NOT EDIT
-॥  नवम खण्डः ॥
+नवम खण्डः
 # End of Section Title -- section_73 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_772 ## DO NOT EDIT
 ॥ त्रीणि रेवस्य(देवस्य) व्रतानि ॥  
@@ -377,7 +377,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_776 ## DO NOT EDIT
 
 # Start of Section Title -- section_74 ## DO NOT EDIT
-॥  दशमः खण्डः ॥
+दशमः खण्डः
 # End of Section Title -- section_74 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_777 ## DO NOT EDIT
 ॥ पुरुषव्रतन्नव ॥  
@@ -394,11 +394,11 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_778 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_8 ## DO NOT EDIT
-॥ अर्काणि पाठः ॥
+अर्काणि पाठः
 # End of SuperSection Title -- supersection_8 ## DO NOT EDIT
 
 # Start of Section Title -- section_75 ## DO NOT EDIT
-॥  एकादश खण्डः ॥
+एकादश खण्डः
 # End of Section Title -- section_75 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_779 ## DO NOT EDIT
 ॥ अञ्जश्च वैरूपम् ॥  
@@ -471,7 +471,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_788 ## DO NOT EDIT
 
 # Start of Section Title -- section_76 ## DO NOT EDIT
-॥  द्वादश खण्डः ॥
+द्वादश खण्डः
 # End of Section Title -- section_76 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_789 ## DO NOT EDIT
 ॥ बृहती देवस्थाने ॥  
@@ -544,7 +544,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_798 ## DO NOT EDIT
 
 # Start of Section Title -- section_77 ## DO NOT EDIT
-॥ त्रयोदश खण्डः ॥
+त्रयोदश खण्डः
 # End of Section Title -- section_77 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_799 ## DO NOT EDIT
 ॥ वसिष्ठ जमदग्न्योर्को द्वौ ॥  
@@ -645,7 +645,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_812 ## DO NOT EDIT
 
 # Start of Section Title -- section_78 ## DO NOT EDIT
-॥ चतुर्दशः खण्डः ॥
+चतुर्दशः खण्डः
 # End of Section Title -- section_78 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_813 ## DO NOT EDIT
 ॥ रौद्राणि आजिदोहानि मारुतानि वा मऋतनिधनम् ई निधनं त्रीणिधनं ऐन्द्राणि वा प्राजापत्यानिवा ॥  
@@ -676,7 +676,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_816 ## DO NOT EDIT
 
 # Start of Section Title -- section_79 ## DO NOT EDIT
-॥ पञ्चदशः खण्डः ॥
+पञ्चदशः खण्डः
 # End of Section Title -- section_79 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_817 ## DO NOT EDIT
 ॥ बाभ्रवाणि त्रीणि ॥  
@@ -700,7 +700,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_819 ## DO NOT EDIT
 
 # Start of Section Title -- section_80 ## DO NOT EDIT
-॥ षोडशः खण्डः ॥
+षोडशः खण्डः
 # End of Section Title -- section_80 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_820 ## DO NOT EDIT
 ॥ यज्ञ सारथि च ॥  
@@ -794,11 +794,11 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_832 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_9 ## DO NOT EDIT
-॥ द्वन्द्व – पर्व ॥
+द्वन्द्व – पर्व
 # End of SuperSection Title -- supersection_9 ## DO NOT EDIT
 
 # Start of Section Title -- section_81 ## DO NOT EDIT
-॥ सप्तदशः खण्डः ॥
+सप्तदशः खण्डः
 # End of Section Title -- section_81 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_833 ## DO NOT EDIT
 ॥ वसिष्ठस्य प्राणापानौ ॥  
@@ -836,7 +836,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_837 ## DO NOT EDIT
 
 # Start of Section Title -- section_82 ## DO NOT EDIT
-॥ अष्टादशः खण्डः ॥
+अष्टादशः खण्डः
 # End of Section Title -- section_82 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_838 ## DO NOT EDIT
 ॥ भर्गयशसी ॥  
@@ -874,7 +874,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_842 ## DO NOT EDIT
 
 # Start of Section Title -- section_83 ## DO NOT EDIT
-॥ एकोनविंशः खण्डः ॥
+एकोनविंशः खण्डः
 # End of Section Title -- section_83 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_843 ## DO NOT EDIT
 ॥ त्रीणि चक्षूंषि ॥  
@@ -905,7 +905,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_846 ## DO NOT EDIT
 
 # Start of Section Title -- section_84 ## DO NOT EDIT
-॥ विंशः खण्डः ॥
+विंशः खण्डः
 # End of Section Title -- section_84 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_847 ## DO NOT EDIT
 ॥ बार्हत् गिररायोवाजीये ॥  
@@ -943,7 +943,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_851 ## DO NOT EDIT
 
 # Start of Section Title -- section_85 ## DO NOT EDIT
-॥ एकविंशः खण्डः ॥
+एकविंशः खण्डः
 # End of Section Title -- section_85 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_852 ## DO NOT EDIT
 ॥ यामे ॥  
@@ -981,7 +981,7 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_856 ## DO NOT EDIT
 
 # Start of Section Title -- section_86 ## DO NOT EDIT
-॥ द्वाविंशः खण्डः ॥
+द्वाविंशः खण्डः
 # End of Section Title -- section_86 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_857 ## DO NOT EDIT
 ॥ ईषाड् विश्व ज्योतिषी ॥  
@@ -1019,11 +1019,11 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_861 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_10 ## DO NOT EDIT
-॥  शुक्रिय पर्व ॥
+शुक्रिय पर्व
 # End of SuperSection Title -- supersection_10 ## DO NOT EDIT
 
 # Start of Section Title -- section_87 ## DO NOT EDIT
-॥ त्रयोविंशः खण्डः ॥
+त्रयोविंशः खण्डः
 # End of Section Title -- section_87 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_862 ## DO NOT EDIT
 ॥ मार्तवे द्वे ॥  
@@ -1068,11 +1068,11 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_867 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_11 ## DO NOT EDIT
-॥ शाक्वर्यः ॥
+शाक्वर्य पर्व
 # End of SuperSection Title -- supersection_11 ## DO NOT EDIT
 
 # Start of Section Title -- section_88 ## DO NOT EDIT
-॥ चतुर्विंशः खण्डः ॥
+चतुर्विंशः खण्डः
 # End of Section Title -- section_88 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_868 ## DO NOT EDIT
 ॥ ऐन्द्रा महा नाम्नयः सिमाश्शक्वर्यः माटवीर्वा  ॥
@@ -1082,11 +1082,11 @@ Version 3.0 2026-03-30 16:09:17
 #End of Mantra Sets -- subsection_868 ## DO NOT EDIT
 
 # Start of SuperSection Title -- supersection_12 ## DO NOT EDIT
-॥ औपनिषद पर्व ॥
+औपनिषद पर्व
 # End of SuperSection Title -- supersection_12 ## DO NOT EDIT
 
 # Start of Section Title -- section_89 ## DO NOT EDIT
-॥ प्रथम खण्डः ॥
+प्रथम खण्डः
 # End of Section Title -- section_89 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_869 ## DO NOT EDIT
 ॥ ऐन्द्र षोडशी तवश्शाव्यं ज्येष्ठ साम सुभेषजं वा ॥  
