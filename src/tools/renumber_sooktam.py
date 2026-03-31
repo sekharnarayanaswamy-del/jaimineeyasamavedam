@@ -14,8 +14,8 @@ def int_to_devanagari(n):
                '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
     return "".join(mapping[c] for c in str(n))
 
-def renumber_text_file(input_file):
-    print(f"Renumbering TEXT file: {input_file}")
+def renumber_text_file(input_file, preserve_super=False, reset_per_super=False):
+    print(f"Renumbering TEXT file: {input_file} (Preserve Super: {preserve_super}, Reset per Super: {reset_per_super})")
     with open(input_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
@@ -23,24 +23,43 @@ def renumber_text_file(input_file):
     current_sec = 0
     current_sub = 1
 
+    # To calculate current_sup correctly even if preserved, we need a separate counter
+    # but the replacement logic depends on current_sup.
+    
+    # We'll use a pass to detect supersection numbers if preserved, but it's simpler
+    # to just increment a visit counter.
+    
     new_lines = []
     for line in lines:
         if '# Start of SuperSection Title' in line:
             current_sup += 1
+            if reset_per_super:
+                # Reset section and subsection counters for the NEW supersection
+                print(f"  [RESET] SuperSection {current_sup} detected. Resetting counters.")
+                current_sec = 0
+                current_sub = 1
+                
         if '# Start of Section Title' in line:
             current_sec += 1
 
         # Apply replacements using current counters
         def replace_supersection(m):
+            # If not preserving, use the visit order. 
+            # If preserving, this function isn't called for the ID block (see logic below)
             return f'supersection_{current_sup}' if current_sup > 0 else m.group(0)
+            
         def replace_section(m):
             return f'section_{current_sec}' if current_sec > 0 else m.group(0)
+            
         def replace_subsection(m):
             return f'subsection_{current_sub}'
 
+        # Note: we use different regex for section vs supersection to avoid partial matches
         line = re.sub(r'subsection_(\d+)', replace_subsection, line)
         line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', replace_section, line)
-        line = re.sub(r'supersection_(\d+)', replace_supersection, line)
+        
+        if not preserve_super:
+            line = re.sub(r'supersection_(\d+)', replace_supersection, line)
         
         new_lines.append(line)
 
@@ -55,6 +74,13 @@ def renumber_text_file(input_file):
     in_subsection_title = False
 
     for line in new_lines:
+        # Reset Samam counter if we hit a new supersection (optional, but keep it consistent)
+        # Actually, samams are usually local to subsection or section. 
+        # The user didn't ask to reset samam labels at supersection boundary,
+        # but if we are resetting everything, it might be safer to handle them properly.
+        # However, the current script renumbers samams CONTIGUOUSLY across the file.
+        # Let's stick to contiguous samams unless asked, as they are often global pointers.
+        
         # Clean up old subsection titles
         if '# Start of SubSection Title' in line:
             in_subsection_title = True
@@ -94,11 +120,11 @@ def renumber_text_file(input_file):
     with open(input_file, 'w', encoding='utf-8') as f:
         f.writelines(final_lines)
     
-    print(f"Success! {current_sup} SuperSections, {current_sec} Sections, {current_sub-1} SubSections.")
+    print(f"Success! Final state: {current_sup} SuperSections.")
     print(f"Total Samams Renumbered: {samam_counter - 1}")
 
-def renumber_json_file(input_file, output_file=None):
-    print(f"Renumbering JSON file: {input_file}")
+def renumber_json_file(input_file, output_file=None, preserve_super=False):
+    print(f"Renumbering JSON file: {input_file} (Preserve Super: {preserve_super})")
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
@@ -116,11 +142,11 @@ def renumber_json_file(input_file, output_file=None):
 
     for old_ss_id in ss_keys:
         old_ss = data["supersection"][old_ss_id]
-        new_ss_id = f"supersection_{ss_idx}"
+        new_ss_id = old_ss_id if preserve_super else f"supersection_{ss_idx}"
         
         new_ss = {
             "supersection_title": old_ss.get("supersection_title", ""),
-            "supersection_number": ss_idx,
+            "supersection_number": int(new_ss_id.split('_')[1]) if '_' in new_ss_id else ss_idx,
             "sections": {}
         }
         
@@ -190,6 +216,8 @@ def main():
     parser = argparse.ArgumentParser(description="Renumber JSV files (JSON or TXT).")
     parser.add_argument('input_file', help="Path to input JSV file")
     parser.add_argument('--output', help="Output file path (optional)")
+    parser.add_argument('--preserve-super', action='store_true', help="Do NOT renumber supersections (keep existing ID)")
+    parser.add_argument('--reset-per-super', action='store_true', help="Reset section and subsection counters at each SuperSection boundary")
     args = parser.parse_args()
 
     input_path = Path(args.input_file)
@@ -198,9 +226,10 @@ def main():
         sys.exit(1)
 
     if input_path.suffix.lower() == '.json':
-        renumber_json_file(args.input_file, args.output)
+        renumber_json_file(args.input_file, args.output, preserve_super=args.preserve_super)
     else:
-        renumber_text_file(args.input_file)
+        renumber_text_file(args.input_file, preserve_super=args.preserve_super, reset_per_super=args.reset_per_super)
+
 
 if __name__ == "__main__":
     main()

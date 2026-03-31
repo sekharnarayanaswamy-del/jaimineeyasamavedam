@@ -670,9 +670,9 @@ def convert_corrections_to_json(
         "supersection": {}
     }
     
-    supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
-    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1 ## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+ ## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+ ## DO NOT EDIT|$)', re.DOTALL)
-    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+) ## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1 ## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1 ## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1 ## DO NOT EDIT', re.DOTALL)
+    supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1\s+## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+\s+## DO NOT EDIT|$)', re.DOTALL)
+    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1\s+## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+\s+## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+\s+## DO NOT EDIT|$)', re.DOTALL)
+    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1\s+## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1\s+## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1\s+## DO NOT EDIT', re.DOTALL)
 
     print(f"--- Step 2a: Extracting SuperSections ---")
     supersections_data = supersection_pattern.findall(file_content)
@@ -1131,29 +1131,34 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         "supersection": {}
     }
     
-    # Patterns for matching markers
+    # Patterns for matching markers (use \s* to handle hand-edited markers like 'supersection_22##')
+    ss_regex = r'#\s*Start\s+of\s+SuperSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    sec_regex = r'#\s*Start\s+of\s+Section\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    sub_regex = r'#\s*Start\s+of\s+SubSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    mantra_regex = r'#\s*Start\s+of\s+Mantra\s+Sets\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    
     supersection_pattern = re.compile(
-        r'#\s*Start of SuperSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of SuperSection Title', 
-        re.MULTILINE
+        ss_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+SuperSection\s+Title', 
+        re.MULTILINE | re.DOTALL
     )
     section_pattern = re.compile(
-        r'#\s*Start of Section Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of Section Title', 
-        re.MULTILINE
+        sec_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+Section\s+Title', 
+        re.MULTILINE | re.DOTALL
     )
     rik_metadata_pattern = re.compile(
-        r'#\s*Start of Rik Metadata -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Rik Metadata', 
+        r'#\s*Start\s+of\s+Rik\s+Metadata\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT\s*\n(.*?)\s*\n#\s*End\s+of\s+Rik\s+Metadata', 
         re.MULTILINE | re.DOTALL
     )
     rik_text_pattern = re.compile(
-        r'#\s*Start of Rik Text -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Rik Text', 
+        r'#\s*Start\s+of\s+Rik\s+Text\s+--\s+(.*?)\s*##\s+DO\s+NOT\s+EDIT\s*\n(.*?)\s*\n#\s*End\s+of\s+Rik\s+Text', 
         re.MULTILINE | re.DOTALL
     )
     subsection_pattern = re.compile(
-        r'#\s*Start of SubSection Title -- (\S+) ## DO NOT EDIT\s*\n([^\n]+)\s*\n#\s*End of SubSection Title', 
-        re.MULTILINE
+        sub_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+SubSection\s+Title', 
+        re.MULTILINE | re.DOTALL
     )
     mantra_pattern = re.compile(
-        r'#\s*Start of Mantra Sets -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Mantra Sets', 
+        mantra_regex + r'\s*\n(.*?)\s*\n#\s*End\s+of\s+Mantra\s+Sets', 
         re.MULTILINE | re.DOTALL
     )
     
@@ -1168,14 +1173,15 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     
     # Build section-to-supersection mapping by scanning file order
     section_to_supersection = {}
-    current_supersection = None
+    # Build section-to-supersection mapping by scanning file order sequentially
     for line in content.split('\n'):
-        ss_match = re.match(r'# Start of SuperSection Title -- (\S+) ## DO NOT EDIT', line)
+        line = line.strip()
+        ss_match = re.search(ss_regex, line)
         if ss_match:
-            current_supersection = ss_match.group(1)
-        sec_match = re.match(r'# Start of Section Title -- (\S+) ## DO NOT EDIT', line)
+            current_supersection = ss_match.group(1).strip()
+        sec_match = re.search(sec_regex, line)
         if sec_match and current_supersection:
-            section_to_supersection[sec_match.group(1)] = current_supersection
+            section_to_supersection[sec_match.group(1).strip()] = current_supersection
     
     # Extract sections and assign to correct supersection
     for sec_match in section_pattern.finditer(content):
@@ -1255,7 +1261,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Extract footnotes
     # Extract footnotes
     footnote_pattern = re.compile(
-        r'# Start of Footnote -- (\S+) ## DO NOT EDIT\s*\n(.*?)\s*\n# End of Footnote',
+        r'#\s*Start of Footnote -- (\S+)\s+## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Footnote',
         re.MULTILINE | re.DOTALL
     )
     footnotes_map = {}
@@ -1278,21 +1284,21 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         if footnotes:
             footnotes_map[sub_id] = footnotes
     
-    # Build complete subsections
-    all_subsection_ids = set(subsection_headers.keys()) | set(mantra_sets_map.keys())
-    
-    # Determine which section each subsection belongs to based on order
+    # Build subsection-to-section mapping
     subsection_to_section = {}
     current_section = None
     for line in content.split('\n'):
-        sec_match = re.match(r'# Start of Section Title -- (\S+) ## DO NOT EDIT', line)
+        line = line.strip()
+        sec_match = re.search(sec_regex, line)
         if sec_match:
-            current_section = sec_match.group(1)
-        sub_match = re.match(r'# Start of SubSection Title -- (\S+) ## DO NOT EDIT', line)
+            current_section = sec_match.group(1).strip()
+        sub_match = re.search(sub_regex, line)
         if sub_match and current_section:
-            subsection_to_section[sub_match.group(1)] = current_section
+            subsection_to_section[sub_match.group(1).strip()] = current_section
     
-    # Add subsections to their sections
+    # Build complete subsections
+    all_subsection_ids = set(subsection_headers.keys()) | set(mantra_sets_map.keys())
+    
     # Add subsections to their sections
     global_samam_count = 0
     sorted_sub_ids = sorted(all_subsection_ids, key=lambda x: int(x.replace('subsection_', '')) if x.startswith('subsection_') else 0)

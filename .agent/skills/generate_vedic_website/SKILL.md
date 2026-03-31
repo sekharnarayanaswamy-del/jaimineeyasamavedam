@@ -5,7 +5,7 @@ description: Instructions for maintain and generating the Jaimineeya static site
 
 # Generate Vedic Website Skill
 
-This skill covers the mechanics of translating the Source of Truth JSON into the static GitHub Pages layout (`src/generate_website.py`) and managing curated collections (`src/curate_jsv.py`).
+This skill covers the mechanics of translating the Source of Truth JSON into the static GitHub Pages layout (`src/generate_website.py`) for Samhita and Aaranam.
 
 ## 1. Site Architecture
 *   **Dual Sub-site Model**: The static archive maintains two primary independent sub-sites: **Samhita** (`docs/samhita/`) and **Aaranam** (`docs/aranam/`).

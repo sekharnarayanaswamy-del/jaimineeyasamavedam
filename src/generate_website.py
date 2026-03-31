@@ -2588,6 +2588,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const jumpInput = document.getElementById('sidebar-jump');
     const searchBtn = document.querySelector('.search-btn');
     
+    // Build a dynamic map: displayed parva number → actual supersection ID
+    // by reading the already-rendered sidebar links
+    const parvaMap = {};
+    document.querySelectorAll('.nav-section .nav-links a').forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const ssMatch = href.match(/kandah\\/(supersection_\\d+)\\//);
+        if (ssMatch) {
+            const displayNum = parseInt(link.textContent.trim());
+            if (!isNaN(displayNum)) {
+                parvaMap[displayNum] = ssMatch[1];
+            }
+        }
+    });
+
     const handleJump = () => {
         const val = jumpInput ? jumpInput.value.trim() : '';
         if (!val) return;
@@ -2601,7 +2615,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = val.split('.');
         
         if (parts.length >= 2) {
-            const parvaId = `supersection_${parts[0]}`;
+            const parvaNum = parseInt(parts[0]);
+            // Use the dynamic map if available, otherwise fall back to direct supersection_N
+            const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
             if (parts.length === 3) {
@@ -2813,6 +2829,7 @@ document.addEventListener('DOMContentLoaded', function() {
         # Generate Parva sections with Kandah grids
         parva_sections = ""
         for parva in self.parvas:
+            parva_clean = parva.title.replace('॥', '').replace('||', '').replace('|', '').strip()
             kandah_cards = ""
             parva_sama_count = 0
             for kandah in parva.kandahs:
@@ -2822,17 +2839,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     for s in kandah.samas
                 )
                 parva_sama_count += kandah_sama_count
+                kandah_clean = kandah.title.replace('॥', '').replace('||', '').replace('|', '').strip()
                 
                 kandah_cards += f'''
                 <a href="kandah/{parva.id}/{kandah.kandah_number}.html" class="kandah-card">
                     <div class="number">{kandah.kandah_number}</div>
-                    <div class="title">{kandah.title}</div>
+                    <div class="title">{kandah_clean}</div>
                     <div class="count">{kandah_sama_count} साम</div>
                 </a>'''
             
             parva_sections += f'''
             <section class="parva-section">
-                <h2>{parva.parva_number}. {parva.title}</h2>
+                <h2>{parva.parva_number}. {parva_clean}</h2>
                 <div class="kandah-grid">
                     {kandah_cards}
                 </div>
@@ -3444,9 +3462,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>'''
                 
-                header_count = f"({self._to_devanagari_num(len(kandah.samas))}) " if len(kandah.samas) > 0 else ""
+                parva_clean = parva.title.replace('॥', '').replace('||', '').replace('|', '').strip()
+                kandah_clean = kandah.title.replace('॥', '').replace('||', '').replace('|', '').strip()
                 
-                html = f'''{self._get_html_head(f"{parva.title} - {kandah.title}", depth=2)}
+                # Calculate real sama count for this Kandah
+                kandah_sama_count = sum(count_samams_with_fallback(s.mantra_text) for s in kandah.samas)
+                
+                html = f'''{self._get_html_head(f"{parva_clean} - {kandah_clean}", depth=2)}
 <body>
     <div class="page-container">
         {self._get_sidebar_html(current_parva_id=parva.id, current_kandah_id=kandah.id, depth=2)}
@@ -3456,15 +3478,15 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav class="breadcrumb">
                 <a href="../../index.html">मुख्यपृष्ठम्</a>
                 <span class="breadcrumb-separator">›</span>
-                <span>{parva.title}</span>
+                <span>{parva_clean}</span>
                 <span class="breadcrumb-separator">›</span>
-                <span>{kandah.title}</span>
+                <span>{kandah_clean}</span>
             </nav>
             
             <header class="page-header">
-                <h1>{parva.title} - {kandah.title} <span class="sama-count">{header_count}</span></h1>
+                <h1>{parva_clean} - {kandah_clean}</h1>
                 <div class="page-meta">
-                    <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span></p>
+                    <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span> | साम: <span class="number">{kandah_sama_count}</span></p>
                 </div>
             </header>
             
