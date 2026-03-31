@@ -44,6 +44,6 @@ We could also build a new standalone text (Sooktamala/Ritu Shanti Japam, etc) by
 Alternately, do the following if you want to add samams to an existing collection by copy/paste:
 1. ``` copy data\output\txt\Devanagari\Samam_Devanagari_Unicode.txt data\output\txt\Devanagari\Ritu-shanti-japam.txt```
 2. Copy/paste or enter additional samams. e.g. from Sooktam.txt to data\output\txt\Devanagari\Samam_Devanagari_Unicode.txt
-3. ``` python src\tools\renumber_sooktam.py data\output\txt\Devanagari\Ritu-shanti-japam.txt```
+3. ``` python src\tools\renumber_sooktam.py data\output\txt\Devanagari\Ritu-shanti-japam.txt --preserve-super```
 4. ``` python src\generate_json.py data\output\txt\Devanagari\Ritu-shanti-japam.txt --output Ritu-shanti-japam.json```
 5. ``` python src\render_pdf.py Ritu-shanti-japam.json --type collection --toc-level subsection```

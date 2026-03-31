@@ -12,10 +12,11 @@ The JSON structure must rigidly follow this path:
 `Parva (SuperSection) -> Kandah (Section) -> Arsheyam (Subsection/Header) -> Samam (Mantra Sets) -> Rik (Individual verse)`
 
 ## 2. Text Markup Conventions
-*   **SuperSection**: Starts with `# ` and ends with `# End of ...`
-*   **Section**: Starts with `## ` and ends with `## End of ...`
-*   **Subsection**: Starts with `### ` and ends with `### End of ...`
-*   **Mantras**: Block starts with `# Start of Mantra Sets` and ends with `# End of Mantra Sets`.
+*   **SuperSection**: Starts with `# Start of SuperSection Title -- ID ## DO NOT EDIT` and ends with `# End of SuperSection Title -- ID`
+*   **Section**: Starts with `# Start of Section Title -- ID ## DO NOT EDIT` and ends with `# End of Section Title -- ID`
+*   **Subsection**: Starts with `# Start of SubSection Title -- ID ## DO NOT EDIT` and ends with `# End of SubSection Title -- ID`
+*   **Mantras**: Block starts with `# Start of Mantra Sets -- ID ## DO NOT EDIT` and ends with `# End of Mantra Sets -- ID`.
+*   **Marker Stability**: The parser is robust to whitespace before `##`. For example, both `subsection_22##` and `subsection_22  ##` are valid.
 *   **Samam boundaries**: Marked by double dandas with Devanagari numerals, e.g., `॥ २ ॥`. All pipeline components must convert Arabic numerals to Devanagari numerals when modifying text files.
 *   **Dandas**: Always output `॥` instead of `||` or `| |`.
 

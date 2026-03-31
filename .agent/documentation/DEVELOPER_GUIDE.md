@@ -25,6 +25,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 **Role**: The central parser and "Source of Truth". It converts raw text files (with custom markup) into a structured JSON database.
 *   **`RikMetadataParser` (Class)**: Responsible for parsing the auxiliary metadata file (`rishi_devata_chandas_for_rik.txt`). It handles complex logic for mapping Rishi/Devata/Chandas to Rik IDs, including range-based assignments `(1-10)` and specific overrides.
 *   **`convert_corrections_to_json`**: The main driver function for the "Correction Mode". It reads the processed Unicode text file, extracts hierarchy (SuperSection > Section), and embeds metadata.
+*   **Robust Parsing Logic**: The parser now uses a space-tolerant, multi-line regex system for markers (e.g., `# Start of SuperSection Title -- ID ## DO NOT EDIT`). It correctly handles markers regardless of whether there are zero, one, or many spaces before the `##` marker, making it robust against minor manual editing variations.
 *   **`parse_unicode_text_file`**: Handles the reading of the main input file, ensuring encoding safety and stripping invisible characters.
 
 ### 2.2 `src/generate_website.py`
@@ -297,7 +298,10 @@ A special section at the end of the input file enclosed in `# Closing Mantras` /
 
 #### Utility Scripts
 
-*   **`data/input/renumber_sooktam.py`**: Renumbers all samam numbers (`॥N॥`) sequentially across the entire file. Useful after reordering or adding samams.
+*   **`src/tools/renumber_sooktam.py`**: A vital utility for managing IDs in collections. It supports:
+    *   **Text Renumbering**: Sequentially updates all Samam numbers (`॥N॥`) in a `.txt` file.
+    *   **JSON Renumbering**: Sequentially updates `subsection_N` IDs and Samam numbers in a `.json` file.
+    *   **SuperSection Preservation**: Use the `--preserve-super` flag to maintain existing SuperSection IDs (e.g., `supersection_22`) while renumbering subsections.
 
 ---
 
@@ -428,23 +432,25 @@ python src/tools/build_collection.py [OPTIONS]
 | `--output` | Output JSON file (default: `data/output/Collection_latest_out.json`). |
 | `--title` | Title for the collection (default: जैमिनीय साम सूक्तमाला). |
 
-### `src/tools/copy_rik_ids.py`
-*Utility to transfer validated Rik IDs/Metadata from one JSON file to another (e.g., from a corrected baseline to a freshly parsed version).*
+### `src/tools/renumber_sooktam.py`
+*Renumbers subsections and Samam markers in TXT or JSON files.*
 
 ```bash
-python src/tools/copy_rik_ids.py <source_json> <target_json> [OPTIONS]
+# Renumber a text file (in-place)
+python src/tools/renumber_sooktam.py data/input/Sooktam.txt
+
+# Renumber a JSON file (outputs to a new file)
+python src/tools/renumber_sooktam.py data/output/Sooktam_out.json --preserve-super
 ```
 | Option | Description |
 | :--- | :--- |
-| `source_json` | Source JSON file path (contains correct IDs). |
-| `target_json` | Target JSON file path (IDs will be updated here). |
-| `-o`, `--output` | Optional output file path. If omitted, updates `target_json` in-place. |
-| `--copy-metadata` | Also copy `rik_metadata` field. |
-| `--copy-text` | Also copy `rik_text` field. |
-| `--dry-run` | Preview changes without modifying files. |
-| `--no-backup` | Skip creating a backup of the target file. |
+| `input_file` | Path to the `.txt` or `.json` file to renumber. |
+| `--preserve-super` | If set, preserves existing SuperSection IDs (essential for `Prayogamala` etc.). |
+| `--samhita` | (TXT mode) Start numbering from 1 (default). |
 
 ---
+
+### `src/tools/copy_rik_ids.py`
 
 ## 5. Technical Reference
 
