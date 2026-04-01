@@ -45,6 +45,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const jumpInput = document.getElementById('sidebar-jump');
     const searchBtn = document.querySelector('.search-btn');
     
+    // Build a dynamic map from Parva links: displayed parva number → actual supersection ID
+    const parvaMap = {};
+    document.querySelectorAll('.parva-link').forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const ssMatch = href.match(/kandah\/([^\/]+)\//);
+        if (ssMatch) {
+            const displayNum = parseInt(link.textContent.trim());
+            if (!isNaN(displayNum)) {
+                parvaMap[displayNum] = ssMatch[1];
+            }
+        }
+    });
+
     const handleJump = () => {
         const val = jumpInput ? jumpInput.value.trim() : '';
         if (!val) return;
@@ -58,7 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const parts = val.split('.');
         
         if (parts.length >= 2) {
-            const parvaId = `supersection_${parts[0]}`;
+            const parvaNum = parseInt(parts[0]);
+            // Use the dynamic map if available, otherwise fall back to direct supersection_N
+            const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
             if (parts.length === 3) {

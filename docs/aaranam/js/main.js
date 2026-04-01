@@ -45,12 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const jumpInput = document.getElementById('sidebar-jump');
     const searchBtn = document.querySelector('.search-btn');
     
-    // Build a dynamic map: displayed parva number → actual supersection ID
-    // by reading the already-rendered sidebar links
+    // Build a dynamic map from Parva links: displayed parva number → actual supersection ID
     const parvaMap = {};
-    document.querySelectorAll('.nav-section .nav-links a').forEach(link => {
+    document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
-        const ssMatch = href.match(/kandah\/(supersection_\d+)\//);
+        const ssMatch = href.match(/kandah\/([^\/]+)\//);
         if (ssMatch) {
             const displayNum = parseInt(link.textContent.trim());
             if (!isNaN(displayNum)) {
