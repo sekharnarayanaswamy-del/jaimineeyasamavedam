@@ -2588,12 +2588,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const jumpInput = document.getElementById('sidebar-jump');
     const searchBtn = document.querySelector('.search-btn');
     
-    // Build a dynamic map: displayed parva number → actual supersection ID
-    // by reading the already-rendered sidebar links
+    // Build a dynamic map from Parva links: displayed parva number → actual supersection ID
     const parvaMap = {};
-    document.querySelectorAll('.nav-section .nav-links a').forEach(link => {
+    document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
-        const ssMatch = href.match(/kandah\\/(supersection_\\d+)\\//);
+        const ssMatch = href.match(/kandah\/([^\/]+)\//);
         if (ssMatch) {
             const displayNum = parseInt(link.textContent.trim());
             if (!isNaN(displayNum)) {
@@ -2698,7 +2697,7 @@ document.addEventListener('DOMContentLoaded', function() {
         parva_links = ""
         for parva in self.parvas:
             active = 'active' if parva.id == current_parva_id else ''
-            parva_links += f'<a href="{prefix}kandah/{parva.id}/1.html" class="{active}">{parva.parva_number}</a>\n'
+            parva_links += f'<a href="{prefix}kandah/{parva.id}/1.html" class="parva-link {active}">{parva.parva_number}</a>\n'
         
         # Kandah links for current parva (if applicable)
         kandah_section = ""
@@ -2711,7 +2710,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 kandah_links = ""
                 for kandah in current_parva.kandahs:
                     active = 'active' if kandah.id == current_kandah_id else ''
-                    kandah_links += f'<a href="{prefix}kandah/{current_parva_id}/{kandah.kandah_number}.html" class="{active}">{kandah.kandah_number}</a>\n'
+                    kandah_links += f'<a href="{prefix}kandah/{current_parva_id}/{kandah.kandah_number}.html" class="kandah-link {active}">{kandah.kandah_number}</a>\n'
                 
                 kandah_section = f'''
                 <div class="nav-section">
@@ -2748,7 +2747,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 label_text = f"{current_samam_start}"
                             
                             # Create link
-                            sama_links += f'<a href="#sama-{sama.sama_number}">{label_text}</a>\n'
+                            sama_links += f'<a href="#sama-{sama.sama_number}" class="sama-link">{label_text}</a>\n'
                             
                             # Update counters
                             total_real_samams += cnt

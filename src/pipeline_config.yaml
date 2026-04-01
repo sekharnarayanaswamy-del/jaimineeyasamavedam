@@ -10,6 +10,23 @@ project:
   output_root: "data/output"
   input_root: "data/input"
 
+# --- RENUMBERING (src/tools/renumber_sooktam.py) ---
+renumber_sooktam:
+  samhita:
+    input: "data/input/Samhita_corrected.txt"
+    start_super: 1
+    start_section: 1
+    start_subsection: 1
+    reset_per_super: true
+    contiguous_samams: true  # Samhita historically used global Samam counts
+  aaranam:
+    input: "data/input/Aaranam_latest.txt"
+    start_super: 7
+    start_section: 65
+    start_subsection: 728
+    reset_per_super: false
+    contiguous_samams: false # Aaranam resets per section by default
+
 # --- JSON GENERATION (src/generate_json.py) ---
 generate_json:
   # Metadata source files used in INITIAL mode
@@ -63,8 +80,10 @@ generate_website:
   # Type-specific sources
   samhita:
     source: "data/output/Vargeekaran.json"
+    output_dir: "docs/samhita"
   aaranam:
     source: "data/output/Aaranam_latest_out.json"
+    output_dir: "docs/aaranam"
 
 # --- PDF & HTML RENDERING (src/render_pdf.py) ---
 render:

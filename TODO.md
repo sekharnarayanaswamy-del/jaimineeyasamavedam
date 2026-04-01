@@ -11,6 +11,8 @@
 - [x] **Correction Flow Refinements**: Verified and stabilized the `generate_json.py` initial run with corrected khanda headers.
 - [x] **Enhanced Classification Indices**: Implemented a 3-column grid layout for Rishi, Devata, and Chandas indices. Added "Top 20" prominent item cards and a 3-column row-based alphabetical index (**वर्णानुक्रमण**).
 - [x] **Aggregate Rik Counting**: Standardized unique Rik calculations across the website, showing ~587 unique classified Riks in the samhita.
+- [x] **Jump Navigation Fix**: Resolved "Jump to" corruption where Kandah links were overwriting Parva IDs in the internal map. Added specific CSS classes (`parva-link`, `kandah-link`) to differentiate navigation levels.
+- [x] **Landing Page Protection**: Updated `pipeline_config.yaml` to use dedicated `output_dir` subdirectories (`docs/samhita`, `docs/aaranam`) to prevent accidental overwriting of the root `docs/index.html`.
 
 ## Website Navigation & Indices
 - [ ] **Refine Metadata Parsing**: Ensure `parse_metadata_str` in `generate_website.py` robustly handles all edge cases from the enriched JSON/CSV data.
