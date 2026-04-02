@@ -197,9 +197,11 @@
     % --- SUPERSECTION ---
     \cleardoublepage           
     \phantomsection              
+    \BLOCK{ if supersection.supersection_title }
     \chapter*{\centering \VAR{supersection.supersection_title}}
     \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title}}
     \markboth{\VAR{supersection.supersection_title}}{\VAR{supersection.supersection_title}}
+    \BLOCK{ endif }
     
     % GLUE FIX: Prevent page break between Chapter and First Section
     \nopagebreak
@@ -216,13 +218,15 @@
             % --- SECTION ---
             
             \phantomsection  
-                
+
+            \BLOCK{ if section.section_title }
             \section*{\centering \VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})}
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
             \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})} 
             \BLOCK{ endif }
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
+            \BLOCK{ endif }
 
             \BLOCK{ set ns = namespace(prev_rik_id=none) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }

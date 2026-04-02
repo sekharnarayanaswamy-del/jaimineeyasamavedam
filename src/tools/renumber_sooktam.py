@@ -14,74 +14,66 @@ def int_to_devanagari(n):
                '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
     return "".join(mapping[c] for c in str(n))
 
-def renumber_text_file(input_file, preserve_super=False, reset_per_super=False):
-    print(f"Renumbering TEXT file: {input_file} (Preserve Super: {preserve_super}, Reset per Super: {reset_per_super})")
+def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, reset_samam_per_section=False, reset_samam_per_super=True, start_sup=1, start_sec=1, start_sub=1, preserve_all=False):
+    print(f"Renumbering TEXT file: {input_file}")
+    print(f"  Starts: Super={start_sup}, Section={start_sec}, Subsection={start_sub}")
+    print(f"  Settings: Reset per Super={reset_per_super}, Reset Samam per Section={reset_samam_per_section}, Reset Samam per Super={reset_samam_per_super}")
+    
     with open(input_file, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
-    current_sup = 0
-    current_sec = 0
-    current_sub = 1
-
-    # To calculate current_sup correctly even if preserved, we need a separate counter
-    # but the replacement logic depends on current_sup.
-    
-    # We'll use a pass to detect supersection numbers if preserved, but it's simpler
-    # to just increment a visit counter.
+    current_sup = start_sup - 1
+    current_sec = start_sec - 1
+    current_sub = start_sub - 1
     
     new_lines = []
+    
+    # Pass 1: ID Renumbering
     for line in lines:
         if '# Start of SuperSection Title' in line:
             current_sup += 1
             if reset_per_super:
-                # Reset section and subsection counters for the NEW supersection
-                print(f"  [RESET] SuperSection {current_sup} detected. Resetting counters.")
-                current_sec = 0
-                current_sub = 1
-                
+                current_sec = 0 
+                current_sub = 0
+        
         if '# Start of Section Title' in line:
             current_sec += 1
+            
+        if '# Start of SubSection Title' in line:
+            current_sub += 1
 
-        # Apply replacements using current counters
-        def replace_supersection(m):
-            # If not preserving, use the visit order. 
-            # If preserving, this function isn't called for the ID block (see logic below)
-            return f'supersection_{current_sup}' if current_sup > 0 else m.group(0)
+        def replace_subsection(m):
+            return f'subsection_{max(1, current_sub)}'
             
         def replace_section(m):
-            return f'section_{current_sec}' if current_sec > 0 else m.group(0)
+            return f'section_{max(1, current_sec)}'
             
-        def replace_subsection(m):
-            return f'subsection_{current_sub}'
+        def replace_supersection(m):
+            if preserve_super: return m.group(0)
+            return f'supersection_{max(1, current_sup)}'
 
-        # Note: we use different regex for section vs supersection to avoid partial matches
-        line = re.sub(r'subsection_(\d+)', replace_subsection, line)
-        line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', replace_section, line)
-        
-        if not preserve_super:
+        if not preserve_all:
+            line = re.sub(r'subsection_(\d+)', replace_subsection, line)
+            line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', replace_section, line)
             line = re.sub(r'supersection_(\d+)', replace_supersection, line)
         
         new_lines.append(line)
 
-        # Increment subsection counter AFTER the end of the mantra sets block
-        if '#End of Mantra Sets' in line or '# End of Mantra Sets' in line:
-            current_sub += 1
-
-    # Pass 2: Renumber Samams contiguously within text
+    # Pass 2: Renumber Samams
     final_lines = []
     samam_counter = 1
     in_mantra_set = False
     in_subsection_title = False
 
     for line in new_lines:
-        # Reset Samam counter if we hit a new supersection (optional, but keep it consistent)
-        # Actually, samams are usually local to subsection or section. 
-        # The user didn't ask to reset samam labels at supersection boundary,
-        # but if we are resetting everything, it might be safer to handle them properly.
-        # However, the current script renumbers samams CONTIGUOUSLY across the file.
-        # Let's stick to contiguous samams unless asked, as they are often global pointers.
-        
-        # Clean up old subsection titles
+        # Reset Samam count at Section/SuperSection boundaries if requested
+        if reset_samam_per_section:
+            if '# Start of Section Title' in line or '# Start of SuperSection Title' in line:
+                samam_counter = 1
+        elif reset_samam_per_super:
+            if '# Start of SuperSection Title' in line:
+                samam_counter = 1
+
         if '# Start of SubSection Title' in line:
             in_subsection_title = True
         elif '# End of SubSection Title' in line:
@@ -90,16 +82,9 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False):
             text = line.strip()
             if text.startswith('॥') and (text.endswith('॥') or text.endswith(')')):
                 prefix = line[:line.find('॥')]
-                # Handle various header formats
-                m1 = re.match(r'^॥\s*(.+?)\s*-\s*[०-९]+\s*॥$', text)
-                m2 = re.match(r'^॥\s*(.+?)\s*॥\s*\([०-९]+\)$', text)
-                
-                inner = None
-                if m1: inner = m1.group(1).strip()
-                elif m2: inner = m2.group(1).strip()
-                elif text.endswith('॥'): inner = text[1:-1].strip()
-                
-                if inner: line = f"{prefix}॥ {inner} ॥\n"
+                clean_text = re.sub(r'[०-९\d\-]+', '', text).replace('॥', '').replace('(', '').replace(')', '').strip()
+                if clean_text:
+                    line = f"{prefix}॥ {clean_text} ॥\n"
 
         if '#Start of Mantra Sets' in line or '# Start of Mantra Sets' in line:
             in_mantra_set = True
@@ -119,8 +104,11 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False):
 
     with open(input_file, 'w', encoding='utf-8') as f:
         f.writelines(final_lines)
+
+    with open(input_file, 'w', encoding='utf-8') as f:
+        f.writelines(final_lines)
     
-    print(f"Success! Final state: {current_sup} SuperSections.")
+    print(f"Success! Final state: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections.")
     print(f"Total Samams Renumbered: {samam_counter - 1}")
 
 def renumber_json_file(input_file, output_file=None, preserve_super=False):
@@ -217,7 +205,12 @@ def main():
     parser.add_argument('input_file', help="Path to input JSV file")
     parser.add_argument('--output', help="Output file path (optional)")
     parser.add_argument('--preserve-super', action='store_true', help="Do NOT renumber supersections (keep existing ID)")
+    parser.add_argument('--preserve-all', action='store_true', help="Do NOT renumber supersection, section, or subsection IDs (only renumbers Samams)")
     parser.add_argument('--reset-per-super', action='store_true', help="Reset section and subsection counters at each SuperSection boundary")
+    parser.add_argument('--contiguous-samams', action='store_true', help="Do NOT reset Samam numbering at Section boundaries")
+    parser.add_argument('--start-super', type=int, default=1, help="Starting number for supersections (default: 1)")
+    parser.add_argument('--start-section', type=int, default=1, help="Starting number for sections (default: 1)")
+    parser.add_argument('--start-subsection', type=int, default=1, help="Starting number for subsections (default: 1)")
     args = parser.parse_args()
 
     input_path = Path(args.input_file)
@@ -228,7 +221,16 @@ def main():
     if input_path.suffix.lower() == '.json':
         renumber_json_file(args.input_file, args.output, preserve_super=args.preserve_super)
     else:
-        renumber_text_file(args.input_file, preserve_super=args.preserve_super, reset_per_super=args.reset_per_super)
+        # Default is reset_samam_per_section=True. --contiguous-samams sets it to False.
+        renumber_text_file(args.input_file, 
+                           preserve_super=args.preserve_super, 
+                           reset_per_super=args.reset_per_super,
+                           reset_samam_per_section=False,
+                           reset_samam_per_super=not args.contiguous_samams,
+                           start_sup=args.start_super,
+                           start_sec=args.start_section,
+                           start_sub=args.start_subsection,
+                           preserve_all=args.preserve_all)
 
 
 if __name__ == "__main__":

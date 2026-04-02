@@ -2141,6 +2141,9 @@ Examples:
                         choices=['section', 'subsection', 'both'], default=None,
                         help='Determines which headers appear in the TOC.')
     
+    parser.add_argument('--title', dest='title', default=None,
+                        help='Custom Sanskrit title for the document.')
+    
     args = parser.parse_args()
     mode_type = args.type
     type_settings = cfg_types.get(mode_type, {})
@@ -2315,18 +2318,19 @@ Examples:
                     
             sec_riks = len(seen_riks)
             if sec_riks > 0 or samam_count > 0:
-                khanda_rows.append({
-                    'khanda': khanda_name,
-                    'riks': to_devanagari_numeral(sec_riks),
-                    'samams': to_devanagari_numeral(samam_count)
-                })
+                if khanda_name:
+                    khanda_rows.append({
+                        'khanda': khanda_name,
+                        'riks': to_devanagari_numeral(sec_riks),
+                        'samams': to_devanagari_numeral(samam_count)
+                    })
                 patha_riks += sec_riks
                 patha_samams += samam_count
                 total_riks += sec_riks
                 total_samams += samam_count
             
             # Ensure the count is available for the section header in templates
-            sec_data['Count'] = to_devanagari_numeral(samam_count)
+            sec_data['Count'] = to_devanagari_numeral(samam_count) if khanda_name else ""
         
         # Add total count for the supersection
         ss_data['Count'] = to_devanagari_numeral(patha_samams)
@@ -2343,8 +2347,9 @@ Examples:
     total_samams_dev = to_devanagari_numeral(total_samams)
     
     # Define Sanskrit title based on type (for PDF/html generation)
-    # Priority: CLI > JSON Meta > Type Setting > Default
-    doc_title_sa = type_settings.get('doc_title')
+    # Priority: CLI > Config Type > JSON Meta > Default
+    doc_title_sa = args.title or type_settings.get('doc_title')
+    
     if not doc_title_sa:
         doc_title_sa = data_Devanagari.get('meta', {}).get('title')
         

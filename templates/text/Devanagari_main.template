@@ -3,16 +3,14 @@
 Version \VAR{version} \VAR{generated_at}
 
 \BLOCK{ for i, supersection in supersections.items() }
-%- set supersection_title = supersection.get("supersection_title", "Untitled Supersection") 
-\BLOCK{ if supersection_title }
+%- set supersection_title = supersection.get("supersection_title", "") 
 # Start of SuperSection Title -- \VAR{i} ## DO NOT EDIT
 \VAR{ supersection_title}
 # End of SuperSection Title -- \VAR{i} ## DO NOT EDIT
 
-\BLOCK{ endif }
 \BLOCK{ for j, section in supersection.get('sections', {}).items() }
 \BLOCK{ if j.startswith('section_') }
-%- set section_title = section.get('section_title', 'खण्डः') 
+%- set section_title = section.get('section_title', "") 
 # Start of Section Title -- \VAR{j} ## DO NOT EDIT
 \VAR{ section_title }
 # End of Section Title -- \VAR{j} ## DO NOT EDIT

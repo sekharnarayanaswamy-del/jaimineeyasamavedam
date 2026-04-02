@@ -61,7 +61,7 @@ curate_jsv:
     - "data/output/Aaranam_latest_out.json"
   filter: "data/input/Ritu-shanti.txt"
   output: "data/output/Collection_latest_out.json"
-  title: "ऋतु शान्ति जपम्"
+  title: "जैमिनीय साम सङ्ग्रहः"
 
 # --- COLLECTION BUILDING (src/tools/build_collection.py) ---
 build_collection:

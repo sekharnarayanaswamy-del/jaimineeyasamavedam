@@ -496,10 +496,14 @@
                         const sectionData = sections.find(s => s.element === entry.target);
                         if (sectionData) {
                             currentSection = sectionData;
-                            if (sectionData.sectionTitle) {
+                            if (sectionData.sectionTitle && sectionData.chapterTitle) {
                                 navTitle.textContent = sectionData.chapterTitle + ' › ' + sectionData.sectionTitle;
-                            } else {
+                            } else if (sectionData.sectionTitle) {
+                                navTitle.textContent = sectionData.sectionTitle;
+                            } else if (sectionData.chapterTitle) {
                                 navTitle.textContent = sectionData.chapterTitle;
+                            } else {
+                                navTitle.textContent = '';
                             }
                         }
                     }
@@ -531,13 +535,15 @@
             <div class="toc-content">
             \BLOCK{ for key, supersection in supersections.items() }
                 <div class="toc-group">
+                    \BLOCK{ if supersection.supersection_title }
                     <div class="toc-chapter">
                         <a href="#\VAR{key}">\VAR{supersection.supersection_title}</a>
                     </div>
+                    \BLOCK{ endif }
                     <ul>
                     \BLOCK{ for section_key, section in supersection.sections.items() }
                         \BLOCK{ if section_key != 'count' }
-                        \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
+                        \BLOCK{ if (toc_level == 'section' or toc_level == 'both') and section.section_title }
                         <li class="toc-section">
                             <a href="#\VAR{key}-\VAR{section_key}">\VAR{section.section_title | replace(':', 'ः')} <span class="section-samam-count">(\VAR{section.Count})</span></a>
                         </li>
@@ -560,12 +566,16 @@
         <!-- Content -->
         \BLOCK{ for key, supersection in supersections.items() }
         <div class="chapter" id="\VAR{key}">
+            \BLOCK{ if supersection.supersection_title }
             <h1 class="chapter-title">\VAR{supersection.supersection_title}</h1>
+            \BLOCK{ endif }
             
             \BLOCK{ for section_key, section in supersection.sections.items() }
                 \BLOCK{ if section_key != 'count' }
                 <div class="section" id="\VAR{key}-\VAR{section_key}">
+                    \BLOCK{ if section.section_title }
                     <h2 class="section-title">\VAR{section.section_title | replace(':', 'ः')} <span class="section-samam-count">(\VAR{section.Count})</span></h2>
+                    \BLOCK{ endif }
                     
                     <!-- Pre-rendered Subsections -->
                     \BLOCK{ for sub_html in section.html_subsections }

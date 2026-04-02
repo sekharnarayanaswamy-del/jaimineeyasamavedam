@@ -670,9 +670,9 @@ def convert_corrections_to_json(
         "supersection": {}
     }
     
-    supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1\s+## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+\s+## DO NOT EDIT|$)', re.DOTALL)
-    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1\s+## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+\s+## DO NOT EDIT|# Start of SuperSection Title -- supersection_\d+\s+## DO NOT EDIT|$)', re.DOTALL)
-    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+)\s+## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1\s+## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1\s+## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1\s+## DO NOT EDIT', re.DOTALL)
+    supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1\s*## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+|$)', re.DOTALL)
+    section_pattern = re.compile(r'# Start of Section Title -- (section_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1\s*## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+|# Start of SuperSection Title -- supersection_\d+|$)', re.DOTALL)
+    subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1\s*## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1\s*## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1\s*## DO NOT EDIT', re.DOTALL)
 
     print(f"--- Step 2a: Extracting SuperSections ---")
     supersections_data = supersection_pattern.findall(file_content)
@@ -742,7 +742,7 @@ def convert_corrections_to_json(
             
             current_supersection_sections[section_id] = {
                 "section_title": clean_section_title,
-                "Count": int_to_devanagari_local(section_mantra_count),
+                "Count": int_to_devanagari_local(section_mantra_count) if clean_section_title else "",
                 "subsections": {}
             }
             
@@ -1132,40 +1132,40 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     }
     
     # Patterns for matching markers (use \s* to handle hand-edited markers like 'supersection_22##')
-    ss_regex = r'#\s*Start\s+of\s+SuperSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
-    sec_regex = r'#\s*Start\s+of\s+Section\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
-    sub_regex = r'#\s*Start\s+of\s+SubSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
-    mantra_regex = r'#\s*Start\s+of\s+Mantra\s+Sets\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    ss_regex = r'#\s*Start\s+of\s+SuperSection\s+Title\s+--\s+(?P<ss_id>.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    sec_regex = r'#\s*Start\s+of\s+Section\s+Title\s+--\s+(?P<sec_id>.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    sub_regex = r'#\s*Start\s+of\s+SubSection\s+Title\s+--\s+(?P<sub_id>.*?)\s*##\s*DO\s+NOT\s+EDIT'
+    mantra_regex = r'#\s*Start\s+of\s+Mantra\s+Sets\s+--\s+(?P<mantra_id>.*?)\s*##\s*DO\s+NOT\s+EDIT'
     
     supersection_pattern = re.compile(
-        ss_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+SuperSection\s+Title', 
+        ss_regex + r'\s*\n(?P<ss_title>.*?)\s*#\s*End\s+of\s+SuperSection\s+Title\s+--\s+(?P=ss_id)', 
         re.MULTILINE | re.DOTALL
     )
     section_pattern = re.compile(
-        sec_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+Section\s+Title', 
+        sec_regex + r'\s*\n(?P<sec_title>.*?)\s*#\s*End\s+of\s+Section\s+Title\s+--\s+(?P=sec_id)', 
         re.MULTILINE | re.DOTALL
     )
     rik_metadata_pattern = re.compile(
-        r'#\s*Start\s+of\s+Rik\s+Metadata\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT\s*\n(.*?)\s*\n#\s*End\s+of\s+Rik\s+Metadata', 
+        r'#\s*Start\s+of\s+Rik\s+Metadata\s+--\s+(?P<rik_meta_id>.*?)\s*##\s*DO\s+NOT\s+EDIT\s*\n(?P<rik_meta_text>.*?)\s*#\s*End\s+of\s+Rik\s+Metadata', 
         re.MULTILINE | re.DOTALL
     )
     rik_text_pattern = re.compile(
-        r'#\s*Start\s+of\s+Rik\s+Text\s+--\s+(.*?)\s*##\s+DO\s+NOT\s+EDIT\s*\n(.*?)\s*\n#\s*End\s+of\s+Rik\s+Text', 
+        r'#\s*Start\s+of\s+Rik\s+Text\s+--\s+(?P<rik_text_id>.*?)\s*##\s+DO\s+NOT\s+EDIT\s*\n(?P<rik_text>.*?)\s*#\s*End\s+of\s+Rik\s+Text', 
         re.MULTILINE | re.DOTALL
     )
     subsection_pattern = re.compile(
-        sub_regex + r'\s*\n(.*?)\n\s*#\s*End\s+of\s+SubSection\s+Title', 
+        sub_regex + r'\s*\n(?P<sub_title>.*?)\s*#\s*End\s+of\s+SubSection\s+Title\s+--\s+(?P=sub_id)', 
         re.MULTILINE | re.DOTALL
     )
     mantra_pattern = re.compile(
-        mantra_regex + r'\s*\n(.*?)\s*\n#\s*End\s+of\s+Mantra\s+Sets', 
+        mantra_regex + r'\s*\n(?P<mantra_text>.*?)\s*#\s*End\s+of\s+Mantra\s+Sets\s+--\s+(?P=mantra_id)', 
         re.MULTILINE | re.DOTALL
     )
     
     # Extract supersections
     for ss_match in supersection_pattern.finditer(content):
-        ss_id = ss_match.group(1)
-        ss_title = ss_match.group(2).strip()
+        ss_id = ss_match.group("ss_id")
+        ss_title = ss_match.group("ss_title").strip()
         data["supersection"][ss_id] = {
             "supersection_title": ss_title,
             "sections": {}
@@ -1176,17 +1176,17 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Build section-to-supersection mapping by scanning file order sequentially
     for line in content.split('\n'):
         line = line.strip()
-        ss_match = re.search(ss_regex, line)
+        ss_match = re.search(r'#\s*Start\s+of\s+SuperSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT', line)
         if ss_match:
             current_supersection = ss_match.group(1).strip()
-        sec_match = re.search(sec_regex, line)
+        sec_match = re.search(r'#\s*Start\s+of\s+Section\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT', line)
         if sec_match and current_supersection:
             section_to_supersection[sec_match.group(1).strip()] = current_supersection
     
     # Extract sections and assign to correct supersection
     for sec_match in section_pattern.finditer(content):
-        sec_id = sec_match.group(1)
-        sec_title = sec_match.group(2).strip()
+        sec_id = sec_match.group("sec_id")
+        sec_title = sec_match.group("sec_title").strip()
         # Use the mapping to find the correct supersection
         ss_id = section_to_supersection.get(sec_id, 'supersection_1')
         if ss_id in data["supersection"]:
@@ -1198,8 +1198,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Extract Rik metadata for each subsection
     rik_metadata_map = {}
     for rm_match in rik_metadata_pattern.finditer(content):
-        sub_id = rm_match.group(1)
-        meta_text = rm_match.group(2).strip().replace('\n', ' ')
+        sub_id = rm_match.group("rik_meta_id")
+        meta_text = rm_match.group("rik_meta_text").strip().replace('\n', ' ')
         # Strip any literal \newline commands that may have crept in
         meta_text = meta_text.replace('\\newline%', ' ').replace('\\newline', ' ')
         # Normalize pipes
@@ -1210,9 +1210,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     rik_text_map = {}
     for rt_match in rik_text_pattern.finditer(content):
         # ... existing extraction ...
-        sub_id = rt_match.group(1)
+        sub_id = rt_match.group("rik_text_id")
         # Sanitize Rik text: remove newlines, carriage returns, backslashes, and literal \newline commands
-        rik_text = rt_match.group(2).strip().replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
+        rik_text = rt_match.group("rik_text").strip().replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
         rik_text = rik_text.replace('\\newline%', ' ').replace('\\newline', ' ').replace('\\', '')
         # Normalize pipes for Rik text as well (as per "visarga handling" pattern)
         rik_text = rik_text.replace('||', '॥').replace('|', '।')
@@ -1223,8 +1223,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Extract subsection headers (Samam header + metadata)
     subsection_headers = {}
     for sub_match in subsection_pattern.finditer(content):
-        sub_id = sub_match.group(1)
-        header_line = sub_match.group(2).strip()
+        sub_id = sub_match.group("sub_id")
+        header_line = sub_match.group("sub_title").strip()
         # Sanitize header line to remove NBSP
         header_line = sanitize_invisible_chars(header_line)
         # Split header and saman_metadata (they're separated by double space)
@@ -1238,9 +1238,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Extract mantra sets
     mantra_sets_map = {}
     for m_match in mantra_pattern.finditer(content):
-        sub_id = m_match.group(1)
+        sub_id = m_match.group("mantra_id")
         # Capture raw mantra text first
-        mantra_text_raw = m_match.group(2)
+        mantra_text_raw = m_match.group("mantra_text")
         
         # Sanitize invisible characters (Redundant if global is done, but keeps logic localized/independent)
         # Also normalize pipes/dandas as requested ("visarga handling" interpreted as punctuation normalization)
@@ -1289,10 +1289,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     current_section = None
     for line in content.split('\n'):
         line = line.strip()
-        sec_match = re.search(sec_regex, line)
+        sec_match = re.search(r'#\s*Start\s+of\s+Section\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT', line)
         if sec_match:
             current_section = sec_match.group(1).strip()
-        sub_match = re.search(sub_regex, line)
+        sub_match = re.search(r'#\s*Start\s+of\s+SubSection\s+Title\s+--\s+(.*?)\s*##\s*DO\s+NOT\s+EDIT', line)
         if sub_match and current_section:
             subsection_to_section[sub_match.group(1).strip()] = current_section
     
@@ -1401,7 +1401,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                     text = mantra_set.get("corrected-mantra", "")
                     m_markers = re.findall(r'॥\s*[०-९]+\s*॥', text)
                     mantra_count += len(m_markers) if m_markers else 1
-            sec_data["Count"] = int_to_devanagari_local(mantra_count)
+            sec_data["Count"] = int_to_devanagari_local(mantra_count) if sec_data.get("section_title") else ""
     
     # --- Extract Closing Mantras ---
     closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)

@@ -298,10 +298,12 @@ A special section at the end of the input file enclosed in `# Closing Mantras` /
 
 #### Utility Scripts
 
-*   **`src/tools/renumber_sooktam.py`**: A vital utility for managing IDs in collections. It supports:
-    *   **Text Renumbering**: Sequentially updates all Samam numbers (`॥N॥`) in a `.txt` file.
-    *   **JSON Renumbering**: Sequentially updates `subsection_N` IDs and Samam numbers in a `.json` file.
-    *   **SuperSection Preservation**: Use the `--preserve-super` flag to maintain existing SuperSection IDs (e.g., `supersection_22`) while renumbering subsections.
+*   **`src/tools/renumber_sooktam.py`**: A vital utility for managing IDs and sequential numbering in JSV files.
+    *   **Robust Renumbering**: Sequentially updates all IDs (`supersection_N`, `section_N`, `subsection_N`) and mantra numbers (`॥N॥`) based on header anchors (`# Start of ... Title`).
+    *   **Custom Offsets**: Supports starting numbers for SuperSection, Section, and Subsection via CLI arguments.
+    *   **Samam Counting**: By default, Samam numbers reset to 1 at every *SuperSection* boundary. Use `--contiguous-samams` for fully global contiguous numbering.
+    *   **Reset per SuperSection**: Optional flag to reset Section/Subsection counters at each SuperSection boundary.
+    *   **Preserve Modes**: `preserve-super` only skips renumbering SuperSections, while `--preserve-all` preserves all section/supersection structure IDs and only renumbers the Samams within them.
 
 ---
 
@@ -433,11 +435,11 @@ python src/tools/build_collection.py [OPTIONS]
 | `--title` | Title for the collection (default: जैमिनीय साम सूक्तमाला). |
 
 ### `src/tools/renumber_sooktam.py`
-*Renumbers subsections and Samam markers in TXT or JSON files.*
+*Renumbers IDs and Samam markers in TXT or JSON files with custom offsets.*
 
 ```bash
-# Renumber a text file (in-place)
-python src/tools/renumber_sooktam.py data/input/Sooktam.txt
+# Renumber a text file (in-place) with custom offsets
+python src/tools/renumber_sooktam.py data/input/Aaranam_latest.txt --start-super 7 --start-section 65 --start-subsection 728
 
 # Renumber a JSON file (outputs to a new file)
 python src/tools/renumber_sooktam.py data/output/Sooktam_out.json --preserve-super
@@ -445,12 +447,30 @@ python src/tools/renumber_sooktam.py data/output/Sooktam_out.json --preserve-sup
 | Option | Description |
 | :--- | :--- |
 | `input_file` | Path to the `.txt` or `.json` file to renumber. |
-| `--preserve-super` | If set, preserves existing SuperSection IDs (essential for `Prayogamala` etc.). |
-| `--samhita` | (TXT mode) Start numbering from 1 (default). |
+| `--preserve-super` | If set, preserves existing SuperSection IDs. |
+| `--preserve-all` | If set, preserves all SuperSection, Section, and SubSection IDs (only resets Samam numbering). |
+| `--start-super` | Starting number for SuperSections (default: 1). |
+| `--start-section` | Starting number for Sections (default: 1). |
+| `--start-subsection` | Starting number for SubSections (default: 1). |
+| `--reset-per-super` | Reset section and subsection counters at each SuperSection boundary. |
+| `--contiguous-samams` | Do NOT reset Samam numbering at SuperSection boundaries (contiguous throughout file). |
 
 ---
 
 ### `src/tools/copy_rik_ids.py`
+*Utility to safely duplicate a Rik and its metadata within the source JSON based on a specific position.*
+
+```bash
+python src/tools/copy_rik_ids.py [OPTIONS]
+```
+| Option | Description |
+| :--- | :--- |
+| `input_json` | JSON file containing the source Rik data. |
+| `--source-id` | Original `rik_id` identifying the block to duplicate. |
+| `--target-subsection` | Destination subsection where the duplicate should be added. |
+| `--position` | Index pos (0-based) to insert the copied block within the subsection. |
+
+---
 
 ## 5. Technical Reference
 

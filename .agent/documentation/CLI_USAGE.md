@@ -80,6 +80,7 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 | `--output-mode` | Output style: `combined`, `separate`, or `nometa`. | `combined` |
 | `--pdf-font` | Font name to use for PDF generation. | `AdiShila Vedic` |
 | `--html-font` | Font family string for HTML output. | `'AdiShila Vedic', 'Adishila SanVedic'` |
+| `--title` | Custom Sanskrit title for the document. | From `pipeline_config.yaml` or input JSON metadata. |
 
 ### Output Modes
 
@@ -94,6 +95,11 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 **Generate Combined Output (Standard):**
 ```bash
 python src/render_pdf.py
+```
+
+**Custom Document Title:**
+```bash
+python src/render_pdf.py data/output/Prayogamala-pb.json --type collection --title "प्रयोगमाला पूर्वभागम्"
 ```
 
 **Generate Separate Rik and Samam Files (with metadata):**
