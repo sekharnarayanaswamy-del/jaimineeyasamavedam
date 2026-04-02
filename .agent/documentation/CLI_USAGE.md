@@ -260,7 +260,51 @@ python src/apply_excel_corrections.py
 
 ---
 
-## 6. Footnote Formatting Guide
+## 6. `renumber_sooktam.py`
+
+This script renumbers IDs (`supersection_N`, `section_N`, `subsection_N`) and mantra markers (`॥ N ॥`) in both `.txt` and `.json` files.
+
+**Location:** `src/tools/renumber_sooktam.py`
+
+### Usage
+
+```bash
+python src/tools/renumber_sooktam.py <input_file> [OPTIONS]
+```
+
+### Arguments
+
+| Argument | Description | Default |
+| :--- | :--- | :--- |
+| `input_file` | Path to the `.txt` or `.json` file to renumber. | - |
+| `--preserve-super` | Preserve existing SuperSection IDs (only renumbers sections/subsections). | False |
+| `--preserve-all` | Preserve ALL structure IDs (only renumbers Samams). | False |
+| `--start-super` | Starting number for SuperSections. | 1 |
+| `--start-section` | Starting number for Sections. | 1 |
+| `--start-subsection` | Starting number for SubSections. | 1 |
+| `--reset-per-super` | Reset Section/SubSection counters at every SuperSection boundary. | False |
+| `--contiguous-samams` | Do NOT reset Samam numbering at SuperSection boundaries (global contiguous). | False |
+
+### Examples
+
+**Renumber TXT file resetting Samams per SuperSection (Default):**
+```bash
+python src/tools/renumber_sooktam.py data/output/txt/Devanagari/Samhita_Unicode.txt
+```
+
+**Renumber while keeping existing structure IDs (Samam-only renumbering):**
+```bash
+python src/tools/renumber_sooktam.py data/input/Aaranam_latest.txt --preserve-all
+```
+
+**Custom starting offsets:**
+```bash
+python src/tools/renumber_sooktam.py MyText.txt --start-super 5 --start-section 10
+```
+
+---
+
+## 7. Footnote Formatting Guide
 
 This section describes how to correctly format footnotes in the source text file.
 
