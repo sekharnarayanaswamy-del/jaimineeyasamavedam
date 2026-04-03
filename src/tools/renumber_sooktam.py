@@ -26,21 +26,56 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, 
     current_sec = start_sec - 1
     current_sub = start_sub - 1
     
+    last_old_sub = None
+    last_old_sec = None
+    last_old_sup = None
+    
     new_lines = []
     
-    # Pass 1: ID Renumbering
+    seen_in_sub = set()
+    in_sup_block = False
+    in_sec_block = False
+    
+    # Pass 1: ID Mapping (Set-based grouping)
     for line in lines:
+        # Reset tracker on Section/SuperSection boundaries
+        if '# Start of SuperSection' in line or '# Start of Section' in line:
+            seen_in_sub = set()
+
+        # Detect SuperSection changes
         if '# Start of SuperSection Title' in line:
-            current_sup += 1
-            if reset_per_super:
-                current_sec = 0 
-                current_sub = 0
-        
+            if not in_sup_block:
+                current_sup += 1
+                in_sup_block = True
+                if reset_per_super:
+                    current_sec = 0
+                    current_sub = 0
+        elif '# End of SuperSection Title' in line:
+            in_sup_block = False
+
+        # Detect Section changes
         if '# Start of Section Title' in line:
-            current_sec += 1
-            
-        if '# Start of SubSection Title' in line:
-            current_sub += 1
+            if not in_sec_block:
+                current_sec += 1
+                in_sec_block = True
+        elif '# End of Section Title' in line:
+            in_sec_block = False
+
+        # Detect SubSection components
+        # Order: Metadata -> Text -> Title -> Mantra Sets (or any variation)
+        # We only increment if we see a tag we've ALREADY seen for the current sub
+        m = re.search(r'# Start of (SubSection Title|Rik Metadata|Rik Text|Mantra Sets)', line)
+        if m:
+            tag_type = m.group(1)
+            # If we see a tag type we've already seen in this block, it's a new verse
+            if tag_type in seen_in_sub:
+                current_sub += 1
+                seen_in_sub = {tag_type}
+            else:
+                # First tag of the section or file
+                if not seen_in_sub:
+                    current_sub += 1
+                seen_in_sub.add(tag_type)
 
         def replace_subsection(m):
             return f'subsection_{max(1, current_sub)}'
@@ -59,20 +94,24 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, 
         
         new_lines.append(line)
 
-    # Pass 2: Renumber Samams
+    # Pass 2: Renumber Samams and Riks
     final_lines = []
     samam_counter = 1
+    rik_counter = 1
     in_mantra_set = False
+    in_rik_text = False
     in_subsection_title = False
 
     for line in new_lines:
-        # Reset Samam count at Section/SuperSection boundaries if requested
+        # Reset Samam/Rik count at Section/SuperSection boundaries if requested
         if reset_samam_per_section:
             if '# Start of Section Title' in line or '# Start of SuperSection Title' in line:
                 samam_counter = 1
+                rik_counter = 1
         elif reset_samam_per_super:
             if '# Start of SuperSection Title' in line:
                 samam_counter = 1
+                rik_counter = 1
 
         if '# Start of SubSection Title' in line:
             in_subsection_title = True
@@ -88,6 +127,9 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, 
 
         if '#Start of Mantra Sets' in line or '# Start of Mantra Sets' in line:
             in_mantra_set = True
+        
+        if '# Start of Rik Text' in line:
+            in_rik_text = True
             
         if in_mantra_set:
             def samam_repl(m):
@@ -96,20 +138,30 @@ def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, 
                 samam_counter += 1
                 return res
             line = re.sub(r'(?:॥|\|\|)\s*([०-९\d]+)\s*(?:॥|\|\|)', samam_repl, line)
+
+        if in_rik_text:
+            def rik_repl(m):
+                nonlocal rik_counter
+                res = f"॥ {int_to_devanagari(rik_counter)} ॥"
+                rik_counter += 1
+                return res + m.group(1) # Preserve trailing whitespace/newline
+            
+            # Robust regex for verse markers at the end (captures trailing whitespace to preserve newlines)
+            line = re.sub(r'(?:॥|\|\||\|)\s*[०-९\d]+\s*(?:॥|\|\||\|)(\s*)$', rik_repl, line)
             
         if '#End of Mantra Sets' in line or '# End of Mantra Sets' in line:
             in_mantra_set = False
+
+        if '# End of Rik Text' in line:
+            in_rik_text = False
             
         final_lines.append(line)
 
     with open(input_file, 'w', encoding='utf-8') as f:
         f.writelines(final_lines)
-
-    with open(input_file, 'w', encoding='utf-8') as f:
-        f.writelines(final_lines)
     
     print(f"Success! Final state: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections.")
-    print(f"Total Samams Renumbered: {samam_counter - 1}")
+    print(f"Total Samams: {samam_counter - 1}, Total Riks: {rik_counter - 1}")
 
 def renumber_json_file(input_file, output_file=None, preserve_super=False):
     print(f"Renumbering JSON file: {input_file} (Preserve Super: {preserve_super})")
@@ -123,6 +175,7 @@ def renumber_json_file(input_file, output_file=None, preserve_super=False):
     new_data["meta"]["renumbered_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     global_samam_count = 0
+    global_rik_count = 0
     ss_idx = 1
     
     # Sort supersections by ID
@@ -169,6 +222,15 @@ def renumber_json_file(input_file, output_file=None, preserve_super=False):
                 if "header" in new_sub:
                     new_sub["header"]["header_number"] = sub_idx
                 
+                # Renumber Riks in rik_text if present
+                if "rik_text" in new_sub and isinstance(new_sub["rik_text"], str):
+                    def rik_repl(m):
+                        nonlocal global_rik_count
+                        global_rik_count += 1
+                        return f"॥ {int_to_devanagari(global_rik_count)} ॥"
+                    # Only renumber marker at the end
+                    new_sub["rik_text"] = re.sub(r'॥\s*[०-९\d]+\s*॥$', rik_repl, new_sub["rik_text"].strip())
+
                 # Renumber Samams in mantras
                 for ms in new_sub.get("corrected-mantra_sets", []):
                     mantra = ms.get("corrected-mantra", "")
@@ -198,7 +260,7 @@ def renumber_json_file(input_file, output_file=None, preserve_super=False):
     with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(new_data, f, ensure_ascii=False, indent=4)
     
-    print(f"Successfully renumbered JSON: {ss_idx-1} SuperSections, {global_samam_count} Samams.")
+    print(f"Successfully renumbered JSON: {ss_idx-1} SuperSections, {global_samam_count} Samams, {global_rik_count} Riks.")
 
 def main():
     parser = argparse.ArgumentParser(description="Renumber JSV files (JSON or TXT).")

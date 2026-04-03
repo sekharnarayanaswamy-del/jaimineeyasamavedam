@@ -40,8 +40,9 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
-**Role**: Converts JSON data into high-quality LaTeX/HTML segments for the physical book.
-*   **`CreatePdf`**: The main orchestration function. It loads the JSON and applies templates to generate `.tex` files for compilation.
+**Role**: Converts JSON data into high-quality LaTeX (for PDFs) and HTML documents.
+*   **`CreatePdf` / `CreateHtmlFile`**: Main orchestration functions for PDF and HTML generation.
+*   **`format_dandas_html`**: Handles the formatting of mantra and metadata text for HTML. Now supports a `preserve_spaces` flag to maintain manual whitespace alignment in Rishi/Devata metadata blocks.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
 *   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`).
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
@@ -344,6 +345,8 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 > *   `collection` → **जैमिनीय साम सूक्त माला**
 >
 > The output file prefix also changes accordingly (`Samhita_`, `Aaranam_`, vs `Collection_`).
+>
+> **Section Counts**: Section headers in the TOC and document body automatically aggregate counts. For mixed content (Riks and Samams), the format is **(ऋ-N, सा-M)**.
 
 ### `src/generate_website.py`
 *Generates the static website. Each mode generates an independent sub-site; the common landing page (`docs/index.html`) is maintained manually.*
@@ -479,12 +482,18 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Section Markers**: The `RikTextParser` supports both `खण्डः` (Khanda) and `पर्वा` (Parva) markers as section boundaries, ensuring accurate extraction across different Samaveda portions.
 *   **Continuous Text**: `remove_mantra_spaces()` creates continuous text for Samhita views, preserving structure lines (Colophons).
 
+### Advanced Indexing & Renumbering (Technical)
+*   **Ordinal Section Indexing**: In `curate_jsv.py`, the system no longer parses section numbers from JSON keys (like `section_37`). Instead, it sorts the keys and assigns an **ordinal index** (1-based position) to each section within its parent SuperSection. This prevents "broken links" in filter files when source JSONs are regenerated with different key names.
+*   **Set-Based Component Grouping**: In `renumber_sooktam.py`, the logic was upgraded from simple state-based tracking to **Set-based tracking**. Each structural component (`Metadata`, `Text`, `Title`) is added to a "seen" set for the current subsection. The counter is **only** incremented if a component is repeated (e.g., a new `Metadata` block starts). This allows verses with staggered parts (e.g., Metadata followed by a delayed Title) to be correctly unified under a single `subsection_ID`.
+
 ### Visual Rendering Logic
 *   **Visarga-Accent Swap**: A critical rendering fix (`step_preprocess_visarga_accent` in `src/utils.py`) handles the Vedic convention where an accent marked *after* a Visarga (`ः`) must visually appear on the preceding vowel.
     *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering.
     *   *Applied In*: PDF, Website, and Rik Samhita generators.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
-*   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection, ensuring that subsections containing multiple grouped Riks are counted accurately.
+*   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
+*   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
+*   **HTML Metadata Formatting**: To preserve scholar-aligned metadata in HTML, the renderer selectively skips whitespace normalization for `rik_metadata` and `saman_metadata` fields, paired with `white-space: pre-wrap` in CSS.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
 
 ### 5.3 Footnote Syntax

@@ -10,40 +10,27 @@ This skill outlines how to build a new standalone text (Sooktamala/Ritu Shanti J
 ## 1. P.K.S Identifiers
 *   Every single Samam in the project is identified by a unique tuple: `P.K.S`
     *   **P** = Parva (SuperSection index, e.g., `1` for Agneyam)
-    *   **K** = Kandah (Section ordinal index)
+    *   **K** = Kandah (**Ordinal index**). Sections are mapped by their position (1st, 2nd, etc.) within a Parva. Do NOT rely on JSON key names like `section_37`.
     *   **S** = Samam number (Numeric value extracted from Devanagari boundary `॥ N ॥`)
 
 ## 2. The Extraction Workflow
 ### Concept 
 When tasked to create a custom selection (e.g., "Ritu Shanti Japam"):
-1.  **Identify Verses**: Gather the `P.K.S` identifiers from the user (e.g., `1.1.1`, `1.4.2`).
-2.  **Use Tools**: Do NOT manually copy-paste JSON. Use the CLI utilities:
-    *   `src/tools/build_collection.py` (pulls from a single source JSON like `Vargeekaran.json`).
-    *   `src/curate_jsv.py` (pulls and merges from multiple source JSONs).
-3.  **Command**: Provide the tool with a `--filter` text file containing the list of IDs.
-4.  **Result**: The tool outputs a clean, standalone JSON formatted under a single Supersection and `"सङ्ग्रहः"` (Collection) Section, preserving all inner text, swaras, and footnotes perfectly.
-### Pipeline
-* Use `curate_jsv.py` to generate a JSON file from the json files for Samhita or Aaranam: `data\output\Vargeekaran.json` and `data\output\Aaranam_latest.json` and using a filter file `data\input\Ritu-shanti.txt`. 
+1.  **Identify Verses**: Gather the `P.K.S` identifiers (e.g., `1.7.1`). The curation tool sorts source section keys alphabetically and assigns ordinal numbers starting at 1.
+2.  **Use Tools**: Do NOT manually copy-paste JSON. Use:
+    *   `src/curate_jsv.py`: High-level tool for merging multiple sources via filter files.
+3.  **Command**: Provide a `--filter` text file. IDs can be simple `P.K.S` or enhanced `P.K.S(Metadata)(Title)`.
+4.  **Modes**: 
+    *   `rik_nometa`: Extracts Rik text only, helpful for generating cleaner 'Patha' views without Samam metadata.
 
-    ``` python src\curate_jsv.py --sources data\output\Vargeekaran.json data\output\Aaranam_latest_out.json --filter data\input\Ritu-shanti.txt --output Ritu-shanti-latest.json```
+## 3. Renumbering and Finalization
+After curation or manual editing, use `src/tools/renumber_sooktam.py` to ensure sequential IDs:
+*   **Grouping Logic**: The tool uses "Component Tracking". It groups `Metadata`, `Text`, and `Title` blocks for the same verse into a single `subsection_N` ID even if they are split by blank lines or tags.
+*   **Sequential Sync**: It resets counts based on `--start-subsection` (default 1) or preserves SuperSection boundaries with `--preserve-super`.
 
-* If subsection headers have to be used to build the TOC, then use --toc-level <level> where level is the TOC hierarchy: section (default), subsection, or both. Controls both PDF and HTML TOC.
-
-    ``` python src\render_pdf.py Ritu-shanti-japam.json --type collection --toc-level subsection```
-
-## 3. Alternate Workflow
-We could also build a new standalone text (Sooktamala/Ritu Shanti Japam, etc) by manually creating a new Unicode text file containing the required collection. This should be done in the same format as for Samhita or Aaranam:  
-* Example : `data\input\Sooktam.txt`
-
-
-#### Pipeline for complex cases (Example): 
-1. ``` python src\curate_jsv.py --sources data\output\Vargeekaran.json data\output\Aaranam_latest_out.json data\output\Sooktam_latest.json --filter data\input\Ritu-shanti.txt --output Ritu-shanti-latest.json```
-2. ``` python src\tools\renumber_sooktam.py data\output\Ritu-shanti-latest.json```
-3. ``` python src\render_pdf.py data\output\Ritu-shanti-latest.json --type collection --toc-level subsection```
-
-Alternately, do the following if you want to add samams to an existing collection by copy/paste:
-1. ``` copy data\output\txt\Devanagari\Samam_Devanagari_Unicode.txt data\output\txt\Devanagari\Ritu-shanti-japam.txt```
-2. Copy/paste or enter additional samams. e.g. from Sooktam.txt to data\output\txt\Devanagari\Samam_Devanagari_Unicode.txt
-3. ``` python src\tools\renumber_sooktam.py data\output\txt\Devanagari\Ritu-shanti-japam.txt --preserve-super```
-4. ``` python src\generate_json.py data\output\txt\Devanagari\Ritu-shanti-japam.txt --output Ritu-shanti-japam.json```
-5. ``` python src\render_pdf.py Ritu-shanti-japam.json --type collection --toc-level subsection```
+### Pipeline for complex cases (Example): 
+1. ``` python src\curate_jsv.py --sources data\output\Vargeekaran.json data\output\Aaranam_latest_out.json --filter data\input\Nakshatra_sooktam.txt --output data\output\Nakshatra_sooktam.json --mode rik_nometa --filter-type rik```
+2. ``` python src\render_pdf.py data\output\Nakshatra_sooktam.json --type collection```
+3. ``` python src\tools\renumber_sooktam.py data\output\txt\Devanagari\Collection_Devanagari_Unicode.txt```
+4. ``` python src\generate_json.py data\output\txt\Devanagari\Collection_Devanagari_Unicode.txt --output data\output\Nakshatra_sooktam.json```
+5. ``` python src\render_pdf.py data\output\Nakshatra_sooktam.json --type collection```

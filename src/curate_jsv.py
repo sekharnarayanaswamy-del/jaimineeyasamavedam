@@ -28,8 +28,65 @@ def get_samam_numbers(sub_data):
     for m in matches:
         # Convert Devanagari digits to int
         arabic = m.translate(str.maketrans('०१२३४५६७८९', '0123456789'))
-        result.append(int(arabic))
+        try:
+            result.append(int(arabic))
+        except ValueError:
+            continue
     return result
+
+
+def build_lookup_index(all_data, filter_type='samam'):
+    """
+    Build mapping: (p_num, k_num, id) -> source_subsection_key
+    The 'id' is either a Samam number (from text) or a Rik ID (from metadata).
+    """
+    idx = {}
+    ss_map = all_data.get("supersection", {})
+    for ss_key, ss_data in ss_map.items():
+        if not isinstance(ss_data, dict): continue
+        
+        # Try to get Parva number from metadata, fallback to key name (e.g. supersection_1 -> 1)
+        p_num = ss_data.get("supersection_number")
+        if p_num is None:
+            try:
+                p_num = int(ss_key.split('_')[-1])
+            except:
+                p_num = 1
+        
+        sections_dict = ss_data.get("sections", {})
+        # Sort section keys to ensure we assign the correct ordinal numbers matching the user's view
+        sec_keys = sorted(
+            [k for k in sections_dict.keys() if k.startswith('section_')],
+            key=lambda x: int(x.split('_')[1]) if '_' in x else 0
+        )
+        
+        for k_idx, sec_key in enumerate(sec_keys, 1):
+            sec_data = sections_dict[sec_key]
+            
+            # Use explicit 'section_number' if available, else use ordinal position (1-based)
+            k_num = sec_data.get("section_number")
+            if k_num is None:
+                k_num = k_idx
+            
+            old_sub_sections = sec_data.get("subsections", {})
+            for sub_key, sub_data in old_sub_sections.items():
+                address = (ss_key, sec_key, sub_key)
+                if filter_type == 'rik':
+                    # Use the rik_id metadata field
+                    rik_id = sub_data.get('rik_id')
+                    if rik_id is not None:
+                        # Convert to int if it's a number, or keep as is
+                        try:
+                            ri = int(rik_id)
+                            idx[(p_num, k_num, ri)] = address
+                        except:
+                            idx[(p_num, k_num, rik_id)] = address
+                else:
+                    # Default: Use samam numbers extracted from mantra text
+                    samam_nums = get_samam_numbers(sub_data)
+                    for sn in samam_nums:
+                        idx[(p_num, k_num, sn)] = address
+    return idx
 
 
 def parse_p_k_s(content):
@@ -45,16 +102,23 @@ def parse_p_k_s(content):
     for match in range_pattern.finditer(content):
         p1, k1, s1, p2, k2, s2 = map(int, match.groups())
         if p1 == p2 and k1 == k2 and s1 <= s2:
-            results.extend([(p1, k1, s) for s in range(s1, s2 + 1)])
+            results.extend([(p1, k1, s, "") for s in range(s1, s2 + 1)])
         else:
             print(f"Warning: Invalid range {p1}.{k1}.{s1}-{p2}.{k2}.{s2}")
             
     # Remove ranges so we don't process them again as single IDs
     content_no_ranges = range_pattern.sub('', content)
     
-    pattern = re.compile(r'(\d+)\.(\d+)\.(\d+)')
-    matches = pattern.finditer(content_no_ranges)
-    results.extend([(int(m.group(1)), int(m.group(2)), int(m.group(3))) for m in matches])
+    # Process lines to get metadata
+    for line in content_no_ranges.split('\n'):
+        line = line.strip()
+        if not line or line.startswith('#'): continue
+        
+        # Match P.K.S and capture rest of line
+        m = re.search(r'(\d+)\.(\d+)\.(\d+)\s*(.*)', line)
+        if m:
+            p, k, s, meta = m.groups()
+            results.append((int(p), int(k), int(s), meta.strip()))
     
     return results
 
@@ -76,8 +140,13 @@ def parse_filter_file(content):
         line = line.strip()
         if not line:
             continue
+        
+        # Check for section header (ordinal like १) or 1))
+        # But we don't necessarily want to treat numbered items as sections if they contain IDs
         sec_match = section_pattern.match(line)
-        if sec_match:
+        pks_m = re.search(r'(\d+)\.(\d+)\.(\d+)\s*(.*)', line)
+        
+        if sec_match and not pks_m:
             if has_seen_header or current_section["ids"]:
                 sections.append(current_section)
             current_section = {"title": line, "ids": []}
@@ -85,20 +154,22 @@ def parse_filter_file(content):
             continue
             
         # Process ranges
+        range_found = False
         for match in range_pattern.finditer(line):
             p1, k1, s1, p2, k2, s2 = map(int, match.groups())
             if p1 == p2 and k1 == k2 and s1 <= s2:
-                current_section["ids"].extend([(p1, k1, s) for s in range(s1, s2 + 1)])
+                current_section["ids"].extend([(p1, k1, s, "") for s in range(s1, s2 + 1)])
+                range_found = True
             else:
                 print(f"Warning: Invalid or cross-section range pattern {match.group(0)}")
-                
-        # Remove ranges from the line to avoid parsing them as single identifiers
-        line_no_ranges = range_pattern.sub('', line)
         
-        # Process single IDs
-        ids = pks_pattern.findall(line_no_ranges)
-        if ids:
-            current_section["ids"].extend([(int(p), int(k), int(s)) for p, k, s in ids])
+        if range_found:
+            continue
+
+        # Process single IDs with metadata
+        if pks_m:
+            p, k, s, meta = pks_m.groups()
+            current_section["ids"].append((int(p), int(k), int(s), meta.strip()))
 
     if current_section["ids"] or has_seen_header:
         sections.append(current_section)
@@ -155,7 +226,10 @@ def main():
     parser.add_argument('--filter', default=None, help='Filter text file with P.K.S identifiers')
     parser.add_argument('--output', default=None, help='Output JSON file')
     parser.add_argument('--title', default=None, help='Title for the curated collection')
+    parser.add_argument('--mode', choices=['samam', 'rik', 'both', 'rik_nometa'], default=None, help='Text mode: samam (default), rik, both, or rik_nometa')
 
+    parser.add_argument('--filter-type', choices=['samam', 'rik'], default='samam',
+                        help="Whether filter IDs refer to Samam numbers or Rik numbers (default: samam)")
     args = parser.parse_args()
 
     # Priority: CLI > Config > Defaults
@@ -175,6 +249,7 @@ def main():
         sys.exit(1)
 
     title = args.title or curate_cfg.get('title', 'जैमिनीय साम सूक्तमाला')
+    mode = args.mode or curate_cfg.get('mode', 'samam')
 
     # 1. Load and Merge Source JSONs
     source_data = {"supersection": {}, "closing_mantras": []}
@@ -240,7 +315,8 @@ def main():
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "source_file": ", ".join(sources),
             "filter_file": str(filter_file),
-            "title": title
+            "title": title,
+            "mode": mode
         },
         "supersection": {
             "supersection_1": {
@@ -278,27 +354,9 @@ def main():
         parva_section_map[ss_key] = sec_keys
 
     # Pre-build a Samam-number index: (ss_key, sec_key) -> { samam_num -> sub_key }
-    print("Building Samam index...", flush=True)
-    samam_index = {}
-    for ss_key, ss_data in source_super.items():
-        if not isinstance(ss_data, dict):
-            continue
-        for sec_key, sec_data in ss_data.get('sections', {}).items():
-            if not isinstance(sec_data, dict):
-                continue
-            subsections_dict = sec_data.get("subsections", {})
-            sub_keys = sorted(
-                subsections_dict.keys(),
-                key=lambda x: int(x.split('_')[1]) if '_' in x else 0
-            )
-            idx = {}
-            for sub_key in sub_keys:
-                sub_data = subsections_dict[sub_key]
-                samam_nums = get_samam_numbers(sub_data)
-                for sn in samam_nums:
-                    idx[sn] = sub_key
-            samam_index[(ss_key, sec_key)] = idx
-    print("Samam index built.", flush=True)
+    print(f"Building {args.filter_type} index...")
+    lookup_index = build_lookup_index(source_data, filter_type=args.filter_type)
+    print(f"{args.filter_type.capitalize()} index built.")
 
     found_count = 0
     missing_ids = []
@@ -310,42 +368,26 @@ def main():
         last_source_id = None
         current_target_sub = None
 
-        for p, k_ord, s_val in filter_sec["ids"]:
-            ss_key = f"supersection_{p}"
+        for p_val, k_val, s_val, extra_meta in filter_sec["ids"]:
+            # Look up the ID
+            lookup_key = (p_val, k_val, s_val)
+            if lookup_key not in lookup_index:
+                print(f"  Warning: ID {p_val}.{k_val}.{s_val} not found in sources.")
+                missing_ids.append(f"{p_val}.{k_val}.{s_val}")
+                continue
 
-            # Access the Parva
+            ss_key, sec_key, sub_key = lookup_index[lookup_key]
+
+            # Access the Source data using keys from index
             ss_data = source_super.get(ss_key)
-            if not ss_data:
-                print(f"  Missing Parva: {ss_key}", flush=True)
-                missing_ids.append(f"{p}.{k_ord}.{s_val}")
-                continue
-
-            # Get section by ordinal within the supersection
-            parva_sections = parva_section_map.get(ss_key, [])
-            if k_ord < 1 or k_ord > len(parva_sections):
-                print(f"  Kandah {k_ord} out of range in {ss_key} (Max: {len(parva_sections)})", flush=True)
-                missing_ids.append(f"{p}.{k_ord}.{s_val}")
-                continue
-
-            sec_key = parva_sections[k_ord - 1]
             sec_data = ss_data.get("sections", {}).get(sec_key)
-            if not sec_data:
-                print(f"  Internal Error: {sec_key} missing", flush=True)
-                missing_ids.append(f"{p}.{k_ord}.{s_val}")
-                continue
-
-            # Look up Samam number in the index
-            idx = samam_index.get((ss_key, sec_key), {})
-            sub_key = idx.get(s_val)
-
-            if not sub_key:
-                print(f"  Samam {s_val} NOT found in {ss_key}.{sec_key}", flush=True)
-                missing_ids.append(f"{p}.{k_ord}.{s_val}")
-                continue
+            sub_data = sec_data["subsections"][sub_key]
 
             # Avoid duplicate Samam entries
             full_key = (ss_key, sec_key, sub_key, s_val)
-            if full_key in added_subsections:
+            # If we have metadata in the filter, it might not be a duplicate if we want different metadata for same PKS
+            # But usually it's a mistake. However, for metadata update we should allow it or pick the last.
+            if full_key in added_subsections and not extra_meta:
                 print(f"  Samam {s_val} (already added, skipping duplicate)", flush=True)
                 continue
 
@@ -353,18 +395,20 @@ def main():
             current_source_id = (ss_key, sec_key, sub_key)
         
             if current_source_id == last_source_id and current_target_sub is not None:
-                print(f"  Grouping Samam {s_val} into existing Arsheyam {sub_key}", flush=True)
-                source_sub_data = sec_data["subsections"][sub_key]
-                if "corrected-mantra_sets" in source_sub_data:
-                    for mset in source_sub_data["corrected-mantra_sets"]:
-                        if not isinstance(mset, dict): continue
-                        raw_text = mset.get("corrected-mantra", "")
-                        specific_text = extract_specific_samam(raw_text, s_val)
-                        if specific_text:
-                            import copy
-                            mset_copy = copy.deepcopy(mset)
-                            mset_copy["corrected-mantra"] = specific_text
-                            current_target_sub["corrected-mantra_sets"].append(mset_copy)
+                # If in Samam or Both mode, we might need to add another Samam to the existing subsection
+                if mode != 'rik':
+                    print(f"  Grouping Samam {s_val} into existing Arsheyam {sub_key}", flush=True)
+                    source_sub_data = sec_data["subsections"][sub_key]
+                    if "corrected-mantra_sets" in source_sub_data:
+                        for mset in source_sub_data["corrected-mantra_sets"]:
+                            if not isinstance(mset, dict): continue
+                            raw_text = mset.get("corrected-mantra", "")
+                            specific_text = extract_specific_samam(raw_text, s_val)
+                            if specific_text:
+                                import copy
+                                mset_copy = copy.deepcopy(mset)
+                                mset_copy["corrected-mantra"] = specific_text
+                                current_target_sub["corrected-mantra_sets"].append(mset_copy)
                 continue
 
             # New Arsheyam Entry
@@ -374,28 +418,68 @@ def main():
             target_sub_key = f"subsection_{found_count}"
             sub_copy = copy.deepcopy(sub_data)
 
-            # Extract target Samam
-            new_mantra_sets = []
-            if "corrected-mantra_sets" in sub_copy:
-                for mset in sub_copy["corrected-mantra_sets"]:
-                    if not isinstance(mset, dict): continue
-                    raw_text = mset.get("corrected-mantra", "")
-                    specific_text = extract_specific_samam(raw_text, s_val)
-                    if specific_text:
-                        mset["corrected-mantra"] = specific_text
-                        new_mantra_sets.append(mset)
+            # Extract target Samam if in samam or both mode
+            if mode in ['samam', 'both']:
+                new_mantra_sets = []
+                if "corrected-mantra_sets" in sub_copy:
+                    for mset in sub_copy["corrected-mantra_sets"]:
+                        if not isinstance(mset, dict): continue
+                        raw_text = mset.get("corrected-mantra", "")
+                        specific_text = extract_specific_samam(raw_text, s_val)
+                        if specific_text:
+                            mset["corrected-mantra"] = specific_text
+                            new_mantra_sets.append(mset)
+                sub_copy["corrected-mantra_sets"] = new_mantra_sets
+            else:
+                # In Rik modes, we don't need the Samam mantra sets
+                if "corrected-mantra_sets" in sub_copy:
+                    del sub_copy["corrected-mantra_sets"]
 
-            sub_copy["corrected-mantra_sets"] = new_mantra_sets
+            # Ensure rik_id is unique across parvas for rendering deduplication
+            # We use P.K.Rik format as a string ID
+            source_rik_id = sub_copy.get('rik_id')
+            if source_rik_id is not None:
+                sub_copy['rik_id'] = f"{p_val}.{k_val}.{source_rik_id}"
+                if 'rik_ids' in sub_copy:
+                    sub_copy['rik_ids'] = [f"{p_val}.{k_val}.{rid}" for rid in sub_copy['rik_ids']]
 
-            # Drop Rik and metadata
-            for kk in ['rik_text', 'rik_metadata', 'saman_metadata',
-                       'rik_classifications', 'rik_id', 'rik_ids', 'mantra_sets']:
-                if kk in sub_copy:
-                    del sub_copy[kk]
-
-            if "header" not in sub_copy or not isinstance(sub_copy["header"], dict):
-                sub_copy["header"] = {"header": ""}
-            sub_copy["header"]["header_number"] = found_count
+            # Handle Rik and Metadata keys based on mode
+            rik_keys = ['rik_text', 'rik_metadata', 'rik_classifications', 'rik_id', 'rik_ids']
+            
+            if mode == 'samam':
+                # Drop Rik fields in Samam-only mode
+                for kk in rik_keys:
+                    if kk in sub_copy:
+                        del sub_copy[kk]
+            elif mode == 'rik_nometa':
+                # Drop all metadata fields, keep ONLY rik_text (KEEP rik_id/ids for rendering logic)
+                metadata_keys = ['rik_metadata', 'rik_classifications', 'saman_metadata', 
+                                 'saman_rishi', 'saman_devata', 'saman_chandas',
+                                 'rik_rishi', 'rik_devata', 'rik_chandas']
+                for kk in metadata_keys:
+                    if kk in sub_copy:
+                        del sub_copy[kk]
+                
+                # Apply metadata from filter if present
+                if extra_meta:
+                    sub_copy['rik_metadata'] = extra_meta
+                    
+                # Keep header object but empty out the title for rik_nometa
+                if 'header' in sub_copy:
+                    sub_copy['header']['header'] = ""
+                else:
+                    sub_copy['header'] = {"header": ""}
+            
+            # Always drop 'mantra_sets' (legacy)
+            if 'mantra_sets' in sub_copy:
+                del sub_copy['mantra_sets']
+            
+            # Renumber and attach to target (unless header was deleted in rik_nometa)
+            if mode != 'rik_nometa':
+                if "header" not in sub_copy or not isinstance(sub_copy["header"], dict):
+                    sub_copy["header"] = {"header": ""}
+                sub_copy["header"]["header_number"] = found_count
+            
             target_subsections[target_sub_key] = sub_copy
 
             last_source_id = current_source_id

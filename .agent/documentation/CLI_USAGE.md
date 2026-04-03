@@ -112,7 +112,10 @@ python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json --outp
 python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json --output-mode nometa
 ```
 
-> **Note:** The `nometa` mode generates text files with structural markers that can be used as input to `generate_json.py` in `initial` mode for re-processing.
+### Notes and Best Practices
+*   **Metadata Whitespace Preservation**: In HTML output, manual alignment of Rishi/Devata metadata is preserved. Ensure the source TXT file matches the desired visual layout.
+*   **Aggregate Counting**: In `collection` mode, section headers automatically display aggregate counts. For mixed content, the format is **(ऋ-N, सा-M)**. If the section contains only one type, it shows only the numeral **(N)**.
+*   **Navigation IDs**: Every section and subsection is assigned a unique ID (e.g., `#supersection_1-section_1-subsection_1`) for robust linking and table of contents navigation.
 
 ---
 
@@ -260,11 +263,68 @@ python src/apply_excel_corrections.py
 
 ---
 
-## 6. `renumber_sooktam.py`
+## 6. `curate_jsv.py`
+
+This script curates a subset of JSON files based on a list of P.K.S (Parva, Kandah, Samam) identifiers. It supports merging from multiple sources (Samhita, Aaranam, etc.) into a standalone curated JSON (Sooktamala).
+
+**Location:** `src/curate_jsv.py`
+
+### Usage
+
+```bash
+python src/curate_jsv.py --sources <src1> [src2...] --filter <filter_file> --output <output_file> [OPTIONS]
+```
+
+### Arguments
+
+| Argument | Description | Default |
+| :--- | :--- | :--- |
+| `--sources` | List of source JSON files (Samhita, Aaranam, etc.). | From `pipeline_config.yaml` |
+| `--filter` | Text file containing P.K.S identifiers (one per line, e.g., `1.1.1`). | From `pipeline_config.yaml` |
+| `--output` | Path to the output curated JSON file. | From `pipeline_config.yaml` |
+| `--title` | Custom title for the curated collection. | "जैमिनीय साम सूक्तमाला" |
+| `--mode` | Selection mode: `samam` (default), `rik`, `both`, or `rik_nometa`. | `samam` |
+
+### Features
+
+*   **Merging**: Automatically merges supersections and closing mantras from multiple JSON sources.
+*   **P.K.S Filtering**: Precisely extracts specific Samams based on the global section **ordinal** index. 
+    *   **Note**: The tool sorts source section keys (Kandahs) and assigns them numbers 1, 2, 3... based on their position. This ensures robust mapping regardless of naming conventions in the source JSON.
+*   **Text Modes**:
+    *   `samam`: Only includes Samam music text (musical notations), drops Rik meta.
+    *   `rik`: Only includes the original Rik verse text, includes all Rik metadata.
+    *   `both`: Includes both Samam and Rik text for comparison.
+    *   `rik_nometa`: Includes ONLY the original Rik verse text, stripping all metadata fields.
+
+### Examples
+
+**Standard Samam Curation:**
+```bash
+python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter data/input/Nakshatra_sooktam.txt --output data/output/nakshatra_sooktam.json
+```
+
+**Curate Rik Text instead of Samam (with metadata):**
+```bash
+python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter my_filter.txt --output my_rik_collection.json --mode rik
+```
+
+**Curate Rik Text ONLY (no metadata):**
+```bash
+python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter my_filter.txt --output my_rik_only.json --mode rik_nometa
+```
+
+---
+
+## 7. `renumber_sooktam.py`
 
 This script renumbers IDs (`supersection_N`, `section_N`, `subsection_N`) and mantra markers (`॥ N ॥`) in both `.txt` and `.json` files.
 
 **Location:** `src/tools/renumber_sooktam.py`
+
+### Features
+
+*   **Component Grouping**: The tool uses a set-based tracking logic. If a verse is composed of separate blocks (e.g., `# Start of Rik Metadata` followed by `# Start of Rik Text`), they are all grouped under the same `subsection_N` ID even if separated by blank lines. Only repeated components (e.g., a second Metadata block) trigger a counter increment.
+*   **Sequential Sync**: Ensures perfectly sequential IDs across curated collections.
 
 ### Usage
 

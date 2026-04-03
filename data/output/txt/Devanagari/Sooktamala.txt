@@ -1,6 +1,6 @@
 जैमिनीय साम सङ्ग्रहः
 
-Version 3.0 2026-04-03 21:09:33
+Version 3.0 2026-04-03 17:44:12
 
 # Start of SuperSection Title -- supersection_20 ## DO NOT EDIT
 ॥ जैमिनीय साम सूक्तमाला ॥
@@ -894,7 +894,7 @@ Version 3.0 2026-04-03 21:09:33
 ॥ नक्षत्रसूक्तम् ॥
 # End of Section Title -- section_25 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_117 ## DO NOT EDIT
-नक्षत्रम्ःकृत्तिका           देवताःअग्निः
+नक्षत्रम्:कृत्तिका           देवता:अग्निः
 # End of Rik Metadata -- subsection_117 ## DO NOT EDIT
 # Start of Rik Text -- subsection_117 ## DO NOT EDIT
 अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) ॥ १ ॥
@@ -908,7 +908,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_117 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_118 ## DO NOT EDIT
-नक्षत्रम्ःरोहिणी         देवताःप्रजापतिः
+नक्षत्रम्:रोहिणी         देवता:प्रजापतिः
 # End of Rik Metadata -- subsection_118 ## DO NOT EDIT
 # Start of Rik Text -- subsection_118 ## DO NOT EDIT
 प्रजापते नत्वदेतान् अन्यो विश्वाजातानि परिता बभूव यतःकामास्ते जुहुमः तन्नोऽस्तू वयंस्याम पतयो रयीणां ॥ २ ॥
@@ -922,7 +922,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_118 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_119 ## DO NOT EDIT
-नक्षत्रम्ःमृगशिरा       देवताःसोमः
+नक्षत्रम्:मृगशिरा       देवता:सोमः
 # End of Rik Metadata -- subsection_119 ## DO NOT EDIT
 # Start of Rik Text -- subsection_119 ## DO NOT EDIT
 उच्चा(1)ते(1)जातमन्धा(3)सा(2) । दिविसा(2)त्भूम्याद(1)दे । उग्रं(2)शर्म्मा(2)माहिश्रा(2)वाः ॥ ३ ॥
@@ -936,7 +936,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_119 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_120 ## DO NOT EDIT
-नक्षत्रम्ःआर्द्रा       देवताःरुद्रः
+नक्षत्रम्:आर्द्रा       देवता:रुद्रः
 # End of Rik Metadata -- subsection_120 ## DO NOT EDIT
 # Start of Rik Text -- subsection_120 ## DO NOT EDIT
 आ(2) वो रा(2)जानमध्वर(4)स्या(1) रूद्रं(2) । हो(2)ता(1)रं सत्याया(2)जं रो(2)द॑(1)स्योः । अग्निं पूरा(2) तानाइत्नो(2)राचिक्तात् ।  हिरण्य रूपामा(2)वा(1)सेकृणुध्वम् ॥ ४ ॥
@@ -950,7 +950,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_120 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_121 ## DO NOT EDIT
-नक्षत्रम्ःपुनर्वसु       देवताःअदितिः
+नक्षत्रम्:पुनर्वसु       देवता:अदितिः
 # End of Rik Metadata -- subsection_121 ## DO NOT EDIT
 # Start of Rik Text -- subsection_121 ## DO NOT EDIT
 माहि(1)त्रीणा(2)मा(2)वा(1)रस्तु । धुक्षंमित्र(4)स्या(1)र्यम्णः । दूराध(2)ऋषंवा(2)रूणस्या ॥ ५ ॥
@@ -964,7 +964,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_121 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_122 ## DO NOT EDIT
-नक्षत्रम्ःपुष्यः       देवताःबृहस्पतिः
+नक्षत्रम्:पुष्यः       देवता:बृहस्पतिः
 # End of Rik Metadata -- subsection_122 ## DO NOT EDIT
 # Start of Rik Text -- subsection_122 ## DO NOT EDIT
 सोमंरा(4)जा(1)नंवा(2)रूणम्। अ(2)ग्नी(2)मन्वारा(1)भामहे । आ(2)दित्यंविष्णुंसू(2)र्य(1)म् । ब्र(2)ह्मा(4)ण(1)ञ्चाबृहस्पा(2)तिम् ॥ ६ ॥
@@ -978,7 +978,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_122 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_123 ## DO NOT EDIT
-नक्षत्रम्ःआश्लेषा       देवताःसर्पाः
+नक्षत्रम्:आश्लेषा       देवता:सर्पाः
 # End of Rik Metadata -- subsection_123 ## DO NOT EDIT
 # Start of Rik Text -- subsection_123 ## DO NOT EDIT
 नाहितेपूर्ता(4)मा(1)क्षीपात् । भू(2)व(1)न्नेमानांपते । आथादु(2)वो(1)वनवसे ॥ ७ ॥
@@ -992,7 +992,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_123 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_124 ## DO NOT EDIT
-नक्षत्रम्ःमघा       देवताःपितरः
+नक्षत्रम्:मघा       देवता:पितरः
 # End of Rik Metadata -- subsection_124 ## DO NOT EDIT
 # Start of Rik Text -- subsection_124 ## DO NOT EDIT
 ऊर्जंवहन्तीःअमृतङ्घतंपयःकीलालं परिसृतं स्वधास्थ तर्प्पयतमे पितृन् ॥ ८ ॥
@@ -1006,7 +1006,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_124 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_125 ## DO NOT EDIT
-नक्षत्रम्ःपूर्वाफाल्गुनी       देवताःभगः
+नक्षत्रम्:पूर्वाफाल्गुनी       देवता:भगः
 # End of Rik Metadata -- subsection_125 ## DO NOT EDIT
 # Start of Rik Text -- subsection_125 ## DO NOT EDIT
 यं(3)रा(1)क्ष(4)न्तिप्रा(2)चे(1)तसःवा(2)रू(1)णोमित्रो(4)अर्यामा(2)।ना(2)कीस्सा(2)दभ्यातेज(2)ना(1)ः ॥ ९ ॥
@@ -1020,7 +1020,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_125 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_126 ## DO NOT EDIT
-नक्षत्रम्ःउत्तराफाल्गुनी       देवताःअर्यमा
+नक्षत्रम्:उत्तराफाल्गुनी       देवता:अर्यमा
 # End of Rik Metadata -- subsection_126 ## DO NOT EDIT
 # Start of Rik Text -- subsection_126 ## DO NOT EDIT
 भा(2)गोनाचित्रः । अग्निर्मा(2)हो(2)नां । द(3)धा(1)तीरा(2)त्नम् ॥ १० ॥
@@ -1034,7 +1034,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_126 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_127 ## DO NOT EDIT
-नक्षत्रम्ःहस्तः       देवताःसविता
+नक्षत्रम्:हस्तः       देवता:सविता 
 # End of Rik Metadata -- subsection_127 ## DO NOT EDIT
 # Start of Rik Text -- subsection_127 ## DO NOT EDIT
 त(3)त् सावीतु(2)र्वा(2)रेण्यं । भ(3)र्गो(1)देवा(1)स्याधीमहि । धी(2)योयोन(1)ःप्राचोद(2)यात् ॥ ११ ॥
@@ -1048,7 +1048,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_127 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_128 ## DO NOT EDIT
-नक्षत्रम्ःचित्रा       देवताःत्वष्टा
+नक्षत्रम्:चित्रा       देवता:त्वष्टा
 # End of Rik Metadata -- subsection_128 ## DO NOT EDIT
 # Start of Rik Text -- subsection_128 ## DO NOT EDIT
 त्व(3)ष्टानोदै(2)व्यंवा(2)चा(1)ः । पर्ज(2)न्योब्र(4)ह्मा(1)ण(2)स्पा(2)तीः । पुत्रै(4)भ्रा(4)तृ(1)भिरा(4)दीतीर्नूपातु(1)नः । दुष्टा(1)रन्द्रा(4)मा(1)णंवा(2)चाः ॥ १२ ॥
@@ -1062,7 +1062,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_128 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_129 ## DO NOT EDIT
-नक्षत्रम्ःस्वाती       देवताःवायुः
+नक्षत्रम्:स्वाती       देवता:वायुः
 # End of Rik Metadata -- subsection_129 ## DO NOT EDIT
 # Start of Rik Text -- subsection_129 ## DO NOT EDIT
 वातआ(2)वा(1)तूभेषाजं(2) । शंभूमा(2)योभूनोहृदे । प्राणआयूंषि(1)तारि(1)षात् ॥ १३ ॥
@@ -1076,7 +1076,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_129 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_130 ## DO NOT EDIT
-नक्षत्रम्ःविशाखा       देवताःइन्द्राग्नी
+नक्षत्रम्:विशाखा       देवता:इन्द्राग्नी
 # End of Rik Metadata -- subsection_130 ## DO NOT EDIT
 # Start of Rik Text -- subsection_130 ## DO NOT EDIT
 इन्द्रा(1)ग्नीआपा(2)दीय(2)म् । पूर्वागा(3)त्पद्वा(2)ती(1)भ्यः । हित्वा(4)शि(4)रो(1)जिह्वा(2)या(4)रा(1)रापच्चारात् । त्रिंशा(2)त्पादा(2)न्या(1)क्रमीत् ॥ १४ ॥
@@ -1090,7 +1090,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_130 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_131 ## DO NOT EDIT
-नक्षत्रम्ःअनुराधा       देवताःमित्रः
+नक्षत्रम्:अनुराधा       देवता:मित्रः
 # End of Rik Metadata -- subsection_131 ## DO NOT EDIT
 # Start of Rik Text -- subsection_131 ## DO NOT EDIT
 ऊर्जा(2)मित्रोवारू(1)णोपिन्वा(2)ताईळा ठ(1) । पी(3)वा(1)रीमीषं(1)कृणू(1)हीना(1)इन्द्रा ॥ १५ ॥
@@ -1104,7 +1104,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_131 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_132 ## DO NOT EDIT
-नक्षत्रम्ःजेष्ठा       देवताःइन्द्रः
+नक्षत्रम्:जेष्ठा       देवता:इन्द्रः
 # End of Rik Metadata -- subsection_132 ## DO NOT EDIT
 # Start of Rik Text -- subsection_132 ## DO NOT EDIT
 य(3)स्ते(1) नूनं शा(1)तकृतो(1) । इन्द्र(1) घुम्नीता(1)मो(2) मा(2)दा(1)ः । ते(3)ना(1) नूनम्मादे(1) मदेः ॥ १६ ॥
@@ -1118,7 +1118,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_132 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_133 ## DO NOT EDIT
-नक्षत्रम्ःमूला       देवताःनिर्ऋतिः
+नक्षत्रम्:मूला       देवता:निर्ऋतिः
 # End of Rik Metadata -- subsection_133 ## DO NOT EDIT
 # Start of Rik Text -- subsection_133 ## DO NOT EDIT
 वे(2)त्थाहि(2)नि(2)रिऋ(1)तीनां । वज्रा(1)हस्तापारिव्रा(2)जं(1) । आहा(1)रहश्शुन्धू(4)ःपा(1)रीपादा(1)मिवा ॥ १७ ॥
@@ -1132,7 +1132,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_133 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_134 ## DO NOT EDIT
-नक्षत्रम्ःपूर्वाषाढा       देवताःआपः
+नक्षत्रम्:पूर्वाषाढा       देवता:आपः
 # End of Rik Metadata -- subsection_134 ## DO NOT EDIT
 # Start of Rik Text -- subsection_134 ## DO NOT EDIT
 यादाकादा(4)चामीढूषे(1) । स्तोता(2)जरेतमार्क्त्या(1)ः । आदीद्व(2)न्दे(2)तावारुणंवीपा(2)गीरा(1) । धक्ता(2)रंवि(2)प्रा(2)तानाम् ॥ १८ ॥
@@ -1146,7 +1146,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_134 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_135 ## DO NOT EDIT
-नक्षत्रम्ःउत्तराषाढा       देवताःविश्वेदेवाः
+नक्षत्रम्:उत्तराषाढा       देवता:विश्वेदेवाः
 # End of Rik Metadata -- subsection_135 ## DO NOT EDIT
 # Start of Rik Text -- subsection_135 ## DO NOT EDIT
 य(2)द्वा(2)ऊविश्पा(4)तीश्शितः । सुप्रीतो(1)मा(2)नुषोवीशे । विश्वेदग्निप्रा(2)तिर(1)क्षांसि सेधति ॥ १९ ॥
@@ -1160,7 +1160,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_135 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_136 ## DO NOT EDIT
-नक्षत्रम्ःश्रवणः       देवताःविष्णुः
+नक्षत्रम्:श्रवणः       देवता:विष्णुः
 # End of Rik Metadata -- subsection_136 ## DO NOT EDIT
 # Start of Rik Text -- subsection_136 ## DO NOT EDIT
 ईदंविष्णुर्विचा(1)क्रमे । त्रेधा(2)नी(2)दे(1)थेपादं सा(2)मू(1)ढमस्यपांसूले(2) ॥ २० ॥
@@ -1174,7 +1174,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_136 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_137 ## DO NOT EDIT
-नक्षत्रम्ःधनिष्ठा       देवताःवसवः
+नक्षत्रम्:धनिष्ठा       देवता:वसवः
 # End of Rik Metadata -- subsection_137 ## DO NOT EDIT
 # Start of Rik Text -- subsection_137 ## DO NOT EDIT
 तामग्नीम(2)स्ते(2)वसवः । न्यू(3)कृ(2)ण्वन् सुप्रतिचक्षं । आ(3)वा(2)सेकुतश्चित् । दक्षय्यो(2)यो(2)दमाअ(2)सनित्यः ॥ २१ ॥
@@ -1188,7 +1188,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_137 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_138 ## DO NOT EDIT
-नक्षत्रम्ःशतभिषक्       देवताःवरुणः
+नक्षत्रम्:शतभिषक्       देवता:वरुणः
 # End of Rik Metadata -- subsection_138 ## DO NOT EDIT
 # Start of Rik Text -- subsection_138 ## DO NOT EDIT
 प्रा(2)मित्रा(2)यप्रार्यम्णे(1) । सा(2)चात्थ्याठ(1)मृतावसो । वरु(2)त्थ्ये टट्य(2)वा(4)रूणेछन्द्यंवा(2)चा(1)ः । स्तोत्रं(1) रा(2)ज(1)सुगायता ॥ २२ ॥
@@ -1202,7 +1202,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_138 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_139 ## DO NOT EDIT
-नक्षत्रम्ःउत्तरभाद्रपदा       देवताःअहिर्बुध्न्यः
+नक्षत्रम्:उत्तरभाद्रपदा       देवता:अहिर्बुध्न्यः
 # End of Rik Metadata -- subsection_139 ## DO NOT EDIT
 # Start of Rik Text -- subsection_139 ## DO NOT EDIT
 अहिरसिबुध्निया रौद्रेणानीकेन पाहि माग्ने पिपृहि मा नमस्ते अस्तु मा मा हिंसीः ॥ २३ ॥
@@ -1216,7 +1216,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_139 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_140 ## DO NOT EDIT
-नक्षत्रम्ःपूर्वभाद्रपदा        देवताःअजैकपात्
+नक्षत्रम्:पूर्वभाद्रपदा        देवता:अजैकपात्
 # End of Rik Metadata -- subsection_140 ## DO NOT EDIT
 # Start of Rik Text -- subsection_140 ## DO NOT EDIT
 अज्योस्येकपात रौद्रेणानीकेन पाहि माग्ने पिपृहि मा नमस्ते अस्तु मा मा हिंसीः ॥ २४ ॥
@@ -1230,7 +1230,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_140 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_141 ## DO NOT EDIT
-नक्षत्रम्ःरेवती       देवताःपूषा
+नक्षत्रम्:रेवती       देवता:पूषा
 # End of Rik Metadata -- subsection_141 ## DO NOT EDIT
 # Start of Rik Text -- subsection_141 ## DO NOT EDIT
 सो(4)मा(1)ःपूषा(2) चा(1)चेततुः।वि(2)श्वा(3)सां सुक्षी(2)तीनां(2)।देवात्रा(2) रथ्योरहित(1)ः ॥ २५ ॥
@@ -1244,7 +1244,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_141 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_142 ## DO NOT EDIT
-नक्षत्रम्ःअश्विनी       देवताःअश्विनौ
+नक्षत्रम्:अश्विनी       देवता:अश्विनौ
 # End of Rik Metadata -- subsection_142 ## DO NOT EDIT
 # Start of Rik Text -- subsection_142 ## DO NOT EDIT
 एतेप(4)न्थाआथो(1)दीवः । एभीर्व्या(2)श्वामै(2)राया । ऊता(2)श्रो(1)षन्तूनोभुवाः ॥ २६ ॥
@@ -1258,7 +1258,7 @@ Version 3.0 2026-04-03 21:09:33
 #End of Mantra Sets -- subsection_142 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_143 ## DO NOT EDIT
-नक्षत्रम्ःअपभरणी       देवताःयमः
+नक्षत्रम्:अपभरणी       देवता:यमः
 # End of Rik Metadata -- subsection_143 ## DO NOT EDIT
 # Start of Rik Text -- subsection_143 ## DO NOT EDIT
 नाकेसूपर्णा(1)मूपा(1)यत्पा(1)त(1)न्तं । हृ(2)दा(2)वेन(1)न्तो अभ्या(2)चा(1)क्षतत्वा । हिर(1)ण्यपा(3)क्षंवारूणस्यादूतं(2) । यामास्यायो(2)नू(1)शाकूनं(4)भूरण्यूम् ॥ २७ ॥

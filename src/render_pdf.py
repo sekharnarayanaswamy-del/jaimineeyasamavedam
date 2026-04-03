@@ -1432,7 +1432,7 @@ def escape_for_html(text):
     }
     return ''.join(html_escapes.get(c, c) for c in text)
 
-def format_dandas_html(text):
+def format_dandas_html(text, preserve_spaces=False):
     """
     Formats danda symbols for HTML output.
     Adds appropriate spacing and wraps mantra numbers in spans.
@@ -1456,9 +1456,12 @@ def format_dandas_html(text):
     text = text.replace('॥', ' <span class="danda">॥</span> ')
     text = text.replace('।', ' <span class="danda">।</span> ')
 
-    # Clean up extra spaces
-    text = re.sub(r'\s+', ' ', text)
+    # Clean up extra spaces ONLY if we don't want to preserve manual alignments
+    if not preserve_spaces:
+        text = re.sub(r'\s+', ' ', text)
+        
     return text.strip()
+
 
 def handle_consecutive_trikamba_html(text):
     """
@@ -1550,7 +1553,9 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     # 1. Rik Metadata - Only if rik_id changed
     if string_1 and show_rik_info:
         s1 = escape_for_html(string_1)
-        s1 = format_dandas_html(s1)
+        # PRESERVE SPACES FOR METADATA
+        s1 = format_dandas_html(s1, preserve_spaces=True)
+
         s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
@@ -1578,7 +1583,9 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
-        meta = format_dandas_html(meta)
+        # PRESERVE SPACES FOR METADATA
+        meta = format_dandas_html(meta, preserve_spaces=True)
+
         meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
@@ -1678,7 +1685,9 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
     # Rik Metadata
     if string_1:
         s1 = escape_for_html(string_1)
-        s1 = format_dandas_html(s1)
+        # PRESERVE SPACES FOR METADATA
+        s1 = format_dandas_html(s1, preserve_spaces=True)
+
         s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata">{s1}</div>')
@@ -1734,7 +1743,9 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
         header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
-        meta = format_dandas_html(meta)
+        # PRESERVE SPACES FOR METADATA
+        meta = format_dandas_html(meta, preserve_spaces=True)
+
         meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
@@ -2316,7 +2327,10 @@ Examples:
                 
                 samam_count += sub_samam_count
                     
+            # Total aggregation format for section headers
             sec_riks = len(seen_riks)
+            
+            # Summary table row generation
             if sec_riks > 0 or samam_count > 0:
                 if khanda_name:
                     khanda_rows.append({
@@ -2328,12 +2342,31 @@ Examples:
                 patha_samams += samam_count
                 total_riks += sec_riks
                 total_samams += samam_count
+
+            count_parts = []
+            if sec_riks > 0 and samam_count > 0:
+                count_parts.append(f"ऋ-{to_devanagari_numeral(sec_riks)}")
+                count_parts.append(f"सा-{to_devanagari_numeral(samam_count)}")
+            elif sec_riks > 0:
+                count_parts.append(to_devanagari_numeral(sec_riks))
+            elif samam_count > 0:
+                count_parts.append(to_devanagari_numeral(samam_count))
+            else:
+                count_parts.append("०")
             
-            # Ensure the count is available for the section header in templates
-            sec_data['Count'] = to_devanagari_numeral(samam_count) if khanda_name else ""
+            sec_data['Count'] = ", ".join(count_parts) if khanda_name else ""
         
-        # Add total count for the supersection
-        ss_data['Count'] = to_devanagari_numeral(patha_samams)
+        # Add total count for the supersection using similar combined logic
+        ss_count_parts = []
+        if patha_riks > 0 and patha_samams > 0:
+            ss_count_parts.append(f"ऋ-{to_devanagari_numeral(patha_riks)}")
+            ss_count_parts.append(f"सा-{to_devanagari_numeral(patha_samams)}")
+        elif patha_riks > 0:
+            ss_count_parts.append(to_devanagari_numeral(patha_riks))
+        else:
+            ss_count_parts.append(to_devanagari_numeral(patha_samams))
+            
+        ss_data['Count'] = ", ".join(ss_count_parts)
         
         if khanda_rows:
             summary_table.append({

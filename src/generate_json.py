@@ -47,19 +47,18 @@ def sanitize_invisible_chars(text):
     invisible_chars = [
         '\u200b',  # Zero-width space
         '\u200c',  # Zero-width non-joiner
-        '\u200d',  # Zero-width joiner (FOUND IN YOUR FILE!)
+        '\u200d',  # Zero-width joiner
         '\ufeff',  # BOM / Zero-width no-break space
         '\u2060',  # Word joiner
         '\u180e',  # Mongolian vowel separator
         '\u00ad',  # Soft hyphen
-        '\u00a0',  # No-Break Space (NBSP) - The likely culprit for subsection titles
+        '\u00a0',  # No-Break Space (NBSP)
     ]
     for char in invisible_chars:
         text = text.replace(char, '')
     
-    # 2.5 B. Globally replace colons with Devanagari visargas
-    text = text.replace(':', 'ः')
     return text
+
 
 def parse_mantra_set(mantra_set_text):
     mantra_sets = []
@@ -1166,10 +1165,13 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     for ss_match in supersection_pattern.finditer(content):
         ss_id = ss_match.group("ss_id")
         ss_title = ss_match.group("ss_title").strip()
+        # Normalize titles (visargas and pipes) since we removed global colon replacement
+        ss_title = ss_title.replace(':', 'ः').replace('||', '॥').replace('|', '।')
         data["supersection"][ss_id] = {
             "supersection_title": ss_title,
             "sections": {}
         }
+
     
     # Build section-to-supersection mapping by scanning file order
     section_to_supersection = {}
@@ -1187,6 +1189,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     for sec_match in section_pattern.finditer(content):
         sec_id = sec_match.group("sec_id")
         sec_title = sec_match.group("sec_title").strip()
+        # Normalize titles
+        sec_title = sec_title.replace(':', 'ः').replace('||', '॥').replace('|', '।')
         # Use the mapping to find the correct supersection
         ss_id = section_to_supersection.get(sec_id, 'supersection_1')
         if ss_id in data["supersection"]:
@@ -1194,17 +1198,32 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 "section_title": sec_title,
                 "subsections": {}
             }
+
     
     # Extract Rik metadata for each subsection
     rik_metadata_map = {}
     for rm_match in rik_metadata_pattern.finditer(content):
         sub_id = rm_match.group("rik_meta_id")
-        meta_text = rm_match.group("rik_meta_text").strip().replace('\n', ' ')
-        # Strip any literal \newline commands that may have crept in
-        meta_text = meta_text.replace('\\newline%', ' ').replace('\\newline', ' ')
-        # Normalize pipes
-        meta_text = meta_text.replace('||', '॥').replace('|', '।')
+        raw_meta = rm_match.group("rik_meta_text").strip()
+        
+        # FEATURE: Handle quoted literals for "exactly as given" metadata
+        if raw_meta.startswith('"') and raw_meta.endswith('"'):
+            # Extract content between quotes, preserve everything else (no normalization)
+            meta_text = raw_meta[1:-1]
+            # Replace inner newlines with space to maintain JSON structure, but keep everything else
+            meta_text = meta_text.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
+        else:
+            # Normal processing for unquoted metadata
+            meta_text = raw_meta.replace('\n', ' ')
+            # Strip any literal \newline commands that may have crept in
+            meta_text = meta_text.replace('\\newline%', ' ').replace('\\newline', ' ')
+            # Normalize pipes
+            meta_text = meta_text.replace('||', '॥').replace('|', '।')
+            # Normalize colon to visarga for unquoted metadata
+            meta_text = meta_text.replace(':', 'ः')
+            
         rik_metadata_map[sub_id] = meta_text
+
     
     # Extract Rik text for each subsection
     rik_text_map = {}
@@ -1231,9 +1250,11 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         parts = header_line.split('  ', 1)
         header = parts[0].strip()
         saman_metadata = parts[1].strip() if len(parts) > 1 else ""
-        # Normalize pipes
-        saman_metadata = saman_metadata.replace('||', '॥').replace('|', '।')
+        # Normalize headers and saman_metadata (visargas and pipes)
+        header = header.replace(':', 'ः').replace('||', '॥').replace('|', '।')
+        saman_metadata = saman_metadata.replace(':', 'ः').replace('||', '॥').replace('|', '।')
         subsection_headers[sub_id] = {"header": header, "saman_metadata": saman_metadata}
+
     
     # Extract mantra sets
     mantra_sets_map = {}
