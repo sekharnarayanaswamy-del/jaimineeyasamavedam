@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css?v=1775064184">
+    <link rel="stylesheet" href="../../css/styles.css?v=1775481765">
 </head>
 <body>
     <div class="page-container">
@@ -113,6 +113,7 @@
             
             
                     <article class="sama-entry" id="sama-1">
+                        <span id="rik-813" class="rik-anchor"></span>
                         <div class="sama-id-row">
                             <span class="sama-id">
                                 <a href="#sama-1">2.4.1</a>
@@ -137,6 +138,7 @@
                         </div>
                     </article>
                     <article class="sama-entry" id="sama-2">
+                        <span id="rik-814" class="rik-anchor"></span>
                         <div class="sama-id-row">
                             <span class="sama-id">
                                 <a href="#sama-2">2.4.2</a>
@@ -161,6 +163,7 @@
                         </div>
                     </article>
                     <article class="sama-entry" id="sama-3">
+                        <span id="rik-815" class="rik-anchor"></span>
                         <div class="sama-id-row">
                             <span class="sama-id">
                                 <a href="#sama-3">2.4.3</a>
@@ -185,6 +188,7 @@
                         </div>
                     </article>
                     <article class="sama-entry" id="sama-4">
+                        <span id="rik-816" class="rik-anchor"></span>
                         <div class="sama-id-row">
                             <span class="sama-id">
                                 <a href="#sama-4">2.4.4</a>
@@ -217,6 +221,21 @@
         </main>
         
     </div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>अन्वेषणम् (Search)</h3>
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
+                <span class="search-hint">Type in Devanagari or English</span>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="search-overlay" id="search-overlay"></div>
+    <script src="../../search-index.js"></script>
     <script src="../../js/main.js"></script>
 </body>
 </html>

@@ -673,7 +673,15 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         
         # Output: Upright (not italics)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
-        formatted_output.append(r"\vspace{0.8em}")
+        
+        # --- NEW: Layout grouping for Rik + Samam ---
+        has_samam_content = bool(display_sub_title.strip() or string_3.strip() or subsection.get('mantra_sets'))
+        if has_samam_content:
+            formatted_output.append(r"\nopagebreak")                
+            formatted_output.append(r"\vspace{0.3em}") # Reduced space to keep together
+            formatted_output.append(r"\nopagebreak")
+        else:
+            formatted_output.append(r"\vspace{0.8em}")
 
     # 4. Combined Header: || Subsection header || || samam_metadata ||
     header_part = display_sub_title.strip()
@@ -697,8 +705,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     if combined_header:
          formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
+    # Keep header with mantra text
     formatted_output.append(r"\nopagebreak")                
-    formatted_output.append(r"\vspace{0.5em}")
+    formatted_output.append(r"\vspace{0.4em}")
     formatted_output.append(r"\nopagebreak")
 
     # --- MANTRA CONTENT RENDERING ---
@@ -807,10 +816,20 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
             formatted_output.append(r"\par\vspace{0.5em}") 
             paragraph_buffer = [] 
 
+    # --- FINAL SPACING ---
+    # The user wants an extra line between this subsection and the next metadata
+    # if this subsection contains both Rik and Samam.
+    is_mixed = bool(string_2.strip()) and bool(subsection.get('mantra_sets'))
+    trailing_space = r"\par\vspace{1.5em}" if is_mixed else r"\par\vspace{0.6em}"
+
     if paragraph_buffer:
         full_paragraph = "".join(paragraph_buffer)
         formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-        formatted_output.append(r"\par\vspace{0.5em}")
+        formatted_output.append(trailing_space)
+    elif is_verse_end:
+        # Update the last spacer if the paragraph ended exactly at a verse boundary
+        if formatted_output and formatted_output[-1] == r"\par\vspace{0.5em}":
+            formatted_output[-1] = trailing_space
 
     return "\n\n".join(formatted_output)
 
@@ -1644,7 +1663,15 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         # Create verse div with flowing content
         if word_elements:
             verse_html = ''.join(word_elements)
-            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
+            # Add extra margin if this is a mixed subsection (Rik + Samam)
+            is_mixed = bool(string_2.strip())
+            style = ' style="margin-bottom: 2.5rem;"' if is_mixed else ''
+            formatted_output.append(f'<div class="mantra-verse"{style}>{verse_html}</div>')
+
+    # If no mantra verses were added but it was a rik-only or header-only section, 
+    # we don't necessarily add the extra margin here as it might be handled by the next section's top margin.
+    # However, to be safe, if it's a mixed section and we only have Rik text so far (unlikely for mantra_sets),
+    # we'd add it to the last div.
 
     # Accumulate footnotes for section-level rendering (don't render inline)
     if collected_footnotes and footnotes_accumulator is not None:

@@ -72,12 +72,37 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
-            // Use the dynamic map if available, otherwise fall back to direct supersection_N
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
+            
             if (parts.length === 3) {
-                url += `#sama-${parts[2]}`;
+                const targetNum = parseInt(parts[2]);
+                const samaLinks = document.querySelectorAll('.sama-link');
+                let matchedAnchor = null;
+                
+                samaLinks.forEach(link => {
+                    const text = link.textContent.trim();
+                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
+                    if (rangeMatch) {
+                        const start = parseInt(rangeMatch[1]);
+                        const end = parseInt(rangeMatch[2]);
+                        if (targetNum >= start && targetNum <= end) {
+                            matchedAnchor = link.getAttribute('href');
+                        }
+                    } else {
+                        const exactMatch = text.match(/^([0-9]+)$/);
+                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) {
+                            matchedAnchor = link.getAttribute('href');
+                        }
+                    }
+                });
+                
+                if (matchedAnchor) {
+                    url += matchedAnchor;
+                } else {
+                    url += `#sama-${parts[2]}`;
+                }
             }
             window.location.assign(url);
         }

@@ -497,6 +497,7 @@ class Sama:
     rik_devata: str = ""
     rik_chandas: str = ""
     rik_classifications: List[Dict] = field(default_factory=list)
+    rik_ids: List[int] = field(default_factory=list) # Relative Rik IDs in Kandah
 
 @dataclass
 class Kandah:
@@ -591,6 +592,9 @@ class JSVParser:
                         s.rik_devata = sub_data.get('rik_devata', '')
                         s.rik_chandas = sub_data.get('rik_chandas', '')
                         s.rik_classifications = sub_data.get('rik_classifications', [])
+                        s.rik_ids = sub_data.get('rik_ids', [])
+                        if not s.rik_ids and sub_data.get('rik_id'):
+                            s.rik_ids = [sub_data.get('rik_id')]
         
         self._finalize_current_sama()
         return self.parvas
@@ -645,6 +649,14 @@ class JSVParser:
                 self._ensure_sama_exists(subsection_id)
                 if self.current_sama:
                     self.current_sama.rik_text = rik_text
+                    
+                    # Also extract relative rik number from ॥ N ॥ if present
+                    # and push to rik_ids
+                    # Regex for [॥।|]{1,2} N [॥।|]{1,2}
+                    rik_nums = re.findall(r'(?:॥|\|\||।।|।|\|)\s*([\d०-९]+)\s*(?:॥|\|\||।।|।|\|)', rik_text)
+                    if rik_nums:
+                        from utils import devanagari_to_int
+                        self.current_sama.rik_ids.extend([devanagari_to_int(n) for n in rik_nums])
                     
             # Check for Mantra Sets
             elif '#Start of Mantra Sets --' in line or '# Start of Mantra Sets --' in line:
@@ -797,6 +809,7 @@ class WebsiteGenerator:
         # Generate files
         self._generate_css()
         self._generate_js()
+        self._generate_search_index()
         self._generate_homepage()
         self._generate_indices()
         self._generate_kandah_pages()
@@ -1671,6 +1684,196 @@ background: var(--bg-sidebar);
     text-align: center;
     color: var(--text-muted);
     font-size: 0.9rem;
+}
+
+/* Search Modal */
+.search-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}
+
+.search-overlay.active {
+    display: block;
+}
+
+.search-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    background: var(--bg-main);
+    border-radius: 12px;
+    z-index: 9999;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.search-modal.active {
+    display: flex;
+}
+
+.search-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.search-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-modal-header h3 {
+    margin: 0;
+    font-family: var(--font-sanskrit);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.search-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+    padding: 0 4px;
+}
+
+.search-close:hover {
+    color: var(--color-accent);
+}
+
+.search-input-container {
+    padding: 16px 20px 8px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1.2rem;
+    font-family: var(--font-sanskrit);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.15);
+}
+
+.search-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    padding-left: 4px;
+}
+
+.search-results {
+    overflow-y: auto;
+    padding: 8px 20px 20px;
+    flex: 1;
+}
+
+.search-result-item {
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.search-result-item:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+}
+
+.search-result-ref {
+    font-weight: 600;
+    color: var(--color-accent);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.search-result-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.search-result-text {
+    font-family: var(--font-sanskrit);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    line-height: 1.8;
+    max-height: 5.4rem;
+    overflow: hidden;
+}
+
+.search-result-field {
+    margin-bottom: 10px;
+}
+
+.search-result-field:last-child {
+    margin-bottom: 0;
+}
+
+.search-result-field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.search-result-text mark {
+    background: #fff3cd;
+    color: inherit;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.search-no-results .icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.search-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
 }
 
 /* Responsive */
@@ -2592,7 +2795,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const parvaMap = {};
     document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
-        const ssMatch = href.match(/kandah\/([^\/]+)\//);
+        const ssMatch = href.match(/kandah[/]([^/]+)[/]/);
         if (ssMatch) {
             const displayNum = parseInt(link.textContent.trim());
             if (!isNaN(displayNum)) {
@@ -2615,12 +2818,37 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
-            // Use the dynamic map if available, otherwise fall back to direct supersection_N
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
+            
             if (parts.length === 3) {
-                url += `#sama-${parts[2]}`;
+                const targetNum = parseInt(parts[2]);
+                const samaLinks = document.querySelectorAll('.sama-link');
+                let matchedAnchor = null;
+                
+                samaLinks.forEach(link => {
+                    const text = link.textContent.trim();
+                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
+                    if (rangeMatch) {
+                        const start = parseInt(rangeMatch[1]);
+                        const end = parseInt(rangeMatch[2]);
+                        if (targetNum >= start && targetNum <= end) {
+                            matchedAnchor = link.getAttribute('href');
+                        }
+                    } else {
+                        const exactMatch = text.match(/^([0-9]+)$/);
+                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) {
+                            matchedAnchor = link.getAttribute('href');
+                        }
+                    }
+                });
+                
+                if (matchedAnchor) {
+                    url += matchedAnchor;
+                } else {
+                    url += `#sama-${parts[2]}`;
+                }
             }
             window.location.assign(url);
         }
@@ -2633,11 +2861,151 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
+    
+    // Search Modal
+    const searchModal = document.getElementById('search-modal');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchInput = document.getElementById('search-input');
+    const searchClose = document.getElementById('search-close');
+    const searchResults = document.getElementById('search-results');
+    let searchIndex = null;
+    
+    const loadSearchIndex = () => {
+        if (typeof SEARCH_INDEX !== 'undefined') {
+            searchIndex = SEARCH_INDEX;
+            if (searchResults) searchResults.innerHTML = '';
+        } else {
+            if (searchResults) searchResults.innerHTML = '<div class="search-no-results"><div class="icon">⚠️</div>Could not load search index.</div>';
+        }
+    };
+    
+    const openSearchModal = () => {
+        if (searchModal) {
+            searchModal.classList.add('active');
+            searchOverlay.classList.add('active');
+            if (searchInput) searchInput.focus();
+            if (!searchIndex) loadSearchIndex();
+        }
+    };
+    
+    const closeSearchModal = () => {
+        if (searchModal) searchModal.classList.remove('active');
+        if (searchOverlay) searchOverlay.classList.remove('active');
+    };
+    
+    if (searchClose) searchClose.addEventListener('click', closeSearchModal);
+    if (searchOverlay) searchOverlay.addEventListener('click', closeSearchModal);
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeSearchModal();
+        if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            openSearchModal();
+        }
+    });
+    
     if (searchBtn) {
         searchBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            handleJump();
+            openSearchModal();
+        });
+    }
+    
+    document.querySelectorAll('.top-nav a').forEach(link => {
+        if (link.textContent.includes('Search') || link.textContent.includes('अन्वेषणम्')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                openSearchModal();
+            });
+        }
+    });
+    
+    // Detect current page depth for relative path resolution
+    const currentPath = window.location.pathname;
+    const isKandahPage = currentPath.includes('/kandah/');
+    const depthPrefix = isKandahPage ? '../../' : '';
+    
+    const highlightText = (text, query) => {
+        if (!query || !text) return text;
+        const idx = text.toLowerCase().indexOf(query.toLowerCase());
+        if (idx === -1) return text;
+        return text.substring(0, idx) + '<mark>' + text.substring(idx, idx + query.length) + '</mark>' + text.substring(idx + query.length);
+    };
+    
+    const performSearch = (query) => {
+        if (!query || query.length < 2 || !searchIndex) return [];
+        const q = query.toLowerCase().trim();
+        const results = [];
+        for (const entry of searchIndex) {
+            let score = 0;
+            let matchedFields = [];
+            
+            const checkField = (text, fieldScore, fieldName, displayHtml) => {
+                if (text.toLowerCase().includes(q)) {
+                    score += fieldScore;
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                }
+            };
+            
+            checkField(entry.mantra_clean, 10, 'Mantra', entry.mantra_html);
+            checkField(entry.rik_clean, 8, 'Rik', entry.rik_html);
+            
+            for (const c of entry.classifications) {
+                checkField(c.rishi, 7, 'Rishi', c.rishi);
+                checkField(c.devata, 6, 'Devata', c.devata);
+                checkField(c.chandas, 4, 'Chandas', c.chandas);
+            }
+            
+            checkField(entry.title_clean, 5, 'Title', entry.title_html);
+            checkField(entry.metadata_clean, 3, 'Metadata', entry.metadata_html);
+            
+            if (score > 0) {
+                results.push({ ...entry, score, matchedFields });
+            }
+        }
+        results.sort((a, b) => b.score - a.score);
+        return results.slice(0, 50);
+    };
+    
+    if (searchInput) {
+        let debounceTimer;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const query = this.value.trim();
+                if (!query) {
+                    if (searchResults) searchResults.innerHTML = '';
+                    return;
+                }
+                if (!searchIndex) {
+                    if (searchResults) searchResults.innerHTML = '<div class="search-loading">Loading search index...</div>';
+                    return;
+                }
+                const results = performSearch(query);
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="search-no-results"><div class="icon">🔍</div>No results found for "' + query + '"</div>';
+                    return;
+                }
+                let html = '';
+                for (const r of results) {
+                    const classInfo = r.classifications.length > 0 
+                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).join('; ')
+                        : '';
+                    const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
+                    let fieldsHtml = '';
+                    for (const mf of r.matchedFields) {
+                        const highlighted = highlightText(mf.html || mf.text, query);
+                        const label = fieldLabels[mf.name] || mf.name;
+                        fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
+                    }
+                    html += `<a href="${depthPrefix}${r.link}" class="search-result-item">
+                        <div class="search-result-ref">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</div>
+                        <div class="search-result-meta">${classInfo || ''}</div>
+                        ${fieldsHtml}
+                    </a>`;
+                }
+                searchResults.innerHTML = html;
+            }, 250);
         });
     }
     
@@ -2659,6 +3027,63 @@ document.addEventListener('DOMContentLoaded', function() {
 '''
         with open(self.output_dir / 'js' / 'main.js', 'w', encoding='utf-8') as f:
             f.write(js)
+
+    def _clean_text_for_search(self, html_text: str) -> str:
+        """Strip HTML tags and swara spans to get plain Devanagari text for search matching"""
+        if not html_text:
+            return ""
+        text = re.sub(r'<[^>]+>', ' ', html_text)
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+
+    def _generate_search_index(self):
+        """Generate search-index.json with clean text for matching and HTML for display"""
+        index = []
+        for parva in self.parvas:
+            for kandah in parva.kandahs:
+                for sama in kandah.samas:
+                    sama_ref = f"{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}"
+                    link = f"kandah/{parva.id}/{kandah.kandah_number}.html#sama-{sama.sama_number}"
+                    
+                    rik_clean = self._clean_text_for_search(sama.rik_text)
+                    mantra_clean = self._clean_text_for_search(sama.mantra_text)
+                    title_clean = self._clean_text_for_search(sama.title)
+                    metadata_clean = self._clean_text_for_search(sama.saman_metadata)
+                    
+                    classifications = []
+                    for c in sama.rik_classifications:
+                        classifications.append({
+                            "rishi": c.get("Rishi", ""),
+                            "devata": c.get("Devata", ""),
+                            "chandas": c.get("Chandas", ""),
+                            "global_num": c.get("Global_Rik_Num", "")
+                        })
+                    
+                    entry = {
+                        "ref": sama_ref,
+                        "link": link,
+                        "parva_num": parva.parva_number,
+                        "parva_title": parva.title,
+                        "kandah_num": kandah.kandah_number,
+                        "sama_num": sama.sama_number,
+                        "rik_html": sama.rik_text or "",
+                        "mantra_html": sama.mantra_text or "",
+                        "title_html": sama.title or "",
+                        "metadata_html": sama.saman_metadata or "",
+                        "rik_clean": rik_clean,
+                        "mantra_clean": mantra_clean,
+                        "title_clean": title_clean,
+                        "metadata_clean": metadata_clean,
+                        "classifications": classifications
+                    }
+                    index.append(entry)
+        
+        index_path = self.output_dir / 'search-index.js'
+        with open(index_path, 'w', encoding='utf-8') as f:
+            f.write('const SEARCH_INDEX = ')
+            json.dump(index, f, ensure_ascii=False)
+            f.write(';')
+        print(f"  Search index: {len(index)} entries → {index_path}")
 
     def _get_html_head(self, title: str, depth: int = 0) -> str:
         """Generate HTML head section"""
@@ -2919,6 +3344,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </footer>
         </main>
     </div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>अन्वेषणम् (Search)</h3>
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
+                <span class="search-hint">Type in Devanagari or English</span>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="search-overlay" id="search-overlay"></div>
+    <script src="search-index.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>'''
@@ -3026,6 +3466,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </section>
         </main>
     </div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>अन्वेषणम् (Search)</h3>
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
+                <span class="search-hint">Type in Devanagari or English</span>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="search-overlay" id="search-overlay"></div>
+    <script src="../search-index.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>'''
@@ -3165,6 +3620,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </section>
         </main>
     </div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>अन्वेषणम् (Search)</h3>
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
+                <span class="search-hint">Type in Devanagari or English</span>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="search-overlay" id="search-overlay"></div>
+    <script src="../search-index.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>'''
@@ -3239,6 +3709,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 kandah_counter = {'val': 0}
                 kandah_seen_footnotes = {}  # content -> (id, display_num)
                 kandah_all_footnotes = []   # list of (id, display_num, text)
+                
+                # Tracking Rik occurrences for unique anchors
+                rik_occurrence_map = defaultdict(int)
 
                 # Build Sama entries
                 sama_entries = ""
@@ -3412,8 +3885,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     # NO per-Sama footnotes section here - accumulated at Kandah level
                     
+                    # Generate Rik Anchors for Jump Navigation
+                    rik_anchor_tags = ""
+                    for rid in sama.rik_ids:
+                        rik_occurrence_map[rid] += 1
+                        occ = rik_occurrence_map[rid]
+                        anchor_id = f"rik-{rid}" if occ == 1 else f"rik-{rid}_{occ}"
+                        rik_anchor_tags += f'<span id="{anchor_id}" class="rik-anchor"></span>'
+
                     sama_entries += f'''
                     <article class="sama-entry" id="sama-{sama.sama_number}">
+                        {rik_anchor_tags}
                         <div class="sama-id-row">
                             <span class="sama-id">
                                 <a href="#sama-{sama.sama_number}">{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}</a>
@@ -3506,6 +3988,21 @@ document.addEventListener('DOMContentLoaded', function() {
         </main>
         
     </div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h3>अन्वेषणम् (Search)</h3>
+                <button class="search-close" id="search-close">&times;</button>
+            </div>
+            <div class="search-input-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
+                <span class="search-hint">Type in Devanagari or English</span>
+            </div>
+            <div class="search-results" id="search-results"></div>
+        </div>
+    </div>
+    <div class="search-overlay" id="search-overlay"></div>
+    <script src="../../search-index.js"></script>
     <script src="../../js/main.js"></script>
 </body>
 </html>'''
@@ -3665,6 +4162,11 @@ Examples:
     print(f"   - {len(parvas)} Parvas (Patha)")
     print(f"   - {total_kandahs} Kandahs (Khanda)")
     print(f"   - {total_samas} Samas (Sama)")
+    
+    import sys
+    import io
+    if sys.stdout.encoding != 'utf-8':
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     
     for parva in parvas:
         print(f"\n   {parva.parva_number}. {parva.title}")

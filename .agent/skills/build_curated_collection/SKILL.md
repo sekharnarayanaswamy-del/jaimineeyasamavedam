@@ -24,9 +24,11 @@ When tasked to create a custom selection (e.g., "Ritu Shanti Japam"):
     *   `rik_nometa`: Extracts Rik text only, helpful for generating cleaner 'Patha' views without Samam metadata.
 
 ## 3. Renumbering and Finalization
-After curation or manual editing, use `src/tools/renumber_sooktam.py` to ensure sequential IDs:
-*   **Grouping Logic**: The tool uses "Component Tracking". It groups `Metadata`, `Text`, and `Title` blocks for the same verse into a single `subsection_N` ID even if they are split by blank lines or tags.
-*   **Sequential Sync**: It resets counts based on `--start-subsection` (default 1) or preserves SuperSection boundaries with `--preserve-super`.
+After curation or manual editing, use `src/tools/renumber_sooktam.py` to ensure sequential IDs and verse counts:
+*   **Sequential Trackers**: The tool maintains independent counters for **Samams** (in `Mantra Sets`) and **Riks** (in `Rik Text`).
+*   **Grouping Logic**: It groups `Metadata`, `Text`, and `Title` blocks for the same verse into a single `subsection_N` ID based on their proximity.
+*   **Cross-File Sync**: Always run the renumbering tool on both `Sooktamala.txt` and `Collection_Devanagari_Unicode.txt` to keep them synchronized before generating the final JSON.
+*   **SuperSection Preservation**: Use `--preserve-super` if the file belongs to a specific indexed collection (e.g., `supersection_20`).
 
 ### Pipeline for complex cases (Example): 
 1. ``` python src\curate_jsv.py --sources data\output\Vargeekaran.json data\output\Aaranam_latest_out.json --filter data\input\Nakshatra_sooktam.txt --output data\output\Nakshatra_sooktam.json --mode rik_nometa --filter-type rik```
