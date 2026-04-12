@@ -4039,14 +4039,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     sama_header_html = ""
                     if sama_header_items:
-                        # Only show procedure link at sama level if it's a subsection-level procedure
-                        # (not section or supersection - those are shown at header level)
-                        if sama.procedure_ref and sama.procedure_ref.get('scope') == 'subsection':
-                            # Use slugified title or filename as URL
-                            slug = Path(sama.procedure_ref.get('file', '')).stem
-                            proc_anchor = f"../../prayoga/{slug}.html"
-                            proc_title = sama.procedure_ref.get('title', 'विधिः')
-                            sama_header_items.append(f'<div class="sama-header-text"><a href="{proc_anchor}" class="proc-link-text" title="{proc_title}">📜 [{proc_title}]</a></div>')
+                        # Procedure links are shown at section/supersection header level only
+                        # Remove sama-level procedure links (subsection scope)
                     
                     sama_header_html = f'<div class="sama-header-container">{"".join(sama_header_items)}</div>'
 

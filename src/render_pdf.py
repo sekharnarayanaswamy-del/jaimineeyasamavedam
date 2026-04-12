@@ -749,21 +749,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     elif meta_part:
         combined_header = meta_part
         
-    procedure_ref = subsection.get('procedure_ref', {})
-    # Only show procedure at sama level if it's a subsection-level procedure
-    # (section and supersection scope are shown at section header in template)
-    if procedure_ref and procedure_ref.get('scope') == 'subsection':
-        slug = Path(procedure_ref.get('file', '')).stem
-        proc_title = procedure_ref.get('title', 'विधिः')
-        proc_link = f"\\footnote{{{proc_title} - \\hyperref[app:{slug}]{{परिशिष्टम् पश्यतु (See Appendix)}}}}"
-        
-        if combined_header:
-            combined_header += f" {proc_link}"
-        else:
-            combined_header = proc_link
-            
-    if combined_header:
-         formatted_output.append(f"{{\\centering {combined_header} \\par}}")
+    # Procedure links are shown at section/supersection header level in template
+    # No sama-level procedure links (subsection scope shown at header)
 
     # Keep header with mantra text
     formatted_output.append(r"\nopagebreak")                
@@ -1001,20 +988,11 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     elif meta_part:
         combined_header = meta_part
         
-    procedure_ref = subsection.get('procedure_ref', {})
-    # Only show procedure if it's NOT a section-level procedure (those are shown at section header)
-    if procedure_ref and procedure_ref.get('scope') != 'section':
-        slug = Path(procedure_ref.get('file', '')).stem
-        proc_title = procedure_ref.get('title', 'विधिः')
-        proc_link = f"\\footnote{{{proc_title} - \\hyperref[app:{slug}]{{परिशिष्टम् पश्यतु (See Appendix)}}}}"
-        
-        if combined_header:
-            combined_header += f" {proc_link}"
-        else:
-            combined_header = proc_link
-            
+    # Procedure links are shown at section/supersection header level in template
+    # No sama-level procedure links (handled at header)
+    
     if combined_header:
-        formatted_output.append(f"{{\\centering {combined_header} \\par}}")
+         formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
     formatted_output.append(r"\nopagebreak")
     formatted_output.append(r"\vspace{0.5em}")
