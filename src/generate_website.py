@@ -4458,7 +4458,7 @@ Examples:
     )
     
     parser.add_argument(
-        '--output-dir', '-o',
+        '--output_dir', '-o',
         type=str,
         default=None,
         help='Output directory for generated website'
