@@ -750,8 +750,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         combined_header = meta_part
         
     procedure_ref = subsection.get('procedure_ref', {})
-    # Only show procedure if it's NOT a section-level procedure (those are shown at section header)
-    if procedure_ref and procedure_ref.get('scope') != 'section':
+    # Only show procedure at sama level if it's a subsection-level procedure
+    # (section and supersection scope are shown at section header in template)
+    if procedure_ref and procedure_ref.get('scope') == 'subsection':
         slug = Path(procedure_ref.get('file', '')).stem
         proc_title = procedure_ref.get('title', 'विधिः')
         proc_link = f"\\footnote{{{proc_title} - \\hyperref[app:{slug}]{{परिशिष्टम् पश्यतु (See Appendix)}}}}"
@@ -2510,42 +2511,13 @@ Examples:
     print(f"Processing {input_file} in '{output_mode}' mode...")
     print(f"Document Title: {doc_title_sa}")
     
-    # Load Prayoga (Procedure) Index - Folder-based convention
-    # Folders: section_N, supersection_N, subsection_N contain .md files
-    # that automatically apply to that scope
+    # Load Prayoga (Procedure) Index from YAML
+    # Note: procedure_ref should already be injected into the JSON during generate_json.py
+    # using the --procedures flag. This code is kept for backward compatibility if needed.
     prayoga_dir = Path("data/input/prayoga")
     prayoga_index = {}
-    
-    if prayoga_dir.exists():
-        for item in prayoga_dir.iterdir():
-            if item.is_dir():
-                folder_name = item.name  # e.g., "section_1", "supersection_21"
-                # Determine scope from folder name prefix
-                if folder_name.startswith('supersection_'):
-                    scope = 'supersection'
-                    target_id = folder_name  # e.g., "supersection_21"
-                elif folder_name.startswith('section_'):
-                    scope = 'section'
-                    target_id = folder_name  # e.g., "section_1"
-                elif folder_name.startswith('subsection_'):
-                    scope = 'subsection'
-                    target_id = folder_name
-                else:
-                    continue
-                
-                # Find all .md files in this folder
-                for md_file in item.glob('*.md'):
-                    title = md_file.stem.replace('_', ' ').replace('-', ' ').title()
-                    # Relative path from prayoga_dir
-                    rel_path = f"{folder_name}/{md_file.name}"
-                    prayoga_index[(scope, target_id)] = {
-                        'file': rel_path,
-                        'title': title,
-                        'scope': scope
-                    }
-    
-    # Legacy support: also check YAML index if it exists
     index_path = prayoga_dir / "prayoga_index.yaml"
+    
     if index_path.exists():
         with open(index_path, 'r', encoding='utf-8') as f:
             cfg = yaml.safe_load(f)
@@ -2553,7 +2525,12 @@ Examples:
                 for proc in cfg['procedures']:
                     scope = proc.get('scope')
                     target_id = proc.get('id')
-                    if scope and target_id and (scope, target_id) not in prayoga_index:
+                    if scope and target_id:
+                        prayoga_index[(scope, target_id)] = {
+                            'file': proc.get('file'),
+                            'title': proc.get('title'),
+                            'scope': scope
+                        }
                         prayoga_index[(scope, target_id)] = {
                             'file': proc.get('file'),
                             'title': proc.get('title'),
@@ -2561,6 +2538,7 @@ Examples:
                         }
 
     # Inject procedure_ref into subsections based on lowest-level matching scope
+    # Only inject if not already present in JSON (from --procedures in generate_json.py)
     procedures = {}
     for super_key, supersection in supersections.items():
         super_proc = prayoga_index.get(('supersection', super_key))
@@ -2568,6 +2546,36 @@ Examples:
             if section_key == 'count': continue
             sec_proc = prayoga_index.get(('section', section_key)) or super_proc
             for subsection_key, subsection in section.get('subsections', {}).items():
+                # Check if procedure_ref already exists in JSON (from generate_json.py --procedures)
+                if subsection.get('procedure_ref'):
+                    # Use existing procedure_ref from JSON
+                    procedure_ref = subsection['procedure_ref']
+                    file_path = procedure_ref.get('file', '')
+                    if file_path and file_path not in procedures:
+                        full_md_path = prayoga_dir / file_path
+                        if full_md_path.exists():
+                            with open(full_md_path, 'r', encoding='utf-8') as f:
+                                md_content = f.read()
+                            if md_content.startswith('---'):
+                                parts = md_content.split('---', 2)
+                                if len(parts) >= 3:
+                                    md_content = parts[2].strip()
+                            latex_content = md_content.replace('_', '\\_').replace('&', '\\&').replace('%', '\\%').replace('$', '\\$')
+                            latex_content = re.sub(r'(?m)^### (.*?)$', r'\\subsubsection*{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^## (.*?)$', r'\\subsection*{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^# (.*?)$', r'\\section*{\1}', latex_content)
+                            latex_content = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', latex_content)
+                            latex_content = re.sub(r'\*(.*?)\*', r'\\textit{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^- (.*?)$', r'$\\bullet$ \1\n\n', latex_content)
+                            
+                            procedures[file_path] = {
+                                'slug': Path(file_path).stem,
+                                'title': procedure_ref.get('title', 'विधिः'),
+                                'latex_content': latex_content
+                            }
+                    continue
+                
+                # Otherwise, inject from YAML (backward compatibility)
                 target_proc = prayoga_index.get(('subsection', subsection_key)) or sec_proc
                 
                 if target_proc:

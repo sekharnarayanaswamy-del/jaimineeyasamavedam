@@ -7,42 +7,10 @@ import yaml
 from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config
 
 def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
-    """Load the procedure linking index from both folder convention and YAML."""
+    """Load the procedure linking index from YAML file."""
     # Build lookup maps by scope
     index = {'supersection': {}, 'section': {}, 'subsection': {}}
     
-    prayoga_dir = Path("data/input/prayoga")
-    
-    # First: Scan folders (folder-based convention takes priority)
-    if prayoga_dir.exists():
-        for item in prayoga_dir.iterdir():
-            if item.is_dir():
-                folder_name = item.name  # e.g., "section_1", "supersection_21", "subsection_5"
-                # Determine scope from folder name prefix
-                if folder_name.startswith('supersection_'):
-                    scope = 'supersection'
-                    target_id = folder_name  # e.g., "supersection_21"
-                elif folder_name.startswith('section_'):
-                    scope = 'section'
-                    target_id = folder_name  # e.g., "section_1"
-                elif folder_name.startswith('subsection_'):
-                    scope = 'subsection'
-                    target_id = folder_name
-                else:
-                    continue
-                
-                # Find all .md files in this folder
-                for md_file in item.glob('*.md'):
-                    title = md_file.stem.replace('_', ' ').replace('-', ' ').title()
-                    rel_path = f"{folder_name}/{md_file.name}"
-                    index[scope][target_id] = {
-                        'file': rel_path,
-                        'title': title,
-                        'scope': scope,
-                        'scope_id': target_id
-                    }
-    
-    # Second: Also check YAML index (legacy support, won't override folders)
     if os.path.exists(path):
         with open(path, 'r', encoding='utf-8') as f:
             data = yaml.safe_load(f)
@@ -50,15 +18,13 @@ def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
         for entry in data.get('procedures', []):
             scope = entry.get('scope', 'section')
             scope_id = entry.get('id', '')
-            # Only add if not already set by folder convention
-            if scope_id not in index.get(scope, {}):
+            if scope_id:
                 index[scope][scope_id] = {
                     'file': entry.get('file', ''),
                     'title': entry.get('title', ''),
                     'scope': scope,
                     'scope_id': scope_id
                 }
-    
     return index
 
 def resolve_procedure(proc_index, supersection_id, section_id, subsection_id):
