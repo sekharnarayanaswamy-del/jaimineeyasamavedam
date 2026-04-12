@@ -120,7 +120,45 @@ python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json --outp
 
 ---
 
-## 3. `generate_Rik_for_samhita.py`
+## 3. `generate_website.py`
+
+This script generates the static HTML website from JSON data.
+
+**Location:** `src/generate_website.py`
+
+### Usage
+
+```bash
+python src/generate_website.py [OPTIONS]
+```
+
+### Arguments
+
+| Argument | Description | Default |
+| :--- | :--- | :--- |
+| `--source-file`, `-s` | Path to the input JSON file. | Required |
+| `--output-dir`, `-o` | Output directory (default: `docs`). | `docs` |
+| `--audio-dir`, `-d` | Directory for audio placeholder folders. | `data/input/Audio_Placeholders` |
+| `--samhita`, `-m` | Generate for Samhita mode. | Default |
+| `--aranam`, `-a` | Generate for Aaranam mode. | - |
+| `--collection`, `-c` | Generate for Collection mode. | - |
+| `--title` | Custom title for the collection (used with `--collection`). | From JSON metadata |
+
+### Examples
+
+**Generate Samhita website:**
+```bash
+python src/generate_website.py -s data/output/Vargeekaran.json -o docs/samhita
+```
+
+**Generate Collection with custom title:**
+```bash
+python src/generate_website.py -s data/output/Sooktamala.json -o docs/collection/sooktamala -c --title "साम सूक्तमाला"
+```
+
+---
+
+## 4. `generate_Rik_for_samhita.py`
 
 This script generates a PDF containing primarily Rik text, intended for Samhita verification or specific output formats.
 

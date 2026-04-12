@@ -386,6 +386,22 @@ python src/generate_website.py [OPTIONS]
 | `--audio-dir`, `-d` | Directory for audio placeholder folders (default: `data/input/Audio_Placeholders`). |
 | `--samhita`, `-m` | Generate for Samhita / Prakruti Ganam. This is the default and uses the `samhita` configuration key. |
 | `--aranam`, `-a` | Generate for Aaranam / Aranya Ganam mode (uses `aranam` configuration key). |
+| `--collection`, `-c` | Generate for Collection/Sama Sangraha mode (uses `collection` configuration key). |
+| `--title` | Custom Sanskrit title for the collection (used with `--collection`). |
+
+#### Collection Mode
+
+The website supports multiple collections (Sooktamala, Prayogamala, etc.) accessible from the gateway homepage. To generate a collection sub-site:
+
+```bash
+# Generate Sooktamala collection
+python src/generate_website.py -s data/output/Sooktamala.json -o docs/collection/sooktamala -c --title "साम सूक्तमाला"
+
+# Generate Prayogamala collection  
+python src/generate_website.py -s data/output/PrayogamalaPurva.json -o docs/collection/prayogamala-purva -c --title "प्रयोगमाला पूर्वभागः"
+```
+
+The gateway homepage (`docs/index.html`) automatically lists all collections configured in `docs/collection_config.yaml`.
 
 ### `src/generate_Rik_for_samhita.py`
 *Generates continuous Rik text document.*
