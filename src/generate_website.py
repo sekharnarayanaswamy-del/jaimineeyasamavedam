@@ -4038,9 +4038,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             sama_header_items.append(f'<div class="sama-metadata-text">॥ {clean_smeta} ॥</div>')
                     
                     sama_header_html = ""
-                    if sama_header_items:
-                        # Procedure links are shown at section/supersection header level only
-                        # Remove sama-level procedure links (subsection scope)
+                    # Procedure links are shown at section/supersection header level only
+                    # No sama-level procedure links (subsection scope shown at header)
                     
                     sama_header_html = f'<div class="sama-header-container">{"".join(sama_header_items)}</div>'
 
