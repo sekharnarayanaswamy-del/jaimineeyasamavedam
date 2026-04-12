@@ -501,15 +501,299 @@ Footnotes in the source text must follow the `(sN)` pattern **immediately follow
 *   **Correct**: `इ(श)(s1)`
 *   **Incorrect**: `इ(श) (s1)` (Space creates detachment)
 
-### 5.4 Sidebar "Jump to" Logic
-The website includes a "Jump to" input field in the sidebar that allows users to navigate directly to a specific Parva, Kandah, or Sama.
-*   **Input Formats**:
-    *   `P.K` — Navigates to Parva `P`, Kandah `K`.
-    *   `P.K.S` — Navigates to Parva `P`, Kandah `K`, and scrolls to Sama `S`.
-*   **Implementation**: This is handled by a client-side JavaScript function `handleJump()` in `js/main.js`. It dynamically calculates the relative path prefix (`../`) based on the current page's depth (e.g., if the user is in a Kandah page, it uses `../../` to reach the root before navigating to the target).
-*   **Dynamic Path Resolution**: The logic checks `window.location.pathname` to determine the depth, ensuring correctly resolved links from both the homepage, classification indices, and specific content pages.
+### 5.4 Sidebar "Jump to" Logic — Technical Details
 
-### 5.4 Rik Identification & Global Mapping (Vargeekaran.json)
+The website includes a "Jump to" input field in the sidebar that allows users to navigate directly to a specific Parva, Kandah, or Sama.
+
+#### Input Formats
+| Format | Example | Behavior |
+|--------|---------|----------|
+| `P.K` | `6.11` | Navigates to Parva 6, Kandah 11 |
+| `P.K.S` | `6.11.33` | Navigates to Parva 6, Kandah 11, scrolls to Samam 33 |
+
+#### Samam Range Resolution
+
+The key challenge is that Samam numbers in the input (e.g., `33`) do not directly correspond to HTML anchor IDs. The sidebar displays Samam **ranges** in its `.sama-link` elements:
+
+```html
+<a href="#sama-10" class="sama-link">31–33</a>
+```
+
+So Samam 33 is inside the `#sama-10` block. The `handleJump()` function resolves this by:
+
+1. **Parsing the sidebar links** — reads all `.sama-link` elements and their text content
+2. **Range matching** — uses regex `/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/` to parse range text (e.g., `31–33`)
+3. **Exact match fallback** — if the link text is a single number (e.g., `34`), matches directly
+4. **Anchor resolution** — finds the `href` of the matching link and appends it to the URL
+
+```javascript
+samaLinks.forEach(link => {
+    const text = link.textContent.trim();
+    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
+    if (rangeMatch) {
+        const start = parseInt(rangeMatch[1]);
+        const end = parseInt(rangeMatch[2]);
+        if (targetNum >= start && targetNum <= end) {
+            matchedAnchor = link.getAttribute('href');
+        }
+    }
+});
+```
+
+#### Relative Path Calculation
+
+The function calculates the correct `../` prefix based on the current page's depth:
+
+| Page Type | Depth | Prefix |
+|-----------|-------|--------|
+| Homepage / Index | 0 | `./` |
+| Classification pages | 1 | `../` |
+| Kandah pages | 2 | `../../` |
+
+```javascript
+const path = window.location.pathname;
+let depth = 0;
+if (path.includes('/kandah/')) depth = 2;
+else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
+const prefix = '../'.repeat(depth);
+```
+
+#### Dynamic Parva ID Mapping
+
+Parva IDs in URLs use internal names (e.g., `supersection_6`) rather than numbers. The function builds a dynamic map from the sidebar's `.parva-link` elements:
+
+```javascript
+const parvaMap = {};
+document.querySelectorAll('.parva-link').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    const ssMatch = href.match(/kandah[/]([^/]+)[/]/);
+    if (ssMatch) {
+        parvaMap[parseInt(link.textContent.trim())] = ssMatch[1];
+    }
+});
+```
+
+**Files**: `src/generate_website.py` (`_generate_js()` method), `docs/*/js/main.js`
+
+---
+
+### 5.5 Full-Text Search — Technical Details
+
+The search system provides full-text search across all Samam content, including mantra text, Rik text, Rishi, Devata, and Chandas metadata.
+
+#### Architecture Overview
+
+```
+generate_website.py
+    ├── _generate_search_index()  →  search-index.js (global SEARCH_INDEX)
+    ├── _clean_text_for_search()  →  strips HTML for matching
+    └── _generate_js()            →  search modal logic in main.js
+
+Page templates (all)
+    ├── <script src="search-index.js"></script>  (loaded before main.js)
+    └── search modal HTML + overlay div
+```
+
+#### Search Index Generation (`search-index.js`)
+
+The index is generated as a **JavaScript file** (not JSON) to avoid CORS issues when opening HTML files directly via `file://` protocol.
+
+```python
+def _generate_search_index(self):
+    index = []
+    for parva in self.parvas:
+        for kandah in parva.kandahs:
+            for sama in kandah.samas:
+                entry = {
+                    "ref": "P.K.S",           # e.g., "1.3.7"
+                    "link": "kandah/...",     # relative URL with anchor
+                    "parva_num": 1,
+                    "parva_title": "आग्नेयपाठः",
+                    "kandah_num": 3,
+                    "sama_num": 7,
+                    "rik_html": "...",         # HTML with swara marks (display)
+                    "mantra_html": "...",      # HTML with swara marks (display)
+                    "title_html": "...",
+                    "metadata_html": "...",
+                    "rik_clean": "...",        # plain text (matching)
+                    "mantra_clean": "...",     # plain text (matching)
+                    "title_clean": "...",
+                    "metadata_clean": "...",
+                    "classifications": [...]   # Rishi, Devata, Chandas
+                }
+                index.append(entry)
+    
+    # Write as JS variable, not JSON
+    with open(self.output_dir / 'search-index.js', 'w', encoding='utf-8') as f:
+        f.write('const SEARCH_INDEX = ')
+        json.dump(index, f, ensure_ascii=False)
+        f.write(';')
+```
+
+#### Permissive Search Features
+
+The search system supports multiple matching modes for flexible searching:
+
+1. **Exact Match** - Standard substring matching with whitespace removed
+2. **Diacritic-Free Match** - Strips vowel marks (े, ी, ौ etc.) before matching. Example: "ओग्न" matches "ओ(त)ग्ना"
+3. **Transliteration Match** - Converts IAST/Latin input to Devanagari. Example: "agni" converts to "अग्नि" and matches
+
+The index includes additional permissive fields:
+- `*_permissive` - Base Devanagari characters without vowel marks
+- `*_latin` - Transliterated Latin (IAST-like) version for matching Latin input
+
+#### Text Cleaning for Search
+
+The `_clean_text_for_search()` method strips all HTML tags to produce plain text for matching:
+
+```python
+def _clean_text_for_search(self, html_text: str) -> str:
+    if not html_text:
+        return ""
+    text = re.sub(r'<[^>]+>', ' ', html_text)  # strip all tags
+    text = re.sub(r'\s+', ' ', text).strip()   # normalize whitespace
+    return text
+```
+
+This means a user can type `पावस्वामाधूमक्तमः` (without swara marks) and it will match against the underlying text even though the displayed HTML contains `<span class="accent-swarita">` tags.
+
+#### Scoring System
+
+Results are scored by field relevance (higher = more relevant):
+
+| Field | Score |
+|-------|-------|
+| Mantra text | 10 |
+| Rik text | 8 |
+| Rishi | 7 |
+| Devata | 6 |
+| Title | 5 |
+| Chandas | 4 |
+| Metadata | 3 |
+
+Results are sorted by score descending and limited to 50 entries.
+
+#### Search Result Interaction
+
+The search results support flexible user interaction:
+
+| Action | Behavior |
+|--------|----------|
+| Single click (no selection) | Navigate to result |
+| Double click | Always navigate to result |
+| Drag/Select text | Allows text selection without navigation |
+| Right click | Opens context menu for copy (no navigation) |
+
+This is implemented by tracking mouse movement and selection state in the `mouseup` handler.
+
+#### Search Modal JavaScript
+
+The search logic in `main.js` works as follows:
+
+1. **Modal open** — triggered by sidebar button, top nav link, or pressing `/`
+2. **Index loading** — `SEARCH_INDEX` global is already available (loaded via `<script>` tag)
+3. **Debounced input** — 250ms debounce to avoid excessive processing
+4. **Search execution** — iterates all entries, checks each field with `String.includes()`
+5. **Result rendering** — displays HTML with `<mark>` highlighting around matched text
+6. **Navigation** — clicking a result navigates to the `link` URL (e.g., `kandah/supersection_1/3.html#sama-7`)
+
+```javascript
+const loadSearchIndex = () => {
+    if (typeof SEARCH_INDEX !== 'undefined') {
+        searchIndex = SEARCH_INDEX;
+        if (searchResults) searchResults.innerHTML = '';
+    }
+};
+
+const performSearch = (query) => {
+    if (!query || query.length < 2 || !searchIndex) return [];
+    const q = query.toLowerCase().trim();
+    const results = [];
+    for (const entry of searchIndex) {
+        let score = 0;
+        if (entry.mantra_clean.toLowerCase().includes(q)) score += 10;
+        if (entry.rik_clean.toLowerCase().includes(q)) score += 8;
+        // ... more fields
+        if (score > 0) results.push({ ...entry, score, matchField, matchText });
+    }
+    results.sort((a, b) => b.score - a.score);
+    return results.slice(0, 50);
+};
+```
+
+#### Highlighting Logic
+
+The `highlightText()` function finds the query within the clean text, then maps the position back to the original HTML to wrap the matched portion in `<mark>` tags:
+
+```javascript
+const highlightText = (html, query) => {
+    const clean = stripHtml(html);
+    const idx = clean.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return html;
+    const start = html.indexOf(clean.substring(idx, idx + query.length));
+    const end = start + clean.substring(idx, idx + query.length).length;
+    return html.substring(0, start) + '<mark>' + html.substring(start, end) + '</mark>' + html.substring(end);
+};
+```
+
+#### CSS Structure
+
+The modal uses a flex column layout for proper scrolling:
+
+```css
+.search-modal {
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.search-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;          /* allows flex child to shrink */
+}
+
+.search-results {
+    overflow-y: auto;       /* scrollable */
+    flex: 1;                /* takes remaining space */
+}
+
+.search-result-text mark {
+    background: #fff3cd;    /* yellow highlight */
+    padding: 0 2px;
+    border-radius: 2px;
+}
+```
+
+#### Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `/` | Open search modal (when not in an input) |
+| `Escape` | Close search modal |
+| Click overlay | Close search modal |
+
+#### Script Loading Order
+
+Each page template includes scripts in this order:
+
+```html
+<script src="../../search-index.js"></script>  <!-- defines SEARCH_INDEX -->
+<script src="../../js/main.js"></script>       <!-- uses SEARCH_INDEX -->
+```
+
+The path depth varies by page type:
+- Homepage: `search-index.js` (same directory)
+- Classification: `../search-index.js`
+- Kandah pages: `../../search-index.js`
+
+**Files**: `src/generate_website.py` (`_generate_search_index()`, `_clean_text_for_search()`, CSS, JS template, all page templates), `docs/*/search-index.js` (generated)
+
+---
+
+### 5.6 Rik Identification & Global Mapping (Vargeekaran.json)
 The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which acts as the **Enriched Source of Truth** for the website.
 *   **Sequential verse numbering**: It maintains a global counter as it traverses the Samhita hierarchy. This counter matches the row index in the Reconciliation Excel and becomes the `Global_Rik_Num` used for classification lookups.
 *   **Verse Extraction**: The parser looks for Devanagari verse numbers (e.g., `॥ ७ ॥`) within Arsheyam text blocks. It converts these Devanagari digits to standard integers to determine the relative `Rik_ID`.

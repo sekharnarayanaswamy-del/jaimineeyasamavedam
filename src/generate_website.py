@@ -21,6 +21,7 @@ import re
 import json
 import sys
 import argparse
+import markdown
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Any
@@ -484,6 +485,7 @@ class Sama:
     saman_metadata: str = ""
     rik_text: str = ""
     mantra_text: str = ""
+    procedure_ref: Dict = field(default_factory=dict)
     footnotes: List[str] = field(default_factory=list)
     audio_filename: str = ""
     sama_number: int = 0
@@ -576,6 +578,7 @@ class JSVParser:
                              if isinstance(m, dict):
                                  mantra_list.append(m.get('corrected-mantra', ''))
                         s.mantra_text = '\n'.join(mantra_list)
+                        s.procedure_ref = sub_data.get('procedure_ref', {})
                         
                         fns = sub_data.get('footnotes', {})
                         fn_list = []
@@ -813,6 +816,7 @@ class WebsiteGenerator:
         self._generate_homepage()
         self._generate_indices()
         self._generate_kandah_pages()
+        self._generate_procedure_pages()
         self._generate_metadata_json()
         
         print(f"✅ Website generated at: {self.output_dir}")
@@ -1456,6 +1460,44 @@ background: var(--bg-sidebar);
     width: auto;
     max-width: fit-content;
 }
+.proc-link-text {
+    font-size: 0.9rem !important;
+    vertical-align: middle;
+    margin-left: 10px;
+    color: #2e7d32;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.proc-link-text:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.procedure-box {
+    background: #F0F4F7;
+    border-left: 4px solid #2e7d32;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.procedure-label {
+    font-size: 0.75rem;
+    color: #2e7d32;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+}
+
+.procedure-text {
+    font-family: var(--font-sanskrit);
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+}
 
 /* Sama Metadata Text - displayed above Sama/Mantra text in Brown */
 .sama-metadata-text {
@@ -1465,6 +1507,44 @@ background: var(--bg-sidebar);
     text-align: center;
     width: auto;
     max-width: fit-content;
+}
+.proc-link-text {
+    font-size: 0.9rem !important;
+    vertical-align: middle;
+    margin-left: 10px;
+    color: #2e7d32;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.proc-link-text:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.procedure-box {
+    background: #F0F4F7;
+    border-left: 4px solid #2e7d32;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.procedure-label {
+    font-size: 0.75rem;
+    color: #2e7d32;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+}
+
+.procedure-text {
+    font-family: var(--font-sanskrit);
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: var(--text-primary);
 }
 
 /* Rik Text Box */
@@ -1791,38 +1871,59 @@ background: var(--bg-sidebar);
 
 .search-results {
     overflow-y: auto;
-    padding: 8px 20px 20px;
+    padding: 12px;
     flex: 1;
+    user-select: text;
+    -webkit-user-select: text;
 }
 
 .search-result-item {
-    padding: 16px;
-    margin-bottom: 12px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    cursor: pointer;
+    border-left: 3px solid transparent;
+    border-radius: 4px;
     transition: all 0.2s ease;
-    text-decoration: none;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
     display: block;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .search-result-item:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+    border-left-color: var(--color-accent);
+    background: rgba(255, 107, 53, 0.08);
+}
+
+.search-result-item a {
+    text-decoration: none;
+    color: inherit;
+    pointer-events: auto;
 }
 
 .search-result-ref {
     font-weight: 600;
     color: var(--color-accent);
-    font-size: 0.9rem;
-    margin-bottom: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+}
+
+.search-result-ref a {
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.search-result-ref a:hover {
+    text-decoration: underline;
 }
 
 .search-result-meta {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .search-result-text {
@@ -1830,12 +1931,19 @@ background: var(--bg-sidebar);
     font-size: 1.2rem;
     color: var(--text-primary);
     line-height: 1.8;
-    max-height: 5.4rem;
-    overflow: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
 }
 
 .search-result-field {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 4px;
 }
 
 .search-result-field:last-child {
@@ -2936,14 +3044,65 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query || query.length < 2 || !searchIndex) return [];
         const q = query.toLowerCase().trim();
         const results = [];
+        
+        // Convert IAST/Latin input to Devanagari for matching
+        const latinToDevanagari = (text) => {
+            const mapping = {
+                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'ri': 'ॠ',
+                'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
+                'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
+                'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
+                'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
+                'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
+                '.': '।', '|': '॥'
+            };
+            let result = text.toLowerCase();
+            // Process long vowels first
+            for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
+                result = result.replaceAll(k, v);
+            }
+            return result;
+        };
+        
+        // Check if query looks like Latin (contains a-z, not Devanagari)
+        const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
+        const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
+        
         for (const entry of searchIndex) {
             let score = 0;
             let matchedFields = [];
             
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
-                if (text.toLowerCase().includes(q)) {
+                if (!text) return;
+                // Remove spaces for comparison
+                const wsRegex = new RegExp('\\\\s+', 'g');
+                const textNoSpaces = text.replace(wsRegex, '');
+                const qNoSpaces = q.replace(wsRegex, '');
+                
+                // Check exact match
+                if (textNoSpaces.toLowerCase().includes(qNoSpaces)) {
                     score += fieldScore;
                     matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    return;
+                }
+                
+                // Check permissive (diacritic-stripped) match
+                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                if (textPermissive.toLowerCase().includes(qPermissive)) {
+                    score += fieldScore * 0.8;
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    return;
+                }
+                
+                // Check Latin transliteration match
+                if (isLatin && devanagariQuery) {
+                    const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                    const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
+                    if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
+                        score += fieldScore * 0.7;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    }
                 }
             };
             
@@ -2951,9 +3110,9 @@ document.addEventListener('DOMContentLoaded', function() {
             checkField(entry.rik_clean, 8, 'Rik', entry.rik_html);
             
             for (const c of entry.classifications) {
-                checkField(c.rishi, 7, 'Rishi', c.rishi);
-                checkField(c.devata, 6, 'Devata', c.devata);
-                checkField(c.chandas, 4, 'Chandas', c.chandas);
+                checkField(c.rishi_clean, 7, 'Rishi', c.rishi);
+                checkField(c.devata_clean, 6, 'Devata', c.devata);
+                checkField(c.chandas_clean, 4, 'Chandas', c.chandas);
             }
             
             checkField(entry.title_clean, 5, 'Title', entry.title_html);
@@ -2998,13 +3157,44 @@ document.addEventListener('DOMContentLoaded', function() {
                         const label = fieldLabels[mf.name] || mf.name;
                         fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
                     }
-                    html += `<a href="${depthPrefix}${r.link}" class="search-result-item">
-                        <div class="search-result-ref">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</div>
+                    html += `<div class="search-result-item">
+                        <div class="search-result-ref"><a href="${depthPrefix}${r.link}">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</a></div>
                         <div class="search-result-meta">${classInfo || ''}</div>
                         ${fieldsHtml}
-                    </a>`;
+                    </div>`;
                 }
                 searchResults.innerHTML = html;
+                
+                // Add click handlers to result items for navigation
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    let startX, startY;
+                    item.addEventListener('mousedown', function(e) {
+                        if (e.button !== 0) return;
+                        startX = e.clientX;
+                        startY = e.clientY;
+                    });
+                    item.addEventListener('mouseup', function(e) {
+                        if (e.button !== 0) return;
+                        const dx = Math.abs(e.clientX - startX);
+                        const dy = Math.abs(e.clientY - startY);
+                        if (dx > 5 || dy > 5) return;
+                        const selection = window.getSelection();
+                        if (selection && selection.toString().trim().length > 0) {
+                            return;
+                        }
+                        const link = this.querySelector('.search-result-ref a');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    });
+                    // Double-click always navigates
+                    item.addEventListener('dblclick', function(e) {
+                        const link = this.querySelector('.search-result-ref a');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    });
+                });
             }, 250);
         });
     }
@@ -3033,8 +3223,58 @@ document.addEventListener('DOMContentLoaded', function() {
         if not html_text:
             return ""
         text = re.sub(r'<[^>]+>', ' ', html_text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        # Remove swara notation (text within parentheses) for search matching
+        text = re.sub(r'\([^)]*\)', '', text)
+        # Normalize various types of whitespace and remove zero-width characters
+        text = re.sub(r'\s+', ' ', text)  # Convert multiple whitespace to single space
+        text = text.replace('\u00A0', ' ')  # Non-breaking space to regular space
+        text = text.replace('\u200B', '')   # Zero-width space
+        text = text.replace('\u200C', '')   # Zero-width non-joiner
+        text = text.replace('\u200D', '')   # Zero-width joiner
+        text = text.replace('\u2060', '')   # Word joiner
+        text = text.strip()
         return text
+
+    def _strip_diacritics(self, text: str) -> str:
+        """Remove Devanagari combining marks (diacritics) for permissive matching"""
+        if not text:
+            return ""
+        # Remove combining marks (devanagari diacritics range)
+        # Keep base characters, remove marks like ि ी े ै ो ौ etc.
+        diacritics = ''.join([chr(c) for c in range(0x0900, 0x0902)])  # chandrabindu, anusvara, visarga
+        diacritics += ''.join([chr(c) for c in range(0x093E, 0x094D)])  # vowel marks
+        diacritics += ''.join([chr(c) for c in range(0x0951, 0x0954)])  # accent marks
+        result = []
+        for char in text:
+            if char not in diacritics:
+                result.append(char)
+        return ''.join(result)
+
+    def _transliterate_to_latin(self, text: str) -> str:
+        """Convert Devanagari to basic Latin (IAST-like) for transliteration search"""
+        if not text:
+            return ""
+        # Simple Devanagari to Latin mapping
+        mapping = {
+            'अ': 'a', 'आ': 'aa', 'इ': 'i', 'ई': 'ee', 'उ': 'u', 'ऊ': 'oo', 'ऋ': 'ri', 'ॠ': 'rii',
+            'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
+            'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ng',
+            'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'n',
+            'ट': 't', 'ठ': 'th', 'ड': 'd', 'ढ': 'dh', 'ण': 'n',
+            'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+            'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+            'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 'sh', 'ष': 'sh', 'स': 's', 'ह': 'h',
+            'ा': 'a', 'ि': 'i', 'ी': 'i', 'ु': 'u', 'ू': 'u', 'ृ': 'ri', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
+            'ं': 'n', 'ः': 'h', 'ँ': 'm',
+            '।': '|', '॥': '||',
+        }
+        result = []
+        for char in text:
+            if char in mapping:
+                result.append(mapping[char])
+            elif char.isalpha() and not '\u0900' <= char <= '\u097F':
+                result.append(char)  # Keep non-Devanagari
+        return ''.join(result)
 
     def _generate_search_index(self):
         """Generate search-index.json with clean text for matching and HTML for display"""
@@ -3050,12 +3290,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     title_clean = self._clean_text_for_search(sama.title)
                     metadata_clean = self._clean_text_for_search(sama.saman_metadata)
                     
+                    # Permissive search fields
+                    rik_permissive = self._strip_diacritics(rik_clean)
+                    mantra_permissive = self._strip_diacritics(mantra_clean)
+                    rik_latin = self._transliterate_to_latin(rik_clean)
+                    mantra_latin = self._transliterate_to_latin(mantra_clean)
+                    
                     classifications = []
                     for c in sama.rik_classifications:
+                        rishi_clean = self._clean_text_for_search(c.get("Rishi", ""))
+                        devata_clean = self._clean_text_for_search(c.get("Devata", ""))
+                        chandas_clean = self._clean_text_for_search(c.get("Chandas", ""))
                         classifications.append({
                             "rishi": c.get("Rishi", ""),
+                            "rishi_clean": rishi_clean,
+                            "rishi_permissive": self._strip_diacritics(rishi_clean),
+                            "rishi_latin": self._transliterate_to_latin(rishi_clean),
                             "devata": c.get("Devata", ""),
+                            "devata_clean": devata_clean,
+                            "devata_permissive": self._strip_diacritics(devata_clean),
+                            "devata_latin": self._transliterate_to_latin(devata_clean),
                             "chandas": c.get("Chandas", ""),
+                            "chandas_clean": chandas_clean,
+                            "chandas_permissive": self._strip_diacritics(chandas_clean),
+                            "chandas_latin": self._transliterate_to_latin(chandas_clean),
                             "global_num": c.get("Global_Rik_Num", "")
                         })
                     
@@ -3074,6 +3332,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         "mantra_clean": mantra_clean,
                         "title_clean": title_clean,
                         "metadata_clean": metadata_clean,
+                        "rik_permissive": rik_permissive,
+                        "mantra_permissive": mantra_permissive,
+                        "rik_latin": rik_latin,
+                        "mantra_latin": mantra_latin,
                         "classifications": classifications
                     }
                     index.append(entry)
@@ -3352,7 +3614,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="search-input-container">
                 <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
-                <span class="search-hint">Type in Devanagari or English</span>
+                <span class="search-hint">Type in Devanagari</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -3474,7 +3736,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="search-input-container">
                 <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
-                <span class="search-hint">Type in Devanagari or English</span>
+                <span class="search-hint">Type in Devanagari</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -3628,7 +3890,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="search-input-container">
                 <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
-                <span class="search-hint">Type in Devanagari or English</span>
+                <span class="search-hint">Type in Devanagari</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -3776,7 +4038,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     sama_header_html = ""
                     if sama_header_items:
-                        sama_header_html = f'<div class="sama-header-container">{"".join(sama_header_items)}</div>'
+                        if sama.procedure_ref:
+                            # Use slugified title or filename as URL
+                            slug = Path(sama.procedure_ref.get('file', '')).stem
+                            proc_anchor = f"../../prayoga/{slug}.html"
+                            proc_title = sama.procedure_ref.get('title', 'विधिः')
+                            sama_header_items.append(f'<div class="sama-header-text"><a href="{proc_anchor}" class="proc-link-text" title="{proc_title}">📜 [{proc_title}]</a></div>')
+                    
+                    sama_header_html = f'<div class="sama-header-container">{"".join(sama_header_items)}</div>'
 
                     
                     # Mantra text with Sama header above it
@@ -3996,7 +4265,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="search-input-container">
                 <input type="text" class="search-input" id="search-input" placeholder="Search mantra text, Rishi, Devata, Chandas...">
-                <span class="search-hint">Type in Devanagari or English</span>
+                <span class="search-hint">Type in Devanagari</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -4010,6 +4279,88 @@ document.addEventListener('DOMContentLoaded', function() {
                 with open(parva_dir / f'{kandah.kandah_number}.html', 'w', encoding='utf-8') as f:
                     f.write(html)
                     
+    def _generate_procedure_pages(self):
+        """Generate standalone HTML pages for procedures from Markdown files"""
+        prayoga_dir = self.output_dir / 'prayoga'
+        prayoga_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Collect all unique procedure Markdown files from Samas
+        procedures = {}
+        for parva in self.parvas:
+            for kandah in parva.kandahs:
+                for sama in kandah.samas:
+                    if sama.procedure_ref:
+                        file_path = sama.procedure_ref.get('file', '')
+                        if file_path and file_path.endswith('.md'):
+                            slug = Path(file_path).stem
+                            title_meta = sama.procedure_ref.get('title', 'विधिः')
+                            # Also build the backlink for the very first Sama that links to this procedure
+                            backlink = f"../kandah/{parva.id}/{kandah.kandah_number}.html#sama-{sama.sama_number}"
+                            if file_path not in procedures:
+                                procedures[file_path] = {
+                                    'slug': slug, 
+                                    'title': title_meta, 
+                                    'backlink': backlink, 
+                                    'backlink_title': f"{parva.title} - {kandah.title}"
+                                }
+
+        # Render each markdown file
+        for file_path, proc_info in procedures.items():
+            full_md_path = Path("data/input/prayoga") / file_path
+            if not full_md_path.exists():
+                print(f"[WARNING] Procedure file not found: {full_md_path}")
+                continue
+            
+            with open(full_md_path, 'r', encoding='utf-8') as f:
+                md_content = f.read()
+
+            # Frontmatter stripping
+            if md_content.startswith('---'):
+                parts = md_content.split('---', 2)
+                if len(parts) >= 3:
+                    md_content = parts[2].strip()
+
+            html_content = markdown.markdown(md_content, extensions=['tables'])
+
+            # Render page layout with base styling
+            title = proc_info['title']
+            html = f'''{self._get_html_head(title, depth=1)}
+<body>
+    <div class="page-container">
+        {self._get_sidebar_html(depth=1)}
+        <main class="main-content" style="max-width: 1200px;">
+            {self._get_top_nav_html(depth=1)}
+            <div class="page-header" style="text-align: left; margin-bottom: 20px;">
+                <a href="{proc_info['backlink']}" style="color: #2e7d32; text-decoration: none; font-weight: 500;">← Back to {proc_info['backlink_title']}</a>
+                <h1>{title}</h1>
+            </div>
+            
+            <div class="procedure-markdown-content" style="background: white; padding: 2.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-size: 1.15rem; line-height: 1.7; color: #333;">
+                <style>
+                    .procedure-markdown-content h1, .procedure-markdown-content h2, .procedure-markdown-content h3 {{
+                        color: #5c3a21;
+                        margin-top: 1.5em;
+                        margin-bottom: 0.5em;
+                    }}
+                    .procedure-markdown-content h1 {{ font-size: 2rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 0.3em; }}
+                    .procedure-markdown-content h2 {{ font-size: 1.5rem; }}
+                    .procedure-markdown-content p {{ margin-bottom: 1.2em; }}
+                    .procedure-markdown-content ul, .procedure-markdown-content ol {{ margin-bottom: 1.2em; padding-left: 2em; }}
+                    .procedure-markdown-content li {{ margin-bottom: 0.5em; }}
+                    .procedure-markdown-content strong {{ color: #2e7d32; }}
+                </style>
+                {html_content}
+            </div>
+        </main>
+    </div>
+</body>
+</html>'''
+            
+            out_path = prayoga_dir / f"{proc_info['slug']}.html"
+            with open(out_path, 'w', encoding='utf-8') as f:
+                f.write(html)
+
+
     def _generate_metadata_json(self):
         """Generate metadata.json for reference"""
         metadata = {
