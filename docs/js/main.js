@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const parvaMap = {};
     document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
-        const ssMatch = href.match(/kandah\/([^\/]+)\//);
+        const ssMatch = href.match(/kandah[/]([^/]+)[/]/);
         if (ssMatch) {
             const displayNum = parseInt(link.textContent.trim());
             if (!isNaN(displayNum)) {
@@ -115,11 +115,151 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
+    
+    // Search Modal
+    const searchModal = document.getElementById('search-modal');
+    const searchOverlay = document.getElementById('search-overlay');
+    const searchInput = document.getElementById('search-input');
+    const searchClose = document.getElementById('search-close');
+    const searchResults = document.getElementById('search-results');
+    let searchIndex = null;
+    
+    const loadSearchIndex = () => {
+        if (typeof SEARCH_INDEX !== 'undefined') {
+            searchIndex = SEARCH_INDEX;
+            if (searchResults) searchResults.innerHTML = '';
+        } else {
+            if (searchResults) searchResults.innerHTML = '<div class="search-no-results"><div class="icon">⚠️</div>Could not load search index.</div>';
+        }
+    };
+    
+    const openSearchModal = () => {
+        if (searchModal) {
+            searchModal.classList.add('active');
+            searchOverlay.classList.add('active');
+            if (searchInput) searchInput.focus();
+            if (!searchIndex) loadSearchIndex();
+        }
+    };
+    
+    const closeSearchModal = () => {
+        if (searchModal) searchModal.classList.remove('active');
+        if (searchOverlay) searchOverlay.classList.remove('active');
+    };
+    
+    if (searchClose) searchClose.addEventListener('click', closeSearchModal);
+    if (searchOverlay) searchOverlay.addEventListener('click', closeSearchModal);
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeSearchModal();
+        if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            openSearchModal();
+        }
+    });
+    
     if (searchBtn) {
         searchBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            handleJump();
+            openSearchModal();
+        });
+    }
+    
+    document.querySelectorAll('.top-nav a').forEach(link => {
+        if (link.textContent.includes('Search') || link.textContent.includes('अन्वेषणम्')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                openSearchModal();
+            });
+        }
+    });
+    
+    // Detect current page depth for relative path resolution
+    const currentPath = window.location.pathname;
+    const isKandahPage = currentPath.includes('/kandah/');
+    const depthPrefix = isKandahPage ? '../../' : '';
+    
+    const highlightText = (text, query) => {
+        if (!query || !text) return text;
+        const idx = text.toLowerCase().indexOf(query.toLowerCase());
+        if (idx === -1) return text;
+        return text.substring(0, idx) + '<mark>' + text.substring(idx, idx + query.length) + '</mark>' + text.substring(idx + query.length);
+    };
+    
+    const performSearch = (query) => {
+        if (!query || query.length < 2 || !searchIndex) return [];
+        const q = query.toLowerCase().trim();
+        const results = [];
+        for (const entry of searchIndex) {
+            let score = 0;
+            let matchedFields = [];
+            
+            const checkField = (text, fieldScore, fieldName, displayHtml) => {
+                if (text.toLowerCase().includes(q)) {
+                    score += fieldScore;
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                }
+            };
+            
+            checkField(entry.mantra_clean, 10, 'Mantra', entry.mantra_html);
+            checkField(entry.rik_clean, 8, 'Rik', entry.rik_html);
+            
+            for (const c of entry.classifications) {
+                checkField(c.rishi, 7, 'Rishi', c.rishi);
+                checkField(c.devata, 6, 'Devata', c.devata);
+                checkField(c.chandas, 4, 'Chandas', c.chandas);
+            }
+            
+            checkField(entry.title_clean, 5, 'Title', entry.title_html);
+            checkField(entry.metadata_clean, 3, 'Metadata', entry.metadata_html);
+            
+            if (score > 0) {
+                results.push({ ...entry, score, matchedFields });
+            }
+        }
+        results.sort((a, b) => b.score - a.score);
+        return results.slice(0, 50);
+    };
+    
+    if (searchInput) {
+        let debounceTimer;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const query = this.value.trim();
+                if (!query) {
+                    if (searchResults) searchResults.innerHTML = '';
+                    return;
+                }
+                if (!searchIndex) {
+                    if (searchResults) searchResults.innerHTML = '<div class="search-loading">Loading search index...</div>';
+                    return;
+                }
+                const results = performSearch(query);
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="search-no-results"><div class="icon">🔍</div>No results found for "' + query + '"</div>';
+                    return;
+                }
+                let html = '';
+                for (const r of results) {
+                    const classInfo = r.classifications.length > 0 
+                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).join('; ')
+                        : '';
+                    const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
+                    let fieldsHtml = '';
+                    for (const mf of r.matchedFields) {
+                        const highlighted = highlightText(mf.html || mf.text, query);
+                        const label = fieldLabels[mf.name] || mf.name;
+                        fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
+                    }
+                    html += `<a href="${depthPrefix}${r.link}" class="search-result-item">
+                        <div class="search-result-ref">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</div>
+                        <div class="search-result-meta">${classInfo || ''}</div>
+                        ${fieldsHtml}
+                    </a>`;
+                }
+                searchResults.innerHTML = html;
+            }, 250);
         });
     }
     

@@ -190,14 +190,65 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query || query.length < 2 || !searchIndex) return [];
         const q = query.toLowerCase().trim();
         const results = [];
+        
+        // Convert IAST/Latin input to Devanagari for matching
+        const latinToDevanagari = (text) => {
+            const mapping = {
+                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'ri': 'ॠ',
+                'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
+                'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
+                'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
+                'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
+                'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
+                '.': '।', '|': '॥'
+            };
+            let result = text.toLowerCase();
+            // Process long vowels first
+            for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
+                result = result.replaceAll(k, v);
+            }
+            return result;
+        };
+        
+        // Check if query looks like Latin (contains a-z, not Devanagari)
+        const isLatin = /[a-z]/.test(q) && !/[ऀ-ॿ]/.test(q);
+        const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
+        
         for (const entry of searchIndex) {
             let score = 0;
             let matchedFields = [];
             
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
-                if (text.toLowerCase().includes(q)) {
+                if (!text) return;
+                // Remove spaces for comparison
+                const wsRegex = new RegExp('\\s+', 'g');
+                const textNoSpaces = text.replace(wsRegex, '');
+                const qNoSpaces = q.replace(wsRegex, '');
+                
+                // Check exact match
+                if (textNoSpaces.toLowerCase().includes(qNoSpaces)) {
                     score += fieldScore;
                     matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    return;
+                }
+                
+                // Check permissive (diacritic-stripped) match
+                const textPermissive = textNoSpaces.replace(/[ा-्॑-॔]/g, '');
+                const qPermissive = qNoSpaces.replace(/[ा-्॑-॔]/g, '');
+                if (textPermissive.toLowerCase().includes(qPermissive)) {
+                    score += fieldScore * 0.8;
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    return;
+                }
+                
+                // Check Latin transliteration match
+                if (isLatin && devanagariQuery) {
+                    const textLatin = textNoSpaces.replace(/[ा-्॑-॔]/g, '');
+                    const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
+                    if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
+                        score += fieldScore * 0.7;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    }
                 }
             };
             
@@ -205,9 +256,9 @@ document.addEventListener('DOMContentLoaded', function() {
             checkField(entry.rik_clean, 8, 'Rik', entry.rik_html);
             
             for (const c of entry.classifications) {
-                checkField(c.rishi, 7, 'Rishi', c.rishi);
-                checkField(c.devata, 6, 'Devata', c.devata);
-                checkField(c.chandas, 4, 'Chandas', c.chandas);
+                checkField(c.rishi_clean, 7, 'Rishi', c.rishi);
+                checkField(c.devata_clean, 6, 'Devata', c.devata);
+                checkField(c.chandas_clean, 4, 'Chandas', c.chandas);
             }
             
             checkField(entry.title_clean, 5, 'Title', entry.title_html);
@@ -252,13 +303,44 @@ document.addEventListener('DOMContentLoaded', function() {
                         const label = fieldLabels[mf.name] || mf.name;
                         fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
                     }
-                    html += `<a href="${depthPrefix}${r.link}" class="search-result-item">
-                        <div class="search-result-ref">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</div>
+                    html += `<div class="search-result-item">
+                        <div class="search-result-ref"><a href="${depthPrefix}${r.link}">${r.ref} — ${r.parva_title}, Kandah ${r.kandah_num}</a></div>
                         <div class="search-result-meta">${classInfo || ''}</div>
                         ${fieldsHtml}
-                    </a>`;
+                    </div>`;
                 }
                 searchResults.innerHTML = html;
+                
+                // Add click handlers to result items for navigation
+                document.querySelectorAll('.search-result-item').forEach(item => {
+                    let startX, startY;
+                    item.addEventListener('mousedown', function(e) {
+                        if (e.button !== 0) return;
+                        startX = e.clientX;
+                        startY = e.clientY;
+                    });
+                    item.addEventListener('mouseup', function(e) {
+                        if (e.button !== 0) return;
+                        const dx = Math.abs(e.clientX - startX);
+                        const dy = Math.abs(e.clientY - startY);
+                        if (dx > 5 || dy > 5) return;
+                        const selection = window.getSelection();
+                        if (selection && selection.toString().trim().length > 0) {
+                            return;
+                        }
+                        const link = this.querySelector('.search-result-ref a');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    });
+                    // Double-click always navigates
+                    item.addEventListener('dblclick', function(e) {
+                        const link = this.querySelector('.search-result-ref a');
+                        if (link) {
+                            window.location.href = link.href;
+                        }
+                    });
+                });
             }, 250);
         });
     }
