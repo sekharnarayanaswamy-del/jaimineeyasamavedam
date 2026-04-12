@@ -207,7 +207,67 @@ def remove_mantra_spaces(text):
     text = text.replace('\uFEFF', '')  # Byte order mark
     
     return text
+
+def split_rik_lines_html(text):
+    """
+    Splits multi-Rik text so each Rik appears on its own line.
+    Splits after each verse marker (॥ N ॥) and joins with <br>.
+    If only one Rik is present, returns the text unchanged.
+    """
+    if not text:
+        return text
+    # Split after each ॥ N ॥ pattern (Devanagari or ASCII digits)
+    # The marker stays at the end of each segment
+    parts = re.split(r'((?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|))', text)
+    if len(parts) <= 1:
+        return text
+    # Re-join: marker goes with the preceding text segment
+    lines = []
+    current = ''
+    for part in parts:
+        if re.match(r'(?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|)', part):
+            current += part
+            lines.append(current.strip())
+            current = ''
+        else:
+            current += part
+    # If there's leftover text after the last marker, append it
+    if current.strip():
+        lines.append(current.strip())
+    # Filter out empty lines
+    lines = [l for l in lines if l]
+    if len(lines) <= 1:
+        return text
+    return '<br>'.join(lines)
+
+def split_rik_lines_latex(text):
+    """
+    Splits multi-Rik text so each Rik appears on its own line in LaTeX.
+    Splits after each verse marker (॥ N ॥) and joins with \\newline.
+    If only one Rik is present, returns the text unchanged.
+    """
+    if not text:
+        return text
+    parts = re.split(r'((?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|))', text)
+    if len(parts) <= 1:
+        return text
+    lines = []
+    current = ''
+    for part in parts:
+        if re.match(r'(?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|)', part):
+            current += part
+            lines.append(current.strip())
+            current = ''
+        else:
+            current += part
+    if current.strip():
+        lines.append(current.strip())
+    lines = [l for l in lines if l]
+    if len(lines) <= 1:
+        return text
+    return ' \\\\\\newline '.join(lines)
     
+
 # ----------------------------------------------------
 # FOOTNOTE PROCESSING UTILITIES
 # ----------------------------------------------------
@@ -420,20 +480,8 @@ def clean_stack_arg(text):
     text = text.replace('%', '').replace('\n', ' ').replace('\r', '')
     return text.strip()
 
-def CreateCompilation():
-    outputdir="outputs/md/Compilation"
-    templateFileName_md="templates/PanchasatCompile_main.md"
-    templateFileName_tex="templates/PanchasatCompile_main.tex"
-    exit_code=0
-    ts_string = Path("TS_withPadaGhanaJataiKrama.json").read_text(encoding="utf-8")
-    parseTree = json.loads(ts_string)
-    for kanda in parseTree['TS']['Kanda']:
-        kandaInfo=kanda['id']
-        for prasna in kanda['Prasna']:
-            prasnaInfo=prasna['id']
-            CreateMd(templateFileName_md,f"TS_{kandaInfo}_{prasnaInfo}","Compilation",prasna)
-                       
-def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True):
+                        
+def CreatePdf (templateFileName,name,DocfamilyName,data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -469,7 +517,8 @@ def CreatePdf (templateFileName,name,DocfamilyName,data, current_os="Windows", o
         summary_title=summary_title,
         toc_level=toc_level,
         has_riks=has_riks,
-        has_samams=has_samams
+        has_samams=has_samams,
+        prayogas=prayogas or []
     )
     
 
@@ -662,14 +711,12 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Process Footnotes in Rik Text
         s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
         # Step D: Format Dandas (Spaces around dandas only)
+        # Split multi-Rik text so each Rik is on its own line
+        s2 = split_rik_lines_latex(s2)
         s2 = format_dandas(s2)
         
         # SAFETY PATCH: Remove any lingering \newline commands that might have snuck in
         s2 = s2.replace(r'\newline', ' ').replace(r'\textbackslash{}newline', ' ')
-        
-
-        
-
         
         # Output: Upright (not italics)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
@@ -702,6 +749,18 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     elif meta_part:
         combined_header = meta_part
         
+    procedure_ref = subsection.get('procedure_ref', {})
+    # Only show procedure if it's NOT a section-level procedure (those are shown at section header)
+    if procedure_ref and procedure_ref.get('scope') != 'section':
+        slug = Path(procedure_ref.get('file', '')).stem
+        proc_title = procedure_ref.get('title', 'विधिः')
+        proc_link = f"\\footnote{{{proc_title} - \\hyperref[app:{slug}]{{परिशिष्टम् पश्यतु (See Appendix)}}}}"
+        
+        if combined_header:
+            combined_header += f" {proc_link}"
+        else:
+            combined_header = proc_link
+            
     if combined_header:
          formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
@@ -941,6 +1000,18 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     elif meta_part:
         combined_header = meta_part
         
+    procedure_ref = subsection.get('procedure_ref', {})
+    # Only show procedure if it's NOT a section-level procedure (those are shown at section header)
+    if procedure_ref and procedure_ref.get('scope') != 'section':
+        slug = Path(procedure_ref.get('file', '')).stem
+        proc_title = procedure_ref.get('title', 'विधिः')
+        proc_link = f"\\footnote{{{proc_title} - \\hyperref[app:{slug}]{{परिशिष्टम् पश्यतु (See Appendix)}}}}"
+        
+        if combined_header:
+            combined_header += f" {proc_link}"
+        else:
+            combined_header = proc_link
+            
     if combined_header:
         formatted_output.append(f"{{\\centering {combined_header} \\par}}")
 
@@ -1100,6 +1171,8 @@ def format_rik_nometa(subsection, supersection_title, section_title, subsection_
         s2 = replace_accents(s2)
         # Apply footnotes
         s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
+        # Split multi-Rik text so each Rik is on its own line
+        s2 = split_rik_lines_latex(s2)
         s2 = format_dandas(s2)
         formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
         formatted_output.append(r"\vspace{0.8em}")
@@ -1591,6 +1664,8 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         
         s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
         s2 = replace_accents_html(s2)
+        # Split multi-Rik text so each Rik is on its own line
+        s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
 
@@ -1731,6 +1806,8 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
         
         s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
         s2 = replace_accents_html(s2)
+        # Split multi-Rik text so each Rik is on its own line
+        s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
 
@@ -1864,6 +1941,8 @@ def format_rik_nometa_html(subsection, supersection_title, section_title, subsec
         
         s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
         s2 = replace_accents_html(s2)
+        # Split multi-Rik text so each Rik is on its own line
+        s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text">{s2}</div>')
 
@@ -2431,13 +2510,105 @@ Examples:
     print(f"Processing {input_file} in '{output_mode}' mode...")
     print(f"Document Title: {doc_title_sa}")
     
+    # Load Prayoga (Procedure) Index - Folder-based convention
+    # Folders: section_N, supersection_N, subsection_N contain .md files
+    # that automatically apply to that scope
+    prayoga_dir = Path("data/input/prayoga")
+    prayoga_index = {}
+    
+    if prayoga_dir.exists():
+        for item in prayoga_dir.iterdir():
+            if item.is_dir():
+                folder_name = item.name  # e.g., "section_1", "supersection_21"
+                # Determine scope from folder name prefix
+                if folder_name.startswith('supersection_'):
+                    scope = 'supersection'
+                    target_id = folder_name  # e.g., "supersection_21"
+                elif folder_name.startswith('section_'):
+                    scope = 'section'
+                    target_id = folder_name  # e.g., "section_1"
+                elif folder_name.startswith('subsection_'):
+                    scope = 'subsection'
+                    target_id = folder_name
+                else:
+                    continue
+                
+                # Find all .md files in this folder
+                for md_file in item.glob('*.md'):
+                    title = md_file.stem.replace('_', ' ').replace('-', ' ').title()
+                    # Relative path from prayoga_dir
+                    rel_path = f"{folder_name}/{md_file.name}"
+                    prayoga_index[(scope, target_id)] = {
+                        'file': rel_path,
+                        'title': title,
+                        'scope': scope
+                    }
+    
+    # Legacy support: also check YAML index if it exists
+    index_path = prayoga_dir / "prayoga_index.yaml"
+    if index_path.exists():
+        with open(index_path, 'r', encoding='utf-8') as f:
+            cfg = yaml.safe_load(f)
+            if cfg and 'procedures' in cfg:
+                for proc in cfg['procedures']:
+                    scope = proc.get('scope')
+                    target_id = proc.get('id')
+                    if scope and target_id and (scope, target_id) not in prayoga_index:
+                        prayoga_index[(scope, target_id)] = {
+                            'file': proc.get('file'),
+                            'title': proc.get('title'),
+                            'scope': scope
+                        }
+
+    # Inject procedure_ref into subsections based on lowest-level matching scope
+    procedures = {}
+    for super_key, supersection in supersections.items():
+        super_proc = prayoga_index.get(('supersection', super_key))
+        for section_key, section in supersection.get('sections', {}).items():
+            if section_key == 'count': continue
+            sec_proc = prayoga_index.get(('section', section_key)) or super_proc
+            for subsection_key, subsection in section.get('subsections', {}).items():
+                target_proc = prayoga_index.get(('subsection', subsection_key)) or sec_proc
+                
+                if target_proc:
+                    subsection['procedure_ref'] = target_proc
+                    procedure_ref = target_proc
+                    
+                    # Convert markdown to latex
+                    file_path = procedure_ref.get('file', '')
+                    if file_path and file_path not in procedures:
+                        full_md_path = prayoga_dir / file_path
+                        if full_md_path.exists():
+                            with open(full_md_path, 'r', encoding='utf-8') as f:
+                                md_content = f.read()
+                            if md_content.startswith('---'):
+                                parts = md_content.split('---', 2)
+                                if len(parts) >= 3:
+                                    md_content = parts[2].strip()
+                            latex_content = md_content.replace('_', '\\_').replace('&', '\\&').replace('%', '\\%').replace('$', '\\$')
+                            latex_content = re.sub(r'(?m)^### (.*?)$', r'\\subsubsection*{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^## (.*?)$', r'\\subsection*{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^# (.*?)$', r'\\section*{\1}', latex_content)
+                            latex_content = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', latex_content)
+                            latex_content = re.sub(r'\*(.*?)\*', r'\\textit{\1}', latex_content)
+                            latex_content = re.sub(r'(?m)^- (.*?)$', r'$\\bullet$ \1\n\n', latex_content) # Bullet points with paragraph break
+                            
+                            procedures[file_path] = {
+                                'slug': Path(file_path).stem,
+                                'title': procedure_ref.get('title', 'विधिः'),
+                                'latex_content': latex_content
+                            }
+    
+    prayogas_list = list(procedures.values())
+    prayogas_list = list(procedures.values())
+
     if output_mode == 'combined':
         # Default: Combined output (Rik + Samam together)
         template_file = latex_jinja_env.get_template(templateFile_Devanagari)
         text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
         html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
         
-        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
+        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"{file_prefix}", "Devanagari", supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
         CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         print("Success! Generated combined output files.")
@@ -2450,13 +2621,13 @@ Examples:
         
         # Rik-only output: Pass output_mode='rik' to template
         print("Generating Rik-only output (with metadata)...")
-        CreatePdf(template_file, f"Rik", "Devanagari", supersections, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
+        CreatePdf(template_file, f"Rik", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
         CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         
         # Samam-only output: Pass output_mode='samam' to template
         print("Generating Samam-only output (with metadata)...")
-        CreatePdf(template_file, f"Samam", "Devanagari", supersections, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
+        CreatePdf(template_file, f"Samam", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level)
         CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0)
         

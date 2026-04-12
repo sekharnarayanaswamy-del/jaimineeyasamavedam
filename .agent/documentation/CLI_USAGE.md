@@ -23,6 +23,7 @@ python src/generate_json.py <input_file> [OPTIONS]
 | `--output` | Path for the generated JSON output file. | Auto-generated: `data/output/<input_basename>_out.json` |
 | `--metadata-csv` | CSV file to enrich metadata (correction mode only). | None |
 | `--initial-json` | Trusted Initial JSON output to map Rik IDs correctly (correction mode only). | None |
+| `--procedures` | Path to procedure index YAML file (e.g., `data/input/prayoga/prayoga_index.yaml`). If omitted, no procedure links are added. | None |
 
 ### Modes
 

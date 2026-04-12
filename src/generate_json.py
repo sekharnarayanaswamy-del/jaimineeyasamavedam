@@ -3,7 +3,74 @@ from pathlib import Path
 import json
 import re
 import os
+import yaml
 from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config
+
+def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
+    """Load the procedure linking index from both folder convention and YAML."""
+    # Build lookup maps by scope
+    index = {'supersection': {}, 'section': {}, 'subsection': {}}
+    
+    prayoga_dir = Path("data/input/prayoga")
+    
+    # First: Scan folders (folder-based convention takes priority)
+    if prayoga_dir.exists():
+        for item in prayoga_dir.iterdir():
+            if item.is_dir():
+                folder_name = item.name  # e.g., "section_1", "supersection_21", "subsection_5"
+                # Determine scope from folder name prefix
+                if folder_name.startswith('supersection_'):
+                    scope = 'supersection'
+                    target_id = folder_name  # e.g., "supersection_21"
+                elif folder_name.startswith('section_'):
+                    scope = 'section'
+                    target_id = folder_name  # e.g., "section_1"
+                elif folder_name.startswith('subsection_'):
+                    scope = 'subsection'
+                    target_id = folder_name
+                else:
+                    continue
+                
+                # Find all .md files in this folder
+                for md_file in item.glob('*.md'):
+                    title = md_file.stem.replace('_', ' ').replace('-', ' ').title()
+                    rel_path = f"{folder_name}/{md_file.name}"
+                    index[scope][target_id] = {
+                        'file': rel_path,
+                        'title': title,
+                        'scope': scope,
+                        'scope_id': target_id
+                    }
+    
+    # Second: Also check YAML index (legacy support, won't override folders)
+    if os.path.exists(path):
+        with open(path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f)
+        
+        for entry in data.get('procedures', []):
+            scope = entry.get('scope', 'section')
+            scope_id = entry.get('id', '')
+            # Only add if not already set by folder convention
+            if scope_id not in index.get(scope, {}):
+                index[scope][scope_id] = {
+                    'file': entry.get('file', ''),
+                    'title': entry.get('title', ''),
+                    'scope': scope,
+                    'scope_id': scope_id
+                }
+    
+    return index
+
+def resolve_procedure(proc_index, supersection_id, section_id, subsection_id):
+    """Resolve procedure ref: subsection > section > supersection."""
+    if subsection_id in proc_index.get('subsection', {}):
+        return proc_index['subsection'][subsection_id]
+    if section_id in proc_index.get('section', {}):
+        return proc_index['section'][section_id]
+    if supersection_id in proc_index.get('supersection', {}):
+        return proc_index['supersection'][supersection_id]
+    return None
+
 
 # --- Version and Metadata ---
 metadata = get_generated_metadata()
@@ -644,6 +711,18 @@ def convert_corrections_to_json(
 ):
     print(f"--- Step 1: Loading External Datasets ---")
     
+    # Load pipeline config to find procedure index
+    pipeline_cfg = load_pipeline_config()
+    
+    # CLI arg --procedures takes priority; if not specified, no procedures (default: no procedure)
+    proc_index_file = args.procedures if args.procedures else None
+    proc_index = {}
+    if proc_index_file and os.path.exists(proc_index_file):
+        proc_index = load_procedure_index(proc_index_file)
+        print(f"[INFO] Loaded procedure index from {proc_index_file} with {sum(len(v) for v in proc_index.values())} entries.")
+    else:
+        print(f"[INFO] No procedure index specified (use --procedures to add).")
+    
     rik_meta_parser = RikMetadataParser(rik_meta_file)
     rik_text_parser = RikTextParser(rik_text_file)
     saman_meta_parser = SamanMetadataParser(saman_meta_file)
@@ -903,9 +982,11 @@ def convert_corrections_to_json(
                             "corrected-mantra": full_saman_text, 
                             "corrected-swara": ""
                         }],
-                        "mantra_sets": []
+                        "mantra_sets": [],
+                        "procedure_ref": resolve_procedure(proc_index, supersection_id, section_id, subsection_id)
                     }
             
+
             global_subsection_offset += current_section_subsection_count
 
     # --- Extract Closing Mantras ---
@@ -1011,6 +1092,17 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     if not os.path.exists(filepath):
         print(f"[ERROR] Unicode file '{filepath}' not found.")
         return None
+    
+    # Load procedure index - CLI arg takes priority; if not specified, no procedures
+    pipeline_cfg = load_pipeline_config()
+    proc_index_file = args.procedures if args.procedures else None
+    proc_index = {}
+    if proc_index_file and os.path.exists(proc_index_file):
+        proc_index = load_procedure_index(proc_index_file)
+        print(f"[INFO] Loaded procedure index from {proc_index_file} with {sum(len(v) for v in proc_index.values())} entries.")
+    else:
+        print(f"[INFO] No procedure index specified (use --procedures to add).")
+
     
     import csv 
     import re
@@ -1404,6 +1496,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                     "saman_rishi": saman_rishi_val,
                     "saman_devata": saman_devata_val,
                     "saman_chandas": saman_chandas_val,
+                    "procedure_ref": resolve_procedure(proc_index, ss_id, sec_id, sub_id),
                 }
                 
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
@@ -1474,6 +1567,8 @@ Examples:
     
     parser.add_argument('--type', choices=['samhita', 'aaranam'], default='samhita',
                         help='Type of Samaveda text: samhita or aaranam')
+    parser.add_argument('--procedures', type=str, default=None,
+                        help='Path to procedure index YAML file (e.g., data/input/prayoga/prayoga_index.yaml). If not specified, no procedures will be linked.')
     
     args = parser.parse_args()
     

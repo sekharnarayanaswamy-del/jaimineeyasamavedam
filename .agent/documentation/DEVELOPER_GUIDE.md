@@ -37,6 +37,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Audio filename mapping.
     *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
     *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a single-column, horizontal-flowing alphabetical index (**वर्णानुक्रमण**) designed for maximum density and readability. Includes aggregate unique Rik counting (currently ~587 Riks).
+*   **Prayoga Markdown Integration**: Automatically detects and loads `markdown` files configured in `prayoga_index.yaml` to dynamically build standalone procedural webpage layouts accessible through modal popup links embedded next to the respective Vedic verse headings.
 *   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
@@ -45,6 +46,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`format_dandas_html`**: Handles the formatting of mantra and metadata text for HTML. Now supports a `preserve_spaces` flag to maintain manual whitespace alignment in Rishi/Devata metadata blocks.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
 *   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`).
+*   **Prayoga Appendix Generation**: Recursively intercepts YAML configuration arrays pointing to nested markdown text, compiles them efficiently into internal `PhantomSection` structural LaTeX logic without massive external package reliance, and aggregates all referenced manuals inside an overarching `\chapter*{... Appendix ...}` tail. It then intelligently appends `hyperref` click anchors inside dynamic footnotes directly onto the respective Samams.
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.
 
@@ -306,6 +308,28 @@ A special section at the end of the input file enclosed in `# Closing Mantras` /
     *   **Reset per SuperSection**: Optional flag to reset Section/Subsection counters at each SuperSection boundary.
     *   **Preserve Modes**: `preserve-super` only skips renumbering SuperSections, while `--preserve-all` preserves all section/supersection structure IDs and only renumbers the Samams within them.
 
+### 3.6 Workflow F: Prayoga Procedures (Markdown Integration)
+
+This dynamic architecture allows one to build procedural ritual guides alongside the textual Samam datasets, guaranteeing platform-independent portability and single-source management. 
+
+#### Setup & Integration Schema
+1. **Markdown Files**: Write rituals and Prayoga implementations dynamically inside `data/input/prayoga/` using native Markdown (Titles, Bolding, Unordered Lists).
+2. **YAML Index Mapping**: Hook these texts into specific JSON structural nodes (be it Supersection or Subsection) by populating `data/input/prayoga/prayoga_index.yaml`.
+   * The scope and ID specify *where* in the hierarchy the Prayoga logically applies. 
+   * Subsequent Samams implicitly inherit procedures located above them.
+   * Scope can be: `supersection`, `section`, or `subsection`
+3. **Execution Effects**:
+   * **JSON Generation**: Use `--procedures` flag to inject procedure references into JSON:
+     ```bash
+     python src/generate_json.py <input.txt> --procedures data/input/prayoga/prayoga_index.yaml --output output.json
+     ```
+     If omitted, no procedures are linked (default: no procedure).
+   * **Website**: Web Generation reads procedure_ref from JSON, exports formatted links at header level based on scope:
+     * `supersection` scope → link at supersection header
+     * `section` scope → link at section (Kandah) header
+     * `subsection` scope → link at individual sama level
+   * **PDF Toolkit**: PDF logic reads procedure_ref from JSON and adds footnote links to appendix.
+
 ---
 
 ## 4. CLI Reference
@@ -322,6 +346,7 @@ python src/generate_json.py <input_file> [OPTIONS]
 | `--metadata-file` | Path to `.xlsx`, `.csv`, or `.txt` file to enrich metadata. |
 | `--output` | Custom output path (optional). |
 | `--initial-json` | Path to a trusted initial JSON file (for re-mapping Rik IDs). |
+| `--procedures` | Path to procedure index YAML file. If omitted, no procedure links are added. |
 
 ### `src/render_pdf.py`
 *Generates LaTeX (PDF), single-page HTML, and Unicode Text from JSON.*

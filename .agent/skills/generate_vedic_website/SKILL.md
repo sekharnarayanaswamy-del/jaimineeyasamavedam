@@ -11,6 +11,7 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
 *   **Dual Sub-site Model**: The static archive maintains two primary independent sub-sites: **Samhita** (`docs/samhita/`) and **Aaranam** (`docs/aranam/`).
 *   **Gateway Landing Page**: A manually maintained premium landing page at `docs/index.html` provides the primary entry point to both collections.
 *   **Common Assets**: CSS and JS are shared locally within each sub-site to ensure full portability and offline functionality.
+*   **Prayoga Procedures**: Dedicated procedural markdown files are supported which are dynamically built into the site structure as independent readable web pages. Please refer to `.agent/skills/manage_prayoga_procedures/SKILL.md` for specifics on linking and rendering.
 
 ## 2. UI/UX & Typography Standards
 *   **Samam Count Display**: 
@@ -32,3 +33,18 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
 *   **Samhita**: `python src/generate_website.py --samhita -o docs/samhita`
 *   **Aaranam**: `python src/generate_website.py --aaranam -o docs/aranam`
 *   **Custom Collection**: `python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter logic.txt --output docs/custom/`
+
+## 5. Prayoga Procedure Links
+*   **JSON Generation**: First generate JSON with procedures:
+    ```bash
+    python src/generate_json.py <input.txt> --procedures data/input/prayoga/prayoga_index.yaml --output output.json
+    ```
+*   **Website Generation**: Then generate website from the JSON (no extra flag needed):
+    ```bash
+    python src/generate_website.py --source-file output.json -o docs/
+    ```
+*   **Link Placement**:
+    *   `supersection` scope → Link at supersection header
+    *   `section` scope → Link at section (Kandah) header
+    *   `subsection` scope → Link at individual sama level
+*   **No Duplicate**: Section/supersection-scoped links only appear at header level, not on individual samams (unless subsection scope)

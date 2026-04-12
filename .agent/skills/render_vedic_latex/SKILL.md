@@ -29,6 +29,11 @@ In `collection` mode, section headers must display aggregate counts of all conte
 *   The raw text uses markers like `(s1)`.
 *   These must be mapped against the `footnotes` dictionary within the JSON.
 *   Convert to true LaTeX footnotes using `\footnote{...}`.
+*   **Prayoga Procedures**: Dedicated procedural markdown files are supported which are dynamically built into the document structure as a compiled Appendix (`\chapter*{...}`) and footnote jumpers. Please refer to `.agent/skills/manage_prayoga_procedures/SKILL.md` for specifics on linking, parsing, and rendering.
+*   **JSON Generation with Procedures**: To add procedure links:
+    ```bash
+    python src/generate_json.py <input.txt> --procedures data/input/prayoga/prayoga_index.yaml --output output.json
+    ```
 
 ## 5. Scriptio Continua (Continuous Text)
 When generating "Rik Samhita" (Continuous Text):

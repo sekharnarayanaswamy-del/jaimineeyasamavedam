@@ -522,8 +522,9 @@ class Parva:
 class JSVParser:
     """Parses the Samhita source file into Parva → Kandah → Sama structure"""
     
-    def __init__(self, source_file: str):
+    def __init__(self, source_file: str, procedure_index: dict = None):
         self.source_file = source_file
+        self.procedure_index = procedure_index or {}
         self.parvas: List[Parva] = []
         self.current_parva: Optional[Parva] = None
         self.current_kandah: Optional[Kandah] = None
@@ -4038,7 +4039,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     sama_header_html = ""
                     if sama_header_items:
-                        if sama.procedure_ref:
+                        # Only show procedure link at sama level if it's a subsection-level procedure
+                        # (not section or supersection - those are shown at header level)
+                        if sama.procedure_ref and sama.procedure_ref.get('scope') == 'subsection':
                             # Use slugified title or filename as URL
                             slug = Path(sama.procedure_ref.get('file', '')).stem
                             proc_anchor = f"../../prayoga/{slug}.html"
@@ -4218,6 +4221,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 # Calculate real sama count for this Kandah
                 kandah_sama_count = sum(count_samams_with_fallback(s.mantra_text) for s in kandah.samas)
                 
+                # Check for procedure_ref at Kandah (section) or Parva (supersection) level
+                procedure_link = ""
+                for sama in kandah.samas:
+                    if sama.procedure_ref:
+                        scope = sama.procedure_ref.get('scope', '')
+                        if scope == 'section':
+                            # This procedure applies to the entire Kandah
+                            slug = Path(sama.procedure_ref.get('file', '')).stem
+                            proc_anchor = f"../../prayoga/{slug}.html"
+                            proc_title = sama.procedure_ref.get('title', 'विधिः')
+                            procedure_link = f'<div class="procedure-box"><span class="procedure-label">विधिः</span><a href="{proc_anchor}" class="procedure-text">{proc_title}</a></div>'
+                            break
+                        elif scope == 'supersection':
+                            # Show supersection procedure on each Kandah page
+                            slug = Path(sama.procedure_ref.get('file', '')).stem
+                            proc_anchor = f"../../prayoga/{slug}.html"
+                            proc_title = sama.procedure_ref.get('title', 'विधिः')
+                            procedure_link = f'<div class="procedure-box"><span class="procedure-label">विधिः</span><a href="{proc_anchor}" class="procedure-text">{proc_title}</a></div>'
+                            break
+                
                 html = f'''{self._get_html_head(f"{parva_clean} - {kandah_clean}", depth=2)}
 <body>
     <div class="page-container">
@@ -4238,6 +4261,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="page-meta">
                     <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span> | साम: <span class="number">{kandah_sama_count}</span></p>
                 </div>
+                {procedure_link}
             </header>
             
             <div class="toc">

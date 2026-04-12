@@ -52,12 +52,12 @@
 \usepackage{ragged2e} 
 \usepackage{stackengine} 
 \usepackage{fancyhdr}    
+\usepackage[perpage]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
 \usepackage{hyperref}    
 \usepackage{imakeidx}    
 \usepackage{emoji}       
 \usepackage{needspace}
 \usepackage{longtable}
-\usepackage[perpage]{footmisc} % Resets footnote numbering on every page
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
@@ -227,6 +227,18 @@
             \markright{\VAR{section.section_title.replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
             \BLOCK{ endif }
+            
+            % --- SECTION-LEVEL PROCEDURE LINK ---
+            \BLOCK{ set section_procedure = none }
+            \BLOCK{ for sub_key, sub in section.subsections.items() }
+                \BLOCK{ if sub.procedure_ref and sub.procedure_ref.get('scope') == 'section' }
+                    \BLOCK{ set section_procedure = sub.procedure_ref }
+                    \BLOCK{ break }
+                \BLOCK{ endif }
+            \BLOCK{ endfor }
+            \BLOCK{ if section_procedure }
+            \footnote{\VAR{section_procedure.get('title', 'विधिः')} - \hyperref[app:\VAR{section_procedure.get('file', '').rsplit('.', 1)[0]}]{परिशिष्टम् पश्यतु (See Appendix)}}
+            \BLOCK{ endif }
 
             \BLOCK{ set ns = namespace(prev_rik_id=none) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
@@ -308,6 +320,33 @@
 {\normalsize \bfseries \VAR{line}}\\[0.3em]
 \BLOCK{ endfor }
 \end{center}
+\BLOCK{ endif }
+\BLOCK{ if prayogas }
+% --- PRAYOGA APPENDIX ---
+\cleardoublepage
+\phantomsection
+\markboth{परिशिष्टम्}{परिशिष्टम्}
+\fancyhead[LO]{परिशिष्टम्}
+\fancyhead[RE]{परिशिष्टम्}
+\chapter*{\centering ॥ परिशिष्टम् (Appendix) ॥}
+\addcontentsline{toc}{chapter}{परिशिष्टम् (Appendix)}
+
+\BLOCK{ for proc in prayogas }
+\phantomsection
+\label{app:\VAR{proc.slug}}
+% The markdown converter already injects section* or subsection* headings
+% However, we title the block securely here if needed
+\vspace{1em}
+{
+  \large \bfseries \textcolor{AccentGreen}{\VAR{proc.title}}
+}
+\vspace{0.5em}
+
+{\normalsize
+\VAR{proc.latex_content}
+}
+\vspace{2em}
+\BLOCK{ endfor }
 \BLOCK{ endif }
 \clearpage
 
