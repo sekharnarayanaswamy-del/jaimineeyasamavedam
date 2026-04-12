@@ -23,6 +23,16 @@ def get_generated_metadata():
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
 
+def devanagari_to_int(text):
+    """Converts Devanagari numerals in a string to an integer."""
+    if not text: return 0
+    # Map Devanagari numerals to Western ones
+    d_to_w = str.maketrans('०१२३४५६७८९', '0123456789')
+    # Use only digits
+    digits = re.sub(r'[^\d०-९]', '', text)
+    if not digits: return 0
+    return int(digits.translate(d_to_w))
+
 def load_pipeline_config(config_path="src/pipeline_config.yaml"):
     """Loads the centralized YAML configuration file."""
     import yaml
