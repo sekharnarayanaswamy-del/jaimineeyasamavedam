@@ -54,6 +54,11 @@ generate_rik_table:
   recon_excel: "data/output/Rik Reconciliation table (JSV-KSV).xlsx"
   v_json: "data/output/Vargeekaran.json"
 
+# --- AARANAM RIK TABLE GENERATION (src/generate_aaranam_rik_table.py) ---
+generate_aaranam_rik_table:
+  input: "data/input/Aaranam_rik.txt"
+  output_csv: "data/output/Aaranam_Rik_Table.csv"
+
 # --- JSV CURATION (src/curate_jsv.py) ---
 curate_jsv:
   sources:
@@ -84,6 +89,10 @@ generate_website:
   aaranam:
     source: "data/output/Aaranam_latest_out.json"
     output_dir: "docs/aaranam"
+  collection:
+    source: "data/output/Collection_latest_out.json"
+    output_dir: "docs/collection"
+    title: "जैमिनीय साम सङ्ग्रहः"
 
 # --- PDF & HTML RENDERING (src/render_pdf.py) ---
 render:
@@ -124,3 +133,9 @@ render:
     enable_footnote_consolidation: true
     replace_colons_with_visarga: true
     sanitize_invisible_chars: true
+
+# --- PROCEDURE LINKING (Prayoga Descriptions) ---
+procedures:
+  enabled: true
+  input_dir: "data/input/prayoga"
+  index_file: "data/input/prayoga/prayoga_index.yaml"

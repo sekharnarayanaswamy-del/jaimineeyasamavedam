@@ -91,6 +91,13 @@ SITE_CONFIG = {
         'footer_sa': 'जैमिनीय सामवेद आरण्य गानम्',
         'meta_desc': 'Jaimineeya Sama Aaranam digital archive',
         'keywords': 'Samaveda, Jaimineeya, Aaranam, Aranya, Ganam, Vedas, Sanskrit'
+    },
+    'collection': {
+        'title_sa': 'जैमिनीय साम सङ्ग्रहः',
+        'title_en': 'Jaimineeya Sama Sangraha',
+        'footer_sa': 'जैमिनीय सामवेद सङ्ग्रहः',
+        'meta_desc': 'Jaimineeya Sama Sangraha collection',
+        'keywords': 'Samaveda, Jaimineeya, Sangraha, Collection, Vedas, Sanskrit'
     }
 }
 
@@ -776,12 +783,16 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita'):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
         self.mode = mode
-        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita'])
+        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita']).copy()
+        
+        # Override title_sa if custom_title provided
+        if custom_title:
+            self.config['title_sa'] = custom_title
         
         self.metadata = {
             "version": "2.0.0",
@@ -4483,6 +4494,17 @@ Examples:
         action='store_true',
         help='Generate for Aaranam'
     )
+    group.add_argument(
+        '-c', '--collection',
+        action='store_true',
+        help='Generate for Collection (Jaimineeya Sama Sangraha)'
+    )
+    parser.add_argument(
+        '--title',
+        type=str,
+        default=None,
+        help='Custom title for collection mode (e.g., "जैमिनीय साम सङ्ग्रहः")'
+    )
     
     args = parser.parse_args()
     
@@ -4491,6 +4513,8 @@ Examples:
         mode = 'aaranam'
     elif args.samhita:
         mode = 'samhita'
+    elif args.collection:
+        mode = 'collection'
     else:
         mode = web_cfg.get('type', 'aaranam')
 
@@ -4500,6 +4524,9 @@ Examples:
     source_file = args.source_file or type_cfg.get('source') or web_cfg.get('source') or str(default_source)
     output_dir = args.output_dir or type_cfg.get('output_dir') or web_cfg.get('output_dir') or str(default_output)
     audio_dir = args.audio_dir or type_cfg.get('audio_dir') or web_cfg.get('audio_dir') or str(default_audio)
+    
+    # Custom title for collection mode: CLI > Config > Default
+    custom_title = args.title or type_cfg.get('title') or None
     
     # Validate source file exists
     source_path = Path(source_file)
@@ -4542,7 +4569,7 @@ Examples:
     
     # Generate website
     print("\n[INFO] Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode)
+    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title)
     generator.generate()
     
     print("\n" + "=" * 60)
