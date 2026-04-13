@@ -848,12 +848,19 @@ The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which a
     *   **Purpose**: This allows the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
 *   **Sorting**: All data is processed using a strict numerical sort on SuperSection and Section keys to ensure the global counter remains stable across runs.
 
-### 5.5 Typography System
-The website's visual hierarchy is driven by a two-font system designed to balance traditional aesthetics with modern readability.
-*   **Adishila Vedic (Serif)**: Used for all traditional Sanskrit content, mantra text, and metadata labels.
-*   **Adishila San Vedic (Sans-serif)**: Used for numerals, counts, and interactive navigation elements.
-
 Detailed mapping of CSS classes to font families and fine-tuning instructions can be found in the **[Typography Guide](docs/typography_guide.md)**. Changes to the typography are made in the CSS fragments within `src/generate_website.py`.
+
+---
+
+### 5.7 Vedic Accent Rendering (Syllable Wrapper Strategy)
+
+To ensure high-precision vertical and horizontal alignment of Samaveda accents across all browsers (including mobile), the system uses a **Syllable Wrapper** strategy.
+
+*   **Mechanism**: A regex engine in `local_replace_accents_html` (and sync'd in `render_pdf.py`) identifies each accented Devanagari syllable (consonant + matras) and wraps it in a `<span class="accented-char">`.
+*   **Baseline Anchoring**: Accents are contained within a nested `<span class="accent-mark">` positioned **absolutely** relative to the parent.
+*   **Level Alignment**: By using `bottom: 0.5em` (relative to the **baseline** of the syllable), all accent marks across a line of text are forced onto a single, perfectly horizontal plane, regardless of individual character heights (e.g., `आ` vs `नो`).
+*   **Ghost Base**: Each accent span includes a transparent "Ghost Base" character (`\u0905`) to satisfy browser requirements for combining marks, preventing "dotted circle" artifacts.
+*   **Centering**: Absolute markers use `left: 0.4em` to achieve visual centering over both wide and standard syllables.
 
 ---
 

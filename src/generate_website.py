@@ -121,27 +121,39 @@ def local_escape_for_html(text):
 def local_replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters wrapped in spans.
-    This 'Hybrid Inline' approach allows vertical control while maintaining inline flow.
+    Uses a 'Syllable Wrapper' strategy: wraps the base character and its accents in a 
+    relative span to allow stable baseline-relative absolute positioning.
     """
     if not text:
         return text
     
-    # Return wrapped Unicode combining characters for native browser handling with manual 'lift'
-    replacements = [
-        # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
-        # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
-        # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
-        # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
-    ]
+    import re
     
-    for marker, replacement in replacements:
-        text = text.replace(marker, replacement)
+    # Syllable pattern: any non-space/non-danda followed by accent codes (x)
+    # We include Devanagari range and common Vedic extensions
+    pattern = r'([\u0900-\u097F][\u093E-\u094F\u0962-\u0963]*)((?:\(\d\))+)'
     
-    return text
+    def replacer(match):
+        base_char = match.group(1)
+        accents_raw = match.group(2)
+        
+        # Mapping for the internal markers
+        # All marks are shifted onto the same horizontal 'track' using CSS
+        repl_map = {
+            '(1)': '<span class="accent-mark accent-swarita"><span class="ghost">\u0905</span>\u0951</span>',
+            '(2)': '<span class="accent-mark accent-anudatta"><span class="ghost">\u0905</span>\u1CD2</span>', 
+            '(3)': '<span class="accent-mark accent-kampa"><span class="ghost">\u0905</span>\u1CF8</span>',
+            '(4)': '<span class="accent-mark accent-trikampa"><span class="ghost">\u0905</span>\u1CF9</span>',
+        }
+        
+        accent_html = ""
+        found_codes = re.findall(r'\(\d\)', accents_raw)
+        for code in found_codes:
+            accent_html += repl_map.get(code, "")
+            
+        return f'<span class="accented-char">{base_char}{accent_html}</span>'
+
+    return re.sub(pattern, replacer, text)
 
 
 def local_process_footnotes_html(text, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None):
@@ -861,6 +873,15 @@ class WebsiteGenerator:
     def _generate_css(self):
         """Generate CSS stylesheet - Configured Palette"""
         css = '''/* Jaimineeya Samavedam Website Styles */
+/* Web Fonts */
+@font-face {
+    font-family: 'Noto Sans Devanagari';
+    src: url('../fonts/NotoSansDevanagari.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* User Defined Palette */
 
 :root {
@@ -895,9 +916,9 @@ class WebsiteGenerator:
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
 --font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -2158,21 +2179,35 @@ background: var(--bg-sidebar);
     align-items: flex-start;
 }
 
-/* Accent Marks - Hybrid Inline Offset (Visual Lift) */
-.accent-swarita, .accent-kampa, .accent-trikampa {
-    display: inline-block;
+/* Accent Marks - Level Baseline Alignment (Syllable Wrapper) */
+.accented-char {
     position: relative;
-    top: -0.25em; /* Lifts the accent high above the character as requested */
-    width: 0;
-    margin-right: 0;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
-.accent-anudatta {
-    display: inline-block;
-    position: relative;
-    top: 0.1em; /* Adjusts the line below for better visibility */
+.accent-mark {
+    position: absolute;
+    bottom: 0.5em; /* Lowered distance from baseline for clean clearance */
+    left: 0.4em; /* Centered over the base character syllable */
     width: 0;
-    margin-right: 0;
+    white-space: nowrap;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Subtle individual adjustments to align bottom justified to the horizontal line */
+.accent-swarita { bottom: 0.55em; }
+.accent-anudatta { bottom: 0.5em; }
+.accent-kampa, .accent-trikampa { bottom: 0.48em; }
+
+.ghost {
+    color: transparent !important;
+    opacity: 0 !important;
+    user-select: none;
+    display: inline-block;
+    width: 0;
+    overflow: visible;
 }
 
 .footnote-item .footnote-ref {

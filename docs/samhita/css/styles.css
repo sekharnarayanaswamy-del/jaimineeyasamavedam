@@ -1,4 +1,13 @@
 /* Jaimineeya Samavedam Website Styles */
+/* Web Fonts */
+@font-face {
+    font-family: 'Noto Sans Devanagari';
+    src: url('../fonts/NotoSansDevanagari.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* User Defined Palette */
 
 :root {
@@ -33,9 +42,9 @@
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
 --font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -1296,21 +1305,35 @@ background: var(--bg-sidebar);
     align-items: flex-start;
 }
 
-/* Accent Marks - Hybrid Inline Offset (Visual Lift) */
-.accent-swarita, .accent-kampa, .accent-trikampa {
-    display: inline-block;
+/* Accent Marks - Level Baseline Alignment (Syllable Wrapper) */
+.accented-char {
     position: relative;
-    top: -0.25em; /* Lifts the accent high above the character as requested */
-    width: 0;
-    margin-right: 0;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
-.accent-anudatta {
-    display: inline-block;
-    position: relative;
-    top: 0.1em; /* Adjusts the line below for better visibility */
+.accent-mark {
+    position: absolute;
+    bottom: 0.5em; /* Lowered distance from baseline for clean clearance */
+    left: 0.4em; /* Centered over the base character syllable */
     width: 0;
-    margin-right: 0;
+    white-space: nowrap;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Subtle individual adjustments to align bottom justified to the horizontal line */
+.accent-swarita { bottom: 0.55em; }
+.accent-anudatta { bottom: 0.5em; }
+.accent-kampa, .accent-trikampa { bottom: 0.48em; }
+
+.ghost {
+    color: transparent !important;
+    opacity: 0 !important;
+    user-select: none;
+    display: inline-block;
+    width: 0;
+    overflow: visible;
 }
 
 .footnote-item .footnote-ref {

@@ -1560,26 +1560,35 @@ def handle_consecutive_trikamba_html(text):
 def replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters wrapped in spans.
-    This 'Hybrid Inline' approach allows vertical control while maintaining inline flow.
+    Syncs with generate_website.py Syllable Wrapper strategy.
     """
     if not text:
         return text
     
-    replacements = [
-        # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
-        # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
-        # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
-        # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
-    ]
+    import re
     
-    for marker, replacement in replacements:
-        text = text.replace(marker, replacement)
+    # Syllable pattern: any non-space/non-danda followed by accent codes (x)
+    pattern = r'([\u0900-\u097F][\u093E-\u094F\u0962-\u0963]*)((?:\(\d\))+)'
     
-    return text
+    def replacer(match):
+        base_char = match.group(1)
+        accents_raw = match.group(2)
+        
+        repl_map = {
+            '(1)': '<span class="accent-mark accent-swarita"><span class="ghost">\u0905</span>\u0951</span>',
+            '(2)': '<span class="accent-mark accent-anudatta"><span class="ghost">\u0905</span>\u1CD2</span>', 
+            '(3)': '<span class="accent-mark accent-kampa"><span class="ghost">\u0905</span>\u1CF8</span>',
+            '(4)': '<span class="accent-mark accent-trikampa"><span class="ghost">\u0905</span>\u1CF9</span>',
+        }
+        
+        accent_html = ""
+        found_codes = re.findall(r'\(\d\)', accents_raw)
+        for code in found_codes:
+            accent_html += repl_map.get(code, "")
+            
+        return f'<span class="accented-char">{base_char}{accent_html}</span>'
+
+    return re.sub(pattern, replacer, text)
 
 def format_mantra_sets_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, 
                               footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
