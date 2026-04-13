@@ -1561,20 +1561,20 @@ def handle_consecutive_trikamba_html(text):
 def replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    AdishilaVedic font properly supports these characters.
+    Returns raw Unicode combining characters for native browser handling (Inline).
     """
     if not text:
         return text
     
     replacements = [
         # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        ('(1)', '\u0951'),
         # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        ('(2)', '\u1CD2'),
         # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        ('(3)', '\u1CF8'),
         # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
+        ('(4)', '\u1CF9'),
     ]
     
     for marker, replacement in replacements:

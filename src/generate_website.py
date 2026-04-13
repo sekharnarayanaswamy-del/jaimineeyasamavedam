@@ -124,16 +124,16 @@ def local_replace_accents_html(text):
     if not text:
         return text
     
-    # Use spans with zero-width CSS positioning (matching the working renderPDF.py output)
+    # Return raw Unicode combining characters for native browser handling (Inline)
     replacements = [
         # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        ('(1)', '\u0951'),
         # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        ('(2)', '\u1CD2'),
         # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        ('(3)', '\u1CF8'),
         # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
+        ('(4)', '\u1CF9'),
     ]
     
     for marker, replacement in replacements:
@@ -1353,7 +1353,17 @@ background: var(--bg-sidebar);
 }
 
 /* Sama Entry (Verse) - Rig Veda Style */
+.sama-anchor, .rik-anchor {
+    scroll-margin-top: 100px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .sama-entry {
+    scroll-margin-top: 100px;
     margin-bottom: var(--spacing-2xl);
     padding-bottom: var(--spacing-xl);
     border-bottom: 1px solid var(--border-light);
@@ -1580,7 +1590,7 @@ background: var(--bg-sidebar);
 .rik-text {
     font-family: var(--font-sanskrit);
     font-size: 1.6rem;
-    line-height: 2;
+    line-height: 2.2; /* Increased for better inline accent clearance */
     color: #1565c0;
     text-align: center;
 }
@@ -2106,55 +2116,6 @@ background: var(--bg-sidebar);
 
 .word-space {
     width: 0.3em;
-}
-
-/* Vedic Accent Mark Styles - Zero-width positioning */
-.accent-swarita {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
-    color: #1565c0;
-    font-weight: bold;
-    font-size: 1.2em;
-    position: relative;
-    left: -0.1em;
-    top: -0.15em;
-}
-
-.accent-anudatta {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
-    color: #1565c0;
-    font-weight: bold;
-    font-size: 1.2em;
-    position: relative;
-    left: -0.1em;
-    top: -0.15em;
-}
-
-.accent-kampa {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
-    color: #1565c0;
-    font-weight: bold;
-    font-size: 1.2em;
-    position: relative;
-    left: -0.1em;
-    top: -0.15em;
-}
-
-.accent-trikampa {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
-    color: #1565c0;
-    font-weight: bold;
-    font-size: 1.2em;
-    position: relative;
-    left: -0.1em;
-    top: -0.15em;
 }
 
 .danda {
@@ -2863,55 +2824,75 @@ sup.footnote-ref a:hover {
             f.write(css)
             
     def _generate_js(self):
-        """Generate JavaScript for interactivity"""
-        js = '''// Jaimineeya Samavedam Website JavaScript
+        """Generate JavaScript for interactivity with deterministic navigation"""
+        js = r'''// Jaimineeya Samavedam Website JavaScript
+// Deterministic Navigation System v2.1
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                // Update URL without jumping
-                history.pushState(null, null, this.getAttribute('href'));
-            }
-        });
-    });
+    console.log("[JS] Jaimineeya Website Loaded");
 
-    // Highlight current section in jump links
-    const observerOptions = {
-        root: null,
-        rootMargin: '-20% 0px -70% 0px',
-        threshold: 0
+    // Centralized Scroll Handler
+    const scrollToTarget = (targetId, smooth = true) => {
+        if (!targetId) return;
+        
+        // Clean hash (strip #)
+        const id = targetId.startsWith('#') ? targetId.substring(1) : targetId;
+        const element = document.getElementById(id);
+        
+        if (element) {
+            console.log("[Scroll] Navigating to:", id);
+            
+            // Fixed header offset (adjust based on CSS)
+            const headerOffset = 100;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+            
+            return true;
+        }
+        console.warn("[Scroll] Target not found:", id);
+        return false;
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const id = entry.target.getAttribute('id');
-            const jumpLink = document.querySelector(`.jump-links a[href="#${id}"]`);
-            if (jumpLink) {
-                if (entry.isIntersecting) {
-                    document.querySelectorAll('.jump-links a').forEach(a => a.classList.remove('active'));
-                    jumpLink.classList.add('active');
-                }
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.sama-entry').forEach(entry => {
-        observer.observe(entry);
+    // 1. Handle Initial Load Scroll (Deterministic Wait)
+    window.addEventListener('load', () => {
+        if (window.location.hash) {
+            console.log("[Load] Initial hash detected:", window.location.hash);
+            // Wait for Sanskrit web fonts and layout to finish settling
+            setTimeout(() => {
+                scrollToTarget(window.location.hash, false);
+            }, 200);
+        }
     });
 
-    // Sidebar Jump Logic
-    const jumpInput = document.getElementById('sidebar-jump');
-    const searchBtn = document.querySelector('.search-btn');
-    
-    // Build a dynamic map from Parva links: displayed parva number → actual supersection ID
+    // 2. Handle Hash Changes (Link clicks, History)
+    window.addEventListener('hashchange', () => {
+        console.log("[HashChange] New hash:", window.location.hash);
+        scrollToTarget(window.location.hash, true);
+    });
+
+    // 3. Smooth scroll for ALL internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            if (hash === '#') return;
+            
+            e.preventDefault();
+            // Update hash which triggers hashchange listener
+            if (window.location.hash === hash) {
+                // Manually trigger if hash is identical
+                scrollToTarget(hash, true);
+            } else {
+                window.location.hash = hash;
+            }
+        });
+    });
+
+    // 4. Parva Map for Jump resolution
     const parvaMap = {};
     document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
@@ -2924,24 +2905,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // 5. Jump Logic (Deterministic Two-Step)
+    const jumpInput = document.getElementById('sidebar-jump');
     const handleJump = () => {
         const val = jumpInput ? jumpInput.value.trim() : '';
         if (!val) return;
         
+        console.log("[Jump] Input received:", val);
+        const parts = val.split('.');
+        
+        // Resolve prefix based on depth
         const path = window.location.pathname;
         let depth = 0;
         if (path.includes('/kandah/')) depth = 2;
         else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
-        
         const prefix = '../'.repeat(depth);
-        const parts = val.split('.');
-        
+
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
-            let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
             
+            const targetPage = `kandah/${parvaId}/${kandahId}.html`;
+            const absoluteTargetPage = new URL(prefix + targetPage, window.location.href).pathname;
+            const currentPage = window.location.pathname;
+            
+            let targetHash = "";
             if (parts.length === 3) {
                 const targetNum = parseInt(parts[2]);
                 const samaLinks = document.querySelectorAll('.sama-link');
@@ -2949,41 +2938,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 samaLinks.forEach(link => {
                     const text = link.textContent.trim();
-                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
+                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—\-][ ]*([0-9]+)$/);
                     if (rangeMatch) {
                         const start = parseInt(rangeMatch[1]);
                         const end = parseInt(rangeMatch[2]);
-                        if (targetNum >= start && targetNum <= end) {
-                            matchedAnchor = link.getAttribute('href');
-                        }
+                        if (targetNum >= start && targetNum <= end) matchedAnchor = link.getAttribute('href');
                     } else {
                         const exactMatch = text.match(/^([0-9]+)$/);
-                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) {
-                            matchedAnchor = link.getAttribute('href');
-                        }
+                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) matchedAnchor = link.getAttribute('href');
                     }
                 });
                 
-                if (matchedAnchor) {
-                    url += matchedAnchor;
-                } else {
-                    url += `#sama-${parts[2]}`;
-                }
+                targetHash = matchedAnchor || `#v-${parts[2]}`;
             }
-            window.location.assign(url);
+
+            console.log("[Jump] Resolving:", {targetPage, targetHash});
+
+            // STEP 1: Determine if we need to change files
+            if (currentPage.endsWith(targetPage) || currentPage.includes('/' + targetPage)) {
+                // Same file: Just scroll (Step 2)
+                console.log("[Jump] Same page identified, scrolling...");
+                if (window.location.hash === targetHash) scrollToTarget(targetHash, true);
+                else window.location.hash = targetHash;
+            } else {
+                // Different file: Redirect (Step 1)
+                console.log("[Jump] Different page, navigating to:", prefix + targetPage + targetHash);
+                window.location.assign(prefix + targetPage + targetHash);
+            }
         }
     };
 
     if (jumpInput) {
-        jumpInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                handleJump();
-            }
+        jumpInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleJump();
         });
     }
-    
-    // Search Modal
-    const searchModal = document.getElementById('search-modal');
+
+    // Search Interactivity (Standard)
     const searchOverlay = document.getElementById('search-overlay');
     const searchInput = document.getElementById('search-input');
     const searchClose = document.getElementById('search-close');
@@ -3060,7 +3051,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Convert IAST/Latin input to Devanagari for matching
         const latinToDevanagari = (text) => {
             const mapping = {
-                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'ri': 'ॠ',
+                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
                 'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
                 'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
                 'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
@@ -3501,7 +3492,7 @@ document.addEventListener('DOMContentLoaded', function() {
         """Generate right sidebar with jump links"""
         jump_links = ""
         for sama in samas:
-            jump_links += f'<a href="#sama-{sama.sama_number}">{sama.sama_number}</a>\n'
+            jump_links += f'<a href="#sama-{sama.sama_number}" class="sama-link">{sama.sama_number}</a>\n'
         
         return f'''<aside class="sidebar-right">
     <h3>साम: <span class="number">({len(samas)})</span></h3>
@@ -3633,7 +3624,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="search-overlay" id="search-overlay"></div>
     <script src="search-index.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main.js?v={int(datetime.now().timestamp())}"></script>
 </body>
 </html>'''
         
@@ -3755,7 +3746,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="search-overlay" id="search-overlay"></div>
     <script src="../search-index.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="../js/main.js?v={int(datetime.now().timestamp())}"></script>
 </body>
 </html>'''
         with open(self.output_dir / 'classification' / 'anukramanika.html', 'w', encoding='utf-8') as f:
@@ -3909,7 +3900,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="search-overlay" id="search-overlay"></div>
     <script src="../search-index.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="../js/main.js?v={int(datetime.now().timestamp())}"></script>
 </body>
 </html>'''
         with open(self.output_dir / 'classification' / filename, 'w', encoding='utf-8') as f:
@@ -3974,6 +3965,9 @@ document.addEventListener('DOMContentLoaded', function() {
             parva_dir.mkdir(parents=True, exist_ok=True)
             
             for kandah in parva.kandahs:
+                # Running counter for Samam verse numbers (matching sidebar logic)
+                current_verse_num = 1
+                
                 # Build Table of Contents
                 toc_items = ""
                 for sama in kandah.samas:
@@ -4169,7 +4163,21 @@ document.addEventListener('DOMContentLoaded', function() {
                         anchor_id = f"rik-{rid}" if occ == 1 else f"rik-{rid}_{occ}"
                         rik_anchor_tags += f'<span id="{anchor_id}" class="rik-anchor"></span>'
 
+                    # Calculate how many verse markers are in this Samam for numbering sync
+                    # Use the same logic as the sidebar to ensure anchors match labels
+                    verse_count = count_samams_with_fallback(sama.mantra_text)
+                    
+                    # Generate unique anchors for EVERY verse number in the current range
+                    # This ensures direct jumps like 2.4.11 work even if 11 is not the first verse
+                    verse_anchors = ""
+                    for v_num in range(current_verse_num, current_verse_num + verse_count):
+                        verse_anchors += f'<span id="v-{v_num}" class="sama-anchor"></span>'
+                    
+                    # Update running counter for next Samam
+                    current_verse_num += verse_count
+                    
                     sama_entries += f'''
+                    {verse_anchors}
                     <article class="sama-entry" id="sama-{sama.sama_number}">
                         {rik_anchor_tags}
                         <div class="sama-id-row">
@@ -4300,7 +4308,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="search-overlay" id="search-overlay"></div>
     <script src="../../search-index.js"></script>
-    <script src="../../js/main.js"></script>
+    <script src="../../js/main.js?v={int(datetime.now().timestamp())}"></script>
 </body>
 </html>'''
                 
