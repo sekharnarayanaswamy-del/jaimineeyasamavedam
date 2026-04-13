@@ -539,9 +539,30 @@ class JSVParser:
     def parse(self) -> List[Parva]:
         """Main parsing method - delegates based on file type"""
         if self.source_file.lower().endswith('.json'):
-            return self._parse_json()
+            parvas = self._parse_json()
         else:
-            return self._parse_text_file()
+            parvas = self._parse_text_file()
+            
+        # Post-process to ensure sama_number matches natural sequence IDs
+        self._post_process_numbering()
+        return parvas
+
+    def _post_process_numbering(self):
+        """
+        Recalculate all sama_number properties to match the natural mantra sequence.
+        This ensures that Search hits and Jump-to targets correctly align with anchors.
+        """
+        for parva in self.parvas:
+            for kandah in parva.kandahs:
+                running_mantra_count = 0
+                for sama in kandah.samas:
+                    # The block's anchor ID will be based on this sama_number
+                    sama.sama_number = running_mantra_count + 1
+                    
+                    # Update count based on actual mantras in this block
+                    cnt = count_samams_with_fallback(sama.mantra_text)
+                    if cnt == 0: cnt = 1
+                    running_mantra_count += cnt
 
     def _parse_json(self) -> List[Parva]:
         """Parse JSON source file"""
@@ -2954,16 +2975,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 5. Jump Logic (Deterministic Two-Step)
-    const jumpInput = document.getElementById('sidebar-jump');
-    const handleJump = () => {
-        const val = jumpInput ? jumpInput.value.trim() : '';
+    // 5. Consolidated Navigation Logic (Deterministic P.K.S Resolution)
+    window.resolveJump = (val, smooth = true) => {
         if (!val) return;
         
-        console.log("[Jump] Input received:", val);
+        console.log("[Navigation] Resolving reference:", val);
         const parts = val.split('.');
         
-        // Resolve prefix based on depth
+        // Resolve prefix based on current depth
         const path = window.location.pathname;
         let depth = 0;
         if (path.includes('/kandah/')) depth = 2;
@@ -2973,23 +2992,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
             
-            // Site-aware prefix resolution (Samhita context)
+            // Site-aware prefix resolution (Handles Samhita vs Aaranam cross-links)
             let sitePrefix = "";
             const currentPath = window.location.pathname;
-            // Samhita is Parva 1-6
             if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
                 sitePrefix = "../samhita/";
+            } else if (parvaNum > 6 && currentPath.includes('/samhita/')) {
+                sitePrefix = "../aaranam/";
             }
 
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             
-            // Deterministic hash: point to specific Samam ID
+            // Deterministic hash: point to specific Samam Sequence ID (#sama-N)
             const targetHash = parts.length === 3 ? `#sama-${parts[2]}` : "";
             const targetPage = `kandah/${parvaId}/${kandahId}.html`;
             const currentPage = window.location.pathname;
             
-            console.log("[Jump] Resolving to:", prefix + sitePrefix + targetPage + targetHash);
+            console.log("[Navigation] Target determined:", prefix + sitePrefix + targetPage + targetHash);
 
             if (currentPage.endsWith(targetPage) || currentPage.includes('/' + targetPage)) {
                 // Same file: Just scroll
@@ -2999,7 +3019,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Different file: Redirect
                 window.location.assign(prefix + sitePrefix + targetPage + targetHash);
             }
+            return true;
         }
+        return false;
+    };
+
+    // Link Jump Box to Consolidated Logic
+    const jumpInput = document.getElementById('sidebar-jump');
+    const handleJump = () => {
+        const val = jumpInput ? jumpInput.value.trim() : '';
+        window.resolveJump(val, true);
     };
 
     // 6. Sidebar Highlighting (Intersection Observer)
@@ -3250,7 +3279,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         const link = this.querySelector('.search-result-ref a');
                         if (link) {
-                            window.location.href = link.href;
+                            // Extract reference from text (e.g. "1.1.1 — ...")
+                            const refPart = link.textContent.split('—')[0].trim();
+                            if (refPart && window.resolveJump) {
+                                e.preventDefault();
+                                window.resolveJump(refPart, true);
+                                closeSearchModal();
+                            } else {
+                                window.location.href = link.href;
+                            }
                         }
                     });
                     // Double-click always navigates
@@ -4029,9 +4066,6 @@ document.addEventListener('DOMContentLoaded', function() {
             parva_dir.mkdir(parents=True, exist_ok=True)
             
             for kandah in parva.kandahs:
-                # Running counter for Samam verse numbers (matching sidebar logic)
-                current_verse_num = 1
-                
                 # Build Table of Contents
                 toc_items = ""
                 for sama in kandah.samas:
@@ -4048,6 +4082,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 # Build Sama entries
                 sama_entries = ""
                 for sama in kandah.samas:
+                    # Update: reliance on parser-assigned sama.sama_number which 
+                    # now matches the starting mantra sequence ID.
                     # Parse footnote dict for this sama
                     current_footnotes_dict = {}
                     if sama.footnotes:
@@ -4227,19 +4263,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         anchor_id = f"rik-{rid}" if occ == 1 else f"rik-{rid}_{occ}"
                         rik_anchor_tags += f'<span id="{anchor_id}" class="rik-anchor"></span>'
 
-                    # Calculate how many verse markers are in this Samam for numbering sync
-                    # Use the same logic as the sidebar to ensure anchors match labels
+                    # Use parser-assigned sama_number as the anchor start
+                    start_samam_for_entry = sama.sama_number
                     verse_count = count_samams_with_fallback(sama.mantra_text)
+                    if verse_count == 0: verse_count = 1
                     
                     # Generate unique anchors for EVERY verse number in the current range
-                    # This avoids the "inter-page vs same-page" discrepancy
                     verse_anchors = ""
-                    for s_num in range(current_verse_num, current_verse_num + verse_count):
+                    for s_num in range(start_samam_for_entry, start_samam_for_entry + verse_count):
                         verse_anchors += f'<span id="sama-{s_num}" class="sama-anchor"></span>'
-                    
-                    # Record the start samam for sidebar sync
-                    start_samam_for_entry = current_verse_num
-                    current_verse_num += verse_count
                     
                     sama_entries += f'''
                     {verse_anchors}

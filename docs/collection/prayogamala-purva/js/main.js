@@ -78,16 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 5. Jump Logic (Deterministic Two-Step)
-    const jumpInput = document.getElementById('sidebar-jump');
-    const handleJump = () => {
-        const val = jumpInput ? jumpInput.value.trim() : '';
+    // 5. Consolidated Navigation Logic (Deterministic P.K.S Resolution)
+    window.resolveJump = (val, smooth = true) => {
         if (!val) return;
         
-        console.log("[Jump] Input received:", val);
+        console.log("[Navigation] Resolving reference:", val);
         const parts = val.split('.');
         
-        // Resolve prefix based on depth
+        // Resolve prefix based on current depth
         const path = window.location.pathname;
         let depth = 0;
         if (path.includes('/kandah/')) depth = 2;
@@ -97,23 +95,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
             
-            // Site-aware prefix resolution (Samhita context)
+            // Site-aware prefix resolution (Handles Samhita vs Aaranam cross-links)
             let sitePrefix = "";
             const currentPath = window.location.pathname;
-            // Samhita is Parva 1-6
             if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
                 sitePrefix = "../samhita/";
+            } else if (parvaNum > 6 && currentPath.includes('/samhita/')) {
+                sitePrefix = "../aaranam/";
             }
 
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             
-            // Deterministic hash: point to specific Samam ID
+            // Deterministic hash: point to specific Samam Sequence ID (#sama-N)
             const targetHash = parts.length === 3 ? `#sama-${parts[2]}` : "";
             const targetPage = `kandah/${parvaId}/${kandahId}.html`;
             const currentPage = window.location.pathname;
             
-            console.log("[Jump] Resolving to:", prefix + sitePrefix + targetPage + targetHash);
+            console.log("[Navigation] Target determined:", prefix + sitePrefix + targetPage + targetHash);
 
             if (currentPage.endsWith(targetPage) || currentPage.includes('/' + targetPage)) {
                 // Same file: Just scroll
@@ -123,7 +122,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Different file: Redirect
                 window.location.assign(prefix + sitePrefix + targetPage + targetHash);
             }
+            return true;
         }
+        return false;
+    };
+
+    // Link Jump Box to Consolidated Logic
+    const jumpInput = document.getElementById('sidebar-jump');
+    const handleJump = () => {
+        const val = jumpInput ? jumpInput.value.trim() : '';
+        window.resolveJump(val, true);
     };
 
     // 6. Sidebar Highlighting (Intersection Observer)
@@ -374,7 +382,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         const link = this.querySelector('.search-result-ref a');
                         if (link) {
-                            window.location.href = link.href;
+                            // Extract reference from text (e.g. "1.1.1 — ...")
+                            const refPart = link.textContent.split('—')[0].trim();
+                            if (refPart && window.resolveJump) {
+                                e.preventDefault();
+                                window.resolveJump(refPart, true);
+                                closeSearchModal();
+                            } else {
+                                window.location.href = link.href;
+                            }
                         }
                     });
                     // Double-click always navigates
