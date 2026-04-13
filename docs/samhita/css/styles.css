@@ -1,13 +1,4 @@
 /* Jaimineeya Samavedam Website Styles */
-/* Web Fonts */
-@font-face {
-    font-family: 'Noto Sans Devanagari';
-    src: url('../fonts/NotoSansDevanagari.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* User Defined Palette */
 
 :root {
@@ -42,9 +33,9 @@
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
 --font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -739,7 +730,7 @@ background: var(--bg-sidebar);
 .rik-text {
     font-family: var(--font-sanskrit);
     font-size: 1.6rem;
-    line-height: 2.2; /* Increased for better inline accent clearance */
+    line-height: 2;
     color: #1565c0;
     text-align: center;
 }
@@ -1267,6 +1258,55 @@ background: var(--bg-sidebar);
     width: 0.3em;
 }
 
+/* Vedic Accent Mark Styles - Zero-width positioning */
+.accent-swarita {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-anudatta {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-kampa {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-trikampa {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
 .danda {
     margin: 0 0.2em;
 }
@@ -1303,37 +1343,6 @@ background: var(--bg-sidebar);
     padding: 5px 0;
     display: flex;
     align-items: flex-start;
-}
-
-/* Accent Marks - Level Baseline Alignment (Syllable Wrapper) */
-.accented-char {
-    position: relative;
-    display: inline-block;
-    vertical-align: baseline;
-}
-
-.accent-mark {
-    position: absolute;
-    bottom: 0.5em; /* Lowered distance from baseline for clean clearance */
-    left: 0.4em; /* Centered over the base character syllable */
-    width: 0;
-    white-space: nowrap;
-    overflow: visible;
-    pointer-events: none;
-}
-
-/* Subtle individual adjustments to align bottom justified to the horizontal line */
-.accent-swarita { bottom: 0.55em; }
-.accent-anudatta { bottom: 0.5em; }
-.accent-kampa, .accent-trikampa { bottom: 0.48em; }
-
-.ghost {
-    color: transparent !important;
-    opacity: 0 !important;
-    user-select: none;
-    display: inline-block;
-    width: 0;
-    overflow: visible;
 }
 
 .footnote-item .footnote-ref {

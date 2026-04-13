@@ -137,12 +137,15 @@ def normalize_and_trim(text):
 
 def step_preprocess_visarga_accent(text):
     """
-    Swaps Visarga (ः) or Danda (। or ॥) with immediately following accent marker (1)/(2)/(3) etc.
-    so the accent is applied to the preceding character (vowel) instead of the modifier/punctuation.
+    Swaps Visarga (ः) with immediately following accent marker (1)/(2)/(3) etc.
+    so the accent is applied to the preceding character (vowel) instead of the Visarga.
+    Also ensures Visarga is attached to the preceding character.
     
-    Examples:
-    - "Wordः(1)" -> "Word(1)ः"
-    - "Word।(1)" -> "Word(1)।"
+    Input: "Word : (1)" -> "Word(1)ः"
+    Input: "Word: (1)" -> "Word(1)ः" 
+    Input: "Word ः (1)" -> "Word(1)ः"
+    Input: "Wordः(1)" -> "Word(1)ः"
+    Output: Rendered accent will now appear on 'd' (or implicit vowel), followed by Visarga.
     """
     if not text:
         return text
@@ -150,12 +153,14 @@ def step_preprocess_visarga_accent(text):
     # 1. Normalize colon to Visarga
     text = text.replace(':', 'ः')
     
-    # 2. Remove space before Visarga/Danda (attach to preceding char)
-    text = re.sub(r'\s+([ः।॥])', r'\1', text)
+    # 2. Remove space before Visarga (attach to preceding char)
+    text = re.sub(r'\s+ः', 'ः', text)
     
-    # 3. Swap Special Chars and Accent (handling potential space between them)
-    # Pattern: Special Char [ः।॥] + optional space + (Accent)
-    pattern = r'([ः।॥])\s*(\([^)]+\))'
+    # 3. Swap Visarga and Accent (handling potential space between them)
+    # Pattern: Visarga + optional space + (Accent)
+    # accents are like (1), (2), (3), (4) or (cha), (ki) etc in Samam
+    pattern = r'([ः])\s*(\([^)]+\))'
+    # Replace with: Accent Marker first, then Visarga
     return re.sub(pattern, r'\2\1', text)
 
 # --- End of Moved Functions ---

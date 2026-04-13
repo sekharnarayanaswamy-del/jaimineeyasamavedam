@@ -49,9 +49,7 @@ except ImportError:
     # Fallback/Dummy versions for linting/missing files
     def combine_ardhaksharas(s): return list(s)
     def get_generated_metadata(f): return {}
-    def step_preprocess_visarga_accent(s): 
-        print("WARNING: Using dummy step_preprocess_visarga_accent!")
-        return s
+    def step_preprocess_visarga_accent(s): return s
     def parse_mantra_for_latex(s): return s
     def load_pipeline_config(): return {}
 
@@ -120,40 +118,28 @@ def local_escape_for_html(text):
 
 def local_replace_accents_html(text):
     """
-    Replaces ASCII accent markers with Unicode Vedic accent characters wrapped in spans.
-    Uses a 'Syllable Wrapper' strategy: wraps the base character and its accents in a 
-    relative span to allow stable baseline-relative absolute positioning.
+    Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
+    Uses spans with zero-width positioning for correct display (matching renderPDF.py).
     """
     if not text:
         return text
     
-    import re
+    # Use spans with zero-width CSS positioning (matching the working renderPDF.py output)
+    replacements = [
+        # Swarita (Vertical line above) - U+0951
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        # Anudatta (Horizontal line below) - U+1CD2
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        # Kampa (Curve) - U+1CF8
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        # Trikampa - U+1CF9
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
+    ]
     
-    # Syllable pattern: any non-space/non-danda followed by accent codes (x)
-    # We include Devanagari range and common Vedic extensions
-    pattern = r'([\u0900-\u097F][\u093E-\u094F\u0962-\u0963]*)((?:\(\d\))+)'
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
     
-    def replacer(match):
-        base_char = match.group(1)
-        accents_raw = match.group(2)
-        
-        # Mapping for the internal markers
-        # All marks are shifted onto the same horizontal 'track' using CSS
-        repl_map = {
-            '(1)': '<span class="accent-mark accent-swarita"><span class="ghost">\u0905</span>\u0951</span>',
-            '(2)': '<span class="accent-mark accent-anudatta"><span class="ghost">\u0905</span>\u1CD2</span>', 
-            '(3)': '<span class="accent-mark accent-kampa"><span class="ghost">\u0905</span>\u1CF8</span>',
-            '(4)': '<span class="accent-mark accent-trikampa"><span class="ghost">\u0905</span>\u1CF9</span>',
-        }
-        
-        accent_html = ""
-        found_codes = re.findall(r'\(\d\)', accents_raw)
-        for code in found_codes:
-            accent_html += repl_map.get(code, "")
-            
-        return f'<span class="accented-char">{base_char}{accent_html}</span>'
-
-    return re.sub(pattern, replacer, text)
+    return text
 
 
 def local_process_footnotes_html(text, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None):
@@ -873,15 +859,6 @@ class WebsiteGenerator:
     def _generate_css(self):
         """Generate CSS stylesheet - Configured Palette"""
         css = '''/* Jaimineeya Samavedam Website Styles */
-/* Web Fonts */
-@font-face {
-    font-family: 'Noto Sans Devanagari';
-    src: url('../fonts/NotoSansDevanagari.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
 /* User Defined Palette */
 
 :root {
@@ -916,9 +893,9 @@ class WebsiteGenerator:
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
 --font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -1613,7 +1590,7 @@ background: var(--bg-sidebar);
 .rik-text {
     font-family: var(--font-sanskrit);
     font-size: 1.6rem;
-    line-height: 2.2; /* Increased for better inline accent clearance */
+    line-height: 2;
     color: #1565c0;
     text-align: center;
 }
@@ -2141,6 +2118,55 @@ background: var(--bg-sidebar);
     width: 0.3em;
 }
 
+/* Vedic Accent Mark Styles - Zero-width positioning */
+.accent-swarita {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-anudatta {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-kampa {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
+.accent-trikampa {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
+}
+
 .danda {
     margin: 0 0.2em;
 }
@@ -2177,37 +2203,6 @@ background: var(--bg-sidebar);
     padding: 5px 0;
     display: flex;
     align-items: flex-start;
-}
-
-/* Accent Marks - Level Baseline Alignment (Syllable Wrapper) */
-.accented-char {
-    position: relative;
-    display: inline-block;
-    vertical-align: baseline;
-}
-
-.accent-mark {
-    position: absolute;
-    bottom: 0.5em; /* Lowered distance from baseline for clean clearance */
-    left: 0.4em; /* Centered over the base character syllable */
-    width: 0;
-    white-space: nowrap;
-    overflow: visible;
-    pointer-events: none;
-}
-
-/* Subtle individual adjustments to align bottom justified to the horizontal line */
-.accent-swarita { bottom: 0.55em; }
-.accent-anudatta { bottom: 0.5em; }
-.accent-kampa, .accent-trikampa { bottom: 0.48em; }
-
-.ghost {
-    color: transparent !important;
-    opacity: 0 !important;
-    user-select: none;
-    display: inline-block;
-    width: 0;
-    overflow: visible;
 }
 
 .footnote-item .footnote-ref {
