@@ -38,14 +38,14 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
     *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a single-column, horizontal-flowing alphabetical index (**वर्णानुक्रमण**) designed for maximum density and readability. Includes aggregate unique Rik counting (currently ~587 Riks).
 *   **Prayoga Markdown Integration**: Automatically detects and loads `markdown` files configured in `prayoga_index.yaml` to dynamically build standalone procedural webpage layouts accessible through modal popup links embedded next to the respective Vedic verse headings.
-*   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
+*   **`format_rik_text_html`**: Handles HTML formatting for Rik text. Uses **Inline Unicode** rendering (raw combining marks) for maximum stability across mobile and desktop browsers, replacing the legacy span-based stacking.
 
 ### 2.3 `src/render_pdf.py`
 **Role**: Converts JSON data into high-quality LaTeX (for PDFs) and HTML documents.
 *   **`CreatePdf` / `CreateHtmlFile`**: Main orchestration functions for PDF and HTML generation.
 *   **`format_dandas_html`**: Handles the formatting of mantra and metadata text for HTML. Now supports a `preserve_spaces` flag to maintain manual whitespace alignment in Rishi/Devata metadata blocks.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
-*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`).
+*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to Unicode combining marks for HTML (Inline) and zero-width, raised LaTeX glyphs for PDF.
 *   **Prayoga Appendix Generation**: Recursively intercepts YAML configuration arrays pointing to nested markdown text, compiles them efficiently into internal `PhantomSection` structural LaTeX logic without massive external package reliance, and aggregates all referenced manuals inside an overarching `\chapter*{... Appendix ...}` tail. It then intelligently appends `hyperref` click anchors inside dynamic footnotes directly onto the respective Samams.
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.
@@ -542,9 +542,14 @@ Footnotes in the source text must follow the `(sN)` pattern **immediately follow
 *   **Correct**: `इ(श)(s1)`
 *   **Incorrect**: `इ(श) (s1)` (Space creates detachment)
 
-### 5.4 Sidebar "Jump to" Logic — Technical Details
+### 5.4 Sidebar "Jump to" Logic — Technical Details (v2.1)
 
 The website includes a "Jump to" input field in the sidebar that allows users to navigate directly to a specific Parva, Kandah, or Sama.
+
+#### Deterministic Navigation Logic
+To ensure reliable navigation across different pages and browser states, the system uses a **Navigate then Scroll** mechanism:
+1. **Target Identification**: If the jump destination is on a different page, the browser first navigates to that page.
+2. **Deterministic Scrolling**: On the destination page, a script detects the target anchor in the URL hash and performs a smooth scroll *after* a short delay (200ms) to allow the layout to stabilize. This prevents scroll-to-target failures caused by dynamic layout changes or lazy-loaded components.
 
 #### Input Formats
 | Format | Example | Behavior |
