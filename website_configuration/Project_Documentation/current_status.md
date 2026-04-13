@@ -3,7 +3,7 @@
 ## Overview
 This document tracks the current implementation progress of jaimineeyasamavedam.org.
 
-**Last Updated**: February 13, 2026
+**Last Updated**: April 14, 2026
 **Domain**: jaimineeyasamavedam.org (WordPress)
 **Static Library**: sekharnarayanaswamy-del.github.io/jaimineeyasamavedam/ (GitHub Pages)
 **Hosting**: Hostinger (Main) + GitHub Pages (Texts)
@@ -29,11 +29,12 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 | Google Analytics | Configured |
 | Project documentation | In `Project_Documentation/` |
 | WordPress backup | `jaimineeyasamavedamorg.WordPress.2025-12-30.xml` |
-| **Static Website Generator** | `src/generate_website.py` (v2.0) |
+| Static Website Generator | `src/generate_website.py` (v2.1) - Deterministic Nav |
 | **Text Library (Static)** | Published to GitHub Pages (`docs/`) |
 | **Design System** | Verified Colors (`#EFE6D5`, `#FCF9F0`) & Fonts |
 | **Versioning** | Implemented across all outputs (HTML, PDF, CSV) |
 | **Integration** | "Sacred Texts" menu linked to GitHub Pages URL |
+| **Navigation & Search** | Consolidated and verified (v2.1) |
 
 ### 🔄 To Verify
 
@@ -52,11 +53,18 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 | **Audio Content Population** | Medium | Shared |
 | **PDF Downloads Section** | High | 📚 Student |
 | **WordPress Integration** | High | Shared |
+| **WordPress Integration** | High | Shared |
 | **Contact Form** | Low | Shared |
 | **Newsletter Placeholder** | Low | 👥 Community |
-| **Search Functionality** | High | 📚 Student |
 | **Video Integration & Hosting** | Medium | Shared |
 | **Audio Cloud Integration** | Medium | Shared |
+
+### ✅ Completed (v2.1)
+
+| Item | Priority | Persona |
+|------|----------|---------|
+| **Search Functionality** | High | 📚 Student |
+| **Navigation System** | High | 📚 Student |
 
 ---
 

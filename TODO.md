@@ -13,6 +13,7 @@
 - [x] **Aggregate Rik Counting**: Standardized unique Rik calculations across the website, showing ~587 unique classified Riks in the samhita.
 - [x] **Jump Navigation Fix**: Resolved "Jump to" corruption where Kandah links were overwriting Parva IDs in the internal map. Added specific CSS classes (`parva-link`, `kandah-link`) to differentiate navigation levels.
 - [x] **Landing Page Protection**: Updated `pipeline_config.yaml` to use dedicated `output_dir` subdirectories (`docs/samhita`, `docs/aaranam`) to prevent accidental overwriting of the root `docs/index.html`.
+- [x] **Consolidated Navigation & Search Fix**: Unified P.K.S navigation logic into `window.resolveJump`, implemented redundant sequence-based anchors (`sama-N`), and linked search results to specific mantra targets.
 
 ## Website Navigation & Indices
 - [ ] **Refine Metadata Parsing**: Ensure `parse_metadata_str` in `generate_website.py` robustly handles all edge cases from the enriched JSON/CSV data.
@@ -22,5 +23,4 @@
 - [ ] **Proofreading**: Use the CSV/Excel sheet to do a sweep of Rishi/Devata/Chandas assignments.
 
 ## Future Enhancements
-- [ ] **Search Functionality**: Add client-side search for verses.
 - [ ] **Audio Integration**: Link audio files to individual Samams if available.

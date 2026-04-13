@@ -25,12 +25,13 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 **Role**: The central parser and "Source of Truth". It converts raw text files (with custom markup) into a structured JSON database.
 *   **`RikMetadataParser` (Class)**: Responsible for parsing the auxiliary metadata file (`rishi_devata_chandas_for_rik.txt`). It handles complex logic for mapping Rishi/Devata/Chandas to Rik IDs, including range-based assignments `(1-10)` and specific overrides.
 *   **`convert_corrections_to_json`**: The main driver function for the "Correction Mode". It reads the processed Unicode text file, extracts hierarchy (SuperSection > Section), and embeds metadata.
-*   **Robust Parsing Logic**: The parser now uses a space-tolerant, multi-line regex system for markers (e.g., `# Start of SuperSection Title -- ID ## DO NOT EDIT`). It correctly handles markers regardless of whether there are zero, one, or many spaces before the `##` marker, making it robust against minor manual editing variations.
+*   **Robust Parsing Logic**: The parser now uses a space-tolerant, multi-line regex system for markers (e.g., `# Start of SuperSection Title -- ID ## DO NOT EDIT`). It correctly handles markers regardless of whether there are zero, one, or many spaces before the `##` marker, making it robust against manual editing variations.
 *   **`parse_unicode_text_file`**: Handles the reading of the main input file, ensuring encoding safety and stripping invisible characters.
 
 ### 2.2 `src/generate_website.py`
 **Role**: Generates the static HTML website for GitHub Pages.
 *   **`JSVParser` (Class)**: A robust parser that reads the JSON output and populates python objects (`Parva`, `Kandah`, `Arsheyam`). It abstracts the JSON structure into a workable Object Model.
+    *   **Deterministic Numbering**: Includes `_post_process_numbering()` which recalculates the sequential `sama_number` for every mantra in a Kandah. This ensures that P.K.S references (e.g., `1.3.5`) always point to the correct mantra in the sequence, regardless of how mantras are grouped into blocks.
 *   **`WebsiteGenerator` (Class)**: Takes the `JSVParser` objects and orchestrates the HTML creation. It handles:
     *   Template rendering (Jinja2).
     *   Navigation generation (Left Sidebar).
@@ -685,12 +686,12 @@ The search results support flexible user interaction:
 
 | Action | Behavior |
 |--------|----------|
-| Single click (no selection) | Navigate to result |
+| Single click (no selection) | Navigate to result using `window.resolveJump` |
 | Double click | Always navigate to result |
 | Drag/Select text | Allows text selection without navigation |
 | Right click | Opens context menu for copy (no navigation) |
 
-This is implemented by tracking mouse movement and selection state in the `mouseup` handler.
+This is implemented by tracking mouse movement and selection state in the `mouseup` handler. Clicking a result now calls `window.resolveJump(entry.ref)`, which ensures the browser scrolls precisely to the specific mantra block even if it is part of a range.
 
 #### Search Modal JavaScript
 
@@ -807,6 +808,15 @@ The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which a
     *   **Structure**: Each entry in `rik_classifications` contains: `Global_Rik_Num`, `Rishi`, `Devata`, and `Chandas`.
     *   **Purpose**: This allows the `JSVParser` and `WebsiteGenerator` to group Samams by their associated Riks and display accurate metadata on the individual classification pages.
 *   **Sorting**: All data is processed using a strict numerical sort on SuperSection and Section keys to ensure the global counter remains stable across runs.
+
+### 5.7 Deterministic P.K.S Navigation (v2.1)
+The website uses a unified navigation system to resolve `Parva.Kandah.Sama` references consistently across the entry points (Jump box and Search result).
+
+1.  **Invisible Samam Anchors**: Every mantra block in the generated HTML contains a set of `<span>` tags with IDs in the format `id="sama-N"`. If a block covers mantras 8, 9, and 10, it will contain three anchors so that a jump to any of these numbers scrolls to the same block.
+2.  **Centralized Resolver**: The `window.resolveJump(ref, smooth)` function in `main.js` parses the numeric reference, identifies the correct Parva/Kandah subfolder, and uses the `#sama-N` hash to trigger the scroll.
+3.  **Smooth Scrolling**: The system uses `element.scrollIntoView({ behavior: 'smooth' })` when navigating within the same page, or standard hash-based navigation when jumping across pages.
+
+**Files**: `src/generate_website.py` (`_generate_js()`), `docs/*/js/main.js`
 
 ### 5.5 Typography System
 The website's visual hierarchy is driven by a two-font system designed to balance traditional aesthetics with modern readability.
