@@ -2972,50 +2972,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
+            
+            // Site-aware prefix resolution (Samhita context)
+            let sitePrefix = "";
+            const currentPath = window.location.pathname;
+            // Samhita is Parva 1-6
+            if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
+                sitePrefix = "../samhita/";
+            }
+
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
             
+            // Deterministic hash: point to specific Samam ID
+            const targetHash = parts.length === 3 ? `#sama-${parts[2]}` : "";
             const targetPage = `kandah/${parvaId}/${kandahId}.html`;
-            const absoluteTargetPage = new URL(prefix + targetPage, window.location.href).pathname;
             const currentPage = window.location.pathname;
             
-            let targetHash = "";
-            if (parts.length === 3) {
-                const targetNum = parseInt(parts[2]);
-                const samaLinks = document.querySelectorAll('.sama-link');
-                let matchedAnchor = null;
-                
-                samaLinks.forEach(link => {
-                    const text = link.textContent.trim();
-                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—\-][ ]*([0-9]+)$/);
-                    if (rangeMatch) {
-                        const start = parseInt(rangeMatch[1]);
-                        const end = parseInt(rangeMatch[2]);
-                        if (targetNum >= start && targetNum <= end) matchedAnchor = link.getAttribute('href');
-                    } else {
-                        const exactMatch = text.match(/^([0-9]+)$/);
-                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) matchedAnchor = link.getAttribute('href');
-                    }
-                });
-                
-                targetHash = matchedAnchor || `#v-${parts[2]}`;
-            }
+            console.log("[Jump] Resolving to:", prefix + sitePrefix + targetPage + targetHash);
 
-            console.log("[Jump] Resolving:", {targetPage, targetHash});
-
-            // STEP 1: Determine if we need to change files
             if (currentPage.endsWith(targetPage) || currentPage.includes('/' + targetPage)) {
-                // Same file: Just scroll (Step 2)
-                console.log("[Jump] Same page identified, scrolling...");
+                // Same file: Just scroll
                 if (window.location.hash === targetHash) scrollToTarget(targetHash, true);
                 else window.location.hash = targetHash;
             } else {
-                // Different file: Redirect (Step 1)
-                console.log("[Jump] Different page, navigating to:", prefix + targetPage + targetHash);
-                window.location.assign(prefix + targetPage + targetHash);
+                // Different file: Redirect
+                window.location.assign(prefix + sitePrefix + targetPage + targetHash);
             }
         }
     };
+
+    // 6. Sidebar Highlighting (Intersection Observer)
+    const observerOptions = {
+        root: null,
+        rootMargin: '-100px 0px -70% 0px',
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const samaStart = entry.target.getAttribute('data-sama-start');
+                if (samaStart) {
+                    document.querySelectorAll('.nav-links a.active, .jump-links a.active').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    
+                    const links = document.querySelectorAll(`.nav-links a[href="#sama-${samaStart}"], .jump-links a[href="#sama-${samaStart}"]`);
+                    links.forEach(l => {
+                        l.classList.add('active');
+                    });
+                }
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.sama-entry').forEach(el => observer.observe(el));
 
     if (jumpInput) {
         jumpInput.addEventListener('keypress', function(e) {
@@ -3024,10 +3036,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Search Interactivity (Standard)
+    const searchModal = document.getElementById('search-modal');
     const searchOverlay = document.getElementById('search-overlay');
     const searchInput = document.getElementById('search-input');
     const searchClose = document.getElementById('search-close');
     const searchResults = document.getElementById('search-results');
+    const searchBtn = document.querySelector('.search-btn');
     let searchIndex = null;
     
     const loadSearchIndex = () => {
@@ -3485,8 +3499,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             else:
                                 label_text = f"{current_samam_start}"
                             
-                            # Create link
-                            sama_links += f'<a href="#sama-{sama.sama_number}" class="sama-link">{label_text}</a>\n'
+                            # Create link - Deterministic: point to the START of the range
+                            sama_links += f'<a href="#sama-{current_samam_start}" class="sama-link">{label_text}</a>\n'
                             
                             # Update counters
                             total_real_samams += cnt
@@ -3541,7 +3555,8 @@ document.addEventListener('DOMContentLoaded', function() {
         """Generate right sidebar with jump links"""
         jump_links = ""
         for sama in samas:
-            jump_links += f'<a href="#sama-{sama.sama_number}" class="sama-link">{sama.sama_number}</a>\n'
+            # Right sidebar links to individual article entries
+            jump_links += f'<a href="#sama-entry-{sama.sama_number}" class="sama-link">{sama.sama_number}</a>\n'
         
         return f'''<aside class="sidebar-right">
     <h3>साम: <span class="number">({len(samas)})</span></h3>
@@ -4217,21 +4232,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     verse_count = count_samams_with_fallback(sama.mantra_text)
                     
                     # Generate unique anchors for EVERY verse number in the current range
-                    # This ensures direct jumps like 2.4.11 work even if 11 is not the first verse
+                    # This avoids the "inter-page vs same-page" discrepancy
                     verse_anchors = ""
-                    for v_num in range(current_verse_num, current_verse_num + verse_count):
-                        verse_anchors += f'<span id="v-{v_num}" class="sama-anchor"></span>'
+                    for s_num in range(current_verse_num, current_verse_num + verse_count):
+                        verse_anchors += f'<span id="sama-{s_num}" class="sama-anchor"></span>'
                     
-                    # Update running counter for next Samam
+                    # Record the start samam for sidebar sync
+                    start_samam_for_entry = current_verse_num
                     current_verse_num += verse_count
                     
                     sama_entries += f'''
                     {verse_anchors}
-                    <article class="sama-entry" id="sama-{sama.sama_number}">
+                    <article class="sama-entry" id="sama-entry-{sama.sama_number}" data-sama-start="{start_samam_for_entry}">
                         {rik_anchor_tags}
                         <div class="sama-id-row">
                             <span class="sama-id">
-                                <a href="#sama-{sama.sama_number}">{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}</a>
+                                <a href="#sama-entry-{sama.sama_number}">{parva.parva_number}.{kandah.kandah_number}.{sama.sama_number}</a>
                             </span>
                         </div>
                         

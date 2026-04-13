@@ -6310,7 +6310,7 @@ s2 - Thogur Padhati (त)
 #End of Mantra Sets -- subsection_1474 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_1475 ## DO NOT EDIT
-।। वामदेवो गौतमः अग्निः पदपङ्कि।।
+।। वामदेवो गौतमः अग्निः पदपङ्क्तिः।।
 # End of Rik Metadata -- subsection_1475 ## DO NOT EDIT
 # Start of Rik Text -- subsection_1475 ## DO NOT EDIT
 पीबासो(2)मा(1)मिन्द्रा(2)मन्द(1)तुत्वा।य(3)न्ते(1)सूषा(2)वाहरिय्य(2)श्वाद्रिः(2) । सोतु(2)र्बा(1)हुभ्यांसू(4)यातोना(2)र्वा ॥ ८ ॥

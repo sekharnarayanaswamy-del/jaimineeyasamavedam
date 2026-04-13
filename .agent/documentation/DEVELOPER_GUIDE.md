@@ -542,62 +542,6 @@ Footnotes in the source text must follow the `(sN)` pattern **immediately follow
 *   **Correct**: `इ(श)(s1)`
 *   **Incorrect**: `इ(श) (s1)` (Space creates detachment)
 
-### 5.4 Sidebar "Jump to" Logic — Technical Details
-
-The website includes a "Jump to" input field in the sidebar that allows users to navigate directly to a specific Parva, Kandah, or Sama.
-
-#### Input Formats
-| Format | Example | Behavior |
-|--------|---------|----------|
-| `P.K` | `6.11` | Navigates to Parva 6, Kandah 11 |
-| `P.K.S` | `6.11.33` | Navigates to Parva 6, Kandah 11, scrolls to Samam 33 |
-
-#### Samam Range Resolution
-
-The key challenge is that Samam numbers in the input (e.g., `33`) do not directly correspond to HTML anchor IDs. The sidebar displays Samam **ranges** in its `.sama-link` elements:
-
-```html
-<a href="#sama-10" class="sama-link">31–33</a>
-```
-
-So Samam 33 is inside the `#sama-10` block. The `handleJump()` function resolves this by:
-
-1. **Parsing the sidebar links** — reads all `.sama-link` elements and their text content
-2. **Range matching** — uses regex `/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/` to parse range text (e.g., `31–33`)
-3. **Exact match fallback** — if the link text is a single number (e.g., `34`), matches directly
-4. **Anchor resolution** — finds the `href` of the matching link and appends it to the URL
-
-```javascript
-samaLinks.forEach(link => {
-    const text = link.textContent.trim();
-    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
-    if (rangeMatch) {
-        const start = parseInt(rangeMatch[1]);
-        const end = parseInt(rangeMatch[2]);
-        if (targetNum >= start && targetNum <= end) {
-            matchedAnchor = link.getAttribute('href');
-        }
-    }
-});
-```
-
-#### Deterministic Navigation (2-Step Process)
-
-To ensure reliable cross-page jumps, the system uses a **two-step deterministic process**:
-
-1.  **Navigation**: The script first changes the `window.location.href` to the target file.
-2.  **Deferred Scrolling**: Upon page load, if a hash (e.g., `#v-11`) is present, the script waits **200ms** (to allow fonts and layout to stabilize) before calculating the target's position and executing a smooth scroll with a top offset.
-
-This prevents "missed" scrolls that occur when the browser tries to jump before the layout/fonts have fully rendered.
-
-#### Synced Verse Anchors
-
-For Samams that cover multiple verses (e.g., `10–11`), the generator creates **multiple anchors** to ensure that jumping to any specific verse in the range works correctly:
-
-```html
-<span id="v-10" class="sama-anchor"></span>
-<span id="v-11" class="sama-anchor"></span>
-<div class="sama-content">...</div>
 ```
 
 This synchronization between the sidebar's listed verse numbers and the content's internal anchors ensures that `P.K.S` jumps are always handled by the browser's native ID resolution on the first attempt.
