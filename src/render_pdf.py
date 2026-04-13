@@ -87,20 +87,19 @@ CURRENT_TOC_LEVEL = "section"
 # 1. NEW UTILITY: Local Visarga Accent Ordering
 # ----------------------------------------------------
 def fix_visarga_accent_order_local(text):
+    """
+    Ensures accents strictly precede Visarga and Danda.
+    This is required for proper Unicode combining behavior in most browsers.
+    """
     if not text: return text
     
     # Normalize colons
     text = text.replace(':', 'ः')
-    text = re.sub(r'\s+ः', 'ः', text)
+    text = re.sub(r'\s+([ः।॥])', r'\1', text)
     
-    if 'Adishila' in CURRENT_PDF_FONT:
-        # Adishila needs Accent FIRST, then Visarga: (1)ः
-        pattern = r'([ः])\s*(\([^)]+\))'
-        text = re.sub(pattern, r'\2\1', text)
-    else:
-        # Standard OpenType (Noto) needs Visarga FIRST, then Accent: ः(1)
-        pattern = r'(\([^)]+\))\s*([ः])'
-        text = re.sub(pattern, r'\2\1', text)
+    # Strictly swap Visarga/Danda and Accent: (1)ः or (1)।
+    pattern = r'([ः।॥])\s*(\([^)]+\))'
+    text = re.sub(pattern, r'\2\1', text)
         
     return text
 
@@ -1560,21 +1559,21 @@ def handle_consecutive_trikamba_html(text):
 
 def replace_accents_html(text):
     """
-    Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Returns raw Unicode combining characters for native browser handling (Inline).
+    Replaces ASCII accent markers with Unicode Vedic accent characters wrapped in spans.
+    This 'Hybrid Inline' approach allows vertical control while maintaining inline flow.
     """
     if not text:
         return text
     
     replacements = [
         # Swarita (Vertical line above) - U+0951
-        ('(1)', '\u0951'),
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
         # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '\u1CD2'),
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
         # Kampa (Curve) - U+1CF8
-        ('(3)', '\u1CF8'),
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
         # Trikampa - U+1CF9
-        ('(4)', '\u1CF9'),
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
     ]
     
     for marker, replacement in replacements:

@@ -1296,6 +1296,23 @@ background: var(--bg-sidebar);
     align-items: flex-start;
 }
 
+/* Accent Marks - Hybrid Inline Offset (Visual Lift) */
+.accent-swarita, .accent-kampa, .accent-trikampa {
+    display: inline-block;
+    position: relative;
+    top: -0.25em; /* Lifts the accent high above the character as requested */
+    width: 0;
+    margin-right: 0;
+}
+
+.accent-anudatta {
+    display: inline-block;
+    position: relative;
+    top: 0.1em; /* Adjusts the line below for better visibility */
+    width: 0;
+    margin-right: 0;
+}
+
 .footnote-item .footnote-ref {
     color: #1565c0;
     font-weight: bold;

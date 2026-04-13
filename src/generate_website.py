@@ -49,7 +49,9 @@ except ImportError:
     # Fallback/Dummy versions for linting/missing files
     def combine_ardhaksharas(s): return list(s)
     def get_generated_metadata(f): return {}
-    def step_preprocess_visarga_accent(s): return s
+    def step_preprocess_visarga_accent(s): 
+        print("WARNING: Using dummy step_preprocess_visarga_accent!")
+        return s
     def parse_mantra_for_latex(s): return s
     def load_pipeline_config(): return {}
 
@@ -118,22 +120,22 @@ def local_escape_for_html(text):
 
 def local_replace_accents_html(text):
     """
-    Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Uses spans with zero-width positioning for correct display (matching renderPDF.py).
+    Replaces ASCII accent markers with Unicode Vedic accent characters wrapped in spans.
+    This 'Hybrid Inline' approach allows vertical control while maintaining inline flow.
     """
     if not text:
         return text
     
-    # Return raw Unicode combining characters for native browser handling (Inline)
+    # Return wrapped Unicode combining characters for native browser handling with manual 'lift'
     replacements = [
         # Swarita (Vertical line above) - U+0951
-        ('(1)', '\u0951'),
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
         # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '\u1CD2'),
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
         # Kampa (Curve) - U+1CF8
-        ('(3)', '\u1CF8'),
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
         # Trikampa - U+1CF9
-        ('(4)', '\u1CF9'),
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
     ]
     
     for marker, replacement in replacements:
@@ -2154,6 +2156,23 @@ background: var(--bg-sidebar);
     padding: 5px 0;
     display: flex;
     align-items: flex-start;
+}
+
+/* Accent Marks - Hybrid Inline Offset (Visual Lift) */
+.accent-swarita, .accent-kampa, .accent-trikampa {
+    display: inline-block;
+    position: relative;
+    top: -0.25em; /* Lifts the accent high above the character as requested */
+    width: 0;
+    margin-right: 0;
+}
+
+.accent-anudatta {
+    display: inline-block;
+    position: relative;
+    top: 0.1em; /* Adjusts the line below for better visibility */
+    width: 0;
+    margin-right: 0;
 }
 
 .footnote-item .footnote-ref {
