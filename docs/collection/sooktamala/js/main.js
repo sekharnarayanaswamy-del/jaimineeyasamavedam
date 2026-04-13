@@ -233,9 +233,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const highlightText = (text, query) => {
         if (!query || !text) return text;
-        const idx = text.toLowerCase().indexOf(query.toLowerCase());
-        if (idx === -1) return text;
-        return text.substring(0, idx) + '<mark>' + text.substring(idx, idx + query.length) + '</mark>' + text.substring(idx + query.length);
+        // Escape query for regex and use global flag
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escaped, 'gi');
+        
+        // Split by HTML tags to avoid highlighting inside tags (e.g. <span class="...">)
+        const parts = text.split(/(<[^>]+>)/g);
+        return parts.map(p => p.startsWith('<') ? p : p.replace(regex, (m) => `<mark>${m}</mark>`)).join('');
     };
     
     const performSearch = (query) => {
