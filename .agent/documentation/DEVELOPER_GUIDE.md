@@ -529,10 +529,10 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Set-Based Component Grouping**: In `renumber_sooktam.py`, the logic was upgraded from simple state-based tracking to **Set-based tracking**. Each structural component (`Metadata`, `Text`, `Title`) is added to a "seen" set for the current subsection. The counter is **only** incremented if a component is repeated (e.g., a new `Metadata` block starts). This allows verses with staggered parts (e.g., Metadata followed by a delayed Title) to be correctly unified under a single `subsection_ID`.
 
 ### Visual Rendering Logic
-*   **Zero-Width CSS Positioning**: The system uses a specialized zero-width positioning strategy for Vedic accents (`\u0951`, `\u1CD2`, `\u1CF8`, `\u1CF9`). Accents are wrapped in `<span>` tags with `display: inline-block` and `width: 0`, allowing them to "overlay" the preceding base character without displacing the text flow. This ensures compatibility across most modern browsers and fonts (like AdishilaVedic).
-*   **Dotted Circle Rendering (Deferred)**: Standard browsers/fonts occasionally display a "dotted circle" (`◌`) when a Vedic accent follows certain characters (like a Visarga). 
-    *   *Experimental Revert*: Multiple fixes were attempted, including Zero Width Joiners (ZWJ), visarga-accent swapping logic, and CSS pseudo-element hacks. These were **abandoned and removed** from the codebase as they introduced rendering instabilities and did not reliably solve the issue across all platforms.
-    *   *Current State*: The project continues to use standard Unicode sequences with CSS overlay positioning.
+*   **Visarga-Accent Swap**: A rendering fix handles the Vedic convention where an accent marked *after* a Visarga (`ः`) must visually appear on the preceding vowel. The implementation always swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` regardless of input order or font. No font-specific CSS handling is applied.
+    *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering.
+    *   *Applied In*: `render_pdf.py`, `generate_Rik_for_samhita.py`, and `generate_website.py`.
+    *   *Note*: This ensures accent appears on the character before the visarga for correct Vedic rendering in all fonts (Adishila, NotoSansDevanagari, etc.).
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
