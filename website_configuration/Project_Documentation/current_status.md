@@ -43,6 +43,7 @@ This document tracks the current implementation progress of jaimineeyasamavedam.
 | **Deployment** | Verify GitHub Pages update frequency |
 | **Mobile Responsiveness** | Test new static layout on actual mobile devices |
 | **Audio Mapping** | Verify mapping of MP3 filenames to generated placeholders |
+| **Dotted Circles** | Investigate font-specific "dotted circle" rendering in standard browsers (Deferred) |
 
 ### 📋 Not Started (Release 1)
 

@@ -532,6 +532,7 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Visarga-Accent Swap**: A critical rendering fix (`step_preprocess_visarga_accent` in `src/utils.py`) handles the Vedic convention where an accent marked *after* a Visarga (`ः`) must visually appear on the preceding vowel.
     *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering.
     *   *Applied In*: PDF, Website, and Rik Samhita generators.
+*   **Dotted Circle Mitigation (Deferred)**: Some fonts/browsers display a "dotted circle" (`◌`) when a Vedic accent is not correctly combined with a base character. An experimental fix involving wrapping the base character and accent in a shared `<span>` was attempted but deferred due to regex complexity and edge cases. Currently, the system uses **zero-width CSS positioning** to overlay the accent.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
