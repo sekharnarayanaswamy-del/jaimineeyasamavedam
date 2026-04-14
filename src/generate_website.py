@@ -3587,10 +3587,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="sidebar-footer">
         <a href="{prefix}index.html" class="footer-btn">मुख्यपृष्ठम्</a>
-        {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">अनुक्रमणिका</a>' if self.mode == "COLLECTION" else ""}
+        {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">अनुक्रमणिका</a>' if self.mode == "collection" else ""}
         {f"""<a href="{prefix}classification/rishi.html" class="footer-btn">ऋषयः</a>
         <a href="{prefix}classification/devata.html" class="footer-btn">देवताः</a>
-        <a href="{prefix}classification/chandas.html" class="footer-btn">छन्दांसि</a>""" if self.mode != 'COLLECTION' else ""}
+        <a href="{prefix}classification/chandas.html" class="footer-btn">छन्दांसि</a>""" if self.mode != 'collection' else ""}
     </div>
 </aside>'''
 
@@ -3706,7 +3706,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="stats">({len(self.header_index)})</span>
                         </a>
                     </div>
-                </div>""" if self.mode != 'COLLECTION' else ""}
+                </div>""" if self.mode != 'collection' else ""}
             </div>
             
             {parva_sections}
@@ -3724,7 +3724,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'COLLECTION' else 'Search mantra text, Rishi, Devata, Chandas...'}">
+                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'collection' else 'Search mantra text, Rishi, Devata, Chandas...'}">
                 <span class="search-hint">Type in Devanagari</span>
             </div>
             <div class="search-results" id="search-results"></div>
@@ -4309,7 +4309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <td class="class-value">{c['Chandas']}</td>
                                     </tr>''' for c in sama.rik_classifications])}
                             </table>
-                        </div>""" if self.mode != 'COLLECTION' and sama.rik_classifications else ""}
+                        </div>""" if self.mode != 'collection' and sama.rik_classifications else ""}
 
                         {rik_html}
                         {mantra_html}
