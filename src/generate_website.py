@@ -119,22 +119,25 @@ def local_escape_for_html(text):
 def local_replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Wraps the preceding character (base) and the accent in a span to ensure 
-    correct rendering in standard fonts (avoiding dotted circles).
+    Uses spans with zero-width positioning for correct display (matching renderPDF.py).
     """
     if not text:
         return text
     
-    # Use regex to capture the preceding character and wrap them together
+    # Use spans with zero-width CSS positioning (matching the working renderPDF.py output)
     replacements = [
-        (r'([^\s।॥ः])\(1\)', '<span class="accent-swarita">\\1\u0951</span>'),
-        (r'([^\s।॥ः])\(2\)', '<span class="accent-anudatta">\\1\u1CD2</span>'),
-        (r'([^\s।॥ः])\(3\)', '<span class="accent-kampa">\\1\u1CF8</span>'),
-        (r'([^\s।॥ः])\(4\)', '<span class="accent-trikampa">\\1\u1CF9</span>'),
+        # Swarita (Vertical line above) - U+0951
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        # Anudatta (Horizontal line below) - U+1CD2
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        # Kampa (Curve) - U+1CF8
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        # Trikampa - U+1CF9
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
     ]
     
-    for pattern, replacement in replacements:
-        text = re.sub(pattern, replacement, text)
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
     
     return text
 
@@ -2137,17 +2140,29 @@ background: var(--bg-sidebar);
     width: 0.3em;
 }
 
-/* Vedic Accent Mark Styles - Standard rendering within combined span */
-.accent-swarita, .accent-anudatta, .accent-kampa, .accent-trikampa {
-    display: inline;
+/* Vedic Accent Mark Styles - Zero-width positioning */
+.accent-swarita {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
     color: #1565c0;
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    position: relative;
+    left: -0.1em;
+    top: -0.15em;
 }
 
-.accent-kampa {
+.accent-anudatta {
+    display: inline-block;
+    width: 0;
+    overflow: visible;
+    color: #1565c0;
+    font-weight: bold;
+    font-size: 1.2em;
     position: relative;
-    top: -0.1em;
+    left: -0.1em;
+    top: -0.15em;
 }
 
 .accent-kampa {

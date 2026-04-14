@@ -1561,22 +1561,24 @@ def handle_consecutive_trikamba_html(text):
 def replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Wraps the preceding character (base) and the accent in a span to ensure 
-    correct rendering in standard fonts (avoiding dotted circles).
+    AdishilaVedic font properly supports these characters.
     """
     if not text:
         return text
     
-    # Use regex to capture the preceding character and wrap them together
     replacements = [
-        (r'([^\s।॥ः])\(1\)', '<span class="accent-swarita">\\1\u0951</span>'),
-        (r'([^\s।॥ः])\(2\)', '<span class="accent-anudatta">\\1\u1CD2</span>'),
-        (r'([^\s।॥ः])\(3\)', '<span class="accent-kampa">\\1\u1CF8</span>'),
-        (r'([^\s।॥ः])\(4\)', '<span class="accent-trikampa">\\1\u1CF9</span>'),
+        # Swarita (Vertical line above) - U+0951
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        # Anudatta (Horizontal line below) - U+1CD2
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        # Kampa (Curve) - U+1CF8
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        # Trikampa - U+1CF9
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
     ]
     
-    for pattern, replacement in replacements:
-        text = re.sub(pattern, replacement, text)
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
     
     return text
 
