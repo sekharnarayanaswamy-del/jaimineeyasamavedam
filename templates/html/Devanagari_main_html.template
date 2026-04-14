@@ -259,53 +259,17 @@
             font-weight: bold;
         }
         
-        /* Accent marks - zero-width positioning for fonts without native Vedic support */
-        .accent-swarita {
-            display: inline-block;
-            width: 0;
-            overflow: visible;
+        /* Accent marks - standard rendering within combined span */
+        .accent-swarita, .accent-anudatta, .accent-kampa, .accent-trikampa {
+            display: inline;
             color: var(--accent-blue);
             font-weight: bold;
-            font-size: 1.2em;
-            position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            font-size: 1.15em;
         }
-        
-        .accent-anudatta {
-            display: inline-block;
-            width: 0;
-            overflow: visible;
-            color: var(--accent-blue);
-            font-weight: bold;
-            font-size: 1.2em;
-            position: relative;
-            left: -0.1em;
-            top: -0.15em;
-        }
-        
+
         .accent-kampa {
-            display: inline-block;
-            width: 0;
-            overflow: visible;
-            color: var(--accent-blue);
-            font-weight: bold;
-            font-size: 1.2em;
             position: relative;
-            left: -0.1em;
-            top: -0.15em;
-        }
-        
-        .accent-trikampa {
-            display: inline-block;
-            width: 0;
-            overflow: visible;
-            color: var(--accent-blue);
-            font-weight: bold;
-            font-size: 1.2em;
-            position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            top: -0.1em;
         }
         
         /* Footnote Section Styles */
