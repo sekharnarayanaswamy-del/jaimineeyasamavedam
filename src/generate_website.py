@@ -3587,6 +3587,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="sidebar-footer">
         <a href="{prefix}index.html" class="footer-btn">मुख्यपृष्ठम्</a>
+        {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">अनुक्रमणिका</a>' if self.mode == "COLLECTION" else ""}
         {f"""<a href="{prefix}classification/rishi.html" class="footer-btn">ऋषयः</a>
         <a href="{prefix}classification/devata.html" class="footer-btn">देवताः</a>
         <a href="{prefix}classification/chandas.html" class="footer-btn">छन्दांसि</a>""" if self.mode != 'COLLECTION' else ""}
