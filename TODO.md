@@ -20,7 +20,7 @@
 
 ## Text Quality
 - [ ] **Accents & Swaras**: Continue verifying swara rendering, especially for complex combined consonants.
-    - [ ] Resolve "dotted circle" rendering issue in standard fonts/browsers (Experimental fix deferred).
+    - [ ] Resolve "dotted circle" rendering issue in standard fonts/browsers (Experimental hacks like ZWJ and visarga-swapping were tried and abandoned; currently deferred).
 - [ ] **Proofreading**: Use the CSV/Excel sheet to do a sweep of Rishi/Devata/Chandas assignments.
 
 ## Future Enhancements

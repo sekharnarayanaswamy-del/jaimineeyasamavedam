@@ -601,6 +601,25 @@ remove shloka 1-5  # remove only shloka markers
 
 ---
 
+## 9. Technical Decision: Rendering Revert (April 2026)
+
+**Issue**: Display of "dotted circle" (`◌`) in standard browsers/fonts when Vedic accents follow a Visarga (`ः`).
+
+**Experimental Fixes Attempted**:
+1. **Zero Width Joiner (ZWJ)**: Inserting `\u200D` between components to force ligature or glyph combinations.
+2. **Visarga-Accent Swapping**: A pre-processing step to swap order (`ः(1)` → `(1)ः`) to trick the font engine.
+3. **CSS Visarga Wrapping**: Wrapping `ः` in a `<span>` to apply `font-feature-settings` or `::after` content hacks.
+
+**Outcome**: **Reverted and Abandoned**.
+The experimental fixes proved unstable. Specifically, ZWJ did not consistently resolve the issue across different operating systems, and swapping/wrapping logic introduced layout regressions and search highlighting bugs.
+
+**Current Strategy**: 
+- Reverted to standard Unicode sequences.
+- Maintained **Zero-width CSS positioning** (overlay method) as the most compatible stable approach.
+- Deferred further glyph-level fixes to future custom font development or browser engine improvements.
+
+---
+
 *This document should be updated as new edge cases are discovered or design 
 decisions are made. It serves as the primary reference for generating formal 
 specifications and test suites.*
