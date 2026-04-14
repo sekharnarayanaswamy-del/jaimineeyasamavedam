@@ -267,8 +267,9 @@ else:
 
 def _fix_visarga_accent_with_zwj(text):
     """
-    For visarga+accent: Use ZWJ to force proper combining in both Adishila and Noto.
-    Input: word:(1) -> word:\u200D(1)    (ZWJ prevents circle in Noto)
+    Always swap so accent appears on character BEFORE visarga.
+    Input: Word:(1) -> Word(1):  (accent now on preceding character)
+    No font-specific handling.
     """
     if not text:
         return text
@@ -277,10 +278,9 @@ def _fix_visarga_accent_with_zwj(text):
     text = text.replace(':', 'ः')
     text = re.sub(r'\s+ः', 'ः', text)
     
-    # If visarga is BEFORE accent (: (1)), add ZWJ between them
+    # Always swap Visarga + Accent to Accent + Visarga
     pattern = r'([ः])\s*(\([^)]+\))'
-    zwj = '\u200D'  # Zero-width joiner
-    text = re.sub(pattern, r'\1' + zwj + r'\2', text)
+    text = re.sub(pattern, r'\2\1', text)
     
     return text
 

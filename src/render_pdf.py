@@ -88,9 +88,8 @@ CURRENT_TOC_LEVEL = "section"
 # ----------------------------------------------------
 def fix_visarga_accent_order_local(text):
     """
-    For visarga+accent: Use ZWJ to force proper combining in both Adishila and Noto.
-    Input: word:(1) -> word:\u200D(1)    (ZWJ prevents circle in Noto)
-    Input: word(1): -> word(1):        (no change needed)
+    Always swap so accent appears on character BEFORE visarga.
+    Input: Word:(1) -> Word(1):  (accent now on preceding character)
     """
     if not text: return text
     
@@ -98,11 +97,9 @@ def fix_visarga_accent_order_local(text):
     text = text.replace(':', 'ः')
     text = re.sub(r'\s+ः', 'ः', text)
     
-    # If visarga is BEFORE accent (: (1)), add ZWJ between them
-    # This prevents Noto from showing circle before visarga
+    # Always swap Visarga + Accent to Accent + Visarga
     pattern = r'([ः])\s*(\([^)]+\))'
-    zwj = '\u200D'  # Zero-width joiner
-    text = re.sub(pattern, r'\1' + zwj + r'\2', text)
+    text = re.sub(pattern, r'\2\1', text)
     
     return text
 
