@@ -2137,29 +2137,17 @@ background: var(--bg-sidebar);
     width: 0.3em;
 }
 
-/* Vedic Accent Mark Styles - Zero-width positioning */
-.accent-swarita {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
+/* Vedic Accent Mark Styles - Standard rendering within combined span */
+.accent-swarita, .accent-anudatta, .accent-kampa, .accent-trikampa {
+    display: inline;
     color: #1565c0;
     font-weight: bold;
-    font-size: 1.2em;
-    position: relative;
-    left: -0.1em;
-    top: -0.15em;
+    font-size: 1.1em;
 }
 
-.accent-anudatta {
-    display: inline-block;
-    width: 0;
-    overflow: visible;
-    color: #1565c0;
-    font-weight: bold;
-    font-size: 1.2em;
+.accent-kampa {
     position: relative;
-    left: -0.1em;
-    top: -0.15em;
+    top: -0.1em;
 }
 
 .accent-kampa {
