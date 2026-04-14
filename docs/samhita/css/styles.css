@@ -1270,6 +1270,7 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     top: -0.15em;
+    isolation: isolate;
 }
 
 .accent-anudatta {
@@ -1282,6 +1283,8 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     top: -0.15em;
+    isolation: isolate;
+}
 }
 
 .accent-kampa {
@@ -1310,16 +1313,26 @@ background: var(--bg-sidebar);
 
 /* NotoSansDevanagari accent+visarga fix */
 /* When accent mark is immediately followed by visarga, prevent circle from appearing */
-/* This targets the ::before pseudo-element rendering issue in NotoSansDevanagari */
 .visarga {
     display: inline-block;
+    font-feature-settings: "locl" 0;
+    -webkit-font-feature-settings: "locl" 0;
 }
 
-.accent-swarita + .visarga::before,
-.accent-anudatta + .visarga::before,
-.accent-kampa + .visarga::before,
-.accent-trikampa + .visarga::before {
-    margin-left: -0.15em;
+/* Add zero-width space after accent to prevent font rendering interference */
+.accent-swarita + .visarga::after,
+.accent-anudatta + .visarga::after,
+.accent-kampa + .visarga::after,
+.accent-trikampa + .visarga::after {
+    content: "B";
+    font-size: 0;
+}
+
+.accent-swarita + .visarga,
+.accent-anudatta + .visarga,
+.accent-kampa + .visarga,
+.accent-trikampa + .visarga {
+    letter-spacing: -0.05em;
 }
 
 .danda {

@@ -265,6 +265,26 @@ else:
     _handle_trikamba = local_handle_consecutive_trikamba
 
 
+def _fix_visarga_accent_with_zwj(text):
+    """
+    For visarga+accent: Use ZWJ to force proper combining in both Adishila and Noto.
+    Input: word:(1) -> word:\u200D(1)    (ZWJ prevents circle in Noto)
+    """
+    if not text:
+        return text
+    
+    # Normalize colons
+    text = text.replace(':', 'ः')
+    text = re.sub(r'\s+ः', 'ः', text)
+    
+    # If visarga is BEFORE accent (: (1)), add ZWJ between them
+    pattern = r'([ः])\s*(\([^)]+\))'
+    zwj = '\u200D'  # Zero-width joiner
+    text = re.sub(pattern, r'\1' + zwj + r'\2', text)
+    
+    return text
+
+
 def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None):
     """
     Format Rik text for HTML display with proper accent marks.
@@ -281,8 +301,8 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     # Step 2: Handle consecutive trikamba
     text = _handle_trikamba(text)
     
-    # Step 2a: Fix Visarga-Accent Order
-    text = step_preprocess_visarga_accent(text)
+    # Step 2a: Fix Visarga-Accent Order with ZWJ for Noto font compatibility
+    text = _fix_visarga_accent_with_zwj(text)
     
     # Step 3: Escape HTML special characters (before adding our HTML)
     text = _escape_html(text)
@@ -309,8 +329,8 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     if not mantra_text:
         return "", []
 
-    # --- Preprocess Visarga/Accents ---
-    mantra_text = step_preprocess_visarga_accent(mantra_text)
+    # --- Preprocess Visarga/Accents with ZWJ ---
+    mantra_text = _fix_visarga_accent_with_zwj(mantra_text)
 
     
     if footnotes_dict is None:
@@ -2154,6 +2174,7 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     top: -0.15em;
+    isolation: isolate;
 }
 
 .accent-anudatta {
@@ -2166,6 +2187,8 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     top: -0.15em;
+    isolation: isolate;
+}
 }
 
 .accent-kampa {
@@ -2194,16 +2217,26 @@ background: var(--bg-sidebar);
 
 /* NotoSansDevanagari accent+visarga fix */
 /* When accent mark is immediately followed by visarga, prevent circle from appearing */
-/* This targets the ::before pseudo-element rendering issue in NotoSansDevanagari */
 .visarga {
     display: inline-block;
+    font-feature-settings: "locl" 0;
+    -webkit-font-feature-settings: "locl" 0;
 }
 
-.accent-swarita + .visarga::before,
-.accent-anudatta + .visarga::before,
-.accent-kampa + .visarga::before,
-.accent-trikampa + .visarga::before {
-    margin-left: -0.15em;
+/* Add zero-width space after accent to prevent font rendering interference */
+.accent-swarita + .visarga::after,
+.accent-anudatta + .visarga::after,
+.accent-kampa + .visarga::after,
+.accent-trikampa + .visarga::after {
+    content: "\200B";
+    font-size: 0;
+}
+
+.accent-swarita + .visarga,
+.accent-anudatta + .visarga,
+.accent-kampa + .visarga,
+.accent-trikampa + .visarga {
+    letter-spacing: -0.05em;
 }
 
 .danda {

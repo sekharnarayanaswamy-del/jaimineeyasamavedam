@@ -88,8 +88,9 @@ CURRENT_TOC_LEVEL = "section"
 # ----------------------------------------------------
 def fix_visarga_accent_order_local(text):
     """
-    Swaps Visarga and Accent so accent appears on preceding character.
-    This is font-independent: always swap (:(1)) to ((1):) for proper rendering.
+    For visarga+accent: Use ZWJ to force proper combining in both Adishila and Noto.
+    Input: word:(1) -> word:\u200D(1)    (ZWJ prevents circle in Noto)
+    Input: word(1): -> word(1):        (no change needed)
     """
     if not text: return text
     
@@ -97,11 +98,12 @@ def fix_visarga_accent_order_local(text):
     text = text.replace(':', 'ः')
     text = re.sub(r'\s+ः', 'ः', text)
     
-    # Always swap Visarga + Accent to Accent + Visarga
-    # Pattern: Visarga + optional space + (Accent)
+    # If visarga is BEFORE accent (: (1)), add ZWJ between them
+    # This prevents Noto from showing circle before visarga
     pattern = r'([ः])\s*(\([^)]+\))'
-    text = re.sub(pattern, r'\2\1', text)
-        
+    zwj = '\u200D'  # Zero-width joiner
+    text = re.sub(pattern, r'\1' + zwj + r'\2', text)
+    
     return text
 
 # ----------------------------------------------------
@@ -1579,6 +1581,9 @@ def replace_accents_html(text):
     
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
+    
+    # Wrap visarga in span for CSS targeting (fixes NotoSansDevanagari circle issue)
+    text = text.replace('ः', '<span class="visarga">ः</span>')
     
     return text
 
