@@ -87,20 +87,20 @@ CURRENT_TOC_LEVEL = "section"
 # 1. NEW UTILITY: Local Visarga Accent Ordering
 # ----------------------------------------------------
 def fix_visarga_accent_order_local(text):
+    """
+    Swaps Visarga and Accent so accent appears on preceding character.
+    This is font-independent: always swap (:(1)) to ((1):) for proper rendering.
+    """
     if not text: return text
     
     # Normalize colons
     text = text.replace(':', 'ः')
     text = re.sub(r'\s+ः', 'ः', text)
     
-    if 'Adishila' in CURRENT_PDF_FONT:
-        # Adishila needs Accent FIRST, then Visarga: (1)ः
-        pattern = r'([ः])\s*(\([^)]+\))'
-        text = re.sub(pattern, r'\2\1', text)
-    else:
-        # Standard OpenType (Noto) needs Visarga FIRST, then Accent: ः(1)
-        pattern = r'(\([^)]+\))\s*([ः])'
-        text = re.sub(pattern, r'\2\1', text)
+    # Always swap Visarga + Accent to Accent + Visarga
+    # Pattern: Visarga + optional space + (Accent)
+    pattern = r'([ः])\s*(\([^)]+\))'
+    text = re.sub(pattern, r'\2\1', text)
         
     return text
 

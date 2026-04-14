@@ -139,6 +139,9 @@ def local_replace_accents_html(text):
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
     
+    # Wrap visarga in span for CSS targeting (helps fix NotoSansDevanagari rendering)
+    text = text.replace('ः', '<span class="visarga">ः</span>')
+    
     return text
 
 
@@ -2187,6 +2190,20 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     top: -0.15em;
+}
+
+/* NotoSansDevanagari accent+visarga fix */
+/* When accent mark is immediately followed by visarga, prevent circle from appearing */
+/* This targets the ::before pseudo-element rendering issue in NotoSansDevanagari */
+.visarga {
+    display: inline-block;
+}
+
+.accent-swarita + .visarga::before,
+.accent-anudatta + .visarga::before,
+.accent-kampa + .visarga::before,
+.accent-trikampa + .visarga::before {
+    margin-left: -0.15em;
 }
 
 .danda {

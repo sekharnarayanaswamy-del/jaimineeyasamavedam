@@ -1308,6 +1308,20 @@ background: var(--bg-sidebar);
     top: -0.15em;
 }
 
+/* NotoSansDevanagari accent+visarga fix */
+/* When accent mark is immediately followed by visarga, prevent circle from appearing */
+/* This targets the ::before pseudo-element rendering issue in NotoSansDevanagari */
+.visarga {
+    display: inline-block;
+}
+
+.accent-swarita + .visarga::before,
+.accent-anudatta + .visarga::before,
+.accent-kampa + .visarga::before,
+.accent-trikampa + .visarga::before {
+    margin-left: -0.15em;
+}
+
 .danda {
     margin: 0 0.2em;
 }
