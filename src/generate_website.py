@@ -298,7 +298,7 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     text = _handle_trikamba(text)
     
     # Step 2a: Fix Visarga-Accent Order with ZWJ for Noto font compatibility
-    text = step_preprocess_visarga_accent(text)
+    # text = step_preprocess_visarga_accent(text)
     
     # Step 3: Escape HTML special characters (before adding our HTML)
     text = _escape_html(text)

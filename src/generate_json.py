@@ -1294,7 +1294,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         # Normalize pipes for Rik text as well (as per "visarga handling" pattern)
         rik_text = rik_text.replace('||', '॥').replace('|', '।')
         # Apply Visarga Accent Preprocessing
-        rik_text = step_preprocess_visarga_accent(rik_text)
+        # rik_text = step_preprocess_visarga_accent(rik_text)
         rik_text_map[sub_id] = rik_text
     
     # Extract subsection headers (Samam header + metadata)
