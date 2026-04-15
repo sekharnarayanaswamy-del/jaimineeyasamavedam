@@ -108,16 +108,21 @@ def load_reconciliation_data(excel_path):
         
     return mapping
 
-def main(input_file=None, output_csv=None, recon_excel=None, v_json=None):
+def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_json=None):
     # 0. Load Configuration
     from utils import load_pipeline_config
     pipeline_cfg = load_pipeline_config()
     table_cfg = pipeline_cfg.get('generate_rik_table', {})
+    
+    # Use the provided mode, or the one from config, or default to 'samhita'
+    active_mode = mode or table_cfg.get('type') or 'samhita'
+    mode_cfg = table_cfg.get(active_mode, {})
 
-    input_file = input_file or table_cfg.get('input') or DEFAULT_INPUT
-    output_csv = output_csv or table_cfg.get('output_csv') or DEFAULT_OUTPUT_CSV
-    recon_excel = recon_excel or table_cfg.get('recon_excel') or DEFAULT_RECON_EXCEL
-    v_json = v_json or table_cfg.get('v_json') or DEFAULT_VARGEEKARAN_JSON
+    # Priority: Function Args > Mode Config > Root Config > Default Constants
+    input_file = input_file or mode_cfg.get('input') or table_cfg.get('input') or DEFAULT_INPUT
+    output_csv = output_csv or mode_cfg.get('output_csv') or table_cfg.get('output_csv') or DEFAULT_OUTPUT_CSV
+    recon_excel = recon_excel or mode_cfg.get('recon_excel') or table_cfg.get('recon_excel') or DEFAULT_RECON_EXCEL
+    v_json = v_json or mode_cfg.get('v_json') or table_cfg.get('v_json') or DEFAULT_VARGEEKARAN_JSON
 
     # Get metadata
     metadata = get_generated_metadata()
@@ -292,14 +297,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate a Rik-level table listing every unique Rik."
     )
-    parser.add_argument("input", nargs="?", default=DEFAULT_INPUT,
-                        help=f"Input JSON file (default: {DEFAULT_INPUT})")
-    parser.add_argument("-o", "--output", default=DEFAULT_OUTPUT_CSV,
-                        help=f"Output CSV file (default: {DEFAULT_OUTPUT_CSV})")
-    parser.add_argument("-e", "--excel", default=DEFAULT_RECON_EXCEL,
-                        help=f"Reconciliation Excel file (default: {DEFAULT_RECON_EXCEL})")
-    parser.add_argument("-j", "--json_out", default=DEFAULT_VARGEEKARAN_JSON,
-                        help=f"Output Vargeekaran JSON file (default: {DEFAULT_VARGEEKARAN_JSON})")
+    parser.add_argument("--type", choices=["samhita", "aaranam"],
+                        help="Mode of operation: 'samhita' (default) or 'aaranam'")
+    parser.add_argument("input", nargs="?",
+                        help="Override Input JSON file")
+    parser.add_argument("-o", "--output",
+                        help="Override Output CSV file")
+    parser.add_argument("-e", "--excel",
+                        help="Override Reconciliation Excel file")
+    parser.add_argument("-j", "--json_out",
+                        help="Override Output Vargeekaran JSON file")
 
     args = parser.parse_args()
-    main(input_file=args.input, output_csv=args.output, recon_excel=args.excel, v_json=args.json_out)
+    main(mode=args.type, input_file=args.input, output_csv=args.output, recon_excel=args.excel, v_json=args.json_out)

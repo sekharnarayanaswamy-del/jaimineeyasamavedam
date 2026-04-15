@@ -49,10 +49,17 @@ generate_json:
 
 # --- RIK TABLE GENERATION (src/generate_rik_table.py) ---
 generate_rik_table:
-  input: "data/output/Samhita_corrected_out.json"
-  output_csv: "data/output/JSV_Rik_Table.csv"
-  recon_excel: "data/output/Rik Reconciliation table (JSV-KSV).xlsx"
-  v_json: "data/output/Vargeekaran.json"
+  type: "samhita"
+  samhita:
+    input: "data/output/Samhita_corrected_out.json"
+    output_csv: "data/output/JSV_Rik_Table.csv"
+    recon_excel: "data/output/Rik Reconciliation table (JSV-KSV).xlsx"
+    v_json: "data/output/Vargeekaran.json"
+  aaranam:
+    input: "data/output/Aaranam_latest_out.json"
+    output_csv: "data/output/Aaranam_Rik_Table.csv"
+    recon_excel: "data/output/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx"
+    v_json: "data/output/Aaranam_vargeekaran.json"
 
 # --- AARANAM RIK TABLE GENERATION (src/generate_aaranam_rik_table.py) ---
 generate_aaranam_rik_table:
@@ -87,7 +94,7 @@ generate_website:
     source: "data/output/Vargeekaran.json"
     output_dir: "docs/samhita"
   aaranam:
-    source: "data/output/Aaranam_latest_out.json"
+    source: "data/output/Aaranam_vargeekaran.json"
     output_dir: "docs/aaranam"
   collection:
     source: "data/output/Collection_latest_out.json"
