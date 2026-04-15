@@ -46,7 +46,9 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`CreatePdf` / `CreateHtmlFile`**: Main orchestration functions for PDF and HTML generation.
 *   **`format_dandas_html`**: Handles the formatting of mantra and metadata text for HTML. Now supports a `preserve_spaces` flag to maintain manual whitespace alignment in Rishi/Devata metadata blocks.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
-*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`). Now supports font-specific vertical offsets for Adishila (`0.6ex` for Swarita).
+*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs. 
+    *   **AdishilaVedic**: Uses `\raisebox` + `\accentmark` (now raised to `0.6ex` for Swarita).
+    *   **Noto Sans Devanagari**: Implements an NBSP (\char"00A0) base inside a zero-width `\makebox` to suppress the "dotted circle" placeholder while allowing precise `\raisebox` control (`0.7ex` for Swarita, `-0.1ex` for Anudatta).
 *   **Custom Output Pathing**: Supports a `--output` / `-o` flag to override default filenames and directories. Implements suffix preservation (e.g., `_Rik`, `_Samam`) for separate rendering modes.
 *   **Terminal Encoding Fix**: Forces UTF-8 console output to correctly display Sanskrit document titles during processing on Windows.
 *   **Prayoga Appendix Generation**: Recursively intercepts YAML configuration arrays pointing to nested markdown text, compiles them efficiently into internal `PhantomSection` structural LaTeX logic without massive external package reliance, and aggregates all referenced manuals inside an overarching `\chapter*{... Appendix ...}` tail. It then intelligently appends `hyperref` click anchors inside dynamic footnotes directly onto the respective Samams.

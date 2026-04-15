@@ -130,12 +130,13 @@ def replace_accents(text):
             ('(4)', r'\raisebox{0.4ex}{\accentmark{12}{\char"1CF9}}'),
         ]
     else:
-        # For standard OpenType fonts like Noto Sans Devanagari, output raw Unicode
+        # For Noto Sans and other fonts, use a Non-Breaking Space (\char"00A0) as a base
+        # to suppress dotted circles. Wrap in \makebox[0pt] to hide the NBSP width.
         replacements = [
-            ('(1)', '\u0951'),
-            ('(2)', '\u1CD2'),
-            ('(3)', '\u1CF8'),
-            ('(4)', '\u1CF9'),
+            ('(1)', r'\raisebox{0.7ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"0951}}}'), # Swarita
+            ('(2)', r'\raisebox{-0.1ex}{\makebox[0pt]{\accentmark{15}{\char"00A0\char"1CD2}}}'), # Anudatta
+            ('(3)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"1CF8}}}'), # Kampa
+            ('(4)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"1CF9}}}'), # Trikamba
         ]
   
     for marker, replacement in replacements:
