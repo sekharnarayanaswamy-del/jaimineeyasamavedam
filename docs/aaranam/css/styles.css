@@ -33,9 +33,9 @@
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: '{self.font}', '{self.font_sans}', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
---font-body: '{self.font}', '{self.font_sans}', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: '{self.font}', '{self.font_sans}', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
+--font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -87,11 +87,11 @@ h4 { font-size: 1.2rem; }
 
 /* Numerals and Counts in Adishila San Vedic (Sans Look) */
 .stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {{
-    font-family: '{self.font_sans}', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
+    font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
 }}
 
 .stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {{
-    font-family: '{self.font}', 'Noto Serif Devanagari', serif !important;
+    font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
 }}
 
 .sanskrit-text {
@@ -1269,7 +1269,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
     isolation: isolate;
 }
 
@@ -1282,9 +1282,8 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.25em;
     isolation: isolate;
-}
 }
 
 .accent-kampa {
@@ -1296,7 +1295,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
 }
 
 .accent-trikampa {
@@ -1308,7 +1307,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
 }
 
 .danda {

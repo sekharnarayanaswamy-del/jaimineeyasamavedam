@@ -897,6 +897,18 @@ class WebsiteGenerator:
         
     def _generate_css(self):
         """Generate CSS stylesheet - Configured Palette"""
+        # Determine font-specific offsets (matching renderPDF.py logic)
+        if 'notosans' in self.font.lower():
+            sw_off = '0.07em'
+            ka_off = '0.05em'
+            tr_off = '0.05em'
+            an_off = '-0.1em'
+        else: # Default/Adishila
+            sw_off = '0.06em'
+            ka_off = '0.06em'
+            tr_off = '0.06em'
+            an_off = '0.25em'
+
         css = '''/* Jaimineeya Samavedam Website Styles */
 /* User Defined Palette */
 
@@ -2168,7 +2180,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: -0.25em;
+    bottom: {sw_off};
     isolation: isolate;
 }
 
@@ -2181,7 +2193,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: -0.25em;
+    bottom: {an_off};
     isolation: isolate;
 }
 
@@ -2194,7 +2206,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: -0.25em;
+    bottom: {ka_off};
 }
 
 .accent-trikampa {
@@ -2206,7 +2218,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: -0.25em;
+    bottom: {tr_off};
 }
 
 .danda {
@@ -2911,6 +2923,14 @@ sup.footnote-ref a:hover {
     margin-bottom: 2rem;
 }
 '''
+        # Replace placeholders for font and offsets
+        css = css.replace('{self.font}', self.font)
+        css = css.replace('{self.font_sans}', self.font_sans)
+        css = css.replace('{sw_off}', sw_off)
+        css = css.replace('{ka_off}', ka_off)
+        css = css.replace('{tr_off}', tr_off)
+        css = css.replace('{an_off}', an_off)
+
         with open(self.output_dir / 'css' / 'styles.css', 'w', encoding='utf-8') as f:
             f.write(css)
             

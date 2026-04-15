@@ -39,7 +39,10 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
     *   Applying `SITE_CONFIG` settings based on the selected mode (`samhita` or `aranam`).
     *   **Enhanced Indices**: Generates advanced classification pages (Rishi, Devata, Chandas) with a 3-column "Top 20" prominent card section and a single-column, horizontal-flowing alphabetical index (**वर्णानुक्रमण**) designed for maximum density and readability. Includes aggregate unique Rik counting (currently ~587 Riks).
 *   **Prayoga Markdown Integration**: Automatically detects and loads `markdown` files configured in `prayoga_index.yaml` to dynamically build standalone procedural webpage layouts accessible through modal popup links embedded next to the respective Vedic verse headings.
-*   **`format_rik_text_html`**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
+*   **`_generate_css`**: Generates a centralized CSS stylesheet for the website.
+    *   **Font-Aware Accent Rendering**: Implements the same vertical offset logic as the PDF pipeline. Accents (**Swarita**, **Kampa**, **Trikampa**, **Anudatta**) are positioned relative to the base character with specific offsets that adjust based on the selected `--font` (e.g., higher offsets for Noto Sans).
+    *   **CSS Interpolation**: Uses a `.replace()` based interpolation strategy for the huge CSS template to inject user-defined variables (`{self.font}`, `{sw_off}`, etc.) without requiring complex double-bracing for native CSS brackets.
+*   **format_rik_text_html**: Handles the specific HTML formatting for Rik text, including accent rendering (`<span>` classes) and footnote linking.
 
 ### 2.3 `src/render_pdf.py`
 **Role**: Converts JSON data into high-quality LaTeX (for PDFs) and HTML documents.
@@ -545,6 +548,9 @@ python src/tools/copy_rik_ids.py [OPTIONS]
         *   `generate_website.py`: `step_preprocess_visarga_accent()` in `format_rik_text_html()` and `format_mantra_text_html()`
     *   *Not Applied*: Rik text processing in `render_pdf.py` and the RikTextParser in `generate_json.py`
     *   *Note*: This ensures accent appears on the character before the visarga for correct Vedic rendering in all fonts (Adishila, NotoSansDevanagari, etc.).
+*   **Font-Specific Accent Scaling (Website)**: The website renderer (`_generate_css`) implements font-specific vertical shifts (`bottom` relative positioning) to ensure consistent accent alignment across disparate font metrics.
+    *   **AdishilaVedic**: Swarita/Kampa/Trikamba @ `0.06em`, Anudatta @ `-0.25em`.
+    *   **NotoSansDevanagari**: Swarita @ `0.07em`, Kampa/Trikampa @ `0.05em`, Anudatta @ `-0.1em`.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
