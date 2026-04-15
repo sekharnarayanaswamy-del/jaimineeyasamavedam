@@ -702,7 +702,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Step A: Remove Spaces (Samhita Mode)
         s2 = remove_mantra_spaces(string_2)
         # Step A.1: Fix Visarga-Accent Order
-        s2 = fix_visarga_accent_order_local(s2)
+        # s2 = fix_visarga_accent_order_local(s2)
         # Step B: Handle Consecutive Accent Kerning
         s2 = handle_consecutive_accents(s2)
         # Step C: Replace Accents with LaTeX commands (with adjusted sizes)
@@ -928,7 +928,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     # Rik Text (with Vedic Accents)
     if string_2:
         s2 = remove_mantra_spaces(string_2)
-        s2 = fix_visarga_accent_order_local(s2)
+        # s2 = fix_visarga_accent_order_local(s2)
         s2 = handle_consecutive_accents(s2)
         s2 = replace_accents(s2)
         # Apply footnotes

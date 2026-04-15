@@ -494,7 +494,7 @@ class RikTextParser:
                 clean_text = f"{raw_text} ॥ {rik_num_str} ॥"
                 
                 # Apply Visarga/Accent corrections
-                clean_text = step_preprocess_visarga_accent(clean_text)
+                # clean_text = step_preprocess_visarga_accent(clean_text)
                 
                 # Store by rik_id (overwrite if duplicate - take last occurrence)
                 section_map[rik_id_int] = clean_text
@@ -892,7 +892,7 @@ def convert_corrections_to_json(
 
                 # --- NEW: Apply Visarga Preprocessing globally ---
                 # Only process text fields, skip metadata fields to preserve parens as requested
-                display_rik_text = step_preprocess_visarga_accent(display_rik_text)
+                # display_rik_text = step_preprocess_visarga_accent(display_rik_text)
                 full_saman_text = step_preprocess_visarga_accent(full_saman_text)
                 # -----------------------------------------------
 
@@ -1337,7 +1337,6 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         else:
             mantra_sets_map[sub_id] = mantras
     
-    # Extract footnotes
     # Extract footnotes
     footnote_pattern = re.compile(
         r'#\s*Start of Footnote -- (\S+)\s+## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Footnote',

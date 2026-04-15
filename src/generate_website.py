@@ -266,11 +266,7 @@ else:
 
 
 def _fix_visarga_accent_with_zwj(text):
-    """
-    Always swap so accent appears on character BEFORE visarga.
-    Input: Word:(1) -> Word(1):  (accent now on preceding character)
-    No font-specific handling.
-    """
+    """Swaps Visarga and accent marker so accent applies to preceding vowel."""
     if not text:
         return text
     
@@ -302,7 +298,7 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     text = _handle_trikamba(text)
     
     # Step 2a: Fix Visarga-Accent Order with ZWJ for Noto font compatibility
-    text = _fix_visarga_accent_with_zwj(text)
+    text = step_preprocess_visarga_accent(text)
     
     # Step 3: Escape HTML special characters (before adding our HTML)
     text = _escape_html(text)
@@ -330,7 +326,7 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
         return "", []
 
     # --- Preprocess Visarga/Accents with ZWJ ---
-    mantra_text = _fix_visarga_accent_with_zwj(mantra_text)
+    mantra_text = step_preprocess_visarga_accent(mantra_text)
 
     
     if footnotes_dict is None:

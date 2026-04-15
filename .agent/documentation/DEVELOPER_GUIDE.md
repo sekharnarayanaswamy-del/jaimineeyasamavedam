@@ -529,9 +529,14 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Set-Based Component Grouping**: In `renumber_sooktam.py`, the logic was upgraded from simple state-based tracking to **Set-based tracking**. Each structural component (`Metadata`, `Text`, `Title`) is added to a "seen" set for the current subsection. The counter is **only** incremented if a component is repeated (e.g., a new `Metadata` block starts). This allows verses with staggered parts (e.g., Metadata followed by a delayed Title) to be correctly unified under a single `subsection_ID`.
 
 ### Visual Rendering Logic
-*   **Visarga-Accent Swap**: A rendering fix handles the Vedic convention where an accent marked *after* a Visarga (`ः`) must visually appear on the preceding vowel. The implementation always swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` regardless of input order or font. No font-specific CSS handling is applied.
-    *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering.
-    *   *Applied In*: `render_pdf.py`, `generate_Rik_for_samhita.py`, and `generate_website.py`.
+*   **Visarga-Accent Swap**: A rendering fix handles the Vedic convention where an accent marked *after* a Visarga (`ः`) must visually appear on the preceding vowel. The implementation always swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` regardless of input order or font.
+    *   *Logic*: Swaps `Wordः(1)` $\rightarrow$ `Word(1)ः` just before rendering. Pattern: `([ः])\s*(\([^)]+\))` → `\2\1`
+    *   *Function*: Uses `step_preprocess_visarga_accent()` from `utils.py` - shared across all generators
+    *   *Applied To*: **Mantra/Samam text only** (not Rik text)
+    *   *Applied In*: 
+        *   `generate_json.py`: `step_preprocess_visarga_accent()` for mantra_set_content, full_saman_text, and mantra_text
+        *   `generate_website.py`: `step_preprocess_visarga_accent()` in `format_rik_text_html()` and `format_mantra_text_html()`
+    *   *Not Applied*: Rik text processing in `render_pdf.py` and the RikTextParser in `generate_json.py`
     *   *Note*: This ensures accent appears on the character before the visarga for correct Vedic rendering in all fonts (Adishila, NotoSansDevanagari, etc.).
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
