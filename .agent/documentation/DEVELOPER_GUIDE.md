@@ -550,7 +550,7 @@ python src/tools/copy_rik_ids.py [OPTIONS]
     *   *Note*: This ensures accent appears on the character before the visarga for correct Vedic rendering in all fonts (Adishila, NotoSansDevanagari, etc.).
 *   **Font-Specific Accent Scaling (Website)**: The website renderer (`_generate_css`) implements font-specific vertical shifts (`bottom` relative positioning) to ensure consistent accent alignment across disparate font metrics.
     *   **AdishilaVedic**: Swarita/Kampa/Trikamba @ `0.06em`, Anudatta @ `-0.25em`.
-    *   **NotoSansDevanagari**: Swarita @ `0.07em`, Kampa/Trikampa @ `0.05em`, Anudatta @ `-0.1em`.
+    *   **NotoSansDevanagari**: Swarita/Kampa/Trikamba raised to `0.1em`, Anudatta @ `-0.1em`.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.

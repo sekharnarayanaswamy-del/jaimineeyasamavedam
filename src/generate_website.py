@@ -899,9 +899,9 @@ class WebsiteGenerator:
         """Generate CSS stylesheet - Configured Palette"""
         # Determine font-specific offsets (matching renderPDF.py logic)
         if 'notosans' in self.font.lower():
-            sw_off = '0.07em'
-            ka_off = '0.05em'
-            tr_off = '0.05em'
+            sw_off = '0.1em'
+            ka_off = '0.1em'
+            tr_off = '0.1em'
             an_off = '-0.1em'
         else: # Default/Adishila
             sw_off = '0.06em'
