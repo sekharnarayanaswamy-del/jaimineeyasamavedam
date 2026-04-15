@@ -1,0 +1,52 @@
+जैमिनीय साम संहिता
+
+Version 3.0 2026-04-15 21:47:23
+
+# Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
+आग्नेयपाठः
+# End of SuperSection Title -- supersection_1 ## DO NOT EDIT
+
+# Start of Section Title -- section_1 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_1 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_1 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
+# End of Rik Metadata -- subsection_1 ## DO NOT EDIT
+# Start of Rik Text -- subsection_1 ## DO NOT EDIT
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) ॥ १ ॥
+# End of Rik Text -- subsection_1 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_1 ## DO NOT EDIT
+॥गौतमस्यपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_1 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
+ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा) इ(श) । ता या(टा) इ(श) ता या(टि) इ(श) । गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इ(श) ता या(टि) इ(श) । नाइ हो(कि) ता(च) । सा(ट) त्सा(ट) इ बा(खा) औहो वा(शि) । ही(ख) षि(श) ॥१॥
+#End of Mantra Sets -- subsection_1 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_6 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्यः अग्निः गायत्री।।
+# End of Rik Metadata -- subsection_6 ## DO NOT EDIT
+# Start of Rik Text -- subsection_6 ## DO NOT EDIT
+अग्निर्वृ(1)णि(1)जङ्घनात् । द्रविणास्यु(4)र्वीपन्या(2)या । सामी(2)द्धश्शुक्रा(2)आहूतः ॥ ४ ॥
+# End of Rik Text -- subsection_6 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_6 ## DO NOT EDIT
+॥श्रौतर्षाणित्रीणि॥  ।। त्रयाणां श्रुतर्षिः गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_6 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_6 ## DO NOT EDIT
+अग्निर्वृत्रा(ती) ।णा(ट) इजा(खा) औहोवा(शि) ।घा(ख) ना(श) त् । द्र(च) वि(श) णा(क) स्युर्वीप(कि) न्याया(टा) ओइसमि द्धा(टु) श्शू(त) ।क्राया(चा) हुताइळा(टी) भा(खण्)। ओ(प) इळा(प्ला) ॥६॥ अग्नी(खा) रौहोवा(शि) हाइवृत्राणी(शु) ।जङ्घा(टा) ना(त) दौहो(टा) वा(त) इ(श) ।द्रविणा(पि) स्यू:(ण) ।ओइवाइ(षी) पन्याया(टि)। सामाइद्धा(टीट्) श्शू(ख) औहोवा(शि) ।क्राया हू(टि) ता:(ख)॥७॥ ओ(त) ग्नी:(त)। वृत्राणी(कि)   जङ्घनादौ(की) होऔहो(खि) वा(श) । द्रवी(चा) णा(क) स्युर्वीप(कि) न्यया(चा) औ(क) होऔ हो(खि) वा(श) ।समिद्धा(चि) श्शुक्रया(चि) औ(क) होऔहो(खि) बा(प्ल) हूतो(प्ला) । हाइ(शा)॥८॥
+#End of Mantra Sets -- subsection_6 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_7 ## DO NOT EDIT
+।। उशनाः अग्निः गायत्री।।
+# End of Rik Metadata -- subsection_7 ## DO NOT EDIT
+# Start of Rik Text -- subsection_7 ## DO NOT EDIT
+प्रेष्ठं(3)वोआतीथिं । स्तू(2) षे(2) मित्रामीवाप्रीयं । अ(2)ग्ने राथन्ना(2)वेद्यम् ॥ ५ ॥
+# End of Rik Text -- subsection_7 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_7 ## DO NOT EDIT
+॥औशनञ्च॥  ।। त्रयाणां श्रुतर्षिः गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_7 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_7 ## DO NOT EDIT
+प्रेष्ठंवा:(ति) ।अता(टा) इथी(ता) म् ।स्तुषे(चा) मित्रमिव प्रा(टु) या(त) म् ।अग्नाइरा(भी) था(त) न्नावा(टा) हा(खण) इ(श) । दा(प) आया(प्ला) म् । हाइ(शा) ॥९॥
+#End of Mantra Sets -- subsection_7 ## DO NOT EDIT

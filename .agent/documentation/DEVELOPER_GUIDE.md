@@ -46,7 +46,9 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`CreatePdf` / `CreateHtmlFile`**: Main orchestration functions for PDF and HTML generation.
 *   **`format_dandas_html`**: Handles the formatting of mantra and metadata text for HTML. Now supports a `preserve_spaces` flag to maintain manual whitespace alignment in Rishi/Devata metadata blocks.
 *   **`process_footnotes_latex`**: A specialized processor that converts `(sN)` text markers into true LaTeX footnotes (`\footnote{...}`), resolving them against the metadata dictionary.
-*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`).
+*   **`replace_accents`**: The core rendering engine for Vedic Accents. It maps ASCII markers `(1)` to zero-width, raised LaTeX glyphs (e.g., `\makebox[0pt]{\raisebox{...}}`). Now supports font-specific vertical offsets for Adishila (`0.6ex` for Swarita).
+*   **Custom Output Pathing**: Supports a `--output` / `-o` flag to override default filenames and directories. Implements suffix preservation (e.g., `_Rik`, `_Samam`) for separate rendering modes.
+*   **Terminal Encoding Fix**: Forces UTF-8 console output to correctly display Sanskrit document titles during processing on Windows.
 *   **Prayoga Appendix Generation**: Recursively intercepts YAML configuration arrays pointing to nested markdown text, compiles them efficiently into internal `PhantomSection` structural LaTeX logic without massive external package reliance, and aggregates all referenced manuals inside an overarching `\chapter*{... Appendix ...}` tail. It then intelligently appends `hyperref` click anchors inside dynamic footnotes directly onto the respective Samams.
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.
@@ -358,12 +360,15 @@ python src/render_pdf.py [INPUT_JSON] [OPTIONS]
 ```
 | Option | Description |
 | :--- | :--- |
+| `[INPUT_JSON]` | Path to source JSON (optional, auto-selected if omitted). |
+| `--output`, `-o` | Override default output basename or specify full output path. |
 | `--output-mode` | `combined` (default), `separate` (split Rik/Samam), or `nometa`. |
 | `--type` | Type of Samaveda text: `samhita` (default), `aaranam`, or `collection`. |
 | `--pdf-font` | Custom font name for LaTeX (default: `AdishilaVedic`). |
 | `--html-font` | Font family string for HTML output (default: `'AdishilaVedic', 'AdishilaSanVedic'`). |
 | `--pdf-color-mode` | `color` (colored metadata/swara marks) or `bw` (default, black/white for book typesetting). |
 | `--toc-level` | TOC hierarchy: `section` (default), `subsection`, or `both`. Controls both PDF and HTML TOC. |
+| `--title` | Custom Sanskrit title for the document. |
 
 > **Dynamic Title**: The document title on the PDF title page, HTML header, and text output is determined by `--type`:
 > *   `samhita` → **जैमिनीय साम संहिता**

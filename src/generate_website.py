@@ -139,9 +139,6 @@ def local_replace_accents_html(text):
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
     
-    # Wrap visarga in span for CSS targeting (helps fix NotoSansDevanagari rendering)
-    text = text.replace('ः', '<span class="visarga">ः</span>')
-    
     return text
 
 
@@ -823,11 +820,13 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic'):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
         self.mode = mode
+        self.font = font
+        self.font_sans = font_sans
         self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita']).copy()
         
         # Override title_sa if custom_title provided
@@ -933,9 +932,9 @@ class WebsiteGenerator:
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
---font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-heading: '{self.font}', '{self.font_sans}', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-body: '{self.font}', '{self.font_sans}', 'Noto Sans Devanagari', 'Inter', sans-serif;
+--font-sanskrit: '{self.font}', '{self.font_sans}', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -986,13 +985,13 @@ h3 { font-size: 1.4rem; }
 h4 { font-size: 1.2rem; }
 
 /* Numerals and Counts in Adishila San Vedic (Sans Look) */
-.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {
-    font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
-}
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {{
+    font-family: '{self.font_sans}', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
+}}
 
-.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {
-    font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
-}
+.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {{
+    font-family: '{self.font}', 'Noto Serif Devanagari', serif !important;
+}}
 
 .sanskrit-text {
 font-family: var(--font-sanskrit);
@@ -2169,7 +2168,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: -0.25em;
     isolation: isolate;
 }
 
@@ -2182,9 +2181,8 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: -0.25em;
     isolation: isolate;
-}
 }
 
 .accent-kampa {
@@ -2196,7 +2194,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: -0.25em;
 }
 
 .accent-trikampa {
@@ -2208,31 +2206,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
-}
-
-/* NotoSansDevanagari accent+visarga fix */
-/* When accent mark is immediately followed by visarga, prevent circle from appearing */
-.visarga {
-    display: inline-block;
-    font-feature-settings: "locl" 0;
-    -webkit-font-feature-settings: "locl" 0;
-}
-
-/* Add zero-width space after accent to prevent font rendering interference */
-.accent-swarita + .visarga::after,
-.accent-anudatta + .visarga::after,
-.accent-kampa + .visarga::after,
-.accent-trikampa + .visarga::after {
-    content: "\200B";
-    font-size: 0;
-}
-
-.accent-swarita + .visarga,
-.accent-anudatta + .visarga,
-.accent-kampa + .visarga,
-.accent-trikampa + .visarga {
-    letter-spacing: -0.05em;
+    bottom: -0.25em;
 }
 
 .danda {
@@ -3875,7 +3849,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>सामानुक्रमणिका (Alphabetical Index)</h1>
-                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: 'AdishilaVedic', serif;">
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: '{self.font}', serif;">
                     {total_arsheyams} आर्षेयम् • {total_samas} साम • {self.total_riks_classified} ऋचः
                 </div>
             </div>
@@ -4020,7 +3994,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {self._get_top_nav_html(depth=1)}
             <div class="page-header">
                 <h1>{title}</h1>
-                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: 'AdishilaVedic', serif;">
+                <div class="stats-summary" style="margin-top: 0.3rem; color: var(--text-muted); font-size: 1.1rem; font-family: '{self.font}', serif;">
                     {total_items} {item_trans} • {total_arsheyams} आर्षेयम्
                 </div>
             </div>
@@ -4664,6 +4638,13 @@ Examples:
         help='Custom title for collection mode (e.g., "जैमिनीय साम सङ्ग्रहः")'
     )
     
+    parser.add_argument(
+        '--font',
+        type=str,
+        default=None,
+        help='Primary font for the website (default: AdishilaVedic)'
+    )
+    
     args = parser.parse_args()
     
     # Determine mode: Priority CLI flags > Config (default: aaranam)
@@ -4674,7 +4655,7 @@ Examples:
     elif args.collection:
         mode = 'collection'
     else:
-        mode = web_cfg.get('type', 'aaranam')
+        mode = web_cfg.get('default_type', 'aaranam')
 
     type_cfg = web_cfg.get(mode, {})
     
@@ -4685,6 +4666,10 @@ Examples:
     
     # Custom title for collection mode: CLI > Config > Default
     custom_title = args.title or type_cfg.get('title') or None
+    
+    # Font settings: CLI > Config Type > Config Global > Default
+    font = args.font or type_cfg.get('font') or web_cfg.get('font') or 'AdishilaVedic'
+    font_sans = 'AdishilaSanVedic' # Keep as default unless we want a separate option
     
     # Validate source file exists
     source_path = Path(source_file)
@@ -4727,7 +4712,7 @@ Examples:
     
     # Generate website
     print("\n[INFO] Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title)
+    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font)
     generator.generate()
     
     print("\n" + "=" * 60)

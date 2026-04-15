@@ -6,6 +6,20 @@
     <title>॥ \VAR{doc_title_sa} ॥</title>
     <style>
         :root {
+            --font-doc: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', 'AdishilaVedic', 'Arial Unicode MS', sans-serif;
+            
+            \BLOCK{ if 'Noto' in html_font }
+            /* Noto Sans specific accent offsets */
+            --swarita-bottom: 0.15em;
+            --anudatta-bottom: -0.15em;
+            --swara-size: 1.1rem;
+            \BLOCK{ else }
+            /* Default accent offsets (Adishila-optimized) */
+            --swarita-bottom: 0.05em;
+            --anudatta-bottom: 0.1em;
+            --swara-size: 1.3rem;
+            \BLOCK{ endif }
+
             --primary-color:  #000000;
             --accent-blue: #0d47a1;
             --accent-green: #1b5e20;
@@ -30,13 +44,26 @@
         }
         
         body {
-            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', 'Arial Unicode MS', sans-serif;
+            font-family: var(--font-doc);
             font-size: 1.3rem;
             line-height: 1.8;
             color: var(--primary-color);
             background: var(--bg-light);
             margin: 0;
             padding: 0;
+        }
+        
+        .sanskrit-text {
+            font-family: var(--font-doc);
+            font-size: 1.2rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
+            font-feature-settings: "kern", "liga", "clig", "calt";
+        }
+
+        .sanskrit-large {
+            font-size: 1.4rem;
+            line-height: 2.2;
         }
         
         .container {
@@ -173,6 +200,7 @@
             text-align: center;
             color: var(--accent-purple);
             font-size: 1.5rem;
+            line-height: 2;
             margin: 0;
             white-space: pre-wrap;
         }
@@ -181,6 +209,8 @@
             text-align: center;
             color: var(--accent-blue);
             font-size: 1.5rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
             margin-bottom: 0;
         }
         
@@ -226,18 +256,18 @@
         }
         
         .mantra-text {
-            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            font-family: var(--font-doc);
             font-size: 1.5rem;
             line-height: 1.2;
         }
         
         .swara-text {
-            font-family: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', sans-serif;
+            font-family: var(--font-doc);
             color: var(--swara-red);
-            font-size: 1.25rem;
+            font-size: var(--swara-size);
             line-height: 1;
             text-align: center;
-            margin-top: -0.3em;
+            margin-top: -0.25em;
             min-height: 1em;
             border-right: 1px solid transparent;
             padding-right: 2px;
@@ -264,48 +294,50 @@
             display: inline-block;
             width: 0;
             overflow: visible;
-            color: var(--accent-blue);
+            color: inherit;
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            left: 0;
+            bottom: var(--swarita-bottom);
+            isolation: isolate;
         }
         
         .accent-anudatta {
             display: inline-block;
             width: 0;
             overflow: visible;
-            color: var(--accent-blue);
+            color: inherit;
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            left: 0;
+            bottom: var(--anudatta-bottom);
+            isolation: isolate;
         }
         
         .accent-kampa {
             display: inline-block;
             width: 0;
             overflow: visible;
-            color: var(--accent-blue);
+            color: inherit;
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            left: 0;
+            bottom: var(--swarita-bottom);
         }
         
         .accent-trikampa {
             display: inline-block;
             width: 0;
             overflow: visible;
-            color: var(--accent-blue);
+            color: inherit;
             font-weight: bold;
             font-size: 1.2em;
             position: relative;
-            left: -0.1em;
-            top: -0.15em;
+            left: 0;
+            bottom: var(--swarita-bottom);
         }
         
         /* Footnote Section Styles */

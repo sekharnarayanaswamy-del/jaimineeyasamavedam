@@ -78,9 +78,12 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 | Argument | Description | Default |
 | :--- | :--- | :--- |
 | `input_file` | The input JSON file path (Positional). | `data/output/Agneyam-Pavamanam_corrected_out.json` |
+| `--output`, `-o` | Override the default output basename or specify a full output path. | Auto-generated based on input |
 | `--output-mode` | Output style: `combined`, `separate`, or `nometa`. | `combined` |
 | `--pdf-font` | Font name to use for PDF generation. | `AdiShila Vedic` |
 | `--html-font` | Font family string for HTML output. | `'AdiShila Vedic', 'Adishila SanVedic'` |
+| `--pdf-color-mode` | Color mode for PDF: `bw` or `color`. | `bw` |
+| `--toc-level` | TOC headers: `section`, `subsection`, or `both`. | `section` |
 | `--title` | Custom Sanskrit title for the document. | From `pipeline_config.yaml` or input JSON metadata. |
 
 ### Output Modes
@@ -111,6 +114,11 @@ python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json --outp
 **Generate No-Metadata Output (for re-processing):**
 ```bash
 python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json --output-mode nometa
+```
+
+**Custom Output Path and Filename:**
+```bash
+python src/render_pdf.py data/output/Sooktamala.json -o data/exports/my_sooktam
 ```
 
 ### Notes and Best Practices

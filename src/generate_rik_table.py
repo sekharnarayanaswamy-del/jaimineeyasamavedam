@@ -115,7 +115,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     table_cfg = pipeline_cfg.get('generate_rik_table', {})
     
     # Use the provided mode, or the one from config, or default to 'samhita'
-    active_mode = mode or table_cfg.get('type') or 'samhita'
+    active_mode = mode or table_cfg.get('default_type') or 'samhita'
     mode_cfg = table_cfg.get(active_mode, {})
 
     # Priority: Function Args > Mode Config > Root Config > Default Constants

@@ -28,6 +28,24 @@ renumber_sooktam:
     contiguous_samams: false # Aaranam resets per section by default
 
 # --- JSON GENERATION (src/generate_json.py) ---
+# CLI Options:
+#   input_file              Input text file to process
+#   --input-mode            Input mode: initial, correction (default: correction)
+#   --output                Output JSON file path
+#   --metadata-file         Optional .xlsx, .txt, or .csv file to enrich metadata (correction mode only)
+#   --initial-json          Trusted Initial JSON output to map Rik IDs correctly (correction mode only)
+#   --type                  Type of Samaveda text: samhita, aaranam (default: samhita)
+#   --procedures             Path to procedure index YAML file
+#
+# Input Modes:
+#   initial     - Reads raw text files and combines with external metadata files
+#                 (rishi_devata_chandas_for_rik.txt, sama_rishi_chandas_out.txt, vedic_text.txt)
+#   correction  - Reads processed Unicode text file with embedded metadata
+#
+# Examples:
+#   python generate_json.py --type samhita --input-mode initial
+#   python generate_json.py input.txt --input-mode correction
+#
 generate_json:
   # Metadata source files used in INITIAL mode
   sources:
@@ -39,17 +57,24 @@ generate_json:
   samhita:
     input: "data/input/Samhita_corrected.txt"
     output: "data/output/Samhita_corrected_out.json"
-    type: "samhita"
     mode: "correction"
   aaranam:
     input: "data/input/Aaranam_latest.txt"
     output: "data/output/Aaranam_latest_out.json"
-    type: "aaranam"
     mode: "correction"
 
 # --- RIK TABLE GENERATION (src/generate_rik_table.py) ---
+# CLI Options:
+#   --type                   Mode: samhita, aaranam (default: samhita)
+#   input                    Override Input JSON file
+#   -o, --output             Override Output CSV file
+#   -e, --excel              Override Reconciliation Excel file
+#   -j, --json_out          Override Output Vargeekaran JSON file
+#
 generate_rik_table:
-  type: "samhita"
+  # Default type (used if no CLI --type flag specified)
+  default_type: "samhita"  # Choices: samhita, aaranam
+  
   samhita:
     input: "data/output/Samhita_corrected_out.json"
     output_csv: "data/output/JSV_Rik_Table.csv"
@@ -82,12 +107,28 @@ build_collection:
   title: "जैमिनीय साम सङ्ग्रहः"
 
 # --- WEBSITE GENERATION (src/generate_website.py) ---
+# CLI Options:
+#   --source-file, -s    Path to the source text file
+#   --output_dir, -o     Output directory for generated website
+#   --audio-dir, -d      Directory for audio placeholder folders
+#   --samhita, -m        Generate for Samhita (mutually exclusive with -a, -c)
+#   --aaranam, -a        Generate for Aaranam (default, mutually exclusive)
+#   --collection, -c     Generate for Collection (mutually exclusive)
+#   --title              Custom title for collection mode
+#   --font               Primary font for the website (default: AdishilaVedic)
+#
+# Examples:
+#   python generate_website.py --samhita
+#   python generate_website.py -a --source-file aranam.json
+#
 generate_website:
-  # General website settings
+  # Default mode (used if no CLI flag specified)
+  default_type: "aaranam"  # Choices: samhita, aaranam, collection
+  
+  # General website settings (fallbacks if not overridden by type-specific config)
   output_dir: "docs"
   audio_dir: "data/input/Audio_Placeholders"
-  
-  type: "aaranam"
+  font: "AdishilaVedic"
   
   # Type-specific sources
   samhita:
@@ -102,13 +143,34 @@ generate_website:
     title: "जैमिनीय साम सङ्ग्रहः"
 
 # --- PDF & HTML RENDERING (src/render_pdf.py) ---
+# CLI Options:
+#   input_file              Input JSON file (auto-selected based on --type if not specified)
+#   --output, -o            Override the default output basename or specify a full output path
+#   --output-mode           Output mode: combined, separate, nometa (default: combined)
+#   --pdf-font              Font for PDF output (default: AdishilaVedic)
+#   --html-font             Font for HTML output
+#   --type                  Type of Samaveda text: samhita, aaranam, collection (default: samhita)
+#   --pdf-color-mode        Color mode for PDF: bw, color (default: bw)
+#   --toc-level             TOC headers: section, subsection, both (default: section)
+#   --title                 Custom Sanskrit title for the document
+#
+# Output Modes:
+#   combined   - Single output with both Rik and Samam content (default)
+#   separate   - Two separate outputs: Rik-only and Samam-only (with metadata)
+#   nometa     - Two separate outputs: Rik-only and Samam-only (without metadata)
+#
+# Examples:
+#   python render_pdf.py input.json
+#   python render_pdf.py input.json --output-mode separate
+#   python render_pdf.py input.json --output-mode nometa
+#
 render:
   defaults:
-    output_mode: "combined"    # 'combined', 'separate', 'nometa'
+    output_mode: "combined"
     pdf_font: "AdishilaVedic"
     html_font: "'AdishilaVedic', 'AdishilaSanVedic'"
     pdf_color_mode: "bw"
-    toc_level: "section"       # 'section', 'subsection', 'both'
+    toc_level: "section"
   
   types:
     samhita:
