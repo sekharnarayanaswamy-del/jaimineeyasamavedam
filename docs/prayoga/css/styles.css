@@ -86,13 +86,13 @@ h3 { font-size: 1.4rem; }
 h4 { font-size: 1.2rem; }
 
 /* Numerals and Counts in Adishila San Vedic (Sans Look) */
-.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {
+.stat-value, .rishi-rank, .number, .nav-links a, .toc-list li a, .jump-links a, .footnote-ref, .stats-summary, .stats-summary strong, .count, .rishi-count, .stats, .alpha-count, .item-count, .item-refs a, .item-count-badge, .sama-id, .sama-id a, .jump-input {{
     font-family: 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif !important;
-}
+}}
 
-.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {
+.stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {{
     font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
-}
+}}
 
 .sanskrit-text {
 font-family: var(--font-sanskrit);
@@ -493,7 +493,17 @@ background: var(--bg-sidebar);
 }
 
 /* Sama Entry (Verse) - Rig Veda Style */
+.sama-anchor, .rik-anchor {
+    scroll-margin-top: 100px;
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .sama-entry {
+    scroll-margin-top: 100px;
     margin-bottom: var(--spacing-2xl);
     padding-bottom: var(--spacing-xl);
     border-bottom: 1px solid var(--border-light);
@@ -1113,10 +1123,11 @@ background: var(--bg-sidebar);
 }
 
 .search-result-text mark {
-    background: #fff3cd;
-    color: inherit;
+    background: #ffff00;
+    color: #000;
     padding: 0 2px;
     border-radius: 2px;
+    font-weight: 500;
 }
 
 .search-no-results {
@@ -1258,7 +1269,8 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
+    isolation: isolate;
 }
 
 .accent-anudatta {
@@ -1270,7 +1282,8 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.25em;
+    isolation: isolate;
 }
 
 .accent-kampa {
@@ -1282,7 +1295,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
 }
 
 .accent-trikampa {
@@ -1294,7 +1307,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    top: -0.15em;
+    bottom: 0.06em;
 }
 
 .danda {

@@ -1,51 +1,71 @@
 // Jaimineeya Samavedam Website JavaScript
+// Deterministic Navigation System v2.1
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-                // Update URL without jumping
-                history.pushState(null, null, this.getAttribute('href'));
-            }
-        });
-    });
+    console.log("[JS] Jaimineeya Website Loaded");
 
-    // Highlight current section in jump links
-    const observerOptions = {
-        root: null,
-        rootMargin: '-20% 0px -70% 0px',
-        threshold: 0
+    // Centralized Scroll Handler
+    const scrollToTarget = (targetId, smooth = true) => {
+        if (!targetId) return;
+        
+        // Clean hash (strip #)
+        const id = targetId.startsWith('#') ? targetId.substring(1) : targetId;
+        const element = document.getElementById(id);
+        
+        if (element) {
+            console.log("[Scroll] Navigating to:", id);
+            
+            // Fixed header offset (adjust based on CSS)
+            const headerOffset = 100;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+            
+            return true;
+        }
+        console.warn("[Scroll] Target not found:", id);
+        return false;
     };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const id = entry.target.getAttribute('id');
-            const jumpLink = document.querySelector(`.jump-links a[href="#${id}"]`);
-            if (jumpLink) {
-                if (entry.isIntersecting) {
-                    document.querySelectorAll('.jump-links a').forEach(a => a.classList.remove('active'));
-                    jumpLink.classList.add('active');
-                }
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.sama-entry').forEach(entry => {
-        observer.observe(entry);
+    // 1. Handle Initial Load Scroll (Deterministic Wait)
+    window.addEventListener('load', () => {
+        if (window.location.hash) {
+            console.log("[Load] Initial hash detected:", window.location.hash);
+            // Wait for Sanskrit web fonts and layout to finish settling
+            setTimeout(() => {
+                scrollToTarget(window.location.hash, false);
+            }, 200);
+        }
     });
 
-    // Sidebar Jump Logic
-    const jumpInput = document.getElementById('sidebar-jump');
-    const searchBtn = document.querySelector('.search-btn');
-    
-    // Build a dynamic map from Parva links: displayed parva number → actual supersection ID
+    // 2. Handle Hash Changes (Link clicks, History)
+    window.addEventListener('hashchange', () => {
+        console.log("[HashChange] New hash:", window.location.hash);
+        scrollToTarget(window.location.hash, true);
+    });
+
+    // 3. Smooth scroll for ALL internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const hash = this.getAttribute('href');
+            if (hash === '#') return;
+            
+            e.preventDefault();
+            // Update hash which triggers hashchange listener
+            if (window.location.hash === hash) {
+                // Manually trigger if hash is identical
+                scrollToTarget(hash, true);
+            } else {
+                window.location.hash = hash;
+            }
+        });
+    });
+
+    // 4. Parva Map for Jump resolution
     const parvaMap = {};
     document.querySelectorAll('.parva-link').forEach(link => {
         const href = link.getAttribute('href') || '';
@@ -58,70 +78,102 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    const handleJump = () => {
-        const val = jumpInput ? jumpInput.value.trim() : '';
+    // 5. Consolidated Navigation Logic (Deterministic P.K.S Resolution)
+    window.resolveJump = (val, smooth = true) => {
         if (!val) return;
         
+        console.log("[Navigation] Resolving reference:", val);
+        const parts = val.split('.');
+        
+        // Resolve prefix based on current depth
         const path = window.location.pathname;
         let depth = 0;
         if (path.includes('/kandah/')) depth = 2;
         else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
-        
         const prefix = '../'.repeat(depth);
-        const parts = val.split('.');
-        
+
         if (parts.length >= 2) {
             const parvaNum = parseInt(parts[0]);
+            
+            // Site-aware prefix resolution (Handles Samhita vs Aaranam cross-links)
+            let sitePrefix = "";
+            const currentPath = window.location.pathname;
+            if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
+                sitePrefix = "../samhita/";
+            } else if (parvaNum > 6 && currentPath.includes('/samhita/')) {
+                sitePrefix = "../aaranam/";
+            }
+
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
             const kandahId = parts[1];
-            let url = `${prefix}kandah/${parvaId}/${kandahId}.html`;
             
-            if (parts.length === 3) {
-                const targetNum = parseInt(parts[2]);
-                const samaLinks = document.querySelectorAll('.sama-link');
-                let matchedAnchor = null;
-                
-                samaLinks.forEach(link => {
-                    const text = link.textContent.trim();
-                    const rangeMatch = text.match(/^([0-9]+)[ ]*[–—-][ ]*([0-9]+)$/);
-                    if (rangeMatch) {
-                        const start = parseInt(rangeMatch[1]);
-                        const end = parseInt(rangeMatch[2]);
-                        if (targetNum >= start && targetNum <= end) {
-                            matchedAnchor = link.getAttribute('href');
-                        }
-                    } else {
-                        const exactMatch = text.match(/^([0-9]+)$/);
-                        if (exactMatch && parseInt(exactMatch[1]) === targetNum) {
-                            matchedAnchor = link.getAttribute('href');
-                        }
-                    }
-                });
-                
-                if (matchedAnchor) {
-                    url += matchedAnchor;
-                } else {
-                    url += `#sama-${parts[2]}`;
-                }
+            // Deterministic hash: point to specific Samam Sequence ID (#sama-N)
+            const targetHash = parts.length === 3 ? `#sama-${parts[2]}` : "";
+            const targetPage = `kandah/${parvaId}/${kandahId}.html`;
+            const currentPage = window.location.pathname;
+            
+            console.log("[Navigation] Target determined:", prefix + sitePrefix + targetPage + targetHash);
+
+            if (currentPage.endsWith(targetPage) || currentPage.includes('/' + targetPage)) {
+                // Same file: Just scroll
+                if (window.location.hash === targetHash) scrollToTarget(targetHash, true);
+                else window.location.hash = targetHash;
+            } else {
+                // Different file: Redirect
+                window.location.assign(prefix + sitePrefix + targetPage + targetHash);
             }
-            window.location.assign(url);
+            return true;
         }
+        return false;
     };
 
-    if (jumpInput) {
-        jumpInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                handleJump();
+    // Link Jump Box to Consolidated Logic
+    const jumpInput = document.getElementById('sidebar-jump');
+    const handleJump = () => {
+        const val = jumpInput ? jumpInput.value.trim() : '';
+        window.resolveJump(val, true);
+    };
+
+    // 6. Sidebar Highlighting (Intersection Observer)
+    const observerOptions = {
+        root: null,
+        rootMargin: '-100px 0px -70% 0px',
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const samaStart = entry.target.getAttribute('data-sama-start');
+                if (samaStart) {
+                    document.querySelectorAll('.nav-links a.active, .jump-links a.active').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    
+                    const links = document.querySelectorAll(`.nav-links a[href="#sama-${samaStart}"], .jump-links a[href="#sama-${samaStart}"]`);
+                    links.forEach(l => {
+                        l.classList.add('active');
+                    });
+                }
             }
         });
+    }, observerOptions);
+
+    document.querySelectorAll('.sama-entry').forEach(el => observer.observe(el));
+
+    if (jumpInput) {
+        jumpInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleJump();
+        });
     }
-    
-    // Search Modal
+
+    // Search Interactivity (Standard)
     const searchModal = document.getElementById('search-modal');
     const searchOverlay = document.getElementById('search-overlay');
     const searchInput = document.getElementById('search-input');
     const searchClose = document.getElementById('search-close');
     const searchResults = document.getElementById('search-results');
+    const searchBtn = document.querySelector('.search-btn');
     let searchIndex = null;
     
     const loadSearchIndex = () => {
@@ -181,9 +233,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const highlightText = (text, query) => {
         if (!query || !text) return text;
-        const idx = text.toLowerCase().indexOf(query.toLowerCase());
-        if (idx === -1) return text;
-        return text.substring(0, idx) + '<mark>' + text.substring(idx, idx + query.length) + '</mark>' + text.substring(idx + query.length);
+        // Escape query for regex and use global flag
+        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escaped, 'gi');
+        
+        // Split by HTML tags to avoid highlighting inside tags (e.g. <span class="...">)
+        const parts = text.split(/(<[^>]+>)/g);
+        return parts.map(p => p.startsWith('<') ? p : p.replace(regex, (m) => `<mark>${m}</mark>`)).join('');
     };
     
     const performSearch = (query) => {
@@ -194,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Convert IAST/Latin input to Devanagari for matching
         const latinToDevanagari = (text) => {
             const mapping = {
-                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'ri': 'ॠ',
+                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
                 'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
                 'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
                 'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
@@ -211,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         // Check if query looks like Latin (contains a-z, not Devanagari)
-        const isLatin = /[a-z]/.test(q) && !/[ऀ-ॿ]/.test(q);
+        const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
         const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
         
         for (const entry of searchIndex) {
@@ -221,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
                 if (!text) return;
                 // Remove spaces for comparison
-                const wsRegex = new RegExp('\\s+', 'g');
+                const wsRegex = new RegExp('\\\\s+', 'g');
                 const textNoSpaces = text.replace(wsRegex, '');
                 const qNoSpaces = q.replace(wsRegex, '');
                 
@@ -233,8 +289,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Check permissive (diacritic-stripped) match
-                const textPermissive = textNoSpaces.replace(/[ा-्॑-॔]/g, '');
-                const qPermissive = qNoSpaces.replace(/[ा-्॑-॔]/g, '');
+                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
                     score += fieldScore * 0.8;
                     matchedFields.push({ name: fieldName, text: text, html: displayHtml });
@@ -243,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Check Latin transliteration match
                 if (isLatin && devanagariQuery) {
-                    const textLatin = textNoSpaces.replace(/[ा-्॑-॔]/g, '');
+                    const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
                     const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
                     if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
                         score += fieldScore * 0.7;
@@ -330,7 +386,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         const link = this.querySelector('.search-result-ref a');
                         if (link) {
-                            window.location.href = link.href;
+                            // Extract reference from text (e.g. "1.1.1 — ...")
+                            const refPart = link.textContent.split('—')[0].trim();
+                            if (refPart && window.resolveJump) {
+                                e.preventDefault();
+                                window.resolveJump(refPart, true);
+                                closeSearchModal();
+                            } else {
+                                window.location.href = link.href;
+                            }
                         }
                     });
                     // Double-click always navigates

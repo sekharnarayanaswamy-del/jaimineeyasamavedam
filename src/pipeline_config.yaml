@@ -95,9 +95,9 @@ generate_aaranam_rik_table:
 curate_jsv:
   sources:
     - "data/output/Vargeekaran.json"
-    - "data/output/Aaranam_latest_out.json"
-  filter: "data/input/Ritu-shanti.txt"
-  output: "data/output/Collection_latest_out.json"
+    - "data/output/Aaranam_vargeekaran.json"
+  filter: "data/input/Ashirvachana_samani.txt"
+  output: "data/output/Ashirvachana_samani_out.json"
   title: "जैमिनीय साम सङ्ग्रहः"
 
 # --- COLLECTION BUILDING (src/tools/build_collection.py) ---
