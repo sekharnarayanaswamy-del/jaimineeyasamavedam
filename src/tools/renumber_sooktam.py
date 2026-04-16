@@ -6,177 +6,208 @@ import re
 import argparse
 import json
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
+
+# Add the parent directory (src) to sys.path to allow importing utils
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+try:
+    from utils import (
+        increment_project_version, 
+        inject_metadata_to_text, 
+        get_generated_metadata,
+        get_project_version,
+        set_project_version,
+        load_pipeline_config
+    )
+except ImportError:
+    # Fallback if utils is not accessible
+    def get_generated_metadata(increment=False):
+        return {"version": "3.0", "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+    def inject_metadata_to_text(content, version, timestamp):
+        return content
+    def increment_project_version():
+        return "3.0"
 
 def int_to_devanagari(n):
     mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', 
                '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
     return "".join(mapping[c] for c in str(n))
 
-def renumber_text_file(input_file, preserve_super=False, reset_per_super=False, reset_samam_per_section=False, reset_samam_per_super=True, start_sup=1, start_sec=1, start_sub=1, preserve_all=False):
+def renumber_text_file(input_file, output_file=None, preserve_super=False, reset_per_super=False, reset_samam_per_section=False, reset_samam_per_super=True, start_sup=1, start_sec=1, start_sub=1, preserve_all=False, no_renumber=False, custom_version=None):
     print(f"Renumbering TEXT file: {input_file}")
-    print(f"  Starts: Super={start_sup}, Section={start_sec}, Subsection={start_sub}")
-    print(f"  Settings: Reset per Super={reset_per_super}, Reset Samam per Section={reset_samam_per_section}, Reset Samam per Super={reset_samam_per_super}")
     
     with open(input_file, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+        content = f.read()
 
-    # ─── Pass 1: Renumber SuperSection, Section, SubSection IDs ───
-    # Rik Text / Rik Metadata header lines are SKIPPED here;
-    # their subsection numbers are fixed in Pass 2.
+    # Initialize counters for summary
     current_sup = start_sup - 1
     current_sec = start_sec - 1
     current_sub = start_sub - 1
-    
-    new_lines = []
-    in_sup_block = False
-    in_sec_block = False
-    
-    for line in lines:
-        # Detect SuperSection changes
-        if re.search(r'#\s*Start of SuperSection Title', line):
-            if not in_sup_block:
-                current_sup += 1
-                in_sup_block = True
-                if reset_per_super:
-                    current_sec = start_sec - 1
-                    current_sub = start_sub - 1
-        elif re.search(r'#\s*End of SuperSection Title', line):
-            in_sup_block = False
-
-        # Detect Section changes
-        if re.search(r'#\s*Start of Section Title', line):
-            if not in_sec_block:
-                current_sec += 1
-                in_sec_block = True
-        elif re.search(r'#\s*End of Section Title', line):
-            in_sec_block = False
-
-        # Skip Rik Text / Rik Metadata headers — handled in Pass 2
-        is_rik_header = bool(re.search(r'#\s*(Start|End) of (Rik Text|Rik Metadata)', line))
-
-        # Detect new SubSection by title marker only
-        if re.search(r'#\s*Start of SubSection Title', line):
-            current_sub += 1
-
-        if not preserve_all and not is_rik_header:
-            line = re.sub(r'subsection_(\d+)',
-                          lambda m: f'subsection_{max(1, current_sub)}', line)
-            line = re.sub(r'(?<!super)(?<!sub)section_(\d+)',
-                          lambda m: f'section_{max(1, current_sec)}', line)
-            line = re.sub(r'supersection_(\d+)',
-                          lambda m: m.group(0) if preserve_super else f'supersection_{max(1, current_sup)}', line)
-
-        new_lines.append(line)
-
-    print(f"  Pass 1 done: {max(0, current_sup)} SuperSections, "
-          f"{max(0, current_sec)} Sections, {max(0, current_sub)} SubSections.")
-
-    # ─── Pass 2: Assign Rik Text / Rik Metadata headers the subsection
-    #     number of the NEXT SubSection Title that follows them. ───
-    # For each Rik header line, scan forward to find the next
-    # "# Start of SubSection Title -- subsection_N" and use that N.
-    pass2_lines = []
-    for i, line in enumerate(new_lines):
-        if re.search(r'#\s*(Start|End) of (Rik Text|Rik Metadata)', line):
-            # Look ahead for the next SubSection Title
-            next_sub_num = None
-            for j in range(i + 1, len(new_lines)):
-                m = re.search(r'#\s*Start of SubSection Title\s*--\s*subsection_(\d+)', new_lines[j])
-                if m:
-                    next_sub_num = m.group(1)
-                    break
-            if next_sub_num is not None:
-                line = re.sub(r'subsection_\d+', f'subsection_{next_sub_num}', line)
-            # If no SubSection Title follows (end of file), leave as-is
-        pass2_lines.append(line)
-
-    print(f"  Pass 2 done: Rik Text / Rik Metadata headers aligned to following subsections.")
-
-    # ─── Pass 3: Independently renumber Samam and Rik verse counters ───
-    # Samam counter: ॥N॥ inside Mantra Sets blocks
-    # Rik counter:   ॥N॥ at end-of-line inside Rik Text blocks
-    final_lines = []
     samam_counter = 1
     rik_counter = 1
-    in_mantra_set = False
-    in_rik_text = False
-    in_subsection_title = False
 
-    for line in pass2_lines:
-        # Reset counters at Section/SuperSection boundaries if requested
-        if reset_samam_per_section:
-            if re.search(r'#\s*Start of (Section Title|SuperSection Title)', line):
-                samam_counter = 1
-                rik_counter = 1
-        elif reset_samam_per_super:
+    if no_renumber:
+        print("  [INFO] Inject-only mode: Skipping renumbering passes.")
+        final_lines_str = content
+    else:
+        print(f"  Starts: Super={start_sup}, Section={start_sec}, Subsection={start_sub}")
+        print(f"  Settings: Reset per Super={reset_per_super}, Reset Samam per Section={reset_samam_per_section}, Reset Samam per Super={reset_samam_per_super}")
+        
+        lines = content.splitlines(keepends=True)
+
+        # ─── Pass 1: Renumber SuperSection, Section, SubSection IDs ───
+        new_lines = []
+        in_sup_block = False
+        in_sec_block = False
+        
+        for line in lines:
             if re.search(r'#\s*Start of SuperSection Title', line):
-                samam_counter = 1
-                rik_counter = 1
+                if not in_sup_block:
+                    current_sup += 1
+                    in_sup_block = True
+                    if reset_per_super:
+                        current_sec = start_sec - 1
+                        current_sub = start_sub - 1
+            elif re.search(r'#\s*End of SuperSection Title', line):
+                in_sup_block = False
 
-        # Clean SubSection Title text (strip old numbers)
-        if re.search(r'#\s*Start of SubSection Title', line):
-            in_subsection_title = True
-        elif re.search(r'#\s*End of SubSection Title', line):
-            in_subsection_title = False
-        elif in_subsection_title and line.strip():
-            text = line.strip()
-            if text.startswith('॥') and (text.endswith('॥') or text.endswith(')')):
-                prefix = line[:line.find('॥')]
-                clean_text = re.sub(r'[०-९\d\-]+', '', text).replace('॥', '').replace('(', '').replace(')', '').strip()
-                if clean_text:
-                    line = f"{prefix}॥ {clean_text} ॥\n"
+            if re.search(r'#\s*Start of Section Title', line):
+                if not in_sec_block:
+                    current_sec += 1
+                    in_sec_block = True
+            elif re.search(r'#\s*End of Section Title', line):
+                in_sec_block = False
 
-        # Track block boundaries
-        if re.search(r'#\s*Start of Mantra Sets', line):
-            in_mantra_set = True
-        if re.search(r'#\s*Start of Rik Text', line):
-            in_rik_text = True
+            is_rik_header = bool(re.search(r'#\s*(Start|End) of (Rik Text|Rik Metadata)', line))
+            if re.search(r'#\s*Start of SubSection Title', line):
+                current_sub += 1
 
-        # Renumber Samam markers inside Mantra Sets
-        if in_mantra_set:
-            def samam_repl(m):
-                nonlocal samam_counter
-                res = f"॥ {int_to_devanagari(samam_counter)} ॥"
-                samam_counter += 1
-                return res
-            line = re.sub(r'(?:॥|\|\||।।|।|\|)\s*([०-९\d]+)\s*(?:॥|\|\||।।|।|\|)', samam_repl, line)
+            if not preserve_all and not is_rik_header:
+                line = re.sub(r'subsection_(\d+)', lambda m: f'subsection_{max(1, current_sub)}', line)
+                line = re.sub(r'(?<!super)(?<!sub)section_(\d+)', lambda m: f'section_{max(1, current_sec)}', line)
+                line = re.sub(r'supersection_(\d+)', lambda m: m.group(0) if preserve_super else f'supersection_{max(1, current_sup)}', line)
 
-        # Renumber Rik markers inside Rik Text (॥N॥ at end of line)
-        if in_rik_text:
-            def rik_repl(m):
-                nonlocal rik_counter
-                res = f"॥ {int_to_devanagari(rik_counter)} ॥"
-                rik_counter += 1
-                return res + m.group(1)  # preserve trailing whitespace
-            line = re.sub(r'(?:॥|\|\||।।|।|\|)\s*[०-९\d]+\s*(?:॥|\|\||।।|।|\|)(\s*)$', rik_repl, line)
+            new_lines.append(line)
 
-        if re.search(r'#\s*End of Mantra Sets', line):
-            in_mantra_set = False
-        if re.search(r'#\s*End of Rik Text', line):
-            in_rik_text = False
+        print(f"  Pass 1 done: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections.")
 
-        final_lines.append(line)
+        # ─── Pass 2: Assign Rik Text / Rik Metadata headers ───
+        pass2_lines = []
+        for i, line in enumerate(new_lines):
+            if re.search(r'#\s*(Start|End) of (Rik Text|Rik Metadata)', line):
+                next_sub_num = None
+                for j in range(i + 1, len(new_lines)):
+                    m = re.search(r'#\s*Start of SubSection Title\s*--\s*subsection_(\d+)', new_lines[j])
+                    if m:
+                        next_sub_num = m.group(1)
+                        break
+                if next_sub_num is not None:
+                    line = re.sub(r'subsection_\d+', f'subsection_{next_sub_num}', line)
+            pass2_lines.append(line)
+        print(f"  Pass 2 done: Rik Text / Rik Metadata headers aligned to following subsections.")
 
-    with open(input_file, 'w', encoding='utf-8') as f:
-        f.writelines(final_lines)
+        # ─── Pass 3: Renumber Samam and Rik verse counters ───
+        final_lines = []
+        in_mantra_set = False
+        in_rik_text = False
+        in_subsection_title = False
 
-    print(f"  Pass 3 done: {samam_counter - 1} Samams, {rik_counter - 1} Riks renumbered.")
-    print(f"Success! Final state: {max(0, current_sup)} SuperSections, "
-          f"{max(0, current_sec)} Sections, {max(0, current_sub)} SubSections. "
-          f"Samams: {samam_counter - 1}, Riks: {rik_counter - 1}")
+        for line in pass2_lines:
+            if reset_samam_per_section:
+                if re.search(r'#\s*Start of (Section Title|SuperSection Title)', line):
+                    samam_counter = 1
+                    rik_counter = 1
+            elif reset_samam_per_super:
+                if re.search(r'#\s*Start of SuperSection Title', line):
+                    samam_counter = 1
+                    rik_counter = 1
 
-def renumber_json_file(input_file, output_file=None, preserve_super=False):
+            if re.search(r'#\s*Start of SubSection Title', line):
+                in_subsection_title = True
+            elif re.search(r'#\s*End of SubSection Title', line):
+                in_subsection_title = False
+            elif in_subsection_title and line.strip():
+                text = line.strip()
+                if text.startswith('॥') and (text.endswith('॥') or text.endswith(')')):
+                    prefix = line[:line.find('॥')]
+                    clean_text = re.sub(r'[०-९\d\-]+', '', text).replace('॥', '').replace('(', '').replace(')', '').strip()
+                    if clean_text:
+                        line = f"{prefix}॥ {clean_text} ॥\n"
+
+            if re.search(r'#\s*Start of Mantra Sets', line): in_mantra_set = True
+            if re.search(r'#\s*Start of Rik Text', line): in_rik_text = True
+
+            if in_mantra_set:
+                def samam_repl(m):
+                    nonlocal samam_counter
+                    res = f"॥ {int_to_devanagari(samam_counter)} ॥"
+                    samam_counter += 1
+                    return res
+                line = re.sub(r'(?:॥|\|\||।।|।|\|)\s*([०-९\d]+)\s*(?:॥|\|\||।।|।|\|)', samam_repl, line)
+
+            if in_rik_text:
+                def rik_repl(m):
+                    nonlocal rik_counter
+                    res = f"॥ {int_to_devanagari(rik_counter)} ॥"
+                    rik_counter += 1
+                    return res + m.group(1)
+                line = re.sub(r'(?:॥|\|\||।।|।|\|)\s*[०-९\d]+\s*(?:॥|\|\||।।|।|\|)(\s*)$', rik_repl, line)
+
+            if re.search(r'#\s*End of Mantra Sets', line): in_mantra_set = False
+            if re.search(r'#\s*End of Rik Text', line): in_rik_text = False
+            final_lines.append(line)
+    
+        final_lines_str = "".join(final_lines)
+        print(f"  Pass 3 done: {samam_counter - 1} Samams, {rik_counter - 1} Riks renumbered.")
+
+    # Get metadata
+    meta = get_generated_metadata()
+    version_to_use = custom_version if custom_version else meta["version"]
+    final_content = inject_metadata_to_text(final_lines_str, version_to_use, meta["generated_at"])
+
+    if not output_file: output_file = input_file
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(final_content)
+
+    if not no_renumber:
+        print(f"Success! Final state: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections. Samams: {samam_counter - 1}, Riks: {rik_counter - 1}")
+    else:
+        print(f"Success! Metadata updated in {output_file} to Version {version_to_use}")
+
+def renumber_json_file(input_file, output_file=None, preserve_super=False, no_renumber=False, custom_version=None):
     print(f"Renumbering JSON file: {input_file} (Preserve Super: {preserve_super})")
+    if no_renumber:
+        print("  [INFO] Inject-only mode: Skipping JSON re-indexing.")
+        
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+    # Use project metadata
+    meta = get_generated_metadata()
+    version_to_use = custom_version if custom_version else meta["version"]
+    
+    if no_renumber:
+        # Just update metadata and return
+        data["meta"]["version"] = version_to_use
+        data["meta"]["generated_at"] = meta["generated_at"]
+        data["meta"]["renumbered_at"] = meta["generated_at"]
+        
+        if not output_file: output_file = input_file
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+        print(f"Successfully updated metadata in JSON: {input_file}")
+        return
+
     new_data = {
-        "meta": data.get("meta", {}),
+        "meta": {
+            "version": version_to_use,
+            "generated_at": meta["generated_at"],
+            "renumbered_at": meta["generated_at"]
+        },
         "supersection": {}
     }
-    new_data["meta"]["renumbered_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     global_samam_count = 0
     global_rik_count = 0
@@ -267,6 +298,11 @@ def renumber_json_file(input_file, output_file=None, preserve_super=False):
     print(f"Successfully renumbered JSON: {ss_idx-1} SuperSections, {global_samam_count} Samams, {global_rik_count} Riks.")
 
 def main():
+    # Load defaults from config
+    cfg = load_pipeline_config()
+    renum_cfg = cfg.get('renumber_sooktam', {})
+    defaults = renum_cfg.get('defaults', {})
+
     parser = argparse.ArgumentParser(description="Renumber JSV files (JSON or TXT).")
     parser.add_argument('input_file', help="Path to input JSV file")
     parser.add_argument('--output', help="Output file path (optional)")
@@ -277,7 +313,26 @@ def main():
     parser.add_argument('--start-super', type=int, default=1, help="Starting number for supersections (default: 1)")
     parser.add_argument('--start-section', type=int, default=1, help="Starting number for sections (default: 1)")
     parser.add_argument('--start-subsection', type=int, default=1, help="Starting number for subsections (default: 1)")
+    parser.add_argument('--jsv-version', help="Manually specify JSV version (updates src/VERSION)")
+    parser.add_argument('--no-increment', action='store_true', 
+                        default=defaults.get('no_increment', False),
+                        help="Use current version without incrementing")
+    parser.add_argument('--no-renumber', action='store_true', 
+                        default=defaults.get('no_renumber', False),
+                        help="Only inject metadata header, skip renumbering content")
     args = parser.parse_args()
+
+    # Determine Version to use
+    if args.jsv_version:
+        target_version = args.jsv_version
+        set_project_version(target_version)
+        print(f"Using manual Version {target_version} (Updated src/VERSION)")
+    elif args.no_increment:
+        target_version = get_project_version()
+        print(f"Using current Version {target_version} (No increment)")
+    else:
+        target_version = increment_project_version()
+        print(f"Rolling over to Version {target_version}")
 
     input_path = Path(args.input_file)
     if not input_path.exists():
@@ -285,10 +340,11 @@ def main():
         sys.exit(1)
 
     if input_path.suffix.lower() == '.json':
-        renumber_json_file(args.input_file, args.output, preserve_super=args.preserve_super)
+        renumber_json_file(args.input_file, args.output, preserve_super=args.preserve_super, no_renumber=args.no_renumber, custom_version=target_version)
     else:
         # Default is reset_samam_per_section=True. --contiguous-samams sets it to False.
         renumber_text_file(args.input_file, 
+                           output_file=args.output,
                            preserve_super=args.preserve_super, 
                            reset_per_super=args.reset_per_super,
                            reset_samam_per_section=False,
@@ -296,7 +352,9 @@ def main():
                            start_sup=args.start_super,
                            start_sec=args.start_section,
                            start_sub=args.start_subsection,
-                           preserve_all=args.preserve_all)
+                           preserve_all=args.preserve_all,
+                           no_renumber=args.no_renumber,
+                           custom_version=target_version)
 
 
 if __name__ == "__main__":

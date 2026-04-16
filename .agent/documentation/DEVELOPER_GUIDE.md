@@ -502,6 +502,9 @@ python src/tools/renumber_sooktam.py data/output/Sooktam_out.json --preserve-sup
 | Option | Description |
 | :--- | :--- |
 | `input_file` | Path to the `.txt` or `.json` file to renumber. |
+| `--jsv-version` | Manual version override (e.g. 5.0). Updates src/VERSION. |
+| `--no-increment` | Use current version from src/VERSION without bumping. |
+| `--no-renumber` | Inject-Only mode: update metadata header but skip renumbering content. |
 | `--preserve-super` | If set, preserves existing SuperSection IDs. |
 | `--preserve-all` | If set, preserves all SuperSection, Section, and SubSection IDs (only resets Samam numbering). |
 | `--start-super` | Starting number for SuperSections (default: 1). |

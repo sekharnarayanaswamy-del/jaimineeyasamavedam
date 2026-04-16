@@ -548,6 +548,7 @@ class JSVParser:
     def __init__(self, source_file: str, procedure_index: dict = None):
         self.source_file = source_file
         self.procedure_index = procedure_index or {}
+        self.metadata = {}
         self.parvas: List[Parva] = []
         self.current_parva: Optional[Parva] = None
         self.current_kandah: Optional[Kandah] = None
@@ -584,6 +585,8 @@ class JSVParser:
         """Parse JSON source file"""
         with open(self.source_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
+            
+        self.metadata = data.get('meta', {})
             
         super_keys = sorted(data.get('supersection', {}).keys(), 
                           key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
@@ -650,6 +653,11 @@ class JSVParser:
     def _parse_text_file(self) -> List[Parva]:
         """Legacy Parsing method (Text File)"""
         content = self._read_file()
+        
+        # Extract metadata from text headers if present
+        from utils import extract_metadata_from_text
+        self.metadata = extract_metadata_from_text(content)
+        
         lines = content.split('\n')
         
         i = 0
@@ -820,7 +828,7 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic'):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic', metadata: Dict = None):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
@@ -833,11 +841,16 @@ class WebsiteGenerator:
         if custom_title:
             self.config['title_sa'] = custom_title
         
+        # Standardize metadata - priority: passed metadata > system metadata
+        from utils import get_generated_metadata
+        sys_meta = get_generated_metadata()
+        
         self.metadata = {
-            "version": "2.0.0",
+            "version": metadata.get("version", sys_meta["version"]) if metadata else sys_meta["version"],
+            "generated_at": sys_meta["generated_at"],
             "last_updated": datetime.now().strftime("%Y-%m-%d")
         }
-        self.generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.generated_at = self.metadata["generated_at"]
         
         # Initialize indices and counts (populated later by _collect_indices)
         self.rishi_index = {}
@@ -4732,7 +4745,7 @@ Examples:
     
     # Generate website
     print("\n[INFO] Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font)
+    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font, metadata=parser_obj.metadata)
     generator.generate()
     
     print("\n" + "=" * 60)

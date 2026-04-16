@@ -4,7 +4,7 @@ import json
 import re
 import os
 import yaml
-from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config
+from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config, extract_metadata_from_text
 
 def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
     """Load the procedure linking index from YAML file."""
@@ -1178,10 +1178,11 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # GLOBAL SANITIZATION: Remove invisible characters from the entire file content
     content = sanitize_invisible_chars(content)
     
-    # Initialize data structure
+    # Initialize data structure from file metadata if present
+    file_meta = extract_metadata_from_text(content)
     data = {
         "meta": {
-            "version": JSV_VERSION,
+            "version": file_meta.get("version", JSV_VERSION),
             "generated_at": GENERATED_AT,
             "title": title
         },

@@ -13,15 +13,87 @@ from requests.models import PreparedRequest
 
 import datetime
 
-# --- Version and Metadata constants ---
-JSV_VERSION = "3.0"
+# --- Version and Metadata Utilities ---
+VERSION_FILE = Path(__file__).parent / "VERSION"
 
-def get_generated_metadata():
-    """Returns a dictionary with version and generation timestamp."""
+def get_project_version():
+    """Reads the current version from src/VERSION."""
+    if VERSION_FILE.exists():
+        try:
+            return VERSION_FILE.read_text(encoding='utf-8').strip()
+        except:
+            pass
+    return "3.0"
+
+def increment_project_version():
+    """Increments the minor version (y in x.y) in src/VERSION."""
+    current_version = get_project_version()
+    try:
+        parts = current_version.split('.')
+        if len(parts) >= 2:
+            # Increment the last numerical part
+            parts[-1] = str(int(parts[-1]) + 1)
+            new_version = ".".join(parts)
+        else:
+            new_version = current_version + ".1"
+            
+        VERSION_FILE.write_text(new_version, encoding='utf-8')
+        return new_version
+    except Exception as e:
+        print(f"[WARNING] Failed to increment version: {e}")
+        return current_version
+
+def set_project_version(version):
+    """Manually sets the version in src/VERSION."""
+    try:
+        VERSION_FILE.write_text(version, encoding='utf-8')
+        return True
+    except Exception as e:
+        print(f"[WARNING] Failed to set version: {e}")
+        return False
+
+def get_generated_metadata(increment=False):
+    """Returns a dictionary with version and generation timestamp.
+    If increment=True, rolls over the version number in src/VERSION.
+    """
+    version = increment_project_version() if increment else get_project_version()
     return {
-        "version": JSV_VERSION,
+        "version": version,
         "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+
+def inject_metadata_to_text(content, version, timestamp=None):
+    """Prepends a standardized metadata block to the text content."""
+    if not timestamp:
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    metadata_block = [
+        "# [JSV METADATA]",
+        f"# Version: {version}",
+        f"# Generated At: {timestamp}",
+        "# [END METADATA]",
+        ""
+    ]
+    
+    # Remove any existing metadata block if present (at the start of file)
+    clean_content = re.sub(r'^# \[JSV METADATA\].*?# \[END METADATA\]\s*', '', content, flags=re.DOTALL)
+    
+    return "\n".join(metadata_block) + clean_content
+
+def extract_metadata_from_text(content):
+    """Parses the metadata block from a text string."""
+    # Default metadata
+    meta = {
+        "version": "3.0",
+        "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    
+    match = re.search(r'# \[JSV METADATA\].*?# Version:\s*(?P<version>.*?)\n.*?# Generated At:\s*(?P<at>.*?)\n.*?# \[END METADATA\]', content, re.DOTALL)
+    if match:
+        meta["version"] = match.group("version").strip()
+        meta["generated_at"] = match.group("at").strip()
+    
+    return meta
 
 def devanagari_to_int(text):
     """Converts Devanagari numerals in a string to an integer."""

@@ -384,6 +384,9 @@ python src/tools/renumber_sooktam.py <input_file> [OPTIONS]
 | Argument | Description | Default |
 | :--- | :--- | :--- |
 | `input_file` | Path to the `.txt` or `.json` file to renumber. | - |
+| `--jsv-version` | Manual version override (e.g. 5.0). Updates src/VERSION. | None |
+| `--no-increment` | Use current version from src/VERSION without bumping. | False |
+| `--no-renumber` | Inject-Only mode: update metadata header but skip renumbering content. | False |
 | `--preserve-super` | Preserve existing SuperSection IDs (only renumbers sections/subsections). | False |
 | `--preserve-all` | Preserve ALL structure IDs (only renumbers Samams). | False |
 | `--start-super` | Starting number for SuperSections. | 1 |

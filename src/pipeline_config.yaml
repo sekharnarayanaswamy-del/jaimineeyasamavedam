@@ -6,12 +6,26 @@
 # --- GLOBAL SETTINGS ---
 project:
   name: "Jaimineeya Samavedam"
-  version: "3.0"
+  version: "5.0"
   output_root: "data/output"
   input_root: "data/input"
 
 # --- RENUMBERING (src/tools/renumber_sooktam.py) ---
+# CLI Options:
+#   input_file              Target .txt or .json file
+#   --output                Optional specific output path
+#   --jsv-version           Manual version override (e.g. 5.0). Updates src/VERSION.
+#   --no-increment          Use current version from src/VERSION without bumping.
+#   --no_renumber           Inject-Only mode: update metadata header but skip renumbering content.
+#   --preserve-super        Keep existing SuperSection IDs.
+#   --preserve-all          Keep all structural IDs, only renumber Samams/Riks.
+#   --reset-per-super       Reset Section/Subsection counters at each SuperSection.
+#   --contiguous-samams    Do NOT reset Samam numbering at Section boundaries.
+#
 renumber_sooktam:
+  defaults:
+    no_increment: false
+    no_renumber: false
   samhita:
     input: "data/input/Samhita_corrected.txt"
     start_super: 1

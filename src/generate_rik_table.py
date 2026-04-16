@@ -143,6 +143,15 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+    # Use cascading metadata if present in JSON, otherwise fallback
+    json_meta = data.get('meta', {})
+    if json_meta.get('version'):
+        JSV_VERSION = json_meta['version']
+        print(f"[INFO] Using cascading Version {JSV_VERSION}")
+    
+    # Always use fresh timestamp for the export
+    GENERATED_at = GENERATED_AT
+
     # Load Excel Reconciliation Data
     recon_data = load_reconciliation_data(recon_excel)
 
