@@ -33,9 +33,9 @@
 --border-light: #E8DCC0;
 
 /* Typography */
---font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
---font-body: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
---font-sanskrit: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
+--font-heading: 'NotoSansDevanagari', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
+--font-body: 'NotoSansDevanagari', 'AdishilaSanVedic', 'Noto Sans Devanagari', 'Inter', sans-serif;
+--font-sanskrit: 'NotoSansDevanagari', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Siddhanta', serif;
 
 /* Spacing */
 --spacing-xs: 0.25rem;
@@ -91,7 +91,7 @@ h4 { font-size: 1.2rem; }
 }}
 
 .stat-label, .rik-metadata, .mantra-number, .sama-header-text, .sama-metadata-text, .classification-table th, .classification-table td, .class-value, .class-label, .page-subtitle, .sama-count, .nav-section h3, .sidebar-right h3 {{
-    font-family: 'AdishilaVedic', 'Noto Serif Devanagari', serif !important;
+    font-family: 'NotoSansDevanagari', 'Noto Serif Devanagari', serif !important;
 }}
 
 .sanskrit-text {
@@ -1269,7 +1269,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.1em;
     isolation: isolate;
 }
 
@@ -1282,7 +1282,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.25em;
+    bottom: -0.25em;
     isolation: isolate;
 }
 
@@ -1295,7 +1295,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.1em;
 }
 
 .accent-trikampa {
@@ -1307,7 +1307,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.1em;
 }
 
 .danda {
