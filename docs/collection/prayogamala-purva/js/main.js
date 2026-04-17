@@ -98,10 +98,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Site-aware prefix resolution (Handles Samhita vs Aaranam cross-links)
             let sitePrefix = "";
             const currentPath = window.location.pathname;
-            if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
-                sitePrefix = "../samhita/";
-            } else if (parvaNum > 6 && currentPath.includes('/samhita/')) {
-                sitePrefix = "../aaranam/";
+            
+            // Only switch sites if the parvaNum is NOT in our local parvaMap
+            if (!parvaMap[parvaNum]) {
+                if (parvaNum <= 6 && currentPath.includes('/aaranam/')) {
+                    sitePrefix = "../samhita/";
+                } else if (parvaNum > 6 && currentPath.includes('/samhita/')) {
+                    sitePrefix = "../aaranam/";
+                }
             }
 
             const parvaId = parvaMap[parvaNum] || `supersection_${parts[0]}`;
@@ -227,9 +231,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Detect current page depth for relative path resolution
-    const currentPath = window.location.pathname;
-    const isKandahPage = currentPath.includes('/kandah/');
-    const depthPrefix = isKandahPage ? '../../' : '';
+    const path = window.location.pathname;
+    let depth = 0;
+    if (path.includes('/kandah/')) depth = 2;
+    else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
+    const depthPrefix = '../'.repeat(depth);
     
     const highlightText = (text, query) => {
         if (!query || !text) return text;
