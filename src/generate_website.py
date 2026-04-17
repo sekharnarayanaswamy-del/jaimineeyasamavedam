@@ -915,7 +915,7 @@ class WebsiteGenerator:
             sw_off = '0.1em'
             ka_off = '0.1em'
             tr_off = '0.1em'
-            an_off = '-0.1em'
+            an_off = '-0.25em'
         else: # Default/Adishila
             sw_off = '0.06em'
             ka_off = '0.06em'
