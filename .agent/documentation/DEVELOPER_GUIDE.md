@@ -887,3 +887,62 @@ Run the generator to see the changes:
 python src/generate_website.py --source-file data/output/Vargeekaran.json -o docs
 ```
 Usage of `!important` should be minimized and reserved for situations where global hierarchy rules (like the numeral group) conflict with specific component needs.
+
+---
+
+## 7. Template-Driven Asset Rendering (`render_pdf.py`)
+
+The `render_pdf.py` script follows the **Template-Based Asset Generation** design pattern. It decouples the complex Vedic logic (accent alignment, numbering, classification) from the final document layout (LaTeX, HTML, or Text).
+
+### 7.1 Architectural Workflow
+
+The following diagram illustrates how raw JSON data flows through the rendering engine to produce multiple target formats:
+
+```mermaid
+graph TD
+    JSON[Vargeekaran JSON] --> PreProcess[Python Pre-processing]
+    Cfg[pipeline_config.yaml] --> PreProcess
+    
+    subgraph render_pdf.py Logic
+        PreProcess --> EnvSetup[Jinja Env Setup \BLOCK, \VAR\]
+        EnvSetup --> Filters[Custom Filters: format_mantra, replace_accents]
+        Filters --> TemplateRender[Template.render]
+    end
+    
+    TplDir[templates/] --> TemplateRender
+    
+    TemplateRender --> PDFOut[".tex -> LuaLaTeX -> .pdf"]
+    TemplateRender --> HTMLOut[.html]
+    TemplateRender --> TXTOut[.txt]
+```
+
+### 7.2 Custom Jinja2 Delimiters
+
+To prevent syntax collisions with the target languages (especially LaTeX and HTML, which both use curly braces `{}` and percent signs `%`), `render_pdf.py` initializes a custom Jinja2 environment with the following delimiters:
+
+| Delimiter | Default | Custom | Example |
+| :--- | :--- | :--- | :--- |
+| **Block Start** | `{%` | `\BLOCK{` | `\BLOCK{ if x }` |
+| **Block End** | `%}` | `}` | `\BLOCK{ endif }` |
+| **Variable Start** | `{{` | `\VAR{` | `\VAR{ title }` |
+| **Variable End** | `}}` | `}` | `\VAR{ title }` |
+
+This allows LaTeX code to be written naturally without escaping every bracket, making templates much easier to maintain.
+
+### 7.3 Design Decisions: Logic vs. Layout
+
+The pipeline uses a **Hybrid Rendering** approach:
+
+1.  **Lightweight Layout (Jinja)**: Templates handle the macroscopic structure—loops over sections, page-level metadata, and document headers.
+2.  **Heavyweight Logic (Python Filters)**: Complex Vedic formatting is handled by Python functions registered as Jinja filters:
+    *   **`format_mantra_sets`**: Orchestrates the multi-layered rendering of mantra text and swaras.
+    *   **`replace_accents`**: Sophisticated regex-based replacement of ASCII markers with font-specific LaTeX raisebox commands.
+    *   **`preprocess_html_data`**: To avoid global state issues and complex loops inside HTML templates, the renderer builds complete HTML subsections in memory *before* the template is rendered. The template then simply outputs the pre-built strings.
+
+### 7.4 Target Output Specifics
+
+*   **PDF (.tex)**: Uses `lualatex` as the compiler to support the HarfBuzz font engine required for complex Devanagari ligatures and stacked swaras.
+*   **HTML (.html)**: Generates a single-page document with an embedded sidebar-to-content mapping.
+*   **Text (.txt)**: Produces a "Round-trip" Unicode file designed to be re-imported as a source file after manual corrections.
+
+**Files**: `src/render_pdf.py` (Engine), `templates/pdf/` (LaTeX), `templates/html/` (HTML), `templates/text/` (Unicode)
