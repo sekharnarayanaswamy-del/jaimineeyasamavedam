@@ -26,26 +26,26 @@ jaimineeyasamavedam/
 
 ### **A. The Data Engine (`data/`)**
 - **`data/input/`**:
-    - [`Samhita_corrected.txt`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/input/Samhita_corrected.txt): The master unified source file for the Jaimineeya Samhita.
-    - [`Aaranam_latest.txt`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
-    - [`Rik Reconciliation table.xlsx`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/input/Rik%20Reconciliation%20table.xlsx): The source of truth for Rishi/Devata metadata.
+    - [`Samhita_corrected.txt`](../../data/input/Samhita_corrected.txt): The master unified source file for the Jaimineeya Samhita.
+    - [`Aaranam_latest.txt`](../../data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
+    - [`Rik Reconciliation table.xlsx`](../../data/input/Rik%20Reconciliation%20table.xlsx): The source of truth for Rishi/Devata metadata.
 - **`data/output/`**:
-    - [`Vargeekaran.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita.
-    - [`Aaranam_vargeekaran.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam.
-    - [`JSV_Rik_Table.csv`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/JSV_Rik_Table.csv): A flattened table used for corrections and analysis.
+    - [`Vargeekaran.json`](../../data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita.
+    - [`Aaranam_vargeekaran.json`](../../data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam.
+    - [`JSV_Rik_Table.csv`](../../data/output/JSV_Rik_Table.csv): A flattened table used for corrections and analysis.
 
 ### **B. The Logic Engine (`src/`)**
-- [`generate_json.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/generate_json.py): The primary parser that converts plain-text Vedic markup into structured JSON.
-- [`generate_rik_table.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/generate_rik_table.py): Integrates metadata from Excel sheets into the main JSON database.
-- [`generate_website.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/generate_website.py): The "Static Site Generator" that creates the beautiful parchment-styled web pages.
-- [`render_pdf.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render_pdf.py): A complex wrapper for LuaLaTeX that produces high-quality Vedic PDFs with accurate accents.
-- [`pipeline_config.yaml`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/pipeline_config.yaml): The central switchboard for mapping input files to output paths.
+- [`generate_json.py`](../../src/generate_json.py): The primary parser that converts plain-text Vedic markup into structured JSON.
+- [`generate_rik_table.py`](../../src/generate_rik_table.py): Integrates metadata from Excel sheets into the main JSON database.
+- [`generate_website.py`](../../src/generate_website.py): The "Static Site Generator" that creates the beautiful parchment-styled web pages.
+- [`render_pdf.py`](../../src/render_pdf.py): A complex wrapper for LuaLaTeX that produces high-quality Vedic PDFs with accurate accents.
+- [`pipeline_config.yaml`](../../src/pipeline_config.yaml): The central switchboard for mapping input files to output paths.
 
 ### **C. The Web Engine (`docs/`)**
-- [`index.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/docs/index.html): The project gateway (Dashboard).
-- [`main.js`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/docs/samhita/js/main.js): The navigation and client-side search engine (Samhita example).
-- [`styles.css`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/docs/samhita/css/styles.css): The design system, including font-specific Vedic accent alignments.
-- [`search-index.js`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/docs/samhita/search-index.js): An offline-ready database for ultra-fast mantra searching.
+- [`index.html`](../../docs/index.html): The project gateway (Dashboard).
+- [`main.js`](../../docs/samhita/js/main.js): The navigation and client-side search engine (Samhita example).
+- [`styles.css`](../../docs/samhita/css/styles.css): The design system, including font-specific Vedic accent alignments.
+- [`search-index.js`](../../docs/samhita/search-index.js): An offline-ready database for ultra-fast mantra searching.
 
 ### **D. The Agent Workspace (`.agent/`)**
 - **`documentation/`**: Architectural guides and technical manuals for developers/AI.
