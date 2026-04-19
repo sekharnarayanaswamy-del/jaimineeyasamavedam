@@ -259,7 +259,8 @@ def split_rik_lines_latex(text):
     lines = [l for l in lines if l]
     if len(lines) <= 1:
         return text
-    return ' \\\\\\newline '.join(lines)
+    # Use standard LaTeX line break (\\) for multi-verse Riks
+    return ' \\\\ '.join(lines)
     
 
 # ----------------------------------------------------
@@ -711,6 +712,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Process Footnotes in Rik Text
         s2 = process_footnotes_latex(s2, subsection.get('footnotes', {}), seen_markers, subsection_key)
         # Step D: Format Dandas (Spaces around dandas only)
+        # s2 = format_dandas(s2) -- moved after splitting
+        
         # Split multi-Rik text so each Rik is on its own line
         s2 = split_rik_lines_latex(s2)
         s2 = format_dandas(s2)

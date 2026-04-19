@@ -262,6 +262,40 @@ else:
     _handle_trikamba = local_handle_consecutive_trikamba
 
 
+def split_rik_lines_html(text):
+    """
+    Splits multi-Rik text so each Rik appears on its own line in HTML.
+    Splits after each verse marker (॥ N ॥) and joins with <br>.
+    If only one Rik is present, returns the text unchanged.
+    """
+    if not text:
+        return text
+    # Split after each ॥ N ॥ pattern (Devanagari or ASCII digits)
+    # The marker stays at the end of each segment
+    import re
+    parts = re.split(r'((?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|))', text)
+    if len(parts) <= 1:
+        return text
+    # Re-join: marker goes with the preceding text segment
+    lines = []
+    current = ''
+    for part in parts:
+        if re.match(r'(?:॥|\|\|)\s*[०-९\d]+\s*(?:॥|\|\|)', part):
+            current += part
+            lines.append(current.strip())
+            current = ''
+        else:
+            current += part
+    # If there's leftover text after the last marker, append it
+    if current.strip():
+        lines.append(current.strip())
+    # Filter out empty lines
+    lines = [l for l in lines if l]
+    if len(lines) <= 1:
+        return text
+    return '<br>'.join(lines)
+
+
 def _fix_visarga_accent_with_zwj(text):
     """Swaps Visarga and accent marker so accent applies to preceding vowel."""
     if not text:
@@ -306,7 +340,10 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     # Step 5: Replace accent markers with Unicode combining characters
     text = _replace_accents(text)
     
-    # Step 6: Format dandas
+    # Step 6: Split multi-Rik text so each Rik is on its own line
+    text = split_rik_lines_html(text)
+    
+    # Step 7: Format dandas
     text = _format_dandas(text)
     
     return text, collected_footnotes
