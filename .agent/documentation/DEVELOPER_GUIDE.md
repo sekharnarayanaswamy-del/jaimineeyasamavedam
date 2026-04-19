@@ -312,8 +312,8 @@ A special section at the end of the input file enclosed in `# Closing Mantras` /
 *   **`src/tools/renumber_sooktam.py`**: A vital utility for managing IDs and sequential numbering in JSV files.
     *   **Robust Renumbering**: Sequentially updates all IDs (`supersection_N`, `section_N`, `subsection_N`) and mantra numbers (`॥N॥`) based on header anchors (`# Start of ... Title`).
     *   **Custom Offsets**: Supports starting numbers for SuperSection, Section, and Subsection via CLI arguments.
-    *   **Samam Counting**: By default, Samam numbers reset to 1 at every *SuperSection* boundary. Use `--contiguous-samams` for fully global contiguous numbering.
-    *   **Reset per SuperSection**: Optional flag to reset Section/Subsection counters at each SuperSection boundary.
+    *   **Type-Aware Config**: Automatically loads mode-specific settings (Samhita vs Aaranam) from `pipeline_config.yaml`.
+    *   **Pre-Flight Validation**: Includes a structural integrity scanner that detects orphans or mismatched `# Start` and `# End` tags before processing, aborting early to prevent file corruption.
     *   **Preserve Modes**: `preserve-super` only skips renumbering SuperSections, while `--preserve-all` preserves all section/supersection structure IDs and only renumbers the Samams within them.
 
 ### 3.6 Workflow F: Prayoga Procedures (Markdown Integration)
@@ -510,6 +510,7 @@ python src/tools/renumber_sooktam.py data/output/Sooktam_out.json --preserve-sup
 | `--start-super` | Starting number for SuperSections (default: 1). |
 | `--start-section` | Starting number for Sections (default: 1). |
 | `--start-subsection` | Starting number for SubSections (default: 1). |
+| `--type`, `-t` | Mode: `samhita` or `aaranam`. Loads offsets/resets from config. |
 | `--reset-per-super` | Reset section and subsection counters at each SuperSection boundary. |
 | `--contiguous-samams` | Do NOT reset Samam numbering at SuperSection boundaries (contiguous throughout file). |
 

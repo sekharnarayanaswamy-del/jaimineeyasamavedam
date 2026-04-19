@@ -25,14 +25,24 @@ jaimineeyasamavedam/
 ## 2. Core Pillars & Important Files
 
 ### **A. The Data Engine (`data/`)**
-- **`data/input/`**:
-    - [`Samhita_corrected.txt`](../../data/input/Samhita_corrected.txt): The master unified source file for the Jaimineeya Samhita.
-    - [`Aaranam_latest.txt`](../../data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
-    - [`Rik Reconciliation table.xlsx`](../../data/input/Rik%20Reconciliation%20table.xlsx): The source of truth for Rishi/Devata metadata.
-- **`data/output/`**:
-    - [`Vargeekaran.json`](../../data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita.
-    - [`Aaranam_vargeekaran.json`](../../data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam.
-    - [`JSV_Rik_Table.csv`](../../data/output/JSV_Rik_Table.csv): A flattened table used for corrections and analysis.
+- **Input Data**:
+    - [`data/input/Samhita_corrected.txt`](../../data/input/Samhita_corrected.txt): The master unified source file for the Jaimineeya Samhita.
+    - [`data/input/Aaranam_latest.txt`](../../data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
+    - [`data/input/Rik Reconciliation table (JSV-KSV).xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29.xlsx): The reference for Samhita metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
+    - [`data/input/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29%20-%20Aaranam.xlsx): The reference for Aaranam metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
+    
+- **Output Data**:
+- The json files represent the single source of truth in the project. 
+
+    - [`data/output/Samhita_corrected_out.json`](../../data/output/Samhita_corrected_out.json): The processed, hierarchical database of the Samhita that is generated from the `Samhita_corrected.txt` file.
+    - [`data/output/Aaranam_latest_out.json`](../../data/output/Aaranam_latest_out.json): The processed, hierarchical database of the Aaranam that is generated from the `Aaranam_latest.txt` file.
+    - [`data/output/Vargeekaran.json`](../../data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita enriched with Rishi, Devata, Chandas metadata for website publishing.
+    - [`data/output/Aaranam_vargeekaran.json`](../../data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam enriched with Rishi, Devata, Chandas metadata for website publishing.
+
+        
+- Rik text and Rik/Samam metadata from initial mode of generate_json.py is the starting point for the csv file below. 
+- It is then combined with the Rik table from KSV to create the Rik Rishi/Devata/Chandas Reconciliation file mentioned above.  
+    - [`data/output/JSV_Rik_Table.csv`](../../data/output/JSV_Rik_Table.csv): A flattened table used for corrections and analysis.
 
 ### **B. The Logic Engine (`src/`)**
 - [`generate_json.py`](../../src/generate_json.py): The primary parser that converts plain-text Vedic markup into structured JSON.

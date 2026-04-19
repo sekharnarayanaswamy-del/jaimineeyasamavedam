@@ -6,7 +6,7 @@
 # --- GLOBAL SETTINGS ---
 project:
   name: "Jaimineeya Samavedam"
-  version: "5.0"
+  version: "3.12"
   output_root: "data/output"
   input_root: "data/input"
 
@@ -14,13 +14,14 @@ project:
 # CLI Options:
 #   input_file              Target .txt or .json file
 #   --output                Optional specific output path
+#   --type / -t             Type of text (loads presets: samhita, aaranam, collection)
 #   --jsv-version           Manual version override (e.g. 5.0). Updates src/VERSION.
 #   --no-increment          Use current version from src/VERSION without bumping.
-#   --no_renumber           Inject-Only mode: update metadata header but skip renumbering content.
+#   --no-renumber           Inject-Only mode: update metadata header but skip renumbering content.
 #   --preserve-super        Keep existing SuperSection IDs.
 #   --preserve-all          Keep all structural IDs, only renumber Samams/Riks.
 #   --reset-per-super       Reset Section/Subsection counters at each SuperSection.
-#   --contiguous-samams    Do NOT reset Samam numbering at Section boundaries.
+#   --contiguous-samams     Do NOT reset Samam numbering at Section boundaries.
 #
 renumber_sooktam:
   defaults:
@@ -32,14 +33,14 @@ renumber_sooktam:
     start_section: 1
     start_subsection: 1
     reset_per_super: true
-    contiguous_samams: true  # Samhita historically used global Samam counts
+    contiguous_samams: false   
   aaranam:
     input: "data/input/Aaranam_latest.txt"
     start_super: 7
-    start_section: 65
-    start_subsection: 728
+    start_section: 1
+    start_subsection: 1
     reset_per_super: false
-    contiguous_samams: false # Aaranam resets per section by default
+    contiguous_samams: false  
 
 # --- JSON GENERATION (src/generate_json.py) ---
 # CLI Options:
@@ -84,6 +85,7 @@ generate_json:
 #   -o, --output             Override Output CSV file
 #   -e, --excel              Override Reconciliation Excel file
 #   -j, --json_out          Override Output Vargeekaran JSON file
+#   --no-enrich             Skip external Excel reconciliation; use JSON-resident metadata only.
 #
 generate_rik_table:
   # Default type (used if no CLI --type flag specified)
@@ -96,11 +98,19 @@ generate_rik_table:
     v_json: "data/output/Vargeekaran.json"
   aaranam:
     input: "data/output/Aaranam_latest_out.json"
-    output_csv: "data/output/Aaranam_Rik_Table.csv"
+    output_csv: "data/output/Aaranam_Rik_Table_Baseline.csv"
     recon_excel: "data/output/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx"
     v_json: "data/output/Aaranam_vargeekaran.json"
+    no_enrich: true  # Default preference for Aaranam baseline generation
 
 # --- AARANAM RIK TABLE GENERATION (src/generate_aaranam_rik_table.py) ---
+# This script extracts Rik text and IDs directly from raw Unicode text (data/input/Aaranam_rik.txt)
+# to produce a baseline CSV table for analysis or initial reconciliation. 
+# This CSV file should be merged with the KSV metadata master to create the final Aaranam_vargeekaran.json
+# CLI Options:
+#   input                    Override path to the input .txt file
+#   -o, --output             Override path to the output .csv file
+#
 generate_aaranam_rik_table:
   input: "data/input/Aaranam_rik.txt"
   output_csv: "data/output/Aaranam_Rik_Table.csv"
@@ -188,12 +198,12 @@ render:
   
   types:
     samhita:
-      input_file: "data/output/Samhita_corrected_out.json"
+      input_file: "data/output/Vargeekaran.json"
       doc_title: "जैमिनीय साम संहिता"
       summary_title: "संहिता सङ्ख्या"
       file_prefix: "Samhita"
     aaranam:
-      input_file: "data/output/Aaranam_latest_out.json"
+      input_file: "data/output/Aaranam_vargeekaran.json"
       doc_title: "जैमिनीय साम आरण्य गानम्"
       summary_title: "आरण्यम् सङ्ख्या"
       file_prefix: "Aaranam"

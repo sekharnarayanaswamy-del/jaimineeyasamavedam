@@ -108,7 +108,7 @@ def load_reconciliation_data(excel_path):
         
     return mapping
 
-def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_json=None):
+def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_json=None, no_enrich=False):
     # 0. Load Configuration
     from utils import load_pipeline_config
     pipeline_cfg = load_pipeline_config()
@@ -132,7 +132,10 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     print(f"Generating Rik Table (v{JSV_VERSION})...")
     print(f"Input JSON : {input_file}")
     print(f"Output CSV : {output_csv}")
-    print(f"Recon Excel: {recon_excel}")
+    if not no_enrich:
+        print(f"Recon Excel: {recon_excel}")
+    else:
+        print(f"Recon Excel: [SKIPPED - No Enrich Mode]")
     print(f"V-JSON Out : {v_json}")
 
     # Load the JSON
@@ -153,7 +156,9 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     GENERATED_at = GENERATED_AT
 
     # Load Excel Reconciliation Data
-    recon_data = load_reconciliation_data(recon_excel)
+    recon_data = {}
+    if not no_enrich:
+        recon_data = load_reconciliation_data(recon_excel)
 
     # CSV rows
     rows = []
@@ -201,7 +206,31 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                     
                 rik_metadata = sub_data.get('rik_metadata', '')
                 rik_text_full = sub_data.get('rik_text', '')
-                
+                # 1. Handle Empty Rik Text (as per user request: put "null")
+                if not rik_text_full.strip():
+                    global_rik_counter += 1
+                    classification = recon_data.get(global_rik_counter, {})
+                    if not classification:
+                        classification = {
+                            "rishi": sub_data.get('rik_rishi', ""),
+                            "chandas": sub_data.get('rik_chandas', ""),
+                            "devata": sub_data.get('rik_devata', "")
+                        }
+                    
+                    rows.append({
+                        'Global_Rik_Num': global_rik_counter,
+                        'Patha_Name': ss_title,
+                        'Khanda': sec_title,
+                        'Rik_ID': "null",
+                        'Rishi': classification['rishi'],
+                        'Chandas': classification['chandas'],
+                        'Devata': classification['devata'],
+                        'Rik_Text': "null",
+                        'Rik_Metadata': rik_metadata
+                    })
+                    continue
+
+                # 2. Process Non-Empty Rik Text
                 # Split rik text by new line to handle multiple Riks in the same Arsheyam
                 rik_lines = [line.strip() for line in rik_text_full.split('\n') if line.strip()]
                 
@@ -226,7 +255,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                             except ValueError:
                                 line_rik_id = base_rik_id
                         else:
-                            line_rik_id = base_rik_id
+                            line_rik_id = "null"
 
                         # Combine all lines matching this Rik ID
                         combined_text = ' '.join(current_rik_parts)
@@ -235,7 +264,16 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                         # Check if we've seen this unique Rik before
                         if current_rik_key not in unique_riks:
                             global_rik_counter += 1
-                            classification = recon_data.get(global_rik_counter, {"rishi": "", "chandas": "", "devata": ""})
+                            
+                            # Enrichment Strategy: Excel > JSON > Default
+                            classification = recon_data.get(global_rik_counter, {})
+                            if not classification:
+                                classification = {
+                                    "rishi": sub_data.get('rik_rishi', ""),
+                                    "chandas": sub_data.get('rik_chandas', ""),
+                                    "devata": sub_data.get('rik_devata', "")
+                                }
+                            
                             unique_riks[current_rik_key] = {
                                 'Global_Rik_Num': global_rik_counter,
                                 'classification': classification
@@ -264,6 +302,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                         
                         sub_data['rik_classifications'].append({
                             "Global_Rik_Num": res['Global_Rik_Num'],
+                            "Rik_ID": line_rik_id,
                             "Rishi": res['classification']['rishi'],
                             "Chandas": res['classification']['chandas'],
                             "Devata": res['classification']['devata']
@@ -279,10 +318,10 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
         f.write(f"{filename} {JSV_VERSION} {GENERATED_AT}\n")
 
         fieldnames = [
-            'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rishi', 'Chandas', 'Devata', 'Rik_Text', 'Rik_Metadata'
+            'Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rik_Text', 'Rik_Metadata'
         ]
         
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
         writer.writeheader()
         writer.writerows(rows)
 
@@ -317,5 +356,8 @@ if __name__ == "__main__":
     parser.add_argument("-j", "--json_out",
                         help="Override Output Vargeekaran JSON file")
 
+    parser.add_argument("--no-enrich", action="store_true",
+                        help="Skip enrichment from external Excel reconciliation table")
+
     args = parser.parse_args()
-    main(mode=args.type, input_file=args.input, output_csv=args.output, recon_excel=args.excel, v_json=args.json_out)
+    main(mode=args.type, input_file=args.input, output_csv=args.output, recon_excel=args.excel, v_json=args.json_out, no_enrich=args.no_enrich)
