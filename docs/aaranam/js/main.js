@@ -237,58 +237,77 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
     const depthPrefix = '../'.repeat(depth);
     
-    const highlightText = (text, query, devanagariQuery = null) => {
-        if (!query || !text) return text;
-        
-        // Define a filler regex that matches common Vedic "noise" (accents, swaras, tags)
-        // \u0951-\u0957: Devanagari Stress/Vedic Accents
-        // \u1CD0-\u1CFF: Vedic Extensions
-        // \([^)]*\): Text in parentheses like (श) or (1)
-        // <[^>]+>: HTML tags
-        // \s: Whitespace
-        const filler = '(?:[\\u0951-\\u0957\\u1CD0-\\u1CFF\\s]|\\([^)]*\\)|<[^>]+>)*';
-        
+    const highlightText = (text, query, devanagariQuery) => {
+        if (!text) return text;
+        if (!query && !devanagariQuery) return text;
+    
+        // Filler regex: skip virama, accents, dandas, whitespace, swara labels, HTML tags
+        const FILLER = /[\u094D\u0951-\u0957\u0964\u0965\u1CD0-\u1CFF\s]|\([^)]*\)|<[^>]+>/;
+        const fillerPat = "(?:" + FILLER.source + ")*";
+    
+        // Vowel-matra equivalence for cross-script highlighting
+        const vowelMap = new Map([
+            ["\u0905", "(?:\u0905|\u093E)?"],
+            ["\u0906", "(?:\u0906|\u093E)"],
+            ["\u0907", "(?:\u0907|\u093F)"],
+            ["\u0908", "(?:\u0908|\u0940)"],
+            ["\u0909", "(?:\u0909|\u0941)"],
+            ["\u090A", "(?:\u090A|\u0942)"],
+            ["\u090B", "(?:\u090B|\u0943)"],
+            ["\u090F", "(?:\u090F|\u0947)"],
+            ["\u0910", "(?:\u0910|\u0948)"],
+            ["\u0913", "(?:\u0913|\u094B)"],
+            ["\u0914", "(?:\u0914|\u094C)"],
+        ]);
+    
         const createPermissiveRegex = (q) => {
             if (!q) return null;
-            // Normalize q: remove swara labels and Unicode accents BUT KEEP Vowel Marks/Viramas
-            const baseQ = q.replace(/\([^)]*\)/g, '').replace(/[\u0951-\u0957\u1CD0-\u1CFF]/g, '').trim();
+            const baseQ = q.replace(/\([^)]*\)/g, "").replace(/[\u0951-\u0957\u1CD0-\u1CFF]/g, "").trim();
             if (!baseQ) return null;
-            
-            // Build regex: each character followed by the "filler"
-            const pattern = baseQ.split('').map(char => {
-                const escaped = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                return escaped + filler;
-            }).join('');
-            
-            return new RegExp(pattern, 'gi');
+            const pattern = baseQ.split("").map(char => {
+                const vm = vowelMap.get(char);
+                if (vm) return vm + fillerPat;
+                const escaped = char.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                return escaped + fillerPat;
+            }).join("");
+            return new RegExp(pattern, "gi");
         };
-
-        // Determine which query to use for this field
-        // If the text looks like Devanagari and we have a devanagari equivalent from a Latin search, use it
+    
         const isDevanagariField = /[\u0900-\u097F]/.test(text);
         const effectiveQuery = (isDevanagariField && devanagariQuery) ? devanagariQuery : query;
-        
+    
         const regex = createPermissiveRegex(effectiveQuery);
         if (!regex) return text;
-        
-        // We carefully highlight WITHOUT breaking HTML tags
-        // Strategy: match the regex against the HTML and wrap matches in <mark>
-        return text.replace(regex, (match) => {
-            // But wait! If the match is purely an HTML tag or contains tags, we need to be careful.
-            // Simplified approach: just wrap the whole match.
-            return `<mark>${match}</mark>`;
-        });
-    };
     
-    const performSearch = (query, isLatin, devanagariQuery) => {
+        return text.replace(regex, (match) => "<mark>" + match + "</mark>");
+    };
+
+    const latinToDevanagari = (text) => {
+        const mapping = {
+            'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
+            'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
+            'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
+            'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
+            'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
+            'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
+            '.': '।', '|': '॥'
+        };
+        let result = text.toLowerCase();
+        for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
+            result = result.replaceAll(k, v);
+        }
+        return result;
+    };
+
+    const performSearch = (query, callIsLatin, callDevanagariQuery) => {
         if (!query || query.length < 2 || !searchIndex) return [];
         const q = query.toLowerCase().trim();
         const results = [];
-        
-        // Convert IAST/Latin input to Devanagari for matching
+
+        const isLatin = callIsLatin !== undefined ? callIsLatin : (/[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q));
+
         const normalizeLatin = (text) => {
             if (!text) return "";
-            // Map common phonetic variations to a canonical simplified version
             const map = {
                 'aa': 'a', 'ee': 'i', 'oo': 'u', 'ii': 'i', 'uu': 'u',
                 'kh': 'k', 'gh': 'g', 'ch': 'c', 'jh': 'j', 'th': 't', 'dh': 'd', 'ph': 'p', 'bh': 'b',
@@ -302,25 +321,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return result;
         };
 
-        const latinToDevanagari = (text) => {
-            const mapping = {
-                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
-                'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
-                'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
-                'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
-                'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
-                'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
-                '.': '।', '|': '॥'
-            };
-            let result = text.toLowerCase();
-            for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
-                result = result.replaceAll(k, v);
-            }
-            return result;
-        };
-        
-        // (Logic removed from here as it's now passed in)
-        
+        // Use the passed devanagariQuery if provided, otherwise compute it
+        const devanagariQuery = callDevanagariQuery !== undefined ? callDevanagariQuery : (isLatin ? latinToDevanagari(q) : null);
+
         for (const entry of searchIndex) {
             let score = 0;
             let matchedFields = [];
@@ -328,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
                 if (!text) return;
                 // Remove spaces for comparison
-                const wsRegex = new RegExp('\\\\s+', 'g');
+                const wsRegex = /\s+/g;
                 const textNoSpaces = text.replace(wsRegex, '');
                 const qNoSpaces = q.replace(wsRegex, '');
                 
@@ -422,7 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const q = query.toLowerCase().trim();
                 const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
                 const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
-                
                 const results = performSearch(query, isLatin, devanagariQuery);
                 if (results.length === 0) {
                     searchResults.innerHTML = '<div class="search-no-results"><div class="icon">🔍</div>No results found for "' + query + '"</div>';
