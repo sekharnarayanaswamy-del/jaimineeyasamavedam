@@ -3237,16 +3237,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query || !text) return text;
         
         // Define a filler regex that matches common Vedic "noise" (accents, swaras, tags)
-        // \u0951-\u0954 \u1CD0-\u1CFF: Vedic Accents
+        // \u0951-\u0957: Devanagari Stress/Vedic Accents
+        // \u1CD0-\u1CFF: Vedic Extensions
         // \([^)]*\): Text in parentheses like (श) or (1)
         // <[^>]+>: HTML tags
         // \s: Whitespace
-        const filler = '(?:[\\u0951-\\u0954\\u1CD0-\\u1CFF\\s]|\\([^)]*\\)|<[^>]+>)*';
+        const filler = '(?:[\\u0951-\\u0957\\u1CD0-\\u1CFF\\s]|\\([^)]*\\)|<[^>]+>)*';
         
         const createPermissiveRegex = (q) => {
             if (!q) return null;
-            // Normalize q: remove parentheses and accents for the "base" letters
-            const baseQ = q.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965]/g, '').trim();
+            // Normalize q: remove swara labels and Unicode accents BUT KEEP Vowel Marks/Viramas
+            const baseQ = q.replace(/\([^)]*\)/g, '').replace(/[\u0951-\u0957\u1CD0-\u1CFF]/g, '').trim();
             if (!baseQ) return null;
             
             // Build regex: each character followed by the "filler"
