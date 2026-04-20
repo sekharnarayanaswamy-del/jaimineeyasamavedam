@@ -414,6 +414,18 @@ def process_footnotes_text(text, footnotes_dict):
     return text, footnotes_list
 
 
+def split_rik_lines_text(text):
+    """Ensure each Rik verse ends with a newline for plain text output."""
+    if not text:
+        return ""
+    # Pattern to match a verse marker (e.g., ॥ ७ ॥) optionally followed by spaces
+    # and ensure there's a newline after it.
+    pattern = r'(॥\s*[\d०-९]+\s*॥)\s*'
+    # Replace with the marker followed by a newline, but only if not already followed by one
+    # To keep it simple, we'll just replace marker+any trailing space with marker+\n
+    return re.sub(pattern, r'\1\n', text).strip()
+
+
 def replace_footnote_markers_filter(text, footnotes_dict={}):
     """Filter to replace footnote markers in text."""
     if not text:
@@ -1338,11 +1350,19 @@ def format_rik_only_text(subsection, section_title, subsection_title, prev_rik_i
     formatted_output = []
     
     current_rik_id = subsection.get('rik_id')
+    rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
     rik_metadata = subsection.get('rik_metadata', '')
     rik_text = subsection.get('rik_text', '')
     
     # Skip if no Rik content or if this Rik was already shown
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    
+    # Also show if rik_ids contains multiple Riks and the max ID differs from prev
+    if not show_rik_info and len(rik_ids) > 1:
+        max_rik_id = max(rik_ids) if rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
+
     if not show_rik_info or (not rik_metadata and not rik_text):
         return ""
     
@@ -1425,10 +1445,18 @@ def format_rik_nometa_text(subsection, section_title, subsection_title, prev_rik
     formatted_output = []
     
     current_rik_id = subsection.get('rik_id')
+    rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
     rik_text = subsection.get('rik_text', '')
     
     # Skip if no Rik content or if this Rik was already shown
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+
+    # Also show if rik_ids contains multiple Riks and the max ID differs from prev
+    if not show_rik_info and len(rik_ids) > 1:
+        max_rik_id = max(rik_ids) if rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
+
     if not show_rik_info or not rik_text:
         return ""
     
@@ -2353,6 +2381,7 @@ Examples:
     latex_jinja_env.filters["format_samam_nometa"] = format_samam_nometa
     latex_jinja_env.filters["format_rik_nometa_text"] = format_rik_nometa_text
     latex_jinja_env.filters["format_samam_nometa_text"] = format_samam_nometa_text
+    latex_jinja_env.filters["split_rik_lines"] = split_rik_lines_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
     latex_jinja_env.filters["clean_toc_title"] = clean_toc_title
     

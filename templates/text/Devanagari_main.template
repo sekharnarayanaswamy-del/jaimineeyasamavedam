@@ -21,16 +21,18 @@ Version \VAR{version} \VAR{generated_at}
 %- set rik_text = subsection.get('rik_text', '') 
 %- set saman_metadata = subsection.get('saman_metadata', '') 
 %- set footnotes = subsection.get('footnotes', {}) 
+%- set rik_ids = subsection.get('rik_ids', [subsection.rik_id] if subsection.rik_id else [])
+%- set max_rik_id = rik_ids|max if rik_ids else none
 \BLOCK{ if output_mode == 'rik' }
 \VAR{subsection|format_rik_only_text(j,k,ns.prev_rik_id)}
 \BLOCK{ elif output_mode == 'samam' }
 \VAR{subsection|format_samam_only_text(j,k)}
 \BLOCK{ elif output_mode == 'rik_nometa' }
-\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) }
+\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) or (rik_ids|length > 1 and max_rik_id != ns.prev_rik_id) }
 \BLOCK{ if show_rik and rik_text }
 %- set current_rik_id = subsection.get('rik_id', 1) 
 # Start of Rik Text -- rik_\VAR{current_rik_id} ## DO NOT EDIT
-\VAR{ rik_text | replace_footnotes(footnotes) }
+\VAR{ rik_text | replace_footnotes(footnotes) | split_rik_lines }
 # End of Rik Text -- rik_\VAR{current_rik_id} ## DO NOT EDIT
 
 \BLOCK{ endif }
@@ -44,7 +46,7 @@ Version \VAR{version} \VAR{generated_at}
 #End of Mantra Sets -- \VAR{k} ## DO NOT EDIT
 
 \BLOCK{ else }
-\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) }
+\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) or (rik_ids|length > 1 and max_rik_id != ns.prev_rik_id) }
 \BLOCK{ if show_rik and rik_metadata }
 # Start of Rik Metadata -- \VAR{k} ## DO NOT EDIT
 \VAR{ rik_metadata }
@@ -52,7 +54,7 @@ Version \VAR{version} \VAR{generated_at}
 \BLOCK{ endif }
 \BLOCK{ if show_rik and rik_text }
 # Start of Rik Text -- \VAR{k} ## DO NOT EDIT
-\VAR{ rik_text | replace_footnotes(footnotes) }
+\VAR{ rik_text | replace_footnotes(footnotes) | split_rik_lines }
 # End of Rik Text -- \VAR{k} ## DO NOT EDIT
 
 \BLOCK{ endif }
@@ -72,7 +74,7 @@ Version \VAR{version} \VAR{generated_at}
 \BLOCK{ endif }
 
 \BLOCK{ endif }
-\BLOCK{ set ns.prev_rik_id = subsection.rik_id }
+\BLOCK{ set ns.prev_rik_id = max_rik_id }
 \BLOCK{ endfor }
 \BLOCK{ endif }
 \BLOCK{ endfor }

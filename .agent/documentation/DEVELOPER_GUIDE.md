@@ -57,6 +57,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **Prayoga Appendix Generation**: Recursively intercepts YAML configuration arrays pointing to nested markdown text, compiles them efficiently into internal `PhantomSection` structural LaTeX logic without massive external package reliance, and aggregates all referenced manuals inside an overarching `\chapter*{... Appendix ...}` tail. It then intelligently appends `hyperref` click anchors inside dynamic footnotes directly onto the respective Samams.
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.
+*   **`split_rik_lines_text`**: A specialized filter for Unicode text export that ensures multi-verse Rik mantras are separated by newlines. It uses regex to detect verse markers (`॥ N ॥`) and inserts a `\n` to maintain a clean, readable layout in plain text.
 
 ### 2.4 `src/generate_Rik_for_samhita.py`
 **Role**: A specialized reporting tool that generates the "Rik Samhita" (Continuous Text) view.
@@ -557,6 +558,7 @@ python src/tools/copy_rik_ids.py [OPTIONS]
     *   **NotoSansDevanagari**: Swarita/Kampa/Trikamba raised to `0.1em`, Anudatta @ `-0.1em`.
 *   **Accent Collision**: `handle_consecutive_accents()` allows fine-tuning (kerning) when two accents might overlap visually (e.g. Swarita + Anudatta).
 *   **Sankhya Table Logic**: The summary table ("Sankhya") correctly counts unique Rik IDs by processing the `rik_ids` list in each subsection.
+*   **Multi-Rik Deduplication (Unicode Export)**: To ensure that subsections sharing a base Rik but adding new ones (e.g., [7] followed by [7, 8]) are not incorrectly deduplicated and skipped, the rendering pipeline compares the `max(rik_ids)` against the `prev_rik_id`. This ensures that every new verse added to a block triggers a re-render of the metadata and text in the Unicode export.
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
 *   **HTML Metadata Formatting**: To preserve scholar-aligned metadata in HTML, the renderer selectively skips whitespace normalization for `rik_metadata` and `saman_metadata` fields, paired with `white-space: pre-wrap` in CSS.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
