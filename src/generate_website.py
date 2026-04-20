@@ -3299,7 +3299,7 @@ const highlightText = (text, query, devanagariQuery) => {
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
                 if (!text) return;
                 // Remove spaces for comparison
-                const wsRegex = new RegExp('\\\\s+', 'g');
+                const wsRegex = /\s+/g;
                 const textNoSpaces = text.replace(wsRegex, '');
                 const qNoSpaces = q.replace(wsRegex, '');
                 
@@ -3312,7 +3312,7 @@ const highlightText = (text, query, devanagariQuery) => {
                 
                 // Check permissive (diacritic-stripped) match
                 // We must strip parentheses content for Samam swara ignoring
-                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0957\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
                 const textPermissive = stripAll(textNoSpaces);
                 const qPermissive = stripAll(qNoSpaces);
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
@@ -3401,7 +3401,7 @@ const highlightText = (text, query, devanagariQuery) => {
                 let html = '';
                 for (const r of results) {
                     const classInfo = r.classifications.length > 0 
-                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).join('; ')
+                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).filter(Boolean).join('; ')
                         : '';
                     const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
                     let fieldsHtml = '';
@@ -4857,6 +4857,13 @@ Examples:
     print("\n[INFO] Generating website (Rig Veda style)...")
     generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font, metadata=parser_obj.metadata)
     generator.generate()
+    
+    # Run post-processing patches automatically
+    try:
+        from patch_highlight_js import run_patcher
+        run_patcher()
+    except ImportError:
+        print("\n[WARNING] Could not find patch_highlight_js.py - skipping automatic patches.")
     
     print("\n" + "=" * 60)
     print("  ✨ Website generation complete!")

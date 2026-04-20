@@ -73,7 +73,7 @@ def patch_file(js_path):
                     f'{ind}',
                     f'{ind}    const createPermissiveRegex = (q) => {{',
                     f'{ind}        if (!q) return null;',
-                    f'{ind}        const baseQ = q.replace(/\\([^)]*\\)/g, "").replace(/[\\u0951-\\u0957\\u1CD0-\\u1CFF]/g, "").trim();',
+                    f'{ind}        const baseQ = q.replace(/\\([^)]*\\)/g, "").replace(/[\\u0951-\\u0957\\u1CD0-\\u1CFF\\u0964\\u0965\\s]/g, "").trim();',
                     f'{ind}        if (!baseQ) return null;',
                     f'{ind}        const pattern = baseQ.split("").map(char => {{',
                     f'{ind}            const vm = vowelMap.get(char);',
@@ -103,15 +103,20 @@ def patch_file(js_path):
     js_path.write_text(content, encoding='utf-8')
     return patches
 
-for site in ['samhita', 'aaranam']:
-    js_path = DOCS_DIR / site / 'js' / 'main.js'
-    if not js_path.exists():
-        print(f"  SKIP: {js_path}")
-        continue
-    
-    result = patch_file(js_path)
-    print(f"[{site}]")
-    for p in result:
-        print(p)
+def run_patcher():
+    """Main entry point to patch all sites."""
+    print("\n[POST-PROCESS] Applying visual and search patches...")
+    for site in ['samhita', 'aaranam']:
+        js_path = DOCS_DIR / site / 'js' / 'main.js'
+        if not js_path.exists():
+            print(f"  SKIP: {js_path}")
+            continue
+        
+        result = patch_file(js_path)
+        print(f"[{site}]")
+        for p in result:
+            print(p)
+    print("\nDone. Refresh browser (Ctrl+Shift+R) to test.")
 
-print("\nDone. Refresh browser (Ctrl+Shift+R) to test.")
+if __name__ == '__main__':
+    run_patcher()

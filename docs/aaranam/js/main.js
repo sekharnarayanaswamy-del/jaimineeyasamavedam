@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         const createPermissiveRegex = (q) => {
             if (!q) return null;
-            const baseQ = q.replace(/\([^)]*\)/g, "").replace(/[\u0951-\u0957\u1CD0-\u1CFF]/g, "").trim();
+            const baseQ = q.replace(/\([^)]*\)/g, "").replace(/[\u0951-\u0957\u1CD0-\u1CFF\u0964\u0965\s]/g, "").trim();
             if (!baseQ) return null;
             const pattern = baseQ.split("").map(char => {
                 const vm = vowelMap.get(char);
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Check permissive (diacritic-stripped) match
                 // We must strip parentheses content for Samam swara ignoring
-                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0957\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
                 const textPermissive = stripAll(textNoSpaces);
                 const qPermissive = stripAll(qNoSpaces);
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
@@ -433,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 let html = '';
                 for (const r of results) {
                     const classInfo = r.classifications.length > 0 
-                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).join('; ')
+                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).filter(Boolean).join('; ')
                         : '';
                     const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
                     let fieldsHtml = '';

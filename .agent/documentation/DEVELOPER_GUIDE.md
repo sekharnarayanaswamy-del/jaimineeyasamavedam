@@ -667,13 +667,12 @@ def _generate_search_index(self):
 The search system supports multiple matching modes for flexible searching:
 
 1. **Exact Match** - Standard substring matching with whitespace removed.
-2. **Diacritic-Free (Permissive) Match** - Strips vowel marks (े, ी, ौ etc.), structural punctuation (।, ॥), and both Devanagari (०-९) and ASCII (0-9) digits before matching.
-3. **Vedic Accent-Agnostic** - Specifically strips the full range of **Vedic Extensions** (`\u1CD0` to `\u1CFF`) and standard Vedic accents (`\u0951` to `\u0954`). This allows copy-pasted text from disparate sources to match correctly regardless of accentuation or numbering.
-4. **Transliteration Match** - Converts IAST/Latin input to Devanagari. Example: "agni" converts to "अग्नि" and matches.
+2. **Permissive (Matching) Logic** - Uses a `stripAll` function to remove accents, dandas, numbers, and matras before comparison.
+   - **Vedic Range**: Specifically strips the full range of **Vedic Extensions** (`\u1CD0` to `\u1CFF`) and swara marks (`\u0951` to `\u0957`).
+   - **Punctuation Aagnostic**: Ignores `।` and `॥` in both query and text.
+3. **English-to-Devanagari Match** - Converts IAST/Latin input to Devanagari. Example: "agni" converts to "अग्नि" and matches.
 
-The index includes additional permissive fields:
-- `*_permissive` - Base Devanagari characters without vowel marks, accents, punctuation, or numbers.
-- `*_latin` - Transliterated Latin (IAST-like) version for matching Latin input.
+The `performSearch` function in `main.js` orchestrates this by checking a field's exact match first, followed by a permissive match using the `stripAll` utility.
 
 #### Text Cleaning for Search
 
@@ -756,18 +755,21 @@ const performSearch = (query) => {
 
 #### Highlighting Logic
 
-The `highlightText()` function finds the query within the clean text, then maps the position back to the original HTML to wrap the matched portion in `<mark>` tags:
+The `highlightText()` function uses a sophisticated **Permissive Regex Generator**. Instead of simple index matching, it constructs a complex regular expression that skip Vedic "noise" (accents, dandas, viralma) in the text.
+
+1. **Vowel-Matra Equivalence**: Maps independent vowels (e.g., `अ`) to their matra forms (e.g., `ा`) ensuring high-precision cross-script highlighting.
+2. **Filler Pattern (`fillerPat`)**: Inserts a non-capturing group `(?:\s|[noise]|<tags>)*` between every character of the search query. This allows the highlighter to find a match even if the underlying HTML has `<span>` tags or the text has swara markings.
+3. **Query Sanitization**: Strips dandas and extra whitespace from the user's search box query before building the regex to prevent literal punctuation from breaking the match.
 
 ```javascript
-const highlightText = (html, query) => {
-    const clean = stripHtml(html);
-    const idx = clean.toLowerCase().indexOf(query.toLowerCase());
-    if (idx === -1) return html;
-    const start = html.indexOf(clean.substring(idx, idx + query.length));
-    const end = start + clean.substring(idx, idx + query.length).length;
-    return html.substring(0, start) + '<mark>' + html.substring(start, end) + '</mark>' + html.substring(end);
-};
+const regex = createPermissiveRegex(effectiveQuery);
+return text.replace(regex, (match) => "<mark>" + match + "</mark>");
 ```
+
+#### Post-Processing & Build Automation
+To resolve browser escaping issues with complex regex patterns, the website uses a **Post-Processing Pass**.
+- **`src/patch_highlight_js.py`**: Injects the sophisticated `highlightText` and `createPermissiveRegex` logic into the generated `main.js` files.
+- **Automation**: This script is automatically called by `generate_website.py` at the end of the build.
 
 #### CSS Structure
 

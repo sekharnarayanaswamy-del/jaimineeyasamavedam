@@ -2,9 +2,9 @@
 
 This document captures the strategic vision for the next generation of the Vedic text processing pipeline, as discussed in [Conversation 480ce470].
 
-## Phase 1: Tactical Safety (Current)
-- **Validation Layer**: Implement a pre-flight validator in `renumber_sooktam.py` to catch orphan or mismatched `# Start` and `# End` tags before processing.
-- **Danda Normalization**: Strengthen regex logic to handle corrupted heavy bars (`┃`) and standard dandas (`॥`, `।`) without losing verse alignment.
+## Phase 1: Tactical Safety (Stabilized)
+- [ ] **Validation Layer**: Implement a pre-flight validator in `renumber_sooktam.py` to catch orphan or mismatched `# Start` and `# End` tags before processing.
+- [x] **Danda Normalization & Search Stability**: Strengthened regex logic to handle corrupted heavy bars and standard dandas without losing verse alignment. Fully implemented permissive, danda-agnostic search matching and highlighting for the website.
 
 ## Phase 2: Structural Alignment (Next)
 - **Shared Pattern Registry**: Move all structural tag definitions (SuperSection, Section, SubSection, Rik, Mantra Set) into a shared `src/patterns.py`.
