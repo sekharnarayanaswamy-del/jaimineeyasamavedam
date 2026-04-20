@@ -295,8 +295,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Check permissive (diacritic-stripped) match
-                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
-                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
                     score += fieldScore * 0.8;
                     matchedFields.push({ name: fieldName, text: text, html: displayHtml });

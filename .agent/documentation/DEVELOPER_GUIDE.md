@@ -666,13 +666,14 @@ def _generate_search_index(self):
 
 The search system supports multiple matching modes for flexible searching:
 
-1. **Exact Match** - Standard substring matching with whitespace removed
-2. **Diacritic-Free Match** - Strips vowel marks (े, ी, ौ etc.) before matching. Example: "ओग्न" matches "ओ(त)ग्ना"
-3. **Transliteration Match** - Converts IAST/Latin input to Devanagari. Example: "agni" converts to "अग्नि" and matches
+1. **Exact Match** - Standard substring matching with whitespace removed.
+2. **Diacritic-Free (Permissive) Match** - Strips vowel marks (े, ी, ौ etc.), structural punctuation (।, ॥), and both Devanagari (०-९) and ASCII (0-9) digits before matching.
+3. **Vedic Accent-Agnostic** - Specifically strips the full range of **Vedic Extensions** (`\u1CD0` to `\u1CFF`) and standard Vedic accents (`\u0951` to `\u0954`). This allows copy-pasted text from disparate sources to match correctly regardless of accentuation or numbering.
+4. **Transliteration Match** - Converts IAST/Latin input to Devanagari. Example: "agni" converts to "अग्नि" and matches.
 
 The index includes additional permissive fields:
-- `*_permissive` - Base Devanagari characters without vowel marks
-- `*_latin` - Transliterated Latin (IAST-like) version for matching Latin input
+- `*_permissive` - Base Devanagari characters without vowel marks, accents, punctuation, or numbers.
+- `*_latin` - Transliterated Latin (IAST-like) version for matching Latin input.
 
 #### Text Cleaning for Search
 
