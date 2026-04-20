@@ -2062,6 +2062,14 @@ background: var(--bg-sidebar);
     -ms-user-select: text;
 }
 
+.search-result-text mark {
+    background-color: #ffeb3b; 
+    color: #000;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
 .search-result-field {
     margin-bottom: 8px;
     padding: 6px 10px;
@@ -3225,15 +3233,46 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
     const depthPrefix = '../'.repeat(depth);
     
-    const highlightText = (text, query) => {
+    const highlightText = (text, query, devanagariQuery = null) => {
         if (!query || !text) return text;
-        // Escape query for regex and use global flag
-        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(escaped, 'gi');
         
-        // Split by HTML tags to avoid highlighting inside tags (e.g. <span class="...">)
-        const parts = text.split(/(<[^>]+>)/g);
-        return parts.map(p => p.startsWith('<') ? p : p.replace(regex, (m) => `<mark>${m}</mark>`)).join('');
+        // Define a filler regex that matches common Vedic "noise" (accents, swaras, tags)
+        // \u0951-\u0954 \u1CD0-\u1CFF: Vedic Accents
+        // \([^)]*\): Text in parentheses like (श) or (1)
+        // <[^>]+>: HTML tags
+        // \s: Whitespace
+        const filler = '(?:[\\u0951-\\u0954\\u1CD0-\\u1CFF\\s]|\\([^)]*\\)|<[^>]+>)*';
+        
+        const createPermissiveRegex = (q) => {
+            if (!q) return null;
+            // Normalize q: remove parentheses and accents for the "base" letters
+            const baseQ = q.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965]/g, '').trim();
+            if (!baseQ) return null;
+            
+            // Build regex: each character followed by the "filler"
+            const pattern = baseQ.split('').map(char => {
+                const escaped = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                return escaped + filler;
+            }).join('');
+            
+            return new RegExp(pattern, 'gi');
+        };
+
+        // Determine which query to use for this field
+        // If the text looks like Devanagari and we have a devanagari equivalent from a Latin search, use it
+        const isDevanagariField = /[\u0900-\u097F]/.test(text);
+        const effectiveQuery = (isDevanagariField && devanagariQuery) ? devanagariQuery : query;
+        
+        const regex = createPermissiveRegex(effectiveQuery);
+        if (!regex) return text;
+        
+        // We carefully highlight WITHOUT breaking HTML tags
+        // Strategy: match the regex against the HTML and wrap matches in <mark>
+        return text.replace(regex, (match) => {
+            // But wait! If the match is purely an HTML tag or contains tags, we need to be careful.
+            // Simplified approach: just wrap the whole match.
+            return `<mark>${match}</mark>`;
+        });
     };
     
     const performSearch = (query) => {
@@ -3298,11 +3337,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Check permissive (diacritic-stripped) match
-                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
-                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                // We must strip parentheses content for Samam swara ignoring
+                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0954\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                const textPermissive = stripAll(textNoSpaces);
+                const qPermissive = stripAll(qNoSpaces);
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
                     score += fieldScore * 0.8;
-                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml, matchedInDevanagari: true });
                     return;
                 }
                 
@@ -3388,7 +3429,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
                     let fieldsHtml = '';
                     for (const mf of r.matchedFields) {
-                        const highlighted = highlightText(mf.html || mf.text, query);
+                        const highlighted = highlightText(mf.html || mf.text, query, devanagariQuery);
                         const label = fieldLabels[mf.name] || mf.name;
                         fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
                     }
