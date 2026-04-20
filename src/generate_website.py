@@ -3242,6 +3242,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const results = [];
         
         // Convert IAST/Latin input to Devanagari for matching
+        const normalizeLatin = (text) => {
+            if (!text) return "";
+            // Map common phonetic variations to a canonical simplified version
+            const map = {
+                'aa': 'a', 'ee': 'i', 'oo': 'u', 'ii': 'i', 'uu': 'u',
+                'kh': 'k', 'gh': 'g', 'ch': 'c', 'jh': 'j', 'th': 't', 'dh': 'd', 'ph': 'p', 'bh': 'b',
+                'sh': 's', 'z': 's', 'w': 'v', 'ñ': 'n', 'ṅ': 'n', 'ṇ': 'n', 'ś': 's', 'ṣ': 's',
+                'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṛ': 'r', 'ṭ': 't', 'ḍ': 'd', 'ḥ': 'h', 'ṃ': 'n', 'ṁ': 'n'
+            };
+            let result = text.toLowerCase().replace(/[^a-z]/g, '');
+            for (const [k, v] of Object.entries(map)) {
+                result = result.replaceAll(k, v);
+            }
+            return result;
+        };
+
         const latinToDevanagari = (text) => {
             const mapping = {
                 'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
@@ -3253,7 +3269,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 '.': '।', '|': '॥'
             };
             let result = text.toLowerCase();
-            // Process long vowels first
             for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
                 result = result.replaceAll(k, v);
             }
@@ -3291,13 +3306,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 
-                // Check Latin transliteration match
-                if (isLatin && devanagariQuery) {
-                    const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
-                    const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
-                    if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
-                        score += fieldScore * 0.7;
+                // Check Latin match if input is Latin
+                if (isLatin) {
+                    const qLatin = normalizeLatin(qNoSpaces);
+                    // Match against various latin fields found in entries
+                    if (fieldName === 'Mantra' && entry.mantra_latin && entry.mantra_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
                         matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Rik' && entry.rik_latin && entry.rik_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Title' && entry.title_latin && entry.title_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (devanagariQuery) {
+                        // Fallback: check Devanagari conversion match
+                        const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                        const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
+                        if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
+                            score += fieldScore * 0.65;
+                            matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                        }
                     }
                 }
             };
@@ -3307,7 +3336,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             for (const c of entry.classifications) {
                 checkField(c.rishi_clean, 7, 'Rishi', c.rishi);
+                // Latin match for Rishi
+                if (isLatin && c.rishi_latin && c.rishi_latin.includes(normalizeLatin(q))) {
+                    score += 5; matchedFields.push({ name: 'Rishi', text: c.rishi_clean, html: c.rishi });
+                }
+                
                 checkField(c.devata_clean, 6, 'Devata', c.devata);
+                // Latin match for Devata
+                if (isLatin && c.devata_latin && c.devata_latin.includes(normalizeLatin(q))) {
+                    score += 4; matchedFields.push({ name: 'Devata', text: c.devata_clean, html: c.devata });
+                }
+                
                 checkField(c.chandas_clean, 4, 'Chandas', c.chandas);
             }
             
@@ -3459,30 +3498,34 @@ document.addEventListener('DOMContentLoaded', function() {
         return ''.join(result)
 
     def _transliterate_to_latin(self, text: str) -> str:
-        """Convert Devanagari to basic Latin (IAST-like) for transliteration search"""
+        """Convert Devanagari to Super-Permissive Latin for fuzzy matching"""
         if not text:
             return ""
-        # Simple Devanagari to Latin mapping
+        # Base mapping for Super-Permissive Latin (collapses similar sounds)
         mapping = {
-            'अ': 'a', 'आ': 'aa', 'इ': 'i', 'ई': 'ee', 'उ': 'u', 'ऊ': 'oo', 'ऋ': 'ri', 'ॠ': 'rii',
+            'अ': 'a', 'आ': 'a', 'इ': 'i', 'ई': 'i', 'उ': 'u', 'ऊ': 'u', 'ऋ': 'r', 'ॠ': 'r',
             'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
-            'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ng',
-            'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'n',
-            'ट': 't', 'ठ': 'th', 'ड': 'd', 'ढ': 'dh', 'ण': 'n',
-            'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
-            'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
-            'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 'sh', 'ष': 'sh', 'स': 's', 'ह': 'h',
-            'ा': 'a', 'ि': 'i', 'ी': 'i', 'ु': 'u', 'ू': 'u', 'ृ': 'ri', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
-            'ं': 'n', 'ः': 'h', 'ँ': 'm',
-            '।': '|', '॥': '||',
+            'क': 'k', 'ख': 'k', 'ग': 'g', 'घ': 'g', 'ङ': 'n',
+            'च': 'c', 'छ': 'c', 'ज': 'j', 'झ': 'j', 'ञ': 'n',
+            'ट': 't', 'ठ': 't', 'ड': 'd', 'ढ': 'd', 'ण': 'n',
+            'त': 't', 'थ': 't', 'द': 'd', 'ध': 'd', 'न': 'n',
+            'प': 'p', 'फ': 'p', 'ब': 'b', 'भ': 'b', 'म': 'm',
+            'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 's', 'ष': 's', 'स': 's', 'ह': 'h',
+            # Vowel marks (all collapse to base)
+            'ा': 'a', 'ि': 'i', 'ी': 'i', 'ु': 'u', 'ू': 'u', 'ृ': 'r', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
+            'ं': 'n', 'ः': 'h', 'ँ': 'n',
         }
         result = []
         for char in text:
             if char in mapping:
                 result.append(mapping[char])
-            elif char.isalpha() and not '\u0900' <= char <= '\u097F':
-                result.append(char)  # Keep non-Devanagari
-        return ''.join(result)
+            elif 'a' <= char.lower() <= 'z':
+                result.append(char.lower())
+        
+        # Combine and collapse results (kh -> k, gh -> g etc)
+        res_str = ''.join(result)
+        # We don't need redundant replacements here as the mapping already collapsed kh/k to k
+        return res_str
 
     def _generate_search_index(self):
         """Generate search-index.json with clean text for matching and HTML for display"""
@@ -3544,6 +3587,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         "mantra_permissive": mantra_permissive,
                         "rik_latin": rik_latin,
                         "mantra_latin": mantra_latin,
+                        "title_latin": self._transliterate_to_latin(title_clean),
+                        "metadata_latin": self._transliterate_to_latin(metadata_clean),
                         "classifications": classifications
                     }
                     index.append(entry)
@@ -3824,8 +3869,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'collection' else 'Search mantra text, Rishi, Devata, Chandas...'}">
-                <span class="search-hint">Type in Devanagari</span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search (Devanagari, English, IAST)...">
+                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas in Devanagari or English</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -3946,8 +3991,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'COLLECTION' else 'Search mantra text, Rishi, Devata, Chandas...'}">
-                <span class="search-hint">Type in Devanagari</span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search (Devanagari, English, IAST)...">
+                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas in Devanagari or English</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -4100,8 +4145,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'COLLECTION' else 'Search mantra text, Rishi, Devata, Chandas...'}">
-                <span class="search-hint">Type in Devanagari</span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search (Devanagari, English, IAST)...">
+                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas in Devanagari or English</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -4504,8 +4549,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="{f'Search mantra text...' if self.mode == 'COLLECTION' else 'Search mantra text, Rishi, Devata, Chandas...'}">
-                <span class="search-hint">Type in Devanagari</span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search (Devanagari, English, IAST)...">
+                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas in Devanagari or English</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>

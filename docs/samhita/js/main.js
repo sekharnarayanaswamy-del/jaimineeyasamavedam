@@ -254,6 +254,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const results = [];
         
         // Convert IAST/Latin input to Devanagari for matching
+        const normalizeLatin = (text) => {
+            if (!text) return "";
+            // Map common phonetic variations to a canonical simplified version
+            const map = {
+                'aa': 'a', 'ee': 'i', 'oo': 'u', 'ii': 'i', 'uu': 'u',
+                'kh': 'k', 'gh': 'g', 'ch': 'c', 'jh': 'j', 'th': 't', 'dh': 'd', 'ph': 'p', 'bh': 'b',
+                'sh': 's', 'z': 's', 'w': 'v', 'ñ': 'n', 'ṅ': 'n', 'ṇ': 'n', 'ś': 's', 'ṣ': 's',
+                'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṛ': 'r', 'ṭ': 't', 'ḍ': 'd', 'ḥ': 'h', 'ṃ': 'n', 'ṁ': 'n'
+            };
+            let result = text.toLowerCase().replace(/[^a-z]/g, '');
+            for (const [k, v] of Object.entries(map)) {
+                result = result.replaceAll(k, v);
+            }
+            return result;
+        };
+
         const latinToDevanagari = (text) => {
             const mapping = {
                 'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
@@ -265,7 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 '.': '।', '|': '॥'
             };
             let result = text.toLowerCase();
-            // Process long vowels first
             for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
                 result = result.replaceAll(k, v);
             }
@@ -303,13 +318,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 
-                // Check Latin transliteration match
-                if (isLatin && devanagariQuery) {
-                    const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
-                    const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
-                    if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
-                        score += fieldScore * 0.7;
+                // Check Latin match if input is Latin
+                if (isLatin) {
+                    const qLatin = normalizeLatin(qNoSpaces);
+                    // Match against various latin fields found in entries
+                    if (fieldName === 'Mantra' && entry.mantra_latin && entry.mantra_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
                         matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Rik' && entry.rik_latin && entry.rik_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Title' && entry.title_latin && entry.title_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (devanagariQuery) {
+                        // Fallback: check Devanagari conversion match
+                        const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                        const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
+                        if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
+                            score += fieldScore * 0.65;
+                            matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                        }
                     }
                 }
             };
@@ -319,7 +348,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             for (const c of entry.classifications) {
                 checkField(c.rishi_clean, 7, 'Rishi', c.rishi);
+                // Latin match for Rishi
+                if (isLatin && c.rishi_latin && c.rishi_latin.includes(normalizeLatin(q))) {
+                    score += 5; matchedFields.push({ name: 'Rishi', text: c.rishi_clean, html: c.rishi });
+                }
+                
                 checkField(c.devata_clean, 6, 'Devata', c.devata);
+                // Latin match for Devata
+                if (isLatin && c.devata_latin && c.devata_latin.includes(normalizeLatin(q))) {
+                    score += 4; matchedFields.push({ name: 'Devata', text: c.devata_clean, html: c.devata });
+                }
+                
                 checkField(c.chandas_clean, 4, 'Chandas', c.chandas);
             }
             
