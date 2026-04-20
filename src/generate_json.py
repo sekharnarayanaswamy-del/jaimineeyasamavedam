@@ -1272,8 +1272,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
             # Replace inner newlines with space to maintain JSON structure, but keep everything else
             meta_text = meta_text.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
         else:
-            # Normal processing for unquoted metadata
-            meta_text = raw_meta.replace('\n', ' ')
+            # Normal processing for unquoted metadata - preserve newlines for multi-verse Arsheyams
+            meta_text = raw_meta.strip()
             # Strip any literal \newline commands that may have crept in
             meta_text = meta_text.replace('\\newline%', ' ').replace('\\newline', ' ')
             # Normalize pipes
@@ -1289,8 +1289,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     for rt_match in rik_text_pattern.finditer(content):
         # ... existing extraction ...
         sub_id = rt_match.group("rik_text_id")
-        # Sanitize Rik text: remove newlines, carriage returns, backslashes, and literal \newline commands
-        rik_text = rt_match.group("rik_text").strip().replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
+        # Sanitize Rik text: preserve newlines (required for multi-verse identification), 
+        # but remove backslashes and literal \newline commands
+        rik_text = rt_match.group("rik_text").strip().replace('\r\n', '\n').replace('\r', '\n')
         rik_text = rik_text.replace('\\newline%', ' ').replace('\\newline', ' ').replace('\\', '')
         # Normalize pipes for Rik text as well (as per "visarga handling" pattern)
         rik_text = rik_text.replace('||', '॥').replace('|', '।')

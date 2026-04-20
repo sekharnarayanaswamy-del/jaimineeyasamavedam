@@ -231,85 +231,86 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                     continue
 
                 # 2. Process Non-Empty Rik Text
-                # Split rik text by new line to handle multiple Riks in the same Arsheyam
-                rik_lines = [line.strip() for line in rik_text_full.split('\n') if line.strip()]
-                
-                current_rik_parts = []
                 import re
+                # Robust split: find all markers (॥ N ॥) and treat the text preceding them as that Rik.
+                # This correctly handles cases where multiple Riks are on the same line.
+                parts = re.split(r'(॥\s*[०-९\d]+\s*॥)', rik_text_full)
                 
-                for i, line in enumerate(rik_lines):
-                    current_rik_parts.append(line)
-                    match = re.search(r'॥\s*([०-९\d]+)\s*॥\s*$', line)
-                    is_last_line = (i == len(rik_lines) - 1)
+                # pairs of (text_before, marker)
+                for i in range(0, len(parts) - 1, 2):
+                    text_seg = parts[i].strip()
+                    marker_seg = parts[i+1].strip()
                     
-                    # Process the group when we hit a verse number or end of the lines
-                    if match or is_last_line:
-                        if match:
-                            num_str = match.group(1)
-                            # convert devanagari to int
-                            devanagari_digits = '०१२३४५६७८९'
-                            for j, char in enumerate(devanagari_digits):
-                                num_str = num_str.replace(char, str(j))
-                            try:
-                                line_rik_id = int(num_str)
-                            except ValueError:
-                                line_rik_id = base_rik_id
-                        else:
-                            line_rik_id = "null"
+                    # If this is the last marker, append any trailing text from the very last element of re.split
+                    if i + 2 == len(parts) - 1:
+                        trailing = parts[i+2].strip()
+                        if trailing:
+                             marker_seg += " " + trailing
 
-                        # Combine all lines matching this Rik ID
-                        combined_text = ' '.join(current_rik_parts)
-                        current_rik_key = (ss_key, sec_key, line_rik_id)
-                        
-                        # Check if we've seen this unique Rik before
-                        if current_rik_key not in unique_riks:
-                            global_rik_counter += 1
-                            
-                            # Enrichment Strategy: Excel > JSON > Default
-                            classification = recon_data.get(global_rik_counter, {})
-                            if not classification:
-                                classification = {
-                                    "rishi": sub_data.get('rik_rishi', ""),
-                                    "chandas": sub_data.get('rik_chandas', ""),
-                                    "devata": sub_data.get('rik_devata', "")
-                                }
-                            
-                            unique_riks[current_rik_key] = {
-                                'Global_Rik_Num': global_rik_counter,
-                                'classification': classification
-                            }
-                            
-                            # Add row for this unique Rik to the CSV (unique list)
-                            # Replace ASCII markers with Unicode accents
-                            clean_text = replace_accents_unicode(combined_text)
-                            row_entry = {
-                                'Global_Rik_Num': global_rik_counter,
-                                'Patha_Name': ss_title,
-                                'Khanda': sec_title,
-                                'Rik_ID': line_rik_id,
-                                'Rishi': classification['rishi'],
-                                'Chandas': classification['chandas'],
-                                'Devata': classification['devata'],
-                                'Rik_Text': clean_text,
-                                'Rik_Metadata': rik_metadata
-                            }
-                            rows.append(row_entry)
+                    # Identify the Rik ID from the marker
+                    match = re.search(r'([०-९\d]+)', marker_seg)
+                    if match:
+                        num_str = match.group(1)
+                        # convert devanagari to int
+                        devanagari_digits = '०१२३४५६७८९'
+                        for j, char in enumerate(devanagari_digits):
+                            num_str = num_str.replace(char, str(j))
+                        try:
+                            line_rik_id = int(num_str)
+                        except ValueError:
+                            line_rik_id = base_rik_id
+                    else:
+                        line_rik_id = "null"
 
-                        # Always inject into sub_data for Vargeekaran JSON
-                        res = unique_riks[current_rik_key]
-                        if 'rik_classifications' not in sub_data:
-                            sub_data['rik_classifications'] = []
+                    combined_text = (text_seg + " " + marker_seg).strip()
+                    current_rik_key = (ss_key, sec_key, line_rik_id)
+                    
+                    # Check if we've seen this unique Rik before
+                    if current_rik_key not in unique_riks:
+                        global_rik_counter += 1
                         
-                        sub_data['rik_classifications'].append({
-                            "Global_Rik_Num": res['Global_Rik_Num'],
-                            "Rik_ID": line_rik_id,
-                            "Rishi": res['classification']['rishi'],
-                            "Chandas": res['classification']['chandas'],
-                            "Devata": res['classification']['devata']
-                        })
-                            
-                        # Reset for next Rik group
-                        current_rik_parts = []
+                        # Enrichment Strategy: Excel > JSON > Default
+                        classification = recon_data.get(global_rik_counter, {})
+                        if not classification:
+                            classification = {
+                                "rishi": sub_data.get('rik_rishi', ""),
+                                "chandas": sub_data.get('rik_chandas', ""),
+                                "devata": sub_data.get('rik_devata', "")
+                            }
+                        
+                        unique_riks[current_rik_key] = {
+                            'Global_Rik_Num': global_rik_counter,
+                            'classification': classification
+                        }
+                        
+                        # Add row for this unique Rik to the CSV (unique list)
+                        # Replace ASCII markers with Unicode accents
+                        clean_text = replace_accents_unicode(combined_text)
+                        row_entry = {
+                            'Global_Rik_Num': global_rik_counter,
+                            'Patha_Name': ss_title,
+                            'Khanda': sec_title,
+                            'Rik_ID': line_rik_id,
+                            'Rishi': classification['rishi'],
+                            'Chandas': classification['chandas'],
+                            'Devata': classification['devata'],
+                            'Rik_Text': clean_text,
+                            'Rik_Metadata': rik_metadata
+                        }
+                        rows.append(row_entry)
+
+                    # Always inject into sub_data for Vargeekaran JSON
+                    res = unique_riks[current_rik_key]
+                    if 'rik_classifications' not in sub_data:
+                        sub_data['rik_classifications'] = []
+                    
+                    sub_data['rik_classifications'].append({
+                        "Global_Rik_Num": res['Global_Rik_Num'],
+                        "Rik_ID": line_rik_id,
+                        "Rishi": res['classification']['rishi'],
+                        "Chandas": res['classification']['chandas'],
+                        "Devata": res['classification']['devata']
+                    })
 
     # Write CSV with UTF-8 BOM for Excel compatibility
     with open(output_csv, 'w', encoding='utf-8-sig', newline='') as f:
