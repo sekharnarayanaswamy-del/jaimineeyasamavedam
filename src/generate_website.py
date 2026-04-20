@@ -3275,7 +3275,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    const performSearch = (query) => {
+    const performSearch = (query, isLatin, devanagariQuery) => {
         if (!query || query.length < 2 || !searchIndex) return [];
         const q = query.toLowerCase().trim();
         const results = [];
@@ -3314,9 +3314,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return result;
         };
         
-        // Check if query looks like Latin (contains a-z, not Devanagari)
-        const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
-        const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
+        // (Logic removed from here as it's now passed in)
         
         for (const entry of searchIndex) {
             let score = 0;
@@ -3416,7 +3414,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (searchResults) searchResults.innerHTML = '<div class="search-loading">Loading search index...</div>';
                     return;
                 }
-                const results = performSearch(query);
+                const q = query.toLowerCase().trim();
+                const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
+                const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
+                
+                const results = performSearch(query, isLatin, devanagariQuery);
                 if (results.length === 0) {
                     searchResults.innerHTML = '<div class="search-no-results"><div class="icon">🔍</div>No results found for "' + query + '"</div>';
                     return;
