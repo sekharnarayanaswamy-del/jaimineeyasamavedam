@@ -39,11 +39,12 @@ if tools_dir.exists() and str(tools_dir) not in sys.path:
 # --- Local Imports ---
 try:
     from utils import (
-        combine_ardhaksharas, 
-        get_generated_metadata, 
+        combine_ardhaksharas,
+        get_generated_metadata,
         step_preprocess_visarga_accent,
         parse_mantra_for_latex,
-        load_pipeline_config
+        load_pipeline_config,
+        extract_closing_mantras
     )
 except ImportError:
     # Fallback/Dummy versions for linting/missing files
@@ -87,7 +88,7 @@ SITE_CONFIG = {
     },
     'aaranam': {
         'title_sa': 'जैमिनीय साम आरण्य गानम्',
-        'title_en': 'Jaimineeya Sama Aaranam', 
+        'title_en': 'Jaimineeya Sama Aaranya Ganam', 
         'footer_sa': 'जैमिनीय सामवेद आरण्य गानम्',
         'meta_desc': 'Jaimineeya Sama Aaranam digital archive',
         'keywords': 'Samaveda, Jaimineeya, Aaranam, Aranya, Ganam, Vedas, Sanskrit'
@@ -587,9 +588,8 @@ class JSVParser:
         self.procedure_index = procedure_index or {}
         self.metadata = {}
         self.parvas: List[Parva] = []
-        self.current_parva: Optional[Parva] = None
-        self.current_kandah: Optional[Kandah] = None
         self.current_sama: Optional[Sama] = None
+        self.closing_mantras: List[str] = []
     def parse(self) -> List[Parva]:
         """Main parsing method - delegates based on file type"""
         if self.source_file.lower().endswith('.json'):
@@ -624,6 +624,7 @@ class JSVParser:
             data = json.load(f)
             
         self.metadata = data.get('meta', {})
+        self.closing_mantras = data.get('closing_mantras', [])
             
         super_keys = sorted(data.get('supersection', {}).keys(), 
                           key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
@@ -694,6 +695,7 @@ class JSVParser:
         # Extract metadata from text headers if present
         from utils import extract_metadata_from_text
         self.metadata = extract_metadata_from_text(content)
+        self.closing_mantras = extract_closing_mantras(content)
         
         lines = content.split('\n')
         
@@ -865,13 +867,14 @@ class JSVParser:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic', metadata: Dict = None):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic', metadata: Dict = None, closing_mantras: List[str] = None):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
         self.mode = mode
         self.font = font
         self.font_sans = font_sans
+        self.closing_mantras = closing_mantras or []
         self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita']).copy()
         
         # Override title_sa if custom_title provided
@@ -2277,6 +2280,38 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     bottom: {tr_off};
+}
+
+.footnote-separator, .closing-separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-xl) 0;
+    width: 200px;
+}
+
+.closing-mantras-section {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: #f8fafc; /* Muted Slate-50 background */
+    border-radius: 12px;
+    border: 1px solid #e2e8f0; /* Muted border */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.closing-mantras-content {
+    font-family: var(--font-sanskrit);
+    font-size: 1.25rem;
+    color: #475569; /* Muted Slate-600 */
+    line-height: 2;
+}
+
+.closing-mantra-line {
+    margin-bottom: 0.5rem;
+}
+
+.footer {
+
 }
 
 .danda {
@@ -4230,12 +4265,12 @@ const highlightText = (text, query, devanagariQuery) => {
             
     def _generate_kandah_pages(self):
         """Generate individual Kandah pages with Samas (like Sukta pages in Rig Veda)"""
-        for parva in self.parvas:
+        for p_idx, parva in enumerate(self.parvas):
             # Create parva directory
             parva_dir = self.output_dir / 'kandah' / parva.id
             parva_dir.mkdir(parents=True, exist_ok=True)
             
-            for kandah in parva.kandahs:
+            for k_idx, kandah in enumerate(parva.kandahs):
                 # Build Table of Contents
                 toc_items = ""
                 for sama in kandah.samas:
@@ -4493,6 +4528,17 @@ const highlightText = (text, query, devanagariQuery) => {
                             {fn_items}
                         </div>
                     </div>'''
+
+                # Render Closing Mantras (Only on the last page of the entire collection)
+                closing_mantras_html = ""
+                if p_idx == len(self.parvas) - 1 and k_idx == len(parva.kandahs) - 1 and self.closing_mantras:
+                    cm_lines = "".join([f'<p class="closing-mantra-line">{line}</p>' for line in self.closing_mantras])
+                    closing_mantras_html = f'''
+                    <section class="closing-mantras-section">
+                        <div class="closing-mantras-content">
+                            {cm_lines}
+                        </div>
+                    </section>'''
                 
                 parva_clean = parva.title.replace('॥', '').replace('||', '').replace('|', '').strip()
                 kandah_clean = kandah.title.replace('॥', '').replace('||', '').replace('|', '').strip()
@@ -4553,6 +4599,8 @@ const highlightText = (text, query, devanagariQuery) => {
             {sama_entries}
             
             {kandah_footnotes_html}
+            
+            {closing_mantras_html}
             
             <footer class="footer">
                 {self.config['footer_sa']}
@@ -4855,7 +4903,7 @@ Examples:
     
     # Generate website
     print("\n[INFO] Generating website (Rig Veda style)...")
-    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font, metadata=parser_obj.metadata)
+    generator = WebsiteGenerator(parvas, output_dir, audio_dir, mode=mode, custom_title=custom_title, font=font, metadata=parser_obj.metadata, closing_mantras=parser_obj.closing_mantras)
     generator.generate()
     
     # Run post-processing patches automatically

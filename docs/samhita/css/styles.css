@@ -1318,6 +1318,38 @@ background: var(--bg-sidebar);
     bottom: 0.06em;
 }
 
+.footnote-separator, .closing-separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-xl) 0;
+    width: 200px;
+}
+
+.closing-mantras-section {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: #f8fafc; /* Muted Slate-50 background */
+    border-radius: 12px;
+    border: 1px solid #e2e8f0; /* Muted border */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.closing-mantras-content {
+    font-family: var(--font-sanskrit);
+    font-size: 1.25rem;
+    color: #475569; /* Muted Slate-600 */
+    line-height: 2;
+}
+
+.closing-mantra-line {
+    margin-bottom: 0.5rem;
+}
+
+.footer {
+
+}
+
 .danda {
     margin: 0 0.2em;
 }

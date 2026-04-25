@@ -95,6 +95,20 @@ def extract_metadata_from_text(content):
     
     return meta
 
+def extract_closing_mantras(content):
+    """
+    Extracts closing mantra lines between # Closing Mantras and # End of Closing Mantras tags.
+    Returns a list of cleaned lines.
+    """
+    if not content:
+        return []
+    
+    closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)
+    closing_match = closing_pattern.search(content)
+    if closing_match:
+        return [line.strip() for line in closing_match.group(1).strip().split('\n') if line.strip()]
+    return []
+
 def devanagari_to_int(text):
     """Converts Devanagari numerals in a string to an integer."""
     if not text: return 0

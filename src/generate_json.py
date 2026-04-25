@@ -4,7 +4,7 @@ import json
 import re
 import os
 import yaml
-from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config, extract_metadata_from_text
+from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config, extract_metadata_from_text, extract_closing_mantras
 
 def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
     """Load the procedure linking index from YAML file."""
@@ -956,14 +956,9 @@ def convert_corrections_to_json(
             global_subsection_offset += current_section_subsection_count
 
     # --- Extract Closing Mantras ---
-    closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)
-    closing_match = closing_pattern.search(file_content)
-    if closing_match:
-        closing_lines = [line.strip() for line in closing_match.group(1).strip().split('\n') if line.strip()]
-        json_output["closing_mantras"] = closing_lines
-        print(f"[INFO] Extracted {len(closing_lines)} closing mantra lines.")
-    else:
-        json_output["closing_mantras"] = []
+    json_output["closing_mantras"] = extract_closing_mantras(file_content)
+    if json_output["closing_mantras"]:
+        print(f"[INFO] Extracted {len(json_output['closing_mantras'])} closing mantra lines.")
 
     print(f"\n--- Step 3: Processing Complete ---")
     print(f"[INFO] Total subsections processed: {global_subsection_offset}")
@@ -1379,6 +1374,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     # Build complete subsections
     all_subsection_ids = set(subsection_headers.keys()) | set(mantra_sets_map.keys())
     
+    # Trackers for Inheritance (Rule 1 & 2)
+    last_rik_text = ""
+    last_rik_metadata = ""
+
     # Add subsections to their sections
     global_samam_count = 0
     sorted_sub_ids = sorted(all_subsection_ids, key=lambda x: int(x.replace('subsection_', '')) if x.startswith('subsection_') else 0)
@@ -1449,8 +1448,6 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 subsection_entry = {
                     "header": {"header": header_info["header"], "header_number": sub_num},
                     "rik_id": rik_id_to_use, 
-                    "rik_metadata": rik_meta_to_use,
-                    "rik_text": rik_text_map.get(sub_id, ""),
                     "saman_metadata": saman_meta_to_use,
                     "mantra_sets": [],
                     "corrected-mantra_sets": [{"corrected-mantra": '\n'.join(mantra_sets_map.get(sub_id, []))}],
@@ -1465,6 +1462,30 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                     "saman_chandas": saman_chandas_val,
                     "procedure_ref": resolve_procedure(proc_index, ss_id, sec_id, sub_id),
                 }
+
+                # --- Rik Inheritance Logic (Rule 1, 2 & 3) ---
+                has_new_metadata = sub_id in rik_metadata_map
+                has_new_text = sub_id in rik_text_map
+                
+                # Handle Rik Metadata
+                if has_new_metadata:
+                    # Tag present: update tracker (could be new content or explicit null)
+                    last_rik_metadata = rik_metadata_map[sub_id]
+                    if last_rik_metadata.strip() == "":
+                         last_rik_metadata = "" # Explicit Reset
+                elif has_new_text:
+                    # New text appears but NO metadata tag -> Break inheritance (Rule 3)
+                    last_rik_metadata = ""
+
+                # Handle Rik Text
+                if has_new_text:
+                    # Tag present: update tracker (could be new content or explicit null)
+                    last_rik_text = rik_text_map[sub_id]
+                # else: Tag missing -> inherit from last_rik_text
+
+                # Populate the entry from the trackers
+                subsection_entry["rik_metadata"] = last_rik_metadata
+                subsection_entry["rik_text"] = last_rik_text
                 
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
                 break
@@ -1485,14 +1506,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
             sec_data["Count"] = int_to_devanagari_local(mantra_count) if sec_data.get("section_title") else ""
     
     # --- Extract Closing Mantras ---
-    closing_pattern = re.compile(r'# Closing Mantras\s*\n(.*?)\s*# End of Closing Mantras', re.DOTALL)
-    closing_match = closing_pattern.search(content)
-    if closing_match:
-        closing_lines = [line.strip() for line in closing_match.group(1).strip().split('\n') if line.strip()]
-        data["closing_mantras"] = closing_lines
-        print(f"[INFO] Extracted {len(closing_lines)} closing mantra lines.")
-    else:
-        data["closing_mantras"] = []
+    data["closing_mantras"] = extract_closing_mantras(content)
+    if data["closing_mantras"]:
+        print(f"[INFO] Extracted {len(data['closing_mantras'])} closing mantra lines.")
 
     return data
 

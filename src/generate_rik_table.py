@@ -20,6 +20,11 @@ import json
 import csv
 import os
 import sys
+try:
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
 
 from utils import get_generated_metadata
 
@@ -88,7 +93,9 @@ def load_reconciliation_data(excel_path):
                 if row[0] is not None:
                     # Handle both integer and string (in case Excel formatted it weirdly)
                     rik_num = int(row[0])
+                    # Row index 5 is F (Rik_Metadata)
                     # Row index 8 is I (Rishi), 9 is J (Chandas), 10 is K (Devata)
+                    rik_metadata_val = str(row[5]).strip() if row[5] is not None else ""
                     rishi = str(row[8]).strip() if row[8] is not None else ""
                     chandas = str(row[9]).strip() if row[9] is not None else ""
                     devata = str(row[10]).strip() if row[10] is not None else ""
@@ -96,7 +103,8 @@ def load_reconciliation_data(excel_path):
                     mapping[rik_num] = {
                         "rishi": rishi,
                         "chandas": chandas,
-                        "devata": devata
+                        "devata": devata,
+                        "rik_metadata": rik_metadata_val
                     }
                     row_count += 1
             except (ValueError, TypeError):
@@ -172,10 +180,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     # Sort supersection keys numerically
     ss_keys = sorted(supersection_container.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0)
 
-    global_rik_counter = 0
-    # Track unique Riks to assign Global_Rik_Num and classification
-    # Key: (supersection_key, section_key, rik_id)
-    # Value: { 'Global_Rik_Num': ..., 'classification': ... }
+    excel_pointer = 0
     unique_riks = {}
     prev_rik_id_global_context = None
 
@@ -190,6 +195,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
         for sec_key in sec_keys:
             sec_data = sections[sec_key]
             sec_title = sec_data.get('section_title', sec_key)
+            display_rik_counter = 0
             
             # Get subsections (Arsheyams/Riks)
             subsections = sec_data.get('subsections', {})
@@ -206,25 +212,33 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                     
                 rik_metadata = sub_data.get('rik_metadata', '')
                 rik_text_full = sub_data.get('rik_text', '')
-                # 1. Handle Empty Rik Text (as per user request: put "null")
+
+                # 1. Handle Empty Rik Text (Explicit null or inherited null)
                 if not rik_text_full.strip():
-                    global_rik_counter += 1
-                    classification = recon_data.get(global_rik_counter, {})
-                    if not classification:
-                        classification = {
-                            "rishi": sub_data.get('rik_rishi', ""),
-                            "chandas": sub_data.get('rik_chandas', ""),
-                            "devata": sub_data.get('rik_devata', "")
-                        }
+                    excel_pointer += 1
+                    classification = recon_data.get(excel_pointer, {})
                     
+                    # For "null" Rik text, we do not increment display counter or show a number
+                    rik_metadata = classification.get('rik_metadata', "")
+                    sub_data['rik_metadata'] = rik_metadata
+                    
+                    sub_data['rik_classifications'] = [{
+                        "Global_Rik_Num": excel_pointer,
+                        "Rik_ID": "null",
+                        "Rishi": classification.get('rishi', ""),
+                        "Chandas": classification.get('chandas', ""),
+                        "Devata": classification.get('devata', ""),
+                        "Rik_Metadata": rik_metadata
+                    }]
+
                     rows.append({
-                        'Global_Rik_Num': global_rik_counter,
+                        'Global_Rik_Num': excel_pointer,
                         'Patha_Name': ss_title,
                         'Khanda': sec_title,
                         'Rik_ID': "null",
-                        'Rishi': classification['rishi'],
-                        'Chandas': classification['chandas'],
-                        'Devata': classification['devata'],
+                        'Rishi': classification.get('rishi', ""),
+                        'Chandas': classification.get('chandas', ""),
+                        'Devata': classification.get('devata', ""),
                         'Rik_Text': "null",
                         'Rik_Metadata': rik_metadata
                     })
@@ -265,51 +279,64 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                     combined_text = (text_seg + " " + marker_seg).strip()
                     current_rik_key = (ss_key, sec_key, line_rik_id)
                     
-                    # Check if we've seen this unique Rik before
+                    # Rule: Only increment excel_pointer for NEW unique Riks
+                    # Repeated Riks in different Samams will share the same Global_Rik_Num
                     if current_rik_key not in unique_riks:
-                        global_rik_counter += 1
+                        excel_pointer += 1
+                        display_rik_counter += 1
                         
-                        # Enrichment Strategy: Excel > JSON > Default
-                        classification = recon_data.get(global_rik_counter, {})
-                        if not classification:
-                            classification = {
-                                "rishi": sub_data.get('rik_rishi', ""),
-                                "chandas": sub_data.get('rik_chandas', ""),
-                                "devata": sub_data.get('rik_devata', "")
-                            }
+                        classification = recon_data.get(excel_pointer, {})
                         
-                        unique_riks[current_rik_key] = {
-                            'Global_Rik_Num': global_rik_counter,
-                            'classification': classification
-                        }
-                        
+                        # Rule: If JSON has explicit null metadata but non-null Rik text, do NOT override with Excel
+                        if rik_metadata == "" and combined_text.strip() != "":
+                             # Keep it null
+                             pass
+                        else:
+                             # Update JSON metadata strictly from Excel if present
+                             if classification.get('rik_metadata'):
+                                 rik_metadata = classification.get('rik_metadata', "")
+                                 sub_data['rik_metadata'] = rik_metadata
+                            
                         # Add row for this unique Rik to the CSV (unique list)
                         # Replace ASCII markers with Unicode accents
                         clean_text = replace_accents_unicode(combined_text)
                         row_entry = {
-                            'Global_Rik_Num': global_rik_counter,
+                            'Global_Rik_Num': excel_pointer,
                             'Patha_Name': ss_title,
                             'Khanda': sec_title,
-                            'Rik_ID': line_rik_id,
-                            'Rishi': classification['rishi'],
-                            'Chandas': classification['chandas'],
-                            'Devata': classification['devata'],
+                            'Rik_ID': display_rik_counter,
+                            'Rishi': classification.get('rishi', ""),
+                            'Chandas': classification.get('chandas', ""),
+                            'Devata': classification.get('devata', ""),
                             'Rik_Text': clean_text,
                             'Rik_Metadata': rik_metadata
                         }
+                        unique_riks[current_rik_key] = {
+                            'Global_Rik_Num': excel_pointer,
+                            'Rik_ID': display_rik_counter,
+                            'classification': classification,
+                            'rik_metadata_override': rik_metadata
+                        }
                         rows.append(row_entry)
+                    
+                    # Use the stored shared info for this Rik (even if repeated)
+                    rik_info = unique_riks[current_rik_key]
+                    final_global_num = rik_info['Global_Rik_Num']
+                    final_rik_id = rik_info['Rik_ID']
+                    final_metadata = rik_info['rik_metadata_override']
+                    final_class = rik_info['classification']
 
                     # Always inject into sub_data for Vargeekaran JSON
-                    res = unique_riks[current_rik_key]
                     if 'rik_classifications' not in sub_data:
                         sub_data['rik_classifications'] = []
                     
                     sub_data['rik_classifications'].append({
-                        "Global_Rik_Num": res['Global_Rik_Num'],
-                        "Rik_ID": line_rik_id,
-                        "Rishi": res['classification']['rishi'],
-                        "Chandas": res['classification']['chandas'],
-                        "Devata": res['classification']['devata']
+                        "Global_Rik_Num": final_global_num,
+                        "Rik_ID": final_rik_id,
+                        "Rishi": final_class.get('rishi', ""),
+                        "Chandas": final_class.get('chandas', ""),
+                        "Devata": final_class.get('devata', ""),
+                        "Rik_Metadata": final_metadata
                     })
 
     # Write CSV with UTF-8 BOM for Excel compatibility
@@ -327,6 +354,81 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
         writer.writerows(rows)
 
     print(f"CSV saved to: {output_csv}")
+    
+    # Write Excel if pandas is available
+    if HAS_PANDAS:
+        from openpyxl.styles import Font
+        output_xlsx = output_csv.rsplit('.', 1)[0] + '.xlsx'
+        try:
+            # Create DataFrame
+            df = pd.DataFrame(rows)
+            # Reorder columns to match CSV preference
+            cols = ['Global_Rik_Num', 'Patha_Name', 'Khanda', 'Rik_ID', 'Rishi', 'Chandas', 'Devata', 'Rik_Text', 'Rik_Metadata']
+            # Only use columns that actually exist in the rows
+            cols = [c for c in cols if c in df.columns]
+            df = df[cols]
+            
+            # Save to Excel
+            with pd.ExcelWriter(output_xlsx, engine='openpyxl') as writer:
+                # 1. Create and save Metadata sheet
+                meta_rows = [
+                    ["Project", "Jaimineeya Samavedam"],
+                    ["Filename", os.path.basename(output_xlsx)],
+                    ["Version", JSV_VERSION],
+                    ["Generated At", GENERATED_AT]
+                ]
+                meta_df = pd.DataFrame(meta_rows, columns=["Property", "Value"])
+                meta_df.to_excel(writer, index=False, sheet_name='Metadata')
+                
+                # Formatting Metadata sheet
+                meta_ws = writer.sheets['Metadata']
+                standard_font = Font(name='Adishila', size=11)
+                bold_font = Font(name='Adishila', size=11, bold=True)
+                
+                for row in meta_ws.iter_rows():
+                    for cell in row:
+                        cell.font = standard_font
+                
+                # Bold headers for Metadata
+                for cell in meta_ws[1]:
+                    cell.font = bold_font
+                    
+                meta_ws.column_dimensions['A'].width = 15
+                meta_ws.column_dimensions['B'].width = 40
+
+                # 2. Save main Rik Table
+                df.to_excel(writer, index=False, sheet_name='Rik Table')
+                
+                # Formatting Rik Table sheet
+                worksheet = writer.sheets['Rik Table']
+                
+                # Apply Adishila to all cells
+                for row in worksheet.iter_rows():
+                    for cell in row:
+                        cell.font = standard_font
+                
+                # Bold headers for Rik Table
+                for cell in worksheet[1]:
+                    cell.font = bold_font
+                
+                # Auto-adjust column widths for Rik Table
+                for col in worksheet.columns:
+                    max_length = 0
+                    column = col[0].column_letter # Get the column name
+                    for cell in col:
+                        try:
+                            if len(str(cell.value)) > max_length:
+                                max_length = len(str(cell.value))
+                        except:
+                            pass
+                    adjusted_width = (max_length + 2)
+                    worksheet.column_dimensions[column].width = min(adjusted_width, 100) # Cap at 100
+
+            print(f"Excel table saved to: {output_xlsx}")
+        except Exception as e:
+            print(f"[ERROR] Failed to save Excel: {e}")
+    else:
+        print("[WARNING] 'pandas' not found. Skipping Excel export.")
     
     # Write Enhanced Vargeekaran JSON (Full Samhita structure with injected info)
     with open(v_json, 'w', encoding='utf-8') as f:

@@ -27,6 +27,8 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`convert_corrections_to_json`**: The main driver function for the "Correction Mode". It reads the processed Unicode text file, extracts hierarchy (SuperSection > Section), and embeds metadata.
 *   **Robust Parsing Logic**: The parser now uses a space-tolerant, multi-line regex system for markers (e.g., `# Start of SuperSection Title -- ID ## DO NOT EDIT`). It correctly handles markers regardless of whether there are zero, one, or many spaces before the `##` marker, making it robust against manual editing variations.
 *   **`parse_unicode_text_file`**: Handles the reading of the main input file, ensuring encoding safety and stripping invisible characters.
+*   **Closing Mantras Support**: Automatically extracts and centers prayer blocks enclosed in `# Closing Mantras` tags.
+*   **Strict Inheritance (Rule 3)**: Implements logic to break metadata inheritance whenever new Rik text appears. If a subsection contains Rik text but no metadata tags, it will NOT inherit from the previous subsection, ensuring data integrity across distinct verses.
 
 ### 2.2 `src/generate_website.py`
 **Role**: Generates the static HTML website for GitHub Pages.
@@ -74,6 +76,11 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **Unique Rik Extraction**: Iterates through the hierarchical JSON and extracts unique Riks, splitting multi-verse Arsheyams into individual rows using positional markers (e.g., `॥ ९ ॥`).
 *   **Classification Integration**: Loads mapping data from the **Reconciliation Excel** (`Rik Reconciliation table (JSV-KSV).xlsx`). It maps each unique verse to its <Rishi, Devata, Chandas> tuple using the `Global_Rik_Num`.
 *   **Accent Normalization**: Converts ASCII markers (e.g., `(1)`) into literal Unicode Swaras (e.g., `U+0951`) for clean CSV representation.
+*   **Sequential Mapping Logic**: Uses an `excel_pointer` to synchronize JSON occurrences with the master Reconciliation Excel. To maintain a strict 1:1 mapping with a unique-Rik Excel sheet, the pointer only increments for **new unique Riks** (determined by ID, Text, and Section) and each null placeholder.
+*   **Premium Excel Export**: Generates `.xlsx` files using `pandas` and `openpyxl` with:
+    *   **Adishila Font**: All cells (including metadata and text) use the project's signature Adishila font.
+    *   **Metadata Sheet**: A dedicated sheet documenting Project, Version, Filename, and Generation Timestamp.
+    *   **Auto-Formatting**: Bold headers and intelligent column width adjustment.
 *   **Structure Injection**: Dynamically injects a `rik_classifications` list into each Arsheyam (Subsection) in the JSON. This list identifies the Riks associated with that Arsheyam and their respective classifications.
 *   **Output**:
     *   `JSV_Rik_Table.csv`: A flattened, deduplicated verse-level table.
@@ -282,7 +289,7 @@ The input file (e.g., `data/input/Sooktam.txt`) uses the same markup conventions
 #### Closing Mantras
 
 A special section at the end of the input file enclosed in `# Closing Mantras` / `# End of Closing Mantras` markers. Each line becomes a centered mantra in the output:
-*   **HTML**: Rendered in a `subsection`-styled card (beige background, blue left border) with centered text
+*   **HTML**: Rendered in a centered block with a "Muted Slate" theme (`#f8fafc` background, `#475569` text) and no horizontal separators.
 *   **PDF**: Rendered contiguously on the last content page in bold centered text (no separate page)
 *   **Text**: Preserved with round-trip markers for re-editing
 

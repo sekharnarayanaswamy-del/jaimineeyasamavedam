@@ -99,7 +99,7 @@ generate_rik_table:
   aaranam:
     input: "data/output/Aaranam_latest_out.json"
     output_csv: "data/output/Aaranam_Rik_Table_Baseline.csv"
-    recon_excel: "data/output/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx"
+    recon_excel: "data/output/Rik Reconciliation table (JSV-KSV) - Aaranam_latest.xlsx"
     v_json: "data/output/Aaranam_vargeekaran.json"
     no_enrich: true  # Default preference for Aaranam baseline generation
 
