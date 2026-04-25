@@ -21,9 +21,10 @@ graph TD
     end
 
     subgraph "Phase 3: Classification & Curation"
-        E1 --> F1("generate_rik_table.py")
+        E1["Structured JSON (data/output/json/...)"] --> F1("generate_rik_table.py")
+        F2["Reconciliation Excel (.xlsx)"] --> F1
         F1 --> G1["Vargeekaran.json (Primary Source)"]
-        F1 --> G2["Rik Table (.csv)"]
+        F1 --> G2["Rik Table (.csv & .xlsx)"]
     end
 
     subgraph "Phase 4: Publication"
@@ -85,8 +86,8 @@ graph TD
 
 | Pipeline | Command Example |
 | :--- | :--- |
-| **Core** | `python src/generate_json.py --samhita` |
-| **Table** | `python src/generate_rik_table.py --type samhita` |
+| **Core JSON** | `python src/generate_json.py --type samhita` |
+| **Rik Table** | `python src/generate_rik_table.py --type samhita` |
 | **Website** | `python src/generate_website.py --samhita` |
 | **Curation** | `python src/curate_jsv.py` |
 | **PDF** | `python src/render_pdf.py data/output/Vargeekaran.json` |
