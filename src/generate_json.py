@@ -999,8 +999,8 @@ def extract_rik_only_data(combined_data):
                 rik_data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = {
                     "header": sub_content.get("header", {"header": f"Rik {rik_id}"}),
                     "rik_id": rik_id,
-                    "rik_metadata": sub_content.get("rik_metadata", ""),
-                    "rik_text": sub_content.get("rik_text", ""),
+                    "rik_metadata": s_aux.get('rik_metadata', None),
+                    "rik_text": s_aux.get('rik_text', None),
                     "saman_metadata": "",  # Empty for Rik-only
                     "corrected-mantra_sets": [],  # Empty for Rik-only
                     "mantra_sets": [],  # Empty for Rik-only

@@ -734,7 +734,10 @@ class JSVParser:
                 metadata = lines[i].strip() if i < len(lines) else ""
                 self._ensure_sama_exists(subsection_id)
                 if self.current_sama:
-                    self.current_sama.rik_metadata = metadata
+                    if self.current_sama.rik_metadata:
+                        self.current_sama.rik_metadata += f"  {metadata}"
+                    else:
+                        self.current_sama.rik_metadata = metadata
                     
             # Check for Rik Text
             elif '# Start of Rik Text --' in line:

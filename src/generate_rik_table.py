@@ -204,33 +204,45 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
             for sub_key in sub_keys:
                 sub_data = subsections[sub_key]
                 
-                # Get Rik info
-                try:
-                    base_rik_id = int(sub_data.get('rik_id', 0))
-                except ValueError:
-                    base_rik_id = 0
-                    
-                rik_metadata = sub_data.get('rik_metadata', '')
+                # 1. Initialize Inheritance Seeds (Point 2: Subsection-to-Rik seeding)
+                inherited_meta = sub_data.get('rik_metadata') or ""
+                inherited_text = sub_data.get('rik_text') or ""
+                
+                # Accumulators for the subsection
+                sub_meta_list = []
+                sub_classifications = []
+                seen_meta = set()
+                
                 rik_text_full = sub_data.get('rik_text', '')
 
-                # 1. Handle Empty Rik Text (Explicit null or inherited null)
+                # 2. Handle Empty Subsection Text (Explicit null or inherited null)
                 if not rik_text_full.strip():
                     excel_pointer += 1
                     classification = recon_data.get(excel_pointer, {})
                     
-                    # For "null" Rik text, we do not increment display counter or show a number
-                    rik_metadata = classification.get('rik_metadata', "")
-                    sub_data['rik_metadata'] = rik_metadata
+                    # XLS Master Overwrite (No Rik-to-Rik inheritance here)
+                    xls_meta = classification.get('rik_metadata')
+                    if classification:
+                        if xls_meta and xls_meta.strip().lower() != "null":
+                            active_meta = xls_meta.strip()
+                        else:
+                            active_meta = ""
+                    else:
+                        # Rik NOT in XLS: Use the seed from the text file
+                        active_meta = inherited_meta
                     
+                    sub_data['rik_metadata'] = active_meta
                     sub_data['rik_classifications'] = [{
                         "Global_Rik_Num": excel_pointer,
                         "Rik_ID": "null",
                         "Rishi": classification.get('rishi', ""),
                         "Chandas": classification.get('chandas', ""),
                         "Devata": classification.get('devata', ""),
-                        "Rik_Metadata": rik_metadata
+                        "Rik_Metadata": active_meta
                     }]
 
+                    # Replace ASCII markers with Unicode accents
+                    clean_text = replace_accents_unicode("null")
                     rows.append({
                         'Global_Rik_Num': excel_pointer,
                         'Patha_Name': ss_title,
@@ -239,23 +251,22 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                         'Rishi': classification.get('rishi', ""),
                         'Chandas': classification.get('chandas', ""),
                         'Devata': classification.get('devata', ""),
-                        'Rik_Text': "null",
-                        'Rik_Metadata': rik_metadata
+                        'Rik_Text': clean_text,
+                        'Rik_Metadata': active_meta
                     })
                     continue
 
-                # 2. Process Non-Empty Rik Text
+                # 3. Process Non-Empty Rik Text
                 import re
                 # Robust split: find all markers (॥ N ॥) and treat the text preceding them as that Rik.
-                # This correctly handles cases where multiple Riks are on the same line.
                 parts = re.split(r'(॥\s*[०-९\d]+\s*॥)', rik_text_full)
                 
-                # pairs of (text_before, marker)
+                # Pairs of (text_before, marker)
                 for i in range(0, len(parts) - 1, 2):
                     text_seg = parts[i].strip()
                     marker_seg = parts[i+1].strip()
                     
-                    # If this is the last marker, append any trailing text from the very last element of re.split
+                    # If this is the last marker, append any trailing text
                     if i + 2 == len(parts) - 1:
                         trailing = parts[i+2].strip()
                         if trailing:
@@ -265,40 +276,48 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                     match = re.search(r'([०-९\d]+)', marker_seg)
                     if match:
                         num_str = match.group(1)
-                        # convert devanagari to int
                         devanagari_digits = '०१२३४५६७८९'
                         for j, char in enumerate(devanagari_digits):
                             num_str = num_str.replace(char, str(j))
                         try:
                             line_rik_id = int(num_str)
                         except ValueError:
-                            line_rik_id = base_rik_id
+                            line_rik_id = 0
                     else:
                         line_rik_id = "null"
 
+                    # Rik Text Overwrite (XLS is Master, else use subsection seed)
+                    # Note: Inheritance is limited to the input text file context.
+                    if not text_seg:
+                        text_seg = inherited_text
+                    
                     combined_text = (text_seg + " " + marker_seg).strip()
                     current_rik_key = (ss_key, sec_key, line_rik_id)
                     
                     # Rule: Only increment excel_pointer for NEW unique Riks
-                    # Repeated Riks in different Samams will share the same Global_Rik_Num
                     if current_rik_key not in unique_riks:
                         excel_pointer += 1
                         display_rik_counter += 1
-                        
                         classification = recon_data.get(excel_pointer, {})
                         
-                        # Rule: If JSON has explicit null metadata but non-null Rik text, do NOT override with Excel
-                        if rik_metadata == "" and combined_text.strip() != "":
-                             # Keep it null
-                             pass
+                        # Metadata Overwrite Logic (XLS is Master)
+                        xls_meta = classification.get('rik_metadata')
+                        if classification:  # XLS row exists
+                            if xls_meta and xls_meta.strip().lower() != "null":
+                                active_meta = xls_meta.strip()
+                            else:
+                                # Explicit 'null' or empty cell in master XLS means empty metadata
+                                active_meta = ""
                         else:
-                             # Update JSON metadata strictly from Excel if present
-                             if classification.get('rik_metadata'):
-                                 rik_metadata = classification.get('rik_metadata', "")
-                                 sub_data['rik_metadata'] = rik_metadata
+                            # Rik NOT in XLS: Fall back to subsection seed (Input File Context)
+                            active_meta = inherited_meta
+                        
+                        # Add unique metadata to the subsection accumulator (deduplicated)
+                        if active_meta and active_meta not in seen_meta:
+                            sub_meta_list.append(active_meta)
+                            seen_meta.add(active_meta)
                             
                         # Add row for this unique Rik to the CSV (unique list)
-                        # Replace ASCII markers with Unicode accents
                         clean_text = replace_accents_unicode(combined_text)
                         row_entry = {
                             'Global_Rik_Num': excel_pointer,
@@ -309,35 +328,30 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
                             'Chandas': classification.get('chandas', ""),
                             'Devata': classification.get('devata', ""),
                             'Rik_Text': clean_text,
-                            'Rik_Metadata': rik_metadata
+                            'Rik_Metadata': active_meta
                         }
                         unique_riks[current_rik_key] = {
                             'Global_Rik_Num': excel_pointer,
                             'Rik_ID': display_rik_counter,
                             'classification': classification,
-                            'rik_metadata_override': rik_metadata
+                            'active_meta': active_meta
                         }
                         rows.append(row_entry)
                     
-                    # Use the stored shared info for this Rik (even if repeated)
+                    # Always inject into sub_data for Vargeekaran JSON (per-Rik classification)
                     rik_info = unique_riks[current_rik_key]
-                    final_global_num = rik_info['Global_Rik_Num']
-                    final_rik_id = rik_info['Rik_ID']
-                    final_metadata = rik_info['rik_metadata_override']
-                    final_class = rik_info['classification']
-
-                    # Always inject into sub_data for Vargeekaran JSON
-                    if 'rik_classifications' not in sub_data:
-                        sub_data['rik_classifications'] = []
-                    
-                    sub_data['rik_classifications'].append({
-                        "Global_Rik_Num": final_global_num,
-                        "Rik_ID": final_rik_id,
-                        "Rishi": final_class.get('rishi', ""),
-                        "Chandas": final_class.get('chandas', ""),
-                        "Devata": final_class.get('devata', ""),
-                        "Rik_Metadata": final_metadata
+                    sub_classifications.append({
+                        "Global_Rik_Num": rik_info['Global_Rik_Num'],
+                        "Rik_ID": rik_info['Rik_ID'],
+                        "Rishi": rik_info['classification'].get('rishi', ""),
+                        "Chandas": rik_info['classification'].get('chandas', ""),
+                        "Devata": rik_info['classification'].get('devata', ""),
+                        "Rik_Metadata": rik_info['active_meta']
                     })
+
+                # Final updates for the subsection
+                sub_data['rik_metadata'] = "  ".join(sub_meta_list)
+                sub_data['rik_classifications'] = sub_classifications
 
     # Write CSV with UTF-8 BOM for Excel compatibility
     with open(output_csv, 'w', encoding='utf-8-sig', newline='') as f:
