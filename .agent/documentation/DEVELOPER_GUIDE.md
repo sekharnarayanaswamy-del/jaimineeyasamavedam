@@ -27,8 +27,10 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`convert_corrections_to_json`**: The main driver function for the "Correction Mode". It reads the processed Unicode text file, extracts hierarchy (SuperSection > Section), and embeds metadata.
 *   **Robust Parsing Logic**: The parser now uses a space-tolerant, multi-line regex system for markers (e.g., `# Start of SuperSection Title -- ID ## DO NOT EDIT`). It correctly handles markers regardless of whether there are zero, one, or many spaces before the `##` marker, making it robust against manual editing variations.
 *   **`parse_unicode_text_file`**: Handles the reading of the main input file, ensuring encoding safety and stripping invisible characters.
+*   **Subsection Inheritance & Explicit Null**:
+    *   **Inheritance**: If a subsection lacks both `# Start of Rik Metadata` and `# Start of Rik Text` tags, it inherits the metadata and text from the previous subsection.
+    *   **Explicit Null**: If the tags are present but empty (e.g., `# Start...` followed immediately by `# End...`), the parser treats this as an explicit null, breaking any inheritance from the previous section.
 *   **Closing Mantras Support**: Automatically extracts and centers prayer blocks enclosed in `# Closing Mantras` tags.
-*   **Strict Inheritance (Rule 3)**: Implements logic to break metadata inheritance whenever new Rik text appears. If a subsection contains Rik text but no metadata tags, it will NOT inherit from the previous subsection, ensuring data integrity across distinct verses.
 
 ### 2.2 `src/generate_website.py`
 **Role**: Generates the static HTML website for GitHub Pages.
@@ -74,7 +76,9 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 ### 2.6 `src/generate_rik_table.py`
 **Role**: The "Bridge Builder" that integrates external classification (Rishi, Devata, Chandas) into the Samhita.
 *   **Unique Rik Extraction**: Iterates through the hierarchical JSON and extracts unique Riks, splitting multi-verse Arsheyams into individual rows using positional markers (e.g., `॥ ९ ॥`).
-*   **Classification Integration**: Loads mapping data from the **Reconciliation Excel** (`Rik Reconciliation table (JSV-KSV).xlsx`). It maps each unique verse to its <Rishi, Devata, Chandas> tuple using the `Global_Rik_Num`.
+*   **Classification Integration (XLS Master Rule)**: Loads mapping data from the **Reconciliation Excel** (`Rik Reconciliation table (JSV-KSV).xlsx`). 
+    *   **Rule**: The Excel sheet is the absolute master for any Rik ID it contains. If a Rik exists in the XLS, its metadata (even if empty) **overwrites** the JSON/Text-file seed.
+    *   **Fallback**: Fallback to the inherited metadata from the text file only occurs if the Rik ID is completely absent from the reconciliation sheet.
 *   **Accent Normalization**: Converts ASCII markers (e.g., `(1)`) into literal Unicode Swaras (e.g., `U+0951`) for clean CSV representation.
 *   **Sequential Mapping Logic**: Uses an `excel_pointer` to synchronize JSON occurrences with the master Reconciliation Excel. To maintain a strict 1:1 mapping with a unique-Rik Excel sheet, the pointer only increments for **new unique Riks** (determined by ID, Text, and Section) and each null placeholder.
 *   **Premium Excel Export**: Generates `.xlsx` files using `pandas` and `openpyxl` with:
