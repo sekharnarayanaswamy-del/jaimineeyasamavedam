@@ -350,6 +350,24 @@ This dynamic architecture allows one to build procedural ritual guides alongside
      * `subsection` scope → link at individual sama level
    * **PDF Toolkit**: PDF logic reads procedure_ref from JSON and adds footnote links to appendix.
 
+### 3.7 Workflow G: Deployment to Hostinger (Automatic)
+
+This workflow automates the publishing of your static texts to your main domain (`jaimineeyasamavedam.org`) while keeping the WordPress site as the primary landing page.
+
+#### Architecture
+The static site is hosted in a subdirectory on Hostinger (e.g., `/public_html/library/`). A GitHub Action monitors the `docs/` folder in the `main` branch and automatically syncs any changes to the server.
+
+#### Steps to Deploy
+1. **Push Changes**: Simply commit and push your updated `docs/` folder to the `main` branch.
+2. **Automatic Sync**: The GitHub Action `Deploy Static Texts to Hostinger` will trigger automatically.
+3. **Verification**: Once the action finishes (visible in the "Actions" tab on GitHub), visit `https://jaimineeyasamavedam.org/library/` to see the updates.
+
+#### Configuration (GitHub Secrets)
+The automation requires three secrets to be configured in the GitHub repository settings:
+*   `FTP_SERVER`: The FTP host from Hostinger.
+*   `FTP_USERNAME`: Your Hostinger FTP username.
+*   `FTP_PASSWORD`: Your Hostinger FTP password.
+
 ---
 
 ## 4. CLI Reference
