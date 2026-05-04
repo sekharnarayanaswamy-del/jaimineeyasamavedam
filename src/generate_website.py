@@ -3787,7 +3787,7 @@ const highlightText = (text, query, devanagariQuery) => {
     </div>
 
     <div class="sidebar-footer">
-        <a href="{prefix}index.html" class="footer-btn">मुख्यपृष्ठम्</a>
+        <a href="{prefix}index.html" class="footer-btn">Digital Repository Home</a>
         {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">अनुक्रमणिका</a>' if self.mode == "collection" else ""}
         {f"""<a href="{prefix}classification/rishi.html" class="footer-btn">ऋषयः</a>
         <a href="{prefix}classification/devata.html" class="footer-btn">देवताः</a>
