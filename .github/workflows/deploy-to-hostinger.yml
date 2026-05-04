@@ -23,5 +23,5 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./docs/
-        server-dir: ./public_html/library/
+        server-dir: ./library/
         # You can change 'library' above to any other folder name
