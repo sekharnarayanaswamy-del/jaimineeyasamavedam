@@ -22,5 +22,5 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./docs/
-        server-dir: ./library/
-        state-name: .ftp-deploy-sync-state.json
+        server-dir: ./
+        # Removed state-name to force a full re-upload
