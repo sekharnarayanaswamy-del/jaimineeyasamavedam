@@ -237,45 +237,65 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
     const depthPrefix = '../'.repeat(depth);
     
-    const highlightText = (text, query) => {
-        if (!query || !text) return text;
-        // Escape query for regex and use global flag
-        const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(escaped, 'gi');
-        
-        // Split by HTML tags to avoid highlighting inside tags (e.g. <span class="...">)
-        const parts = text.split(/(<[^>]+>)/g);
-        return parts.map(p => p.startsWith('<') ? p : p.replace(regex, (m) => `<mark>${m}</mark>`)).join('');
+const highlightText = (text, query, devanagariQuery) => {
+        if (!text) return text;
+        if (!query && !devanagariQuery) return text;
+
+        let searchQ = query;
+        if (devanagariQuery && devanagariQuery.length > 0) {
+            searchQ = devanagariQuery;
+        }
+
+        if (text.toLowerCase().indexOf(searchQ.toLowerCase()) !== -1) {
+            const re = new RegExp(searchQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+            return text.replace(re, '<mark>$&</mark>');
+        }
+
+        return text;
     };
-    
-    const performSearch = (query) => {
+
+    const latinToDevanagari = (text) => {
+        const mapping = {
+            'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
+            'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
+            'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
+            'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
+            'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
+            'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
+            '.': '।', '|': '॥'
+        };
+        let result = text.toLowerCase();
+        for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
+            result = result.replaceAll(k, v);
+        }
+        return result;
+    };
+
+    const performSearch = (query, callIsLatin, callDevanagariQuery) => {
         if (!query || query.length < 2 || !searchIndex) return [];
         const q = query.toLowerCase().trim();
         const results = [];
-        
-        // Convert IAST/Latin input to Devanagari for matching
-        const latinToDevanagari = (text) => {
-            const mapping = {
-                'aa': 'आ', 'ee': 'ई', 'oo': 'ऊ', 'ai': 'ऐ', 'au': 'औ', 'ri': 'ऋ', 'rii': 'ॠ',
-                'kh': 'ख', 'gh': 'घ', 'ch': 'च', 'chh': 'छ', 'jh': 'झ', 'th': 'थ', 'dh': 'ध',
-                'ph': 'फ', 'bh': 'भ', 'sh': 'श', 'ng': 'ङ', 'nj': 'ञ', 'nn': 'ण',
-                'a': 'अ', 'i': 'इ', 'u': 'उ', 'e': 'ए', 'o': 'ओ',
-                'k': 'क', 'g': 'ग', 'c': 'च', 'j': 'ज', 't': 'त', 'd': 'द', 'n': 'न',
-                'p': 'प', 'b': 'ब', 'm': 'म', 'y': 'य', 'r': 'र', 'l': 'ल', 'v': 'व', 'w': 'व', 's': 'स', 'h': 'ह',
-                '.': '।', '|': '॥'
+
+        const isLatin = callIsLatin !== undefined ? callIsLatin : (/[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q));
+
+        const normalizeLatin = (text) => {
+            if (!text) return "";
+            const map = {
+                'aa': 'a', 'ee': 'i', 'oo': 'u', 'ii': 'i', 'uu': 'u',
+                'kh': 'k', 'gh': 'g', 'ch': 'c', 'jh': 'j', 'th': 't', 'dh': 'd', 'ph': 'p', 'bh': 'b',
+                'sh': 's', 'z': 's', 'w': 'v', 'ñ': 'n', 'ṅ': 'n', 'ṇ': 'n', 'ś': 's', 'ṣ': 's',
+                'ā': 'a', 'ī': 'i', 'ū': 'u', 'ṛ': 'r', 'ṭ': 't', 'ḍ': 'd', 'ḥ': 'h', 'ṃ': 'n', 'ṁ': 'n'
             };
-            let result = text.toLowerCase();
-            // Process long vowels first
-            for (const [k, v] of Object.entries(mapping).sort((a, b) => b[0].length - a[0].length)) {
+            let result = text.toLowerCase().replace(/[^a-z]/g, '');
+            for (const [k, v] of Object.entries(map)) {
                 result = result.replaceAll(k, v);
             }
             return result;
         };
-        
-        // Check if query looks like Latin (contains a-z, not Devanagari)
-        const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
-        const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
-        
+
+        // Use the passed devanagariQuery if provided, otherwise compute it
+        const devanagariQuery = callDevanagariQuery !== undefined ? callDevanagariQuery : (isLatin ? latinToDevanagari(q) : null);
+
         for (const entry of searchIndex) {
             let score = 0;
             let matchedFields = [];
@@ -283,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const checkField = (text, fieldScore, fieldName, displayHtml) => {
                 if (!text) return;
                 // Remove spaces for comparison
-                const wsRegex = new RegExp('\\\\s+', 'g');
+                const wsRegex = /\s+/g;
                 const textNoSpaces = text.replace(wsRegex, '');
                 const qNoSpaces = q.replace(wsRegex, '');
                 
@@ -295,21 +315,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Check permissive (diacritic-stripped) match
-                const textPermissive = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
-                const qPermissive = qNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                // We must strip parentheses content for Samam swara ignoring
+                const stripAll = (t) => t.replace(/\([^)]*\)/g, '').replace(/[\u093E-\u094D\u0951-\u0957\u1CD0-\u1CFF\u0964\u0965\u0966-\u096F0-9]/g, '');
+                const textPermissive = stripAll(textNoSpaces);
+                const qPermissive = stripAll(qNoSpaces);
                 if (textPermissive.toLowerCase().includes(qPermissive)) {
                     score += fieldScore * 0.8;
-                    matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    matchedFields.push({ name: fieldName, text: text, html: displayHtml, matchedInDevanagari: true });
                     return;
                 }
                 
-                // Check Latin transliteration match
-                if (isLatin && devanagariQuery) {
-                    const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
-                    const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
-                    if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
-                        score += fieldScore * 0.7;
+                // Check Latin match if input is Latin
+                if (isLatin) {
+                    const qLatin = normalizeLatin(qNoSpaces);
+                    // Match against various latin fields found in entries
+                    if (fieldName === 'Mantra' && entry.mantra_latin && entry.mantra_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
                         matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Rik' && entry.rik_latin && entry.rik_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (fieldName === 'Title' && entry.title_latin && entry.title_latin.includes(qLatin)) {
+                        score += fieldScore * 0.75;
+                        matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                    } else if (devanagariQuery) {
+                        // Fallback: check Devanagari conversion match
+                        const textLatin = textNoSpaces.replace(/[\u093E-\u094D\u0951-\u0954]/g, '');
+                        const dqNoSpaces = devanagariQuery.replace(wsRegex, '');
+                        if (textLatin.toLowerCase().includes(dqNoSpaces.toLowerCase())) {
+                            score += fieldScore * 0.65;
+                            matchedFields.push({ name: fieldName, text: text, html: displayHtml });
+                        }
                     }
                 }
             };
@@ -319,7 +355,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             for (const c of entry.classifications) {
                 checkField(c.rishi_clean, 7, 'Rishi', c.rishi);
+                // Latin match for Rishi
+                if (isLatin && c.rishi_latin && c.rishi_latin.includes(normalizeLatin(q))) {
+                    score += 5; matchedFields.push({ name: 'Rishi', text: c.rishi_clean, html: c.rishi });
+                }
+                
                 checkField(c.devata_clean, 6, 'Devata', c.devata);
+                // Latin match for Devata
+                if (isLatin && c.devata_latin && c.devata_latin.includes(normalizeLatin(q))) {
+                    score += 4; matchedFields.push({ name: 'Devata', text: c.devata_clean, html: c.devata });
+                }
+                
                 checkField(c.chandas_clean, 4, 'Chandas', c.chandas);
             }
             
@@ -348,7 +394,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (searchResults) searchResults.innerHTML = '<div class="search-loading">Loading search index...</div>';
                     return;
                 }
-                const results = performSearch(query);
+                const q = query.toLowerCase().trim();
+                const isLatin = /[a-z]/.test(q) && !/[\u0900-\u097F]/.test(q);
+                const devanagariQuery = isLatin ? latinToDevanagari(q) : null;
+                const results = performSearch(query, isLatin, devanagariQuery);
                 if (results.length === 0) {
                     searchResults.innerHTML = '<div class="search-no-results"><div class="icon">🔍</div>No results found for "' + query + '"</div>';
                     return;
@@ -356,12 +405,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 let html = '';
                 for (const r of results) {
                     const classInfo = r.classifications.length > 0 
-                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).join('; ')
+                        ? r.classifications.map(c => [c.rishi, c.devata, c.chandas].filter(Boolean).join(' | ')).filter(Boolean).join('; ')
                         : '';
                     const fieldLabels = { 'Mantra': 'मन्त्र', 'Rik': 'ऋक्', 'Rishi': 'ऋषि', 'Devata': 'देवता', 'Chandas': 'छन्दस्', 'Title': 'शीर्षक', 'Metadata': 'विवरण' };
                     let fieldsHtml = '';
                     for (const mf of r.matchedFields) {
-                        const highlighted = highlightText(mf.html || mf.text, query);
+                        const highlighted = highlightText(mf.html || mf.text, query, devanagariQuery);
                         const label = fieldLabels[mf.name] || mf.name;
                         fieldsHtml += `<div class="search-result-field"><span class="search-result-field-label">${label}</span><div class="search-result-text">${highlighted}</div></div>`;
                     }
