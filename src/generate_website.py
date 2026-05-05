@@ -3859,6 +3859,7 @@ const highlightText = (text, query, devanagariQuery) => {
         {self._get_sidebar_html()}
         
         <main class="main-content" style="max-width: 1200px;">
+            {self._get_top_nav_html()}
             <div class="home-hero">
                 <h1>{self.config['title_sa']}</h1>
                 <p class="subtitle">{self.config['title_en']}</p>
