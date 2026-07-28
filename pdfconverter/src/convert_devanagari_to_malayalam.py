@@ -491,7 +491,11 @@ class VedicTransliterate:
 
         lines = target_dev_text.splitlines()
         result_lines = []
+        DANDA_PLACEHOLDER = '\u00A6\u00A6\u00A6'  # unlikely triple broken bar
+        DANDA2_PLACEHOLDER = '\u00A6\u00A6\u00A6\u00A6'
         for line in lines:
+            # Preserve danda/double-danda (not in Malayalam script)
+            line = line.replace('॥', DANDA2_PLACEHOLDER).replace('।', DANDA_PLACEHOLDER)
             if re.search(r'[\u0900-\u097F\u1CD0-\u1CF9\uA8E0-\uA8FF]', line):
                 tokens = re.split(r'([\u0900-\u097F\u1CD0-\u1CF9\uA8E0-\uA8FF]+)', line)
                 line_res = []
@@ -503,6 +507,7 @@ class VedicTransliterate:
                     else:
                         line_res.append(token)
                 res_str = ''.join(line_res)
+                res_str = res_str.replace(DANDA2_PLACEHOLDER, '॥').replace(DANDA_PLACEHOLDER, '।')
                 
                 # Clean up font offset spaces attached to Vedic accents
                 res_str = clean_accent_spaces(res_str)
@@ -531,11 +536,6 @@ class VedicTransliterate:
                 # Apply repha to ൪ conversion before consonant
                 res_str = re.sub(r'[\u0d7b\u0d7c]([\u0d15-\u0d39])', r'൪\1', res_str)
                 
-                # Apply consonant doubling after ൪
-                double_consonants = 'കഖഗഘചഛജഝതഥദധനപഫബഭമയലവശഷസ'
-                for c in double_consonants:
-                    res_str = re.sub(f'൪{c}(?!്{c})', f'൪{c}്{c}', res_str)
-
                 # Fix dotted circle before visarga U+0D03 and anusvara U+0D02:
                 # Swap Vedic accent (U+0951, U+0952, U+1CF2) and visarga/anusvara
                 res_str = re.sub(r'([\u0d00-\u0d7f])([॒॑᳚])([ംഃ])', r'\1\3\2', res_str)
