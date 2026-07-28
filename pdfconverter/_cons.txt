@@ -1,0 +1,232 @@
+=== 2-char consonant clusters (top 40) ===
+  'pr': 956
+  'Sc': 947
+  'By': 861
+  'st': 858
+  'nt': 825
+  'dr': 663
+  'kS': 606
+  'tr': 570
+  'rv': 492
+  'sv': 457
+  'ty': 454
+  'gm': 441
+  'nd': 395
+  'dd': 379
+  'Sv': 355
+  'sy': 342
+  'tv': 300
+  'Sr': 290
+  'rt': 286
+  'mR': 246
+  'rp': 238
+  'nn': 233
+  'vy': 233
+  'tt': 229
+  'rm': 228
+  'ss': 216
+  'dy': 212
+  'br': 209
+  'sm': 205
+  'ny': 204
+  'kt': 198
+  'dv': 187
+  'jc': 185
+  'ry': 179
+  'gr': 177
+  'rd': 174
+  'gg': 168
+  'sr': 162
+  'kR': 153
+  'gn': 149
+
+=== 3-char consonant clusters (top 30) ===
+  'ndr': 184
+  'dBy': 106
+  'ntr': 100
+  'rtt': 69
+  'stv': 46
+  'rdd': 43
+  'nty': 31
+  'str': 27
+  'try': 24
+  'tny': 14
+  'rbr': 13
+  'rSv': 12
+  'skR': 12
+  'ssv': 10
+  'rmy': 10
+  'smR': 9
+  'tpr': 9
+  'klR': 9
+  'rcc': 8
+  'spR': 8
+  'ttR': 8
+  'lpy': 7
+  'rjy': 7
+  'ntv': 7
+  'rvR': 7
+  'rNy': 6
+  'pty': 5
+  'rGy': 5
+  'rkk': 5
+  'rtn': 5
+
+=== Token terminal consonant letter ===
+  'H': 3299
+  't': 320
+  'n': 286
+  'm': 134
+  'd': 62
+  'r': 47
+  'k': 28
+  'T': 27
+  's': 18
+  'g': 16
+  'l': 11
+  'S': 9
+  'B': 8
+  'y': 7
+  'f': 5
+  'p': 3
+  'w': 1
+
+=== First letters of tokens (top 30) ===
+  'n': 2790
+  'm': 2780
+  's': 2464
+  'p': 2168
+  'c': 1897
+  'v': 1647
+  '.': 1435
+  'd': 1300
+  'a': 1210
+  't': 1088
+  'S': 1063
+  'k': 895
+  'B': 775
+  'r': 760
+  'y': 738
+  'O': 732
+  'A': 689
+  'h': 572
+  'i': 517
+  'b': 447
+  'j': 422
+  '-': 415
+  'g': 387
+  '(': 290
+  'u': 286
+  'E': 220
+  '&': 192
+  '~': 181
+  ')': 94
+  'R': 89
+
+=== Sample tokens containing both u/U (length contrasts) ===
+  '(UruByAM'
+  'Ana#SSRuqNvannUqtiBi#H'
+  'BUjalavAyu'
+  'BUrBUvaqssuvaqrOM'
+  'BUrBuvaqqssuvaqqrOM'
+  'BUrBuvaqssuqvarOM'
+  'BUrBuvaqssuvOq'
+  'BUrBuvaqssuva#H'
+  'BUrBuvaqssuvaqH'
+  'BUrBuvaqssuvaqrApaq'
+  'BUrBuvaqssuvaqrOM'
+  'BUrBuvaqssuvaqrOmiti'
+  'BUrBuvassuvO'
+  'BUrBuvassuvaH'
+  'BUrBuvassuvarOM'
+  'BUrBuvassuvarOmiti'
+  'BUtEqShuq'
+  'BUta-prEta-piSAca-brahmarAkShasa-yakSha-yamadUta-SAkinI-DAkinI-sarpa-SvApada-vRuScika-taskarAd'
+  'BUyAsuriti'
+  'BavantOnuhNantU'
+  'RucaqssAmaq-yajU(gm)#Shiq'
+  'RuqtUn'
+  'SRuqNvannUqtiBi#H'
+  'SUlA~gkuSadharaM'
+  'SrIrudra-sUkta'
+  'SuSrUqShENyA$M'
+  'SuqSrUqShENyA$M'
+  'SuqnddhyUra#si'
+  'UcuH'
+  'aBU#tiq-masa#mRuddhiqMcaq'
+
+=== Sample tokens with lowercase 'e' (short) ===
+  '(Perform'
+  'Hence'
+  'Here'
+  'abhishekam'
+  'appropriate'
+  'are'
+  'be'
+  'itself.'
+  'method'
+  'more'
+  'perform'
+  'the'
+  'times)'
+
+=== Sample tokens with lowercase 'o' (short) ===
+  '(Perform'
+  '(pooja'
+  'Explanation)'
+  'Optional'
+  'Sadyo'
+  'appropriate'
+  'conduct'
+  'doing'
+  'how'
+  'method'
+  'more'
+  'not'
+  'of'
+  'or'
+  'perform'
+  'pooja'
+  'pooja)'
+  'to'
+  'would'
+  'you'
+
+=== tokens with LL ===
+  'vaLLidEvasEnA'
+
+=== count of | and || ===
+  single |: 3992
+  ||: 531
+
+=== tokens with $ (dirgha svarita) - sample ===
+  '&dA$ByaScaq'
+  '&hOrAqtrayO$'
+  '&hOrAqtrayO$rvRuqShTyA'
+  '&thaqGOrE$ByOq'
+  '&tigrAqhyA$Sca'
+  'A$tmaqdA'
+  'AdiqtyAnA$M'
+  'AgnI$ddhraM'
+  'AgnI$ddhraqmityAgni#'
+  'AgnI$dhraM'
+  'AqSavE$'
+  'AqhaqnaqnyA#yEtyA$'
+  'AqlAqdyA#yEtyA$'
+  'AqrAttE$'
+  'AqtAqryA#yEtyA$'
+  'AqtaqpyA#yEtyA$'
+  'AqviqvESEtyA$'
+  'AqvyAqdhinI#nAqmityA$'
+  'AqvyAqqdhinI$ByO'
+  'AqvyAqqdhinI$Byaqq'
+  'AqyuqrASA$stE'
+  'AvyAqdhinI$ByO'
+  'AvyAqdhinI$ByOq'
+  'AvyAqqdhinI$ByaH'
+  'BAgaqdhEya$M'
+  'BOga$M'
+  'BUmyA$M'
+  'BUqtAnA$M'
+  'BavE$'
+  'Bavya$M'
