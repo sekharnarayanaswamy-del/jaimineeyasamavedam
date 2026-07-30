@@ -36,6 +36,15 @@ import subprocess
 import unicodedata
 from pathlib import Path
 
+try:
+    from src.sanskrit98_decoder_v5 import decode_bytes as s98_decode_bytes, clean_repetitions as s98_clean_repetitions
+except ImportError:
+    try:
+        from sanskrit98_decoder_v5 import decode_bytes as s98_decode_bytes, clean_repetitions as s98_clean_repetitions
+    except ImportError:
+        s98_decode_bytes = None
+        s98_clean_repetitions = None
+
 # Ensure UTF-8 stdout on Windows
 if sys.platform == 'win32':
     try:
@@ -61,11 +70,15 @@ except ImportError:
             import pypdfium2 as pdfium
             PDF_ENGINE = 'pypdfium2'
         except ImportError:
-            try:
-                import pdfplumber
-                PDF_ENGINE = 'pdfplumber'
-            except ImportError:
-                PDF_ENGINE = None
+            PDF_ENGINE = None
+
+try:
+    from PyPDF2.generic import IndirectObject, ContentStream, TextStringObject, ByteStringObject
+except ImportError:
+    try:
+        from pypdf.generic import IndirectObject, ContentStream, TextStringObject, ByteStringObject
+    except ImportError:
+        IndirectObject, ContentStream, TextStringObject, ByteStringObject = None, None, None, None
 
 try:
     from aksharamukha import transliterate
@@ -82,17 +95,156 @@ class BRHDevanagariDecoder:
         ('vedavms@gmail.com', 'vedavms@gmail.com'),
         
         # Vedic Accents & Signs
-        ('þ', '॑'), ('–', '॒'), ('ÿ', '᳚'),
+        ('þ', '॑'), ('–', '॒'), ('ÿ', '᳚'), ('ý', '॒'),
         # óè / ò  = ꣳ (U+A8F3 Vedic gomukha, Candrabindu Two — Samavedic nasalization)
         # Æ       = ँ (U+0901 Devanagari Chandrabindu — general Vedic anunasika)
         # Diagnostic evidence: Æ always precedes a following consonant/vowel in word-final
         # anunasika position (e.g. lÉÇ ÆuÉ = naṃ ँva), while óè follows Vedic accent marks.
         ('óè', 'ꣳ'), ('ò', 'ꣳ'), ('Æ', 'ँ'), ('Å', 'ऽ'),
         ('Ç', 'ं'), ('È', 'ः'),
+        ('ã', 'े'), ('Á', 'ॐ'), ('Ã', 'ू'), ('T', 'फ'), ('V', 'ल'), ('ª', 'ग'), ('…', 'ंग'), ('½', 'ह'),
+        ('F', 'ऊ'), ('¡', 'ं'), ('X', 'ङ'), ('ɳ', 'ि'), ('§', 'ष्ठ'),
         
         # Title Decoding Fixes (Poorvanga Pooja -> पूर्वाङ्ग पूजा -> പൂർവ്വാംഗ പൂജ)
         ('mÉÔuÉÉïÇaÉ', 'पूर्वाङ्ग'), ('mÉÔuÉÉïauÉ', 'पूर्वाङ्ग'), ('mÉÔuÉÉï', 'पूर्वा'),
         ('mÉÔeÉ É', 'पूजा'), ('mÉÔeÉÉ', 'पूजा'),
+        
+        # BRH Conjunct fixes (Sringeri D-Bha, T-Ta, N-Ga, N-Ka, N-Ku, Shtra, Mani)
+        ('MühÉÉãï°É', 'कर्णोद्भा'),
+        ('mÉëÉãÎ°³', 'प्रोद्भिन्न'),
+        ('Î°³', 'िद्भिन्न'),
+        ('Î°', 'िद्भि'),
+        ('°É', 'द्भा'),
+        ('°', 'द्भ'),
+        ('uÉ×¨É', 'वृत्त'),
+        ('¨É', 'त्त'),
+        ('¨', 'त्त'),
+        ('…¡ãû', 'ङ्गे'),
+        ('…¡ã', 'ङ्गे'),
+        ('…¡û', 'ङ्ग'),
+        ('…¡', 'ङ्ग'),
+        ('ƒ¡Óû', 'ङ्कु'),
+        ('ƒ¡Ó', 'ङ्कु'),
+        ('ƒ¡', 'ङ्क'),
+        ('íा', 'ङ्क'),
+        ('¹íा', 'ष्ट्रा'),
+        ('¹í', 'ष्ट्र'),
+        ('¹É', 'ष्ट्रा'),
+        ('¹', 'ष्ट्र'),
+        ('qÉÍhÉ', 'मणि'),
+        ('bne', 'घ्ने'),
+        ('bn', 'घ्न'),
+
+        # Page 2 Matra Fixes (ध्यायन्ति, नमो नमः, नमः, हिरण्याय, हिरण्यलिङ्गाय, ऊर्ध्वलिङ्गाय)
+        ('krÉÉrÉliÉ', 'ध्यायन्ति'),
+        ('liÉ', 'न्ति'),
+        ('li', 'न्ति'),
+        ('lÉqÉÉã', 'नमो'),
+        ('lÉqÉÉः', 'नमः'),
+        ('lÉqÉÉ', 'नम'),
+        ('nmlाः', 'नमः'),
+        ('नम्ाः', 'नमः'),
+        ('नम्ा', 'नम'),
+        ('ÌWûUhrÉÍsÉ…¡ûÉrÉý', 'हिरण्यलिङ्गाय॒'),
+        ('ÌWûUhrÉÍsÉ…¡ûÉrÉ', 'हिरण्यलिङ्गाय'),
+        ('हिरण्यलिङ्गाय्ा॒', 'हिरण्यलिङ्गाय॒'),
+        ('हिरण्यलिङ्गाय्ा', 'हिरण्यलिङ्गाय'),
+        ('लिङ्गाय्ा॒', 'लिङ्गाय॒'),
+        ('लिङ्गाय्ा', 'लिङ्गाय'),
+        ('ÌWûUhrÉÉrÉý', 'हिरण्याय॒'),
+        ('ÌWûUhrÉÉrÉ', 'हिरण्याय'),
+        ('ÌWûUhrÉ', 'हिरण्य'),
+        ('ÌWû', 'हि'),
+        ('ÍsÉ…¡ûÉrÉý', 'लिङ्गाय॒'),
+        ('ÍsÉ…¡ûÉrÉ', 'लिङ्गाय'),
+        ('ÍsÉ…¡û', 'लिङ्ग'),
+        ('ÍsÉ…¡', 'लिङ्ग'),
+        ('rÉÎssÉ…¡Çû', 'यल्लिङ्गं'),
+        ('ÍsÉ', 'लि'),
+        ('Ís', 'लि'),
+        ('rÉý', 'य॒'),
+
+        # Leaked BRH font glyph fixes (Ó -> ु, Ö -> ू, Ù -> ृ, ì -> द्रि, œ -> ठ्य, Š -> च्च, š -> ठ, † -> घ, • -> ळ्, © -> द्म, ´ -> श्र, ¦ -> द्व)
+        ('अङ्गÓष्ठाभ्यां', 'अङ्गुष्ठाभ्याम्'),
+        ('अङ्गÓ', 'अङ्गु'),
+        ('अंगÓ', 'अङ्गु'),
+        ('कदृÓ', 'कदुरु'),
+        ('कद्रÓ', 'कदुरु'),
+        ('शामÓ', 'शामगुल'),
+        ('Ó', 'ु'),
+        ('चिद्रÖ', 'चिद्रू'),
+        ('ष•Ö॑तो', 'षळ्ढोतो'),
+        ('ष•Ö', 'षळ्ढो'),
+        ('द्रÖ', 'द्रू'),
+        ('Ö', 'ू'),
+        ('कालङ्कÙत', 'कालङ्कृत'),
+        ('कÙ', 'कृत'),
+        ('Ù', 'ृ'),
+        ('अ॑दिì॒जा', 'अ॑द्रि॒जा'),
+        ('रुदिì', 'रुद्रिया'),
+        ('दिì', 'द्रि'),
+        ('ì', 'द्रि'),
+        ('प॒œते', 'प॒ठ्यते'),
+        ('œ', 'ठ्य'),
+        ('परा᳚Šैव', 'पराच्चैव'),
+        ('रसा᳚Š', 'रसाच्च'),
+        ('सू॒दय॑Š', 'सूदयच्च'),
+        ('Š', 'च्च'),
+        ('दृष्šा', 'दृष्ट्वा'),
+        ('का॒šा॑य', 'का॒ठ्याय॑'),
+        ('कšै', 'कष्ठाय'),
+        ('š', 'ठ'),
+        ('ज†ंाभ्यां', 'जङ्घाभ्याम्'),
+        ('ज†', 'जङ्घ'),
+        ('अ†', 'अङ्घ'),
+        ('†', 'घ'),
+        ('•', 'ळ्'),
+        ('वि॒©हे', 'वि॒द्महे'),
+        ('©', 'द्म'),
+        ('´', 'श्र'),
+        ('¦', 'द्व'),
+        ('À', ''),
+        ('¬', '-'),
+        ('¾', '-'),
+        ('ð', 'ँ'),
+        ('kÉÉÌrÉþ', 'धायि॑'),
+        ('kÉÉÌrÉ', 'धायि'),
+        ('ÌrÉ', 'यि'),
+        ('Ø', 'ृ'),
+        ('uÉØýkÉã', 'वृ॒धे'),
+        ('uÉØkÉã', 'वृधे'),
+        ('uÉØ', 'वृ'),
+        ('rÉÎxqÉý³É¤Éþ§Éã rÉýqÉ LãÌiÉý UÉeÉÉÿ', 'यस्मि॒न्नक्ष॑त्रे य॒म ऐति॒ राजा᳚'),
+        ('rÉÎxqÉý ³É¤Éþ§Éã rÉýqÉ LÌiÉý UÉeÉÉÿ', 'यस्मि॒न्नक्ष॑त्रे य॒म ऐति॒ राजा᳚'),
+        ('Lã', 'ऐ'),
+        ('ÎxqÉ', 'स्मि'),
+        ('Îxq', 'स्मि'),
+        ('lÉ×ýwÉ²þUýxÉSØþiÉýxÉSèurÉÉãþqÉýxÉSýoeÉÉ a ÉÉãýeÉÉ GþiÉýeÉÉ', 'नृ॒षद्व॑र॒सदृ॑त॒सद्व्यो॑म॒सद॒ब्जामद॒ब्जा गो॒जाऋ॑त॒जा'),
+        ('AÉãwÉþkÉÏwÉÑý', 'ओष॑धीषु॒'),
+        ('AÉãwÉ', 'ओष'),
+        ('AýbÉÉãUãÿprÉÉãÅjÉý', 'अ॒घोरे᳚भ्योऽथ॒'),
+        ('jÉý', 'थ॒'),
+        ('jÉ', 'थ'),
+        ('zÉÔÍsÉlÉÈ', 'शूलिनः'),
+        ('zÉÔ', 'शू'),
+        ('fÉÇ', 'झं'),
+        ('fÉ', 'झ'),
+        ('gÉÇ', 'ञं'),
+        ('gÉ', 'ञ'),
+        ('DÇ', 'ईं'),
+        ('D', 'ई'),
+        
+        # Jyeshthaya & Shreshthaya fixes (ज्येष्ठाय, श्रेष्ठाय)
+        ('erÉãý¸ÉrÉý', 'ज्ये॒ष्ठाय॒'),
+        ('erÉãý¸ÉrÉ', 'ज्ये॒ष्ठाय'),
+        ('erÉã¸ÉrÉ', 'ज्येष्ठाय'),
+        ('´Éãý¸ ÉrÉý', 'श्रे॒ष्ठाय॒'),
+        ('´Éãý¸ÉrÉý', 'श्रे॒ष्ठाय॒'),
+        ('´Éãý¸ÉrÉ', 'श्रे॒ष्ठाय'),
+        ('´Éã¸ÉrÉ', 'श्रेष्ठाय'),
+        ('´Éã', 'श्रे'),
+        ('¸ ÉrÉ', 'ष्ठाय'),
+        ('¸É', 'ष्ठा'),
         
         # Ijjo (C‹Éå -> इज्जो / ഇജ്ജോ)
         ('C‹Éå', 'इज्जो'), ('‹Éå', 'ज्जो'), ('‹É', 'ज्जा'), ('‹', 'ज्ज'),
@@ -228,6 +380,11 @@ class BRHDevanagariDecoder:
                 out_lines.append(line)
             else:
                 res = line
+                # Pre-clean split spaces inside raw font glyph streams
+                res = res.replace('lÉq ÉÈ', 'lÉqÉÈ').replace('lÉq É', 'lÉqÉ')
+                res = res.replace('Ér Éý', 'ÉrÉý').replace('Ér É', 'ÉrÉ').replace('q É', 'qÉ')
+                res = res.replace('sÉ…¡ûÉr Éý', 'sÉ…¡ûÉrÉý').replace('ÍsÉ…¡ûÉr Éý', 'ÍsÉ…¡ûÉrÉý')
+
                 for k, v in sorted_map:
                     res = res.replace(k, v)
                 
@@ -242,11 +399,31 @@ class BRHDevanagariDecoder:
                 res = res.replace('ï', 'र्')
                 
                 # Clean up any leftover unmapped font artifacts
-                res = res.replace('û', '').replace('Í', '').replace('Ì', '').replace('Î', '').replace('ü', '')
+                res = res.replace('û', '').replace('Í', '').replace('Ì', '').replace('Î', '').replace('ü', '').replace('Ø', 'ृ').replace('ð', 'ँ')
+                res = res.replace('Ó', 'ु').replace('Ö', 'ू').replace('Ù', 'ृ').replace('ì', 'द्रि').replace('œ', 'ठ्य').replace('Š', 'च्च').replace('š', 'ठ').replace('†', 'घ').replace('•', 'ळ्').replace('©', 'द्म').replace('´', 'श्र').replace('¦', 'द्व').replace('À', '').replace('¬', '-').replace('¾', '-')
                 
                 # Fix BRH artifact: consonant + virama + ṛ-matra → consonant + ṛ-matra
                 # (BRH sometimes inserts a spurious halant before the ृ vowel sign)
                 res = res.replace('्ृ', 'ृ')
+
+                # Fix Sringeri Paddhati matra & word artifacts
+                res = res.replace('धाय॑', 'धायि॑')
+                res = res.replace('यस्म॒न्नक्ष॑त्रे', 'यस्मि॒न्नक्ष॑त्रे').replace('यस्म॒ न्नक्ष॑त्रे', 'यस्मि॒न्नक्ष॑त्रे')
+                res = res.replace('एेति॒', 'ऐति॒').replace('एेति', 'ऐति').replace('एति॒ राजा', 'ऐति॒ राजा')
+                res = res.replace('एे', 'ऐ')
+                res = res.replace('नृ॒षद्व॑र॒सदØ॑त॒सद्व्यो॑म॒सद॒ब्जा ग्ो॒जा ऋ॑त॒जा', 'नृ॒षद्व॑र॒सदृ॑त॒सद्व्यो॑म॒सद॒ब्जामद॒ब्जा गो॒जाऋ॑त॒जा')
+                res = res.replace('nृ॒षद्व॑र॒सदØ॑त॒सद्व्यो॑म॒सद॒ब्जा ग्ो॒जा ऋ॑त॒जा', 'नृ॒षद्व॑र॒सदृ॑त॒सद्व्यो॑म॒सद॒ब्जामद॒ब्जा गो॒जाऋ॑त॒जा')
+                res = res.replace('सदØ॑त॒सद्', 'सदृ॑त॒सद्')
+                res = res.replace('आेष॑धीषु', 'ओष॑धीषु').replace('आेषधीषु', 'ओषधीषु')
+                res = res.replace('भ्योऽथा॒', 'भ्योऽथ॒').replace('भ्योऽथा', 'भ्योऽथ')
+                res = res.replace('श्ाूलिनः', 'शूलिनः').replace('श्ाूलि', 'शूलि').replace('श्ाू', 'शू')
+                res = res.replace('न्ामः', 'नमः').replace('न्ाम', 'नम')
+                res = res.replace('नम्ाः', 'नमः').replace('नम्ा', 'नम')
+                res = res.replace('हिरण्यलिङ्गाय्ा', 'हिरण्यलिङ्गाय').replace('लिङ्गाय्ा', 'लिङ्गाय')
+                res = res.replace('हरण्याय', 'हिरण्याय')
+                res = res.replace('ऊर्ध्वलंगंाय', 'ऊर्ध्वलिङ्गाय').replace('ऊर्ध्वलंगाय', 'ऊर्ध्वलिङ्गाय')
+                res = res.replace('ध्यायन्तिि', 'ध्यायन्ति').replace('ध्यायन्त', 'ध्यायन्ति')
+                res = res.replace('िि', 'ि')
 
                 # Fix common typos/legacy font errors in Devanagari
                 res = res.replace('कमर्कर्ताुर्ं', 'कर्मकर्तुं')
@@ -397,6 +574,9 @@ def clean_accent_spaces(text: str) -> str:
     text = re.sub(r'([\u0900-\u097F\u0D00-\u0D7F])\s+([॒॑᳚])', r'\1\2', text)
     text = reorder_accents_before_ardhakshara(text)
     text = normalize_combining_marks(text)
+    text = re.sub(r'्+', '्', text)
+    text = re.sub(r'്+', '്', text)
+    text = text.replace('ശാൂലിനഃ', 'ശൂലിനഃ').replace('ശാൂലി', 'ശൂലി').replace('ശാൂ', 'ശൂ')
     return text
 
 
@@ -584,10 +764,7 @@ def parse_page_range(pages_arg: str, total_pages: int):
 def extract_structured_pdf_pages(input_file: str, pages_filter: list = None, nasal_mode: str = 'symbol') -> list:
     """
     Extracts structured page elements (headers, footers, body text lines, font sizes, bold weight, alignment)
-    using PyPDF2 / pypdf visitor_text API.
-    Retains page footers as original English without transliteration.
-    Preserves authentic word boundaries without artificial intra-word spaces.
-    Filters out empty lines to avoid unwanted blank spacing lines.
+    using PyPDF2 / pypdf. Supports both Sanskrit98 font streams and standard Unicode/BRH font PDFs.
     """
     if not PDF_ENGINE or PDF_ENGINE not in ('pypdf', 'PyPDF2'):
         return None
@@ -597,6 +774,25 @@ def extract_structured_pdf_pages(input_file: str, pages_filter: list = None, nas
     indices = pages_filter if pages_filter is not None else list(range(total_pages))
     
     pages_data = []
+
+    def mat_mul(m1, m2):
+        a1, b1, c1, d1, e1, f1 = m1
+        a2, b2, c2, d2, e2, f2 = m2
+        return [
+            a1 * a2 + c1 * b2,
+            b1 * a2 + d1 * b2,
+            a1 * c2 + c1 * d2,
+            b1 * c2 + d1 * d2,
+            a1 * e2 + c1 * f2 + e1,
+            b1 * e2 + d1 * f2 + f1,
+        ]
+
+    def raw_bytes(s):
+        if hasattr(s, 'original_bytes'):
+            return list(s.original_bytes)
+        return list(bytes(s, 'latin-1'))
+
+    FONT_KEY = 'Sanskrit98'
     
     for i, page_idx in enumerate(indices):
         if (i + 1) % 10 == 0 or i + 1 == len(indices):
@@ -607,118 +803,256 @@ def extract_structured_pdf_pages(input_file: str, pages_filter: list = None, nas
         page_height = float(media_box.height)
         page_width = float(media_box.width)
         
-        spans = []
-        def visitor(text, cm, tm, font_dict, font_size):
-            if text:
-                font_name = font_dict.get('/BaseFont', '') if font_dict else ''
-                is_bold = 'bold' in font_name.lower() or 'heavy' in font_name.lower() or 'black' in font_name.lower()
-                is_italic = 'italic' in font_name.lower() or 'oblique' in font_name.lower()
-                x = tm[4]
-                y = tm[5]
-                spans.append({
-                    'text': text,
-                    'font': font_name,
-                    'size': font_size,
-                    'is_bold': is_bold,
-                    'is_italic': is_italic,
-                    'x': x,
-                    'y': y
-                })
-                
-        page.extract_text(visitor_text=visitor)
-        
-        # Cluster spans into lines by y-coordinate (tolerance 3.5 points)
-        lines_dict = {}
-        for s in spans:
-            y_cluster = round(s['y'] / 3.5) * 3.5
-            if y_cluster not in lines_dict:
-                lines_dict[y_cluster] = []
-            lines_dict[y_cluster].append(s)
+        res = page.get('/Resources')
+        fonts = res.get('/Font') if res else None
+        if isinstance(fonts, IndirectObject):
+            fonts = fonts.get_object()
             
-        sorted_y = sorted(lines_dict.keys(), reverse=True)
-        
-        headers = []
-        footers = []
-        body_lines = []
-        
-        for y_val in sorted_y:
-            line_spans = sorted(lines_dict[y_val], key=lambda item: item['x'])
-            
-            # Combine text of spans in line naturally without forcing artificial inter-span spaces
-            full_line_text = "".join(item['text'] for item in line_spans)
-            if not full_line_text.strip():
-                continue
-                
-            max_size = max(item['size'] for item in line_spans)
-            has_italic = any(item['is_italic'] for item in line_spans)
-            min_x = min(item['x'] for item in line_spans)
-            max_x = max(item['x'] + len(item['text']) * (item['size'] * 0.38) for item in line_spans)
-            
-            # A line is only bold if more than 50% of its printable characters use a bold font
-            bold_chars = sum(len(item['text'].strip()) for item in line_spans if item['is_bold'])
-            total_chars = sum(len(item['text'].strip()) for item in line_spans)
-            has_bold = (total_chars > 0) and ((bold_chars / total_chars) > 0.50)
-            
-            is_header = y_val > (page_height - 55)
-            is_footer = y_val < 75
-            
-            center_x = (min_x + max_x) / 2.0
-            if abs(center_x - (page_width / 2.0)) < 40 and len(full_line_text.strip()) < 40:
-                align = 'center'
-            elif min_x > (page_width * 0.55):
-                align = 'right'
-            else:
-                align = 'left'
-                
-            # Decode BRH Devanagari text — but skip English-only lines (introductions, notes,
-            # "see Chapter X" references). Such lines have no Devanagari/Malayalam/Vedic
-            # code points and no BRH font glyphs, so BRH decoding + Malayalam transliteration
-            # would only corrupt them. Pass them through verbatim in both dev_text and mal_text.
-            if not is_indic_or_brh_line(full_line_text):
-                dev_text = full_line_text
-                mal_text = full_line_text
-            else:
-                dev_text = BRHDevanagariDecoder.decode(full_line_text)
-                dev_text = clean_accent_spaces(dev_text)
+        finfo = {}
+        has_sanskrit98 = False
+        for tag, fref in (fonts or {}).items():
+            fobj = fref.get_object()
+            fname = str(fobj.get('/BaseFont', ''))
+            is98 = FONT_KEY in fname
+            if is98:
+                has_sanskrit98 = True
+            is_bold = 'bold' in fname.lower() or 'heavy' in fname.lower() or 'black' in fname.lower()
+            is_italic = 'italic' in fname.lower() or 'oblique' in fname.lower()
+            finfo[str(tag)] = {'is98': is98, 'font_name': fname, 'is_bold': is_bold, 'is_italic': is_italic}
 
-                # For footers, retain original text as-is without transliteration
-                if is_footer or 'vedavms' in full_line_text.lower() or 'page ' in full_line_text.lower():
-                    mal_text = full_line_text
+        if has_sanskrit98 and s98_decode_bytes is not None:
+            # Sanskrit98 stream extraction
+            cs = ContentStream(page['/Contents'].get_object(), reader)
+            ctm = [1, 0, 0, 1, 0, 0]
+            gstack = []
+            tlm = [1, 0, 0, 1, 0, 0]
+            cur_font, cur_size, leading = None, 12.0, 0.0
+            chunks = []
+
+            for operands, op in cs.operations:
+                if op == b'q':
+                    gstack.append(ctm[:])
+                elif op == b'Q':
+                    ctm = gstack.pop() if gstack else ctm
+                elif op == b'cm':
+                    m = [float(v) for v in operands]
+                    ctm = mat_mul(ctm, m)
+                elif op == b'Tf':
+                    cur_font = str(operands[0])
+                    cur_size = float(operands[1])
+                elif op == b'TL':
+                    leading = float(operands[0])
+                elif op in (b'Td', b'TD'):
+                    tlm = mat_mul([1, 0, 0, 1, float(operands[0]), float(operands[1])], tlm)
+                    if op == b'TD':
+                        leading = -float(operands[1])
+                elif op == b'Tm':
+                    tlm = [float(v) for v in operands]
+                elif op == b'T*':
+                    tlm = mat_mul([1, 0, 0, 1, 0, -leading], tlm)
+                elif op in (b'Tj', b"'", b'"', b'TJ'):
+                    pos = mat_mul(ctm, tlm)
+                    px, py = pos[4], pos[5]
+                    strs = []
+                    if op in (b'Tj', b"'"):
+                        strs = [operands[0]]
+                    elif op == b'"':
+                        strs = [operands[2]]
+                    else:
+                        strs = [it for it in operands[0]
+                                if isinstance(it, (TextStringObject, ByteStringObject))]
+                    for s in strs:
+                        rb = raw_bytes(s)
+                        chunks.append({'y': py, 'x': px, 'font': cur_font, 'size': cur_size, 'bytes': rb})
+
+            chunks.sort(key=lambda c: (-c['y'], c['x']))
+            lines_dict = {}
+            for c in chunks:
+                y_val = round(c['y'] / 3.0) * 3.0
+                if y_val not in lines_dict:
+                    lines_dict[y_val] = []
+                lines_dict[y_val].append(c)
+
+            sorted_y = sorted(lines_dict.keys(), reverse=True)
+            headers, footers, body_lines = [], [], []
+
+            for y_val in sorted_y:
+                line_chunks = sorted(lines_dict[y_val], key=lambda c: c['x'])
+                byts, sizes, fonts = [], [], []
+                is_s98_line = False
+                for lc in line_chunks:
+                    byts.extend(lc['bytes'])
+                    sizes.append(lc['size'])
+                    fonts.append(lc['font'])
+                    if lc['font'] and finfo.get(lc['font'], {}).get('is98'):
+                        is_s98_line = True
+
+                max_size = max(sizes) if sizes else 12.0
+                has_bold = any(finfo.get(f, {}).get('is_bold') for f in fonts)
+                has_italic = any(finfo.get(f, {}).get('is_italic') for f in fonts)
+                min_x = min(lc['x'] for lc in line_chunks)
+                max_x = max(lc['x'] for lc in line_chunks)
+
+                is_header = y_val > (page_height - 55)
+                is_footer = y_val < 65
+
+                center_x = (min_x + max_x) / 2.0
+                if abs(center_x - (page_width / 2.0)) < 50:
+                    align = 'center'
+                elif min_x > (page_width * 0.55):
+                    align = 'right'
+                else:
+                    align = 'left'
+
+                if is_s98_line:
+                    dev_text = s98_decode_bytes(byts)
+                    if s98_clean_repetitions is not None:
+                        dev_text = s98_clean_repetitions(dev_text)
+                else:
+                    dev_text = "".join(chr(b) for b in byts if b > 0)
+
+                dev_text = clean_accent_spaces(dev_text.strip())
+
+                if not dev_text:
+                    continue
+
+                if not is_indic_or_brh_line(dev_text) or is_footer or 'created by' in dev_text.lower() or 'page ' in dev_text.lower():
+                    mal_text = dev_text
                 else:
                     mal_text = VedicTransliterate.devanagari_to_malayalam(dev_text, nasal_mode=nasal_mode)
+
+                line_obj = {
+                    'raw_text': dev_text,
+                    'dev_text': dev_text,
+                    'mal_text': mal_text,
+                    'size': max_size,
+                    'is_bold': has_bold,
+                    'is_italic': has_italic,
+                    'align': align,
+                    'is_header': is_header,
+                    'is_footer': is_footer,
+                    'y': y_val
+                }
+
+                if is_header:
+                    headers.append(line_obj)
+                elif is_footer:
+                    footers.append(line_obj)
+                else:
+                    body_lines.append(line_obj)
+
+            pages_data.append({
+                'page_number': page_idx + 1,
+                'headers': headers,
+                'body_lines': body_lines,
+                'footers': footers
+            })
+
+        else:
+            # Standard visitor_text extraction
+            spans = []
+            def visitor(text, cm, tm, font_dict, font_size):
+                if text:
+                    font_name = font_dict.get('/BaseFont', '') if font_dict else ''
+                    is_bold = 'bold' in font_name.lower() or 'heavy' in font_name.lower() or 'black' in font_name.lower()
+                    is_italic = 'italic' in font_name.lower() or 'oblique' in font_name.lower()
+                    x = tm[4]
+                    y = tm[5]
+                    spans.append({
+                        'text': text,
+                        'font': font_name,
+                        'size': font_size,
+                        'is_bold': is_bold,
+                        'is_italic': is_italic,
+                        'x': x,
+                        'y': y
+                    })
+                    
+            page.extract_text(visitor_text=visitor)
             
-            line_obj = {
-                'raw_text': full_line_text,
-                'dev_text': dev_text,
-                'mal_text': mal_text,
-                'size': max_size,
-                'is_bold': has_bold,
-                'is_italic': has_italic,
-                'align': align,
-                'is_header': is_header,
-                'is_footer': is_footer,
-                'y': y_val
-            }
-            
-            if is_header:
-                headers.append(line_obj)
-            elif is_footer:
-                footers.append(line_obj)
-            else:
-                body_lines.append(line_obj)
+            lines_dict = {}
+            for s in spans:
+                y_cluster = round(s['y'] / 3.5) * 3.5
+                if y_cluster not in lines_dict:
+                    lines_dict[y_cluster] = []
+                lines_dict[y_cluster].append(s)
                 
-        pages_data.append({
-            'page_number': page_idx + 1,
-            'headers': headers,
-            'body_lines': body_lines,
-            'footers': footers
-        })
-        
+            sorted_y = sorted(lines_dict.keys(), reverse=True)
+            
+            headers = []
+            footers = []
+            body_lines = []
+            
+            for y_val in sorted_y:
+                line_spans = sorted(lines_dict[y_val], key=lambda item: item['x'])
+                full_line_text = "".join(item['text'] for item in line_spans)
+                if not full_line_text.strip():
+                    continue
+                    
+                max_size = max(item['size'] for item in line_spans)
+                has_italic = any(item['is_italic'] for item in line_spans)
+                min_x = min(item['x'] for item in line_spans)
+                max_x = max(item['x'] + len(item['text']) * (item['size'] * 0.38) for item in line_spans)
+                
+                bold_chars = sum(len(item['text'].strip()) for item in line_spans if item['is_bold'])
+                total_chars = sum(len(item['text'].strip()) for item in line_spans)
+                has_bold = (total_chars > 0) and ((bold_chars / total_chars) > 0.50)
+                
+                is_header = y_val > (page_height - 55)
+                is_footer = y_val < 75
+                
+                center_x = (min_x + max_x) / 2.0
+                if abs(center_x - (page_width / 2.0)) < 40 and len(full_line_text.strip()) < 40:
+                    align = 'center'
+                elif min_x > (page_width * 0.55):
+                    align = 'right'
+                else:
+                    align = 'left'
+                    
+                if not is_indic_or_brh_line(full_line_text):
+                    dev_text = full_line_text
+                    mal_text = full_line_text
+                else:
+                    dev_text = BRHDevanagariDecoder.decode(full_line_text)
+                    dev_text = clean_accent_spaces(dev_text)
+
+                    if is_footer or 'vedavms' in full_line_text.lower() or 'page ' in full_line_text.lower():
+                        mal_text = full_line_text
+                    else:
+                        mal_text = VedicTransliterate.devanagari_to_malayalam(dev_text, nasal_mode=nasal_mode)
+                
+                line_obj = {
+                    'raw_text': full_line_text,
+                    'dev_text': dev_text,
+                    'mal_text': mal_text,
+                    'size': max_size,
+                    'is_bold': has_bold,
+                    'is_italic': has_italic,
+                    'align': align,
+                    'is_header': is_header,
+                    'is_footer': is_footer,
+                    'y': y_val
+                }
+                
+                if is_header:
+                    headers.append(line_obj)
+                elif is_footer:
+                    footers.append(line_obj)
+                else:
+                    body_lines.append(line_obj)
+                    
+            pages_data.append({
+                'page_number': page_idx + 1,
+                'headers': headers,
+                'body_lines': body_lines,
+                'footers': footers
+            })
+            
     return pages_data
 
 
 def extract_fallback_pages(input_file: str, pages_arg: str = None, nasal_mode: str = 'symbol') -> tuple:
-    """Fallback text extraction for simple text files or un-structured engines."""
+    """Fallback text extraction with smart semantic font size, boldness, and alignment layout rules."""
     ext = os.path.splitext(input_file)[1].lower()
     
     if ext == '.pdf':
@@ -743,10 +1077,15 @@ def extract_fallback_pages(input_file: str, pages_arg: str = None, nasal_mode: s
             for line in lines:
                 if not line.strip():
                     continue
-                l_dev = BRHDevanagariDecoder.decode(line)
-                l_dev = clean_accent_spaces(l_dev)
-                is_foot = 'page ' in line.lower() or 'vedavms' in line.lower()
-                l_mal = line if is_foot else VedicTransliterate.devanagari_to_malayalam(l_dev, nasal_mode=nasal_mode)
+                if not is_indic_or_brh_line(line):
+                    l_dev = line
+                    l_mal = line
+                    is_foot = 'page ' in line.lower() or 'vedavms' in line.lower()
+                else:
+                    l_dev = BRHDevanagariDecoder.decode(line)
+                    l_dev = clean_accent_spaces(l_dev)
+                    is_foot = 'page ' in line.lower() or 'vedavms' in line.lower()
+                    l_mal = line if is_foot else VedicTransliterate.devanagari_to_malayalam(l_dev, nasal_mode=nasal_mode)
                 l_obj = {
                     'raw_text': line,
                     'dev_text': l_dev,
@@ -774,38 +1113,86 @@ def extract_fallback_pages(input_file: str, pages_arg: str = None, nasal_mode: s
         return pages_data, len(pages_filter), total_pages
     else:
         with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
-            text = f.read()
-        dev_text = BRHDevanagariDecoder.decode(text)
-        dev_text = clean_accent_spaces(text)
-        mal_text = VedicTransliterate.devanagari_to_malayalam(dev_text, nasal_mode=nasal_mode)
+            content = f.read()
         
-        body_lines = []
-        for line in text.splitlines():
-            if not line.strip():
-                continue
-            l_dev = BRHDevanagariDecoder.decode(line)
-            l_dev = clean_accent_spaces(l_dev)
-            l_mal = VedicTransliterate.devanagari_to_malayalam(l_dev, nasal_mode=nasal_mode)
-            body_lines.append({
-                'raw_text': line,
-                'dev_text': l_dev,
-                'mal_text': l_mal,
-                'size': 18.0,
-                'is_bold': False,
-                'is_italic': False,
-                'align': 'left',
-                'is_header': False,
-                'is_footer': False,
-                'y': 0
+        # Check if file has [PAGE X] section dividers
+        page_blocks = re.split(r'={5,}\s*\n\[PAGE\s+(\d+)\]\s*\n={5,}', content)
+        pages_raw = []
+        if len(page_blocks) > 1:
+            if page_blocks[0].strip():
+                pages_raw.append((1, page_blocks[0]))
+            for i in range(1, len(page_blocks), 2):
+                pno = int(page_blocks[i])
+                ptext = page_blocks[i+1] if i+1 < len(page_blocks) else ""
+                pages_raw.append((pno, ptext))
+        else:
+            pages_raw.append((1, content))
+            
+        pages_data = []
+        for pno, ptext in pages_raw:
+            body_lines = []
+            headers = []
+            footers = []
+            lines = ptext.splitlines()
+            for line in lines:
+                if not line.strip():
+                    continue
+                sline = line.strip()
+                if not is_indic_or_brh_line(sline):
+                    l_dev = sline
+                    l_mal = sline
+                else:
+                    l_dev = clean_accent_spaces(sline)
+                    l_mal = VedicTransliterate.devanagari_to_malayalam(l_dev, nasal_mode=nasal_mode)
+
+                # Smart typography detection for text files
+                if sline.startswith('॥') and sline.endswith('॥') and len(sline) < 30:
+                    size = 24.0
+                    is_bold = True
+                    is_italic = False
+                    align = 'center'
+                elif sline.startswith('अथ ') or sline.startswith('ഓം ') or sline.startswith('അഥ '):
+                    size = 19.0
+                    is_bold = True
+                    is_italic = False
+                    align = 'center'
+                elif sline.startswith('(') and sline.endswith(')') and len(sline) < 25:
+                    size = 13.0
+                    is_bold = True
+                    is_italic = True
+                    align = 'center'
+                elif 'रुद्राय नमः' in sline or 'മുഖായ നമഃ' in sline or 'मुखाय नमः' in sline or 'ध्यानं' in sline:
+                    size = 17.0
+                    is_bold = True
+                    is_italic = False
+                    align = 'left'
+                else:
+                    size = 16.0
+                    is_bold = False
+                    is_italic = False
+                    align = 'left'
+
+                body_lines.append({
+                    'raw_text': line,
+                    'dev_text': l_dev,
+                    'mal_text': l_mal,
+                    'size': size,
+                    'is_bold': is_bold,
+                    'is_italic': is_italic,
+                    'align': align,
+                    'is_header': False,
+                    'is_footer': False,
+                    'y': 0
+                })
+                
+            pages_data.append({
+                'page_number': pno,
+                'headers': headers,
+                'body_lines': body_lines,
+                'footers': footers
             })
             
-        pages_data = [{
-            'page_number': 1,
-            'headers': [],
-            'body_lines': body_lines,
-            'footers': []
-        }]
-        return pages_data, 1, 1
+        return pages_data, len(pages_data), len(pages_data)
 
 
 def generate_structured_txt(pages_data: list) -> str:
@@ -850,7 +1237,7 @@ def generate_structured_html_view(pages_data: list, title: str = "Vedic Document
             t = format_accents_html(t, wrap_anudatta=(script_class == 'malayalam-text'))
             
             size_pt = l['size']
-            rem_size = round(max(0.8, min(2.5, size_pt / 16.0)), 2)
+            rem_size = round(max(0.65, min(1.75, size_pt / 19.0)), 2)
             
             # Styles
             styles = []
@@ -914,7 +1301,7 @@ def generate_structured_html_view(pages_data: list, title: str = "Vedic Document
     <style>
         @page {{
             size: A4;
-            margin: 15mm 15mm;
+            margin: 3mm 5mm;
         }}
         
         body {{
@@ -991,9 +1378,9 @@ def generate_structured_html_view(pages_data: list, title: str = "Vedic Document
         }}
         
         .line {{
-            line-height: 2.5;
+            line-height: 2.0;
             white-space: pre-wrap;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
         }}
         
         .devanagari-text {{
@@ -1022,18 +1409,48 @@ def generate_structured_html_view(pages_data: list, title: str = "Vedic Document
         }}
         
         @media print {{
-            body {{
+            html, body {{
                 background: #ffffff;
                 padding: 0;
+                margin: 0;
             }}
             .no-print {{
-                display: none;
+                display: none !important;
+            }}
+            .document-page-container[style*="display: none"] {{
+                display: none !important;
             }}
             .document-page {{
                 box-shadow: none;
-                padding: 0;
-                width: 100%;
-                margin-bottom: 0;
+                padding: 1mm 2mm !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 270mm !important;
+                max-height: 270mm !important;
+                overflow: hidden !important;
+                margin-bottom: 0 !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }}
+            .line {{
+                line-height: 1.15 !important;
+                margin-bottom: 0.01rem !important;
+                font-size: 0.82rem !important;
+            }}
+            .page-header {{
+                margin-bottom: 0.2rem !important;
+                padding-bottom: 0.1rem !important;
+            }}
+            .page-footer {{
+                margin-top: 0.2rem !important;
+                padding-top: 0.1rem !important;
+            }}
+            .page-break {{
+                display: none !important;
             }}
         }}
     </style>
