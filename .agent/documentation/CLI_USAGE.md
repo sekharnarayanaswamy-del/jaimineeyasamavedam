@@ -466,3 +466,57 @@ s2: Thogur Padhati explanation here
 > [!CAUTION]
 > Avoid copying text from PDFs or web pages directly, as invisible Unicode characters (zero-width joiners, etc.) may be introduced. These can break footnote detection. If footnotes aren't rendering correctly, try deleting and retyping the `(sN)` marker.
 
+---
+
+## 8. Malayalam Script Pipeline (CLI Guide)
+
+The Malayalam workflow converts, transliterates, and renders the Jaimineeya Samaveda into Malayalam base text with Grantha superscript swara notations and Vedic modifiers.
+
+### Step 1: Generate JSON AST from Malayalam Text
+```powershell
+python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json
+```
+
+### Step 2: Render PDF, HTML, and Unicode TXT
+Run `src/render_pdf.py` with `--script malayalam` in one of the 3 available output modes:
+
+1. **Combined Mode (Default — Rik + Samam + Rishi/Devata/Chandas):**
+   ```powershell
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+   ```
+   *Generated Outputs:*
+   - `data/output/pdf/Malayalam/Samhita_Malayalam.pdf`
+   - `data/output/html/Malayalam/Samhita_Malayalam.html`
+   - `data/output/txt/Malayalam/Samhita_Malayalam_Unicode.txt`
+
+2. **Separate Mode (Separate Rik and Samam files with Metadata):**
+   ```powershell
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate
+   ```
+   *Generated Outputs:*
+   - `data/output/pdf/Malayalam/Rik_Malayalam.pdf` & `Samam_Malayalam.pdf`
+   - `data/output/html/Malayalam/Rik_Malayalam.html` & `Samam_Malayalam.html`
+   - `data/output/txt/Malayalam/Rik_Malayalam_Unicode.txt` & `Samam_Malayalam_Unicode.txt`
+
+3. **No-Metadata Mode (Mantra Texts Only, no RDC headers):**
+   ```powershell
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+   ```
+   *Generated Outputs:*
+   - `data/output/pdf/Malayalam/Rik_NoMeta_Malayalam.pdf` & `Samam_NoMeta_Malayalam.pdf`
+   - `data/output/html/Malayalam/Rik_NoMeta_Malayalam.html` & `Samam_NoMeta_Malayalam.html`
+   - `data/output/txt/Malayalam/Rik_NoMeta_Malayalam_Unicode.txt` & `Samam_NoMeta_Malayalam_Unicode.txt`
+
+### All-in-One Command
+```powershell
+python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json; $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+```
+
+### Font Building & Glyph Table Generation
+To re-build the custom font or regenerate the interactive HTML glyph table:
+```powershell
+python scripts/build_swara_font.py
+python scripts/generate_glyph_grid.py
+```
+
+

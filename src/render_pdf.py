@@ -542,9 +542,22 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         with open(tmpfilename,"w",encoding="utf-8") as f:
             f.write(document)
         
-        # Uncomment to run latexmk
-        # result = subprocess.Popen(["latexmk","-lualatex", "--interaction=nonstopmode","--silent",tmpfilename],cwd=tmpdirname)
-        # result.wait()
+        try:
+            cmd = ["xelatex", "-interaction=nonstopmode", tmpfilename]
+            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
+            
+            # Step 2: run makeindex if .idx file exists to generate index (.ind)
+            idx_file = Path(tmpdirname) / f"{Path(TexFileName).stem}.idx"
+            if idx_file.exists() and idx_file.stat().st_size > 0:
+                cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
+                subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True)
+                
+            # Step 3: Pass 2 of xelatex to resolve TOC, index, and page cross-references
+            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
+            if proc.returncode != 0:
+                print(f"[WARNING] xelatex compilation returned non-zero code {proc.returncode}")
+        except Exception as e:
+            print(f"[WARNING] Failed to run xelatex: {e}")
         
         src_pdf_file=Path(f"{tmpdirname}/{PdfFileName}")
         dst_pdf_file=Path(f"{outputdir}/{PdfFileName}")
@@ -553,27 +566,32 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         src_tex_file=Path(f"{tmpdirname}/{TexFileName}")
         dst_tex_file=Path(f"{outputdir}/{TexFileName}")
         
+        import shutil
         path = Path(src_tex_file)
         if path.is_file():
-            if dst_tex_file.exists():
-                dst_tex_file.unlink()
-            src_tex_file.rename(dst_tex_file)  
+            try:
+                shutil.copyfile(src_tex_file, dst_tex_file)
+                src_tex_file.unlink(missing_ok=True)
+            except Exception as e:
+                print(f"[WARN] Could not move TeX file: {e}")
         path = Path(src_pdf_file)
         if path.is_file():
-            if dst_pdf_file.exists():
-                dst_pdf_file.unlink()
-            src_pdf_file.rename(dst_pdf_file)
+            try:
+                shutil.copyfile(src_pdf_file, dst_pdf_file)
+                src_pdf_file.unlink(missing_ok=True)
+            except Exception as e:
+                print(f"[WARN] Could not overwrite PDF file (may be locked in viewer): {e}")
         path = Path(src_log_file)
         if path.is_file():
-            if dst_log_file.exists():
-                dst_log_file.unlink()
-            src_log_file.rename(dst_log_file)
+            try:
+                shutil.copyfile(src_log_file, dst_log_file)
+                src_log_file.unlink(missing_ok=True)
+            except Exception as e:
+                print(f"[WARN] Could not move log file: {e}")
 
     return exit_code
 
 def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, toc_level='section', output_dir_override=None, name_override=None, jsv_version=None, generated_at=None):
-    data=escape_for_latex(data)
-    
     outputdir="data/output"
     logdir="data/output/logs"
     exit_code=0
@@ -625,7 +643,10 @@ def escape_for_latex(data):
     if isinstance(data, dict):
         new_data = {}
         for key in data.keys():
-            new_data[key] = escape_for_latex(data[key])
+            if key == 'malayalam-mantra-sets':
+                new_data[key] = data[key]
+            else:
+                new_data[key] = escape_for_latex(data[key])
         return new_data
     elif isinstance(data, list):
         return [escape_for_latex(item) for item in data]
@@ -1343,6 +1364,470 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
 
 
 # ----------------------------------------------------
+# MALAYALAM SAMAM-ONLY FORMATTING (Phase 1 pilot)
+# ----------------------------------------------------
+_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
+
+MODIFIER_DIRECT_MAP = {
+    # Modifiers from updated Google Sheet (A..H)
+    "A": "\uE004",  # Syllable Arc (Tie) ╭╮ / ⁀
+    "B": "\uE005",  # Caret / Peak /\ / ^
+    "C": "\uE001",  # High/Mid-Dot ॱ / ·
+    "D": "\uE006",  # Chevron Roof Ʌ
+    "E": "\uE002",  # Heavy Vertical ┃
+    "F": "\uE002",  # Light Vertical ╷
+    "G": "\uE003",  # Descending Tone \ / ⟍
+    "H": "\uE002",  # Swarita ॑ / |
+
+    # Lowercase variants
+    "a": "\uE004", "b": "\uE005", "c": "\uE001", "d": "\uE006",
+    "e": "\uE002", "f": "\uE002", "g": "\uE003", "h": "\uE002",
+
+    # Direct Symbols matching "How to enter" column
+    "^": "\uE005", "˄": "\uE005",
+    "Ʌ": "\uE006", "/\\": "\uE006", "∧": "\uE006",
+    "⁀": "\uE004", "͡": "\uE004", "╭╮": "\uE004",
+    "ͦ": "\uE009", "˚": "\uE009",
+    "ॱ": "\uE001", "·": "\uE001",
+    "_": "\uE007",
+    "|": "\uE002", "│": "\uE002", "।": "।",
+    "┃": "\uE002", "╷": "\uE002", "⃓": "\uE002",
+    "\\": "\uE003", "╲": "\uE003", "⟍": "\uE003",
+    "/": "\uE008",
+    ",": "\uE00A", "ˏ": "\uE00A", "̦": "\uE00A",
+    "||": "\uE00B", "॥": "\uE00B",
+    "॑": "\uE002", "ˈ": "\uE002",
+    "L": "\uE002", "l": "\uE002",
+}
+
+
+MODIFIER_KEYS = {
+    "A", "B", "C", "D", "E", "F", "G", "H", "L",
+    "a", "b", "c", "d", "e", "f", "g", "h", "l",
+    "^", "˄", "Ʌ", "/\\", "∧", "⁀", "͡", "╭╮", "ͦ", "˚", "ॱ", "·",
+    "|", "│", "।", "┃", "╷", "⃓", "\\", "╲", "⟍", "॑", "ˈ",
+    "\uE001", "\uE002", "\uE003", "\uE004", "\uE005", "\uE006", "\uE008", "\uE00A", "\uE00B"
+}
+
+
+def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
+    """Attach a swara modifier to a Mantrakshara in ModifierDarkBlue."""
+    if not mod:
+        return syl_esc
+    m_clean = mod.strip("()")
+    if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\\hspace{{-0.4em}}\uE004}}}}}}"
+    elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\uE005}}}}}}"
+    elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{0.30ex}}{{\\hspace{{0.05em}}\uE001}}}}}}"
+    elif m_clean in ("D", "d", "Ʌ", "\uE006"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\uE006}}}}}}"
+    elif m_clean in ("E", "e", "┃", "\uE002"):
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\uE002}}}}"
+    elif m_clean in ("F", "f", "╷"):
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\uE002}}}}"
+    elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.50em}}\uE003}}}}}}"
+    elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.30ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
+    return syl_esc
+
+
+def _parse_swara_and_modifiers(swara_str: str):
+    """Decompose swara string into pitch swara markers and Mantrakshara modifiers."""
+    if not swara_str:
+        return [], []
+    if "(" in swara_str:
+        parens = re.findall(r"\(([^)]+)\)", swara_str)
+    else:
+        parens = [swara_str]
+    
+    swaras = []
+    mods = []
+    for p in parens:
+        if p in MODIFIER_KEYS:
+            mods.append(p)
+        else:
+            # Check if p has trailing modifier char (e.g. \uE001, \uE003, \uE004, etc.)
+            m = re.search(r"([\uE001-\uE00C\^\\/\|\_]+)$", p)
+            if m:
+                base = p[:m.start()]
+                trailing_mods = p[m.start():]
+                if base:
+                    swaras.append(base)
+                for tm in trailing_mods:
+                    mods.append(tm)
+            else:
+                swaras.append(p)
+    return swaras, mods
+
+
+def _swara_latex(swara: str) -> str:
+    """Latex for pure swara marker pitch glyphs rendered in bold SwaraRed."""
+    if not swara:
+        return ""
+    # Filter out modifiers which attach directly to Mantrakshara
+    if swara in MODIFIER_KEYS or swara in ("A", "B", "C", "D", "E", "F", "G", "H", "L", "a", "b", "c", "d", "e", "f", "g", "h", "l"):
+        return ""
+    return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{swara}}}}}"
+
+
+def wrap_latin_for_latex(text: str) -> str:
+    r"""Wrap any Latin/English character sequences with {\latinfont ...} so they render in Nimbus Roman."""
+    if not text:
+        return text
+    if r'\latinfont' in text:
+        return text
+    return re.sub(r'([A-Za-z0-9][A-Za-z0-9\s,\.\-\':;/\(\)]*)', r'{\\latinfont \1}', text)
+
+
+def _render_malayalam_mantra_body(subsection):
+    """Helper to render Malayalam mantra body with top swara stacks and footnotes."""
+    from malayalam.ml_text import tokenize_mantra_line
+    from malayalam.ml_transliterate import split_malayalam_syllables, devanagari_to_malayalam
+    
+    mantra_sets = subsection.get('malayalam-mantra-sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+    if not mantra_sets:
+        return []
+
+    footnote_data = subsection.get('footnotes', {})
+    paragraph_buffer = []
+    formatted_paragraphs = []
+    
+    for mantra_set in mantra_sets:
+        line = mantra_set.get('malayalam-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
+        if not line:
+            continue
+        is_verse_end = bool(re.search(r'॥\s*[०-९\d]+\s*॥\s*$', line))
+        for tok in tokenize_mantra_line(line):
+            t = tok['type']
+            if t == 'space':
+                paragraph_buffer.append(" ")
+            elif t == 'danda':
+                paragraph_buffer.append(format_dandas(tok['char']))
+            elif t == 'footnote':
+                marker = tok.get('text', '').strip('()')
+                fn_text = footnote_data.get(marker, '')
+                if fn_text:
+                    try:
+                        fn_text = devanagari_to_malayalam(fn_text)
+                    except Exception:
+                        pass
+                    fn_esc = escape_for_latex(fn_text)
+                    fn_esc = wrap_latin_for_latex(fn_esc)
+                    paragraph_buffer.append(f"\\footnote{{\\malayalamfont {fn_esc}}}")
+            elif t == 'marker':
+                m_str = tok['marker']
+                m_esc = _apply_mantrakshara_modifier("", m_str)
+                paragraph_buffer.append(m_esc)
+            elif t == 'word':
+                word = tok['word'].translate(_ENGLISH_DIGITS)
+                swara = tok['swara']
+                if not word:
+                    continue
+
+                # Strip trailing punctuation (like _, ., ,) so swara marker stays on the preceding mantrakshara
+                core_word = word.rstrip("_,.")
+                trailing_punct = word[len(core_word):]
+
+                if not core_word:
+                    paragraph_buffer.append(f"{{\\malayalamfont {escape_for_latex(word)}}}")
+                    continue
+
+                if swara:
+                    swara_parts, mod_parts = _parse_swara_and_modifiers(swara)
+                    
+                    syllables = split_malayalam_syllables(core_word)
+                    parts = []
+                    for idx, syl in enumerate(syllables):
+                        syl_esc = escape_for_latex(syl)
+                        if idx == len(syllables) - 1:
+                            # Attach all modifiers to the final mantrakshara syllable
+                            for mod in mod_parts:
+                                syl_esc = _apply_mantrakshara_modifier(syl_esc, mod)
+                                if mod in ("C", "c", "ॱ", "·", "\uE001"):
+                                    syl_esc += r"\hspace{0.25em}"
+                            
+                            swara_str = "".join(swara_parts)
+                            swara_latex = _swara_latex(swara_str)
+                            if swara_latex:
+                                stack_code = f"\\stackcenter{{\\malayalamfont {syl_esc}}}{{{swara_latex}}}"
+                                parts.append(stack_code)
+                            else:
+                                parts.append(f"{{\\malayalamfont {syl_esc}}}")
+                        else:
+                            parts.append(f"{{\\malayalamfont {syl_esc}}}")
+                    if trailing_punct:
+                        parts.append(f"{{\\malayalamfont {escape_for_latex(trailing_punct)}}}")
+                    paragraph_buffer.append("".join(parts))
+                else:
+                    syl_parts = []
+                    syllables = split_malayalam_syllables(core_word)
+                    for syl in syllables:
+                        syl_esc = escape_for_latex(syl)
+                        syl_parts.append(f"{{\\malayalamfont {syl_esc}}}")
+                    if trailing_punct:
+                        syl_parts.append(f"{{\\malayalamfont {escape_for_latex(trailing_punct)}}}")
+                    paragraph_buffer.append("".join(syl_parts))
+            else:
+                extra_text = tok.get("text", "").translate(_ENGLISH_DIGITS)
+                extra_esc = escape_for_latex(extra_text)
+                paragraph_buffer.append(f"{{\\malayalamfont {extra_esc}}}")
+        if is_verse_end:
+            full_paragraph = "".join(paragraph_buffer)
+            formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
+            formatted_paragraphs.append(r"\par\vspace{0.5em}")
+            paragraph_buffer = []
+
+    if paragraph_buffer:
+        full_paragraph = "".join(paragraph_buffer)
+        formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
+        formatted_paragraphs.append(r"\par\vspace{0.6em}")
+
+    return formatted_paragraphs
+
+
+def format_malayalam_rik_block(subsection, prev_rik_id=None, include_metadata=True):
+    """Format Rik metadata + Rik text (with elevated Vedic accents and footnotes) for LaTeX PDF."""
+    from malayalam.ml_transliterate import devanagari_to_malayalam, split_malayalam_syllables
+
+    current_rik_id = subsection.get('rik_id')
+    rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
+    rik_metadata = subsection.get('rik_metadata', '')
+    rik_text = subsection.get('rik_text', '')
+    
+    show_rik = (prev_rik_id is None) or (current_rik_id != prev_rik_id) or (len(rik_ids) > 1 and max(rik_ids) != prev_rik_id)
+    if not show_rik or (not rik_metadata and not rik_text):
+        return ""
+    
+    footnote_data = subsection.get('footnotes', {})
+    out = []
+    if include_metadata and rik_metadata:
+        try:
+            rm = devanagari_to_malayalam(rik_metadata)
+        except Exception:
+            rm = rik_metadata
+        rm = format_dandas(rm)
+        rm_esc = escape_for_latex(rm)
+        out.append(f"{{\\centering {{\\malayalamfont \\textcolor{{AccentPurple}}{{{rm_esc}}}}} \\par}}")
+        out.append(r"\nopagebreak\vspace{0.2em}\nopagebreak")
+    
+    if rik_text:
+        try:
+            rt = devanagari_to_malayalam(rik_text)
+        except Exception:
+            rt = rik_text
+        rt = clean_stack_arg(rt)
+        
+        # Replace footnote markers (s1), etc. with LaTeX footnotes
+        def _replace_fn(match):
+            m = match.group(1)
+            fn = footnote_data.get(m, '')
+            if fn:
+                try:
+                    fn = devanagari_to_malayalam(fn)
+                except Exception:
+                    pass
+                fn_esc = escape_for_latex(fn)
+                fn_esc = wrap_latin_for_latex(fn_esc)
+                return f"\\footnote{{\\malayalamfont {fn_esc}}}"
+            return ""
+        
+        rt = re.sub(r'\(s(\d+)\)', r'(s\1)', rt)
+        rt = re.sub(r'\((s\d+)\)', _replace_fn, rt)
+        
+        # Format Vedic accents over Malayalam syllables using stackengine
+        tokens = re.findall(r'\\footnote\{[^}]*\}|॥\s*[\d०-९]+\s*॥|[।॥]|\s+|[^\s।॥()]+(?:\(\d+\))*', rt)
+        tok_out = []
+        for tok in tokens:
+            if tok.isspace():
+                continue
+            elif tok in ['।', '॥']:
+                tok_out.append(f'\\hspace{{0.25em}}{tok}\\hspace{{0.25em}}')
+            elif re.match(r'॥\s*[\d०-९]+\s*॥', tok):
+                tok_out.append(f'\\hspace{{0.35em}}\\mbox{{{tok.translate(_ENGLISH_DIGITS)}}}')
+            elif tok.startswith(r'\footnote'):
+                tok_out.append(tok)
+            else:
+                segs = re.findall(r'[^\s()]+?(?:\(\d+\)|$)', tok)
+                seg_out = []
+                for seg in segs:
+                    m_acc = re.match(r'^(.*?)\((\d+)\)$', seg)
+                    if m_acc:
+                        base_word, acc_num = m_acc.group(1), m_acc.group(2)
+                        sylls = split_malayalam_syllables(base_word)
+                        if len(sylls) > 1:
+                            prefix = escape_for_latex(''.join(sylls[:-1]))
+                            last_syl = escape_for_latex(sylls[-1])
+                        else:
+                            prefix = ''
+                            last_syl = escape_for_latex(base_word)
+                        if acc_num == '1':
+                            seg_out.append(f'{prefix}\\rikSwarita{{{last_syl}}}')
+                        elif acc_num == '2':
+                            seg_out.append(f'{prefix}\\rikAnudatta{{{last_syl}}}')
+                        elif acc_num == '3':
+                            seg_out.append(f'{prefix}\\rikKampa{{{last_syl}}}')
+                        elif acc_num == '4':
+                            seg_out.append(f'{prefix}\\rikTrikampa{{{last_syl}}}')
+                        else:
+                            seg_out.append(escape_for_latex(seg))
+                    else:
+                        seg_out.append(escape_for_latex(seg))
+                tok_out.append(''.join(seg_out))
+        
+        rt_formatted = "".join(tok_out)
+        out.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont \\textcolor{{AccentBlue}}{{{rt_formatted}}}}}}}")
+        out.append(r"\par\vspace{0.5em}")
+        
+    return "\n".join(out)
+
+
+def format_malayalam_samam_block(subsection, subsection_title, toc_level='section', include_metadata=True):
+    """Format Samam subsection header + Saman metadata + Samam mantras in Malayalam for LaTeX PDF."""
+    from malayalam.ml_transliterate import devanagari_to_malayalam
+
+    formatted_output = []
+
+    # Clean titles for Display
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+
+    # Header only (exclude metadata) for TOC/Index
+    samam_header_only = display_sub_title
+    m_split = re.match(r'([|॥]+\s*.*?[|॥]+)', display_sub_title)
+    if m_split:
+        samam_header_only = m_split.group(1).strip()
+    index_title = re.sub(r'[|॥]', '', samam_header_only).strip()
+
+    try:
+        display_sub_title = devanagari_to_malayalam(display_sub_title)
+        samam_header_only = devanagari_to_malayalam(samam_header_only)
+        index_title = devanagari_to_malayalam(index_title)
+    except Exception:
+        pass
+
+    formatted_output.append(r"\par\filbreak")
+    formatted_output.append(r"\phantomsection")
+    if subsection_title:
+        toc_title = format_dandas(samam_header_only)
+        mal_toc = "{\\malayalamfont " + toc_title + "}"
+        if toc_level == 'subsection':
+            formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{mal_toc}}}")
+        elif toc_level == 'both':
+            formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{mal_toc}}}")
+        if index_title:
+            formatted_output.append(f"\\index{{{index_title}}}")
+
+    # SubSection Title + Saman Metadata
+    header_parts = []
+    if display_sub_title:
+        header_parts.append(format_dandas(display_sub_title.strip()))
+    
+    if include_metadata:
+        saman_metadata = subsection.get('saman_metadata', '')
+        if saman_metadata:
+            try:
+                sm_mal = devanagari_to_malayalam(saman_metadata)
+            except Exception:
+                sm_mal = saman_metadata
+            header_parts.append(f"\\textcolor{{AccentBrown}}{{{format_dandas(sm_mal)}}}")
+    
+    if header_parts:
+        header_latex = "{\\malayalamfont \\textbf{\\textcolor{AccentGreen}{" + " \\quad ".join(header_parts) + "}}}"
+        formatted_output.append("{\\centering " + header_latex + " \\par}")
+
+    # Keep header with mantra text
+    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\vspace{0.4em}")
+    formatted_output.append(r"\nopagebreak")
+
+    mantra_paragraphs = _render_malayalam_mantra_body(subsection)
+    formatted_output.extend(mantra_paragraphs)
+
+    return "\n\n".join(formatted_output)
+
+
+def format_malayalam_rik_only(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section'):
+    """Rik-only mode (with metadata) for Malayalam."""
+    return format_malayalam_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=True)
+
+
+def format_malayalam_rik_nometa(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section'):
+    """Rik-only mode (without metadata) for Malayalam."""
+    return format_malayalam_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=False)
+
+
+def format_malayalam_samam_only(subsection, supersection_title, section_title, subsection_title, toc_level='section'):
+    """Samam-only mode (with metadata) for Malayalam."""
+    return format_malayalam_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=True)
+
+
+def format_malayalam_samam_nometa(subsection, supersection_title, section_title, subsection_title, toc_level='section'):
+    """Samam-only mode (without metadata) for Malayalam."""
+    return format_malayalam_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=False)
+
+
+def format_malayalam_combined(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section'):
+    """Combined mode: Rik (with metadata) followed by Samam (with metadata) for Malayalam."""
+    parts = []
+    rik_part = format_malayalam_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=True)
+    if rik_part:
+        parts.append(rik_part)
+    samam_part = format_malayalam_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=True)
+    if samam_part:
+        parts.append(samam_part)
+    return "\n\n".join(parts)
+
+
+def format_malayalam_samam(subsection, supersection_title, section_title, subsection_title, toc_level='section'):
+    """Legacy alias for format_malayalam_samam_only."""
+    return format_malayalam_samam_only(subsection, supersection_title, section_title, subsection_title, toc_level=toc_level)
+
+
+def format_malayalam_samam_text(subsection, section_title, subsection_title):
+    """Plain-text artifact for Malayalam Samam with Grantha swara markers."""
+    formatted_sets = []
+    
+    # 1. Check corrected-mantra_sets (preserves Grantha swara markers)
+    corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if corrected_mantra_sets:
+        for corrected in corrected_mantra_sets:
+            c_mantra = corrected.get('corrected-mantra', '')
+            if c_mantra:
+                formatted_sets.append(c_mantra)
+        if formatted_sets:
+            return "\n".join(formatted_sets)
+
+    # 2. Check malayalam-mantra-sets
+    for mantra_set in subsection.get('malayalam-mantra-sets', []):
+        mantra = mantra_set.get('malayalam-mantra', '')
+        if mantra:
+            formatted_sets.append(mantra)
+    if formatted_sets:
+        return "\n".join(formatted_sets)
+        
+    # 3. Check mantra_sets
+    for mantra_set in subsection.get('mantra_sets', []):
+        words = []
+        for word_dict in mantra_set.get('mantra-words', []):
+            w = word_dict.get('word', '')
+            sw = word_dict.get('swara', '')
+            if sw:
+                words.append(f"{w}({sw})")
+            else:
+                words.append(w)
+        if words:
+            formatted_sets.append(" ".join(words))
+
+    return "\n".join(formatted_sets)
+
+
+# ----------------------------------------------------
 # RIK-ONLY TEXT FORMATTING (for separate output mode)
 # ----------------------------------------------------
 def format_rik_only_text(subsection, section_title, subsection_title, prev_rik_id=None):
@@ -2037,6 +2522,72 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
             
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
+def format_malayalam_samam_html(subsection, header_text='', include_metadata=False):
+    """Format Malayalam Samam content with top-stacked red swaras for HTML."""
+    from malayalam.ml_text import tokenize_mantra_line
+    from malayalam.ml_transliterate import split_malayalam_syllables
+    
+    formatted_output = []
+    
+    # Header
+    header_parts = []
+    if header_text:
+        header_title = escape_for_html(header_text).translate(_ENGLISH_DIGITS)
+        header_title = format_dandas_html(header_title)
+        header_parts.append(f'<span class="header-title">{header_title}</span>')
+    
+    if include_metadata:
+        saman_metadata = subsection.get('saman_metadata', '')
+        if saman_metadata:
+            meta = escape_for_html(saman_metadata).translate(_ENGLISH_DIGITS)
+            meta = format_dandas_html(meta, preserve_spaces=True)
+            header_parts.append(f'<span class="header-meta">{meta}</span>')
+            
+    if header_parts:
+        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
+    
+    mantra_sets = subsection.get('malayalam-mantra-sets', [])
+    for mantra_set in mantra_sets:
+        line = mantra_set.get('malayalam-mantra', '')
+        if not line:
+            continue
+        tokens = tokenize_mantra_line(line)
+        word_elements = []
+        for tok in tokens:
+            t = tok['type']
+            if t == 'space':
+                word_elements.append('<span class="word-space">&nbsp;</span>')
+            elif t == 'danda':
+                d = format_dandas_html(tok['char'])
+                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{d}</span></span>')
+            elif t == 'footnote':
+                fn_text = tok["text"].translate(_ENGLISH_DIGITS)
+                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text"><sup>{fn_text}</sup></span></span>')
+            elif t == 'marker':
+                word_elements.append(f'<span class="mantra-word"><span class="swara-text">{escape_for_html(tok["marker"])}</span><span class="mantra-text">&nbsp;</span></span>')
+            elif t == 'word':
+                word = tok['word'].translate(_ENGLISH_DIGITS)
+                swara = tok['swara']
+                if not word:
+                    continue
+                if swara:
+                    syllables = split_malayalam_syllables(word)
+                    for idx, syl in enumerate(syllables):
+                        if idx == len(syllables) - 1:
+                            s_esc = escape_for_html(swara)
+                            word_elements.append(f'<span class="mantra-word"><span class="swara-text">{s_esc}</span><span class="mantra-text">{syl}</span></span>')
+                        else:
+                            word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl}</span></span>')
+                else:
+                    word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{word}</span></span>')
+            else:
+                extra_text = tok.get("text", "").translate(_ENGLISH_DIGITS)
+                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{extra_text}</span></span>')
+        if word_elements:
+            formatted_output.append(f'<div class="mantra-verse">{"".join(word_elements)}</div>')
+    return '\n'.join(formatted_output), 0
+
+
 def preprocess_html_data(supersections, output_mode):
     """
     Pre-processes the data structure to generate HTML for subsections and footnotes
@@ -2072,30 +2623,51 @@ def preprocess_html_data(supersections, output_mode):
                         prev_rik_id, unique_key, 
                         footnote_counter, footnotes_accumulator, seen_content_map
                     )
-                elif output_mode == 'samam':
-                     html_content, footnote_counter = format_samam_only_html(
-                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                        prev_rik_id, unique_key, 
-                        footnote_counter, footnotes_accumulator, seen_content_map
-                    )
                 elif output_mode == 'rik_nometa':
                     html_content, footnote_counter = format_rik_nometa_html(
                         subsection, None, None, subsection.get('header', {}).get('header'), {}, 
                         prev_rik_id, unique_key, 
                         footnote_counter, footnotes_accumulator, seen_content_map
                     )
+                elif output_mode == 'samam':
+                    if subsection.get('malayalam-mantra-sets'):
+                        html_content, footnote_counter = format_malayalam_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True
+                        )
+                    else:
+                        html_content, footnote_counter = format_samam_only_html(
+                            subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                            prev_rik_id, unique_key, 
+                            footnote_counter, footnotes_accumulator, seen_content_map
+                        )
                 elif output_mode == 'samam_nometa':
-                    html_content, footnote_counter = format_samam_nometa_html(
-                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                        prev_rik_id, unique_key, 
-                        footnote_counter, footnotes_accumulator, seen_content_map
-                    )
+                    if subsection.get('malayalam-mantra-sets'):
+                        html_content, footnote_counter = format_malayalam_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=False
+                        )
+                    else:
+                        html_content, footnote_counter = format_samam_nometa_html(
+                            subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                            prev_rik_id, unique_key, 
+                            footnote_counter, footnotes_accumulator, seen_content_map
+                        )
                 else:
-                    html_content, footnote_counter = format_mantra_sets_html(
-                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                        prev_rik_id, unique_key, 
-                        footnote_counter, footnotes_accumulator, seen_content_map
-                    )
+                    if subsection.get('malayalam-mantra-sets'):
+                        r_html, footnote_counter = format_rik_only_html(
+                            subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                            prev_rik_id, unique_key, 
+                            footnote_counter, footnotes_accumulator, seen_content_map
+                        )
+                        s_html, footnote_counter = format_malayalam_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True
+                        )
+                        html_content = f"{r_html}\n{s_html}" if r_html else s_html
+                    else:
+                        html_content, footnote_counter = format_mantra_sets_html(
+                            subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                            prev_rik_id, unique_key, 
+                            footnote_counter, footnotes_accumulator, seen_content_map
+                        )
                 
                 # INDEX COLLECT
                 header = subsection.get('header', {}).get('header', '')
@@ -2188,6 +2760,10 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     outputdir = "data/output"
     exit_code = 0
     
+    # Malayalam script mode has no HTML template yet; skip gracefully
+    if templateFileName is None:
+        return
+    
     # Use overrides if provided
     name = name_override or name
     outputdir = output_dir_override or f"{outputdir}/html/{DocfamilyName}"
@@ -2208,6 +2784,13 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         jsv_version = jsv_version or meta['version']
         generated_at = generated_at or meta['generated_at']
     
+    import base64
+    jaimineeya_swara_b64 = ""
+    font_file = Path("fonts/JaimineeyaSwara.ttf")
+    if font_file.exists():
+        with open(font_file, "rb") as f_font:
+            jaimineeya_swara_b64 = base64.b64encode(f_font.read()).decode("ascii")
+    
     document = template.render(
         supersections=data, 
         html_font=html_font, 
@@ -2223,7 +2806,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         summary_title=summary_title,
         toc_level=toc_level,
         has_riks=has_riks,
-        has_samams=has_samams
+        has_samams=has_samams,
+        jaimineeya_swara_b64=jaimineeya_swara_b64
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
@@ -2275,6 +2859,10 @@ Examples:
                         help="Font for HTML output")
     parser.add_argument('--type', choices=['samhita', 'aaranam', 'collection'], default='samhita',
                         help='Type of Samaveda text: samhita, aaranam, or collection')
+    
+    parser.add_argument('--script', dest='script',
+                        choices=['devanagari', 'malayalam'], default='devanagari',
+                        help='Rendering script: devanagari (default) or malayalam (Phase 1 Samam-only pilot)')
     
     # NEW CLI OPTION
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
@@ -2380,6 +2968,13 @@ Examples:
     latex_jinja_env.filters["format_rik_nometa"] = format_rik_nometa
     latex_jinja_env.filters["format_samam_nometa"] = format_samam_nometa
     latex_jinja_env.filters["format_rik_nometa_text"] = format_rik_nometa_text
+    latex_jinja_env.filters["format_malayalam_rik_only"] = format_malayalam_rik_only
+    latex_jinja_env.filters["format_malayalam_rik_nometa"] = format_malayalam_rik_nometa
+    latex_jinja_env.filters["format_malayalam_samam_only"] = format_malayalam_samam_only
+    latex_jinja_env.filters["format_malayalam_samam_nometa"] = format_malayalam_samam_nometa
+    latex_jinja_env.filters["format_malayalam_combined"] = format_malayalam_combined
+    latex_jinja_env.filters["format_malayalam_samam"] = format_malayalam_samam
+    latex_jinja_env.filters["format_malayalam_samam_text"] = format_malayalam_samam_text
     latex_jinja_env.filters["format_samam_nometa_text"] = format_samam_nometa_text
     latex_jinja_env.filters["split_rik_lines"] = split_rik_lines_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
@@ -2424,6 +3019,28 @@ Examples:
     if jsv_version:
         print(f"[INFO] Using cascading Version {jsv_version} (Final Generation: {generated_at})")
     
+    # --- MALAYALAM SCRIPT MODE (Phase 1 Samam-only pilot) ---
+    script = args.script
+    if script == 'malayalam':
+        from malayalam.ml_text import transform_ast
+        from malayalam.ml_transliterate import devanagari_to_malayalam
+        data_Devanagari, ml_warnings, ml_stats = transform_ast(data_Devanagari)
+        print(f"[INFO] Malayalam script mode: Full Samhita "
+              f"({ml_stats['marked_words']} marked words, {len(ml_warnings)} warnings)")
+        # Transliterate supersection and section titles to Malayalam
+        for ss_key, ss_data in data_Devanagari.get('supersection', {}).items():
+            if ss_data.get('supersection_title'):
+                try:
+                    ss_data['supersection_title'] = devanagari_to_malayalam(ss_data['supersection_title'])
+                except Exception:
+                    pass
+            for sec_key, sec_data in ss_data.get('sections', {}).items():
+                if sec_key != 'count' and sec_data.get('section_title'):
+                    try:
+                        sec_data['section_title'] = devanagari_to_malayalam(sec_data['section_title'])
+                    except Exception:
+                        pass
+
     supersections = data_Devanagari.get('supersection', {})
     supersections = sanitize_data_structure(supersections)
     closing_mantras = data_Devanagari.get('closing_mantras', [])
@@ -2501,27 +3118,47 @@ Examples:
                 total_samams += samam_count
 
             count_parts = []
-            if sec_riks > 0 and samam_count > 0:
-                count_parts.append(f"ऋ-{to_devanagari_numeral(sec_riks)}")
-                count_parts.append(f"सा-{to_devanagari_numeral(samam_count)}")
-            elif sec_riks > 0:
-                count_parts.append(to_devanagari_numeral(sec_riks))
-            elif samam_count > 0:
-                count_parts.append(to_devanagari_numeral(samam_count))
+            if script == 'malayalam':
+                if sec_riks > 0 and samam_count > 0:
+                    count_parts.append(f"ऋ-{sec_riks}")
+                    count_parts.append(f"സാ-{samam_count}")
+                elif sec_riks > 0:
+                    count_parts.append(str(sec_riks))
+                elif samam_count > 0:
+                    count_parts.append(str(samam_count))
+                else:
+                    count_parts.append("0")
             else:
-                count_parts.append("०")
+                if sec_riks > 0 and samam_count > 0:
+                    count_parts.append(f"ऋ-{to_devanagari_numeral(sec_riks)}")
+                    count_parts.append(f"सा-{to_devanagari_numeral(samam_count)}")
+                elif sec_riks > 0:
+                    count_parts.append(to_devanagari_numeral(sec_riks))
+                elif samam_count > 0:
+                    count_parts.append(to_devanagari_numeral(samam_count))
+                else:
+                    count_parts.append("०")
             
             sec_data['Count'] = ", ".join(count_parts) if khanda_name else ""
         
         # Add total count for the supersection using similar combined logic
         ss_count_parts = []
-        if patha_riks > 0 and patha_samams > 0:
-            ss_count_parts.append(f"ऋ-{to_devanagari_numeral(patha_riks)}")
-            ss_count_parts.append(f"सा-{to_devanagari_numeral(patha_samams)}")
-        elif patha_riks > 0:
-            ss_count_parts.append(to_devanagari_numeral(patha_riks))
+        if script == 'malayalam':
+            if patha_riks > 0 and patha_samams > 0:
+                ss_count_parts.append(f"ऋ-{patha_riks}")
+                ss_count_parts.append(f"സാ-{patha_samams}")
+            elif patha_riks > 0:
+                ss_count_parts.append(str(patha_riks))
+            else:
+                ss_count_parts.append(str(patha_samams))
         else:
-            ss_count_parts.append(to_devanagari_numeral(patha_samams))
+            if patha_riks > 0 and patha_samams > 0:
+                ss_count_parts.append(f"ऋ-{to_devanagari_numeral(patha_riks)}")
+                ss_count_parts.append(f"सा-{to_devanagari_numeral(patha_samams)}")
+            elif patha_riks > 0:
+                ss_count_parts.append(to_devanagari_numeral(patha_riks))
+            else:
+                ss_count_parts.append(to_devanagari_numeral(patha_samams))
             
         ss_data['Count'] = ", ".join(ss_count_parts)
         
@@ -2557,6 +3194,14 @@ Examples:
             summary_title_sa = "संहिता सङ्ख्या"
     
     current_os = platform.system()
+
+    # Malayalam script: transliterate the title on the title page
+    if script == 'malayalam' and doc_title_sa:
+        from malayalam.ml_transliterate import devanagari_to_malayalam
+        try:
+            doc_title_sa = devanagari_to_malayalam(doc_title_sa)
+        except Exception:
+            pass
     
     print(f"Processing {input_file} in '{output_mode}' mode...")
     print(f"Document Title: {doc_title_sa}")
@@ -2599,58 +3244,72 @@ Examples:
     
     prayogas_list = list(procedures.values())
 
+    doc_family = 'Malayalam' if script == 'malayalam' else 'Devanagari'
+
+    # Template selection (Malayalam script uses its own Samam-only templates)
+    if script == 'malayalam':
+        template_file_src = templateFile_Malayalam
+        text_template_file_src = f"{text_template_dir}/Malayalam_main.template"
+        html_template_file_src = f"{html_template_dir}/Malayalam_main_html.template"
+        pdf_font = "NotoSerifMalayalam"
+        html_font = "Noto Serif Malayalam"
+    else:
+        template_file_src = templateFile_Devanagari
+        text_template_file_src = text_templateFile_Devanagari
+        html_template_file_src = html_templateFile_Devanagari
+
     if output_mode == 'combined':
         # Default: Combined output (Rik + Samam together)
-        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
-        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
-        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        template_file = latex_jinja_env.get_template(template_file_src)
+        text_template_file = latex_jinja_env.get_template(text_template_file_src)
+        html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
-        CreatePdf(template_file, f"{file_prefix}", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"{file_prefix}", "Devanagari", supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"{file_prefix}", "Devanagari", supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':
         # Separate mode: Generate Rik-only and Samam-only files (with metadata, jsv_version=jsv_version, generated_at=generated_at)
-        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
-        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
-        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        template_file = latex_jinja_env.get_template(template_file_src)
+        text_template_file = latex_jinja_env.get_template(text_template_file_src)
+        html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         # Rik-only output: Pass output_mode='rik' to template
         print("Generating Rik-only output (with metadata)...")
         final_out_name = f"{out_name}_Rik" if out_name else "Rik"
-        CreatePdf(template_file, f"Rik", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Rik", "Devanagari", supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Rik", "Devanagari", supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateTextFile(text_template_file, f"Rik", doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
         
         # Samam-only output: Pass output_mode='samam' to template
         print("Generating Samam-only output (with metadata)...")
         final_out_name = f"{out_name}_Samam" if out_name else "Samam"
-        CreatePdf(template_file, f"Samam", "Devanagari", supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Samam", "Devanagari", supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Samam", "Devanagari", supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateTextFile(text_template_file, f"Samam", doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
         
         print("Success! Generated separate Rik and Samam output files.")
         
     else:
         # Nometa mode: Generate Rik-only and Samam-only files (without metadata, jsv_version=jsv_version, generated_at=generated_at)
-        template_file = latex_jinja_env.get_template(templateFile_Devanagari)
-        text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari)
-        html_template_file = html_jinja_env.get_template(html_templateFile_Devanagari)
+        template_file = latex_jinja_env.get_template(template_file_src)
+        text_template_file = latex_jinja_env.get_template(text_template_file_src)
+        html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         # Rik-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='rik_nometa' to template
         print("Generating Rik-only output (without metadata)...")
         final_out_name = f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta"
-        CreatePdf(template_file, f"Rik_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Rik_NoMeta", "Devanagari", supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Rik_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateTextFile(text_template_file, f"Rik_NoMeta", doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
         
         # Samam-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='samam_nometa' to template
         print("Generating Samam-only output (without metadata)...")
         final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
-        CreatePdf(template_file, f"Samam_NoMeta", "Devanagari", supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Samam_NoMeta", "Devanagari", supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Samam_NoMeta", "Devanagari", supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateTextFile(text_template_file, f"Samam_NoMeta", doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
         
         print("Success! Generated separate Rik and Samam output files without metadata.")
 

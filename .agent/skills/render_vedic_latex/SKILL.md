@@ -40,6 +40,28 @@ When generating "Rik Samhita" (Continuous Text):
 *   `remove_mantra_spaces()` must collapse word spaces while strictly preserving special markers such as line breaks (`\\`), structural lines (e.g., Colophons like `॥ इति ... ॥`), and footnote hooks.
 
 ## 6. Fonts & Rendering
-*   **PDF**: Uses LuaLaTeX with `fontspec` and `Renderer=Harfbuzz` for correct Devanagari shaping.
-*   **HTML**: Relies on CSS font-family stacks, prioritizing **Adishila Vedic**.
-*   **Default Font**: **Adishila Vedic**.
+*   **Devanagari PDF**: Uses XeLaTeX/LuaLaTeX with `fontspec` and `AdishilaVedic` font family.
+*   **Malayalam PDF**: Uses XeLaTeX with `NotoSerifMalayalam-Regular.ttf` for base text, `JaimineeyaSwara.ttf` for superscript swaras and modifiers, `NotoSerifDevanagari-Regular.ttf` for Vedic accents, and `Nimbus Roman.ttf` for English numerals and footnotes.
+*   **HTML**: CSS font-family stack utilizing `JaimineeyaSwara`, `Noto Serif Malayalam`, and `Adishila Vedic`.
+
+## 7. Malayalam CLI Commands
+
+### Step A: Generate JSON from Malayalam Text
+```powershell
+python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json
+```
+
+### Step B: Compile PDF / HTML / TXT Outputs
+*   **Combined Mode (Default):**
+    ```powershell
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+    ```
+*   **Separate Mode (Rik & Samam with metadata):**
+    ```powershell
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate
+    ```
+*   **NoMeta Mode (Mantra texts only):**
+    ```powershell
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+    ```
+

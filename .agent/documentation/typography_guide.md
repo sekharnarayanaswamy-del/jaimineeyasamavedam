@@ -206,3 +206,37 @@ To adjust the density of the location numerals in the index:
 > [!TIP]
 > **Important**: All these styles are injected into the HTML during generation. After editing the fragments in `src/generate_website.py`, you **must** run the generator script to see the changes:
 > `python src/generate_website.py --source-file data/output/Vargeekaran.json -o docs`
+
+---
+
+## 🌴 Malayalam & Grantha Swara Typography System
+
+### Font Hierarchy
+
+| Role | Font File | Visual Description | Usage |
+| :--- | :--- | :--- | :--- |
+| **Base Text** | `NotoSerifMalayalam-Regular.ttf` | Traditional Malayalam Serif | Mantra words, Titles, Headings, Footnote body |
+| **Swara Notations** | `JaimineeyaSwara.ttf` | Red bold superscript (`#c62828`) | Stacks directly **above** Malayalam aksharas |
+| **Vedic Accents** | `NotoSerifDevanagari-Regular.ttf` | Vedic Unicode Extensions | Swarita (`U+0951`), Anudatta (`U+1CD2`), Kampa |
+| **Numerals & Latin** | `Nimbus Roman.ttf` | Classic Latin Serif | English numerals, page numbers, title metadata |
+
+### Stacking Geometry
+*   **Swara Elevation**: `\setstackgap{L}{0.7\baselineskip}` elevates swaras cleanly above Malayalam ascenders.
+*   **Auto-Kerning**: `\swarastack` automatically computes the width of base syllables vs multi-glyph swaras (`\stackleft` / `\stackcenter`) to eliminate visual collisions.
+
+### 11 Vedic Swara Modifiers Layout
+
+| Modifier | Symbol | Stacking Position | Hex / PUA |
+| :--- | :---: | :---: | :--- |
+| **Syllable Arc (Tie)** | `⁀` / `͡` | **Stacked Above** | `U+E004` / `U+2040` |
+| **Caret** | `^` / `˄` | **Stacked Above** | `U+E005` / `U+005E` |
+| **Roof** | `/\` / `Ʌ` | **Stacked Above** | `U+E006` / `U+0245` |
+| **Ring Above** | `˚` / `ͦ` | **Stacked Above** | `U+E009` / `U+0366` |
+| **High/Mid-Dot** | `ॱ` / `·` | **Stacked Above** | `U+E001` / `U+0971` |
+| **Underbar** | `_` | **Stacked Below** | `U+E007` / `U+005F` |
+| **Phrasing Danda** | `╷` / `L` | **Stacked Below** | `U+E002` / `U+2577` |
+| **Descending Tone** | `\` / `╲` | **Stacked Below** | `U+E003` / `U+005C` |
+| **Ascending Tone** | `/` | **Stacked Below** | `U+E008` / `U+002F` |
+| **Low Comma** | `,` / `ˏ` | **Stacked Below** | `U+E00A` / `U+002C` |
+| **Double Danda** | `\|\|` / `॥` | **Inline** | `U+E00B` / `U+0965` |
+

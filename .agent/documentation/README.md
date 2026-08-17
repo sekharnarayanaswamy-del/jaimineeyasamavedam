@@ -1,10 +1,13 @@
-# jaimineeyasamavedam
-Jaimini Sama Vedam 
-This project converts the Sama Vedam text present in the pdf file S1.pdf into Unicode text. The document was created using a propreitary font called Krishna Vedic.  
-Refer to the [index.html](index.html) for more details.
+# Jaimineeya Samavedam — Agent Documentation
 
-## Documentation
+Comprehensive internal technical reference and developer documentation for processing, transliterating, and typesetting the Jaimineeya Samaveda in Devanagari and Malayalam.
 
-*   **[CLI Usage Guide](CLI_USAGE.md)**: Detailed instructions on how to use the processing scripts.
-*   **[Developer Guide](DEVELOPER_GUIDE.md)**: Comprehensive architectural overview and workflow documentation.
-*   **[JSON Structure Guide](Structure.md)**: Explanation of the JSON data structure used in the project.
+## Documentation Index
+
+*   **[CLI Usage Guide](CLI_USAGE.md)**: Detailed instructions and CLI commands for both Devanagari and Malayalam processing pipelines.
+*   **[Developer Guide](DEVELOPER_GUIDE.md)**: Architectural overview, AST data model, and correction workflows.
+*   **[LaTeX Workflow Guide](LATEX_GUIDE.md)**: Stacking macros, XeLaTeX/LuaLaTeX compilation pipeline, and font setup.
+*   **[Typography & Font Guide](typography_guide.md)**: Font hierarchy, Malayalam stacking geometry, and the 11 Vedic Swara Modifiers.
+*   **[Pipeline Architecture](PIPELINE_ARCHITECTURE.md)**: End-to-end data flow from raw text to PDF/HTML/TXT.
+*   **[Website Architecture](WEBSITE_ARCHITECTURE.md)**: Static site generation and online curation gateway.
+*   **[Project Structure](PROJECT_STRUCTURE.md)**: Directory layout and module responsibilities.

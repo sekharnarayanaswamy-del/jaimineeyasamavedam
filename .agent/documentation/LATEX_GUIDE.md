@@ -15,18 +15,29 @@ While your LaTeX Studio/Workshop plugin provides the visual environment, Antigra
 ## 2. Key Project Macros
 The project uses custom commands to handle the unique requirements of Vedic typesetting:
 
+### Devanagari Macros
 *   **`\stackcenter{Mantrah}{Swarah}`**: Stacks a Swara mark centrally beneath a mantra syllable.
 *   **`\stackleft{Mantrah}{Swarah}`**: Used for multi-character Swara marks (aligns based on the project's traditional layout).
 *   **`\accentmark{Size}{Char}`**: Dynamically sizes and bolds Devanagari numerals or symbols.
 *   **`\accentadj`**: Provides fine-tuned kerning (spacing adjustment) between colliding accents.
 
+### Malayalam Macros & Stacking
+*   **`\swarastack{Syllable}{Swara}`**: Dynamic width-aware stacking engine that places red swara notations **above** the base Malayalam akshara without collision.
+*   **`\stackcenter{Syllable}{Swara}`** & **`\stackleft{Syllable}{Swara}`**: Overhead stacking commands mapped to `\swarastack`.
+*   **`\accentmark{Size}{Char}`**: Sizes Vedic combining marks (`\devafont`) over/under Malayalam aksharas.
+*   **`\makeindex` & `\apptocmd{\theindex}{\malayalamfont}{}{}`**: Compiles full two-column alphabetical indices in Malayalam (`അനുക്രമണിക`).
+
 ## 3. Recommended Workflow
 
 ### Step A: Generation
-Always generate the `.tex` file from the source JSON using the project's rendering engine first:
-```bash
-python src/render_pdf.py data/output/Vargeekaran.json --type samhita
-```
+*   **Devanagari:**
+    ```bash
+    python src/render_pdf.py data/output/Vargeekaran.json --type samhita
+    ```
+*   **Malayalam:**
+    ```bash
+    python src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+    ```
 
 ### Step B: AI-Driven Refinement
 Instead of hunting through 20,000+ lines of LaTeX, ask Antigravity to perform targeted shifts:
@@ -37,11 +48,14 @@ Instead of hunting through 20,000+ lines of LaTeX, ask Antigravity to perform ta
 Use your plugin's **PDF Preview** to see the changes. If the build breaks, simply tell Antigravity:
 > *"The build failed with an error about 'Undefined control sequence'. Please fix it."*
 
-## 4. Environment Requirements
-To ensure the plugin compiles correctly, your system must have:
-*   **LuaLaTeX** (Part of TeX Live or MikTeX).
-*   **AdishilaVedic** fonts installed or accessible in the project `fonts/` directory.
-*   **Renderer=Harfbuzz** enabled in the `fontspec` setup (already configured in the project's `.tex` templates).
+## 4. Environment & Font Requirements
+*   **Devanagari**: Compiled with LuaLaTeX/XeLaTeX, `fontspec`, and `AdishilaVedic`.
+*   **Malayalam**: Compiled with XeLaTeX (2-pass + `makeindex`) using:
+    - Base Text: `NotoSerifMalayalam-Regular.ttf`
+    - Superscript Swaras & Modifiers: `JaimineeyaSwara.ttf`
+    - Vedic Accents: `NotoSerifDevanagari-Regular.ttf`
+    - English Numerals & Footnotes: `Nimbus Roman.ttf`
 
 ---
 *Created by Antigravity for the Jaimineeya Samavedam Digitalization Project.*
+

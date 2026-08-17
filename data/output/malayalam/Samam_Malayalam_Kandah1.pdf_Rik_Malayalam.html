@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>॥ ജൈമിനീയ സാമ സംഹിതാ ॥</title>
+    <style>
+        @font-face {
+            font-family: 'JaimineeyaSwara';
+            src: url('../../fonts/JaimineeyaSwara.ttf') format('truetype'),
+                 url('../../../fonts/JaimineeyaSwara.ttf') format('truetype');
+        }
+        :root {
+            --font-doc: 'Noto Serif Malayalam', 'Noto Sans Malayalam', serif, sans-serif;
+            --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', serif;
+            --swara-size: 1.1rem;
+            --primary-color: #000000;
+            --accent-blue: #0d47a1;
+            --accent-green: #1b5e20;
+            --accent-purple: #4a148c;
+            --accent-brown: #4e342e;
+            --swara-red: #c62828;
+            --bg-light: #f8f9fa;
+            --bg-card: #EFE6D5;
+            --border-color: #dee2e6;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--font-doc);
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: var(--primary-color);
+            background: var(--bg-light);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .title-page {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        .title-page h1 {
+            color: var(--accent-blue);
+            font-size: 2.2rem;
+            margin: 0;
+        }
+        .toc {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .toc h2 {
+            text-align: center;
+            color: var(--accent-green);
+            margin-top: 0;
+        }
+        .toc-chapter a {
+            font-weight: bold;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+        .toc-section a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .chapter-title {
+            text-align: center;
+            color: var(--accent-blue);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .section-title {
+            text-align: center;
+            color: var(--accent-purple);
+            margin-top: 30px;
+        }
+        .subsection {
+            margin: 25px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .subsection-header {
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+        .subsection-header .header-title {
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+        .mantra-verse {
+            margin: 15px 0;
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 0;
+            line-height: 1.4;
+        }
+        .mantra-word {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            vertical-align: bottom;
+            margin: 0;
+            padding: 0;
+        }
+        .swara-text {
+            font-family: var(--font-swara);
+            color: var(--swara-red);
+            font-weight: bold;
+            font-size: var(--swara-size);
+            line-height: 1;
+            text-align: center;
+            min-height: 1.1em;
+            padding-bottom: 2px;
+        }
+        .mantra-text {
+            font-family: var(--font-doc);
+            font-size: 1.4rem;
+            line-height: 1.2;
+            text-align: center;
+        }
+        .word-space {
+            display: inline-block;
+            width: 0.35em;
+        }
+        .danda {
+            margin: 0 0.15em;
+            color: var(--primary-color);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title-page">
+            <h1>॥ ജൈമിനീയ സാമ സംഹിതാ ॥</h1>
+            <p style="font-size: 1.1rem; color: var(--accent-blue); margin-top: 10px;">
+                പതിപ്പ്:  | നിർമ്മിതം: 2026-08-16 12:31:49
+            </p>
+        </div>
+
+        <div class="toc" id="toc">
+            <h2>॥ അനുക്രമണികാ ॥</h2>
+            <div class="toc-content">
+                <div class="toc-group">
+                    <div class="toc-chapter">
+                        <a href="#supersection_1">ആഗ്നേയപാഠഃ</a>
+                    </div>
+                    <ul>
+                        <li class="toc-section">
+                            <a href="#supersection_1-section_1">പ്രഥമ ഖണ്ഡഃ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="chapter" id="supersection_1">
+            <h1 class="chapter-title">ആഗ്നേയപാഠഃ</h1>
+
+            <div class="section" id="supersection_1-section_1">
+                <h2 class="section-title">പ്രഥമ ഖണ്ഡഃ</h2>
+
+                <div class="subsection" id="supersection_1-section_1-subsection_1">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഭാരദ്വാജോ ബാർഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">അഗ്നാ<span class="accent-swarita">॑</span>ആ<span class="accent-anudatta">᳒</span>യാഹീവീ<span class="accent-anudatta">᳒</span>താ<span class="accent-anudatta">᳒</span>യേ <span class="danda">।</span> ഗൃ<span class="accent-anudatta">᳒</span>ണാ<span class="accent-anudatta">᳒</span>നോഹവ്യാദാ<span class="accent-swarita">॑</span>തയേ <span class="danda">।</span> നീഹോ<span class="accent-anudatta">᳒</span>താ<span class="accent-swarita">॑</span>സത്സീബർഹീഷി<span class="accent-swarita">॑</span><span class="mantra-number"> <span class="danda">॥</span> 1 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_2">
+                    
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_3">
+                    
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_4">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഭാരദ്വാജോ ബാർഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">ത്വാ<span class="accent-swarita">॑</span>മാഗ്നേയജ്ഞാ<span class="accent-anudatta">᳒</span>നാം <span class="danda">।</span> ഹോ<span class="accent-swarita">॑</span>താവിശ്വേ<span class="accent-swarita">॑</span>ഷാംഹിതഃ <span class="danda">।</span> ദേവേഭി<span class="accent-swarita">॑</span>ര്മാനൂഷേ<span class="accent-swarita">॑</span>ജനേ<span class="mantra-number"> <span class="danda">॥</span> 2 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_5">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ മേധാതിഥിഃ കാണ്വഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">അഗ്നിന്ദൂതം<span class="accent-anudatta">᳒</span>വൃ<span class="accent-swarita">॑</span>ണീമഹേ <span class="danda">।</span> ഹോ<span class="accent-anudatta">᳒</span>താ<span class="accent-swarita">॑</span>രംവിശ്വാ<span class="accent-anudatta">᳒</span>വേ<span class="accent-swarita">॑</span>ദസം <span class="danda">।</span> അസ്യാ<span class="accent-trikampa">᳹</span>യജ്ഞാസ്യാ<span class="accent-swarita">॑</span>സുക്രാ<span class="accent-swarita">॑</span>തും<span class="mantra-number"> <span class="danda">॥</span> 3 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_6">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഭാരദ്വാജോ ബാർഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">അഗ്നിർവൃ<span class="accent-swarita">॑</span>ണി<span class="accent-swarita">॑</span>ജംഘനാത് <span class="danda">।</span> ദ്രവിണാസ്യു<span class="accent-trikampa">᳹</span>ര്വീപന്യാ<span class="accent-anudatta">᳒</span>യാ <span class="danda">।</span> സാമീ<span class="accent-anudatta">᳒</span>ദ്ധശ്ശുക്രാ<span class="accent-anudatta">᳒</span>ആഹൂതഃ<span class="mantra-number"> <span class="danda">॥</span> 4 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_7">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഉശനാഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">പ്രേഷ്ഠം<span class="accent-kampa">᳸</span>വോആതീഥിം <span class="danda">।</span> സ്തൂ<span class="accent-anudatta">᳒</span>ഷേ<span class="accent-anudatta">᳒</span>മിത്രാമീവാപ്രീയം <span class="danda">।</span> അ<span class="accent-anudatta">᳒</span>ഗ്നേരാഥന്നാ<span class="accent-anudatta">᳒</span>വേദ്യം<span class="mantra-number"> <span class="danda">॥</span> 5 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_8">
+                    
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_9">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ സുദീതിപുരുമീഢാ വാംഗിരസൗ തയോർവാഽന്യതരഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">ത്വന്നോആഗ്നേമാ<span class="accent-anudatta">᳒</span>ഹോ<span class="accent-swarita">॑</span>ഭിഃ <span class="danda">।</span> പാഹീവിശ്വാ<span class="accent-swarita">॑</span>സ്യാആ<span class="accent-anudatta">᳒</span>രാ<span class="accent-swarita">॑</span>തേഃ <span class="danda">।</span> ഊത<span class="accent-anudatta">᳒</span>ദ്വീഷോമർക്ത്യാ<span class="accent-swarita">॑</span>സ്യാ<span class="mantra-number"> <span class="danda">॥</span> 6 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_10">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഭാരദ്വാജോ ബാർഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">ഏഹ്യൂ<span class="accent-anudatta">᳒</span>ഷുബ്രാ<span class="accent-anudatta">᳒</span>വാ<span class="accent-swarita">॑</span>ണിതേ <span class="danda">।</span> അഗ്നാഇത്ഥേ<span class="accent-trikampa">᳹</span>താ<span class="accent-swarita">॑</span>രാ<span class="accent-swarita">॑</span>ഗീരാഃ <span class="danda">।</span> ഏ<span class="accent-anudatta">᳒</span>ഭിർവാർധാ<span class="accent-swarita">॑</span>സാഇ<span class="accent-anudatta">᳒</span>ന്ദൂ<span class="accent-swarita">॑</span>ഭിഃ<span class="mantra-number"> <span class="danda">॥</span> 7 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_11">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ വത്സഃ കാണ്വഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">ആ<span class="accent-kampa">᳸</span>തേവാത്സോ<span class="accent-anudatta">᳒</span>മാനോയമാത് <span class="danda">।</span> പരാമാ<span class="accent-trikampa">᳹</span>ഞ്ചിത്സാധാസ്ഥാത് <span class="danda">।</span> അ<span class="accent-anudatta">᳒</span>ഗ്നേ<span class="accent-anudatta">᳒</span>ത്വാങ്കാമയോഗീ<span class="accent-anudatta">᳒</span>രാ<span class="accent-swarita">॑</span><span class="mantra-number"> <span class="danda">॥</span> 8 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_12">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ ഭാരദ്വാജോ ബാർഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">ത്വാമാഗ്നേപു<span class="accent-trikampa">᳹</span>ഷ്കാരാദ<span class="accent-anudatta">᳒</span>ധീ<span class="accent-swarita">॑</span> <span class="danda">।</span> ആ<span class="accent-kampa">᳸</span>ഥ<span class="accent-swarita">॑</span>ര്വാണീരാ<span class="accent-swarita">॑</span>മന്ധത <span class="danda">।</span> മൂർധ്നോ<span class="accent-anudatta">᳒</span>വിശ്വാസ്യാവാഘാ<span class="accent-anudatta">᳒</span>താ<span class="accent-swarita">॑</span>:<span class="mantra-number"> <span class="danda">॥</span> 9 <span class="danda">॥</span> </span></div>
+                </div>
+                <div class="subsection" id="supersection_1-section_1-subsection_13">
+                    <div class="rik-metadata sanskrit-text"><span class="danda">॥</span> ¦¦ വാമദേവഃ അഗ്നിഃ ഗായത്രീ <span class="danda">॥</span> ¦¦</div>
+<div class="rik-text sanskrit-text">അഗ്നേവീ<span class="accent-kampa">᳸</span>വാ<span class="accent-anudatta">᳒</span>സ്വാദാ<span class="accent-anudatta">᳒</span>ഭാരാ <span class="danda">।</span> അസ്മഭ്യാമൂ<span class="accent-anudatta">᳒</span>താ<span class="accent-trikampa">᳹</span>യേ<span class="accent-swarita">॑</span>മാഹേ<span class="accent-anudatta">᳒</span> <span class="danda">।</span> ദേവോഹ്യാസീ<span class="accent-swarita">॑</span>നോദൃശേ<span class="mantra-number"> <span class="danda">॥</span> 10 <span class="danda">॥</span> </span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>ജൈമിനീയ സാമവേദ സംഹിതാ — മലയാളം സംസ്‍കരണം</p>
+        </div>
+    </div>
+</body>
+</html>

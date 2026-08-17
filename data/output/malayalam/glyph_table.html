@@ -1,0 +1,2843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jaimineeya Swara Font — Complete Glyph Inventory & Modifiers Review</title>
+<style>
+    @font-face {
+        font-family: 'JaimineeyaSwara';
+        src: url('../../../fonts/JaimineeyaSwara.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Noto Serif Malayalam';
+        src: url('../../../fonts/NotoSerifMalayalam-Regular.ttf') format('truetype');
+    }
+
+    :root {
+        --bg-main: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --primary-blue: #002171;
+        --swara-red: #c62828;
+        --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-main);
+        padding: 30px 20px;
+        line-height: 1.5;
+    }
+    .container {
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+    header {
+        background: linear-gradient(135deg, #002171 0%, #1e3a8a 100%);
+        color: white;
+        padding: 36px 32px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 25px -5px rgba(0, 33, 113, 0.2);
+    }
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+    }
+    .subtitle {
+        font-size: 15px;
+        color: #bfdbfe;
+        max-width: 900px;
+        line-height: 1.6;
+    }
+    .color-legend {
+        display: flex;
+        gap: 20px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.12);
+        padding: 6px 14px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+    }
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; border: 2px solid white; }
+    .dot-blue { background: #60a5fa; border: 2px solid white; }
+
+    .nav-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 8px;
+        overflow-x: auto;
+    }
+    .tab-btn {
+        background: transparent;
+        border: none;
+        padding: 10px 18px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    .tab-btn:hover {
+        background: #e2e8f0;
+        color: var(--text-main);
+    }
+    .tab-btn.active {
+        background: var(--primary-blue);
+        color: white;
+    }
+
+    .section-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+    .section-header {
+        background: #f8fafc;
+        border-bottom: 1px solid var(--border-color);
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section-tag {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    .tag-modifiers { background: #e0e7ff; color: #3730a3; }
+    .tag-ayugma { background: #fee2e2; color: #991b1b; }
+    .tag-liga { background: #dbeafe; color: #1e40af; }
+    .tag-all { background: #dcfce7; color: #166534; }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    th {
+        background: #f1f5f9;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    tr:hover {
+        background: #f8fafc;
+    }
+    .idx-col {
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 600;
+        width: 75px;
+    }
+    .glyph-cell {
+        font-size: 34px;
+        line-height: 1;
+        width: 100px;
+        text-align: center;
+    }
+    .swara-glyph {
+        font-family: 'JaimineeyaSwara', serif;
+    }
+    .swara-red {
+        color: var(--swara-red);
+        font-weight: bold;
+    }
+    .mod-glyph {
+        color: var(--primary-blue);
+    }
+
+    .dotted-cell {
+        text-align: center;
+        width: 130px;
+    }
+    .dotted-sample {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        vertical-align: middle;
+        line-height: 1;
+        background: #ffffff;
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+    }
+    .dotted-sample .base-circle {
+        font-family: 'Noto Serif Malayalam', 'Segoe UI Symbol', sans-serif;
+        font-size: 22px;
+        color: #64748b;
+        letter-spacing: 2px;
+    }
+    .dotted-sample .arc-tie {
+        color: var(--primary-blue);
+        font-family: 'JaimineeyaSwara', serif;
+        font-size: 26px;
+        line-height: 0.8;
+        margin-bottom: -4px;
+    }
+    .dotted-sample .mod-sup-center {
+        color: var(--primary-blue);
+        font-size: 18px;
+        line-height: 0.8;
+        margin-bottom: 2px;
+        font-weight: bold;
+    }
+    .dotted-sample .mod-dot {
+        color: var(--primary-blue);
+        font-size: 24px;
+        line-height: 0;
+        vertical-align: 4px;
+        margin-left: 2px;
+    }
+    .dotted-sample .mod-sub {
+        color: var(--primary-blue);
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 2px;
+    }
+    .dotted-sample .mod-inline {
+        color: var(--primary-blue);
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 4px;
+    }
+
+    .preview-cell {
+        width: 180px;
+    }
+    .mantra-preview-box {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-family: 'Noto Serif Malayalam', serif;
+    }
+    .stack-top {
+        font-size: 17px;
+        line-height: 1.1;
+        margin-bottom: 1px;
+    }
+    .mantra-base {
+        font-size: 20px;
+        font-weight: bold;
+        color: #0f172a;
+        line-height: 1.2;
+    }
+    .mod-arc-tie {
+        color: var(--primary-blue);
+        font-family: 'JaimineeyaSwara', serif;
+        font-size: 22px;
+        margin-bottom: -4px;
+        display: block;
+    }
+    .mod-blue-sup {
+        color: var(--primary-blue);
+        font-size: 14px;
+        vertical-align: super;
+        margin-left: 2px;
+        font-weight: bold;
+    }
+    .mod-blue-sub {
+        color: var(--primary-blue);
+        font-size: 16px;
+        vertical-align: sub;
+        margin-left: 2px;
+        font-weight: bold;
+    }
+    .mod-blue-dot {
+        color: var(--primary-blue);
+        font-size: 22px;
+        line-height: 0;
+        vertical-align: 3px;
+        margin-left: 2px;
+    }
+    .mod-blue-inline {
+        color: var(--primary-blue);
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 3px;
+    }
+
+    .shortcut-tag {
+        font-family: ui-monospace, monospace;
+        font-size: 15px;
+        color: #3730a3;
+        background: #e0e7ff;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid #c7d2fe;
+    }
+    .mod-desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: normal;
+        margin-top: 4px;
+        line-height: 1.4;
+    }
+    code {
+        font-family: ui-monospace, monospace;
+        background: #f1f5f9;
+        color: #0f172a;
+        padding: 3px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        border: 1px solid #e2e8f0;
+    }
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .badge-above { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge-below { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .badge-shoulder { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-inline { background: #f8fafc; color: #475569; border: 1px solid #cbd5e1; }
+    .badge-base { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .badge-sha { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-pla { background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }
+    .badge-liga { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+    .count-cell { font-weight: 700; color: #0f172a; text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>Jaimineeya Vedic Swara Font (JaimineeyaSwara.ttf) — Complete Glyph Inventory</h1>
+    <div class="subtitle">
+        Comprehensive reference table and visual preview for all Jaimineeya Samaveda swara markers, manuscript overrides (Pla/Sha), ligatures, and the 8 Canonical Vedic Swara Modifiers (A..H).
+    </div>
+    <div class="color-legend">
+        <div class="legend-item"><span class="legend-dot dot-red"></span> Pure Swara Pitch Markers: Bold Red (#c62828) — Stacked Above</div>
+        <div class="legend-item"><span class="legend-dot dot-blue"></span> Vedic Swara Modifiers (A..H): Dark Blue (#002171) — Attached to Mantrakshara</div>
+    </div>
+</header>
+
+<div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('modifiers-section')">1. Swara Modifiers (A..H)</button>
+    <button class="tab-btn" onclick="showTab('ayugma-section')">2. Ayugma Bases (A01..A19)</button>
+    <button class="tab-btn" onclick="showTab('ligatures-section')">3. Manuscript Ligatures</button>
+    <button class="tab-btn" onclick="showTab('all-swaras-section')">4. Full Swara Inventory (220)</button>
+</div>
+
+<!-- SECTION 1: MODIFIERS -->
+<div id="modifiers-section" class="section-card">
+    <div class="section-header">
+        <div class="section-title">Canonical 8 Vedic Swara Modifiers (A..H)</div>
+        <span class="section-tag tag-modifiers">Active Modifiers</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Shortcut</th>
+                <th>Name & Tone Meaning</th>
+                <th>Input Methods</th>
+                <th style="text-align: center;">Direct Glyph</th>
+                <th style="text-align: center;">Dotted Representation (◌)</th>
+                <th>Mantrakshara Stacking Preview</th>
+                <th>Codepoint</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-A</strong></td>
+            <td><strong class="shortcut-tag">(A)</strong></td>
+            <td><strong>Syllable Spanning Arc (Tie / Breve)</strong><div class="mod-desc">Overhead curved arch spanning across syllables for connected tone transition.</div></td>
+            <td><code>(A)</code> / <code>(a)</code> / <code>(╭╮)</code> / <code>(⁀)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='arc-tie'>╭╮</span><span class='base-circle'>◌◌</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌪𑌾</span></div><div class='mantra-base'><span class='mod-arc-tie'>╭╮</span>ൠഹാ</div></div></td>
+            <td><code>U+E004 / ╭╮</code></td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-B</strong></td>
+            <td><strong class="shortcut-tag">(B)</strong></td>
+            <td><strong>Caret / Peak (/\ / ^)</strong><div class="mod-desc">Overhead peak arrowhead indicating elevated melodic emphasis.</div></td>
+            <td><code>(B)</code> / <code>(b)</code> / <code>(^)</code> / <code>(/\)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='mod-sup-center'>^</span><span class='base-circle'>◌</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌕</span></div><div class='mantra-base'>മാ<span class='mod-blue-sup'>^</span></div></div></td>
+            <td><code>U+E005 / ^ / /\</code></td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-C</strong></td>
+            <td><strong class="shortcut-tag">(C)</strong></td>
+            <td><strong>High / Shoulder Dot (ॱ / ·)</strong><div class="mod-desc">Upper-right shoulder pause/spacing dot attached to mantrakshara curve.</div></td>
+            <td><code>(C)</code> / <code>(c)</code> / <code>(ॱ)</code> / <code>(·)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-dot'>·</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌤</span></div><div class='mantra-base'>ഓ<span class='mod-blue-dot'>·</span></div></div></td>
+            <td><code>U+E001 / U+0971 / ·</code></td>
+            <td><span class="badge badge-shoulder">Shoulder</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-D</strong></td>
+            <td><strong class="shortcut-tag">(D)</strong></td>
+            <td><strong>Chevron Roof (Ʌ)</strong><div class="mod-desc">Overhead chevron roof marker indicating roof-tone modulation.</div></td>
+            <td><code>(D)</code> / <code>(d)</code> / <code>(Ʌ)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='mod-sup-center'>Ʌ</span><span class='base-circle'>◌</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'></span></div><div class='mantra-base'>ഹോ<span class='mod-blue-sup'>Ʌ</span></div></div></td>
+            <td><code>U+E006 / U+0245 / Ʌ</code></td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-E</strong></td>
+            <td><strong class="shortcut-tag">(E)</strong></td>
+            <td><strong>Phrasing Heavy Danda (┃)</strong><div class="mod-desc">Phrasing heavy vertical line inline with mantrakshara.</div></td>
+            <td><code>(E)</code> / <code>(e)</code> / <code>(┃)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-inline'>┃</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚</span></div><div class='mantra-base'>മാ<span class='mod-blue-inline'>┃</span></div></div></td>
+            <td><code>U+E002 / U+2503 / ┃</code></td>
+            <td><span class="badge badge-inline">Inline</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-F</strong></td>
+            <td><strong class="shortcut-tag">(F)</strong></td>
+            <td><strong>Light Vertical Line (╷)</strong><div class="mod-desc">Light phrasing vertical tone separator.</div></td>
+            <td><code>(F)</code> / <code>(f)</code> / <code>(╷)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-inline'>╷</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚</span></div><div class='mantra-base'>മാ<span class='mod-blue-inline'>╷</span></div></div></td>
+            <td><code>U+E002 / U+2577 / ╷</code></td>
+            <td><span class="badge badge-inline">Inline</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-G</strong></td>
+            <td><strong class="shortcut-tag">(G)</strong></td>
+            <td><strong>Descending Tone Slash (\ / ⟍)</strong><div class="mod-desc">Downward falling diagonal slash attached beneath the mantrakshara baseline (descending pitch).</div></td>
+            <td><code>(G)</code> / <code>(g)</code> / <code>(\)</code> / <code>(⟍)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-sub'>\</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'></span></div><div class='mantra-base'>ആഇഷോ<span class='mod-blue-sub'>\</span></div></div></td>
+            <td><code>U+E003 / U+005C / \</code></td>
+            <td><span class="badge badge-below">Stacked Below</span></td>
+        </tr>
+        
+        <tr class="mod-row" data-type="modifier">
+            <td class="idx-col"><strong>MOD-H</strong></td>
+            <td><strong class="shortcut-tag">(H)</strong></td>
+            <td><strong>Swarita Tone Accent (॑ / |)</strong><div class="mod-desc">Upper tone Swarita vertical stroke situated on top of the preceding mantrakshara.</div></td>
+            <td><code>(H)</code> / <code>(h)</code> / <code>(L)</code> / <code>(|)</code> / <code>(॑)</code></td>
+            <td class="glyph-cell"><span class="swara-glyph mod-glyph"></span></td>
+            <td class="dotted-cell"><span class='dotted-sample'><span class='mod-sup-center'>|</span><span class='base-circle'>◌</span></span></td>
+            <td class="preview-cell"><div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚𑌿</span></div><div class='mantra-base'>ദാ<span class='mod-blue-sup'>|</span></div></div></td>
+            <td><code>U+E00C / U+0951 / ॑</code></td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+<!-- SECTION 2: AYUGMA BASES -->
+<div id="ayugma-section" class="section-card" style="display:none;">
+    <div class="section-header">
+        <div class="section-title">Ayugma Swara Bases (A01..A19)</div>
+        <span class="section-tag tag-ayugma">Odd Swaras</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Malayalam Base</th>
+                <th style="text-align: center;">Grantha Glyph</th>
+                <th>Codepoint</th>
+                <th>Traditional Meaning</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td class="idx-col"><strong>A01</strong></td>
+            <td><strong>Ka</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ക</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕</span></td>
+            <td><code>U+11315</code></td>
+            <td>Avaroham (അവരോഹം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A02</strong></td>
+            <td><strong>Kha</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഖ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖</span></td>
+            <td><code>U+11316</code></td>
+            <td>Anvangulyam (അന്വംഗുല്യം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A03</strong></td>
+            <td><strong>Ca</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ച</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚</span></td>
+            <td><code>U+1131A</code></td>
+            <td>Abhitam (അഭീതം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A04</strong></td>
+            <td><strong>Cha</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഛ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌛</span></td>
+            <td><code>U+1131B</code></td>
+            <td>Abhram (അഭ്രം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A05</strong></td>
+            <td><strong>Tta</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ട</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟</span></td>
+            <td><code>U+1131F</code></td>
+            <td>Anishtam (അനിഷ്ടം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A06</strong></td>
+            <td><strong>Ttha</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഠ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌠</span></td>
+            <td><code>U+11320</code></td>
+            <td>Apratishtham (അപ്രതിഷ്ഠം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A07</strong></td>
+            <td><strong>Dda</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഡ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌡</span></td>
+            <td><code>U+11321</code></td>
+            <td>Avipriyam (അവിപ്രിയം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A08</strong></td>
+            <td><strong>Ddha</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഢ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌢</span></td>
+            <td><code>U+11322</code></td>
+            <td>Antam (അന്തം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A09</strong></td>
+            <td><strong>Nna</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ണ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣</span></td>
+            <td><code>U+11323</code></td>
+            <td>Namanam (നമനം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A10</strong></td>
+            <td><strong>Ta</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ത</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤</span></td>
+            <td><code>U+11324</code></td>
+            <td>Atatam (അതതം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A11</strong></td>
+            <td><strong>Tha</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഥ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥</span></td>
+            <td><code>U+11325</code></td>
+            <td>Astam (അസ്തം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A12</strong></td>
+            <td><strong>Da</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ദ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌦</span></td>
+            <td><code>U+11326</code></td>
+            <td>Danam (ദാനം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A13</strong></td>
+            <td><strong>Sha (Mal)</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ശ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">ശ</span></td>
+            <td><code>U+0D36</code></td>
+            <td>Saa / Shaa (ശ-based manuscript)</td>
+            <td><span class="badge badge-base">Manuscript Base</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A14</strong></td>
+            <td><strong>Ssa</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ഷ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷</span></td>
+            <td><code>U+11337</code></td>
+            <td>Shastam (ശസ്തം)</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A15</strong></td>
+            <td><strong>Pla (Vedic)</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">പ്ല</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E020</code></td>
+            <td>Plutam (പ്ലുതം - Vedic custom glyph)</td>
+            <td><span class="badge badge-base">Manuscript Base</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A16</strong></td>
+            <td><strong>Nga</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ങ</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙</span></td>
+            <td><code>U+11319</code></td>
+            <td>Nga base</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A17</strong></td>
+            <td><strong>Tra</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ത്ര</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E01D</code></td>
+            <td>Tra conjunct (𑌤𑍍𑌰)</td>
+            <td><span class="badge badge-base">Conjunct</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A18</strong></td>
+            <td><strong>Ra</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ര</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌰</span></td>
+            <td><code>U+11330</code></td>
+            <td>Ra base</td>
+            <td><span class="badge badge-base">Odd swara</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>A19</strong></td>
+            <td><strong>Kra</strong></td>
+            <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">ക്ര</td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E01E</code></td>
+            <td>Kra conjunct (𑌕𑍍𑌰)</td>
+            <td><span class="badge badge-base">Conjunct</span></td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+<!-- SECTION 3: MANUSCRIPT LIGATURES -->
+<div id="ligatures-section" class="section-card" style="display:none;">
+    <div class="section-header">
+        <div class="section-title">Manuscript Overrides & Complex Ligatures (Sha / Pla / Kra / Tra)</div>
+        <span class="section-tag tag-liga">Manuscript Ligatures</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ligature Name</th>
+                <th style="text-align: center;">Rendered Glyph</th>
+                <th>Codepoint / Formula</th>
+                <th>Typographic Composition</th>
+                <th>Stacking Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td class="idx-col"><strong>LIG-01</strong></td>
+            <td><strong>Shaa (Sha+AA)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E010 / 0D36+1133E</code></td>
+            <td>ശ + 𑌾 (Grantha separate right arm)</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-02</strong></td>
+            <td><strong>Shi (Sha+I)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E011 / 0D36+1133F</code></td>
+            <td>ശ + 𑌿 (Grantha authentic iMatra attached to right lobe)</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-03</strong></td>
+            <td><strong>Shii (Sha+II)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E012 / 0D36+11340</code></td>
+            <td>ശ + 𑍀 (Grantha iiMatra attached to right lobe)</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-04</strong></td>
+            <td><strong>Sha+Virama</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E013 / 0D36+1134D</code></td>
+            <td>ശ + ് (Malayalam virama)</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-05</strong></td>
+            <td><strong>Plaa (Pla+AA)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E021 / Pla+1133E</code></td>
+            <td>Vedic Pla + Grantha separate right arm</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-06</strong></td>
+            <td><strong>Pli (Pla+I)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E022 / Pla+1133F</code></td>
+            <td>pi_gran + subjoined Malayalam La</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-07</strong></td>
+            <td><strong>Plii (Pla+II)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E023 / Pla+11340</code></td>
+            <td>pii_gran + subjoined Malayalam La</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-08</strong></td>
+            <td><strong>Shruu (ശ്രൂ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E027</code></td>
+            <td>Clean composite without dotted circles</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-09</strong></td>
+            <td><strong>Shrr (ശ്രൃ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E028</code></td>
+            <td>Clean composite without dotted circles</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        <tr>
+            <td class="idx-col"><strong>LIG-10</strong></td>
+            <td><strong>Nna+U (ണു)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>U+E029</code></td>
+            <td>Nna with right-attached uMatra without collision</td>
+            <td><span class="badge badge-above">Stacked Above</span></td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+<!-- SECTION 4: FULL SWARA INVENTORY -->
+<div id="all-swaras-section" class="section-card" style="display:none;">
+    <div class="section-header">
+        <div class="section-title">Full Samhita Swara Frequency & Character Review</div>
+        <span class="section-tag tag-all">All Markers (220)</span>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Input Marker</th>
+                <th style="text-align: center;">Rendered Glyph</th>
+                <th>Grantha Hex</th>
+                <th>Category</th>
+                <th style="text-align: center;">Corpus Frequency</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr data-type="swara">
+            <td class="idx-col">1</td>
+            <td><strong>(श)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">ശ</span></td>
+            <td><code>0D36</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">2046</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">2</td>
+            <td><strong>(त)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤</span></td>
+            <td><code>11324</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A06)</span></td>
+            <td class="count-cell">1676</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">3</td>
+            <td><strong>(ख)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖</span></td>
+            <td><code>11316</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A02)</span></td>
+            <td class="count-cell">1483</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">4</td>
+            <td><strong>(टा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾</span></td>
+            <td><code>1131F 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1407</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">5</td>
+            <td><strong>(का)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌾</span></td>
+            <td><code>11315 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1137</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">6</td>
+            <td><strong>(क)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕</span></td>
+            <td><code>11315</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A01)</span></td>
+            <td class="count-cell">1135</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">7</td>
+            <td><strong>(टि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿</span></td>
+            <td><code>1131F 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">920</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">8</td>
+            <td><strong>(ट)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟</span></td>
+            <td><code>1131F</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A04)</span></td>
+            <td class="count-cell">794</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">9</td>
+            <td><strong>(खा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾</span></td>
+            <td><code>11316 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">754</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">10</td>
+            <td><strong>(कि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌿</span></td>
+            <td><code>11315 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">736</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">11</td>
+            <td><strong>(ता)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌾</span></td>
+            <td><code>11324 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">696</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">12</td>
+            <td><strong>(शा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E010</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">652</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">13</td>
+            <td><strong>(चा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑌾</span></td>
+            <td><code>1131A 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">632</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">14</td>
+            <td><strong>(प्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">579</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">15</td>
+            <td><strong>(ण)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣</span></td>
+            <td><code>11323</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A05)</span></td>
+            <td class="count-cell">552</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">16</td>
+            <td><strong>(प)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪</span></td>
+            <td><code>1132A</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A08)</span></td>
+            <td class="count-cell">549</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">17</td>
+            <td><strong>(की)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍀</span></td>
+            <td><code>11315 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">493</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">18</td>
+            <td><strong>(शि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E011</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">463</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">19</td>
+            <td><strong>(खि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌿</span></td>
+            <td><code>11316 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">454</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">20</td>
+            <td><strong>(च)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚</span></td>
+            <td><code>1131A</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A03)</span></td>
+            <td class="count-cell">419</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">21</td>
+            <td><strong>(टी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀</span></td>
+            <td><code>1131F 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">391</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">22</td>
+            <td><strong>(ती)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍀</span></td>
+            <td><code>11324 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">347</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">23</td>
+            <td><strong>(य)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯</span></td>
+            <td><code>1132F</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A11)</span></td>
+            <td class="count-cell">347</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">24</td>
+            <td><strong>(चि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑌿</span></td>
+            <td><code>1131A 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">295</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">25</td>
+            <td><strong>(षी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍀</span></td>
+            <td><code>11337 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">294</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">26</td>
+            <td><strong>(ति)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌿</span></td>
+            <td><code>11324 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">291</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">27</td>
+            <td><strong>(प्ला)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E021</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">276</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">28</td>
+            <td><strong>(था)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑌾</span></td>
+            <td><code>11325 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">227</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">29</td>
+            <td><strong>(कु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍁</span></td>
+            <td><code>11315 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">194</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">30</td>
+            <td><strong>(षु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍁</span></td>
+            <td><code>11337 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">192</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">31</td>
+            <td><strong>(खी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑍀</span></td>
+            <td><code>11316 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">189</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">32</td>
+            <td><strong>(टू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍂</span></td>
+            <td><code>1131F 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">178</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">33</td>
+            <td><strong>(षू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍂</span></td>
+            <td><code>11337 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">168</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">34</td>
+            <td><strong>(पा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌾</span></td>
+            <td><code>1132A 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">165</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">35</td>
+            <td><strong>(तू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍂</span></td>
+            <td><code>11324 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">161</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">36</td>
+            <td><strong>(पि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌿</span></td>
+            <td><code>1132A 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">156</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">37</td>
+            <td><strong>(टु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁</span></td>
+            <td><code>1131F 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">153</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">38</td>
+            <td><strong>(त्र)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍍𑌰</span></td>
+            <td><code>11324 1134D 11330</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A17)</span></td>
+            <td class="count-cell">147</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">39</td>
+            <td><strong>(फ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫</span></td>
+            <td><code>1132B</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A09)</span></td>
+            <td class="count-cell">147</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">40</td>
+            <td><strong>(खण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌣𑍍</span></td>
+            <td><code>11316 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">146</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">41</td>
+            <td><strong>(टाच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌚𑍍</span></td>
+            <td><code>1131F 1133E 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">138</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">42</td>
+            <td><strong>(फा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌾</span></td>
+            <td><code>1132B 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">128</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">43</td>
+            <td><strong>(ची)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑍀</span></td>
+            <td><code>1131A 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">121</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">44</td>
+            <td><strong>(तु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍁</span></td>
+            <td><code>11324 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">118</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">45</td>
+            <td><strong>(भि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭𑌿</span></td>
+            <td><code>1132D 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">106</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">46</td>
+            <td><strong>(णा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌾</span></td>
+            <td><code>11323 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">103</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">47</td>
+            <td><strong>(थ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥</span></td>
+            <td><code>11325</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A07)</span></td>
+            <td class="count-cell">101</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">48</td>
+            <td><strong>(कू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍂</span></td>
+            <td><code>11315 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">95</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">49</td>
+            <td><strong>(काच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌾𑌚𑍍</span></td>
+            <td><code>11315 1133E 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">89</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">50</td>
+            <td><strong>(टट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌟𑍍</span></td>
+            <td><code>1131F 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">85</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">51</td>
+            <td><strong>(प्लि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E022</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">84</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">52</td>
+            <td><strong>(प्ली)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E023</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">84</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">53</td>
+            <td><strong>(या)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑌾</span></td>
+            <td><code>1132F 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">78</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">54</td>
+            <td><strong>(शी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E012</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">72</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">55</td>
+            <td><strong>(शु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E015</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">70</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">56</td>
+            <td><strong>(खु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑍁</span></td>
+            <td><code>11316 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">68</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">57</td>
+            <td><strong>(थाच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑌾𑌚𑍍</span></td>
+            <td><code>11325 1133E 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">66</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">58</td>
+            <td><strong>(षि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑌿</span></td>
+            <td><code>11337 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">65</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">59</td>
+            <td><strong>(तच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌚𑍍</span></td>
+            <td><code>11324 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">64</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">60</td>
+            <td><strong>(टाख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌖𑍍</span></td>
+            <td><code>1131F 1133E 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">63</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">61</td>
+            <td><strong>(कीच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍀𑌚𑍍</span></td>
+            <td><code>11315 11340 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">61</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">62</td>
+            <td><strong>(किच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌿𑌚𑍍</span></td>
+            <td><code>11315 1133F 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">56</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">63</td>
+            <td><strong>(टिच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿𑌚𑍍</span></td>
+            <td><code>1131F 1133F 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">56</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">64</td>
+            <td><strong>(टिट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿𑌟𑍍</span></td>
+            <td><code>1131F 1133F 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">53</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">65</td>
+            <td><strong>(टाट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌟𑍍</span></td>
+            <td><code>1131F 1133E 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">52</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">66</td>
+            <td><strong>(फी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍀</span></td>
+            <td><code>1132B 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">52</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">67</td>
+            <td><strong>(यू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑍂</span></td>
+            <td><code>1132F 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">52</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">68</td>
+            <td><strong>(पी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑍀</span></td>
+            <td><code>1132A 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">50</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">69</td>
+            <td><strong>(खू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑍂</span></td>
+            <td><code>11316 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">48</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">70</td>
+            <td><strong>(भी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭𑍀</span></td>
+            <td><code>1132D 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">47</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">71</td>
+            <td><strong>(ङ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙</span></td>
+            <td><code>11319</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A16)</span></td>
+            <td class="count-cell">46</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">72</td>
+            <td><strong>(टच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌚𑍍</span></td>
+            <td><code>1131F 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">44</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">73</td>
+            <td><strong>(शू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E016</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">42</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">74</td>
+            <td><strong>(चू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑍂</span></td>
+            <td><code>1131A 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">39</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">75</td>
+            <td><strong>(फि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌿</span></td>
+            <td><code>1132B 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">39</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">76</td>
+            <td><strong>(कथ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌥𑍍</span></td>
+            <td><code>11315 11325 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">38</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">77</td>
+            <td><strong>(टीच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀𑌚𑍍</span></td>
+            <td><code>1131F 11340 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">38</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">78</td>
+            <td><strong>(फू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍂</span></td>
+            <td><code>1132B 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">36</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">79</td>
+            <td><strong>(प्लु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E024</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">35</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">80</td>
+            <td><strong>(णाफ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌾𑌫𑍍</span></td>
+            <td><code>11323 1133E 1132B 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">33</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">81</td>
+            <td><strong>(चु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑍁</span></td>
+            <td><code>1131A 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">32</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">82</td>
+            <td><strong>(टख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌖𑍍</span></td>
+            <td><code>1131F 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">30</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">83</td>
+            <td><strong>(टीट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀𑌟𑍍</span></td>
+            <td><code>1131F 11340 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">30</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">84</td>
+            <td><strong>(ताच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌾𑌚𑍍</span></td>
+            <td><code>11324 1133E 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">30</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">85</td>
+            <td><strong>(कुच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍁𑌚𑍍</span></td>
+            <td><code>11315 11341 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">29</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">86</td>
+            <td><strong>(यी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑍀</span></td>
+            <td><code>1132F 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">26</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">87</td>
+            <td><strong>(शप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">ശ</span></td>
+            <td><code>0D36 E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">26</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">88</td>
+            <td><strong>(शृ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E017</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">25</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">89</td>
+            <td><strong>(यि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑌿</span></td>
+            <td><code>1132F 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">22</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">90</td>
+            <td><strong>(टिख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿𑌖𑍍</span></td>
+            <td><code>1131F 1133F 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">21</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">91</td>
+            <td><strong>(पु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑍁</span></td>
+            <td><code>1132A 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">20</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">92</td>
+            <td><strong>(खाणफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾𑌣𑌫</span></td>
+            <td><code>11316 1133E 11323 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">19</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">93</td>
+            <td><strong>(फु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍁</span></td>
+            <td><code>1132B 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">18</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">94</td>
+            <td><strong>(खाण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾𑌣𑍍</span></td>
+            <td><code>11316 1133E 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">16</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">95</td>
+            <td><strong>(यु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑍁</span></td>
+            <td><code>1132F 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">16</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">96</td>
+            <td><strong>(षृ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍃</span></td>
+            <td><code>11337 11343</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">16</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">97</td>
+            <td><strong>(णि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌿</span></td>
+            <td><code>11323 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">15</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">98</td>
+            <td><strong>(ष)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷</span></td>
+            <td><code>11337</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A14)</span></td>
+            <td class="count-cell">15</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">99</td>
+            <td><strong>(कच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌚𑍍</span></td>
+            <td><code>11315 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">14</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">100</td>
+            <td><strong>(कूच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍂𑌚𑍍</span></td>
+            <td><code>11315 11342 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">14</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">101</td>
+            <td><strong>(टीख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀𑌖𑍍</span></td>
+            <td><code>1131F 11340 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">14</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">102</td>
+            <td><strong>(प्लू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E025</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">14</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">103</td>
+            <td><strong>(ङि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑌿</span></td>
+            <td><code>11319 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">13</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">104</td>
+            <td><strong>(टूच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍂𑌚𑍍</span></td>
+            <td><code>1131F 11342 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">13</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">105</td>
+            <td><strong>(तिच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌿𑌚𑍍</span></td>
+            <td><code>11324 1133F 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">13</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">106</td>
+            <td><strong>(थि)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑌿</span></td>
+            <td><code>11325 1133F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">13</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">107</td>
+            <td><strong>(प्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">11</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">108</td>
+            <td><strong>(पू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑍂</span></td>
+            <td><code>1132A 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">10</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">109</td>
+            <td><strong>(षा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑌾</span></td>
+            <td><code>11337 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">10</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">110</td>
+            <td><strong>(ङा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑌾</span></td>
+            <td><code>11319 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">111</td>
+            <td><strong>(टुच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁𑌚𑍍</span></td>
+            <td><code>1131F 11341 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">112</td>
+            <td><strong>(तीच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍀𑌚𑍍</span></td>
+            <td><code>11324 11340 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">113</td>
+            <td><strong>(त्रा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍍𑌰𑌾</span></td>
+            <td><code>11324 1134D 11330 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">114</td>
+            <td><strong>(थच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑌚𑍍</span></td>
+            <td><code>11325 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">115</td>
+            <td><strong>(षे)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍇</span></td>
+            <td><code>11337 11347</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">9</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">116</td>
+            <td><strong>(फाप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌾</span></td>
+            <td><code>1132B 1133E E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">8</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">117</td>
+            <td><strong>(भु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭𑍁</span></td>
+            <td><code>1132D 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">8</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">118</td>
+            <td><strong>(टुट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁𑌟𑍍</span></td>
+            <td><code>1131F 11341 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">7</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">119</td>
+            <td><strong>(टूट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍂𑌟𑍍</span></td>
+            <td><code>1131F 11342 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">7</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">120</td>
+            <td><strong>(फप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫</span></td>
+            <td><code>1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">7</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">121</td>
+            <td><strong>(खण)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌣</span></td>
+            <td><code>11316 11323</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">6</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">122</td>
+            <td><strong>(थिच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑌿𑌚𑍍</span></td>
+            <td><code>11325 1133F 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">6</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">123</td>
+            <td><strong>(षो)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍋</span></td>
+            <td><code>11337 1134B</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">6</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">124</td>
+            <td><strong>(कीख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍀𑌖𑍍</span></td>
+            <td><code>11315 11340 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">125</td>
+            <td><strong>(खणफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌣𑌫</span></td>
+            <td><code>11316 11323 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">126</td>
+            <td><strong>(खाणफप्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾𑌣𑌫</span></td>
+            <td><code>11316 1133E 11323 1132B E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">127</td>
+            <td><strong>(तच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌚</span></td>
+            <td><code>11324 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">128</td>
+            <td><strong>(तट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌟𑍍</span></td>
+            <td><code>11324 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">129</td>
+            <td><strong>(तत्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌤𑍍</span></td>
+            <td><code>11324 11324 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">130</td>
+            <td><strong>(शै)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E01A</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">131</td>
+            <td><strong>(षै)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍈</span></td>
+            <td><code>11337 11348</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">132</td>
+            <td><strong>(षौ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌷𑍌</span></td>
+            <td><code>11337 1134C</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">5</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">133</td>
+            <td><strong>(खीणफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑍀𑌣𑌫</span></td>
+            <td><code>11316 11340 11323 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">4</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">134</td>
+            <td><strong>(टूच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍂𑌚</span></td>
+            <td><code>1131F 11342 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">4</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">135</td>
+            <td><strong>(तो)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍋</span></td>
+            <td><code>11324 1134B</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">4</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">136</td>
+            <td><strong>(पण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌣𑍍</span></td>
+            <td><code>1132A 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">4</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">137</td>
+            <td><strong>(शे)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E019</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">4</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">138</td>
+            <td><strong>(काथ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌾𑌥𑍍</span></td>
+            <td><code>11315 1133E 11325 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">139</td>
+            <td><strong>(किख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌿𑌖𑍍</span></td>
+            <td><code>11315 1133F 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">140</td>
+            <td><strong>(कूख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍂𑌖𑍍</span></td>
+            <td><code>11315 11342 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">141</td>
+            <td><strong>(कूच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍂𑌚</span></td>
+            <td><code>11315 11342 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">142</td>
+            <td><strong>(खिण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌿𑌣𑍍</span></td>
+            <td><code>11316 1133F 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">143</td>
+            <td><strong>(ङी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑍀</span></td>
+            <td><code>11319 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">144</td>
+            <td><strong>(टट)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌟</span></td>
+            <td><code>1131F 1131F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">145</td>
+            <td><strong>(टाख)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌖</span></td>
+            <td><code>1131F 1133E 11316</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">146</td>
+            <td><strong>(टिच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿𑌚</span></td>
+            <td><code>1131F 1133F 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">147</td>
+            <td><strong>(टुच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁𑌚</span></td>
+            <td><code>1131F 11341 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">148</td>
+            <td><strong>(ट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍍</span></td>
+            <td><code>1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">149</td>
+            <td><strong>(णुफ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍍</span></td>
+            <td><code>E029 1132B 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">150</td>
+            <td><strong>(फिप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌿</span></td>
+            <td><code>1132B 1133F E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">151</td>
+            <td><strong>(शप्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">ശ</span></td>
+            <td><code>0D36 E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">3</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">152</td>
+            <td><strong>(किच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌿𑌚</span></td>
+            <td><code>11315 1133F 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">153</td>
+            <td><strong>(कीच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍀𑌚</span></td>
+            <td><code>11315 11340 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">154</td>
+            <td><strong>(क्य)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍍𑌯</span></td>
+            <td><code>11315 1134D 1132F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">155</td>
+            <td><strong>(खाण)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾𑌣</span></td>
+            <td><code>11316 1133E 11323</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">156</td>
+            <td><strong>(खिणफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌿𑌣𑌫</span></td>
+            <td><code>11316 1133F 11323 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">157</td>
+            <td><strong>(खीण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑍀𑌣𑍍</span></td>
+            <td><code>11316 11340 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">158</td>
+            <td><strong>(ङ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑍍</span></td>
+            <td><code>11319 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">159</td>
+            <td><strong>(टच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌚</span></td>
+            <td><code>1131F 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">160</td>
+            <td><strong>(टुख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁𑌖𑍍</span></td>
+            <td><code>1131F 11341 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">161</td>
+            <td><strong>(टृ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍃</span></td>
+            <td><code>1131F 11343</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">162</td>
+            <td><strong>(णी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑍀</span></td>
+            <td><code>11323 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">163</td>
+            <td><strong>(तित्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌿𑌤𑍍</span></td>
+            <td><code>11324 1133F 11324 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">164</td>
+            <td><strong>(तृ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍃</span></td>
+            <td><code>11324 11343</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">165</td>
+            <td><strong>(ते)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍇</span></td>
+            <td><code>11324 11347</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">166</td>
+            <td><strong>(थू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑍂</span></td>
+            <td><code>11325 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">167</td>
+            <td><strong>(पाण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌾𑌣𑍍</span></td>
+            <td><code>1132A 1133E 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">168</td>
+            <td><strong>(भ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭</span></td>
+            <td><code>1132D</code></td>
+            <td><span class="badge badge-base">Ayugma Base (A10)</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">169</td>
+            <td><strong>(शाप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E010 E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">170</td>
+            <td><strong>(शॄ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E018</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">171</td>
+            <td><strong>(शो)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E01B</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">2</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">172</td>
+            <td><strong>(कच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌚</span></td>
+            <td><code>11315 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">173</td>
+            <td><strong>(कफ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌫𑍍</span></td>
+            <td><code>11315 1132B 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">174</td>
+            <td><strong>(किथ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑌿𑌥𑍍</span></td>
+            <td><code>11315 1133F 11325 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">175</td>
+            <td><strong>(कीथ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍀𑌥</span></td>
+            <td><code>11315 11340 11325</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">176</td>
+            <td><strong>(कुच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌕𑍁𑌚</span></td>
+            <td><code>11315 11341 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">177</td>
+            <td><strong>(खाप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌾</span></td>
+            <td><code>11316 1133E E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">178</td>
+            <td><strong>(खिणफप्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌿𑌣𑌫</span></td>
+            <td><code>11316 1133F 11323 1132B E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">179</td>
+            <td><strong>(खिप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌖𑌿</span></td>
+            <td><code>11316 1133F E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">180</td>
+            <td><strong>(ङु)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑍁</span></td>
+            <td><code>11319 11341</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">181</td>
+            <td><strong>(चक्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑌕𑍍</span></td>
+            <td><code>1131A 11315 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">182</td>
+            <td><strong>(चाक्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑌾𑌕𑍍</span></td>
+            <td><code>1131A 1133E 11315 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">183</td>
+            <td><strong>(चूख्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌚𑍂𑌖𑍍</span></td>
+            <td><code>1131A 11342 11316 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">184</td>
+            <td><strong>(टख)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌖</span></td>
+            <td><code>1131F 11316</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">185</td>
+            <td><strong>(टटट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌟𑌟𑍍</span></td>
+            <td><code>1131F 1131F 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">186</td>
+            <td><strong>(टाच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌚</span></td>
+            <td><code>1131F 1133E 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">187</td>
+            <td><strong>(टाटट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌾𑌟𑌟𑍍</span></td>
+            <td><code>1131F 1133E 1131F 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">188</td>
+            <td><strong>(टिट)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑌿𑌟</span></td>
+            <td><code>1131F 1133F 1131F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">189</td>
+            <td><strong>(टीच)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀𑌚</span></td>
+            <td><code>1131F 11340 1131A</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">190</td>
+            <td><strong>(टीट)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍀𑌟</span></td>
+            <td><code>1131F 11340 1131F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">191</td>
+            <td><strong>(टुख)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍁𑌖</span></td>
+            <td><code>1131F 11341 11316</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">192</td>
+            <td><strong>(टूट)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍂𑌟</span></td>
+            <td><code>1131F 11342 1131F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">193</td>
+            <td><strong>(टॄ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍄</span></td>
+            <td><code>1131F 11344</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">194</td>
+            <td><strong>(टे)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍇</span></td>
+            <td><code>1131F 11347</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">195</td>
+            <td><strong>(ट्ट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌟𑍍𑌟𑍍</span></td>
+            <td><code>1131F 1134D 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">196</td>
+            <td><strong>(णफ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌫</span></td>
+            <td><code>11323 1132B</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">197</td>
+            <td><strong>(णाफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌾𑌫</span></td>
+            <td><code>11323 1133E 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">198</td>
+            <td><strong>(णिफ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑌿𑌫𑍍</span></td>
+            <td><code>11323 1133F 1132B 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">199</td>
+            <td><strong>(ण्य)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌣𑍍𑌯</span></td>
+            <td><code>11323 1134D 1132F</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">200</td>
+            <td><strong>(तिप्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑌿𑌪𑍍</span></td>
+            <td><code>11324 1133F 1132A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">201</td>
+            <td><strong>(तुच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍁𑌚𑍍</span></td>
+            <td><code>11324 11341 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">202</td>
+            <td><strong>(तूच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌤𑍂𑌚𑍍</span></td>
+            <td><code>11324 11342 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">203</td>
+            <td><strong>(थी)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑍀</span></td>
+            <td><code>11325 11340</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">204</td>
+            <td><strong>(थीच्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌥𑍀𑌚𑍍</span></td>
+            <td><code>11325 11340 1131A 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">205</td>
+            <td><strong>(पाणफप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌾𑌣𑌫</span></td>
+            <td><code>1132A 1133E 11323 1132B E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">206</td>
+            <td><strong>(पिण्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑌿𑌣𑍍</span></td>
+            <td><code>1132A 1133F 11323 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">207</td>
+            <td><strong>(प्ख)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌪𑍍𑌖</span></td>
+            <td><code>1132A 1134D 11316</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">208</td>
+            <td><strong>(प्लिङ्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌙𑍍</span></td>
+            <td><code>E022 11319 1134D</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">209</td>
+            <td><strong>(फाप्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌾</span></td>
+            <td><code>1132B 1133E E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">210</td>
+            <td><strong>(फिप्ल)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑌿</span></td>
+            <td><code>1132B 1133F E020</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">211</td>
+            <td><strong>(फीप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍀</span></td>
+            <td><code>1132B 11340 E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">212</td>
+            <td><strong>(फूप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌫𑍂</span></td>
+            <td><code>1132B 11342 E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">213</td>
+            <td><strong>(भा)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭𑌾</span></td>
+            <td><code>1132D 1133E</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">214</td>
+            <td><strong>(भू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌭𑍂</span></td>
+            <td><code>1132D 11342</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">215</td>
+            <td><strong>(ये)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌯𑍇</span></td>
+            <td><code>1132F 11347</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">216</td>
+            <td><strong>(शिप्ल्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E011 E026</code></td>
+            <td><span class="badge badge-pla">Pla Hybrid Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">217</td>
+            <td><strong>(शौ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E01C</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">218</td>
+            <td><strong>(श्रू)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E027</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">219</td>
+            <td><strong>(श्रृ)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red"></span></td>
+            <td><code>E028</code></td>
+            <td><span class="badge badge-sha">Sha Malayalam Base</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        <tr data-type="swara">
+            <td class="idx-col">220</td>
+            <td><strong>(सट्)</strong></td>
+            <td class="glyph-cell"><span class="swara-glyph swara-red">𑌸𑌟𑍍</span></td>
+            <td><code>11338 1131F 1134D</code></td>
+            <td><span class="badge badge-liga">Compound / Ligature</span></td>
+            <td class="count-cell">1</td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+<script>
+function showTab(sectionId) {
+    var secs = document.querySelectorAll('.section-card');
+    for (var i = 0; i < secs.length; i++) {
+        secs[i].style.display = 'none';
+    }
+    var btns = document.querySelectorAll('.tab-btn');
+    for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.remove('active');
+    }
+    document.getElementById(sectionId).style.display = 'block';
+    event.currentTarget.classList.add('active');
+}
+</script>
+</body>
+</html>
