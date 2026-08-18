@@ -8,16 +8,20 @@
 
 ## 1. Executive Summary & The Sacred Heritage
 
-The **Jaimineeya Shakha** of the *Samaveda* (*Jaiminīya Sāmavedam*) is one of the most ancient, musically intricate, and geographically endangered oral traditions of Vedic chanting. While the Kauthuma and Ranayaniya traditions are widely published across India, the authentic musical recitation of the Jaimineeya tradition has been preserved almost exclusively through the guru-shishya lineages of the **Namboodiri tradition of Kerala** and select Tamil Nadu lineages.
+The **Jaimineeya Shakha** of the *Samaveda* (*Jaiminīya Sāmavedam*) is one of the most ancient, musically intricate, and endangered oral traditions of Vedic chanting. While the Kauthuma and Ranayaniya traditions are more well known and  established across India, the authentic musical recitation of the Jaimineeya tradition has been preserved almost exclusively through the guru-shishya lineages of **Tamil Nadu and by the Namboodiri tradition of Kerala**. This shakha was nearing extinction in Tamilnadu and was salvaged at the instance of Kanchi Mahaperiyava by Brahmasri Makarabhushanam Iyengar (Guruji) who set up the Thogur Jaimineeya Samaveda Patashala nearly fifty years ago. Through the efforts of Guruji, a set of his direct and indirect disciples went through formal, rigorous Vedic studies lasting twelve years which has helped to rescue this precious tradition from the brink. In addition to this, Guruji has published many works in Grantha and Devanagari drawing from manuscripts originally in Grantha.   
 
-Unlike standard Vedic texts that employ simple accent strokes (Udatta / Anudatta / Svarita), the Jaimineeya Samaveda employs a sophisticated two-dimensional notation system:
+The Jaimineeya Samaveda employs a sophisticated system of Yugma and Ayugma swaras (Dharalakshanam of Sabhapati) for phonetic encoding of its Samagana. There was a migration of Jaimini Sama vedins from the Kaveri delta like Anbil, Tiruchi to Kerala around 250-300 years ago. These brahmins are today settled mainly in Kodunthirapully Agraharam in Palakkad. Brahmasri Sahasranama Iyer has very meticulously written by hand the Samhita and Aranyam portions using a special scheme : Malayalam mantrakshara, Grantha/mixed Grantha Malayalam swara markers and a set of swara modifier mnemonics to help easy recitation. The efficacy of his method is borne out by the passage of time that even today the young and old in the village use the paper copies of his manuscript to chant. 
+
+As part of the overall digitalization efforts of Jaimineeya Samaveda, we have now taken an important step to digitize the "Kodunthirapully Padhati". There were some technical challenges caused by the swara notation with mixed Grantha/Malayalam and the mnemonics. To solve this, we have designed a new font, **JaimineeyaSwara** to depict the Grantha/Malayalam swara markers and the graphical swara modifier mnemonics. 
+
+Here is a brief summary of the impementation of Jaimineeya Samaveda in Malayalam is given below:
 1. **Primary Svara Pitch Markers:** Subscript letters (traditionally Grantha or Malayalam characters) that specify the exact pitch movements (such as *Avaroham*, *Anvangulyam*, *Udgamam*, *Yanam*, and *Plutam*).
 2. **Svara Modifiers:** Structural performance indicators that qualify the chant—including multi-syllable spanning melodic arches, peak carets, upper shoulder dots, descending tone slashes, and phrasing dandas.
 
-Today, we are proud to announce the **complete, end-to-end digital publishing ecosystem for the Jaimineeya Samaveda in Malayalam Script**, delivering high-fidelity outputs across:
+With this, we are so happy to announce a **complete, end-to-end digital publishing ecosystem for the Jaimineeya Samaveda in Malayalam Script**, delivering high-fidelity outputs across:
 - 🌐 **Interactive Web Edition (HTML5)** with responsive flexbox stacking and live word-bridging modifiers.
 - 📄 **Archival Print Edition (LuaLaTeX / PDF)** with mathematical sub-point kerning and vector-perfect typography.
-- 📝 **Universal Unicode Plaintext (.txt)** with standard Grantha codepoints and intuitive non-combining modifier symbols.
+- 📝 **Universal Unicode Plaintext (.txt)** with standard Grantha codepoints and intuitive non-combining modifier symbols to aid in further refinement and curation of more Jaimineeya Samaveda content in Malayalam.
 
 ---
 
@@ -28,7 +32,7 @@ Transliterating Jaimineeya Samavedam from traditional palm-leaf manuscripts and 
 ### Hurdle 1: The Grantha-Malayalam Hybrid Conundrum
 Traditional Kerala Jaimineeya manuscripts write the base sacred text (*Mantrakshara*) in **Malayalam script**, while the overhead pitch markers (*Svaras*) are rendered in archaic **Grantha script** with specific regional overrides:
 - **Vedic *Pla* (പ്ല):** A custom composite base glyph combining Grantha *Pa* with a Malayalam subscript *La*, distinct from standard classical Grantha.
-- **Manuscript *Sha* (ശ):** The Jaimineeya tradition specifically employs the Malayalam base letter **ശ** (`U+0D36`) coupled with detached Grantha vowel arms (such as *Shi* 𑌶𑌿, *Shii* 𑌶𑍀, and *Shaa* ശാ) rather than standard Grantha *Śa* (𑌶).
+- **Manuscript *Sha* (ശ):** The manuscript reference specifically employs the Malayalam base letter **ശ** (`U+0D36`) coupled with detached Grantha vowel arms (of *Shi* 𑌶𑌿, *Shii* 𑌶𑍀, and *Shaa* ശാ) rather than standard Grantha *Śa* (𑌶).
 
 Standard system fonts lack these ligature forms, resulting in missing glyph boxes (`[?]`) or unsightly broken dotted circles (`◌`).
 
