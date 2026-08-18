@@ -30,29 +30,30 @@ FEATURED_GLYPHS = [
     ("Modifier (G) Slash", "\uE003", "descending_tone_jsv", "U+E003 / \\", "Modifier (G)", "Below", "Descending Tone Slash"),
     ("Modifier (H) Swarita", "\uE00C", "swarita_jsv", "U+E00C / ॑", "Modifier (H)", "Above", "Overhead Swarita Stroke"),
 
-    # Row 2: Ayugma pure Grantha bases (A01..A08)
+    # Row 2: Ayugma pure Grantha bases (A01..A08) from Google Sheet
     ("A01 Ka (അവരോഹം)", "\U00011315", "ka_gran", "U+11315", "Ayugma Swara", "Above", "Ka (Avaroham)"),
     ("A02 Kha (അന്വംഗുല്യം)", "\U00011316", "kha_gran", "U+11316", "Ayugma Swara", "Above", "Kha (Anvangulyam)"),
-    ("A03 Ca (അഭീതം)", "\U0001131A", "ca_gran", "U+1131A", "Ayugma Swara", "Above", "Ca (Abhitam)"),
-    ("A04 Cha (അഭ്രം)", "\U0001131B", "cha_gran", "U+1131B", "Ayugma Swara", "Above", "Cha (Abhram)"),
-    ("A05 Tta (അനിഷ്ടം)", "\U0001131F", "tta_gran", "U+1131F", "Ayugma Swara", "Above", "Tta (Anishtam)"),
-    ("A06 Ttha (അപ്രതിഷ്ഠം)", "\U00011320", "ttha_gran", "U+11320", "Ayugma Swara", "Above", "Ttha (Apratishtham)"),
-    ("A07 Dda (അവിപ്രിയം)", "\U00011321", "dda_gran", "U+11321", "Ayugma Swara", "Above", "Dda (Avipriyam)"),
-    ("A08 Ddha (അന്തം)", "\U00011322", "ddha_gran", "U+11322", "Ayugma Swara", "Above", "Ddha (Antam)"),
+    ("A03 Ca (ഉദ്ഗമം)", "\U0001131A", "ca_gran", "U+1131A", "Ayugma Swara", "Above", "Ca (Udgamam)"),
+    ("A04 Ta (യാനം)", "\U0001131F", "tta_gran", "U+1131F", "Ayugma Swara", "Above", "Ta (Yanam)"),
+    ("A05 Nna (ണ-സ്വരം)", "\U00011323", "nna_gran", "U+11323", "Ayugma Swara", "Above", "Nna (\"Na\" Swaram)"),
+    ("A06 Ta (ആവർത്തം)", "\U00011324", "ta_gran", "U+11324", "Ayugma Swara", "Above", "Ta (Aavarttam)"),
+    ("A07 Tha (ഉത്ഥാനം)", "\U00011325", "tha_gran", "U+11325", "Ayugma Swara", "Above", "Tha (Utthanam)"),
+    ("A08 Pa (ക്ഷേപണം)", "\U0001132A", "pa_gran", "U+1132A", "Ayugma Swara", "Above", "Pa (Kshepanam)"),
 
-    # Row 3: Ayugma pure Grantha bases (A09..A16)
-    ("A09 Nna (നമനം)", "\U00011323", "nna_gran", "U+11323", "Ayugma Swara", "Above", "Nna (Namanam)"),
-    ("A10 Ta (അതതം)", "\U00011324", "ta_gran", "U+11324", "Ayugma Swara", "Above", "Ta (Atatam)"),
-    ("A11 Tha (അസ്തം)", "\U00011325", "tha_gran", "U+11325", "Ayugma Swara", "Above", "Tha (Astam)"),
-    ("A12 Da (ദാനം)", "\U00011326", "da_gran", "U+11326", "Ayugma Swara", "Above", "Da (Danam)"),
-    ("A13 Dha (ധൃതം)", "\U00011327", "dha_gran", "U+11327", "Ayugma Swara", "Above", "Dha (Dhritam)"),
-    ("A14 Na (നമ്രം)", "\U00011328", "na_gran", "U+11328", "Ayugma Swara", "Above", "Na (Namram)"),
-    ("A15 Pa (പാപം)", "\U0001132A", "pa_gran", "U+1132A", "Ayugma Swara", "Above", "Pa (Papam)"),
-    ("A16 Pha (ഫലം)", "\U0001132B", "pha_gran", "U+1132B", "Ayugma Swara", "Above", "Pha (Phalam)"),
+    # Row 3: Ayugma pure Grantha bases (A09..A16) from Google Sheet
+    ("A09 Pha (ഫ-സ്വരം)", "\U0001132B", "pha_gran", "U+1132B", "Ayugma Swara", "Above", "Pha (\"Pha\" Swaram)"),
+    ("A10 Bha (മർദ്ദനം)", "\U0001132D", "bha_gran", "U+1132D", "Ayugma Swara", "Above", "Bha (Mardanam)"),
+    ("A11 Ya (മർശനം)", "\U0001132F", "ya_gran", "U+1132F", "Ayugma Swara", "Above", "Ya (Marsanam)"),
+    ("A12 Sa (അനാമികാമർശനം)", "\U00011338", "sa_gran", "U+11338", "Ayugma Swara", "Above", "Sa (Anamika Marsanam)"),
+    ("A13 Sha (Base)", "\u0D36", "sha_mal", "U+0D36 (ശ)", "Manuscript Base", "Above", "Sha (Anuvarnna Suchakah)"),
+    ("A14 Ssa (ആദ്യവർണ്ണ)", "\U00011337", "ssa_gran", "U+11337", "Ayugma Swara", "Above", "Ssa (Aadyavarnna Dyotakah)"),
+    ("A15 Pla (Vedic Base)", "\uE020", "pla_jsv", "U+E020 / Pla", "Manuscript Base", "Above", "Pla (Plutam)"),
+    ("A16 Nga (ങ-സ്വരം)", "\U00011319", "nga_gran", "U+11319", "Ayugma Swara", "Above", "Nga (Ng-Swaram)"),
 
     # Row 4: Custom bases & Sha-family
-    ("A17 Tra (ത്ര)", "\uE01D", "t_ra_gran", "U+11324+11330", "Ayugma Conjunct", "Above", "Tra Conjunct"),
-    ("A18 Kra (ക്ര)", "\uE01E", "k_ra_jsv", "U+11315+11330", "Ayugma Conjunct", "Above", "Kra Conjunct"),
+    ("A17 Tra (ത്രസ്വരാഖ്യഃ)", "\uE01D", "t_ra_gran", "U+11324+11330", "Ayugma Conjunct", "Above", "Tra (Tra Swarakhyaha)"),
+    ("A18 Ra (ദ്രുതസ്ഥാനം)", "\U00011330", "ra_gran", "U+11330", "Ayugma Swara", "Above", "Ra (Druta Swara Indicator)"),
+    ("A19 Kra (കൃഷ്ടാഖ്യ)", "\uE01E", "k_ra_jsv", "U+11315+11330", "Ayugma Conjunct", "Above", "Kra (Krishtakhya Bhedah)"),
     ("A13 Sha (Base)", "\u0D36", "sha_mal", "U+0D36 (ശ)", "Malayalam Base", "Above", "Sha Base (Mal)"),
     ("Shaa (Sha+AA)", "\uE010", "sha_aa_jsv", "U+E010 / ശ+ാ", "Manuscript Ligature", "Above", "Shaa Ligature"),
     ("Shi (Sha+I)", "\uE011", "sha_i_jsv", "U+E011 / ശ+ി", "Manuscript Ligature", "Above", "Shi Ligature"),
@@ -135,21 +136,26 @@ def render_image_grid() -> None:
             # Modifiers rendered in Dark Blue (#002171) with Dotted Circle (◌)
             mod_blue = (0, 33, 113)
             dot_gray = (148, 163, 184)
-            if "Arc" in label or "Modifier (A)" in category or "Modifier (B)" in category or "Modifier (D)" in category:
-                # 2-syllable spanning modifiers (A, B, D)
+            if "Arc" in label or "Modifier (A)" in category:
+                # 2-syllable spanning arc (A)
                 draw.text((x0 + 26, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((x0 + 74, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 26, y0 + 48), char_str, fill=mod_blue, font=swara_font)
+                draw.text((x0 + 44, y0 + 52), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (B)" in category or "Caret" in label or "Modifier (D)" in category or "Chevron" in label:
+                # 2-syllable spanning peak/chevron (B, D)
+                draw.text((x0 + 26, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((x0 + 74, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((x0 + 44, y0 + 50), char_str, fill=mod_blue, font=swara_font)
             elif "Modifier (C)" in category or "Dot" in label:
                 # Shoulder dot (C)
                 draw.text((x0 + 36, y0 + 95), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((x0 + 76, y0 + 62), char_str, fill=mod_blue, font=swara_font)
             elif "Modifier (G)" in category or "Slash" in label:
-                # Descending tone slash attached below right base (G)
-                draw.text((x0 + 42, y0 + 70), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 52, y0 + 95), char_str, fill=mod_blue, font=swara_font)
+                # Descending tone slash aligned directly to bottom-center of ◌ (G)
+                draw.text((x0 + 50, y0 + 72), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((x0 + 42, y0 + 105), char_str, fill=mod_blue, font=swara_font)
             elif "Modifier (H)" in category or "Swarita" in label:
-                # Overhead swarita tick (H)
+                # Overhead swarita tick centered above ◌ (H)
                 draw.text((x0 + 50, y0 + 105), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((x0 + 50, y0 + 52), char_str, fill=mod_blue, font=swara_font)
             else:
@@ -192,47 +198,53 @@ def render_html_table() -> None:
         with open(csv_path, encoding="utf-8-sig") as f:
             rows = list(csv.DictReader(f))
 
-    # All Canonical Vedic Swara Modifiers (A..H)
+    import base64
+    jaimineeya_swara_b64 = ""
+    if FONT_PATH.exists():
+        with open(FONT_PATH, "rb") as f_font:
+            jaimineeya_swara_b64 = base64.b64encode(f_font.read()).decode("ascii")
+
+    # All Canonical Vedic Swara Modifiers (A..H + Underbar)
     modifiers = [
         {
             "id": "MOD-A",
             "shortcut": "(A)",
-            "name": "Syllable Spanning Arc (Tie / Breve)",
+            "name": "Syllable Spanning Arc (Tie)",
             "glyph": "\uE004",
-            "codepoint": "U+E004 / ╭╮",
+            "codepoint": "U+E004 / ╭╮ / ⁀",
             "input_methods": "<code>(A)</code> / <code>(a)</code> / <code>(╭╮)</code> / <code>(⁀)</code>",
             "stack_pos": "Stacked Above",
-            "dotted_rep": "<span class='dotted-sample'><span class='arc-tie'>╭╮</span><span class='base-circle'>◌◌</span></span>",
-            "example_text": "ൠഹാ(𑌪𑌾)(A)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌪𑌾</span></div><div class='mantra-base'><span class='mod-arc-tie'>╭╮</span>ൠഹാ</div></div>",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-a-dotted'>&#xE004;</span></span></span>",
+            "example_text": "ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ബാ</span></span></div>",
             "meaning": "Overhead curved arch spanning across syllables for connected tone transition.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-B",
             "shortcut": "(B)",
-            "name": "Caret / Peak (/\\ / ^)",
+            "name": "Peak Elevation Caret (/\\ / ^)",
             "glyph": "\uE005",
             "codepoint": "U+E005 / ^ / /\\",
             "input_methods": "<code>(B)</code> / <code>(b)</code> / <code>(^)</code> / <code>(/\\)</code>",
             "stack_pos": "Stacked Above",
-            "dotted_rep": "<span class='dotted-sample'><span class='mod-sup-center'>^</span><span class='base-circle'>◌</span></span>",
-            "example_text": "മാ(𑌕)(B)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌕</span></div><div class='mantra-base'>മാ<span class='mod-blue-sup'>^</span></div></div>",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-b-dotted'>&#xE005;</span></span></span>",
+            "example_text": "മാ(𑌕)(B) യാ",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌕</span><span class='mantra-text'>മാ<span class='swara-mod mod-b'>&#xE005;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>യാ</span></span></div>",
             "meaning": "Overhead peak arrowhead indicating elevated melodic emphasis.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-C",
             "shortcut": "(C)",
-            "name": "High / Shoulder Dot (ॱ / ·)",
+            "name": "Shoulder Pause Dot (ॱ / ·)",
             "glyph": "\uE001",
-            "codepoint": "U+E001 / U+0971 / ·",
+            "codepoint": "U+E001 / U+00B7 / ·",
             "input_methods": "<code>(C)</code> / <code>(c)</code> / <code>(ॱ)</code> / <code>(·)</code>",
             "stack_pos": "Shoulder",
-            "dotted_rep": "<span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-dot'>·</span></span>",
-            "example_text": "ഓ(𑌤)(C)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌤</span></div><div class='mantra-base'>ഓ<span class='mod-blue-dot'>·</span></div></div>",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-c-dotted'>&#xE001;</span></span></span>",
+            "example_text": "ഓ(𑌤)(C) ഗ്നാ(𑌤)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഓ<span class='swara-mod mod-c'>&#xE001;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഗ്നാ</span></span></div>",
             "meaning": "Upper-right shoulder pause/spacing dot attached to mantrakshara curve.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
@@ -244,10 +256,10 @@ def render_html_table() -> None:
             "codepoint": "U+E006 / U+0245 / Ʌ",
             "input_methods": "<code>(D)</code> / <code>(d)</code> / <code>(Ʌ)</code>",
             "stack_pos": "Stacked Above",
-            "dotted_rep": "<span class='dotted-sample'><span class='mod-sup-center'>Ʌ</span><span class='base-circle'>◌</span></span>",
-            "example_text": "ഹോ()(D)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'></span></div><div class='mantra-base'>ഹോ<span class='mod-blue-sup'>Ʌ</span></div></div>",
-            "meaning": "Overhead chevron roof marker indicating roof-tone modulation.",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-d-dotted'>&#xE006;</span></span></span>",
+            "example_text": "ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-d'>&#xE006;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഇ</span></span><span class='mantra-word'><span class='swara-text'>𑌶𑌾</span><span class='mantra-text'>ഴാ</span></span></div>",
+            "meaning": "Overhead chevron roof marker indicating roof-tone modulation across syllables.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
@@ -258,10 +270,10 @@ def render_html_table() -> None:
             "codepoint": "U+E002 / U+2503 / ┃",
             "input_methods": "<code>(E)</code> / <code>(e)</code> / <code>(┃)</code>",
             "stack_pos": "Inline",
-            "dotted_rep": "<span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-inline'>┃</span></span>",
-            "example_text": "മാ(𑌚)(E)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚</span></div><div class='mantra-base'>മാ<span class='mod-blue-inline'>┃</span></div></div>",
-            "meaning": "Phrasing heavy vertical line inline with mantrakshara.",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-e-dotted'>&#xE002;</span></span></span>",
+            "example_text": "വാ(𑌚)(E)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>വാ<span class='swara-mod mod-e'>&#xE002;</span></span></span></div>",
+            "meaning": "Phrasing heavy vertical line inline with mantrakshara for major structural division.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
@@ -272,10 +284,10 @@ def render_html_table() -> None:
             "codepoint": "U+E002 / U+2577 / ╷",
             "input_methods": "<code>(F)</code> / <code>(f)</code> / <code>(╷)</code>",
             "stack_pos": "Inline",
-            "dotted_rep": "<span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-inline'>╷</span></span>",
-            "example_text": "മാ(𑌚)(F)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚</span></div><div class='mantra-base'>മാ<span class='mod-blue-inline'>╷</span></div></div>",
-            "meaning": "Light phrasing vertical tone separator.",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-f-dotted'>&#x2577;</span></span></span>",
+            "example_text": "ഇ(𑌚)(F)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ<span class='swara-mod mod-f'>&#x2577;</span></span></span></div>",
+            "meaning": "Light phrasing vertical tone separator for sub-cadence pauses.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
@@ -286,24 +298,24 @@ def render_html_table() -> None:
             "codepoint": "U+E003 / U+005C / \\",
             "input_methods": "<code>(G)</code> / <code>(g)</code> / <code>(\\)</code> / <code>(⟍)</code>",
             "stack_pos": "Stacked Below",
-            "dotted_rep": "<span class='dotted-sample'><span class='base-circle'>◌</span><span class='mod-sub'>\\</span></span>",
-            "example_text": "ആഇഷോ()(G)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'></span></div><div class='mantra-base'>ആഇഷോ<span class='mod-blue-sub'>\\</span></div></div>",
-            "meaning": "Downward falling diagonal slash attached beneath the mantrakshara baseline (descending pitch).",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-g-dotted'>&#xE003;</span></span></span>",
+            "example_text": "ബാ(𑌪𑍍𑌲)(G)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ബാ<span class='swara-mod mod-g'>&#xE003;</span></span></span></div>",
+            "meaning": "Downward falling diagonal slash attached beneath the mantrakshara baseline (falling cadence).",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-H",
             "shortcut": "(H)",
-            "name": "Swarita Tone Accent (॑ / |)",
+            "name": "Overhead Swarita (॑ / |)",
             "glyph": "\uE00C",
-            "codepoint": "U+E00C / U+0951 / ॑",
+            "codepoint": "U+E00C / U+007C / |",
             "input_methods": "<code>(H)</code> / <code>(h)</code> / <code>(L)</code> / <code>(|)</code> / <code>(॑)</code>",
             "stack_pos": "Stacked Above",
-            "dotted_rep": "<span class='dotted-sample'><span class='mod-sup-center'>|</span><span class='base-circle'>◌</span></span>",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-h-dotted'>&#xE00C;</span></span></span>",
             "example_text": "ദാ(𑌚𑌿)(H)",
-            "example_preview": "<div class='mantra-preview-box'><div class='stack-top'><span class='swara-red'>𑌚𑌿</span></div><div class='mantra-base'>ദാ<span class='mod-blue-sup'>|</span></div></div>",
-            "meaning": "Upper tone Swarita vertical stroke situated on top of the preceding mantrakshara.",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚𑌿</span><span class='mantra-text'>ദാ<span class='swara-mod mod-h'>&#xE00C;</span></span></span></div>",
+            "meaning": "Upper tone Swarita vertical stroke situated directly on top of the preceding mantrakshara.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
     ]
@@ -313,7 +325,7 @@ def render_html_table() -> None:
     for m in modifiers:
         stack_badge = "badge-above" if m['stack_pos'] == "Stacked Above" else "badge-below" if m['stack_pos'] == "Stacked Below" else "badge-shoulder" if m['stack_pos'] == "Shoulder" else "badge-inline"
         modifier_rows_html.append(f"""
-        <tr class="mod-row" data-type="modifier">
+        <tr data-type="modifier">
             <td class="idx-col"><strong>{m['id']}</strong></td>
             <td><strong class="shortcut-tag">{m['shortcut']}</strong></td>
             <td><strong>{m['name']}</strong><div class="mod-desc">{m['meaning']}</div></td>
@@ -326,33 +338,33 @@ def render_html_table() -> None:
         </tr>
         """)
 
-    # Ayugma Bases table
+    # Ayugma Bases table from Google Sheet (A01..A19)
     ayugma_bases = [
         ("A01", "Ka", "ക", "𑌕", "U+11315", "Avaroham (അവരോഹം)", "Odd swara"),
         ("A02", "Kha", "ഖ", "𑌖", "U+11316", "Anvangulyam (അന്വംഗുല്യം)", "Odd swara"),
-        ("A03", "Ca", "ച", "𑌚", "U+1131A", "Abhitam (അഭീതം)", "Odd swara"),
-        ("A04", "Cha", "ഛ", "𑌛", "U+1131B", "Abhram (അഭ്രം)", "Odd swara"),
-        ("A05", "Tta", "ട", "𑌟", "U+1131F", "Anishtam (അനിഷ്ടം)", "Odd swara"),
-        ("A06", "Ttha", "ഠ", "𑌠", "U+11320", "Apratishtham (അപ്രതിഷ്ഠം)", "Odd swara"),
-        ("A07", "Dda", "ഡ", "𑌡", "U+11321", "Avipriyam (അവിപ്രിയം)", "Odd swara"),
-        ("A08", "Ddha", "ഢ", "𑌢", "U+11322", "Antam (അന്തം)", "Odd swara"),
-        ("A09", "Nna", "ണ", "𑌣", "U+11323", "Namanam (നമനം)", "Odd swara"),
-        ("A10", "Ta", "ത", "𑌤", "U+11324", "Atatam (അതതം)", "Odd swara"),
-        ("A11", "Tha", "ഥ", "𑌥", "U+11325", "Astam (അസ്തം)", "Odd swara"),
-        ("A12", "Da", "ദ", "𑌦", "U+11326", "Danam (ദാനം)", "Odd swara"),
-        ("A13", "Sha (Mal)", "ശ", "ശ", "U+0D36", "Saa / Shaa (ശ-based manuscript)", "Manuscript Base"),
-        ("A14", "Ssa", "ഷ", "𑌷", "U+11337", "Shastam (ശസ്തം)", "Odd swara"),
-        ("A15", "Pla (Vedic)", "പ്ല", "\uE020", "U+E020", "Plutam (പ്ലുതം - Vedic custom glyph)", "Manuscript Base"),
-        ("A16", "Nga", "ങ", "𑌙", "U+11319", "Nga base", "Odd swara"),
-        ("A17", "Tra", "ത്ര", "\uE01D", "U+E01D", "Tra conjunct (𑌤𑍍𑌰)", "Conjunct"),
-        ("A18", "Ra", "ര", "𑌰", "U+11330", "Ra base", "Odd swara"),
-        ("A19", "Kra", "ക്ര", "\uE01E", "U+E01E", "Kra conjunct (𑌕𑍍𑌰)", "Conjunct"),
+        ("A03", "Ca", "ച", "𑌚", "U+1131A", "Udgamam (ഉദ്ഗമം)", "Odd swara"),
+        ("A04", "Ta", "ട", "𑌟", "U+1131F", "Yanam (യാനം)", "Odd swara"),
+        ("A05", "Ṇa", "ണ", "𑌣", "U+11323", "\"Na\" Swaram (\"ണ\" സ്വരം)", "Odd swara"),
+        ("A06", "Ta", "ത", "𑌤", "U+11324", "Aavarttam (ആവർത്തം)", "Odd swara"),
+        ("A07", "Tha", "ഥ", "𑌥", "U+11325", "Utthanam (ഉത്ഥാനം)", "Odd swara"),
+        ("A08", "Pa", "പ", "𑌪", "U+1132A", "Kshepanam (ക്ഷേപണം)", "Odd swara"),
+        ("A09", "Pha", "ഫ", "𑌫", "U+1132B", "\"Pha\" Swaram (ഫ-സ്വരം)", "Odd swara"),
+        ("A10", "Bha", "ഭ", "𑌭", "U+1132D", "Mardanam (മർദ്ദനം)", "Odd swara"),
+        ("A11", "Ya", "യ", "𑌯", "U+1132F", "Marsanam (മർശനം)", "Odd swara"),
+        ("A12", "Sa", "സ", "𑌸", "U+11338", "Anamika Marsanam (അനാമികാമർശനം)", "Odd swara"),
+        ("A13", "Sha (Mal)", "ശ", "ശ", "U+0D36", "Anuvarnna Swara Rahitya Suchakah", "Manuscript Base"),
+        ("A14", "Ssa", "ഷ", "𑌷", "U+11337", "Aadyavarnna Swaraa Bhava Dyotakah", "Odd swara"),
+        ("A15", "Pla (Vedic)", "പ്ല", "\uE020", "U+E020", "\"Pla\" Swara Ityucyamanaha (\"പ്ല\" സ്വര ഇത്യുച്യമാനഃ)", "Manuscript Base"),
+        ("A16", "Nga", "ങ", "𑌙", "U+11319", "Ng-Swaram (\"ങ\" സ്വര ഇത്യുച്യമാനഃ)", "Odd swara"),
+        ("A17", "Tra", "ത്ര", "\uE01D", "U+E01D", "Tra Swarakhyaha (ത്രസ്വരാഖ്യഃ)", "Conjunct"),
+        ("A18", "Ra", "ര", "𑌰", "U+11330", "Druta Swara Position Indicator", "Odd swara"),
+        ("A19", "Kra", "ക്ര", "\uE01E", "U+E01E", "Krishtakhya Swara Bhedah (കൃഷ്ടാഖ്യ സ്വര ഭേദഃ)", "Conjunct"),
     ]
 
     ayugma_rows_html = []
     for aid, m_name, m_char, g_char, hex_code, meaning, notes in ayugma_bases:
         ayugma_rows_html.append(f"""
-        <tr>
+        <tr data-type="ayugma">
             <td class="idx-col"><strong>{aid}</strong></td>
             <td><strong>{m_name}</strong></td>
             <td style="font-family:'Noto Serif Malayalam'; font-size:22px; font-weight:bold;">{m_char}</td>
@@ -380,7 +392,7 @@ def render_html_table() -> None:
     liga_rows_html = []
     for lid, lname, lglyph, lcode, ldesc, lpos in ligatures:
         liga_rows_html.append(f"""
-        <tr>
+        <tr data-type="ligature">
             <td class="idx-col"><strong>{lid}</strong></td>
             <td><strong>{lname}</strong></td>
             <td class="glyph-cell"><span class="swara-glyph swara-red">{lglyph}</span></td>
@@ -416,7 +428,7 @@ def render_html_table() -> None:
             badge_cls = "badge-base"
 
         swara_rows_html.append(f"""
-        <tr data-type="swara">
+        <tr data-type="corpus">
             <td class="idx-col">{idx}</td>
             <td><strong>({marker})</strong></td>
             <td class="glyph-cell"><span class="swara-glyph swara-red">{text_str}</span></td>
@@ -435,11 +447,11 @@ def render_html_table() -> None:
 <style>
     @font-face {{
         font-family: 'JaimineeyaSwara';
-        src: url('../../../fonts/JaimineeyaSwara.ttf') format('truetype');
+        src: url('data:font/truetype;charset=utf-8;base64,{jaimineeya_swara_b64}') format('truetype');
     }}
     @font-face {{
         font-family: 'Noto Serif Malayalam';
-        src: url('../../../fonts/NotoSerifMalayalam-Regular.ttf') format('truetype');
+        src: url('https://fonts.gstatic.com/s/notoserifmalayalam/v28/0FlZVP2yodst28XFviZkH8UfGvjFmsF4Yw.woff2') format('woff2');
     }}
 
     :root {{
@@ -620,119 +632,201 @@ def render_html_table() -> None:
         color: var(--primary-blue);
     }}
 
+    /* DOTTED CIRCLE REPRESENTATION CELL */
     .dotted-cell {{
         text-align: center;
-        width: 130px;
+        width: 150px;
     }}
     .dotted-sample {{
         position: relative;
         display: inline-flex;
-        flex-direction: column;
         align-items: center;
-        vertical-align: middle;
-        line-height: 1;
+        justify-content: center;
         background: #ffffff;
-        padding: 6px 14px;
+        padding: 8px 18px;
         border-radius: 8px;
         border: 1px solid var(--border-color);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }}
-    .dotted-sample .base-circle {{
+    .dotted-sample .base-circle-box {{
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         font-family: 'Noto Serif Malayalam', 'Segoe UI Symbol', sans-serif;
-        font-size: 22px;
-        color: #64748b;
-        letter-spacing: 2px;
+        font-size: 24px;
+        color: #94a3b8;
+        line-height: 1;
+        letter-spacing: 1px;
     }}
-    .dotted-sample .arc-tie {{
+    .dotted-sample .swara-mod-dotted {{
         color: var(--primary-blue);
         font-family: 'JaimineeyaSwara', serif;
-        font-size: 26px;
-        line-height: 0.8;
-        margin-bottom: -4px;
-    }}
-    .dotted-sample .mod-sup-center {{
-        color: var(--primary-blue);
-        font-size: 18px;
-        line-height: 0.8;
-        margin-bottom: 2px;
         font-weight: bold;
+        line-height: 1;
     }}
-    .dotted-sample .mod-dot {{
-        color: var(--primary-blue);
-        font-size: 24px;
-        line-height: 0;
-        vertical-align: 4px;
-        margin-left: 2px;
+    .dotted-sample .mod-a-dotted {{
+        position: absolute;
+        top: -0.42em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
     }}
-    .dotted-sample .mod-sub {{
-        color: var(--primary-blue);
-        font-size: 18px;
-        font-weight: bold;
-        margin-top: 2px;
-    }}
-    .dotted-sample .mod-inline {{
-        color: var(--primary-blue);
+    .dotted-sample .mod-b-dotted {{
+        position: absolute;
+        top: -0.44em;
+        left: 50%;
+        transform: translateX(-50%);
         font-size: 20px;
-        font-weight: bold;
+    }}
+    .dotted-sample .mod-c-dotted {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.38em;
+        font-size: 18px;
+    }}
+    .dotted-sample .mod-d-dotted {{
+        position: absolute;
+        top: -0.44em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 20px;
+    }}
+    .dotted-sample .mod-e-dotted {{
+        position: relative;
         margin-left: 4px;
+        font-size: 24px;
+        vertical-align: -0.05em;
+    }}
+    .dotted-sample .mod-f-dotted {{
+        position: relative;
+        margin-left: 4px;
+        font-size: 24px;
+        vertical-align: -0.05em;
+    }}
+    .dotted-sample .mod-g-dotted {{
+        position: absolute;
+        bottom: -0.40em;
+        left: 50%;
+        transform: translateX(-65%);
+        font-size: 24px;
+    }}
+    .dotted-sample .mod-h-dotted {{
+        position: absolute;
+        top: -0.42em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 22px;
     }}
 
+    /* MANTRAS STACKING PREVIEW CELL */
     .preview-cell {{
-        width: 180px;
+        width: 220px;
     }}
-    .mantra-preview-box {{
+    .mantra-preview-flex {{
+        display: inline-flex;
+        align-items: flex-end;
+        background: #ffffff;
+        border: 1px solid var(--border-color);
+        padding: 8px 16px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }}
+    .mantra-preview-flex .mantra-word {{
         display: inline-flex;
         flex-direction: column;
         align-items: center;
-        background: #f8fafc;
-        border: 1px solid var(--border-color);
-        padding: 6px 14px;
-        border-radius: 8px;
+        justify-content: flex-end;
+        vertical-align: bottom;
+        position: relative;
+        font-size: 1.35rem;
+    }}
+    .mantra-preview-flex .swara-text {{
+        font-family: 'JaimineeyaSwara', serif;
+        font-size: 0.90rem;
+        color: var(--swara-red);
+        line-height: 1;
+        margin-bottom: 4px;
+        padding-bottom: 2px;
+        min-height: 1.1em;
+        user-select: none;
+        display: block;
+        text-align: center;
+    }}
+    .mantra-preview-flex .mantra-text {{
         font-family: 'Noto Serif Malayalam', serif;
-    }}
-    .stack-top {{
-        font-size: 17px;
+        font-size: 1.35rem;
+        font-weight: 500;
         line-height: 1.1;
-        margin-bottom: 1px;
+        color: var(--text-main);
+        position: relative;
+        display: inline-block;
     }}
-    .mantra-base {{
-        font-size: 20px;
-        font-weight: bold;
-        color: #0f172a;
-        line-height: 1.2;
+    .mantra-preview-flex .word-space {{
+        width: 0.40em;
+        display: inline-block;
     }}
-    .mod-arc-tie {{
+    .mantra-preview-flex .swara-mod {{
         color: var(--primary-blue);
         font-family: 'JaimineeyaSwara', serif;
-        font-size: 22px;
-        margin-bottom: -4px;
-        display: block;
-    }}
-    .mod-blue-sup {{
-        color: var(--primary-blue);
-        font-size: 14px;
-        vertical-align: super;
-        margin-left: 2px;
         font-weight: bold;
+        line-height: 1;
     }}
-    .mod-blue-sub {{
-        color: var(--primary-blue);
-        font-size: 16px;
-        vertical-align: sub;
-        margin-left: 2px;
-        font-weight: bold;
+    .mantra-preview-flex .swara-mod.mod-a {{
+        position: absolute;
+        top: -0.28em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
     }}
-    .mod-blue-dot {{
-        color: var(--primary-blue);
-        font-size: 22px;
-        line-height: 0;
-        vertical-align: 3px;
-        margin-left: 2px;
+    .mantra-preview-flex .swara-mod.mod-b {{
+        position: absolute;
+        top: -0.32em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
     }}
-    .mod-blue-inline {{
-        color: var(--primary-blue);
-        font-size: 18px;
-        font-weight: bold;
-        margin-left: 3px;
+    .mantra-preview-flex .swara-mod.mod-c {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.35em;
+        font-size: 0.85rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-d {{
+        position: absolute;
+        top: -0.30em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-e {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-f {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-g {{
+        position: absolute;
+        bottom: -0.38em;
+        left: 28%;
+        transform: translateX(-50%);
+        font-size: 1.05rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-h {{
+        position: absolute;
+        top: -0.35em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.95rem;
     }}
 
     .shortcut-tag {{
@@ -758,142 +852,177 @@ def render_html_table() -> None:
         padding: 3px 6px;
         border-radius: 4px;
         font-size: 12px;
-        border: 1px solid #e2e8f0;
     }}
     .badge {{
         display: inline-block;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }}
-    .badge-above {{ background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }}
-    .badge-below {{ background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }}
-    .badge-shoulder {{ background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }}
-    .badge-inline {{ background: #f8fafc; color: #475569; border: 1px solid #cbd5e1; }}
-    .badge-base {{ background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }}
-    .badge-sha {{ background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }}
-    .badge-pla {{ background: #ecfeff; color: #0e7490; border: 1px solid #a5f3fc; }}
-    .badge-liga {{ background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }}
-    .count-cell {{ font-weight: 700; color: #0f172a; text-align: center; }}
+    .badge-above {{ background: #e0e7ff; color: #3730a3; }}
+    .badge-below {{ background: #fef3c7; color: #92400e; }}
+    .badge-shoulder {{ background: #f3e8ff; color: #6b21a8; }}
+    .badge-inline {{ background: #f1f5f9; color: #334155; }}
+    .badge-base {{ background: #fee2e2; color: #991b1b; }}
+    .badge-sha {{ background: #ecfdf5; color: #065f46; }}
+    .badge-pla {{ background: #fff7ed; color: #9a3412; }}
+    .badge-liga {{ background: #eff6ff; color: #1e40af; }}
+
+    .count-cell {{
+        font-weight: 700;
+        color: var(--text-muted);
+        text-align: right;
+        width: 80px;
+    }}
+
+    footer {{
+        text-align: center;
+        padding: 24px;
+        color: var(--text-muted);
+        font-size: 13px;
+        border-top: 1px solid var(--border-color);
+        margin-top: 40px;
+    }}
 </style>
 </head>
 <body>
 <div class="container">
 
-<header>
-    <h1>Jaimineeya Vedic Swara Font (JaimineeyaSwara.ttf) — Complete Glyph Inventory</h1>
-    <div class="subtitle">
-        Comprehensive reference table and visual preview for all Jaimineeya Samaveda swara markers, manuscript overrides (Pla/Sha), ligatures, and the 8 Canonical Vedic Swara Modifiers (A..H).
-    </div>
-    <div class="color-legend">
-        <div class="legend-item"><span class="legend-dot dot-red"></span> Pure Swara Pitch Markers: Bold Red (#c62828) — Stacked Above</div>
-        <div class="legend-item"><span class="legend-dot dot-blue"></span> Vedic Swara Modifiers (A..H): Dark Blue (#002171) — Attached to Mantrakshara</div>
-    </div>
-</header>
+    <header>
+        <h1>Jaimineeya Swara Font — Complete Glyph Inventory & Modifiers</h1>
+        <div class="subtitle">
+            Authoritative typographic catalog of <strong>JaimineeyaSwara.ttf</strong> showing all 8 Canonical Vedic Swara Modifiers (A..H) with dotted-circle positions and live Mantrakshara stacking previews, 19 Ayugma Grantha bases, custom manuscript ligatures (Pla/Sha), and the full Samhita marker inventory.
+        </div>
+        <div class="color-legend">
+            <div class="legend-item">
+                <span class="legend-dot dot-red"></span>
+                <span>Swara Marker = Red (<code>#c62828</code>)</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-dot dot-blue"></span>
+                <span>Swara Modifier = DarkBlue (<code>#002171</code>)</span>
+            </div>
+        </div>
+    </header>
 
-<div class="nav-tabs">
-    <button class="tab-btn active" onclick="showTab('modifiers-section')">1. Swara Modifiers (A..H)</button>
-    <button class="tab-btn" onclick="showTab('ayugma-section')">2. Ayugma Bases (A01..A19)</button>
-    <button class="tab-btn" onclick="showTab('ligatures-section')">3. Manuscript Ligatures</button>
-    <button class="tab-btn" onclick="showTab('all-swaras-section')">4. Full Swara Inventory ({len(rows)})</button>
-</div>
-
-<!-- SECTION 1: MODIFIERS -->
-<div id="modifiers-section" class="section-card">
-    <div class="section-header">
-        <div class="section-title">Canonical 8 Vedic Swara Modifiers (A..H)</div>
-        <span class="section-tag tag-modifiers">Active Modifiers</span>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="filterTab('all')">All Tables</button>
+        <button class="tab-btn" onclick="filterTab('modifiers')">Vedic Modifiers (A..H)</button>
+        <button class="tab-btn" onclick="filterTab('ayugma')">Ayugma Bases (A01..A19)</button>
+        <button class="tab-btn" onclick="filterTab('ligatures')">Manuscript Ligatures (Pla/Sha)</button>
+        <button class="tab-btn" onclick="filterTab('corpus')">Full Samhita Markers (229)</button>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Shortcut</th>
-                <th>Name & Tone Meaning</th>
-                <th>Input Methods</th>
-                <th style="text-align: center;">Direct Glyph</th>
-                <th style="text-align: center;">Dotted Representation (◌)</th>
-                <th>Mantrakshara Stacking Preview</th>
-                <th>Codepoint</th>
-                <th>Position</th>
-            </tr>
-        </thead>
-        <tbody>
-            {"".join(modifier_rows_html)}
-        </tbody>
-    </table>
-</div>
 
-<!-- SECTION 2: AYUGMA BASES -->
-<div id="ayugma-section" class="section-card" style="display:none;">
-    <div class="section-header">
-        <div class="section-title">Ayugma Swara Bases (A01..A19)</div>
-        <span class="section-tag tag-ayugma">Odd Swaras</span>
+    <!-- Section 1: Modifiers (A..H) -->
+    <div class="section-card" id="sec-modifiers">
+        <div class="section-header">
+            <div class="section-title">
+                <span>1. Canonical Vedic Swara Modifiers (A..H)</span>
+            </div>
+            <span class="section-tag tag-modifiers">8 Modifiers</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Shortcut</th>
+                    <th>Modifier Name & Function</th>
+                    <th>Typing Shortcuts</th>
+                    <th style="text-align:center;">Direct Glyph</th>
+                    <th style="text-align:center;">Dotted Base</th>
+                    <th>Mantrakshara Preview</th>
+                    <th>Unicode / Hex</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody>
+                {"".join(modifier_rows_html)}
+            </tbody>
+        </table>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Malayalam Base</th>
-                <th style="text-align: center;">Grantha Glyph</th>
-                <th>Codepoint</th>
-                <th>Traditional Meaning</th>
-                <th>Category</th>
-            </tr>
-        </thead>
-        <tbody>
-            {"".join(ayugma_rows_html)}
-        </tbody>
-    </table>
-</div>
 
-<!-- SECTION 3: MANUSCRIPT LIGATURES -->
-<div id="ligatures-section" class="section-card" style="display:none;">
-    <div class="section-header">
-        <div class="section-title">Manuscript Overrides & Complex Ligatures (Sha / Pla / Kra / Tra)</div>
-        <span class="section-tag tag-liga">Manuscript Ligatures</span>
+    <!-- Section 2: Ayugma Bases (A01..A19) -->
+    <div class="section-card" id="sec-ayugma">
+        <div class="section-header">
+            <div class="section-title">
+                <span>2. Ayugma Pure Grantha Bases (A01..A19)</span>
+            </div>
+            <span class="section-tag tag-ayugma">19 Bases</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Swara Name</th>
+                    <th>Malayalam Equiv</th>
+                    <th style="text-align:center;">Grantha Glyph</th>
+                    <th>Unicode Codepoint</th>
+                    <th>Phonetic / Traditional Name</th>
+                    <th>Classification</th>
+                </tr>
+            </thead>
+            <tbody>
+                {"".join(ayugma_rows_html)}
+            </tbody>
+        </table>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Ligature Name</th>
-                <th style="text-align: center;">Rendered Glyph</th>
-                <th>Codepoint / Formula</th>
-                <th>Typographic Composition</th>
-                <th>Stacking Position</th>
-            </tr>
-        </thead>
-        <tbody>
-            {"".join(liga_rows_html)}
-        </tbody>
-    </table>
-</div>
 
-<!-- SECTION 4: FULL SWARA INVENTORY -->
-<div id="all-swaras-section" class="section-card" style="display:none;">
-    <div class="section-header">
-        <div class="section-title">Full Samhita Swara Frequency & Character Review</div>
-        <span class="section-tag tag-all">All Markers ({len(rows)})</span>
+    <!-- Section 3: Manuscript Ligatures (Pla/Sha) -->
+    <div class="section-card" id="sec-ligatures">
+        <div class="section-header">
+            <div class="section-title">
+                <span>3. Manuscript Overrides & Ligatures (Pla / Sha)</span>
+            </div>
+            <span class="section-tag tag-liga">10 Ligatures</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ligature Name</th>
+                    <th style="text-align:center;">Glyph</th>
+                    <th>PUA / Mapping</th>
+                    <th>Description & Shaping Rules</th>
+                    <th>Stacking</th>
+                </tr>
+            </thead>
+            <tbody>
+                {"".join(liga_rows_html)}
+            </tbody>
+        </table>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Input Marker</th>
-                <th style="text-align: center;">Rendered Glyph</th>
-                <th>Grantha Hex</th>
-                <th>Category</th>
-                <th style="text-align: center;">Corpus Frequency</th>
-            </tr>
-        </thead>
-        <tbody>
-            {"".join(swara_rows_html)}
-        </tbody>
-    </table>
-</div>
+
+    <!-- Section 4: Full Corpus Markers -->
+    <div class="section-card" id="sec-corpus">
+        <div class="section-header">
+            <div class="section-title">
+                <span>4. Full Samhita Swara Marker Inventory</span>
+            </div>
+            <span class="section-tag tag-all">{len(rows)} Markers in Corpus</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Devanagari Marker</th>
+                    <th style="text-align:center;">Grantha Glyph</th>
+                    <th>Grantha Hex Codepoints</th>
+                    <th>Classification</th>
+                    <th style="text-align:right;">Corpus Frequency</th>
+                </tr>
+            </thead>
+            <tbody>
+                {"".join(swara_rows_html)}
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Jaimineeya Samaveda Digitization Project &bull; Generated from authoritative Grantha & Manuscript Review Tables &bull; Font: JaimineeyaSwara.ttf
+    </footer>
 
 </div>
 
