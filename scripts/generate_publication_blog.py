@@ -481,9 +481,9 @@ html_template = """<!DOCTYPE html>
 
 <div class="hero-banner">
     <div class="hero-content">
-        <h1>Revitalizing the Jaimineeya Samaveda in Malayalam Script</h1>
+        <h1>Revitalizing Jaimineeya Samaveda in Malayalam Script</h1>
         <div class="hero-subtitle">
-            Typographic Innovation, Custom Grantha Font Engineering, and a Unified Multi-Format Publishing Pipeline for Sacred Kerala & Tamil Nadu Vedic Chants.
+            Typographic Innovation, Custom Grantha Font Engineering, and a Unified Multi-Format Publishing Pipeline for Jaimineeya Samavedam
         </div>
         <div class="meta-bar">
             <span>📅 August 2026</span>
@@ -508,13 +508,13 @@ html_template = """<!DOCTYPE html>
         Following a migration of Jaimini Samavedins from the Kaveri delta (Anbil, Tiruchi) to Kerala around 250–300 years ago, a prominent community settled in <strong>Kodunthirapully Agraharam in Palakkad</strong>. In this tradition, <strong>Brahmasri Sahasranama Iyer</strong> meticulously hand-wrote the Samhita and Aranyam portions using a unique and effective scheme: Malayalam mantraksharas, Grantha and mixed Grantha-Malayalam swara markers, and a set of graphical swara modifier mnemonics to facilitate fluent recitation. Even today, young and old scholars in Kodunthirapully chant from paper copies of these revered manuscripts.
     </p>
     <p>
-        As part of our overall digitization efforts, we have now implemented the digital <strong>"Kodunthirapully Paddhati"</strong>. To overcome the technical challenges of mixed Grantha/Malayalam typography and complex visual mnemonics, we engineered the <strong>JaimineeyaSwara</strong> font and built an automated multi-format publishing pipeline delivering:
+        As part of our overall digitization efforts of Jaimineeya Samaveda, we have now implemented the digital <strong>"Kodunthirapully Paddhati"</strong>. We believe this effort will support the living tradition of Sama Veda chanting in the Agraharam in today's digital world. To overcome the technical challenges of mixed Grantha/Malayalam typography and complex visual mnemonics, we engineered the <strong>JaimineeyaSwara</strong> font and built an automated multi-format publishing pipeline delivering:
     </p>
-    <ul>
-        <li>📄 <strong>Sample 1-Page Print Edition (PDF):</strong> <a href="../../data/output/pdf/Malayalam/Samhita_Malayalam.pdf" target="_blank"><code>data/output/pdf/Malayalam/Samhita_Malayalam.pdf</code></a> &bull; With mathematical sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.</li>
-        <li>🌐 <strong>Interactive Web Edition (HTML5):</strong> <em>(Under preparation)</em></li>
-        <li>📝 <strong>Universal Unicode Plaintext (.txt):</strong> With standard Grantha codepoints and intuitive modifier mnemonics to enable ongoing curation and scholarship.</li>
-    </ul>
+    
+        📄 <strong>Publication quality Jaimineeya Samaveda in Malayalam (PDF):</strong> With sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.<br>
+        🌐 <strong>Interactive Web Edition (HTML5):</strong> An easy to navigate Website with advanced search and hyperlink features.<br>
+        📝 <strong>Universal Unicode Plaintext (.txt):</strong> With standard Grantha codepoints and intuitive modifier mnemonics to enable ongoing curation and scholarship.<br>
+    
 
     <h2>2. The Typographic Challenge</h2>
     <p>
@@ -674,7 +674,7 @@ html_template = """<!DOCTYPE html>
         <div class="step-card">
             <div class="step-num">3</div>
             <div class="step-title">Multi-Format Build</div>
-            <div class="step-desc">One command compiles to responsive Web HTML and archival LuaLaTeX PDF.</div>
+            <div class="step-desc">One command compiles to Web HTML and archival LuaLaTeX PDF.</div>
         </div>
     </div>
 
