@@ -57,9 +57,9 @@ To establish absolute typographic control, we engineered a dedicated OpenType fo
 - **10 Custom Manuscript Ligatures (`LIG-01`–`LIG-10`):** Including *Shaa* (``), *Shi* (``), *Shii* (``), *Sha-Virama* (``), *Plaa* (``), *Pli* (``), *Plii* (``), *Shruu* (``), *Shrr* (``), and *Nna+U* (``).
 - **8 Canonical Vedic Swara Modifiers (`MOD-A`–`MOD-H`):** Built with zero-advance bounding boxes for clean dynamic overlay.
 
-### Innovation 2: The Canonical 8 Vedic Swara Modifiers
+### Innovation 2: The Canonical 8 Vedic Swara Modifiers & Inline Marks
 
-| ID | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
+| ID / Mark | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
 | **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition. |
@@ -69,6 +69,9 @@ To establish absolute typographic control, we engineered a dedicated OpenType fo
 | **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |
 | **MOD-G** | `(G)` / `(\)` | **Descending Tone Slash** | `\uE003` / `U+005C` | Stacked Below | Downward falling pitch attached to the bottom-center of the preceding consonant. |
 | **MOD-H** | `(H)` / `(|)` | **Overhead Swarita** | `\uE00C` / `U+007C` | Stacked Above | Vertical upper tone stroke situated directly on top of the base syllable. |
+| **Dot (`.`)** | `.` / `(.)` | **Pause Dot** | `\uE001` / `.` | **Inline** | Stobha and breath pause indicator. |
+| **Underbar (`_`)** | `_` / `(_)` | **Elongation / Low Line** | `\uE007` / `_` | **Inline** | Tone elongation or rhythmic phrasing gap. |
+| **Comma (`,`)** | `,` / `(,)` | **Low Comma** | `\uE00A` / `,` | **Inline** | Minor cadence pause / breath comma. |
 
 ---
 

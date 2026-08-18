@@ -366,6 +366,24 @@ html_template = """<!DOCTYPE html>
         transform: translateX(-50%);
         font-size: 1.20rem;
     }
+    .swara-mod.mod-dot {
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.10rem;
+        vertical-align: baseline;
+    }
+    .swara-mod.mod-underbar {
+        position: relative;
+        margin-left: 0.10em;
+        font-size: 1.25rem;
+        vertical-align: -0.15em;
+    }
+    .swara-mod.mod-comma {
+        position: relative;
+        margin-left: 0.10em;
+        font-size: 1.20rem;
+        vertical-align: baseline;
+    }
 
     /* Tables */
     table {
@@ -516,11 +534,12 @@ html_template = """<!DOCTYPE html>
                 <button class="sample-chip" onclick="loadSample('ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G)')">Sample 2: Dot + Slash</button>
                 <button class="sample-chip" onclick="loadSample('ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾) ദാ(𑌚𑌿)(H)')">Sample 3: Chevron + Swarita</button>
                 <button class="sample-chip" onclick="loadSample('വാ(𑌚)(E) ഇ(𑌚)(F)')">Sample 4: Phrasing Dandas</button>
+                <button class="sample-chip" onclick="loadSample('വാ(𑌚). ഇ(𑌚)_ ദാ(𑌚),')">Sample 5: Inline Marks ( . _ , )</button>
             </div>
         </div>
 
         <div class="input-box-wrapper">
-            <input type="text" id="mantraInput" class="mantra-input" value="ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G) ദാ(𑌚𑌿)(H)" oninput="renderPlayground()" placeholder="Type mantra text with (Swara) and (A..H) modifiers..." />
+            <input type="text" id="mantraInput" class="mantra-input" value="ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G) ദാ(𑌚𑌿)(H) വാ(𑌚). ഇ(𑌚)_ ദാ(𑌚)," oninput="renderPlayground()" placeholder="Type mantra text with (Swara), (A..H), (.), (_), (,)..." />
         </div>
 
         <div class="render-output-stage" id="playgroundOutput">
@@ -528,11 +547,11 @@ html_template = """<!DOCTYPE html>
         </div>
     </div>
 
-    <h2>4. The 8 Canonical Vedic Swara Modifiers</h2>
+    <h2>4. The Canonical 8 Vedic Swara Modifiers & Inline Marks</h2>
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>ID / Mark</th>
                 <th>Shortcut</th>
                 <th>Modifier Name</th>
                 <th style="text-align:center;">Glyph</th>
@@ -605,6 +624,30 @@ html_template = """<!DOCTYPE html>
                 <td><code>U+E00C / U+007C</code></td>
                 <td><span class="badge-above">Above Consonant</span></td>
             </tr>
+            <tr>
+                <td><strong>Dot (<code>.</code>)</strong></td>
+                <td><code>. / (.)</code></td>
+                <td>Pause Dot</td>
+                <td style="text-align:center;" class="glyph-sample">&#xE001;</td>
+                <td><code>U+E001 / U+002E</code></td>
+                <td><span class="badge-inline">Inline</span></td>
+            </tr>
+            <tr>
+                <td><strong>Underbar (<code>_</code>)</strong></td>
+                <td><code>_ / (_)</code></td>
+                <td>Elongation / Low Line</td>
+                <td style="text-align:center;" class="glyph-sample">&#xE007;</td>
+                <td><code>U+E007 / U+005F</code></td>
+                <td><span class="badge-inline">Inline</span></td>
+            </tr>
+            <tr>
+                <td><strong>Comma (<code>,</code>)</strong></td>
+                <td><code>, / (,)</code></td>
+                <td>Low Comma</td>
+                <td style="text-align:center;" class="glyph-sample">&#xE00A;</td>
+                <td><code>U+E00A / U+002C</code></td>
+                <td><span class="badge-inline">Inline</span></td>
+            </tr>
         </tbody>
     </table>
 
@@ -618,7 +661,7 @@ html_template = """<!DOCTYPE html>
         <div class="step-card">
             <div class="step-num">2</div>
             <div class="step-title">Hand Annotation</div>
-            <div class="step-desc">Scholars enter intuitive modifier tags <code>(A)</code>–<code>(H)</code> in any text editor.</div>
+            <div class="step-desc">Scholars enter intuitive modifier tags <code>(A)</code>–<code>(H)</code> and inline marks in any text editor.</div>
         </div>
         <div class="step-card">
             <div class="step-num">3</div>
@@ -686,6 +729,9 @@ function renderPlayground() {
         'H': { cls: 'mod-h', glyph: '&#xE00C;' },
         'h': { cls: 'mod-h', glyph: '&#xE00C;' },
         '|': { cls: 'mod-h', glyph: '&#xE00C;' },
+        '.': { cls: 'mod-dot', glyph: '&#xE001;' },
+        '_': { cls: 'mod-underbar', glyph: '&#xE007;' },
+        ',': { cls: 'mod-comma', glyph: '&#xE00A;' },
     };
 
     const swaraSubs = {
@@ -726,7 +772,19 @@ function renderPlayground() {
         let mod = '';
         let base = t;
 
-        // Check for swara (𑌖)
+        // Check for trailing punctuation marks ., _
+        if (base.endsWith('.') && !base.includes('(')) {
+            mod = modMap['.'];
+            base = base.slice(0, -1);
+        } else if (base.endsWith('_') && !base.includes('(')) {
+            mod = modMap['_'];
+            base = base.slice(0, -1);
+        } else if (base.endsWith(',') && !base.includes('(')) {
+            mod = modMap[','];
+            base = base.slice(0, -1);
+        }
+
+        // Check for swara (𑌖) and modifier (A..H, ., _, ,)
         const swMatch = base.match(/\\(([^)]+)\\)/g);
         if (swMatch) {
             for (let m of swMatch) {
@@ -738,6 +796,18 @@ function renderPlayground() {
                 }
                 base = base.replace(m, '');
             }
+        }
+
+        // Check again for trailing punctuation attached after brackets
+        if (base.endsWith('.')) {
+            if (!mod) mod = modMap['.'];
+            base = base.slice(0, -1);
+        } else if (base.endsWith('_')) {
+            if (!mod) mod = modMap['_'];
+            base = base.slice(0, -1);
+        } else if (base.endsWith(',')) {
+            if (!mod) mod = modMap[','];
+            base = base.slice(0, -1);
         }
 
         let modHtml = '';
