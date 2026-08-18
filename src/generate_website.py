@@ -99,6 +99,13 @@ SITE_CONFIG = {
         'footer_sa': 'जैमिनीय सामवेद सङ्ग्रहः',
         'meta_desc': 'Jaimineeya Sama Sangraha collection',
         'keywords': 'Samaveda, Jaimineeya, Sangraha, Collection, Vedas, Sanskrit'
+    },
+    'malayalam': {
+        'title_sa': 'ജൈമിനീയ സാമ സംഹിതാ',
+        'title_en': 'Jaimineeya Sama Samhita (Malayalam)',
+        'footer_sa': 'ജൈമിനീയ സാമവേദ സംഹിതാ',
+        'meta_desc': 'Jaimineeya Sama Samhita digital archive in Malayalam script with Grantha swara notations',
+        'keywords': 'Samaveda, Jaimineeya, Samhita, Malayalam, Grantha, Swara, Vedas, Sanskrit'
     }
 }
 
@@ -350,6 +357,189 @@ def format_rik_text_html(rik_text, footnotes_dict=None, counter_obj=None, seen_m
     return text, collected_footnotes
 
 
+MALAYALAM_MODIFIER_MAP = {
+    'A': ('mod-a', '\uE004'),
+    'a': ('mod-a', '\uE004'),
+    '⁀': ('mod-a', '\uE004'),
+    'B': ('mod-b', '\uE005'),
+    'b': ('mod-b', '\uE005'),
+    '^': ('mod-b', '\uE005'),
+    '∧': ('mod-b', '\uE005'),
+    'C': ('mod-c', '\uE001'),
+    'c': ('mod-c', '\uE001'),
+    '·': ('mod-c', '\uE001'),
+    'D': ('mod-d', '\uE006'),
+    'd': ('mod-d', '\uE006'),
+    'Ʌ': ('mod-d', '\uE006'),
+    'E': ('mod-e', '\uE002'),
+    'e': ('mod-e', '\uE002'),
+    '┃': ('mod-e', '\uE002'),
+    'L': ('mod-e', '\uE002'),
+    'F': ('mod-f', '\u2577'),
+    'f': ('mod-f', '\u2577'),
+    '╷': ('mod-f', '\u2577'),
+    'G': ('mod-g', '\uE003'),
+    'g': ('mod-g', '\uE003'),
+    '\\': ('mod-g', '\uE003'),
+    'H': ('mod-h', '\uE00C'),
+    'h': ('mod-h', '\uE00C'),
+    '|': ('mod-h', '\uE00C'),
+}
+
+MALAYALAM_SWARA_SUBS = {
+    '𑌪𑍍𑌲': '\uE020',
+    '𑌪𑍍𑌲𑌾': '\uE021',
+    '𑌪𑍍𑌲𑌿': '\uE022',
+    '𑌪𑍍𑌲𑍀': '\uE023',
+    'ശ𑌾': '\uE010',
+    'ശ𑌿': '\uE011',
+    'ശ𑍀': '\uE012',
+    'ശ്': '\uE013',
+    'ത്ര': '\uE01D',
+    'ക്ര': '\uE01E',
+}
+
+def split_malayalam_clusters(word):
+    """Split Malayalam word into syllable clusters."""
+    pattern = r'(?:[\u0D05-\u0D14]|(?:[\u0D15-\u0D3A\u0D7A-\u0D7F](?:\u0D4D[\u0D15-\u0D3A])*[\u0D3E-\u0D4D\u0D57\u0D62\u0D63]?[\u0D02\u0D03]?))'
+    clusters = re.findall(pattern, word)
+    if not clusters or ''.join(clusters) != word:
+        return [word]
+    return clusters
+
+def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None):
+    if not mantra_text:
+        return "", []
+    if footnotes_dict is None: footnotes_dict = {}
+    if counter_obj is None: counter_obj = {'val': 0}
+    if seen_map is None: seen_map = {}
+    if accumulator is None: accumulator = []
+
+    devanagari_digits = '०१२३४५६७८९'
+    html_parts = []
+    collected_footnotes = []
+
+    text = mantra_text.replace('\n', ' ').strip()
+    text = re.sub(r'\|\|', '॥', text)
+    text = re.sub(r'\|\s*\|', '॥', text)
+    text = re.sub(r'।।', '॥', text)
+    text = text.replace('|', '।')
+
+    token_re = re.compile(r'(?:॥\s*[\d०-९]+\s*॥|[।॥]|\(s\d+\)|[^\s।॥()]+(?:\([^)]+\))*|\([^)]+\)|[_.GL])')
+    tokens = token_re.findall(text)
+
+    for tok in tokens:
+        tok = tok.strip()
+        if not tok: continue
+
+        # Verse number
+        m_num = re.match(r'॥\s*([\d०-९]+)\s*॥', tok)
+        if m_num:
+            html_parts.append(f'<span class="mantra-word"><span class="mantra-text"><span class="mantra-number">॥ {m_num.group(1)} ॥</span></span><span class="swara-text">&nbsp;</span></span><div class="mantra-break"></div>')
+            continue
+
+        # Dandas
+        if tok in '।॥':
+            html_parts.append(f'<span class="mantra-word"><span class="mantra-text"><span class="danda">{tok}</span></span><span class="swara-text">&nbsp;</span></span>')
+            continue
+
+        # Footnotes
+        m_fn = re.match(r'\(s(\d+)\)', tok)
+        if m_fn:
+            marker_key = f's{m_fn.group(1)}'
+            footnote_text = footnotes_dict.get(marker_key, '').strip()
+            if footnote_text and footnote_text in seen_map:
+                unique_id, display_num = seen_map[footnote_text]
+            else:
+                counter_obj['val'] += 1
+                val = counter_obj['val']
+                unique_id = f'fn-kandah-{val}'
+                display_num = ''.join(devanagari_digits[int(d)] for d in str(val))
+                if footnote_text:
+                    seen_map[footnote_text] = (unique_id, display_num)
+                    accumulator.append((unique_id, display_num, footnote_text))
+                    collected_footnotes.append((unique_id, val, footnote_text))
+            html_parts.append(f'<sup class="footnote-ref"><a href="#{unique_id}">{display_num}</a></sup>')
+            continue
+
+        # Standalone modifier tokens
+        if tok == '_':
+            html_parts.append('<span class="word-space">&nbsp;</span>')
+            continue
+        elif tok == '.':
+            html_parts.append('<span class="mantra-word"><span class="mantra-text">&nbsp;<span class="swara-mod mod-c">\uE001</span></span><span class="swara-text">&nbsp;</span></span>')
+            continue
+        elif tok in ('G', '(G)'):
+            html_parts.append('<span class="mantra-word"><span class="mantra-text">&nbsp;<span class="swara-mod mod-g">\uE003</span></span><span class="swara-text">&nbsp;</span></span>')
+            continue
+        elif tok in ('L', '(L)'):
+            html_parts.append('<span class="mantra-word"><span class="mantra-text">&nbsp;<span class="swara-mod mod-e">\uE002</span></span><span class="swara-text">&nbsp;</span></span>')
+            continue
+
+        # Normal word
+        base = re.sub(r'\([^)]+\)', '', tok).strip()
+        parens = re.findall(r'\(([^)]+)\)', tok)
+
+        swara = ''
+        mod = None
+        fn = None
+        for p in parens:
+            if p in MALAYALAM_MODIFIER_MAP:
+                mod = MALAYALAM_MODIFIER_MAP[p]
+            elif re.match(r's\d+', p):
+                fn = p
+            else:
+                swara = MALAYALAM_SWARA_SUBS.get(p, p)
+
+        base = base.replace('_', '').replace('.', '')
+        if not base:
+            base = '&nbsp;'
+
+        # Split clusters
+        clusters = split_malayalam_clusters(base) if base != '&nbsp;' else ['&nbsp;']
+        preceding = ''.join(clusters[:-1]) if len(clusters) > 1 else ''
+        last_cluster = clusters[-1]
+
+        if preceding:
+            html_parts.append(f'<span class="mantra-word"><span class="mantra-text">{preceding}</span><span class="swara-text">&nbsp;</span></span>')
+
+        mod_html = ''
+        if mod:
+            mod_cls, mod_glyph = mod
+            if mod_cls == 'mod-b':
+                mod_html = f'<span class="swara-mod mod-b"><span class="caret-glyph">\uE005</span><span class="swara-on-caret">{swara if swara else "&nbsp;"}</span></span>'
+                swara = ''
+            else:
+                mod_html = f'<span class="swara-mod {mod_cls}">{mod_glyph}</span>'
+
+        fn_html = ''
+        if fn:
+            marker_key = fn
+            footnote_text = footnotes_dict.get(marker_key, '').strip()
+            if footnote_text and footnote_text in seen_map:
+                unique_id, display_num = seen_map[footnote_text]
+            else:
+                counter_obj['val'] += 1
+                val = counter_obj['val']
+                unique_id = f'fn-kandah-{val}'
+                display_num = ''.join(devanagari_digits[int(d)] for d in str(val))
+                if footnote_text:
+                    seen_map[footnote_text] = (unique_id, display_num)
+                    accumulator.append((unique_id, display_num, footnote_text))
+                    collected_footnotes.append((unique_id, val, footnote_text))
+            fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}">{display_num}</a></sup>'
+
+        swara_disp = swara if swara else '&nbsp;'
+        html_parts.append(
+            f'<span class="mantra-word">'
+            f'<span class="swara-text">{swara_disp}</span>'
+            f'<span class="mantra-text">{last_cluster}{mod_html}</span>'
+            f'</span>{fn_html}'
+        )
+
+    return ''.join(html_parts), collected_footnotes
+
+
 def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None):
     """
     Format Sama mantra text for HTML display with stacked word/swara layout.
@@ -360,10 +550,13 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     if not mantra_text:
         return "", []
 
+    # Detect Malayalam / Grantha content
+    if re.search(r'[\u0D00-\u0D7F\u11300-\u1137F\uE000-\uE02F]', mantra_text):
+        return format_malayalam_mantra_html(mantra_text, footnotes_dict, counter_obj, seen_map, accumulator)
+
     # --- Preprocess Visarga/Accents with ZWJ ---
     mantra_text = step_preprocess_visarga_accent(mantra_text)
 
-    
     if footnotes_dict is None:
         footnotes_dict = {}
     
@@ -878,11 +1071,23 @@ class WebsiteGenerator:
         self.font = font
         self.font_sans = font_sans
         self.closing_mantras = closing_mantras or []
-        self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita']).copy()
+        
+        self.is_malayalam = (self.mode == 'malayalam' or 'malayalam' in str(self.output_dir).lower() or 'malayalam' in str(self.font).lower())
+        if self.is_malayalam:
+            if self.mode != 'malayalam':
+                self.mode = 'malayalam'
+            if self.font == 'AdishilaVedic':
+                self.font = 'Noto Serif Malayalam'
+                self.font_sans = 'Noto Sans Malayalam'
+            self.config = SITE_CONFIG['malayalam'].copy()
+        else:
+            self.config = SITE_CONFIG.get(mode, SITE_CONFIG['samhita']).copy()
         
         # Override title_sa if custom_title provided
         if custom_title:
             self.config['title_sa'] = custom_title
+        
+        self.labels = self._get_labels()
         
         # Standardize metadata - priority: passed metadata > system metadata
         from utils import get_generated_metadata
@@ -901,6 +1106,44 @@ class WebsiteGenerator:
         self.chandas_index = {}
         self.header_index = []
         self.total_riks_classified = 0
+
+    def _get_labels(self):
+        if getattr(self, 'is_malayalam', False):
+            return {
+                'parva': 'പാഠഃ',
+                'kandah': 'ഖണ്ഡഃ',
+                'sama': 'സാമ:',
+                'arsheyam': 'ആർഷേയമ്',
+                'rik': 'ഋക്',
+                'home': 'മുഖ്യപുറം (Home)',
+                'search': '🔍 അന്വേഷണം (Search)',
+                'jump_placeholder': 'ഉദാ. 1.1.1',
+                'indices': 'മറ്റു വർഗ്ഗീകരണങ്ങൾ (Indices)',
+                'rishi': 'ഋഷയഃ',
+                'devata': 'ദേവതാഃ',
+                'chandas': 'ഛന്ദാംസി',
+                'anukramanika': 'അനുക്രമണിക',
+                'varnanukraman': 'വർണ്ണാനുക്രമണം (Alphabetical Index)',
+                'top_20': 'പ്രമുഖ (Top 20)',
+            }
+        else:
+            return {
+                'parva': 'पर्व:',
+                'kandah': 'खण्ड:',
+                'sama': 'साम:',
+                'arsheyam': 'आर्षेयम्',
+                'rik': 'ऋक्',
+                'home': 'मुख्यपृष्ठम् (Home)',
+                'search': '🔍 अन्वेषणम् (Search)',
+                'jump_placeholder': 'e.g. 1.1.1 or 1.45',
+                'indices': 'अन्य वर्गीकरणम् (Indices)',
+                'rishi': 'ऋषयः',
+                'devata': 'देवताः',
+                'chandas': 'छन्दांसि',
+                'anukramanika': 'अनुक्रमणिका',
+                'varnanukraman': 'वर्णानुक्रमण (Varnanukraman)',
+                'top_20': 'प्रमुखाः (Top 20)',
+            }
         
     def generate(self):
         """Generate all website files"""
@@ -909,6 +1152,14 @@ class WebsiteGenerator:
         (self.output_dir / 'css').mkdir(exist_ok=True)
         (self.output_dir / 'js').mkdir(exist_ok=True)
         (self.output_dir / 'kandah').mkdir(exist_ok=True)
+        
+        # Copy JaimineeyaSwara font if in malayalam mode
+        if self.is_malayalam:
+            (self.output_dir / 'fonts').mkdir(exist_ok=True)
+            src_font = Path('fonts/JaimineeyaSwara.ttf')
+            if src_font.exists():
+                import shutil
+                shutil.copy2(src_font, self.output_dir / 'fonts' / 'JaimineeyaSwara.ttf')
         
         # Create audio placeholder directories
         self._create_audio_directories()
@@ -3027,6 +3278,128 @@ sup.footnote-ref a:hover {
         css = css.replace('{tr_off}', tr_off)
         css = css.replace('{an_off}', an_off)
 
+        if getattr(self, 'is_malayalam', False):
+            font_face = '''
+@font-face {
+    font-family: 'JaimineeyaSwara';
+    src: url('../fonts/JaimineeyaSwara.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+'''
+            malayalam_css = '''
+/* Malayalam Swara & Modifier Typography */
+.mantra-word {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    vertical-align: bottom;
+    position: relative;
+}
+.swara-text {
+    font-family: 'JaimineeyaSwara', serif !important;
+    color: #c62828 !important;
+    font-weight: bold;
+    font-size: 1.10rem !important;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 4px;
+    min-height: 1.1em;
+    user-select: none;
+}
+.mantra-text {
+    font-family: 'Noto Serif Malayalam', serif !important;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: #000000;
+    position: relative;
+}
+.swara-mod {
+    color: #002171;
+    font-family: 'JaimineeyaSwara', serif !important;
+    font-weight: bold;
+    line-height: 1;
+}
+.swara-mod.mod-a {
+    position: absolute;
+    top: -0.28em;
+    left: 100%;
+    transform: translateX(-40%);
+    font-size: 1.05rem;
+    pointer-events: none;
+}
+.swara-mod.mod-b {
+    position: absolute;
+    top: -0.22em;
+    left: 100%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+.swara-mod.mod-b .caret-glyph {
+    display: block;
+    color: #002171;
+    font-size: 1.05rem;
+    line-height: 1;
+}
+.swara-mod.mod-b .swara-on-caret {
+    position: absolute;
+    top: -1.15em;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #c62828 !important;
+    font-size: 0.95rem;
+    font-weight: bold;
+    font-family: 'JaimineeyaSwara', serif !important;
+    line-height: 1;
+    white-space: nowrap;
+}
+.swara-mod.mod-c {
+    position: absolute;
+    top: -0.15em;
+    right: -0.35em;
+    font-size: 0.95rem;
+}
+.swara-mod.mod-d {
+    position: absolute;
+    top: -0.30em;
+    left: 100%;
+    transform: translateX(-40%);
+    font-size: 1.05rem;
+    pointer-events: none;
+}
+.swara-mod.mod-e {
+    position: relative;
+    margin-left: 0.15em;
+    font-size: 1.15rem;
+    vertical-align: -0.05em;
+}
+.swara-mod.mod-f {
+    position: relative;
+    margin-left: 0.15em;
+    font-size: 1.15rem;
+    vertical-align: -0.05em;
+}
+.swara-mod.mod-g {
+    position: absolute;
+    bottom: -0.38em;
+    left: 28%;
+    transform: translateX(-50%);
+    font-size: 1.15rem;
+}
+.swara-mod.mod-h {
+    position: absolute;
+    top: -0.35em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.05rem;
+}
+'''
+            css = font_face + css + malayalam_css
+
         with open(self.output_dir / 'css' / 'styles.css', 'w', encoding='utf-8') as f:
             f.write(css)
             
@@ -3661,6 +4034,11 @@ const highlightText = (text, query, devanagariQuery) => {
         prefix = '../' * depth
         full_title = f"{title} | {self.config['title_sa']}" if title != self.config['title_sa'] else title
         
+        if getattr(self, 'is_malayalam', False):
+            google_fonts = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Malayalam:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet">'
+        else:
+            google_fonts = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">'
+        
         return f'''<!DOCTYPE html>
 <html lang="sa">
 <head>
@@ -3672,22 +4050,24 @@ const highlightText = (text, query, devanagariQuery) => {
     <title>{full_title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+    {google_fonts}
     <link rel="stylesheet" href="{prefix}css/styles.css?v={int(datetime.now().timestamp())}">
 </head>'''
 
     def _get_top_nav_html(self, depth=0):
         """Get HTML for top-right navigation links"""
         prefix = '../' * depth
+        L = self.labels
         return f'''
             <nav class="top-nav">
-                <a href="https://jaimineeyasamavedam.org/"><i class="nav-icon">🏠</i>मुख्यपृष्ठम् (Home)</a>
-                <a href="#"><i class="nav-icon">🔍</i>अन्वेषणम् (Search)</a>
+                <a href="https://jaimineeyasamavedam.org/"><i class="nav-icon">🏠</i>{L['home']}</a>
+                <a href="#"><i class="nav-icon">🔍</i>{L['search']}</a>
             </nav>'''
 
     def _get_sidebar_html(self, current_parva_id: str = "", current_kandah_id: str = "", depth: int = 0) -> str:
         """Generate left sidebar with navigation"""
         prefix = '../' * depth
+        L = self.labels
         
         # Parva links (like Mandala in Rig Veda)
         parva_links = ""
@@ -3710,7 +4090,7 @@ const highlightText = (text, query, devanagariQuery) => {
                 
                 kandah_section = f'''
                 <div class="nav-section">
-                            <h3>खण्ड: <span class="number">({len(current_parva.kandahs)})</span></h3>
+                            <h3>{L['kandah']} <span class="number">({len(current_parva.kandahs)})</span></h3>
                     <div class="nav-links">
                         {kandah_links}
                     </div>
@@ -3726,32 +4106,21 @@ const highlightText = (text, query, devanagariQuery) => {
                         current_samam_start = 1
                         
                         for sama in current_kandah.samas:
-                            # Calculate real Samam count by finding verse delimiters like || 1 || or ॥ १ ॥
                             cnt = 0
                             if sama.mantra_text:
                                 matches = re.findall(r'(?:\|\||॥)\s*[\d०-९]+\s*(?:\|\||॥)', sama.mantra_text)
                                 cnt = len(matches)
                             
-                            # Fallback: if no delimiters found, count as 1
                             if cnt == 0: cnt = 1
-                            
-                            # Calculate range for label
                             range_end = current_samam_start + cnt - 1
-                            if cnt > 1:
-                                label_text = f"{current_samam_start}–{range_end}"
-                            else:
-                                label_text = f"{current_samam_start}"
-                            
-                            # Create link - Deterministic: point to the START of the range
+                            label_text = f"{current_samam_start}–{range_end}" if cnt > 1 else f"{current_samam_start}"
                             sama_links += f'<a href="#sama-{current_samam_start}" class="sama-link">{label_text}</a>\n'
-                            
-                            # Update counters
                             total_real_samams += cnt
                             current_samam_start = range_end + 1
                         
                         sama_section = f'''
                         <div class="nav-section">
-                            <h3>साम: <span class="number">({total_real_samams})</span></h3>
+                            <h3>{L['sama']} <span class="number">({total_real_samams})</span></h3>
                             <div class="nav-links">
                                 {sama_links}
                             </div>
@@ -3767,7 +4136,7 @@ const highlightText = (text, query, devanagariQuery) => {
     </div>
     
     <div class="nav-section">
-        <h3>पर्व:</h3>
+        <h3>{L['parva']}</h3>
         <div class="nav-links">
             {parva_links}
         </div>
@@ -3777,33 +4146,33 @@ const highlightText = (text, query, devanagariQuery) => {
     
     <div class="nav-section">
         <h3>Jump to</h3>
-        <input type="text" class="jump-input" id="sidebar-jump" placeholder="e.g. 1.1.1 or 1.45">
+        <input type="text" class="jump-input" id="sidebar-jump" placeholder="{L['jump_placeholder']}">
     </div>
 
     <div class="nav-section">
         <a href="#" class="search-btn">
-            🔍 अन्वेषणम् (Search)
+            {L['search']}
         </a>
     </div>
 
     <div class="sidebar-footer">
         <a href="{prefix}index.html" class="footer-btn">{self.mode.capitalize()} Home</a>
-        {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">अनुक्रमणिका</a>' if self.mode == "collection" else ""}
-        {f"""<a href="{prefix}classification/rishi.html" class="footer-btn">ऋषयः</a>
-        <a href="{prefix}classification/devata.html" class="footer-btn">देवताः</a>
-        <a href="{prefix}classification/chandas.html" class="footer-btn">छन्दांसि</a>""" if self.mode != 'collection' else ""}
+        {f'<a href="{prefix}classification/anukramanika.html" class="footer-btn">{L["anukramanika"]}</a>' if self.mode == "collection" else ""}
+        {f"""<a href="{prefix}classification/rishi.html" class="footer-btn">{L['rishi']}</a>
+        <a href="{prefix}classification/devata.html" class="footer-btn">{L['devata']}</a>
+        <a href="{prefix}classification/chandas.html" class="footer-btn">{L['chandas']}</a>""" if self.mode != 'collection' else ""}
     </div>
 </aside>'''
 
     def _get_jump_sidebar_html(self, samas: List[Sama]) -> str:
         """Generate right sidebar with jump links"""
+        L = self.labels
         jump_links = ""
         for sama in samas:
-            # Right sidebar links to individual article entries
             jump_links += f'<a href="#sama-entry-{sama.sama_number}" class="sama-link">{sama.sama_number}</a>\n'
         
         return f'''<aside class="sidebar-right">
-    <h3>साम: <span class="number">({len(samas)})</span></h3>
+    <h3>{L['sama']} <span class="number">({len(samas)})</span></h3>
     <div class="jump-links">
         {jump_links}
     </div>
@@ -3812,25 +4181,20 @@ const highlightText = (text, query, devanagariQuery) => {
 
     def _generate_homepage(self):
         """Generate the homepage"""
+        L = self.labels
         total_kandahs = sum(len(p.kandahs) for p in self.parvas)
-        
-        # Count total Arsheyams (subsections/Sama objects)
         total_arsheyams = sum(len(k.samas) for p in self.parvas for k in p.kandahs)
-        
-        # Count all Samam numbers from mantra text
         total_samas = sum(
             count_samams_with_fallback(s.mantra_text)
             for p in self.parvas for k in p.kandahs for s in k.samas
         )
         
-        # Generate Parva sections with Kandah grids
         parva_sections = ""
         for parva in self.parvas:
             parva_clean = parva.title.replace('॥', '').replace('||', '').replace('|', '').strip()
             kandah_cards = ""
             parva_sama_count = 0
             for kandah in parva.kandahs:
-                # Count Samam markers in this Kandah
                 kandah_sama_count = sum(
                     count_samams_with_fallback(s.mantra_text)
                     for s in kandah.samas
@@ -3842,7 +4206,7 @@ const highlightText = (text, query, devanagariQuery) => {
                 <a href="kandah/{parva.id}/{kandah.kandah_number}.html" class="kandah-card">
                     <div class="number">{kandah.kandah_number}</div>
                     <div class="title">{kandah_clean}</div>
-                    <div class="count">{kandah_sama_count} साम</div>
+                    <div class="count">{kandah_sama_count} {L['sama'].replace(':', '')}</div>
                 </a>'''
             
             parva_sections += f'''
@@ -3867,44 +4231,44 @@ const highlightText = (text, query, devanagariQuery) => {
                 <div class="stats-row">
                     <div class="stat-item">
                         <div class="stat-value">{len(self.parvas)}</div>
-                        <div class="stat-label">पर्व: (Parva)</div>
+                        <div class="stat-label">{L['parva']} (Parva)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_kandahs}</div>
-                        <div class="stat-label">खण्ड: (Kandah)</div>
+                        <div class="stat-label">{L['kandah']} (Kandah)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_arsheyams}</div>
-                        <div class="stat-label">आर्षेयम् (Arsheyam)</div>
+                        <div class="stat-label">{L['arsheyam']} (Arsheyam)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{self.total_riks_classified}</div>
-                        <div class="stat-label">ऋक् (Rik)</div>
+                        <div class="stat-label">{L['rik']} (Rik)</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">{total_samas}</div>
-                        <div class="stat-label">साम: (Sama)</div>
+                        <div class="stat-label">{L['sama']} (Sama)</div>
                     </div>
                 </div>
                 
                 {f"""
                 <div class="anya-vargeekaran-card">
-                    <h2>अन्य वर्गीकरणम् (Indices)</h2>
+                    <h2>{L['indices']}</h2>
                     <div class="index-grid-homepage">
                         <a href="classification/rishi.html" class="index-link-item">
-                            <span class="title">ऋषयः</span>
+                            <span class="title">{L['rishi']}</span>
                             <span class="stats">({len(self.rishi_index)})</span>
                         </a>
                         <a href="classification/devata.html" class="index-link-item">
-                            <span class="title">देवताः</span>
+                            <span class="title">{L['devata']}</span>
                             <span class="stats">({len(self.devata_index)})</span>
                         </a>
                         <a href="classification/chandas.html" class="index-link-item">
-                            <span class="title">छन्दांसि</span>
+                            <span class="title">{L['chandas']}</span>
                             <span class="stats">({len(self.chandas_index)})</span>
                         </a>
                         <a href="classification/anukramanika.html" class="index-link-item">
-                            <span class="title">अनुक्रमणिका</span>
+                            <span class="title">{L['anukramanika']}</span>
                             <span class="stats">({len(self.header_index)})</span>
                         </a>
                     </div>
@@ -3922,12 +4286,12 @@ const highlightText = (text, query, devanagariQuery) => {
     <div class="search-modal" id="search-modal">
         <div class="search-modal-content">
             <div class="search-modal-header">
-                <h3>अन्वेषणम् (Search)</h3>
+                <h3>{L['search']}</h3>
                 <button class="search-close" id="search-close">&times;</button>
             </div>
             <div class="search-input-container">
-                <input type="text" class="search-input" id="search-input" placeholder="Search (Devanagari, English, IAST)...">
-                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas in Devanagari or English</span>
+                <input type="text" class="search-input" id="search-input" placeholder="Search (Malayalam, Devanagari, English, IAST)...">
+                <span class="search-hint">Search for Mantras, Rishis, Devatas, or Chandas</span>
             </div>
             <div class="search-results" id="search-results"></div>
         </div>
@@ -4570,6 +4934,12 @@ const highlightText = (text, query, devanagariQuery) => {
                             procedure_link = f'<div class="procedure-box"><span class="procedure-label">विधिः</span><a href="{proc_anchor}" class="procedure-text">{proc_title}</a></div>'
                             break
                 
+                L = self.labels
+                home_title = L['home'].split(' ')[0]
+                all_kandah_text = L.get('all_kandah', 'सम्पूर्णम्') if getattr(self, 'is_malayalam', False) else 'सम्पूर्णम्'
+                if getattr(self, 'is_malayalam', False):
+                    all_kandah_text = 'സമ്പൂർണ്ണം'
+                
                 html = f'''{self._get_html_head(f"{parva_clean} - {kandah_clean}", depth=2)}
 <body>
     <div class="page-container">
@@ -4578,7 +4948,7 @@ const highlightText = (text, query, devanagariQuery) => {
         <main class="main-content">
             {self._get_top_nav_html(depth=2)}
             <nav class="breadcrumb">
-                <a href="../../index.html">मुख्यपृष्ठम्</a>
+                <a href="../../index.html">{home_title}</a>
                 <span class="breadcrumb-separator">›</span>
                 <span>{parva_clean}</span>
                 <span class="breadcrumb-separator">›</span>
@@ -4588,13 +4958,13 @@ const highlightText = (text, query, devanagariQuery) => {
             <header class="page-header">
                 <h1>{parva_clean} - {kandah_clean}</h1>
                 <div class="page-meta">
-                    <p class="page-subtitle">पर्व: <span class="number">{parva.parva_number}</span> | खण्ड: <span class="number">{kandah.kandah_number}</span> | साम: <span class="number">{kandah_sama_count}</span></p>
+                    <p class="page-subtitle">{L['parva']} <span class="number">{parva.parva_number}</span> | {L['kandah']} <span class="number">{kandah.kandah_number}</span> | {L['sama']} <span class="number">{kandah_sama_count}</span></p>
                 </div>
                 {procedure_link}
             </header>
             
             <div class="toc">
-                <h4>खण्ड: {kandah.kandah_number} - सम्पूर्णम्</h4>
+                <h4>{L['kandah']} {kandah.kandah_number} - {all_kandah_text}</h4>
                 <ul class="toc-list">
                     {toc_items}
                 </ul>
@@ -4826,6 +5196,11 @@ Examples:
         action='store_true',
         help='Generate for Collection (Jaimineeya Sama Sangraha)'
     )
+    group.add_argument(
+        '-ml', '--malayalam',
+        action='store_true',
+        help='Generate for Malayalam Samhita'
+    )
     parser.add_argument(
         '--title',
         type=str,
@@ -4843,7 +5218,9 @@ Examples:
     args = parser.parse_args()
     
     # Determine mode: Priority CLI flags > Config (default: aaranam)
-    if args.aaranam:
+    if args.malayalam:
+        mode = 'malayalam'
+    elif args.aaranam:
         mode = 'aaranam'
     elif args.samhita:
         mode = 'samhita'
@@ -4854,17 +5231,26 @@ Examples:
 
     type_cfg = web_cfg.get(mode, {})
     
-    # Priority: CLI > Config Type > Config Global > Hardcoded Default
-    source_file = args.source_file or type_cfg.get('source') or web_cfg.get('source') or str(default_source)
-    output_dir = args.output_dir or type_cfg.get('output_dir') or web_cfg.get('output_dir') or str(default_output)
-    audio_dir = args.audio_dir or type_cfg.get('audio_dir') or web_cfg.get('audio_dir') or str(default_audio)
+    # Defaults for Malayalam mode
+    if mode == 'malayalam':
+        default_ml_source = project_root / 'data' / 'output' / 'malayalam' / 'Samhita_Malayalam.json'
+        default_ml_output = project_root / 'docs' / 'malayalam'
+        default_ml_audio = project_root / 'docs' / 'malayalam' / 'audio'
+        source_file = args.source_file or type_cfg.get('source') or str(default_ml_source)
+        output_dir = args.output_dir or type_cfg.get('output_dir') or str(default_ml_output)
+        audio_dir = args.audio_dir or type_cfg.get('audio_dir') or str(default_ml_audio)
+        font = args.font or type_cfg.get('font') or 'Noto Serif Malayalam'
+        font_sans = 'Noto Sans Malayalam'
+    else:
+        # Priority: CLI > Config Type > Config Global > Hardcoded Default
+        source_file = args.source_file or type_cfg.get('source') or web_cfg.get('source') or str(default_source)
+        output_dir = args.output_dir or type_cfg.get('output_dir') or web_cfg.get('output_dir') or str(default_output)
+        audio_dir = args.audio_dir or type_cfg.get('audio_dir') or web_cfg.get('audio_dir') or str(default_audio)
+        font = args.font or type_cfg.get('font') or web_cfg.get('font') or 'AdishilaVedic'
+        font_sans = 'AdishilaSanVedic'
     
     # Custom title for collection mode: CLI > Config > Default
     custom_title = args.title or type_cfg.get('title') or None
-    
-    # Font settings: CLI > Config Type > Config Global > Default
-    font = args.font or type_cfg.get('font') or web_cfg.get('font') or 'AdishilaVedic'
-    font_sans = 'AdishilaSanVedic' # Keep as default unless we want a separate option
     
     # Validate source file exists
     source_path = Path(source_file)

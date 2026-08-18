@@ -325,6 +325,9 @@ The Malayalam edition involves a two-stage data lifecycle: **Automated Translite
 |    -> Publication PDF: LaTeX XeLaTeX with JaimineeyaSwara.ttf micro-stacking.    |
 |    -> Responsive HTML: Standalone HTML with base64 font & dynamic modifier arcs. |
 |    -> Plaintext (.txt): Standard Unicode text with Grantha & English digits.    |
+| 3. Static Website Generation:                                                    |
+|    python src/generate_website.py --malayalam                                    |
+|    -> Full interactive digital archive generated at docs/malayalam/              |
 +----------------------------------------------------------------------------------+
 ```
 
