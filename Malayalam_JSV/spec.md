@@ -97,7 +97,55 @@ By parsing the existing digital Devanagari text directly from `C:\Users\sekha\On
 ## 5. Execution Instructions
 
 ```bash
-# Run spec generator
+## 6. Authoritative Ayugma Swara Concordance
+
+The 19 Ayugma (odd/subscript) pitch bases follow the traditional Kerala Jaiminiya Lakshana order from the [Google Sheets Reference Concordance](https://docs.google.com/spreadsheets/d/1S0xu2DdhuhbZLVrSjJrKp-iH152Ys_QB0fWNLK6MSYI/edit?gid=0#gid=0):
+
+| ID | Devanagari | Malayalam | Grantha Glyph | Grantha Hex | Traditional Technical Name | Classification |
+| :--- | :---: | :---: | :---: | :---: | :--- | :--- |
+| **A01** | क | **ക** | 𑌕 | `U+11315` | **Avaroham (അവരോഹം)** | Odd Swara Base |
+| **A02** | ख | **ഖ** | 𑌖 | `U+11316` | **Anvangulyam (അന്വംഗുല്യം)** | Odd Swara Base |
+| **A03** | च | **ച** | 𑌚 | `U+1131A` | **Udgamam (ഉദ്ഗമം)** | Odd Swara Base |
+| **A04** | ट | **ട** | 𑌟 | `U+1131F` | **Yanam (യാനം)** | Odd Swara Base |
+| **A05** | ण | **ണ** | 𑌣 | `U+11323` | **"Na" Swaram ("ണ" സ്വരം)** | Odd Swara Base |
+| **A06** | त | **ത** | 𑌤 | `U+11324` | **Aavarttam (ആവർത്തം)** | Odd Swara Base |
+| **A07** | थ | **ഥ** | 𑌥 | `U+11325` | **Utthanam (ഉത്ഥാനം)** | Odd Swara Base |
+| **A08** | प | **പ** | 𑌪 | `U+1132A` | **Kshepanam (ക്ഷേപണം)** | Odd Swara Base |
+| **A09** | फ | **ഫ** | 𑌫 | `U+1132B` | **"Pha" Swaram (ഫ-സ്വരം)** | Odd Swara Base |
+| **A10** | भ | **ഭ** | 𑌭 | `U+1132D` | **Mardanam (മർദ്ദനം)** | Odd Swara Base |
+| **A11** | य | **യ** | 𑌯 | `U+1132F` | **Marsanam (മർശനം)** | Odd Swara Base |
+| **A12** | स | **സ** | 𑌸 | `U+11338` | **Anamika Marsanam (അനാമികാമർശനം)** | Odd Swara Base |
+| **A13** | श | **ശ** | **ശ** | `U+0D36` | **Anuvarnna Swara Rahitya Suchakah** | Manuscript Malayalam Base |
+| **A14** | ष | **ഷ** | 𑌷 | `U+11337` | **Aadyavarnna Swaraa Bhava Dyotakah** | Odd Swara Base |
+| **A15** | प्ल | **പ്ല** | **\uE020** | `U+E020` | **"Pla" Swara Ityucyamanaha ("പ്ല" സ്വര ഇത്യുച്യമാനഃ)** | Authentic Vedic Pla Base |
+| **A16** | ङ | **ങ** | 𑌙 | `U+11319` | **Ng-Swaram ("ങ" സ്വര ഇത്യുച്യമാനഃ)** | Odd Swara Base |
+| **A17** | त्र | **ത്ര** | **\uE01D** | `U+E01D` | **Tra Swarakhyaha (ത്രസ്വരാഖ്യഃ)** | Conjunct Base |
+| **A18** | र | **ര** | 𑌰 | `U+11330` | **Druta Swara Position Indicator** | Odd Swara Base |
+| **A19** | क्र | **ക്ര / കൃ** | **\uE01E** | `U+E01E` | **Krishtakhya Swara Bhedah (കൃഷ്ടാഖ്യ സ്വര ഭേദഃ)** | Conjunct Base |
+
+---
+
+## 7. Canonical 8 Vedic Swara Modifiers (MOD-A .. MOD-H)
+
+| ID | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
+| :--- | :---: | :--- | :---: | :---: | :--- |
+| **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
+| **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition, with swara marker sitting above apex. |
+| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot attached to the upper shoulder of the preceding syllable. |
+| **MOD-D** | `(D)` / `(Ʌ)` | **Chevron Roof** | `\uE006` / `U+0245` | Stacked Above (2 Syllables) | Roof-tone modulation spanning across words. |
+| **MOD-E** | `(E)` / `(┃)` | **Phrasing Heavy Danda** | `\uE002` / `U+2503` | Inline | Structural major cadence division. |
+| **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |
+| **MOD-G** | `(G)` / `(\)` | **Descending Tone Slash** | `\uE003` / `U+005C` | Stacked Below | Downward falling pitch attached to the bottom-center of the preceding consonant. |
+| **MOD-H** | `(H)` / `(|)` | **Overhead Swarita** | `\uE00C` / `U+007C` | Stacked Above | Vertical upper tone stroke situated directly on top of the base syllable. |
+
+---
+
+## 8. Project Links & Open Source Assets
+
+- 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/fonts/JaimineeyaSwara.ttf) ([GitHub Link](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf))
+- 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/Malayalam_JSV/spec.md) ([GitHub Link](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md))
+- 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/malayalam/glyph_table.html) ([GitHub Link](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html))
+- 🌐 **Interactive Publication Blog:** [`docs/blog/Malayalam_JSV_Publication_Blog.html`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/docs/blog/Malayalam_JSV_Publication_Blog.html) ([GitHub Link](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/docs/blog/Malayalam_JSV_Publication_Blog.html))
 python Malayalam_JSV/generate_spec.py
 ```
 

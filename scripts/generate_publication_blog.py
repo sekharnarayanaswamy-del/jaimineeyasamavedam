@@ -116,15 +116,16 @@ Scholars and developers can inspect all 8 modifiers, 19 Ayugma bases, and 229 fu
 
 ---
 
-## 6. Open Source & Future Directions
+## 6. Open Source & Project Links
 
 All font source files, templates, renderers, and transliteration scripts are open-source under permissive licenses:
-- **Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
-- **Key Files:**
-  - Font: `fonts/JaimineeyaSwara.ttf`
-  - HTML Template: `templates/html/Malayalam_main_html.template`
-  - Rendering Engine: `src/render_pdf.py`
-  - Spec & Developer Guide: `Malayalam_JSV/spec.md`
+- 💻 **GitHub Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
+- 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf)
+- 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md)
+- 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html)
+- 🌐 **Interactive Publication Blog:** [`docs/blog/Malayalam_JSV_Publication_Blog.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/docs/blog/Malayalam_JSV_Publication_Blog.html)
+- ⚙️ **Rendering Engine:** [`src/render_pdf.py`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/src/render_pdf.py)
+- 📑 **HTML Template:** [`templates/html/Malayalam_main_html.template`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/templates/html/Malayalam_main_html.template)
 """
 
 # 3. HTML Template with Base64 font placeholder
@@ -786,9 +787,9 @@ html_template = """<!DOCTYPE html>
     </p>
     <ul>
         <li>💻 <strong>GitHub Repository:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam" target="_blank">github.com/sekharnarayanaswamy-del/jaimineeyasamavedam</a></li>
-        <li>🎨 <strong>Interactive Glyph Table:</strong> <a href="../../data/output/malayalam/glyph_table.html" target="_blank">glyph_table.html</a></li>
-        <li>🔤 <strong>Custom Font:</strong> <code>fonts/JaimineeyaSwara.ttf</code></li>
-        <li>📖 <strong>Specification & Developer Guide:</strong> <code>Malayalam_JSV/spec.md</code></li>
+        <li>🔤 <strong>Custom Font:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf" target="_blank"><code>fonts/JaimineeyaSwara.ttf</code></a></li>
+        <li>📖 <strong>Specification & Developer Guide:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md" target="_blank"><code>Malayalam_JSV/spec.md</code></a></li>
+        <li>🎨 <strong>Interactive Glyph Table:</strong> <a href="../../data/output/malayalam/glyph_table.html" target="_blank"><code>data/output/malayalam/glyph_table.html</code></a></li>
     </ul>
 
     <footer>

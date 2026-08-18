@@ -95,12 +95,13 @@ Scholars and developers can inspect all 8 modifiers, 19 Ayugma bases, and 229 fu
 
 ---
 
-## 6. Open Source & Future Directions
+## 6. Open Source & Project Links
 
 All font source files, templates, renderers, and transliteration scripts are open-source under permissive licenses:
-- **Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
-- **Key Files:**
-  - Font: `fonts/JaimineeyaSwara.ttf`
-  - HTML Template: `templates/html/Malayalam_main_html.template`
-  - Rendering Engine: `src/render_pdf.py`
-  - Spec & Developer Guide: `Malayalam_JSV/spec.md`
+- 💻 **GitHub Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
+- 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf)
+- 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md)
+- 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html)
+- 🌐 **Interactive Publication Blog:** [`docs/blog/Malayalam_JSV_Publication_Blog.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/docs/blog/Malayalam_JSV_Publication_Blog.html)
+- ⚙️ **Rendering Engine:** [`src/render_pdf.py`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/src/render_pdf.py)
+- 📑 **HTML Template:** [`templates/html/Malayalam_main_html.template`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/templates/html/Malayalam_main_html.template)
