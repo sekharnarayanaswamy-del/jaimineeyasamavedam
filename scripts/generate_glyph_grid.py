@@ -20,15 +20,18 @@ ARTIFACT_DIR = Path(r"C:\Users\sekha\.gemini\antigravity-ide\brain\33a78242-ade0
 
 # Featured highlights for the high-res visual chart
 FEATURED_GLYPHS = [
-    # Row 1: The Canonical 8 Vedic Swara Modifiers (A..H)
+    # Row 1: The Canonical Vedic Swara Modifiers & Inline Marks
     ("Modifier (A) Arc", "\uE004", "syllable_arc_jsv", "U+E004 / ╭╮", "Modifier (A)", "Above", "Syllable Spanning Arc"),
     ("Modifier (B) Caret", "\uE005", "caret_jsv", "U+E005 / /\\", "Modifier (B)", "Above", "Peak Elevation Caret"),
     ("Modifier (C) Dot", "\uE001", "high_dot_jsv", "U+E001 / ॱ", "Modifier (C)", "Shoulder", "Shoulder Pause Dot"),
     ("Modifier (D) Chevron", "\uE006", "roof_jsv", "U+E006 / Ʌ", "Modifier (D)", "Above", "Chevron Roof"),
     ("Modifier (E) Danda", "\uE002", "phrasing_danda_jsv", "U+E002 / ┃", "Modifier (E)", "Inline", "Phrasing Heavy Danda"),
-    ("Modifier (F) Vert", "\uE002", "phrasing_danda_jsv", "U+E002 / ╷", "Modifier (F)", "Inline", "Light Vertical"),
+    ("Modifier (F) Vert", "\u2577", "accent_dash_jsv", "U+2577 / ╷", "Modifier (F)", "Inline", "Light Vertical"),
     ("Modifier (G) Slash", "\uE003", "descending_tone_jsv", "U+E003 / \\", "Modifier (G)", "Below", "Descending Tone Slash"),
     ("Modifier (H) Swarita", "\uE00C", "swarita_jsv", "U+E00C / ॑", "Modifier (H)", "Above", "Overhead Swarita Stroke"),
+    ("Inline ( . ) Dot", ".", "dot_inline_jsv", "U+002E / .", "Inline Mark", "Inline", "Inline Staccato Dot"),
+    ("Inline ( _ ) Underbar", "_", "underbar_inline_jsv", "U+005F / _", "Inline Mark", "Inline", "Inline Prolongation Bar"),
+    ("Inline ( , ) Comma", ",", "comma_inline_jsv", "U+002C / ,", "Inline Mark", "Inline", "Inline Pause Comma"),
 
     # Row 2: Ayugma pure Grantha bases (A01..A08) from Google Sheet
     ("A01 Ka (അവരോഹം)", "\U00011315", "ka_gran", "U+11315", "Ayugma Swara", "Above", "Ka (Avaroham)"),
@@ -222,12 +225,12 @@ def render_html_table() -> None:
         with open(FONT_PATH, "rb") as f_font:
             jaimineeya_swara_b64 = base64.b64encode(f_font.read()).decode("ascii")
 
-    # All Canonical Vedic Swara Modifiers (A..H + Underbar)
+    # All Canonical Vedic Swara Modifiers (A..H + Inline . _ ,)
     modifiers = [
         {
             "id": "MOD-A",
             "shortcut": "(A)",
-            "name": "Syllable Spanning Arc (Tie)",
+            "name": "Syllable Spanning Melodic Arc (⁀)",
             "glyph": "\uE004",
             "codepoint": "U+E004 / ╭╮ / ⁀",
             "input_methods": "<code>(A)</code> / <code>(a)</code> / <code>(╭╮)</code> / <code>(⁀)</code>",
@@ -235,13 +238,13 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-a-dotted'>&#xE004;</span></span></span>",
             "example_text": "ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ</span></span></div>",
-            "meaning": "Overhead curved arch spanning across syllables for connected tone transition.",
+            "meaning": "Continuous melodic slur bridging two adjacent syllables.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-B",
             "shortcut": "(B)",
-            "name": "Peak Elevation Caret (/\\ / ^)",
+            "name": "Peak Caret Roof (/\\ / ^)",
             "glyph": "\uE005",
             "codepoint": "U+E005 / ^ / /\\",
             "input_methods": "<code>(B)</code> / <code>(b)</code> / <code>(^)</code> / <code>(/\\)</code>",
@@ -249,13 +252,13 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-b-dotted'>&#xE005;</span><span class='swara-on-caret-dotted'>𑌖</span></span></span>",
             "example_text": "ഹോ(𑌖)(B) ബാ",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-b'><span class='caret-glyph'>&#xE005;</span><span class='swara-on-caret'>𑌖</span></span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ബാ</span></span></div>",
-            "meaning": "Overhead peak arrowhead spanning 2 syllables with the swara pitch marker situated directly above the apex.",
+            "meaning": "Peak pitch crest over consonant with embedded swara glyph above apex.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara + SwaraRed (#c62828) Marker above Apex"
         },
         {
             "id": "MOD-C",
             "shortcut": "(C)",
-            "name": "Shoulder Pause Dot (ॱ / ·)",
+            "name": "Upper Shoulder Dot (· / ॱ)",
             "glyph": "\uE001",
             "codepoint": "U+E001 / U+00B7 / ·",
             "input_methods": "<code>(C)</code> / <code>(c)</code> / <code>(ॱ)</code> / <code>(·)</code>",
@@ -263,27 +266,27 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-c-dotted'>&#xE001;</span></span></span>",
             "example_text": "ഓ(𑌤)(C) ഗ്നാ(𑌤)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഓ<span class='swara-mod mod-c'>&#xE001;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഗ്നാ</span></span></div>",
-            "meaning": "Upper-right shoulder pause/spacing dot attached to mantrakshara curve.",
+            "meaning": "Staccato stress pulse attached to syllable curve (Bindu-Svara).",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-D",
             "shortcut": "(D)",
-            "name": "Chevron Roof (Ʌ)",
+            "name": "Chevron Roof (∧ / Ʌ)",
             "glyph": "\uE006",
             "codepoint": "U+E006 / U+0245 / Ʌ",
-            "input_methods": "<code>(D)</code> / <code>(d)</code> / <code>(Ʌ)</code>",
+            "input_methods": "<code>(D)</code> / <code>(d)</code> / <code>(∧)</code> / <code>(Ʌ)</code>",
             "stack_pos": "Stacked Above",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-d-dotted'>&#xE006;</span></span></span>",
             "example_text": "ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-d'>&#xE006;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഇ</span></span><span class='mantra-word'><span class='swara-text'>&#xE010;</span><span class='mantra-text'>ഴാ</span></span></div>",
-            "meaning": "Overhead chevron roof marker indicating roof-tone modulation across syllables.",
+            "meaning": "Span-roof inflection indicator across word boundaries.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-E",
             "shortcut": "(E)",
-            "name": "Phrasing Heavy Danda (┃)",
+            "name": "Bold Tone Column (┃)",
             "glyph": "\uE002",
             "codepoint": "U+E002 / U+2503 / ┃",
             "input_methods": "<code>(E)</code> / <code>(e)</code> / <code>(┃)</code>",
@@ -291,27 +294,27 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-e-dotted'>&#xE002;</span></span></span>",
             "example_text": "വാ(𑌚)(E)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>വാ<span class='swara-mod mod-e'>&#xE002;</span></span></span></div>",
-            "meaning": "Phrasing heavy vertical line inline with mantrakshara for major structural division.",
+            "meaning": "Heavy vertical phrase partition and caesura pause.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-F",
             "shortcut": "(F)",
-            "name": "Light Vertical Line (╷)",
-            "glyph": "\uE002",
-            "codepoint": "U+E002 / U+2577 / ╷",
+            "name": "Thin Accent Dash (╷)",
+            "glyph": "\u2577",
+            "codepoint": "U+2577 / ╷",
             "input_methods": "<code>(F)</code> / <code>(f)</code> / <code>(╷)</code>",
             "stack_pos": "Inline",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-f-dotted'>&#x2577;</span></span></span>",
             "example_text": "ഇ(𑌚)(F)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ<span class='swara-mod mod-f'>&#x2577;</span></span></span></div>",
-            "meaning": "Light phrasing vertical tone separator for sub-cadence pauses.",
+            "meaning": "Light vertical measure boundary tick for sub-cadence pauses.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-G",
             "shortcut": "(G)",
-            "name": "Descending Tone Slash (\\ / ⟍)",
+            "name": "Lower Under-Slash (\\ / ⟍)",
             "glyph": "\uE003",
             "codepoint": "U+E003 / U+005C / \\",
             "input_methods": "<code>(G)</code> / <code>(g)</code> / <code>(\\)</code> / <code>(⟍)</code>",
@@ -319,13 +322,13 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-g-dotted'>&#xE003;</span></span></span>",
             "example_text": "ബാ(𑌪𑍍𑌲)(G)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ<span class='swara-mod mod-g'>&#xE003;</span></span></span></div>",
-            "meaning": "Downward falling diagonal slash attached beneath the mantrakshara baseline (falling cadence).",
+            "meaning": "Subscript downward sliding glide attached beneath the mantrakshara baseline.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
         {
             "id": "MOD-H",
             "shortcut": "(H)",
-            "name": "Overhead Swarita (॑ / |)",
+            "name": "High Pitch Swarita (॑ / |)",
             "glyph": "\uE00C",
             "codepoint": "U+E00C / U+007C / |",
             "input_methods": "<code>(H)</code> / <code>(h)</code> / <code>(L)</code> / <code>(|)</code> / <code>(॑)</code>",
@@ -333,8 +336,50 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-h-dotted'>&#xE00C;</span></span></span>",
             "example_text": "ദാ(𑌚𑌿)(H)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚𑌿</span><span class='mantra-text'>ദാ<span class='swara-mod mod-h'>&#xE00C;</span></span></span></div>",
-            "meaning": "Upper tone Swarita vertical stroke situated directly on top of the preceding mantrakshara.",
+            "meaning": "Vedic high pitch tone marker placed directly above the mantrakshara.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+        },
+        {
+            "id": "MOD-DOT",
+            "shortcut": "( . )",
+            "name": "Inline Staccato Dot ( . )",
+            "glyph": ".",
+            "codepoint": "U+002E / .",
+            "input_methods": "<code>.</code> / <code>(.)</code> / <code>(·)</code>",
+            "stack_pos": "Inline",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted' style='font-size:1.4em; font-weight:bold; color:var(--mod-blue); margin-left:0.1em; line-height:1;'>.</span></span></span>",
+            "example_text": "വാ(𑌚).",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>വാ</span></span><span class='mantra-punct'>.</span></div>",
+            "meaning": "Inline staccato pulse mark placed directly in the text flow.",
+            "color_note": "Inline Punctuation on Mantrakshara"
+        },
+        {
+            "id": "MOD-UNDERBAR",
+            "shortcut": "( _ )",
+            "name": "Inline Sustain Underbar ( _ )",
+            "glyph": "_",
+            "codepoint": "U+005F / _",
+            "input_methods": "<code>_</code> / <code>(_)</code>",
+            "stack_pos": "Inline",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted' style='font-size:1.3em; font-weight:bold; color:var(--mod-blue); margin-left:0.1em;'>_</span></span></span>",
+            "example_text": "ഇ(𑌚)_",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ</span></span><span class='mantra-punct'>_</span></div>",
+            "meaning": "Inline sustain prolongation bar connecting adjacent words or chanting units.",
+            "color_note": "Inline Punctuation on Mantrakshara"
+        },
+        {
+            "id": "MOD-COMMA",
+            "shortcut": "( , )",
+            "name": "Inline Short Pause Comma ( , )",
+            "glyph": ",",
+            "codepoint": "U+002C / ,",
+            "input_methods": "<code>,</code> / <code>(,)</code>",
+            "stack_pos": "Inline",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted' style='font-size:1.3em; font-weight:bold; color:var(--mod-blue); margin-left:0.1em;'>,</span></span></span>",
+            "example_text": "ദാ(𑌚),",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ദാ</span></span><span class='mantra-punct'>,</span></div>",
+            "meaning": "Inline short rhythmic pause marker within the chant.",
+            "color_note": "Inline Punctuation on Mantrakshara"
         },
     ]
 
@@ -797,6 +842,15 @@ def render_html_table() -> None:
         line-height: 1;
         white-space: nowrap;
     }}
+    .mantra-preview-flex .mantra-punct {{
+        font-family: 'Noto Serif Malayalam', serif;
+        font-size: 1.35rem;
+        font-weight: 500;
+        line-height: 1.1;
+        color: var(--text-main);
+        display: inline-block;
+        margin-left: 0.05em;
+    }}
 
     table {{
         width: 100%;
@@ -983,7 +1037,7 @@ def render_html_table() -> None:
     <header>
         <h1>Jaimineeya Swara Font — Complete Glyph Inventory & Modifiers</h1>
         <div class="subtitle">
-            Authoritative typographic catalog of <strong>JaimineeyaSwara.ttf</strong> showing all 8 Canonical Vedic Swara Modifiers (A..H) with dotted-circle positions and live Mantrakshara stacking previews, 19 Ayugma Grantha bases, custom manuscript ligatures (Pla/Sha), and the full Samhita marker inventory.
+            Authoritative typographic catalog of <strong>JaimineeyaSwara.ttf</strong> showing all Canonical Vedic Swara Modifiers (A..H) and inline marks (. _ ,) with dotted-circle positions and live Mantrakshara stacking previews, 19 Ayugma Grantha bases, custom manuscript ligatures (Pla/Sha), and the full Samhita marker inventory.
         </div>
         <div class="color-legend">
             <div class="legend-item">
@@ -999,19 +1053,19 @@ def render_html_table() -> None:
 
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="filterTab('all')">All Tables</button>
-        <button class="tab-btn" onclick="filterTab('modifiers')">Vedic Modifiers (A..H)</button>
+        <button class="tab-btn" onclick="filterTab('modifiers')">Vedic Modifiers & Marks</button>
         <button class="tab-btn" onclick="filterTab('ayugma')">Ayugma Bases (A01..A19)</button>
         <button class="tab-btn" onclick="filterTab('ligatures')">Manuscript Ligatures (Pla/Sha)</button>
         <button class="tab-btn" onclick="filterTab('corpus')">Full Samhita Markers (229)</button>
     </div>
 
-    <!-- Section 1: Modifiers (A..H) -->
+    <!-- Section 1: Modifiers (A..H + Inline Marks) -->
     <div class="section-card" id="sec-modifiers">
         <div class="section-header">
             <div class="section-title">
-                <span>1. Canonical Vedic Swara Modifiers (A..H)</span>
+                <span>1. Canonical Vedic Swara Modifiers & Inline Marks</span>
             </div>
-            <span class="section-tag tag-modifiers">8 Modifiers</span>
+            <span class="section-tag tag-modifiers">{len(modifiers)} Modifiers & Marks</span>
         </div>
         <table>
             <thead>
