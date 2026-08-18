@@ -1214,6 +1214,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         mantra_regex + r'\s*\n(?P<mantra_text>.*?)\s*#\s*End\s+of\s+Mantra\s+Sets\s+--\s+(?P=mantra_id)', 
         re.MULTILINE | re.DOTALL
     )
+    saman_metadata_pattern = re.compile(
+        r'#\s*Start\s+of\s+(?:Samam|Saman)\s+Metadata\s+--\s+(?P<saman_meta_id>.*?)\s*##\s*DO\s+NOT\s+EDIT\s*\n(?P<saman_meta_text>.*?)\s*#\s*End\s+of\s+(?:Samam|Saman)\s+Metadata', 
+        re.MULTILINE | re.DOTALL
+    )
     
     # Extract supersections
     for ss_match in supersection_pattern.finditer(content):
@@ -1311,6 +1315,14 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         subsection_headers[sub_id] = {"header": header, "saman_metadata": saman_metadata}
 
     
+    # Extract Saman / Samam metadata for each subsection
+    saman_metadata_map = {}
+    for sm_match in saman_metadata_pattern.finditer(content):
+        sub_id = sm_match.group("saman_meta_id").strip()
+        raw_meta = sm_match.group("saman_meta_text").strip()
+        raw_meta = raw_meta.replace(':', 'ः').replace('||', '॥').replace('|', '।')
+        saman_metadata_map[sub_id] = raw_meta
+
     # Extract mantra sets
     mantra_sets_map = {}
     for m_match in mantra_pattern.finditer(content):
@@ -1396,7 +1408,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 rik_ids_to_use = None
                 
                 rik_meta_to_use = rik_metadata_map.get(sub_id, "")
-                saman_meta_to_use = header_info["saman_metadata"]
+                saman_meta_to_use = saman_metadata_map.get(sub_id) or header_info["saman_metadata"]
                 
                 # New Metadata Fields
                 rik_rishi_val = ""
