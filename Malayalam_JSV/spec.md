@@ -194,26 +194,13 @@ faces contain U+0D15.
   resolves from the sheet — sources: sheet 317 / decided 0 / fallback 0
   occurrences in the pilot).
 
-**Rendering** (`src/render_pdf.py --script malayalam`, Samam-only pilot):
-- Transforms the AST in `main()` via `ml_text.transform_ast`, forces
-  `output_mode='samam'`, uses `templates/pdf/Malayalam_main.template` +
-  `templates/text/Malayalam_main.template`, and skips HTML output
-  (`CreateHtmlFile` no-ops on a `None` template).
-- `format_malayalam_samam` re-tokenizes each `malayalam-mantra` line and
-  stacks the Grantha swara ABOVE the final syllable of the word with
-  `\stackon` (via `\stackcenter` / `\stackleft`; `\stackleft` for swaras of
-  >1 glyph). Swara glyphs are grouped into per-script font runs
-  (`_swara_latex`): Grantha-block characters use `\granthafont`; non-Grantha
-  characters (e.g. the manuscript-truth Malayalam ശ) use `\malayalamfont`,
-  so mixed swaras like `ശ + Malayalam matra` get a font for every character.
-  The stack gap is `\setstackgap{L}{0.7\baselineskip}` (template), which
-  raises the swara ~16 pt (measured ink-to-ink) above the base syllable.
-  Devanagari mantra numerals are converted to Malayalam digits
-  (൧-൯) for the PDF only; the intermediate text keeps Devanagari numerals.
-- Headers (supersection/section/subsection titles, TOC, index) remain
-  Devanagari in phase 1 and are rendered with `\devafont`.
+**Rendering** (`src/render_pdf.py --script malayalam`, Samam-only & Combined modes):
+- Transforms the AST in `main()` via `ml_text.transform_ast`, supports `output_mode='combined'`, `'separate'`, and `'nometa'`.
+- **PDF Stacking (LaTeX):** `format_malayalam_samam` re-tokenizes each `malayalam-mantra` line and stacks the Grantha swara ABOVE the final syllable of the word with `\stackon` (via `\stackcenter` / `\stackleft`). Swara glyphs use `\swarafont` (`JaimineeyaSwara.ttf`) for Grantha bases, manuscript ligatures (Pla/Sha), and Vedic Modifiers (Mod-A..Mod-H in `ModifierDarkBlue`).
+- **HTML Output:** Standalone, self-contained HTML generated via `templates/html/Malayalam_main_html.template` with embedded base64 `JaimineeyaSwara.ttf` for full offline & mobile rendering. Uses flexbox column layout with raised, compact swaras (`0.90rem`), dynamic right-edge anchoring for inter-syllable modifiers (Mod-A arc, Mod-B caret, Mod-D chevron), and bottom-right anchoring for Mod-G.
+- **Unicode Plaintext Export:** Plaintext `.txt` files use standard Unicode Grantha characters (`𑌶𑌿`, `𑌪𑍍𑌲`, `𑌤𑍂`, `𑌟𑌾`, etc.) without Private Use Area (PUA) codepoints, non-combining standard Unicode symbols for swara modifiers (`(⁀)`, `(∧)`, `(·)`, `(Ʌ)`, `(\)`, `(|)`), and English ASCII digits for verse numbers (`॥ 1 ॥`).
 
-**Font & Typography Setup (xelatex/MiKTeX)**:
+**Font & Typography Setup**:
 - `\setmainfont` & `\malayalamfont`: `NotoSerifMalayalam-Regular.ttf` for base Malayalam text.
 - `\swarafont`: `JaimineeyaSwara.ttf` for superscript swaras, precomposed viramas, manuscript ligatures (Pla/Sha), and all 11 Vedic modifiers.
 - `\devafont`: `NotoSerifDevanagari-Regular.ttf` for Vedic accents (Swarita, Anudatta, Kampa).
@@ -225,21 +212,21 @@ faces contain U+0D15.
 
 ### Step A: Generate AST JSON from Corrections
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json
+python -X utf8 src/generate_json.py data/input/Malayalam/Agneyam_K1_extract.txt --output data/output/malayalam/Agneyam_K1_extract.json
 ```
 
 ### Step B: Compile PDF, HTML, and Unicode TXT
 *   **Combined Mode (Full Samhita: Rik + Samam + RDC + Footnotes + Index):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Agneyam_K1_extract.json --script malayalam
     ```
 *   **Separate Mode (Rik & Samam with metadata):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Agneyam_K1_extract.json --script malayalam --output-mode separate
     ```
 *   **No-Metadata Mode (Mantra text only):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Agneyam_K1_extract.json --script malayalam --output-mode nometa
     ```
 
 ---
