@@ -35,8 +35,6 @@ Unlike standard Vedic texts that employ simple accent strokes (Udatta / Anudatta
 1. **Primary Svara Pitch Markers:** Subscript letters (traditionally Grantha or Malayalam characters) that specify the exact pitch movements (such as *Avaroham*, *Anvangulyam*, *Udgamam*, *Yanam*, and *Plutam*).
 2. **Svara Modifiers:** Structural performance indicators that qualify the chant—including multi-syllable spanning melodic arches, peak carets, upper shoulder dots, descending tone slashes, and phrasing dandas.
 
-Until today, producing a faithful, publication-grade digital edition in **Malayalam script** remained an unsolved challenge. Traditional typesetting engines suffered from severe character overlapping, missing manuscript ligatures, clipping of tone markers, and an inability to represent multi-syllable musical bridges cleanly.
-
 Today, we are proud to announce the **complete, end-to-end digital publishing ecosystem for the Jaimineeya Samaveda in Malayalam Script**, delivering high-fidelity outputs across:
 - 🌐 **Interactive Web Edition (HTML5)** with responsive flexbox stacking and live word-bridging modifiers.
 - 📄 **Archival Print Edition (LuaLaTeX / PDF)** with mathematical sub-point kerning and vector-perfect typography.
@@ -80,35 +78,18 @@ To establish absolute typographic control, we engineered a dedicated OpenType fo
 
 | ID | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
 | :--- | :---: | :--- | :---: | :---: | :--- |
-| **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
-| **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition. |
-| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot attached to the upper shoulder of the preceding syllable. |
-| **MOD-D** | `(D)` / `(Ʌ)` | **Chevron Roof** | `\uE006` / `U+0245` | Stacked Above (2 Syllables) | Roof-tone modulation spanning across words. |
-| **MOD-E** | `(E)` / `(┃)` | **Phrasing Heavy Danda** | `\uE002` / `U+2503` | Inline | Structural major cadence division. |
-| **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |
-| **MOD-G** | `(G)` / `(\)` | **Descending Tone Slash** | `\uE003` / `U+005C` | Stacked Below | Downward falling pitch attached to the bottom-center of the preceding consonant. |
-| **MOD-H** | `(H)` / `(\\|)` | **Overhead Swarita** | `\uE00C` / `U+007C` | Stacked Above | Vertical upper tone stroke situated directly on top of the base syllable. |
-
-### Innovation 3: Dynamic Right-Edge Modifier Anchoring (HTML / CSS)
-In the HTML presentation layer, spanning modifiers (Mod-A, Mod-B, Mod-D) are dynamically anchored to the preceding syllable using responsive CSS transforms:
-
-```css
-.swara-mod.mod-a, .swara-mod.mod-d {
-    position: absolute;
-    top: -0.28em;
-    left: 100%;
-    transform: translateX(-40%);
-    pointer-events: none;
-}
-```
-
-This guarantees that the arch or chevron cleanly bridges the gap between words regardless of screen size, font scale, or syllable width!
+| **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
+| **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition. |
+| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot attached to the upper shoulder of the preceding syllable. |
+| **MOD-D** | `(D)` / `(Ʌ)` | **Chevron Roof** | `\\uE006` / `U+0245` | Stacked Above (2 Syllables) | Roof-tone modulation spanning across words. |
+| **MOD-E** | `(E)` / `(┃)` | **Phrasing Heavy Danda** | `\\uE002` / `U+2503` | Inline | Structural major cadence division. |
+| **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |
+| **MOD-G** | `(G)` / `(\\)` | **Descending Tone Slash** | `\\uE003` / `U+005C` | Stacked Below | Downward falling pitch attached to the bottom-center of the preceding consonant. |
+| **MOD-H** | `(H)` / `(|)` | **Overhead Swarita** | `\\uE00C` / `U+007C` | Stacked Above | Vertical upper tone stroke situated directly on top of the base syllable. |
 
 ---
 
-## 4. The 3-Step Proofreading & Correction Workflow
-
-To enable Vedic scholars and editors to proofread and correct the text without technical friction, we designed a transparent, text-first workflow:
+## 4. The 3-Step Scholar Proofreading Workflow
 
 ```mermaid
 graph LR
@@ -144,12 +125,10 @@ All font source files, templates, renderers, and transliteration scripts are ope
   - HTML Template: `templates/html/Malayalam_main_html.template`
   - Rendering Engine: `src/render_pdf.py`
   - Spec & Developer Guide: `Malayalam_JSV/spec.md`
-
-We invite Vedic scholars, typographers, and digital humanities researchers to explore the repository, submit corrections, and help preserve this invaluable oral heritage for generations to come.
 """
 
-# 3. HTML Blog Post Content (Rich Modern Styling with Embedded Font)
-html_content = f"""<!DOCTYPE html>
+# 3. HTML Template with Base64 font placeholder
+html_template = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -159,12 +138,12 @@ html_content = f"""<!DOCTYPE html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+Malayalam:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-    @font-face {{
+    @font-face {
         font-family: 'JaimineeyaSwara';
-        src: url('data:font/truetype;charset=utf-8;base64,{b64_font}') format('truetype');
-    }}
+        src: url('data:font/truetype;charset=utf-8;base64,__BASE64_FONT__') format('truetype');
+    }
 
-    :root {{
+    :root {
         --bg-page: #f8fafc;
         --bg-card: #ffffff;
         --text-primary: #0f172a;
@@ -176,43 +155,35 @@ html_content = f"""<!DOCTYPE html>
         --accent-teal: #0d9488;
         --border-subtle: #e2e8f0;
         --code-bg: #0f172a;
-    }}
+    }
 
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-    body {{
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: var(--bg-page);
         color: var(--text-primary);
         line-height: 1.7;
         font-size: 17px;
         padding-bottom: 80px;
-    }}
+    }
 
     /* Top Hero Header */
-    .hero-banner {{
+    .hero-banner {
         background: linear-gradient(135deg, #001a54 0%, #002171 50%, #1e3a8a 100%);
         color: white;
-        padding: 80px 20px 60px;
+        padding: 60px 20px 50px;
         text-align: center;
         position: relative;
         overflow: hidden;
         border-bottom: 4px solid #3b82f6;
-    }}
-    .hero-banner::before {{
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(circle at 20% 30%, rgba(239, 68, 68, 0.15), transparent 40%),
-                    radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.2), transparent 50%);
-        pointer-events: none;
-    }}
-    .hero-content {{
+    }
+    .hero-content {
         max-width: 960px;
         margin: 0 auto;
         position: relative;
         z-index: 1;
-    }}
-    .badge-pill {{
+    }
+    .badge-pill {
         display: inline-block;
         background: rgba(255, 255, 255, 0.15);
         color: #bfdbfe;
@@ -225,262 +196,331 @@ html_content = f"""<!DOCTYPE html>
         margin-bottom: 20px;
         backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.2);
-    }}
-    h1 {{
-        font-size: 42px;
+    }
+    h1 {
+        font-size: 38px;
         font-weight: 800;
         letter-spacing: -1px;
         line-height: 1.25;
-        margin-bottom: 20px;
-    }}
-    .hero-subtitle {{
-        font-size: 20px;
+        margin-bottom: 16px;
+    }
+    .hero-subtitle {
+        font-size: 19px;
         color: #cbd5e1;
         line-height: 1.5;
         max-width: 820px;
-        margin: 0 auto 28px;
-    }}
-    .meta-bar {{
+        margin: 0 auto 24px;
+    }
+    .meta-bar {
         display: flex;
         justify-content: center;
         gap: 24px;
         font-size: 14px;
         color: #94a3b8;
         font-weight: 500;
-    }}
+        flex-wrap: wrap;
+    }
+
+    /* Theme Switcher & Toolbar */
+    .top-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 960px;
+        margin: 0 auto 20px;
+        padding: 0 10px;
+    }
+    .theme-pill-container {
+        display: inline-flex;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 4px;
+        border-radius: 30px;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .theme-btn {
+        background: transparent;
+        border: none;
+        color: #e2e8f0;
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .theme-btn.active {
+        background: #ffffff;
+        color: var(--brand-blue);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 
     /* Main Container */
-    .article-container {{
-        max-width: 900px;
+    .article-container {
+        max-width: 960px;
         margin: -30px auto 0;
         background: var(--bg-card);
         border-radius: 16px;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         padding: 50px 60px;
         border: 1px solid var(--border-subtle);
-    }}
+    }
 
-    h2 {{
-        font-size: 28px;
+    h2 {
+        font-size: 26px;
         font-weight: 800;
         color: var(--brand-blue);
         margin: 45px 0 18px;
         padding-bottom: 10px;
         border-bottom: 2px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }}
-    h3 {{
-        font-size: 22px;
-        font-weight: 700;
-        color: #1e293b;
-        margin: 30px 0 12px;
-    }}
-    p {{
+    }
+    p {
         margin-bottom: 20px;
-        color: #334155;
-    }}
+        color: var(--text-secondary);
+    }
 
-    /* Callout Boxes */
-    .callout {{
+    .callout {
         background: #f0fdf4;
         border-left: 4px solid #16a34a;
         padding: 20px 24px;
         border-radius: 0 12px 12px 0;
         margin: 28px 0;
-    }}
-    .callout-title {{
+    }
+    .callout-title {
         font-weight: 700;
         color: #166534;
         font-size: 16px;
         margin-bottom: 6px;
-    }}
+    }
 
-    .callout-challenge {{
-        background: #fef2f2;
-        border-left: 4px solid #dc2626;
-        padding: 20px 24px;
-        border-radius: 0 12px 12px 0;
-        margin: 28px 0;
-    }}
-    .callout-challenge .callout-title {{
-        color: #991b1b;
-    }}
-
-    /* Interactive Live Mantra Preview Cards */
-    .preview-card {{
-        background: #f8fafc;
+    /* Live Interactive Sandbox Playground */
+    .interactive-playground {
+        background: #f1f5f9;
+        border: 2px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 30px;
+        margin: 35px 0;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .playground-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .playground-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--brand-blue);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .sample-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .sample-chip {
+        background: white;
         border: 1px solid #cbd5e1;
-        border-radius: 12px;
-        padding: 24px;
-        margin: 30px 0;
-        text-align: center;
-    }}
-    .preview-card-title {{
+        padding: 6px 12px;
+        border-radius: 20px;
         font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: var(--text-muted);
-        font-weight: 700;
-        margin-bottom: 16px;
-    }}
-    .mantra-display {{
+        font-weight: 600;
+        color: #334155;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .sample-chip:hover {
+        background: var(--brand-blue);
+        color: white;
+        border-color: var(--brand-blue);
+    }
+    .input-box-wrapper {
+        margin-bottom: 20px;
+    }
+    .mantra-input {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 10px;
+        border: 2px solid #94a3b8;
+        font-family: 'Fira Code', 'Noto Serif Malayalam', monospace;
+        font-size: 16px;
+        color: #0f172a;
+        background: white;
+        transition: border-color 0.2s ease;
+        outline: none;
+    }
+    .mantra-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .render-output-stage {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 30px 20px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+    }
+
+    /* Live Mantra Flexbox Display */
+    .mantra-display {
         display: inline-flex;
         align-items: flex-end;
         background: white;
-        padding: 16px 28px;
+        padding: 14px 24px;
         border-radius: 10px;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        border: 1px solid #e2e8f0;
-    }}
-    .mantra-word {{
+    }
+    .mantra-word {
         display: inline-flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
         vertical-align: bottom;
         position: relative;
-        font-size: 1.8rem;
-    }}
-    .swara-text {{
+        font-size: 1.75rem;
+    }
+    .swara-text {
         font-family: 'JaimineeyaSwara', serif;
-        font-size: 1.15rem;
+        font-size: 1.10rem;
         color: var(--swara-red);
         line-height: 1;
         margin-bottom: 4px;
         font-weight: bold;
         min-height: 1.1em;
         user-select: none;
-    }}
-    .mantra-text {{
+        text-align: center;
+    }
+    .mantra-text {
         font-family: 'Noto Serif Malayalam', serif;
-        font-size: 1.8rem;
+        font-size: 1.75rem;
         font-weight: 500;
         line-height: 1.1;
         color: var(--text-primary);
         position: relative;
-    }}
-    .word-space {{
-        width: 0.50em;
+    }
+    .word-space {
+        width: 0.45em;
         display: inline-block;
-    }}
-    .swara-mod {{
+    }
+    .swara-mod {
         color: var(--brand-blue);
         font-family: 'JaimineeyaSwara', serif;
         font-weight: bold;
-    }}
-    .swara-mod.mod-a {{
+    }
+    .swara-mod.mod-a {
         position: absolute;
         top: -0.28em;
         left: 100%;
         transform: translateX(-40%);
-        font-size: 1.25rem;
-    }}
-    .swara-mod.mod-b {{
+        font-size: 1.20rem;
+        pointer-events: none;
+    }
+    .swara-mod.mod-b {
         position: absolute;
         top: -0.32em;
         left: 100%;
         transform: translateX(-40%);
-        font-size: 1.25rem;
-    }}
-    .swara-mod.mod-c {{
+        font-size: 1.20rem;
+        pointer-events: none;
+    }
+    .swara-mod.mod-c {
         position: absolute;
         top: -0.15em;
         right: -0.35em;
-        font-size: 1.15rem;
-    }}
-    .swara-mod.mod-g {{
+        font-size: 1.10rem;
+    }
+    .swara-mod.mod-d {
+        position: absolute;
+        top: -0.30em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 1.20rem;
+        pointer-events: none;
+    }
+    .swara-mod.mod-e {
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.30rem;
+        vertical-align: -0.05em;
+    }
+    .swara-mod.mod-f {
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.30rem;
+        vertical-align: -0.05em;
+    }
+    .swara-mod.mod-g {
         position: absolute;
         bottom: -0.38em;
         left: 28%;
         transform: translateX(-50%);
-        font-size: 1.35rem;
-    }}
-    .swara-mod.mod-h {{
+        font-size: 1.30rem;
+    }
+    .swara-mod.mod-h {
         position: absolute;
         top: -0.35em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 1.25rem;
-    }}
+        font-size: 1.20rem;
+    }
 
     /* Tables */
-    table {{
+    table {
         width: 100%;
         border-collapse: collapse;
         margin: 25px 0;
         font-size: 15px;
-    }}
-    th {{
+    }
+    th {
         background: #f1f5f9;
         color: #334155;
         font-weight: 700;
         text-align: left;
         padding: 12px 16px;
         border-bottom: 2px solid #cbd5e1;
-    }}
-    td {{
+    }
+    td {
         padding: 12px 16px;
         border-bottom: 1px solid #e2e8f0;
         vertical-align: middle;
-    }}
-    tr:hover td {{
+    }
+    tr:hover td {
         background: #f8fafc;
-    }}
-    .glyph-sample {{
+    }
+    .glyph-sample {
         font-family: 'JaimineeyaSwara', serif;
         font-size: 28px;
         color: var(--brand-blue);
         font-weight: bold;
-    }}
-    .badge-above {{ background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }}
-    .badge-below {{ background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }}
-    .badge-shoulder {{ background: #f3e8ff; color: #6b21a8; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }}
-    .badge-inline {{ background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }}
-
-    /* Code Blocks */
-    pre {{
-        background: var(--code-bg);
-        color: #f8fafc;
-        padding: 20px;
-        border-radius: 10px;
-        font-family: 'Fira Code', monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        overflow-x: auto;
-        margin: 24px 0;
-    }}
-    code {{
-        font-family: 'Fira Code', monospace;
-        background: #f1f5f9;
-        color: #0f172a;
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 14px;
-    }}
-    pre code {{
-        background: transparent;
-        color: inherit;
-        padding: 0;
-    }}
+    }
+    .badge-above { background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .badge-below { background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .badge-shoulder { background: #f3e8ff; color: #6b21a8; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .badge-inline { background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
 
     /* Workflow Stepper */
-    .step-grid {{
+    .step-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 18px;
         margin: 28px 0;
-    }}
-    .step-card {{
+    }
+    .step-card {
         background: #f8fafc;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
         padding: 22px 18px;
         text-align: center;
-        position: relative;
-    }}
-    .step-num {{
+    }
+    .step-num {
         width: 34px;
         height: 34px;
         background: var(--brand-blue);
@@ -491,35 +531,77 @@ html_content = f"""<!DOCTYPE html>
         align-items: center;
         justify-content: center;
         margin: 0 auto 12px;
-    }}
-    .step-title {{
+    }
+    .step-title {
         font-size: 16px;
         font-weight: 700;
         color: var(--text-primary);
         margin-bottom: 6px;
-    }}
-    .step-desc {{
+    }
+    .step-desc {
         font-size: 13px;
         color: var(--text-muted);
         line-height: 1.4;
-    }}
+    }
 
-    /* Footer */
-    footer {{
+    /* Dark Mode Themes Support */
+    body.theme-dark {
+        --bg-page: #0b0f19;
+        --bg-card: #131b2e;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --brand-blue: #60a5fa;
+        --swara-red: #f87171;
+        --border-subtle: #1e293b;
+    }
+    body.theme-dark .interactive-playground { background: #0d1527; border-color: #1e293b; }
+    body.theme-dark .mantra-input { background: #1e293b; color: white; border-color: #334155; }
+    body.theme-dark .render-output-stage { background: #0f172a; border-color: #1e293b; }
+    body.theme-dark .mantra-display { background: #1e293b; }
+    body.theme-dark th { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+    body.theme-dark td { border-color: #1e293b; }
+    body.theme-dark tr:hover td { background: #1a233a; }
+    body.theme-dark .step-card { background: #1e293b; border-color: #334155; }
+    body.theme-dark .sample-chip { background: #1e293b; color: #e2e8f0; border-color: #334155; }
+    body.theme-dark h2 { border-color: #1e293b; }
+
+    /* Palm Leaf / Heritage Theme */
+    body.theme-manuscript {
+        --bg-page: #fbf7ee;
+        --bg-card: #fffdf9;
+        --text-primary: #2d2419;
+        --text-secondary: #5c4b37;
+        --brand-blue: #78350f;
+        --border-subtle: #e7dfd0;
+    }
+    body.theme-manuscript .hero-banner {
+        background: linear-gradient(135deg, #451a03 0%, #78350f 50%, #92400e 100%);
+    }
+
+    footer {
         margin-top: 50px;
         padding-top: 30px;
-        border-top: 1px solid #e2e8f0;
+        border-top: 1px solid var(--border-subtle);
         text-align: center;
         font-size: 14px;
         color: var(--text-muted);
-    }}
-    a {{ color: #2563eb; text-decoration: none; font-weight: 600; }}
-    a:hover {{ text-decoration: underline; }}
+    }
+    a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 
 <div class="hero-banner">
+    <div class="top-toolbar">
+        <div></div>
+        <div class="theme-pill-container">
+            <button class="theme-btn active" onclick="setTheme('light')">☀️ Modern Light</button>
+            <button class="theme-btn" onclick="setTheme('dark')">🌙 Night Dark</button>
+            <button class="theme-btn" onclick="setTheme('manuscript')">📜 Palm-Leaf</button>
+        </div>
+    </div>
     <div class="hero-content">
         <span class="badge-pill">Vedic Digital Humanities &bull; Open Source Typography</span>
         <h1>Revitalizing the Jaimineeya Samaveda in Malayalam Script</h1>
@@ -551,37 +633,31 @@ html_content = f"""<!DOCTYPE html>
         <li><strong>Multi-Syllable Spanning Modifiers:</strong> Tonal arches and roof chevrons that visually span across the inter-word space between adjacent syllables.</li>
     </ul>
 
-    <h2>2. Live Typographic Demonstration</h2>
+    <!-- INTERACTIVE MANTRA PLAYGROUND -->
+    <h2>2. Live Interactive Mantra Sandbox</h2>
     <p>
-        The following live render is generated directly using our custom open-source webfont <code>JaimineeyaSwara.ttf</code>:
+        Test the live stacking engine in real-time. Type or click any sample below to see how our custom font and dynamic anchoring render your text:
     </p>
 
-    <div class="preview-card">
-        <div class="preview-card-title">Live Flexbox Stacking & Word-Bridging Modifiers Preview</div>
-        <div class="mantra-display">
-            <!-- Word 1 with Mod-A Arch spanning to Word 2 -->
-            <span class="mantra-word">
-                <span class="swara-text">𑌖</span>
-                <span class="mantra-text">ഹോ<span class="swara-mod mod-a">&#xE004;</span></span>
-            </span>
-            <span class="word-space">&nbsp;</span>
-            <!-- Word 2 with Mod-G descending tone slash -->
-            <span class="mantra-word">
-                <span class="swara-text">𑌪𑍍𑌲</span>
-                <span class="mantra-text">ബാ<span class="swara-mod mod-g">&#xE003;</span></span>
-            </span>
-            <span class="word-space">&nbsp;</span>
-            <!-- Word 3 with Mod-C shoulder dot -->
-            <span class="mantra-word">
-                <span class="swara-text">𑌤</span>
-                <span class="mantra-text">ഓ<span class="swara-mod mod-c">&#xE001;</span></span>
-            </span>
-            <span class="word-space">&nbsp;</span>
-            <!-- Word 4 with Mod-H overhead swarita -->
-            <span class="mantra-word">
-                <span class="swara-text">𑌚𑌿</span>
-                <span class="mantra-text">ദാ<span class="swara-mod mod-h">&#xE00C;</span></span>
-            </span>
+    <div class="interactive-playground">
+        <div class="playground-header">
+            <div class="playground-title">
+                <span>⚡ Live Stacking & Modifier Engine</span>
+            </div>
+            <div class="sample-buttons">
+                <button class="sample-chip" onclick="loadSample('ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ')">Sample 1: Arc + Caret</button>
+                <button class="sample-chip" onclick="loadSample('ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G)')">Sample 2: Dot + Slash</button>
+                <button class="sample-chip" onclick="loadSample('ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾) ദാ(𑌚𑌿)(H)')">Sample 3: Chevron + Swarita</button>
+                <button class="sample-chip" onclick="loadSample('വാ(𑌚)(E) ഇ(𑌚)(F)')">Sample 4: Phrasing Dandas</button>
+            </div>
+        </div>
+
+        <div class="input-box-wrapper">
+            <input type="text" id="mantraInput" class="mantra-input" value="ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G) ദാ(𑌚𑌿)(H)" oninput="renderPlayground()" placeholder="Type mantra text with (Swara) and (A..H) modifiers..." />
+        </div>
+
+        <div class="render-output-stage" id="playgroundOutput">
+            <!-- Dynamic Live Render Target -->
         </div>
     </div>
 
@@ -701,9 +777,134 @@ html_content = f"""<!DOCTYPE html>
 
 </article>
 
+<script>
+function setTheme(theme) {
+    document.body.className = '';
+    if (theme !== 'light') {
+        document.body.classList.add('theme-' + theme);
+    }
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+function loadSample(text) {
+    document.getElementById('mantraInput').value = text;
+    renderPlayground();
+}
+
+function renderPlayground() {
+    const raw = document.getElementById('mantraInput').value;
+    const container = document.getElementById('playgroundOutput');
+    
+    // Parse words
+    const tokens = raw.trim().split(/\\s+/);
+    let html = '<div class="mantra-display">';
+
+    const modMap = {
+        'A': { cls: 'mod-a', glyph: '&#xE004;' },
+        'a': { cls: 'mod-a', glyph: '&#xE004;' },
+        '⁀': { cls: 'mod-a', glyph: '&#xE004;' },
+        'B': { cls: 'mod-b', glyph: '&#xE005;' },
+        'b': { cls: 'mod-b', glyph: '&#xE005;' },
+        '∧': { cls: 'mod-b', glyph: '&#xE005;' },
+        '^': { cls: 'mod-b', glyph: '&#xE005;' },
+        'C': { cls: 'mod-c', glyph: '&#xE001;' },
+        'c': { cls: 'mod-c', glyph: '&#xE001;' },
+        '·': { cls: 'mod-c', glyph: '&#xE001;' },
+        'D': { cls: 'mod-d', glyph: '&#xE006;' },
+        'd': { cls: 'mod-d', glyph: '&#xE006;' },
+        'Ʌ': { cls: 'mod-d', glyph: '&#xE006;' },
+        'E': { cls: 'mod-e', glyph: '&#xE002;' },
+        'e': { cls: 'mod-e', glyph: '&#xE002;' },
+        '┃': { cls: 'mod-e', glyph: '&#xE002;' },
+        'F': { cls: 'mod-f', glyph: '&#x2577;' },
+        'f': { cls: 'mod-f', glyph: '&#x2577;' },
+        '╷': { cls: 'mod-f', glyph: '&#x2577;' },
+        'G': { cls: 'mod-g', glyph: '&#xE003;' },
+        'g': { cls: 'mod-g', glyph: '&#xE003;' },
+        '\\\\': { cls: 'mod-g', glyph: '&#xE003;' },
+        'H': { cls: 'mod-h', glyph: '&#xE00C;' },
+        'h': { cls: 'mod-h', glyph: '&#xE00C;' },
+        '|': { cls: 'mod-h', glyph: '&#xE00C;' },
+    };
+
+    const swaraSubs = {
+        '𑌪𑍍𑌲': '&#xE020;',
+        'Pla': '&#xE020;',
+        'പ്ല': '&#xE020;',
+        '𑌪𑍍𑌲𑌾': '&#xE021;',
+        'Plaa': '&#xE021;',
+        'പ്ലാ': '&#xE021;',
+        '𑌪𑍍𑌲𑌿': '&#xE022;',
+        'Pli': '&#xE022;',
+        'പ്ലി': '&#xE022;',
+        '𑌪𑍍𑌲𑍀': '&#xE023;',
+        'Plii': '&#xE023;',
+        'പ്ലീ': '&#xE023;',
+        'ശ𑌾': '&#xE010;',
+        'ശാ': '&#xE010;',
+        'Shaa': '&#xE010;',
+        'ശ𑌿': '&#xE011;',
+        'ശി': '&#xE011;',
+        'Shi': '&#xE011;',
+        'ശ𑍀': '&#xE012;',
+        'ശീ': '&#xE012;',
+        'Shii': '&#xE012;',
+        'ശ്': '&#xE013;',
+        'ത്ര': '&#xE01D;',
+        'Tra': '&#xE01D;',
+        'ക്ര': '&#xE01E;',
+        'Kra': '&#xE01E;',
+    };
+
+    for (let i = 0; i < tokens.length; i++) {
+        let t = tokens[i];
+        if (i > 0) html += '<span class="word-space">&nbsp;</span>';
+
+        // Extract swara (xxx) and modifier (y)
+        let swara = '';
+        let mod = '';
+        let base = t;
+
+        // Check for swara (𑌖)
+        const swMatch = base.match(/\\(([^)]+)\\)/g);
+        if (swMatch) {
+            for (let m of swMatch) {
+                const inner = m.replace(/[()]/g, '');
+                if (modMap[inner]) {
+                    mod = modMap[inner];
+                } else {
+                    swara = swaraSubs[inner] || inner;
+                }
+                base = base.replace(m, '');
+            }
+        }
+
+        let modHtml = '';
+        if (mod) {
+            modHtml = `<span class="swara-mod ${mod.cls}">${mod.glyph}</span>`;
+        }
+
+        html += `
+        <span class="mantra-word">
+            <span class="swara-text">${swara || '&nbsp;'}</span>
+            <span class="mantra-text">${base}${modHtml}</span>
+        </span>
+        `;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// Initial render
+window.onload = renderPlayground;
+</script>
 </body>
 </html>
 """
+
+html_content = html_template.replace("__BASE64_FONT__", b64_font)
 
 # Write outputs
 OUT_MD.parent.mkdir(parents=True, exist_ok=True)

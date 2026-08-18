@@ -224,7 +224,7 @@ def render_html_table() -> None:
             "stack_pos": "Stacked Above",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-a-dotted'>&#xE004;</span></span></span>",
             "example_text": "ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)",
-            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ബാ</span></span></div>",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ</span></span></div>",
             "meaning": "Overhead curved arch spanning across syllables for connected tone transition.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
@@ -266,7 +266,7 @@ def render_html_table() -> None:
             "stack_pos": "Stacked Above",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-d-dotted'>&#xE006;</span></span></span>",
             "example_text": "ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾)",
-            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-d'>&#xE006;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഇ</span></span><span class='mantra-word'><span class='swara-text'>𑌶𑌾</span><span class='mantra-text'>ഴാ</span></span></div>",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-d'>&#xE006;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഇ</span></span><span class='mantra-word'><span class='swara-text'>&#xE010;</span><span class='mantra-text'>ഴാ</span></span></div>",
             "meaning": "Overhead chevron roof marker indicating roof-tone modulation across syllables.",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
@@ -308,7 +308,7 @@ def render_html_table() -> None:
             "stack_pos": "Stacked Below",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-g-dotted'>&#xE003;</span></span></span>",
             "example_text": "ബാ(𑌪𑍍𑌲)(G)",
-            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌪𑍍𑌲</span><span class='mantra-text'>ബാ<span class='swara-mod mod-g'>&#xE003;</span></span></span></div>",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ<span class='swara-mod mod-g'>&#xE003;</span></span></span></div>",
             "meaning": "Downward falling diagonal slash attached beneath the mantrakshara baseline (falling cadence).",
             "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
         },
