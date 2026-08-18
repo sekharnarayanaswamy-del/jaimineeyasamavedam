@@ -131,36 +131,44 @@ def render_image_grid() -> None:
 
         # Glyph Box
         draw.rounded_rectangle([x0 + 12, y0 + 46, x0 + 140, y0 + 185], radius=8, fill=(248, 250, 252), outline=(226, 232, 240), width=1)
+        bx_cx = x0 + 76
+        bx_cy = y0 + 115
 
         if is_mod:
             # Modifiers rendered in Dark Blue (#002171) with Dotted Circle (◌)
             mod_blue = (0, 33, 113)
             dot_gray = (148, 163, 184)
-            if "Arc" in label or "Modifier (A)" in category:
+            if "Modifier (A)" in category:
                 # 2-syllable spanning arc (A)
-                draw.text((x0 + 26, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 74, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 44, y0 + 52), char_str, fill=mod_blue, font=swara_font)
-            elif "Modifier (B)" in category or "Caret" in label or "Modifier (D)" in category or "Chevron" in label:
+                draw.text((bx_cx - 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 41.5, bx_cy - 22 - 33.5), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (B)" in category or "Modifier (D)" in category:
                 # 2-syllable spanning peak/chevron (B, D)
-                draw.text((x0 + 26, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 74, y0 + 100), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 44, y0 + 50), char_str, fill=mod_blue, font=swara_font)
-            elif "Modifier (C)" in category or "Dot" in label:
+                draw.text((bx_cx - 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 39, bx_cy - 22 - 33.5), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (C)" in category:
                 # Shoulder dot (C)
-                draw.text((x0 + 36, y0 + 95), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 76, y0 + 62), char_str, fill=mod_blue, font=swara_font)
-            elif "Modifier (G)" in category or "Slash" in label:
+                draw.text((bx_cx - 8 - 19, bx_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 12, bx_cy - 50), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (E)" in category or "Modifier (F)" in category:
+                # Inline danda (E, F)
+                draw.text((bx_cx - 12 - 19, bx_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 12, bx_cy - 42), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (G)" in category:
                 # Descending tone slash aligned directly to bottom-center of ◌ (G)
-                draw.text((x0 + 50, y0 + 72), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 42, y0 + 105), char_str, fill=mod_blue, font=swara_font)
-            elif "Modifier (H)" in category or "Swarita" in label:
+                c_cy = bx_cy - 14
+                draw.text((bx_cx - 19, c_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 13, (c_cy + 16) - 65), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (H)" in category:
                 # Overhead swarita tick centered above ◌ (H)
-                draw.text((x0 + 50, y0 + 105), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 50, y0 + 52), char_str, fill=mod_blue, font=swara_font)
+                c_cy = bx_cy + 14
+                draw.text((bx_cx - 19, c_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx, (c_cy - 22) - 65), char_str, fill=mod_blue, font=swara_font)
             else:
-                draw.text((x0 + 35, y0 + 90), "◌", fill=dot_gray, font=dotted_font)
-                draw.text((x0 + 80, y0 + 80), char_str, fill=mod_blue, font=swara_font)
+                draw.text((bx_cx - 19, bx_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 12, bx_cy - 33), char_str, fill=mod_blue, font=swara_font)
         else:
             # Swara pitch glyphs rendered in Bold SwaraRed (#c62828)
             draw.text((x0 + 45, y0 + 75), char_str, fill=(198, 40, 40), font=swara_font)
