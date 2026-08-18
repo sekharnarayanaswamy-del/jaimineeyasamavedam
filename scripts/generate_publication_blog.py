@@ -585,7 +585,7 @@ html_template = """<!DOCTYPE html>
                 <td><strong>MOD-F</strong></td>
                 <td><code>(F) / (╷)</code></td>
                 <td>Light Vertical Line</td>
-                <td style="text-align:center;" class="glyph-sample">&#2577;</td>
+                <td style="text-align:center;" class="glyph-sample">&#x2577;</td>
                 <td><code>U+E002 / U+2577</code></td>
                 <td><span class="badge-inline">Inline</span></td>
             </tr>
