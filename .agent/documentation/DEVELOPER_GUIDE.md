@@ -350,7 +350,45 @@ This dynamic architecture allows one to build procedural ritual guides alongside
      * `subsection` scope → link at individual sama level
    * **PDF Toolkit**: PDF logic reads procedure_ref from JSON and adds footnote links to appendix.
 
-### 3.7 Workflow G: Deployment to Hostinger (Automatic)
+### 3.7 Workflow G: Malayalam Transliteration, Swara Modifier Correction, and Multi-Format Publishing
+
+This workflow handles the end-to-end processing of the Malayalam Jaimineeya Samaveda edition, featuring automated transliteration from Devanagari, manual enrichment of Malayalam-specific Swara Modifiers, and unified publishing across PDF, HTML, and Unicode text formats.
+
+#### Phase 1: Automated Devanagari-to-Malayalam Transliteration
+1. **Base Text Conversion**: `src/malayalam/ml_transliterate.py` transliterates Sanskrit Devanagari text into Malayalam, repairing conjuncts and chillu endings (e.g., word-final `മ്` → `ം`, `്ൃ` → `ൃ`).
+2. **Swara Mapping**: `src/malayalam/ml_map.py` (consuming `Malayalam_JSV/swara_lookup_frozen.json`) maps all 19 Ayugma subscript swaras to authentic Grantha characters (`U+11300`–`U+1137F`) with manuscript overrides (`Pla` `𑌪𑍍𑌲`, `Sha` `𑌶𑌿`, `Tra` `𑌤𑍍𑌰`, `Kra` `𑌕𑍍𑌰`).
+3. **Generate Editable Text**: `src/malayalam/ml_text.py` produces the baseline editable Unicode file (`data/input/Malayalam/*.txt`).
+
+#### Phase 2: Manual Swara Modifier Enrichment
+The editor opens `data/input/Malayalam/*.txt` in any text editor and adds the Malayalam Swara Modifiers directly next to syllables/swaras using typing shortcuts:
+
+| Modifier | Name | Keyboard Input | Plaintext Export | Visual Position | Function |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Mod-A** | Syllable Arc (Tie) | `(A)`, `(a)`, `(⁀)` | `(⁀)` (`U+2040`) | **Above** (Inter-syllable) | Bridges syllables continuously |
+| **Mod-B** | Peak Caret | `(B)`, `(b)`, `(∧)` | `(∧)` (`U+2227`) | **Above** (Inter-syllable) | Upward pitch peak inflection |
+| **Mod-C** | Shoulder Dot | `(C)`, `(c)`, `(·)` | `(·)` (`U+00B7`) | **Shoulder** (Upper-right) | Stobha pause / separation |
+| **Mod-D** | Chevron Roof | `(D)`, `(d)`, `(Ʌ)` | `(Ʌ)` (`U+0245`) | **Above** (Inter-syllable) | Stepped pitch descent |
+| **Mod-E** | Heavy Danda | `(E)`, `(e)`, `(┃)` | `(┃)` (`U+2503`) | **Inline** (Heavy vertical) | Major structural division |
+| **Mod-F** | Light Vertical | `(F)`, `(f)`, `(╷)` | `(╷)` (`U+2577`) | **Inline** (Light vertical) | Minor sub-cadence pause |
+| **Mod-G** | Descending Slash | `(G)`, `(g)`, `(\)` | `(\)` (`U+005C`) | **Below** (Bottom-right) | Falling cadence tone drop |
+| **Mod-H** | Swarita Stroke | `(H)`, `(h)`, `(|)` | `(|)` (`U+007C`) | **Above** (Centered) | Classical Vedic Swarita accent |
+
+#### Phase 3: Multi-Format Typesetting & Publishing
+1. **Generate AST JSON**:
+   ```bash
+   python -X utf8 src/generate_json.py data/input/Malayalam/Agneyam_K1_extract.txt --output data/output/malayalam/Agneyam_K1_extract.json
+   ```
+2. **Compile PDF, HTML, and Unicode TXT**:
+   ```bash
+   # Combined Samhita Mode (Rik + Samam + RDC + Footnotes + Index)
+   python -X utf8 src/render_pdf.py data/output/malayalam/Agneyam_K1_extract.json --script malayalam
+   ```
+*Outputs*:
+- **PDF**: `data/output/pdf/Malayalam/Samhita_Malayalam.pdf` (LaTeX XeLaTeX with `JaimineeyaSwara.ttf` superscript stackings and `ModifierDarkBlue` micro-accents).
+- **HTML**: `data/output/html/Malayalam/Samhita_Malayalam.html` (Standalone, responsive HTML with base64 embedded font and dynamic inter-syllable modifier arcs).
+- **Text**: `data/output/txt/Malayalam/Samhita_Malayalam_Unicode.txt` (Standard Unicode text with English numerals `॥ 1 ॥` and clean Grantha characters).
+
+### 3.8 Workflow H: Deployment to Hostinger (Automatic)
 
 This workflow automates the publishing of your static texts to your main domain (`jaimineeyasamavedam.org`) while keeping the WordPress site as the primary landing page.
 

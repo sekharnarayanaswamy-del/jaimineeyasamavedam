@@ -237,3 +237,65 @@ python -X utf8 src/generate_json.py data/input/Malayalam/Agneyam_K1_extract.txt 
 - **Unicode TXTs:** `data/output/txt/Malayalam/` (`Samhita_Malayalam_Unicode.txt`, `Rik_Malayalam_Unicode.txt`, `Samam_Malayalam_Unicode.txt`, `Rik_NoMeta_Malayalam_Unicode.txt`, `Samam_NoMeta_Malayalam_Unicode.txt`)
 - **Glyph Inventory:** `data/output/malayalam/glyph_table.html` & `data/output/malayalam/glyph_grid_JaimineeyaSwara.png`
 
+---
+
+## 7. Malayalam Transliteration & Correction Workflow Recipe
+
+The Malayalam edition involves a two-stage data lifecycle: **Automated Transliteration** from the digital Devanagari baseline, followed by **Manual Swara Modifier Enrichment** and **Multi-Format Export**.
+
+```
++----------------------------------------------------------------------------------+
+| Phase 1: Automated Devanagari-to-Malayalam Transliteration Pipeline              |
+| 1. Base Text Transliteration (src/malayalam/ml_transliterate.py):                |
+|    - Phonetically transliterates Sanskrit Devanagari -> Malayalam.              |
+|    - Normalizes orthography: word-final മ് -> ം, ്ൃ -> ൃ, combines conjuncts.    |
+| 2. Swara Mapping (src/malayalam/ml_map.py & swara_lookup_frozen.json):           |
+|    - Inverts Devanagari subscript swaras to Grantha Unicode characters.         |
+|    - Preserves authentic manuscript ligatures (Pla 𑌪𑍍𑌲, Sha 𑌶𑌿, Tra 𑌤𑍍𑌰, Kra 𑌕𑍍𑌰).|
+| 3. Baseline Text Export (src/malayalam/ml_text.py):                              |
+|    - Emits baseline editable Unicode text file: data/input/Malayalam/*.txt       |
++----------------------------------------+-----------------------------------------+
+                                         |
+                                         v
++----------------------------------------------------------------------------------+
+| Phase 2: Manual Swara Modifier Enrichment                                        |
+| - Vedic scholar opens data/input/Malayalam/*.txt in VS Code or any text editor.  |
+| - Inserts Swara Modifiers by hand using keyboard shorthand tags:                 |
+|   (e.g., (A) for Arc, (C) for Dot, (G) for Slash, (H) for Swarita, (D) for Roof) |
+|   Example: ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)(G)                                                      |
++----------------------------------------+-----------------------------------------+
+                                         |
+                                         v
++----------------------------------------------------------------------------------+
+| Phase 3: Automated Multi-Format Typesetting & Export                             |
+| 1. AST Parsing:                                                                  |
+|    python -X utf8 src/generate_json.py data/input/Malayalam/<extract>.txt        |
+|      --output data/output/malayalam/<extract>.json                               |
+| 2. Multi-Format Rendering:                                                       |
+|    python -X utf8 src/render_pdf.py data/output/malayalam/<extract>.json         |
+|      --script malayalam                                                          |
+|    -> Publication PDF: LaTeX XeLaTeX with JaimineeyaSwara.ttf micro-stacking.    |
+|    -> Responsive HTML: Standalone HTML with base64 font & dynamic modifier arcs. |
+|    -> Plaintext (.txt): Standard Unicode text with Grantha & English digits.    |
++----------------------------------------------------------------------------------+
+```
+
+---
+
+## 8. Swara Modifier Notation & Input Reference Table
+
+Below is the authoritative reference for entering Swara Modifiers by hand into the Malayalam Unicode text files:
+
+| Modifier ID | Name | Keyboard / Text Input Tags | Plaintext Export Symbol | Visual Glyph | Visual Position | Chanting / Musical Function | Input Example |
+| :--- | :--- | :--- | :--- | :---: | :--- | :--- | :--- |
+| **Mod-A** | Syllable Arc (Tie) | `(A)`, `(a)`, `(⁀)`, `(╭╮)` | `(⁀)` (`U+2040`) |  / ◠ | **Above** (Inter-syllable bridge) | Connects two syllables in a smooth continuous breath | `ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)` |
+| **Mod-B** | Peak Elevation Caret | `(B)`, `(b)`, `(∧)`, `(^)` | `(∧)` (`U+2227`) |  / ∧ | **Above** (Inter-syllable peak) | Upward pitch bend / peak emphasis between syllables | `ഹോ(B) ബാ` |
+| **Mod-C** | Shoulder Pause Dot | `(C)`, `(c)`, `(·)`, `(ॱ)` | `(·)` (`U+00B7`) | ॱ / · | **Shoulder** (Upper right of syllable) | Stobha separator / rhythmic micro-pause | `ഓ(𑌤)(C) ഗ്നാ(𑌤)` |
+| **Mod-D** | Chevron Roof | `(D)`, `(d)`, `(Ʌ)` | `(Ʌ)` (`U+0245`) |  / Ʌ | **Above** (Inter-syllable chevron) | Stepped descent inflection between syllables | `ഹോ(𑌪𑍍𑌲)(D) ഇഴാ` |
+| **Mod-E** | Heavy Phrasing Danda | `(E)`, `(e)`, `(┃)` | `(┃)` (`U+2503`) | ┃ | **Inline** (Heavy vertical) | Major structural chanting division | `വാ(E)` |
+| **Mod-F** | Light Vertical Mark | `(F)`, `(f)`, `(╷)` | `(╷)` (`U+2577`) | ╷ | **Inline** (Light vertical) | Minor breath pause / sub-cadence | `ഇ(F)` |
+| **Mod-G** | Descending Tone Slash | `(G)`, `(g)`, `(\)`, `(╲)` | `(\)` (`U+005C`) | \ | **Below** (Bottom-right of syllable) | Falling pitch cadence drop | `ബാ(𑌪𑍍𑌲)(G)` |
+| **Mod-H** | Overhead Swarita | `(H)`, `(h)`, `(|)`, `(॑)` | `(|)` (`U+007C`) | \| / ॑ | **Above** (Centered over syllable) | Classical Vedic Swarita accent | `ദാ(𑌚𑌿)(H)` |
+| **Mod-L** | Lower Danda | `(L)`, `(l)`, `(|)` | `(|)` (`U+007C`) | \| | **Inline** (Downward stem) | Deep cadence marker | `താ(L)` |
+| **Underbar** | Syllable Linker | `(_)`, `_` | `_` (`U+005F`) | _ | **Below** (Baseline connector) | Sustains multi-syllable phrase continuation | `താ_യാ_ഇ` |
+
