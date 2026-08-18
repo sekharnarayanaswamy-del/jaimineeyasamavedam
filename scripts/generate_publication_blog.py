@@ -48,6 +48,7 @@ html_template = """<!DOCTYPE html>
         --text-secondary: #5c4b37;
         --text-muted: #8c7355;
         --brand-blue: #78350f;
+        --sky-blue: #0284c7;
         --brand-accent: #b45309;
         --swara-red: #c62828;
         --border-subtle: #e7dfd0;
@@ -286,7 +287,7 @@ html_template = """<!DOCTYPE html>
         display: inline-block;
     }
     .swara-mod {
-        color: var(--brand-blue);
+        color: var(--sky-blue);
         font-family: 'JaimineeyaSwara', serif;
         font-weight: bold;
     }
@@ -310,7 +311,7 @@ html_template = """<!DOCTYPE html>
     }
     .swara-mod.mod-b .caret-glyph {
         display: block;
-        color: var(--brand-blue);
+        color: var(--sky-blue);
         font-size: 1.20rem;
         line-height: 1;
     }
@@ -384,6 +385,13 @@ html_template = """<!DOCTYPE html>
         font-size: 1.20rem;
         vertical-align: baseline;
     }
+    .mantra-punct {
+        font-family: 'Noto Serif Malayalam', serif;
+        font-size: 1.75rem;
+        line-height: 1.1;
+        color: var(--sky-blue);
+        margin-right: 0.05em;
+    }
 
     /* Tables */
     table {
@@ -411,7 +419,7 @@ html_template = """<!DOCTYPE html>
     .glyph-sample {
         font-family: 'JaimineeyaSwara', serif;
         font-size: 28px;
-        color: var(--brand-blue);
+        color: var(--sky-blue);
         font-weight: bold;
     }
     .badge-above { background: #fef3c7; color: #78350f; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #fde68a; }

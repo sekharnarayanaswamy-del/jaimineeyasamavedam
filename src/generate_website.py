@@ -3335,7 +3335,7 @@ sup.footnote-ref a:hover {
     position: relative;
 }
 .swara-mod {
-    color: #002171;
+    color: #0284c7;
     font-family: 'JaimineeyaSwara', serif !important;
     font-weight: bold;
     line-height: 1;
@@ -3360,7 +3360,7 @@ sup.footnote-ref a:hover {
 }
 .swara-mod.mod-b .caret-glyph {
     display: block;
-    color: #002171;
+    color: #0284c7;
     font-size: 1.05rem;
     line-height: 1;
 }
@@ -3415,6 +3415,13 @@ sup.footnote-ref a:hover {
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.05rem;
+}
+.mantra-punct {
+    font-family: 'Noto Serif Malayalam', serif !important;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: #0284c7;
+    margin-right: 0.05em;
 }
 '''
             css = font_face + css + malayalam_css

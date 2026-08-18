@@ -138,8 +138,8 @@ def render_image_grid() -> None:
         bx_cy = y0 + 115
 
         if is_mod:
-            # Modifiers rendered in Dark Blue (#002171) with Dotted Circle (◌)
-            mod_blue = (0, 33, 113)
+            # Modifiers rendered in Sky Blue (#0284c7) with Dotted Circle (◌)
+            mod_blue = (2, 132, 199)
             dot_gray = (148, 163, 184)
             if "Modifier (A)" in category:
                 # 2-syllable spanning arc (A)
@@ -179,6 +179,9 @@ def render_image_grid() -> None:
                 c_cy = bx_cy + 14
                 draw.text((bx_cx - 19, c_cy - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx, (c_cy - 22) - 65), char_str, fill=mod_blue, font=swara_font)
+            elif "Inline Mark" in category:
+                draw.text((bx_cx - 19, bx_cy - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 12, bx_cy - 33), char_str, fill=mod_blue, font=label_font)
             else:
                 draw.text((bx_cx - 19, bx_cy - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx + 12, bx_cy - 33), char_str, fill=mod_blue, font=swara_font)
@@ -193,9 +196,9 @@ def render_image_grid() -> None:
         draw.text((x0 + 155, y0 + 134), f"Code: {cp_str}", fill=(100, 116, 139), font=sub_font)
 
         # Color note badge
-        color_badge_text = "Dark Blue (Mantrakshara Mod)" if is_mod else "Bold Red (Swara Pitch)"
-        color_badge_bg = (238, 242, 255) if is_mod else (254, 242, 242)
-        color_badge_fg = (0, 33, 113) if is_mod else (198, 40, 40)
+        color_badge_text = "Sky Blue (Mantrakshara Mod)" if is_mod else "Bold Red (Swara Pitch)"
+        color_badge_bg = (240, 249, 255) if is_mod else (254, 242, 242)
+        color_badge_fg = (2, 132, 199) if is_mod else (198, 40, 40)
         draw.rounded_rectangle([x0 + 12, y0 + 195, x0 + cell_w - 32, y0 + 220], radius=4, fill=color_badge_bg)
         draw.text((x0 + 20, y0 + 200), color_badge_text, fill=color_badge_fg, font=sub_font)
 
@@ -239,7 +242,7 @@ def render_html_table() -> None:
             "example_text": "ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ</span></span></div>",
             "meaning": "Continuous melodic slur bridging two adjacent syllables.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-B",
@@ -253,7 +256,7 @@ def render_html_table() -> None:
             "example_text": "ഹോ(𑌖)(B) ബാ",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-b'><span class='caret-glyph'>&#xE005;</span><span class='swara-on-caret'>𑌖</span></span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ബാ</span></span></div>",
             "meaning": "Peak pitch crest over consonant with embedded swara glyph above apex.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara + SwaraRed (#c62828) Marker above Apex"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara + SwaraRed (#c62828) Marker above Apex"
         },
         {
             "id": "MOD-C",
@@ -267,7 +270,7 @@ def render_html_table() -> None:
             "example_text": "ഓ(𑌤)(C) ഗ്നാ(𑌤)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഓ<span class='swara-mod mod-c'>&#xE001;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഗ്നാ</span></span></div>",
             "meaning": "Staccato stress pulse attached to syllable curve (Bindu-Svara).",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-D",
@@ -281,7 +284,7 @@ def render_html_table() -> None:
             "example_text": "ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-d'>&#xE006;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഇ</span></span><span class='mantra-word'><span class='swara-text'>&#xE010;</span><span class='mantra-text'>ഴാ</span></span></div>",
             "meaning": "Span-roof inflection indicator across word boundaries.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-E",
@@ -295,7 +298,7 @@ def render_html_table() -> None:
             "example_text": "വാ(𑌚)(E)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>വാ<span class='swara-mod mod-e'>&#xE002;</span></span></span></div>",
             "meaning": "Heavy vertical phrase partition and caesura pause.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-F",
@@ -309,7 +312,7 @@ def render_html_table() -> None:
             "example_text": "ഇ(𑌚)(F)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ<span class='swara-mod mod-f'>&#x2577;</span></span></span></div>",
             "meaning": "Light vertical measure boundary tick for sub-cadence pauses.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-G",
@@ -323,7 +326,7 @@ def render_html_table() -> None:
             "example_text": "ബാ(𑌪𑍍𑌲)(G)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ<span class='swara-mod mod-g'>&#xE003;</span></span></span></div>",
             "meaning": "Subscript downward sliding glide attached beneath the mantrakshara baseline.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-H",
@@ -337,7 +340,7 @@ def render_html_table() -> None:
             "example_text": "ദാ(𑌚𑌿)(H)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚𑌿</span><span class='mantra-text'>ദാ<span class='swara-mod mod-h'>&#xE00C;</span></span></span></div>",
             "meaning": "Vedic high pitch tone marker placed directly above the mantrakshara.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-DOT",
@@ -351,7 +354,7 @@ def render_html_table() -> None:
             "example_text": "വാ(𑌚).",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>വാ</span></span><span class='mantra-punct'>.</span></div>",
             "meaning": "Inline staccato pulse mark placed directly in the text flow.",
-            "color_note": "Inline Punctuation on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-UNDERBAR",
@@ -365,7 +368,7 @@ def render_html_table() -> None:
             "example_text": "ഇ(𑌚)_",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ</span></span><span class='mantra-punct'>_</span></div>",
             "meaning": "Inline sustain prolongation bar connecting adjacent words or chanting units.",
-            "color_note": "Inline Punctuation on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
             "id": "MOD-COMMA",
@@ -379,7 +382,7 @@ def render_html_table() -> None:
             "example_text": "ദാ(𑌚),",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ദാ</span></span><span class='mantra-punct'>,</span></div>",
             "meaning": "Inline short rhythmic pause marker within the chant.",
-            "color_note": "Inline Punctuation on Mantrakshara"
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
     ]
 
@@ -523,6 +526,7 @@ def render_html_table() -> None:
         --text-main: #0f172a;
         --text-muted: #64748b;
         --primary-blue: #002171;
+        --mod-blue: #0284c7;
         --swara-red: #c62828;
         --border-color: #e2e8f0;
     }}
@@ -582,7 +586,7 @@ def render_html_table() -> None:
         border-radius: 50%;
     }}
     .dot-red {{ background: #ef4444; border: 2px solid white; }}
-    .dot-blue {{ background: #60a5fa; border: 2px solid white; }}
+    .dot-blue {{ background: #0284c7; border: 2px solid white; }}
 
     .nav-tabs {{
         display: flex;
@@ -801,7 +805,7 @@ def render_html_table() -> None:
         display: inline-block;
     }}
     .mantra-preview-flex .swara-mod {{
-        color: var(--primary-blue);
+        color: var(--mod-blue);
         font-family: 'JaimineeyaSwara', serif;
         font-weight: bold;
         line-height: 1;
@@ -826,7 +830,7 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b .caret-glyph {{
         display: block;
-        color: var(--primary-blue);
+        color: var(--mod-blue);
         font-size: 0.95rem;
         line-height: 1;
     }}
@@ -847,7 +851,7 @@ def render_html_table() -> None:
         font-size: 1.35rem;
         font-weight: 500;
         line-height: 1.1;
-        color: var(--text-main);
+        color: var(--mod-blue);
         display: inline-block;
         margin-left: 0.05em;
     }}

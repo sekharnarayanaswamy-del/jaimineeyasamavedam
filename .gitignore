@@ -71,6 +71,8 @@ output_text/lines/
 
 # Template files
 *.template
+!templates/**/*.template
+!templates/*.template
 !html_templates/Devanagari_main_html.template
 !Devanagari_standalone/working_baseline/Devanagari_main.template
 !Devanagari_standalone/Devanagari_main.template
