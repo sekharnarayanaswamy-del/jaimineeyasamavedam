@@ -19,8 +19,8 @@ Here is a brief summary of the impementation of Jaimineeya Samaveda in Malayalam
 2. **Svara Modifiers:** Structural performance indicators that qualify the chant—including multi-syllable spanning melodic arches, peak carets, upper shoulder dots, descending tone slashes, and phrasing dandas.
 
 With this, we are so happy to announce a **complete, end-to-end digital publishing ecosystem for the Jaimineeya Samaveda in Malayalam Script**, delivering high-fidelity outputs across:
-- 🌐 **Interactive Web Edition (HTML5)** with responsive flexbox stacking and live word-bridging modifiers.
-- 📄 **Archival Print Edition (LuaLaTeX / PDF)** with mathematical sub-point kerning and vector-perfect typography.
+- 📄 **Sample 1-Page Print Edition (PDF):** [`data/output/pdf/Malayalam/Samam_Malayalam.pdf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf) with mathematical sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.
+- 🌐 **Interactive Web Edition (HTML5):** *(Under preparation)*
 - 📝 **Universal Unicode Plaintext (.txt)** with standard Grantha codepoints and intuitive non-combining modifier symbols to aid in further refinement and curation of more Jaimineeya Samaveda content in Malayalam.
 
 ---
@@ -103,9 +103,10 @@ Scholars and developers can inspect all 8 modifiers, 19 Ayugma bases, and 229 fu
 
 All font source files, templates, renderers, and transliteration scripts are open-source under permissive licenses:
 - 💻 **GitHub Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
+- 📄 **Sample Print PDF (1 Page):** [`data/output/pdf/Malayalam/Samam_Malayalam.pdf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf)
 - 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf)
 - 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md)
 - 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html)
-- 🌐 **Interactive Publication Blog:** [`docs/blog/Malayalam_JSV_Publication_Blog.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/docs/blog/Malayalam_JSV_Publication_Blog.html)
+- 🌐 **Malayalam Digital Static Website:** *(Under preparation)*
 - ⚙️ **Rendering Engine:** [`src/render_pdf.py`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/src/render_pdf.py)
 - 📑 **HTML Template:** [`templates/html/Malayalam_main_html.template`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/templates/html/Malayalam_main_html.template)
