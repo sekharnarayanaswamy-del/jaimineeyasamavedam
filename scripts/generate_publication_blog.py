@@ -465,6 +465,14 @@ html_template = """<!DOCTYPE html>
         font-size: 14px;
         color: var(--text-muted);
     }
+    .ornament {
+        color: #ea580c;
+        font-weight: 700;
+        font-size: 1.15em;
+        margin: 0 8px;
+        display: inline-block;
+        vertical-align: middle;
+    }
     a { color: #9a3412; text-decoration: none; font-weight: 600; }
     a:hover { text-decoration: underline; color: #7c2d12; }
 </style>
@@ -684,7 +692,7 @@ html_template = """<!DOCTYPE html>
     </ul>
 
     <footer>
-        Jaimineeya Samaveda Digitization Project &bull; Preserving Vedic Heritage Through Open Typographic Engineering
+        <span class="ornament">ॐ</span> Jaimineeya Samaveda Digitization Project &bull; Preserving Vedic Heritage Through Open Typographic Engineering <span class="ornament">ॐ</span>
     </footer>
 
 </article>
