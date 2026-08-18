@@ -206,22 +206,24 @@ def draw_syllable_arc(width: int = 1600) -> Glyph:
 
 
 def draw_caret(width: int = 1500) -> Glyph:
-    """Swara Modifier B: Upward and downward slopes spanning 2 syllables that do NOT join at the top."""
+    """Swara Modifier B: Crisp, bold peak elevation caret (/ \\) spanning across 2 syllables."""
     glyph = init_glyph()
     glyph.numberOfContours = 2
-    # Left upward slope: rising from (140, 480) towards top (660, 960) with bold uniform width
+    # Left arm: clean perpendicular rectangular stroke rising to apex
+    # Centerline from (220, 450) to (710, 940), thickness 130
     coords_left = [
-        (140, 480, 1),
-        (660, 960, 1),
-        (560, 960, 1),
-        (240, 480, 1),
+        (174, 496, 1),
+        (664, 986, 1),
+        (756, 894, 1),
+        (266, 404, 1),
     ]
-    # Right downward slope: descending from (840, 960) towards right (1360, 480) with bold uniform width
+    # Right arm: clean perpendicular rectangular stroke descending from apex
+    # Centerline from (790, 940) to (1280, 450), thickness 130
     coords_right = [
-        (840, 960, 1),
-        (1360, 480, 1),
-        (1260, 480, 1),
-        (740, 960, 1),
+        (836, 986, 1),
+        (1326, 496, 1),
+        (1234, 404, 1),
+        (744, 894, 1),
     ]
     all_coords = coords_left + coords_right
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in all_coords])

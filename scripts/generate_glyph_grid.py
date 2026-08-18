@@ -143,8 +143,18 @@ def render_image_grid() -> None:
                 draw.text((bx_cx - 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx + 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx - 41.5, bx_cy - 22 - 33.5), char_str, fill=mod_blue, font=swara_font)
-            elif "Modifier (B)" in category or "Modifier (D)" in category:
-                # 2-syllable spanning peak/chevron (B, D)
+            elif "Modifier (B)" in category:
+                # 2-syllable spanning peak caret (B) with Swara marker sitting directly above apex
+                draw.text((bx_cx - 24 - 19, bx_cy + 25 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 24 - 19, bx_cy + 25 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 36, bx_cy - 12 - 17), char_str, fill=mod_blue, font=swara_font)
+                # Grantha Kha (\U00011316) sitting above apex in SwaraRed
+                kha_str = chr(0x11316)
+                kha_bbox = swara_font.getbbox(kha_str)
+                kha_w = kha_bbox[2] - kha_bbox[0]
+                draw.text((bx_cx - kha_w / 2, bx_cy - 74), kha_str, fill=(198, 40, 40), font=swara_font)
+            elif "Modifier (D)" in category:
+                # 2-syllable spanning chevron roof (D)
                 draw.text((bx_cx - 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx + 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx - 39, bx_cy - 22 - 33.5), char_str, fill=mod_blue, font=swara_font)
@@ -236,11 +246,11 @@ def render_html_table() -> None:
             "codepoint": "U+E005 / ^ / /\\",
             "input_methods": "<code>(B)</code> / <code>(b)</code> / <code>(^)</code> / <code>(/\\)</code>",
             "stack_pos": "Stacked Above",
-            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-b-dotted'>&#xE005;</span></span></span>",
-            "example_text": "മാ(𑌕)(B) യാ",
-            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌕</span><span class='mantra-text'>മാ<span class='swara-mod mod-b'>&#xE005;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>യാ</span></span></div>",
-            "meaning": "Overhead peak arrowhead indicating elevated melodic emphasis.",
-            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara"
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-b-dotted'>&#xE005;</span><span class='swara-on-caret-dotted'>𑌖</span></span></span>",
+            "example_text": "ഹോ(𑌖)(B) ബാ",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-b'><span class='caret-glyph'>&#xE005;</span><span class='swara-on-caret'>𑌖</span></span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ബാ</span></span></div>",
+            "meaning": "Overhead peak arrowhead spanning 2 syllables with the swara pitch marker situated directly above the apex.",
+            "color_note": "ModifierDarkBlue (#002171) on Mantrakshara + SwaraRed (#c62828) Marker above Apex"
         },
         {
             "id": "MOD-C",
@@ -790,11 +800,28 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b {{
         position: absolute;
-        top: -0.32em;
+        top: -0.28em;
         left: 100%;
-        transform: translateX(-40%);
-        font-size: 0.95rem;
+        transform: translateX(-50%);
         pointer-events: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }}
+    .mantra-preview-flex .swara-mod.mod-b .caret-glyph {{
+        display: block;
+        color: var(--primary-blue);
+        font-size: 0.95rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
+        position: absolute;
+        top: -0.80em;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--swara-red);
+        font-size: 0.90rem;
+        font-weight: bold;
+        font-family: 'JaimineeyaSwara', serif;
     }}
     .mantra-preview-flex .swara-mod.mod-c {{
         position: absolute;

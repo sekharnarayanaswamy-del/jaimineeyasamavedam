@@ -425,11 +425,28 @@ html_template = """<!DOCTYPE html>
     }
     .swara-mod.mod-b {
         position: absolute;
-        top: -0.32em;
+        top: -0.28em;
         left: 100%;
-        transform: translateX(-40%);
-        font-size: 1.20rem;
+        transform: translateX(-50%);
         pointer-events: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .swara-mod.mod-b .caret-glyph {
+        display: block;
+        color: var(--brand-blue);
+        font-size: 1.20rem;
+    }
+    .swara-mod.mod-b .swara-on-caret {
+        position: absolute;
+        top: -0.80em;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--swara-red);
+        font-size: 1.10rem;
+        font-weight: bold;
+        font-family: 'JaimineeyaSwara', serif;
     }
     .swara-mod.mod-c {
         position: absolute;
@@ -882,7 +899,12 @@ function renderPlayground() {
 
         let modHtml = '';
         if (mod) {
-            modHtml = `<span class="swara-mod ${mod.cls}">${mod.glyph}</span>`;
+            if (mod.cls === 'mod-b') {
+                modHtml = `<span class="swara-mod mod-b"><span class="caret-glyph">&#xE005;</span><span class="swara-on-caret">${swara || '&nbsp;'}</span></span>`;
+                swara = '';
+            } else {
+                modHtml = `<span class="swara-mod ${mod.cls}">${mod.glyph}</span>`;
+            }
         }
 
         html += `
