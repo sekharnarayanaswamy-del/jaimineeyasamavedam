@@ -511,7 +511,7 @@ html_template = """<!DOCTYPE html>
         As part of our overall digitization efforts of Jaimineeya Samaveda, we have now implemented the digital <strong>"Kodunthirapully Paddhati"</strong>. We believe this effort will support the living tradition of Sama Veda chanting in the Agraharam in today's digital world. To overcome the technical challenges of mixed Grantha/Malayalam typography and complex visual mnemonics, we engineered the <strong>JaimineeyaSwara</strong> font and built an automated multi-format publishing pipeline delivering:
     </p>
     
-        📄 <strong>Publication quality Jaimineeya Samaveda in Malayalam (PDF):</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf" target="_blank"><code>Samam_Malayalam.pdf</code></a> &bull; With sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.<br>
+        📄 <strong>Publication quality Jaimineeya Samaveda in Malayalam (PDF):</strong> With sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.<br>
         🌐 <strong>Interactive Web Edition (HTML5):</strong> An easy to navigate Website with advanced search and hyperlink features.<br>
         📝 <strong>Universal Unicode Plaintext (.txt):</strong> With standard Grantha codepoints and intuitive modifier mnemonics to enable ongoing curation and scholarship.<br>
     
@@ -678,16 +678,16 @@ html_template = """<!DOCTYPE html>
         </div>
     </div>
 
-    <h2>6. Project Resources & Open Source</h2>
+    <h2>6. Project Resources</h2>
     <p>
         Explore the repository, test the tools, and contribute to the digitization of the sacred Jaimineeya heritage:
     </p>
     <ul>
         <li>💻 <strong>GitHub Repository:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam" target="_blank">github.com/sekharnarayanaswamy-del/jaimineeyasamavedam</a></li>
-        <li>📄 <strong>Digital publishing of Jaimineeya Samaveda in Malayalam (PDF):</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf" target="_blank"><code>Samam_Malayalam.pdf</code></a></li>
+        <li>📄 <strong>Digital publishing of Jaimineeya Samaveda in Malayalam (PDF):</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf" target="_blank"><code>Samhita_Malayalam</code></a></li>
         <li>🔤 <strong>Custom Font:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf" target="_blank"><code>fonts/JaimineeyaSwara.ttf</code></a></li>
         <li>📖 <strong>Specification & Developer Guide:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md" target="_blank"><code>Malayalam_JSV/spec.md</code></a></li>
-        <li>🎨 <strong>Interactive Glyph Table:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html" target="_blank"><code>data/output/malayalam/glyph_table.html</code></a></li>
+        <li>🎨 <strong>Interactive Glyph Table:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html" target="_blank"><code>Glyph_table</code></a></li>
         <li>🌐 <strong>Malayalam Digital Static Website:</strong> <em>(Work in progress)</em></li>
     </ul>
 
