@@ -14,7 +14,7 @@ The Jaimineeya Samaveda employs a sophisticated system of Yugma and Ayugma swara
 
 As part of our overall digitization efforts of Jaimineeya Samaveda, we have now implemented the digital **"Kodunthirapully Paddhati"**. We believe this effort will support the living tradition of Sama Veda chanting in the Agraharam in today's digital world. To overcome the technical challenges of mixed Grantha/Malayalam typography and complex visual mnemonics, we engineered the **JaimineeyaSwara** font and built an automated multi-format publishing pipeline delivering:
 
-- 📄 **Publication quality Jaimineeya Samaveda in Malayalam (PDF):** With sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.
+- 📄 **Publication quality Jaimineeya Samaveda in Malayalam (PDF):** [`Samam_Malayalam.pdf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf) with sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.
 - 🌐 **Interactive Web Edition (HTML5):** An easy to navigate Website with advanced search and hyperlink features.
 - 📝 **Universal Unicode Plaintext (.txt):** With standard Grantha codepoints and intuitive modifier mnemonics to enable ongoing curation and scholarship.
 
@@ -101,10 +101,10 @@ Scholars and developers can inspect all 8 modifiers, 19 Ayugma bases, and 229 fu
 
 All font source files, templates, renderers, and transliteration scripts are open-source under permissive licenses:
 - 💻 **GitHub Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
-- 📄 **Sample Print PDF (1 Page):** [`data/output/pdf/Malayalam/Samhita_Malayalam.pdf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samhita_Malayalam.pdf)
+- 📄 **Digital publishing of Jaimineeya Samaveda in Malayalam (PDF):** [`Samam_Malayalam.pdf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/pdf/Malayalam/Samam_Malayalam.pdf)
 - 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf)
 - 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md)
 - 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html)
-- 🌐 **Malayalam Digital Static Website:** *(Under preparation)*
+- 🌐 **Malayalam Digital Static Website:** *(Work in progress)*
 - ⚙️ **Rendering Engine:** [`src/render_pdf.py`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/src/render_pdf.py)
 - 📑 **HTML Template:** [`templates/html/Malayalam_main_html.template`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/templates/html/Malayalam_main_html.template)

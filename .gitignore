@@ -27,6 +27,7 @@ output_text/lines/
 
 # Documents
 *.pdf
+!data/output/pdf/Malayalam/*.pdf
 *.docx
 *.xlsx
 *.doc
@@ -36,6 +37,7 @@ output_text/lines/
 *.json
 !corrections_003_merged_out.json
 !Rik_Processing/corrections_003_merged_out.json
+!data/output/malayalam/*.json
 
 # *.txt
 *.csv
