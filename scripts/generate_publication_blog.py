@@ -503,7 +503,7 @@ html_template = """<!DOCTYPE html>
         As part of our overall digitization efforts, we have now implemented the digital <strong>"Kodunthirapully Paddhati"</strong>. To overcome the technical challenges of mixed Grantha/Malayalam typography and complex visual mnemonics, we engineered the <strong>JaimineeyaSwara</strong> font and built an automated multi-format publishing pipeline delivering:
     </p>
     <ul>
-        <li>📄 <strong>Sample 1-Page Print Edition (PDF):</strong> <a href="../../data/output/pdf/Malayalam/Samam_Malayalam.pdf" target="_blank"><code>data/output/pdf/Malayalam/Samam_Malayalam.pdf</code></a> &bull; With mathematical sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.</li>
+        <li>📄 <strong>Sample 1-Page Print Edition (PDF):</strong> <a href="../../data/output/pdf/Malayalam/Samhita_Malayalam.pdf" target="_blank"><code>data/output/pdf/Malayalam/Samhita_Malayalam.pdf</code></a> &bull; With mathematical sub-point kerning, authentic manuscript ligatures, and vector-perfect typography.</li>
         <li>🌐 <strong>Interactive Web Edition (HTML5):</strong> <em>(Under preparation)</em></li>
         <li>📝 <strong>Universal Unicode Plaintext (.txt):</strong> With standard Grantha codepoints and intuitive modifier mnemonics to enable ongoing curation and scholarship.</li>
     </ul>
@@ -676,7 +676,7 @@ html_template = """<!DOCTYPE html>
     </p>
     <ul>
         <li>💻 <strong>GitHub Repository:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam" target="_blank">github.com/sekharnarayanaswamy-del/jaimineeyasamavedam</a></li>
-        <li>📄 <strong>Sample Print PDF (1 Page):</strong> <a href="../../data/output/pdf/Malayalam/Samam_Malayalam.pdf" target="_blank"><code>data/output/pdf/Malayalam/Samam_Malayalam.pdf</code></a></li>
+        <li>📄 <strong>Sample Print PDF (1 Page):</strong> <a href="../../data/output/pdf/Malayalam/Samhita_Malayalam.pdf" target="_blank"><code>data/output/pdf/Malayalam/Samhita_Malayalam.pdf</code></a></li>
         <li>🔤 <strong>Custom Font:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf" target="_blank"><code>fonts/JaimineeyaSwara.ttf</code></a></li>
         <li>📖 <strong>Specification & Developer Guide:</strong> <a href="https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md" target="_blank"><code>Malayalam_JSV/spec.md</code></a></li>
         <li>🎨 <strong>Interactive Glyph Table:</strong> <a href="../../data/output/malayalam/glyph_table.html" target="_blank"><code>data/output/malayalam/glyph_table.html</code></a></li>
