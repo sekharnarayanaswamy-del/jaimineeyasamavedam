@@ -14,16 +14,17 @@
     }
 
     :root {
-        --bg-page: #f8fafc;
-        --bg-card: #ffffff;
-        --text-primary: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
-        --brand-blue: #1e3a8a;
-        --brand-accent: #3b82f6;
+        --bg-page: #fbf7ee;
+        --bg-card: #fffdf9;
+        --text-primary: #2d2419;
+        --text-secondary: #5c4b37;
+        --text-muted: #8c7355;
+        --brand-blue: #78350f;
+        --brand-accent: #b45309;
         --swara-red: #c62828;
-        --border-subtle: #e2e8f0;
-        --shadow-elevation: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        --border-subtle: #e7dfd0;
+        --border-card: #dfd4be;
+        --shadow-elevation: 0 10px 25px -5px rgba(69, 26, 3, 0.06), 0 8px 10px -6px rgba(69, 26, 3, 0.03);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,16 +33,15 @@
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background-color: var(--bg-page);
         color: var(--text-primary);
-        line-height: 1.7;
+        line-height: 1.75;
         font-size: 17px;
-        transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Hero Banner */
+    /* Hero Banner - Palm Leaf Warm Wood Gradient */
     .hero-banner {
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+        background: linear-gradient(135deg, #3b1403 0%, #692c0c 50%, #8c3b10 100%);
         color: white;
-        padding: 70px 20px 80px;
+        padding: 75px 20px 85px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -53,25 +53,10 @@
         height: 40px;
         background: var(--bg-page);
         clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 100%);
-        transition: background 0.3s ease;
     }
     .hero-content {
         max-width: 900px;
         margin: 0 auto;
-    }
-    .badge-pill {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #93c5fd;
-        font-weight: 700;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding: 6px 16px;
-        border-radius: 20px;
-        margin-bottom: 20px;
     }
     h1 {
         font-size: clamp(30px, 4.5vw, 44px);
@@ -79,67 +64,33 @@
         line-height: 1.25;
         letter-spacing: -0.02em;
         margin-bottom: 18px;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
     .hero-subtitle {
         font-size: clamp(17px, 2vw, 20px);
-        color: #cbd5e1;
-        max-width: 760px;
+        color: #fde68a;
+        max-width: 780px;
         margin: 0 auto 25px;
         font-weight: 400;
-        line-height: 1.5;
+        line-height: 1.55;
     }
     .meta-bar {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        color: #94a3b8;
+        gap: 22px;
+        color: #fed7aa;
         font-size: 14px;
         font-weight: 500;
         flex-wrap: wrap;
     }
 
-    /* Top Toolbar */
-    .top-toolbar {
-        max-width: 960px;
-        margin: 0 auto 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .theme-pill-container {
-        display: flex;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border-radius: 24px;
-        padding: 4px;
-        gap: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .theme-btn {
-        background: transparent;
-        border: none;
-        color: white;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .theme-btn.active {
-        background: #ffffff;
-        color: var(--brand-blue);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Main Container */
+    /* Main Article Container */
     .article-container {
         max-width: 960px;
         margin: -30px auto 0;
         background: var(--bg-card);
         border-radius: 16px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        box-shadow: var(--shadow-elevation);
         padding: 50px 60px;
         border: 1px solid var(--border-subtle);
     }
@@ -150,12 +101,12 @@
         color: var(--brand-blue);
         margin: 45px 0 18px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid var(--border-card);
     }
     h3 {
         font-size: 20px;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #451a03;
         margin: 28px 0 12px;
     }
     p {
@@ -164,27 +115,39 @@
     }
 
     .callout {
-        background: #f0fdf4;
-        border-left: 4px solid #16a34a;
-        padding: 20px 24px;
+        background: #fdf8ed;
+        border-left: 4px solid var(--brand-accent);
+        padding: 22px 26px;
         border-radius: 0 12px 12px 0;
         margin: 28px 0;
+        border-top: 1px solid #f4ecda;
+        border-right: 1px solid #f4ecda;
+        border-bottom: 1px solid #f4ecda;
     }
     .callout-title {
         font-weight: 700;
-        color: #166534;
+        color: var(--brand-blue);
         font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    ul, ol {
+        margin-bottom: 22px;
+        padding-left: 26px;
+        color: var(--text-secondary);
+    }
+    li {
         margin-bottom: 8px;
     }
 
     /* Live Interactive Sandbox Playground */
     .interactive-playground {
-        background: #f1f5f9;
-        border: 2px solid #cbd5e1;
+        background: #f5eedc;
+        border: 2px solid var(--border-card);
         border-radius: 16px;
         padding: 30px;
         margin: 35px 0;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: inset 0 2px 4px rgba(69, 26, 3, 0.03);
     }
     .playground-header {
         display: flex;
@@ -208,13 +171,13 @@
         flex-wrap: wrap;
     }
     .sample-chip {
-        background: white;
-        border: 1px solid #cbd5e1;
-        padding: 6px 12px;
+        background: #fffdfa;
+        border: 1px solid #d8cbaf;
+        padding: 6px 14px;
         border-radius: 20px;
         font-size: 13px;
         font-weight: 600;
-        color: #334155;
+        color: #5c4b37;
         cursor: pointer;
         transition: all 0.15s ease;
     }
@@ -230,35 +193,35 @@
         width: 100%;
         padding: 14px 18px;
         border-radius: 10px;
-        border: 2px solid #94a3b8;
+        border: 2px solid #c9bba2;
         font-family: 'Fira Code', 'Noto Serif Malayalam', monospace;
         font-size: 16px;
-        color: #0f172a;
-        background: white;
+        color: #2d2419;
+        background: #fffdfa;
         transition: border-color 0.2s ease;
         outline: none;
     }
     .mantra-input:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        border-color: var(--brand-accent);
+        box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
     }
     .render-output-stage {
-        background: white;
-        border: 1px solid #e2e8f0;
+        background: #fffdf9;
+        border: 1px solid #e5dac4;
         border-radius: 12px;
         padding: 30px 20px;
         min-height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 6px -1px rgba(69, 26, 3, 0.04);
     }
 
     /* Live Mantra Flexbox Display */
     .mantra-display {
         display: inline-flex;
         align-items: flex-end;
-        background: white;
+        background: #fffdf9;
         padding: 14px 24px;
         border-radius: 10px;
     }
@@ -384,20 +347,20 @@
         font-size: 15px;
     }
     th {
-        background: #f1f5f9;
-        color: #334155;
+        background: #f4ecda;
+        color: #451a03;
         font-weight: 700;
         text-align: left;
         padding: 12px 16px;
-        border-bottom: 2px solid #cbd5e1;
+        border-bottom: 2px solid #dfd4be;
     }
     td {
         padding: 12px 16px;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #efe6d5;
         vertical-align: middle;
     }
     tr:hover td {
-        background: #f8fafc;
+        background: #fdf8ed;
     }
     .glyph-sample {
         font-family: 'JaimineeyaSwara', serif;
@@ -405,10 +368,10 @@
         color: var(--brand-blue);
         font-weight: bold;
     }
-    .badge-above { background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-below { background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-shoulder { background: #f3e8ff; color: #6b21a8; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-inline { background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .badge-above { background: #fef3c7; color: #78350f; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #fde68a; }
+    .badge-below { background: #ffedd5; color: #9a3412; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #fed7aa; }
+    .badge-shoulder { background: #fae8ff; color: #701a75; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #f5d0fe; }
+    .badge-inline { background: #f5eedc; color: #5c4b37; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #e5dac4; }
 
     /* Workflow Stepper */
     .step-grid {
@@ -418,8 +381,8 @@
         margin: 28px 0;
     }
     .step-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background: #fbf7ee;
+        border: 1px solid var(--border-subtle);
         border-radius: 12px;
         padding: 22px 18px;
         text-align: center;
@@ -445,42 +408,7 @@
     .step-desc {
         font-size: 13px;
         color: var(--text-muted);
-        line-height: 1.4;
-    }
-
-    /* Dark Mode Themes Support */
-    body.theme-dark {
-        --bg-page: #0b0f19;
-        --bg-card: #131b2e;
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --brand-blue: #60a5fa;
-        --swara-red: #f87171;
-        --border-subtle: #1e293b;
-    }
-    body.theme-dark .interactive-playground { background: #0d1527; border-color: #1e293b; }
-    body.theme-dark .mantra-input { background: #1e293b; color: white; border-color: #334155; }
-    body.theme-dark .render-output-stage { background: #0f172a; border-color: #1e293b; }
-    body.theme-dark .mantra-display { background: #1e293b; }
-    body.theme-dark th { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-    body.theme-dark td { border-color: #1e293b; }
-    body.theme-dark tr:hover td { background: #1a233a; }
-    body.theme-dark .step-card { background: #1e293b; border-color: #334155; }
-    body.theme-dark .sample-chip { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-    body.theme-dark h2 { border-color: #1e293b; }
-
-    /* Palm Leaf / Heritage Theme */
-    body.theme-manuscript {
-        --bg-page: #fbf7ee;
-        --bg-card: #fffdf9;
-        --text-primary: #2d2419;
-        --text-secondary: #5c4b37;
-        --brand-blue: #78350f;
-        --border-subtle: #e7dfd0;
-    }
-    body.theme-manuscript .hero-banner {
-        background: linear-gradient(135deg, #451a03 0%, #78350f 50%, #92400e 100%);
+        line-height: 1.45;
     }
 
     footer {
@@ -491,23 +419,14 @@
         font-size: 14px;
         color: var(--text-muted);
     }
-    a { color: #2563eb; text-decoration: none; font-weight: 600; }
-    a:hover { text-decoration: underline; }
+    a { color: #9a3412; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; color: #7c2d12; }
 </style>
 </head>
 <body>
 
 <div class="hero-banner">
-    <div class="top-toolbar">
-        <div></div>
-        <div class="theme-pill-container">
-            <button class="theme-btn active" onclick="setTheme('light')">☀️ Modern Light</button>
-            <button class="theme-btn" onclick="setTheme('dark')">🌙 Night Dark</button>
-            <button class="theme-btn" onclick="setTheme('manuscript')">📜 Palm-Leaf</button>
-        </div>
-    </div>
     <div class="hero-content">
-        <span class="badge-pill">Vedic Digital Humanities &bull; Open Source Typography</span>
         <h1>Revitalizing the Jaimineeya Samaveda in Malayalam Script</h1>
         <div class="hero-subtitle">
             Typographic Innovation, Custom Grantha Font Engineering, and a Unified Multi-Format Publishing Pipeline for Sacred Kerala & Tamil Nadu Vedic Chants.
@@ -699,15 +618,6 @@
 </article>
 
 <script>
-function setTheme(theme) {
-    document.body.className = '';
-    if (theme !== 'light') {
-        document.body.classList.add('theme-' + theme);
-    }
-    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
 function loadSample(text) {
     document.getElementById('mantraInput').value = text;
     renderPlayground();

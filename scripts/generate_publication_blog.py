@@ -1,5 +1,6 @@
 """Generate comprehensive Publication Blog in Markdown (.md) and Standalone HTML (.html)
 for the Jaimineeya Samaveda Malayalam Digitization Project.
+(Palm-Leaf Heritage Edition)
 """
 
 import base64
@@ -18,124 +19,13 @@ if FONT_PATH.exists():
     with open(FONT_PATH, "rb") as f:
         b64_font = base64.b64encode(f.read()).decode("ascii")
 
-# 2. Read existing Markdown content or fallback
+# 2. Read existing Markdown content
 if OUT_MD.exists():
     md_content = OUT_MD.read_text(encoding="utf-8")
 else:
-    md_content = """# Revitalizing the Jaimineeya Samaveda in Malayalam Script: Typographic Innovation, Custom Font Engineering, and a Unified Multi-Format Publishing Pipeline
+    md_content = ""
 
-> **By the Jaimineeya Samaveda Digitization Project**  
-> *Published: August 2026*  
-> *Repository: [github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)*
-
----
-
-## 1. Executive Summary & The Sacred Heritage
-
-The **Jaimineeya Shakha** of the *Samaveda* (*Jaiminīya Sāmavedam*) is one of the most ancient, musically intricate, and endangered oral traditions of Vedic chanting. While the Kauthuma and Ranayaniya traditions are more well known and established across India, the authentic musical recitation of the Jaimineeya tradition has been preserved almost exclusively through the guru-shishya lineages of **Tamil Nadu and by the Namboodiri tradition of Kerala**. This shakha was nearing extinction in Tamilnadu and was salvaged at the instance of Kanchi Mahaperiyava by Brahmasri Makarabhushanam Iyengar (Guruji) who set up the Thogur Jaimineeya Samaveda Patashala nearly fifty years ago. Through the efforts of Guruji, a set of his direct and indirect disciples went through formal, rigorous Vedic studies lasting twelve years which has helped to rescue this precious tradition from the brink. In addition to this, Guruji has published many works in Grantha and Devanagari drawing from manuscripts originally in Grantha.   
-
-The Jaimineeya Samaveda employs a sophisticated system of Yugma and Ayugma swaras (Dharalakshanam of Sabhapati) for phonetic encoding of its Samagana. There was a migration of Jaimini Sama vedins from the Kaveri delta like Anbil, Tiruchi to Kerala around 250-300 years ago. These brahmins are today settled mainly in Kodunthirapully Agraharam in Palakkad. Brahmasri Sahasranama Iyer has very meticulously written by hand the Samhita and Aranyam portions using a special scheme : Malayalam mantrakshara, Grantha/mixed Grantha Malayalam swara markers and a set of swara modifier mnemonics to help easy recitation. The efficacy of his method is borne out by the passage of time that even today the young and old in the village use the paper copies of his manuscript to chant. 
-
-As part of the overall digitalization efforts of Jaimineeya Samaveda, we have now taken an important step to digitize the "Kodunthirapully Padhati". There were some technical challenges caused by the swara notation with mixed Grantha/Malayalam and the mnemonics. To solve this, we have designed a new font, **JaimineeyaSwara** to depict the Grantha/Malayalam swara markers and the graphical swara modifier mnemonics. 
-
-Here is a brief summary of the implementation of Jaimineeya Samaveda in Malayalam given below:
-1. **Primary Svara Pitch Markers:** Subscript letters (traditionally Grantha or Malayalam characters) that specify the exact pitch movements (such as *Avaroham*, *Anvangulyam*, *Udgamam*, *Yanam*, and *Plutam*).
-2. **Svara Modifiers:** Structural performance indicators that qualify the chant—including multi-syllable spanning melodic arches, peak carets, upper shoulder dots, descending tone slashes, and phrasing dandas.
-
-With this, we are so happy to announce a **complete, end-to-end digital publishing ecosystem for the Jaimineeya Samaveda in Malayalam Script**, delivering high-fidelity outputs across:
-- 🌐 **Interactive Web Edition (HTML5)** with responsive flexbox stacking and live word-bridging modifiers.
-- 📄 **Archival Print Edition (LuaLaTeX / PDF)** with mathematical sub-point kerning and vector-perfect typography.
-- 📝 **Universal Unicode Plaintext (.txt)** with standard Grantha codepoints and intuitive non-combining modifier symbols to aid in further refinement and curation of more Jaimineeya Samaveda content in Malayalam.
-
----
-
-## 2. The Typographic & Technical Challenge
-
-Transliterating Jaimineeya Samavedam from traditional palm-leaf manuscripts and Devanagari baselines into digital Malayalam presented three fundamental hurdles:
-
-### Hurdle 1: The Grantha-Malayalam Hybrid Conundrum
-Traditional Kerala Jaimineeya manuscripts write the base sacred text (*Mantrakshara*) in **Malayalam script**, while the overhead pitch markers (*Svaras*) are rendered in archaic **Grantha script** with specific regional overrides:
-- **Vedic *Pla* (പ്ല):** A custom composite base glyph combining Grantha *Pa* with a Malayalam subscript *La*, distinct from standard classical Grantha.
-- **Manuscript *Sha* (ശ):** The manuscript reference specifically employs the Malayalam base letter **ശ** (`U+0D36`) coupled with detached Grantha vowel arms (of *Shi* 𑌶𑌿, *Shii* 𑌶𑍀, and *Shaa* ശാ) rather than standard Grantha *Śa* (𑌶).
-
-Standard system fonts lack these ligature forms, resulting in missing glyph boxes (`[?]`) or unsightly broken dotted circles (`◌`).
-
-### Hurdle 2: Multi-Syllable Spanning Swara Modifiers
-Several crucial musical modifiers in the Jaimineeya tradition—such as **Modifier (A) Syllable Spanning Arc** and **Modifier (D) Chevron Roof**—do not belong to a single syllable. They visually and musically **span across the boundary between two adjacent words** (e.g. bridging `ഹോ` and `ബാ` / `ഹോ` and `ഇഴാ`).
-
-Standard typesetting engines provide no native mechanism for anchoring a glyph at the right edge of one syllable and stretching it over the whitespace to the next.
-
-### Hurdle 3: Multi-Format Visual Uniformity
-Publishing across Web, Print PDF, and Plaintext required maintaining identical visual conventions and color hierarchies across all platforms:
-- **Mantrakshara (Base Text):** Deep Typography Black (`#0f172a`).
-- **Swara Pitch Markers:** Vedic Sacred Red (`#c62828`).
-- **Swara Modifiers:** Performance Dark Blue (`#002171`).
-
----
-
-## 3. Engineering Innovations
-
-### Innovation 1: The `JaimineeyaSwara.ttf` Custom OpenType Font
-To establish absolute typographic control, we engineered a dedicated OpenType font, **`JaimineeyaSwara.ttf`**, containing:
-- **19 Ayugma Pure Grantha Bases (`A01`–`A19`):** Full coverage of *Avaroham* (𑌕), *Anvangulyam* (𑌖), *Udgamam* (𑌚), *Yanam* (𑌟), *Namanam* (𑌣), *Aavarttam* (𑌤), *Utthanam* (𑌥), *Kshepanam* (𑌪), *Plutam* (\uE020), *Tra* (\uE01D), and *Kra* (\uE01E).
-- **10 Custom Manuscript Ligatures (`LIG-01`–`LIG-10`):** Including *Shaa* (`\uE010`), *Shi* (`\uE011`), *Shii* (`\uE012`), *Sha-Virama* (`\uE013`), *Plaa* (`\uE021`), *Pli* (`\uE022`), *Plii* (`\uE023`), *Shruu* (`\uE027`), *Shrr* (`\uE028`), and *Nna+U* (`\uE029`).
-- **8 Canonical Vedic Swara Modifiers (`MOD-A`–`MOD-H`):** Built with zero-advance bounding boxes for clean dynamic overlay.
-
-### Innovation 2: The Canonical 8 Vedic Swara Modifiers
-
-| ID | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
-| :--- | :---: | :--- | :---: | :---: | :--- |
-| **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
-| **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition. |
-| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot attached to the upper shoulder of the preceding syllable. |
-| **MOD-D** | `(D)` / `(Ʌ)` | **Chevron Roof** | `\\uE006` / `U+0245` | Stacked Above (2 Syllables) | Roof-tone modulation spanning across words. |
-| **MOD-E** | `(E)` / `(┃)` | **Phrasing Heavy Danda** | `\\uE002` / `U+2503` | Inline | Structural major cadence division. |
-| **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |
-| **MOD-G** | `(G)` / `(\\)` | **Descending Tone Slash** | `\\uE003` / `U+005C` | Stacked Below | Downward falling pitch attached to the bottom-center of the preceding consonant. |
-| **MOD-H** | `(H)` / `(|)` | **Overhead Swarita** | `\\uE00C` / `U+007C` | Stacked Above | Vertical upper tone stroke situated directly on top of the base syllable. |
-
----
-
-## 4. The 3-Step Scholar Proofreading Workflow
-
-```mermaid
-graph LR
-    A["1. Export Standard Unicode Plaintext<br/>(Samhita_Malayalam_Unicode.txt)"] --> B["2. Hand-Annotate Swara Modifiers<br/>(A..H in text editor)"]
-    B --> C["3. Multi-Format Build Pipeline<br/>(HTML, PDF, Web)"]
-```
-
-1. **Step 1: Automated Transliteration Baseline:** The Devanagari Samhita text is transliterated to Malayalam base letters with Grantha swaras and English verse numerals (`॥ 1 ॥`).
-2. **Step 2: Scholar Annotation in Plaintext:** The editor opens `Samhita_Malayalam_Unicode.txt` in any standard text editor and inserts intuitive modifier notations:
-   ```text
-   ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G) ദാ(𑌚𑌿)(H)
-   ```
-3. **Step 3: Multi-Format Compilation:** Running `python src/render_pdf.py` instantly parses the annotations and updates the HTML portal, the LuaLaTeX print edition, and the live catalog.
-
----
-
-## 5. Live Typographic Previews & Verification
-
-### The High-Resolution Glyph Inventory
-![Jaimineeya Swara Font Inventory](glyph_grid_JaimineeyaSwara.png)
-
-### The Interactive HTML Review Catalog
-Scholars and developers can inspect all 8 modifiers, 19 Ayugma bases, and 229 full corpus markers in real time via [`glyph_table.html`](glyph_table.html).
-
----
-
-## 6. Open Source & Project Links
-
-All font source files, templates, renderers, and transliteration scripts are open-source under permissive licenses:
-- 💻 **GitHub Repository:** [https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam)
-- 🔤 **Custom Font:** [`fonts/JaimineeyaSwara.ttf`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/fonts/JaimineeyaSwara.ttf)
-- 📖 **Specification & Developer Guide:** [`Malayalam_JSV/spec.md`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/Malayalam_JSV/spec.md)
-- 🎨 **Interactive Glyph Table:** [`data/output/malayalam/glyph_table.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/data/output/malayalam/glyph_table.html)
-- 🌐 **Interactive Publication Blog:** [`docs/blog/Malayalam_JSV_Publication_Blog.html`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/docs/blog/Malayalam_JSV_Publication_Blog.html)
-- ⚙️ **Rendering Engine:** [`src/render_pdf.py`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/src/render_pdf.py)
-- 📑 **HTML Template:** [`templates/html/Malayalam_main_html.template`](https://github.com/sekharnarayanaswamy-del/jaimineeyasamavedam/blob/format-mantras/templates/html/Malayalam_main_html.template)
-"""
-
-# 3. HTML Template with Base64 font placeholder
+# 3. HTML Template with Palm-Leaf Heritage Aesthetic
 html_template = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,16 +42,17 @@ html_template = """<!DOCTYPE html>
     }
 
     :root {
-        --bg-page: #f8fafc;
-        --bg-card: #ffffff;
-        --text-primary: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
-        --brand-blue: #1e3a8a;
-        --brand-accent: #3b82f6;
+        --bg-page: #fbf7ee;
+        --bg-card: #fffdf9;
+        --text-primary: #2d2419;
+        --text-secondary: #5c4b37;
+        --text-muted: #8c7355;
+        --brand-blue: #78350f;
+        --brand-accent: #b45309;
         --swara-red: #c62828;
-        --border-subtle: #e2e8f0;
-        --shadow-elevation: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        --border-subtle: #e7dfd0;
+        --border-card: #dfd4be;
+        --shadow-elevation: 0 10px 25px -5px rgba(69, 26, 3, 0.06), 0 8px 10px -6px rgba(69, 26, 3, 0.03);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -170,16 +61,15 @@ html_template = """<!DOCTYPE html>
         font-family: 'Inter', system-ui, -apple-system, sans-serif;
         background-color: var(--bg-page);
         color: var(--text-primary);
-        line-height: 1.7;
+        line-height: 1.75;
         font-size: 17px;
-        transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Hero Banner */
+    /* Hero Banner - Palm Leaf Warm Wood Gradient */
     .hero-banner {
-        background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+        background: linear-gradient(135deg, #3b1403 0%, #692c0c 50%, #8c3b10 100%);
         color: white;
-        padding: 70px 20px 80px;
+        padding: 75px 20px 85px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -191,25 +81,10 @@ html_template = """<!DOCTYPE html>
         height: 40px;
         background: var(--bg-page);
         clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 100%);
-        transition: background 0.3s ease;
     }
     .hero-content {
         max-width: 900px;
         margin: 0 auto;
-    }
-    .badge-pill {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #93c5fd;
-        font-weight: 700;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding: 6px 16px;
-        border-radius: 20px;
-        margin-bottom: 20px;
     }
     h1 {
         font-size: clamp(30px, 4.5vw, 44px);
@@ -217,67 +92,33 @@ html_template = """<!DOCTYPE html>
         line-height: 1.25;
         letter-spacing: -0.02em;
         margin-bottom: 18px;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        text-shadow: 0 2px 10px rgba(0,0,0,0.35);
     }
     .hero-subtitle {
         font-size: clamp(17px, 2vw, 20px);
-        color: #cbd5e1;
-        max-width: 760px;
+        color: #fde68a;
+        max-width: 780px;
         margin: 0 auto 25px;
         font-weight: 400;
-        line-height: 1.5;
+        line-height: 1.55;
     }
     .meta-bar {
         display: flex;
         justify-content: center;
-        gap: 20px;
-        color: #94a3b8;
+        gap: 22px;
+        color: #fed7aa;
         font-size: 14px;
         font-weight: 500;
         flex-wrap: wrap;
     }
 
-    /* Top Toolbar */
-    .top-toolbar {
-        max-width: 960px;
-        margin: 0 auto 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .theme-pill-container {
-        display: flex;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border-radius: 24px;
-        padding: 4px;
-        gap: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .theme-btn {
-        background: transparent;
-        border: none;
-        color: white;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .theme-btn.active {
-        background: #ffffff;
-        color: var(--brand-blue);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Main Container */
+    /* Main Article Container */
     .article-container {
         max-width: 960px;
         margin: -30px auto 0;
         background: var(--bg-card);
         border-radius: 16px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        box-shadow: var(--shadow-elevation);
         padding: 50px 60px;
         border: 1px solid var(--border-subtle);
     }
@@ -288,12 +129,12 @@ html_template = """<!DOCTYPE html>
         color: var(--brand-blue);
         margin: 45px 0 18px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid var(--border-card);
     }
     h3 {
         font-size: 20px;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #451a03;
         margin: 28px 0 12px;
     }
     p {
@@ -302,27 +143,39 @@ html_template = """<!DOCTYPE html>
     }
 
     .callout {
-        background: #f0fdf4;
-        border-left: 4px solid #16a34a;
-        padding: 20px 24px;
+        background: #fdf8ed;
+        border-left: 4px solid var(--brand-accent);
+        padding: 22px 26px;
         border-radius: 0 12px 12px 0;
         margin: 28px 0;
+        border-top: 1px solid #f4ecda;
+        border-right: 1px solid #f4ecda;
+        border-bottom: 1px solid #f4ecda;
     }
     .callout-title {
         font-weight: 700;
-        color: #166534;
+        color: var(--brand-blue);
         font-size: 17px;
+        margin-bottom: 8px;
+    }
+
+    ul, ol {
+        margin-bottom: 22px;
+        padding-left: 26px;
+        color: var(--text-secondary);
+    }
+    li {
         margin-bottom: 8px;
     }
 
     /* Live Interactive Sandbox Playground */
     .interactive-playground {
-        background: #f1f5f9;
-        border: 2px solid #cbd5e1;
+        background: #f5eedc;
+        border: 2px solid var(--border-card);
         border-radius: 16px;
         padding: 30px;
         margin: 35px 0;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: inset 0 2px 4px rgba(69, 26, 3, 0.03);
     }
     .playground-header {
         display: flex;
@@ -346,13 +199,13 @@ html_template = """<!DOCTYPE html>
         flex-wrap: wrap;
     }
     .sample-chip {
-        background: white;
-        border: 1px solid #cbd5e1;
-        padding: 6px 12px;
+        background: #fffdfa;
+        border: 1px solid #d8cbaf;
+        padding: 6px 14px;
         border-radius: 20px;
         font-size: 13px;
         font-weight: 600;
-        color: #334155;
+        color: #5c4b37;
         cursor: pointer;
         transition: all 0.15s ease;
     }
@@ -368,35 +221,35 @@ html_template = """<!DOCTYPE html>
         width: 100%;
         padding: 14px 18px;
         border-radius: 10px;
-        border: 2px solid #94a3b8;
+        border: 2px solid #c9bba2;
         font-family: 'Fira Code', 'Noto Serif Malayalam', monospace;
         font-size: 16px;
-        color: #0f172a;
-        background: white;
+        color: #2d2419;
+        background: #fffdfa;
         transition: border-color 0.2s ease;
         outline: none;
     }
     .mantra-input:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        border-color: var(--brand-accent);
+        box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
     }
     .render-output-stage {
-        background: white;
-        border: 1px solid #e2e8f0;
+        background: #fffdf9;
+        border: 1px solid #e5dac4;
         border-radius: 12px;
         padding: 30px 20px;
         min-height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+        box-shadow: 0 4px 6px -1px rgba(69, 26, 3, 0.04);
     }
 
     /* Live Mantra Flexbox Display */
     .mantra-display {
         display: inline-flex;
         align-items: flex-end;
-        background: white;
+        background: #fffdf9;
         padding: 14px 24px;
         border-radius: 10px;
     }
@@ -522,20 +375,20 @@ html_template = """<!DOCTYPE html>
         font-size: 15px;
     }
     th {
-        background: #f1f5f9;
-        color: #334155;
+        background: #f4ecda;
+        color: #451a03;
         font-weight: 700;
         text-align: left;
         padding: 12px 16px;
-        border-bottom: 2px solid #cbd5e1;
+        border-bottom: 2px solid #dfd4be;
     }
     td {
         padding: 12px 16px;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #efe6d5;
         vertical-align: middle;
     }
     tr:hover td {
-        background: #f8fafc;
+        background: #fdf8ed;
     }
     .glyph-sample {
         font-family: 'JaimineeyaSwara', serif;
@@ -543,10 +396,10 @@ html_template = """<!DOCTYPE html>
         color: var(--brand-blue);
         font-weight: bold;
     }
-    .badge-above { background: #e0e7ff; color: #3730a3; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-below { background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-shoulder { background: #f3e8ff; color: #6b21a8; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
-    .badge-inline { background: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; }
+    .badge-above { background: #fef3c7; color: #78350f; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #fde68a; }
+    .badge-below { background: #ffedd5; color: #9a3412; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #fed7aa; }
+    .badge-shoulder { background: #fae8ff; color: #701a75; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #f5d0fe; }
+    .badge-inline { background: #f5eedc; color: #5c4b37; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; border: 1px solid #e5dac4; }
 
     /* Workflow Stepper */
     .step-grid {
@@ -556,8 +409,8 @@ html_template = """<!DOCTYPE html>
         margin: 28px 0;
     }
     .step-card {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background: #fbf7ee;
+        border: 1px solid var(--border-subtle);
         border-radius: 12px;
         padding: 22px 18px;
         text-align: center;
@@ -583,42 +436,7 @@ html_template = """<!DOCTYPE html>
     .step-desc {
         font-size: 13px;
         color: var(--text-muted);
-        line-height: 1.4;
-    }
-
-    /* Dark Mode Themes Support */
-    body.theme-dark {
-        --bg-page: #0b0f19;
-        --bg-card: #131b2e;
-        --text-primary: #f1f5f9;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --brand-blue: #60a5fa;
-        --swara-red: #f87171;
-        --border-subtle: #1e293b;
-    }
-    body.theme-dark .interactive-playground { background: #0d1527; border-color: #1e293b; }
-    body.theme-dark .mantra-input { background: #1e293b; color: white; border-color: #334155; }
-    body.theme-dark .render-output-stage { background: #0f172a; border-color: #1e293b; }
-    body.theme-dark .mantra-display { background: #1e293b; }
-    body.theme-dark th { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-    body.theme-dark td { border-color: #1e293b; }
-    body.theme-dark tr:hover td { background: #1a233a; }
-    body.theme-dark .step-card { background: #1e293b; border-color: #334155; }
-    body.theme-dark .sample-chip { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-    body.theme-dark h2 { border-color: #1e293b; }
-
-    /* Palm Leaf / Heritage Theme */
-    body.theme-manuscript {
-        --bg-page: #fbf7ee;
-        --bg-card: #fffdf9;
-        --text-primary: #2d2419;
-        --text-secondary: #5c4b37;
-        --brand-blue: #78350f;
-        --border-subtle: #e7dfd0;
-    }
-    body.theme-manuscript .hero-banner {
-        background: linear-gradient(135deg, #451a03 0%, #78350f 50%, #92400e 100%);
+        line-height: 1.45;
     }
 
     footer {
@@ -629,23 +447,14 @@ html_template = """<!DOCTYPE html>
         font-size: 14px;
         color: var(--text-muted);
     }
-    a { color: #2563eb; text-decoration: none; font-weight: 600; }
-    a:hover { text-decoration: underline; }
+    a { color: #9a3412; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; color: #7c2d12; }
 </style>
 </head>
 <body>
 
 <div class="hero-banner">
-    <div class="top-toolbar">
-        <div></div>
-        <div class="theme-pill-container">
-            <button class="theme-btn active" onclick="setTheme('light')">☀️ Modern Light</button>
-            <button class="theme-btn" onclick="setTheme('dark')">🌙 Night Dark</button>
-            <button class="theme-btn" onclick="setTheme('manuscript')">📜 Palm-Leaf</button>
-        </div>
-    </div>
     <div class="hero-content">
-        <span class="badge-pill">Vedic Digital Humanities &bull; Open Source Typography</span>
         <h1>Revitalizing the Jaimineeya Samaveda in Malayalam Script</h1>
         <div class="hero-subtitle">
             Typographic Innovation, Custom Grantha Font Engineering, and a Unified Multi-Format Publishing Pipeline for Sacred Kerala & Tamil Nadu Vedic Chants.
@@ -837,15 +646,6 @@ html_template = """<!DOCTYPE html>
 </article>
 
 <script>
-function setTheme(theme) {
-    document.body.className = '';
-    if (theme !== 'light') {
-        document.body.classList.add('theme-' + theme);
-    }
-    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-}
-
 function loadSample(text) {
     document.getElementById('mantraInput').value = text;
     renderPlayground();
@@ -976,7 +776,7 @@ OUT_MD.write_text(md_content, encoding="utf-8")
 print(f"Preserved Markdown Blog: {OUT_MD}")
 
 OUT_HTML.write_text(html_content, encoding="utf-8")
-print(f"Generated HTML Blog: {OUT_HTML}")
+print(f"Generated Palm-Leaf HTML Blog: {OUT_HTML}")
 
 # Copy to artifacts directory
 try:
