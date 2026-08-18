@@ -848,6 +848,11 @@ def build_font() -> None:
         lig_subst.ligatures[first].append(lig)
 
     # Custom Sha and Pla ligatures
+    add_ligature("sha_aa_jsv", ["sha_gran", "aaMatra_gran"])
+    add_ligature("sha_i_jsv", ["sha_gran", "iMatra_gran"])
+    add_ligature("sha_ii_jsv", ["sha_gran", "iiMatra_gran"])
+    add_ligature("sha_virama_jsv", ["sha_gran", "virama_gran"])
+
     add_ligature("sha_aa_jsv", ["sha_mal", "aaMatra_gran"])
     add_ligature("sha_i_jsv", ["sha_mal", "iMatra_gran"])
     add_ligature("sha_ii_jsv", ["sha_mal", "iiMatra_gran"])

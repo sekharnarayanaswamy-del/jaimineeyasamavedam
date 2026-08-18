@@ -1789,8 +1789,62 @@ def format_malayalam_samam(subsection, supersection_title, section_title, subsec
     return format_malayalam_samam_only(subsection, supersection_title, section_title, subsection_title, toc_level=toc_level)
 
 
+def _normalize_malayalam_samam_text_line(line: str) -> str:
+    """Normalize Malayalam Samam line for Unicode text export:
+    1. Converts Devanagari/Malayalam numerals to ASCII English numerals (e.g. ॥१॥ -> ॥ 1 ॥).
+    2. Converts any internal PUA characters to standard Grantha Unicode equivalents.
+    3. Converts swara modifier shorthand tags (A..H) to their authentic Unicode symbols.
+    """
+    if not line:
+        return ""
+    
+    # 1. Convert verse numerals to ASCII English digits with clean spacing
+    line = re.sub(r'॥\s*([०-९\d]+)\s*॥', lambda m: f"॥ {m.group(1).translate(_ENGLISH_DIGITS)} ॥", line)
+    
+    # 2. Map PUA swara characters to authentic Grantha characters
+    pua_to_grantha = {
+        '\uE010': '𑌶𑌾',
+        '\uE011': '𑌶𑌿',
+        '\uE012': '𑌶𑍀',
+        '\uE013': '𑌶𑍍',
+        '\uE015': '𑌶𑍁',
+        '\uE016': '𑌶𑍂',
+        '\uE020': '𑌪𑍍𑌲',
+        '\uE021': '𑌪𑍍𑌲𑌾',
+        '\uE022': '𑌪𑍍𑌲𑌿',
+        '\uE023': '𑌪𑍍𑌲𑍀',
+        '\uE027': '𑌶𑍍𑌰𑍂',
+        '\uE028': '𑌷𑍃',
+        '\uE029': '𑌣𑍁',
+    }
+    for pua, gran in pua_to_grantha.items():
+        line = line.replace(pua, gran)
+        
+    # 3. Map Swara Modifier codes to Unicode symbols (using non-combining characters for standalone text rendering)
+    mod_to_unicode = {
+        'A': '⁀', 'a': '⁀', '\uE004': '⁀', '╭╮': '⁀',
+        'B': '∧', 'b': '∧', '\uE005': '∧',
+        'C': '·', 'c': '·', '\uE001': '·', 'ॱ': '·',
+        'D': 'Ʌ', 'd': 'Ʌ', '\uE006': 'Ʌ',
+        'E': '┃', 'e': '┃', '\uE002': '┃',
+        'F': '╷', 'f': '╷',
+        'G': '\\', 'g': '\\', '\uE003': '\\',
+        'H': '|', 'h': '|', '\uE00C': '|',
+        'L': '|', 'l': '|',
+    }
+    
+    def _rep_paren(m):
+        content = m.group(1)
+        if content in mod_to_unicode:
+            return f"({mod_to_unicode[content]})"
+        return m.group(0)
+    
+    line = re.sub(r'\(([^)]+)\)', _rep_paren, line)
+    return line
+
+
 def format_malayalam_samam_text(subsection, section_title, subsection_title):
-    """Plain-text artifact for Malayalam Samam with Grantha swara markers."""
+    """Plain-text artifact for Malayalam Samam with Grantha swara markers and Unicode modifiers."""
     formatted_sets = []
     
     # 1. Check corrected-mantra_sets (preserves Grantha swara markers)
@@ -1799,7 +1853,7 @@ def format_malayalam_samam_text(subsection, section_title, subsection_title):
         for corrected in corrected_mantra_sets:
             c_mantra = corrected.get('corrected-mantra', '')
             if c_mantra:
-                formatted_sets.append(c_mantra)
+                formatted_sets.append(_normalize_malayalam_samam_text_line(c_mantra))
         if formatted_sets:
             return "\n".join(formatted_sets)
 
@@ -1807,7 +1861,7 @@ def format_malayalam_samam_text(subsection, section_title, subsection_title):
     for mantra_set in subsection.get('malayalam-mantra-sets', []):
         mantra = mantra_set.get('malayalam-mantra', '')
         if mantra:
-            formatted_sets.append(mantra)
+            formatted_sets.append(_normalize_malayalam_samam_text_line(mantra))
     if formatted_sets:
         return "\n".join(formatted_sets)
         
@@ -1822,7 +1876,7 @@ def format_malayalam_samam_text(subsection, section_title, subsection_title):
             else:
                 words.append(w)
         if words:
-            formatted_sets.append(" ".join(words))
+            formatted_sets.append(_normalize_malayalam_samam_text_line(" ".join(words)))
 
     return "\n".join(formatted_sets)
 
@@ -2629,10 +2683,194 @@ def preprocess_html_data(supersections, output_mode):
                         prev_rik_id, unique_key, 
                         footnote_counter, footnotes_accumulator, seen_content_map
                     )
+def format_malayalam_samam_html(subsection, subsection_title, include_metadata=True,
+                                 footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, subsection_key=None):
+    """
+    Format Malayalam Samam content as semantic HTML with clean Grantha swara stacking.
+    - Strips all parentheses from the swara marker line.
+    - Aligns swara modifiers (Mod-A..Mod-H) cleanly without parentheses.
+    """
+    from malayalam.ml_text import tokenize_mantra_line
+    from malayalam.ml_transliterate import split_malayalam_syllables
+    
+    formatted_output = []
+    collected_footnotes = []
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+    footnote_data = subsection.get('footnotes', {})
+    
+    # 1. Header
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+    saman_metadata = subsection.get('saman_metadata', '') if include_metadata else ''
+    
+    header_parts = []
+    if display_sub_title:
+        header_title = escape_for_html(display_sub_title)
+        header_title = format_dandas_html(header_title)
+        header_parts.append(f'<span class="header-title">{header_title}</span>')
+    if saman_metadata:
+        meta = escape_for_html(saman_metadata)
+        meta = format_dandas_html(meta, preserve_spaces=True)
+        meta, fnotes, footnote_counter = process_footnotes_html(meta, footnote_data, footnote_counter, seen_markers_map, subsection_key)
+        collected_footnotes.extend(fnotes)
+        header_parts.append(f'<span class="header-meta">{meta}</span>')
+        
+    if header_parts:
+        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
+        
+    # 2. Mantra verses
+    mantra_array = []
+    corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if corrected_mantra_sets:
+        for corrected in corrected_mantra_sets:
+            c_mantra = corrected.get('corrected-mantra', '')
+            if c_mantra:
+                mantra_array.append(c_mantra)
+    elif subsection.get('mantra_sets'):
+        for mantra_set in subsection.get('mantra_sets', []):
+            words = []
+            for word_dict in mantra_set.get('mantra-words', []):
+                w = word_dict.get('word', '')
+                sw = word_dict.get('swara', '')
+                if sw:
+                    words.append(f"{w}({sw})")
+                else:
+                    words.append(w)
+            if words:
+                mantra_array.append(" ".join(words))
+    elif subsection.get('malayalam-mantra-sets'):
+        for mset in subsection.get('malayalam-mantra-sets', []):
+            m = mset.get('malayalam-mantra', '')
+            if m:
+                mantra_array.append(m)
+
+    for mantra_line in mantra_array:
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        tokens = tokenize_mantra_line(clean_mantra)
+        
+        verse_tokens = []
+        for tok in tokens:
+            t = tok['type']
+            if t == 'space':
+                verse_tokens.append('<span class="word-space">&nbsp;</span>')
+            elif t == 'danda':
+                danda_text = escape_for_html(tok.get('char', '।'))
+                verse_tokens.append(f'<span class="danda">{danda_text}</span>')
+            elif t == 'word':
+                word = tok['word'].translate(_ENGLISH_DIGITS)
+                swara = tok['swara']
+                if not word:
+                    continue
+                core_word = word.rstrip("_,.")
+                trailing_punct = word[len(core_word):]
+                syllables = split_malayalam_syllables(core_word)
+                swara_parts, mod_parts = _parse_swara_and_modifiers(swara)
+                
+                for idx, syl in enumerate(syllables):
+                    syl_esc = escape_for_html(syl)
+                    if idx == len(syllables) - 1:
+                        swara_str = "".join(swara_parts).strip("()")
+                        swara_html_map = {
+                            "𑌶𑌿": "\uE011",
+                            "\u11336\u1133F": "\uE011",
+                            "ശി": "\uE011",
+                            "𑌶𑌾": "\uE010",
+                            "𑌶𑍀": "\uE012",
+                            "𑌶𑍍": "\uE013",
+                            "𑌶𑍂": "\uE016",
+                            "𑌷𑍃": "\uE028",
+                        }
+                        swara_display = swara_html_map.get(swara_str, swara_str)
+                        mod_spans = []
+                        for mod in mod_parts:
+                            m_clean = mod.strip("()")
+                            if m_clean in ("C", "c", "ॱ", "·", "\uE001"):
+                                mod_spans.append('<span class="swara-mod mod-c">&#xE001;</span>')
+                            elif m_clean in ("H", "h", "|", "│", "॑", "ˈ", "\uE00C"):
+                                mod_spans.append('<span class="swara-mod mod-h">&#xE00C;</span>')
+                            elif m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
+                                mod_spans.append('<span class="swara-mod mod-a">&#xE004;</span>')
+                            elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+                                mod_spans.append('<span class="swara-mod mod-b">&#xE005;</span>')
+                            elif m_clean in ("D", "d", "Ʌ", "\uE006"):
+                                mod_spans.append('<span class="swara-mod mod-d">&#xE006;</span>')
+                            elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
+                                mod_spans.append('<span class="swara-mod mod-g">&#xE003;</span>')
+                            elif m_clean in ("E", "e", "┃", "\uE002"):
+                                mod_spans.append('<span class="swara-mod mod-e">&#xE002;</span>')
+                            elif m_clean in ("F", "f", "╷"):
+                                mod_spans.append('<span class="swara-mod mod-f">&#xE002;</span>')
+                        
+                        mod_html = "".join(mod_spans)
+                        swara_html = f'<span class="swara-text">{escape_for_html(swara_display)}</span>' if swara_display else '<span class="swara-text">&nbsp;</span>'
+                        verse_tokens.append(f'<span class="mantra-word">{swara_html}<span class="mantra-text">{syl_esc}{mod_html}</span></span>')
+                    else:
+                        verse_tokens.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl_esc}</span></span>')
+                if trailing_punct:
+                    verse_tokens.append(f'<span class="mantra-punct">{escape_for_html(trailing_punct)}</span>')
+            elif t == 'footnote':
+                fn_key = tok.get('marker', '')
+                fn_text = footnote_data.get(fn_key, '')
+                if fn_text:
+                    fn_esc, fnotes, footnote_counter = process_footnotes_html(f"({fn_key})", footnote_data, footnote_counter, seen_markers_map, subsection_key)
+                    collected_footnotes.extend(fnotes)
+                    verse_tokens.append(fn_esc)
+            else:
+                extra_text = escape_for_html(tok.get('text', '').translate(_ENGLISH_DIGITS))
+                if extra_text:
+                    verse_tokens.append(f'<span class="extra-text">{extra_text}</span>')
+
+        if verse_tokens:
+            formatted_output.append(f'<div class="mantra-verse">{"".join(verse_tokens)}</div>')
+
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
+
+    return '\n'.join(formatted_output), footnote_counter
+
+
+def preprocess_html_data(supersections, output_mode='combined'):
+    """
+    Pre-processes all subsection content for HTML template rendering.
+    """
+    index_entries = []
+    
+    for super_key, supersection in supersections.items():
+        for section_key, section in supersection.get('sections', {}).items():
+            if section_key == 'count': continue
+            
+            # --- SECTION STATE ---
+            footnote_counter = 0
+            footnotes_accumulator = []
+            seen_content_map = {}
+            
+            section['html_subsections'] = [] # List of HTML strings
+            
+            prev_rik_id = None
+            
+            for subsection_key, subsection in section.get('subsections', {}).items():
+                unique_key = f"{super_key}_{section_key}_{subsection_key}"
+                is_malayalam = bool(subsection.get('malayalam-mantra-sets') or subsection.get('corrected-mantra_sets'))
+                
+                # Dispatch based on mode
+                html_content = ""
+                if output_mode == 'rik':
+                    html_content, footnote_counter = format_rik_only_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
+                elif output_mode == 'rik_nometa':
+                    html_content, footnote_counter = format_rik_nometa_html(
+                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                        prev_rik_id, unique_key, 
+                        footnote_counter, footnotes_accumulator, seen_content_map
+                    )
                 elif output_mode == 'samam':
-                    if subsection.get('malayalam-mantra-sets'):
+                    if is_malayalam:
                         html_content, footnote_counter = format_malayalam_samam_html(
-                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key
                         )
                     else:
                         html_content, footnote_counter = format_samam_only_html(
@@ -2641,9 +2879,11 @@ def preprocess_html_data(supersections, output_mode):
                             footnote_counter, footnotes_accumulator, seen_content_map
                         )
                 elif output_mode == 'samam_nometa':
-                    if subsection.get('malayalam-mantra-sets'):
+                    if is_malayalam:
                         html_content, footnote_counter = format_malayalam_samam_html(
-                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=False
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=False,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key
                         )
                     else:
                         html_content, footnote_counter = format_samam_nometa_html(
@@ -2652,14 +2892,18 @@ def preprocess_html_data(supersections, output_mode):
                             footnote_counter, footnotes_accumulator, seen_content_map
                         )
                 else:
-                    if subsection.get('malayalam-mantra-sets'):
-                        r_html, footnote_counter = format_rik_only_html(
-                            subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                            prev_rik_id, unique_key, 
-                            footnote_counter, footnotes_accumulator, seen_content_map
-                        )
+                    if is_malayalam:
+                        r_html = ""
+                        if subsection.get('rik_text') or subsection.get('rik_metadata'):
+                            r_html, footnote_counter = format_rik_only_html(
+                                subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                                prev_rik_id, unique_key, 
+                                footnote_counter, footnotes_accumulator, seen_content_map
+                            )
                         s_html, footnote_counter = format_malayalam_samam_html(
-                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key
                         )
                         html_content = f"{r_html}\n{s_html}" if r_html else s_html
                     else:
