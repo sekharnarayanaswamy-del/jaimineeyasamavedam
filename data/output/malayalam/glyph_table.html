@@ -145,138 +145,109 @@
     .tag-liga { background: #dbeafe; color: #1e40af; }
     .tag-all { background: #dcfce7; color: #166534; }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-    }
-    th {
-        background: #f1f5f9;
-        color: #475569;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--border-color);
-    }
-    td {
-        padding: 14px 18px;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 14px;
-        vertical-align: middle;
-    }
-    tr:hover {
-        background: #f8fafc;
-    }
-    .idx-col {
-        color: #94a3b8;
-        font-size: 13px;
-        font-weight: 600;
-        width: 75px;
-    }
-    .glyph-cell {
-        font-size: 34px;
-        line-height: 1;
-        width: 100px;
-        text-align: center;
-    }
-    .swara-glyph {
-        font-family: 'JaimineeyaSwara', serif;
-    }
-    .swara-red {
-        color: var(--swara-red);
-        font-weight: bold;
-    }
-    .mod-glyph {
-        color: var(--primary-blue);
-    }
-
     /* DOTTED CIRCLE REPRESENTATION CELL */
     .dotted-cell {
+        width: 140px;
         text-align: center;
-        width: 150px;
     }
     .dotted-sample {
-        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         background: #ffffff;
-        padding: 8px 18px;
-        border-radius: 8px;
         border: 1px solid var(--border-color);
+        padding: 8px 14px;
+        border-radius: 8px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
-    .dotted-sample .base-circle-box {
+    .base-circle-box {
         position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Noto Serif Malayalam', 'Segoe UI Symbol', sans-serif;
-        font-size: 24px;
-        color: #94a3b8;
-        line-height: 1;
-        letter-spacing: 1px;
+        display: inline-block;
+        font-family: 'Segoe UI Symbol', 'Noto Sans Malayalam', sans-serif;
+        font-size: 1.4rem;
+        color: var(--text-muted);
+        line-height: 1.2;
+        letter-spacing: 2px;
+        user-select: none;
     }
-    .dotted-sample .swara-mod-dotted {
-        color: var(--primary-blue);
+    .swara-mod-dotted {
         font-family: 'JaimineeyaSwara', serif;
         font-weight: bold;
         line-height: 1;
+        pointer-events: none;
     }
-    .dotted-sample .mod-a-dotted {
+    .swara-mod-dotted.mod-a-dotted {
         position: absolute;
-        top: -0.42em;
+        top: -0.22em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 22px;
+        font-size: 1.15em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-b-dotted {
+    .swara-mod-dotted.mod-b-dotted {
         position: absolute;
-        top: -0.44em;
+        top: -0.22em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 20px;
+        font-size: 1.15em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-c-dotted {
+    .swara-on-caret-dotted {
+        position: absolute;
+        top: -1.05em;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #c62828;
+        font-family: 'JaimineeyaSwara', serif;
+        font-size: 1.05em;
+        font-weight: bold;
+        line-height: 1;
+        pointer-events: none;
+    }
+    .swara-mod-dotted.mod-c-dotted {
         position: absolute;
         top: -0.15em;
-        right: -0.38em;
-        font-size: 18px;
+        right: -0.35em;
+        font-size: 1.05em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-d-dotted {
+    .swara-mod-dotted.mod-d-dotted {
         position: absolute;
-        top: -0.44em;
+        top: -0.24em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 20px;
+        font-size: 1.15em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-e-dotted {
+    .swara-mod-dotted.mod-e-dotted {
         position: relative;
-        margin-left: 4px;
-        font-size: 24px;
+        margin-left: 0.15em;
+        font-size: 1.25em;
         vertical-align: -0.05em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-f-dotted {
+    .swara-mod-dotted.mod-f-dotted {
         position: relative;
-        margin-left: 4px;
-        font-size: 24px;
+        margin-left: 0.15em;
+        font-size: 1.25em;
         vertical-align: -0.05em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-g-dotted {
+    .swara-mod-dotted.mod-g-dotted {
         position: absolute;
         bottom: -0.40em;
         left: 50%;
         transform: translateX(-65%);
-        font-size: 24px;
+        font-size: 1.25em;
+        color: var(--mod-blue);
     }
-    .dotted-sample .mod-h-dotted {
+    .swara-mod-dotted.mod-h-dotted {
         position: absolute;
-        top: -0.42em;
+        top: -0.35em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 22px;
+        font-size: 1.15em;
+        color: var(--mod-blue);
     }
 
     /* MANTRAS STACKING PREVIEW CELL */
@@ -333,6 +304,89 @@
         line-height: 1;
     }
     .mantra-preview-flex .swara-mod.mod-a {
+        position: absolute;
+        top: -0.28em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
+    }
+    .mantra-preview-flex .swara-mod.mod-b {
+        position: absolute;
+        top: -0.22em;
+        left: 100%;
+        transform: translateX(-50%);
+        pointer-events: none;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .mantra-preview-flex .swara-mod.mod-b .caret-glyph {
+        display: block;
+        color: var(--primary-blue);
+        font-size: 0.95rem;
+        line-height: 1;
+    }
+    .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {
+        position: absolute;
+        top: -1.05em;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--swara-red);
+        font-size: 0.90rem;
+        font-weight: bold;
+        font-family: 'JaimineeyaSwara', serif;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    th {
+        background: #f1f5f9;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    td {
+        padding: 14px 18px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    tr:hover {
+        background: #f8fafc;
+    }
+    .idx-col {
+        color: #94a3b8;
+        font-size: 13px;
+        font-weight: 600;
+        width: 75px;
+    }
+    .glyph-cell {
+        font-size: 34px;
+        line-height: 1;
+        width: 100px;
+        text-align: center;
+    }
+    .swara-glyph {
+        font-family: 'JaimineeyaSwara', serif;
+    }
+    .swara-red {
+        color: var(--swara-red);
+        font-weight: bold;
+    }
+    .mod-glyph {
+        color: var(--primary-blue);
+    }
+
         position: absolute;
         top: -0.28em;
         left: 100%;

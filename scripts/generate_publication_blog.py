@@ -425,7 +425,7 @@ html_template = """<!DOCTYPE html>
     }
     .swara-mod.mod-b {
         position: absolute;
-        top: -0.28em;
+        top: -0.22em;
         left: 100%;
         transform: translateX(-50%);
         pointer-events: none;
@@ -437,16 +437,19 @@ html_template = """<!DOCTYPE html>
         display: block;
         color: var(--brand-blue);
         font-size: 1.20rem;
+        line-height: 1;
     }
     .swara-mod.mod-b .swara-on-caret {
         position: absolute;
-        top: -0.80em;
+        top: -1.15em;
         left: 50%;
         transform: translateX(-50%);
         color: var(--swara-red);
-        font-size: 1.10rem;
+        font-size: 1.05rem;
         font-weight: bold;
         font-family: 'JaimineeyaSwara', serif;
+        line-height: 1;
+        white-space: nowrap;
     }
     .swara-mod.mod-c {
         position: absolute;
