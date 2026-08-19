@@ -1592,7 +1592,7 @@ def _render_malayalam_mantra_body(subsection):
         line = mantra_set.get('malayalam-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
         if not line:
             continue
-        is_verse_end = bool(re.search(r'॥\s*[०-९\d]+\s*॥\s*$', line))
+        is_verse_end = bool(re.search(r'(\|\||॥)\s*[\d०-९]+\s*(\|\||॥)', line))
         for tok in tokenize_mantra_line(line):
             t = tok['type']
             if t == 'space':
