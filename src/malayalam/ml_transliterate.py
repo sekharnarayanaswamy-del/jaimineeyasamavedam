@@ -81,14 +81,17 @@ def normalize_combining_marks(text: str) -> str:
     return text
 
 
-_DIGITS_TO_ENGLISH = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
+# Translate Devanagari and Malayalam numerals (excluding ൪ which is used for Vedic repha) to English ASCII digits
+_DIGITS_TO_ENGLISH = str.maketrans("०१२३४५६७८९൦൧൨൩൫൬൭൮൯", "0123456789012356789")
 
 
 def post_process_malayalam(text: str) -> str:
     """Cleanup applied after aksharamukha transliteration (ported edge cases)."""
     text = normalize_combining_marks(text)
-    # Vedic transliteration rule: Devanagari ळ (U+0933) -> Malayalam ഴ (U+0D34)
+    # Vedic transliteration rule 2: Devanagari ळ (U+0933) -> Malayalam ഴ (U+0D34)
     text = text.replace("ള", "ഴ").replace("ൾ", "ഴ്")
+    # Vedic transliteration rule 1: Vocalic r / Repha before consonants (e.g. र्हा -> ൪ഹാ)
+    text = re.sub(r"(?:ർ|ര\u0D4D)(?=[ക-ഹ])", "൪", text)
     # Word-final halant ma -> anusvara (e.g. സൂക്തമ് -> സൂക്തം)
     text = re.sub(r"മ്(?=[\s।॥\?!\.,;\)]|$)", "ം", text)
     # Collapse duplicated AA matras
