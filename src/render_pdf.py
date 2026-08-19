@@ -1466,14 +1466,84 @@ def _parse_swara_and_modifiers(swara_str: str):
     return swaras, mods
 
 
+MALAYALAM_SWARA_GLYPH_MAP = {
+    # Grantha Pla family
+    "𑌪𑍍𑌲": "\uE020",
+    "𑌪𑍍𑌲𑌾": "\uE021",
+    "𑌪𑍍𑌲𑌿": "\uE022",
+    "𑌪𑍍𑌲𑍀": "\uE023",
+    "𑌪𑍍𑌲𑍁": "\uE024",
+    "𑌪𑍍𑌲𑍂": "\uE025",
+    "𑌪𑍍𑌲𑍍": "\uE026",
+    
+    # Malayalam Pla family
+    "പ്ല": "\uE020",
+    "പ്ലാ": "\uE021",
+    "പ്ലി": "\uE022",
+    "പ്ലീ": "\uE023",
+    "പ്ലു": "\uE024",
+    "പ്ലൂ": "\uE025",
+    "പ്ല്": "\uE026",
+    
+    # Grantha Sha family
+    "𑌶𑌾": "\uE010",
+    "𑌶𑌿": "\uE011",
+    "\u11336\u1133F": "\uE011",
+    "𑌶𑍀": "\uE012",
+    "𑌶𑍍": "\uE013",
+    "𑌶𑍁": "\uE014",
+    "𑌶𑍂": "\uE015",
+    "𑌶𑍃": "\uE016",
+    "𑌶𑍄": "\uE017",
+    "𑌶𑍇": "\uE018",
+    "𑌶𑍈": "\uE019",
+    "𑌶𑍋": "\uE01A",
+    "𑌶𑍌": "\uE01B",
+    
+    # Malayalam Sha family
+    "ശ𑌾": "\uE010",
+    "ശാ": "\uE010",
+    "ശ𑌿": "\uE011",
+    "ശി": "\uE011",
+    "ശ𑍀": "\uE012",
+    "ശീ": "\uE012",
+    "ശ്": "\uE013",
+    "ശു": "\uE014",
+    "ശൂ": "\uE015",
+    "ശൃ": "\uE016",
+    "ശൄ": "\uE017",
+    "ശെ": "\uE018",
+    "ശൈ": "\uE019",
+    "ശൊ": "\uE01A",
+    "ശൌ": "\uE01B",
+    "ശൗ": "\uE01B",
+    
+    # Other Conjuncts / Forms
+    "𑌤𑍍𑌰": "\uE01D",  # Tra (A17)
+    "ത്ര": "\uE01D",
+    "𑌕𑍍𑌰": "\uE01E",  # Kra (A19)
+    "ക്ര": "\uE01E",
+    "𑌕𑍍𑌰𑍍": "\uE01F", # Kra + virama
+    "ക്ര്": "\uE01F",
+    "𑌶𑍍𑌰𑍂": "\uE027", # Shruu
+    "ശ്രൂ": "\uE027",
+    "𑌶𑍍𑌰𑍃": "\uE028", # Shrr
+    "ശ്രൃ": "\uE028",
+    "𑌷𑍃": "\uE028",
+    "𑌣𑍁": "\uE029",  # Nna+U
+    "ണു": "\uE029",
+}
+
+
 def _swara_latex(swara: str) -> str:
-    """Latex for pure swara marker pitch glyphs rendered in bold SwaraRed."""
+    """Latex for pure swara marker pitch glyphs rendered in bold SwaraRed using JaimineeyaSwara font."""
     if not swara:
         return ""
     # Filter out modifiers which attach directly to Mantrakshara
     if swara in MODIFIER_KEYS or swara in ("A", "B", "C", "D", "E", "F", "G", "H", "L", "a", "b", "c", "d", "e", "f", "g", "h", "l"):
         return ""
-    return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{swara}}}}}"
+    mapped_swara = MALAYALAM_SWARA_GLYPH_MAP.get(swara, swara)
+    return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{mapped_swara}}}}}"
 
 
 def wrap_latin_for_latex(text: str) -> str:
@@ -2772,17 +2842,7 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                     syl_esc = escape_for_html(syl)
                     if idx == len(syllables) - 1:
                         swara_str = "".join(swara_parts).strip("()")
-                        swara_html_map = {
-                            "𑌶𑌿": "\uE011",
-                            "\u11336\u1133F": "\uE011",
-                            "ശി": "\uE011",
-                            "𑌶𑌾": "\uE010",
-                            "𑌶𑍀": "\uE012",
-                            "𑌶𑍍": "\uE013",
-                            "𑌶𑍂": "\uE016",
-                            "𑌷𑍃": "\uE028",
-                        }
-                        swara_display = swara_html_map.get(swara_str, swara_str)
+                        swara_display = MALAYALAM_SWARA_GLYPH_MAP.get(swara_str, swara_str)
                         mod_spans = []
                         for mod in mod_parts:
                             m_clean = mod.strip("()")
