@@ -92,6 +92,10 @@ def post_process_malayalam(text: str) -> str:
     text = text.replace("ള", "ഴ").replace("ൾ", "ഴ്")
     # Vedic transliteration rule 1: Vocalic r / Repha before consonants (e.g. र्हा -> ൪ഹാ)
     text = re.sub(r"(?:ർ|ര\u0D4D)(?=[ക-ഹ])", "൪", text)
+    # Vedic transliteration rule 3: Word-final AA swara / matra -> short vowel (അ)
+    # e.g. സംഹിതാ -> സംഹിത, മാലാ -> മാല, സൂക്തമാലാ -> സൂക്തമാല
+    text = re.sub(r"ാ(?=[\s।॥\?!\.,;\)\"']|$)", "", text)
+    text = re.sub(r"ആ(?=[\s।॥\?!\.,;\)\"']|$)", "അ", text)
     # Word-final halant ma -> anusvara (e.g. സൂക്തമ് -> സൂക്തം)
     text = re.sub(r"മ്(?=[\s।॥\?!\.,;\)]|$)", "ം", text)
     # Collapse duplicated AA matras

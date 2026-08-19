@@ -27,6 +27,7 @@ The JSON structure must rigidly follow this path:
 ## 4. Vedic Transliteration Rules (Devanagari $\rightarrow$ Malayalam)
 *   **Vocalic $r$ / Pre-consonantal Repha**: Transliterate `र्` before consonants (e.g. `र्हा`, `र्त्य`, `र्द्ध`, `र्ध्न`) as `൪` (`U+0D6A`, circular repha), e.g. `बर्हा` $\rightarrow$ `ബ൪ഹാ`, `बर्ही` $\rightarrow$ `ബ൪ഹീ`, `मर्त्या` $\rightarrow$ `മ൪ത്യാ`, `मूर्ध्नो` $\rightarrow$ `മൂ൪ധ്നോ`. Note: `൪` is excluded from ASCII digit normalization so it is preserved as an authentic Vedic repha.
 *   **Intervocalic ळ (LLDA)**: Transliterate Devanagari `ळ` (`U+0933`) to Malayalam `ഴ` (`U+0D34`), e.g. `अग्निमीळे` $\rightarrow$ `അഗ്നിമീഴേ`.
+*   **Word-Final "आ" Shortening**: Transliterate word-final "आ" / "ा" in titles and nouns as short "അ" (removing terminal `ാ` matra), e.g. `जैमिनीय साम संहिता` $\rightarrow$ `ജൈമിനീയ സാമ സംഹിത`, `जैमिनीय साम सूक्त माला` $\rightarrow$ `ജൈമിനീയ സാമ സൂക്തമാല`.
 *   **Word-Final Halant Ma**: Transliterate word-final `മ്` to Malayalam Anusvara `ം` (e.g. `सूक्तम्` $\rightarrow$ `സൂക്തം`).
 *   **Vocalic R Repair**: `്ൃ` $\rightarrow$ `ൃ`, `്ൄ` $\rightarrow$ `ൄ` (prevents double virama).
 *   **End-of-Samam Line Breaking**: Line/paragraph breaks after each Samam verse marker `॥N॥` / `||N||`.

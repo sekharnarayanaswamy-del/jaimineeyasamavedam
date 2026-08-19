@@ -1,6 +1,6 @@
-ജൈമിനീയ സാമ സംഹിതാ
+ജൈമിനീയ സാമ സംഹിത
 
-Version 3.0 2026-08-19 20:59:58
+Version 3.0 2026-08-19 21:14:57
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
 ആഗ്നേയപാഠഃ
