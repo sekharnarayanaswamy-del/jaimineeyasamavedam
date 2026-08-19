@@ -179,7 +179,7 @@
             position: absolute;
             top: -0.28em;
             left: 100%;
-            transform: translateX(-40%);
+            transform: translateX(0%);
             font-size: 0.95rem;
             pointer-events: none;
         }
@@ -187,7 +187,7 @@
             position: absolute;
             top: -0.28em;
             left: 100%;
-            transform: translateX(-40%);
+            transform: translateX(0%);
             font-size: 1.15rem;
             pointer-events: none;
         }
