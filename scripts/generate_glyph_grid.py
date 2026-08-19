@@ -13,8 +13,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 FONT_PATH = ROOT / "fonts" / "JaimineeyaSwara.ttf"
-OUT_IMG = ROOT / "data" / "output" / "malayalam" / "glyph_grid_JaimineeyaSwara.png"
-OUT_HTML = ROOT / "data" / "output" / "malayalam" / "glyph_table.html"
+OUT_DIR = ROOT / "Malayalam_JSV" / "malayalam"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+OUT_IMG = OUT_DIR / "glyph_grid_JaimineeyaSwara.png"
+OUT_HTML = OUT_DIR / "glyph_table.html"
 
 ARTIFACT_DIR = Path(r"C:\Users\sekha\.gemini\antigravity-ide\brain\33a78242-ade0-47ff-b909-95b423204936")
 
