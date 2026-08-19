@@ -1624,7 +1624,8 @@ def _render_malayalam_mantra_body(subsection):
                 trailing_punct = word[len(core_word):]
 
                 if not core_word:
-                    paragraph_buffer.append(f"{{\\malayalamfont {escape_for_latex(word)}}}")
+                    punct_esc = escape_for_latex(word)
+                    paragraph_buffer.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{punct_esc}}}}}")
                     continue
 
                 if swara:
@@ -1651,7 +1652,8 @@ def _render_malayalam_mantra_body(subsection):
                         else:
                             parts.append(f"{{\\malayalamfont {syl_esc}}}")
                     if trailing_punct:
-                        parts.append(f"{{\\malayalamfont {escape_for_latex(trailing_punct)}}}")
+                        tp_esc = escape_for_latex(trailing_punct)
+                        parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{tp_esc}}}}}")
                     paragraph_buffer.append("".join(parts))
                 else:
                     syl_parts = []
@@ -1660,12 +1662,16 @@ def _render_malayalam_mantra_body(subsection):
                         syl_esc = escape_for_latex(syl)
                         syl_parts.append(f"{{\\malayalamfont {syl_esc}}}")
                     if trailing_punct:
-                        syl_parts.append(f"{{\\malayalamfont {escape_for_latex(trailing_punct)}}}")
+                        tp_esc = escape_for_latex(trailing_punct)
+                        syl_parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{tp_esc}}}}}")
                     paragraph_buffer.append("".join(syl_parts))
             else:
                 extra_text = tok.get("text", "").translate(_ENGLISH_DIGITS)
                 extra_esc = escape_for_latex(extra_text)
-                paragraph_buffer.append(f"{{\\malayalamfont {extra_esc}}}")
+                if extra_text.strip() in (".", ",", "_", "._", "_.", ",_", ",.", ";"):
+                    paragraph_buffer.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{extra_esc}}}}}")
+                else:
+                    paragraph_buffer.append(f"{{\\malayalamfont {extra_esc}}}")
         if is_verse_end:
             full_paragraph = "".join(paragraph_buffer)
             formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
