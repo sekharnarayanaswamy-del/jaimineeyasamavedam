@@ -355,9 +355,21 @@ This dynamic architecture allows one to build procedural ritual guides alongside
 This workflow handles the end-to-end processing of the Malayalam Jaimineeya Samaveda edition, featuring automated transliteration from Devanagari, manual enrichment of Malayalam-specific Swara Modifiers, and unified publishing across PDF, HTML, and Unicode text formats.
 
 #### Phase 1: Automated Devanagari-to-Malayalam Transliteration
-1. **Base Text Conversion**: `src/malayalam/ml_transliterate.py` transliterates Sanskrit Devanagari text into Malayalam, repairing conjuncts and chillu endings (e.g., word-final `മ്` → `ം`, `്ൃ` → `ൃ`).
+1. **Base Text Conversion**: `src/malayalam/ml_transliterate.py` transliterates Sanskrit Devanagari text into Malayalam, repairing conjuncts, vowel matras, and Vedic script nuances.
 2. **Swara Mapping**: `src/malayalam/ml_map.py` (consuming `Malayalam_JSV/swara_lookup_frozen.json`) maps all 19 Ayugma subscript swaras to authentic Grantha characters (`U+11300`–`U+1137F`) with manuscript overrides (`Pla` `𑌪𑍍𑌲`, `Sha` `𑌶𑌿`, `Tra` `𑌤𑍍𑌰`, `Kra` `𑌕𑍍𑌰`).
 3. **Generate Editable Text**: `src/malayalam/ml_text.py` produces the baseline editable Unicode file (`data/input/Malayalam/*.txt`).
+
+#### Global Vedic Transliteration Rules (Devanagari $\rightarrow$ Malayalam)
+The pipeline enforces the following canonical transliteration rules across all conversion scripts and output modes:
+
+| # | Rule / Feature | Devanagari | Malayalam | Codepoint / Regex | Description & Example |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1** | **Vocalic $r$ / Pre-consonantal Repha** | `र्` (before consonant) | `൪` (Circular Repha) | `(?:ർ\|ര\u0D4D)(?=[ക-ഹ])` $\rightarrow$ `൪` (`U+0D6A`) | Pre-consonantal repha in Vedic chant (e.g. `बर्हा` $\rightarrow$ `ബ൪ഹാ`, `बर्ही` $\rightarrow$ `ബ൪ഹീ`, `मर्त्या` $\rightarrow$ `മ൪ത്യാ`, `एभिर्वार्द्धा` $\rightarrow$ `ഏഭിർവാ൪ദ്ധാ`, `मूर्ध्नो` $\rightarrow$ `മൂ൪ധ്നോ`). Note: `൪` is excluded from standard ASCII digit conversions so it remains intact as a repha. |
+| **2** | **Intervocalic Vedic DDA/LLDA** | `ळ` / `ळ्ह` | `ഴ` / `ഴ്` | `U+0933` $\rightarrow$ `U+0D34` (`text.replace('ള', 'ഴ')`) | Vedic intervocalic retroflex continuant (e.g. `अग्निमीळे` $\rightarrow$ `അഗ്നിമീഴേ`, `ईळे` $\rightarrow$ `ഈഴെ`). |
+| **3** | **Word-Final Halant Ma** | `म्` (word-final) | `ം` (Anusvara) | `മ്(?=[\s।॥\?!\.,;\)]\|$)` $\rightarrow$ `ം` | Word-final halant ma simplifies to Malayalam anusvara (e.g. `सूक्तम्` $\rightarrow$ `സൂക്തം`). |
+| **4** | **Vocalic R Ligature Repair** | `्ऋ` / `्ॠ` | `ൃ` / `ൄ` | `്ൃ` $\rightarrow$ `ൃ`, `്ൄ` $\rightarrow$ `ൄ` | Prevents erroneous double virama before vocalic r matra (e.g. `ക്ിൃ` $\rightarrow$ `കൃ`). |
+| **5** | **Matra Duplication Collapse** | `ा+` | `ാ` | `ാ+` $\rightarrow$ `ാ` | Collapses accidental double/triple long AA vowel signs. |
+| **6** | **Verse End Non-Breaking Wrap** | `॥ N ॥` / `\|\| N \|\|` | `\nolinebreak\mbox{॥N॥}` | Regex `(\|\|\|॥)\s*[\d०-९]+\s*(\|\|\|॥)` | Samam/Rik verse markers never wrap onto an orphan line alone, and end-of-samam triggers a clean paragraph/line break (`\par\vspace{0.9em}`). |
 
 #### Phase 2: Manual Swara Modifier Enrichment
 The editor opens `data/input/Malayalam/*.txt` in any text editor and adds the Malayalam Swara Modifiers directly next to syllables/swaras using typing shortcuts:
