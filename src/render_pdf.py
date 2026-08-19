@@ -1419,19 +1419,19 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.30em}}\uE00D}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.10em}}\uE00D}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE005}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.05em}}\uE001}}}}}}"
     elif m_clean in ("D", "d", "Ʌ", "\uE006"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE006}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\uE006}}}}}}"
     elif m_clean in ("E", "e", "┃", "\uE002"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\uE002}}}}"
     elif m_clean in ("F", "f", "╷"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\uE002}}}}"
     elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.50em}}\uE003}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.65em}}\uE003}}}}}}"
     elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.10ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
     return syl_esc

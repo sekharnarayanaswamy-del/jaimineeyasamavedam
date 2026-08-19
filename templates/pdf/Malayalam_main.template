@@ -48,6 +48,11 @@
 \usepackage{imakeidx}    
 \usepackage{needspace}
 \usepackage{longtable}
+\usepackage{titlesec}
+\titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\malayalamfont}
+\titlespacing*{\chapter}{0pt}{-25pt}{12pt}
+\titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\malayalamfont}
+\titlespacing*{\section}{0pt}{8pt}{14pt}
 \usepackage{setspace}
 \setstretch{1.85}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -58,7 +63,7 @@
 \lefthyphenmin=3
 \righthyphenmin=3
 \tolerance=500
-\pretolerance=100
+\pretolerance=100.\sta
 \setlength{\emergencystretch}{1em}
 \setlength{\hfuzz}{2pt}
 \setlength{\parindent}{0pt}
