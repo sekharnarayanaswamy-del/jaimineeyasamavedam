@@ -536,24 +536,25 @@ def build_font() -> None:
         new_glyph.recalcBounds({})
         return new_glyph
 
-    # 2. Custom Vedic Pla: Grantha Pa (pa_gran) + Grantha La (la_gran) subjoined directly below
+    # 2. Custom Vedic Pla: Malayalam Va (vamlym) + Grantha La (la_gran) subjoined directly below
     g_glyph_set = gfont.getGlyphSet()
     m_glyph_set = mfont.getGlyphSet()
 
-    pen_pa = TTGlyphPen(g_glyph_set)
-    g_glyph_set["pa_gran"].draw(pen_pa)
-    pa_glyph = pen_pa.glyph()
-    pa_width, pa_lsb = gfont["hmtx"]["pa_gran"]
+    pen_va = TTGlyphPen(m_glyph_set)
+    m_glyph_set["vamlym"].draw(pen_va)
+    va_glyph = pen_va.glyph()
+    va_glyph.recalcBounds({})
+    va_width, va_lsb = mfont["hmtx"]["vamlym"]
 
     pen_la = TTGlyphPen(g_glyph_set)
     g_glyph_set["la_gran"].draw(pen_la)
     la_glyph = pen_la.glyph()
 
-    # Scale Grantha La to subscript (0.52) and position centered below Grantha Pa
-    la_sub_gran = scale_and_shift_glyph(la_glyph, 0.52, 220, -400)
-    pla_glyph = compose_glyphs(pa_glyph, la_sub_gran, 0, 0)
+    # Scale Grantha La to subscript (0.50) and position centered below Malayalam Va
+    la_sub_gran = scale_and_shift_glyph(la_glyph, 0.50, 40, -400)
+    pla_glyph = compose_glyphs(va_glyph, la_sub_gran, 0, 0)
     glyf_table["pla_jsv"] = pla_glyph
-    hmtx_table["pla_jsv"] = (pa_width, pa_lsb)
+    hmtx_table["pla_jsv"] = (va_width, va_lsb)
 
     # Kra (A19): Grantha Ka + subjoined Ra (ra_vattu_gran)
     pen_ka = TTGlyphPen(g_glyph_set)
@@ -697,37 +698,27 @@ def build_font() -> None:
     hmtx_table["nna_u_jsv"] = (2580, nna_lsb)
 
     # 4. Create Pla + Grantha matra composites
-    pen_pi = TTGlyphPen(g_glyph_set)
-    g_glyph_set["pi_gran"].draw(pen_pi)
-    pi_glyph = pen_pi.glyph()
-    pi_width, pi_lsb = gfont["hmtx"]["pi_gran"]
-
-    pen_pii = TTGlyphPen(g_glyph_set)
-    g_glyph_set["pii_gran"].draw(pen_pii)
-    pii_glyph = pen_pii.glyph()
-    pii_width, pii_lsb = gfont["hmtx"]["pii_gran"]
-
-    pla_aa = compose_glyphs(pla_glyph, aa_matra, pa_width - 80, 0)
+    pla_aa = compose_glyphs(pla_glyph, aa_matra, va_width - 80, 0)
     glyf_table["pla_aa_jsv"] = pla_aa
-    hmtx_table["pla_aa_jsv"] = (pa_width + aa_width - 60, pa_lsb)
+    hmtx_table["pla_aa_jsv"] = (va_width + aa_width - 60, va_lsb)
 
-    # Pli: pi_gran + subjoined Grantha La
-    pla_i = compose_glyphs(pi_glyph, la_sub_gran, 0, 0)
+    # Pli: pla_glyph + Grantha i_matra
+    pla_i = compose_glyphs(pla_glyph, i_matra, 0, 0)
     glyf_table["pla_i_jsv"] = pla_i
-    hmtx_table["pla_i_jsv"] = (pi_width, pi_lsb)
+    hmtx_table["pla_i_jsv"] = (va_width, va_lsb)
 
-    # Plii: pii_gran + subjoined Grantha La
-    pla_ii = compose_glyphs(pii_glyph, la_sub_gran, 0, 0)
+    # Plii: pla_glyph + Grantha ii_matra
+    pla_ii = compose_glyphs(pla_glyph, ii_matra, 0, 0)
     glyf_table["pla_ii_jsv"] = pla_ii
-    hmtx_table["pla_ii_jsv"] = (pii_width, pii_lsb)
+    hmtx_table["pla_ii_jsv"] = (va_width, va_lsb)
 
     # Plu / Pluu / Pla-virama
-    glyf_table["pla_u_jsv"] = compose_glyphs(pla_glyph, u_matra, pa_width - 150, 0)
-    hmtx_table["pla_u_jsv"] = (pa_width, pa_lsb)
-    glyf_table["pla_uu_jsv"] = compose_glyphs(pla_glyph, uu_matra, pa_width - 150, 0)
-    hmtx_table["pla_uu_jsv"] = (pa_width + 400, pa_lsb)
+    glyf_table["pla_u_jsv"] = compose_glyphs(pla_glyph, u_matra, va_width - 150, 0)
+    hmtx_table["pla_u_jsv"] = (va_width, va_lsb)
+    glyf_table["pla_uu_jsv"] = compose_glyphs(pla_glyph, uu_matra, va_width - 150, 0)
+    hmtx_table["pla_uu_jsv"] = (va_width + 400, va_lsb)
     glyf_table["pla_virama_jsv"] = compose_glyphs(pla_glyph, virama_mlym, pla_glyph.xMax + 50, 0)
-    hmtx_table["pla_virama_jsv"] = (pla_glyph.xMax + 120, pa_lsb)
+    hmtx_table["pla_virama_jsv"] = (pla_glyph.xMax + 120, va_lsb)
 
     # 5. Modifiers (All 11 Canonical Vedic Swara Modifiers)
     # Mod 1: High / Mid-Dot (U+E001, U+0971, U+00B7) - Swara Modifier C: larger bold dot aligned to swara baseline
