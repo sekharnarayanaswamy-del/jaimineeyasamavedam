@@ -227,7 +227,7 @@ def draw_syllable_arc_danda(width: int = 2100) -> Glyph:
     """Swara Modifier A1 (MOD-A_1): Overhead smooth semi-circular curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    coords = get_bezier_arc_coords(width, y_base=480, thickness=135, height_factor=0.88)
+    coords = get_bezier_arc_coords(width, y_base=480, thickness=95, height_factor=0.88)
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
     glyph.endPtsOfContours = [len(coords) - 1]
