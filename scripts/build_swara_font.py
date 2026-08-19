@@ -223,11 +223,11 @@ def draw_syllable_arc(width: int = 1600) -> Glyph:
     return glyph
 
 
-def draw_syllable_arc_danda(width: int = 2100) -> Glyph:
+def draw_syllable_arc_danda(width: int = 3000) -> Glyph:
     """Swara Modifier A1 (MOD-A_1): Overhead smooth semi-circular curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    coords = get_bezier_arc_coords(width, y_base=480, thickness=95, height_factor=0.88)
+    coords = get_bezier_arc_coords(width, y_base=480, thickness=100, height_factor=0.62)
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
     glyph.endPtsOfContours = [len(coords) - 1]
@@ -753,7 +753,7 @@ def build_font() -> None:
     # Mod 4b: Syllable Spanning Arc over Danda (U+E00D) - Swara Modifier A1
     syllable_arc_danda = draw_syllable_arc_danda()
     glyf_table["syllable_arc_danda_jsv"] = syllable_arc_danda
-    hmtx_table["syllable_arc_danda_jsv"] = (2150, 120)
+    hmtx_table["syllable_arc_danda_jsv"] = (3050, 120)
 
     # Mod 5: Caret (^) (U+E005, U+005E, U+02C4) - Swara Modifier B (spans 2 syllables)
     caret_glyph = draw_caret()
