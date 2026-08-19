@@ -174,29 +174,61 @@ def draw_descending_tone_slash() -> Glyph:
 
 
 def draw_syllable_arc(width: int = 1600) -> Glyph:
-    """Swara Modifier A: Overhead bold smooth curved bridge spanning across 2 syllables (spec_image1..5)."""
+    """Swara Modifier A: Overhead smooth, flatter curved bridge spanning across 2 syllables (spec_image1..5)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
     mid_x = width // 2
-    # Smooth, tall parabolic dome vault arch (height 420 to 1260, ~170 unit bold stroke width)
+    # Smooth, flatter arch with height ~890 at apex, starting from y=480, thickness ~120
     coords = [
-        # Outer curve from left leg rising steeply to apex and descending to right leg
-        (160, 420, 1),
-        (220, 850, 0),
-        (520, 1260, 0),
-        (mid_x, 1260, 1),
-        (width - 520, 1260, 0),
-        (width - 220, 850, 0),
-        (width - 160, 420, 1),
+        # Outer curve from left leg rising to apex and descending to right leg
+        (180, 480, 1),
+        (230, 680, 0),
+        (460, 890, 0),
+        (mid_x, 890, 1),
+        (width - 460, 890, 0),
+        (width - 230, 680, 0),
+        (width - 180, 480, 1),
         # Right leg bottom cut / end cap
-        (width - 290, 470, 1),
+        (width - 290, 480, 1),
         # Inner curve returning up to inner apex and descending to left leg
-        (width - 360, 820, 0),
-        (width - 560, 1090, 0),
-        (mid_x, 1090, 1),
-        (560, 1090, 0),
-        (360, 820, 0),
-        (290, 470, 1),
+        (width - 340, 640, 0),
+        (width - 500, 770, 0),
+        (mid_x, 770, 1),
+        (500, 770, 0),
+        (340, 640, 0),
+        (290, 480, 1),
+    ]
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_syllable_arc_danda(width: int = 2100) -> Glyph:
+    """Swara Modifier A1 (MOD-A_1): Overhead smooth curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    mid_x = width // 2
+    # Wider spanning arch with height ~1020 at apex (clearing danda separator), thickness ~130
+    coords = [
+        # Outer curve from left leg rising to apex and descending to right leg
+        (180, 480, 1),
+        (240, 760, 0),
+        (580, 1020, 0),
+        (mid_x, 1020, 1),
+        (width - 580, 1020, 0),
+        (width - 240, 760, 0),
+        (width - 180, 480, 1),
+        # Right leg bottom cut
+        (width - 300, 480, 1),
+        # Inner curve returning up to inner apex and descending to left leg
+        (width - 360, 710, 0),
+        (width - 630, 890, 0),
+        (mid_x, 890, 1),
+        (630, 890, 0),
+        (360, 710, 0),
+        (300, 480, 1),
     ]
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
@@ -708,6 +740,11 @@ def build_font() -> None:
     glyf_table["syllable_arc_jsv"] = syllable_arc
     hmtx_table["syllable_arc_jsv"] = (1650, 120)
 
+    # Mod 4b: Syllable Spanning Arc over Danda (U+E00D) - Swara Modifier A1
+    syllable_arc_danda = draw_syllable_arc_danda()
+    glyf_table["syllable_arc_danda_jsv"] = syllable_arc_danda
+    hmtx_table["syllable_arc_danda_jsv"] = (2150, 120)
+
     # Mod 5: Caret (^) (U+E005, U+005E, U+02C4) - Swara Modifier B (spans 2 syllables)
     caret_glyph = draw_caret()
     glyf_table["caret_jsv"] = caret_glyph
@@ -771,6 +808,7 @@ def build_font() -> None:
         0xE00B: "double_danda_jsv",
         0xE00C: "swarita_jsv",
         0x0951: "swarita_jsv",
+        0xE00D: "syllable_arc_danda_jsv",
         # Sha family
         0xE010: "sha_aa_jsv",
         0xE011: "sha_i_jsv",

@@ -22,6 +22,7 @@ ARTIFACT_DIR = Path(r"C:\Users\sekha\.gemini\antigravity-ide\brain\33a78242-ade0
 FEATURED_GLYPHS = [
     # Row 1: The Canonical Vedic Swara Modifiers & Inline Marks
     ("Modifier (A) Arc", "\uE004", "syllable_arc_jsv", "U+E004 / ╭╮", "Modifier (A)", "Above", "Syllable Spanning Arc"),
+    ("Modifier (A1) Arc/|", "\uE00D", "syllable_arc_danda_jsv", "U+E00D / (A1)", "Modifier (A1)", "Above", "Syllable Spanning Arc over Danda"),
     ("Modifier (B) Caret", "\uE005", "caret_jsv", "U+E005 / /\\", "Modifier (B)", "Above", "Peak Elevation Caret"),
     ("Modifier (C) Dot", "\uE001", "high_dot_jsv", "U+E001 / ॱ", "Modifier (C)", "Shoulder", "Shoulder Pause Dot"),
     ("Modifier (D) Chevron", "\uE006", "roof_jsv", "U+E006 / Ʌ", "Modifier (D)", "Above", "Chevron Roof"),
@@ -141,11 +142,17 @@ def render_image_grid() -> None:
             # Modifiers rendered in Sky Blue (#0284c7) with Dotted Circle (◌)
             mod_blue = (2, 132, 199)
             dot_gray = (148, 163, 184)
-            if "Modifier (A)" in category:
+            if "Modifier (A)" in category and "Modifier (A1)" not in category:
                 # 2-syllable spanning arc (A)
                 draw.text((bx_cx - 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx + 22 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
                 draw.text((bx_cx - 41.5, bx_cy - 22 - 33.5), char_str, fill=mod_blue, font=swara_font)
+            elif "Modifier (A1)" in category:
+                # 2-syllable spanning arc over danda (A1)
+                draw.text((bx_cx - 28 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 4, bx_cy + 12 - 33), "।", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx + 20 - 19, bx_cy + 12 - 33), "◌", fill=dot_gray, font=dotted_font)
+                draw.text((bx_cx - 48, bx_cy - 26 - 33.5), char_str, fill=mod_blue, font=swara_font)
             elif "Modifier (B)" in category:
                 # 2-syllable spanning peak caret (B) with Swara marker sitting well above apex (zero collision)
                 draw.text((bx_cx - 24 - 19, bx_cy + 25 - 33), "◌", fill=dot_gray, font=dotted_font)
@@ -241,7 +248,21 @@ def render_html_table() -> None:
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-a-dotted'>&#xE004;</span></span></span>",
             "example_text": "ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-a'>&#xE004;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&#xE020;</span><span class='mantra-text'>ബാ</span></span></div>",
-            "meaning": "Continuous melodic slur bridging two adjacent syllables.",
+            "meaning": "Smooth flatter melodic slur bridging two adjacent syllables.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-A1",
+            "shortcut": "(A1)",
+            "name": "Syllable Spanning Arc over Danda (MOD-A1)",
+            "glyph": "\uE00D",
+            "codepoint": "U+E00D / (A1) / (A_1)",
+            "input_methods": "<code>(A1)</code> / <code>(a1)</code> / <code>(A_1)</code> / <code>(a_1)</code>",
+            "stack_pos": "Stacked Above (Over Danda)",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;।&nbsp;◌<span class='swara-mod-dotted mod-a1-dotted'>&#xE00D;</span></span></span>",
+            "example_text": "തൊ(𑌤)(A1) । ഹാ(𑌟𑌾)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>തൊ<span class='swara-mod mod-a1'>&#xE00D;</span></span></span><span class='mantra-text'><span class='danda'>।</span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌟𑌾</span><span class='mantra-text'>ഹാ</span></span></div>",
+            "meaning": "Overhead melodic slur bridging two adjacent syllables across a danda separator.",
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
@@ -691,6 +712,14 @@ def render_html_table() -> None:
         font-size: 1.15em;
         color: var(--mod-blue);
     }}
+    .swara-mod-dotted.mod-a1-dotted {{
+        position: absolute;
+        top: -0.22em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.25em;
+        color: var(--mod-blue);
+    }}
     .swara-mod-dotted.mod-b-dotted {{
         position: absolute;
         top: -0.22em;
@@ -816,6 +845,14 @@ def render_html_table() -> None:
         left: 100%;
         transform: translateX(-40%);
         font-size: 0.95rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-a1 {{
+        position: absolute;
+        top: -0.28em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 1.15rem;
         pointer-events: none;
     }}
     .mantra-preview-flex .swara-mod.mod-b {{

@@ -299,6 +299,14 @@ html_template = """<!DOCTYPE html>
         font-size: 1.20rem;
         pointer-events: none;
     }
+    .swara-mod.mod-a1 {
+        position: absolute;
+        top: -0.28em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 1.40rem;
+        pointer-events: none;
+    }
     .swara-mod.mod-b {
         position: absolute;
         top: -0.22em;
@@ -547,6 +555,7 @@ html_template = """<!DOCTYPE html>
             </div>
             <div class="sample-buttons">
                 <button class="sample-chip" onclick="loadSample('ഹോ(𑌖)(A) ബാ(𑌪𑍍𑌲) മാ(𑌕)(B) യാ')">Sample 1: Arc + Caret</button>
+                <button class="sample-chip" onclick="loadSample('തൊ(𑌤)(A1) । ഹാ(𑌟𑌾) ഇ')">Sample 1b: Arc over Danda (MOD-A1)</button>
                 <button class="sample-chip" onclick="loadSample('ഓ(𑌤)(C) ഗ്നാ(𑌤) ബാ(𑌪𑍍𑌲)(G)')">Sample 2: Dot + Slash</button>
                 <button class="sample-chip" onclick="loadSample('ഹോ(𑌪𑍍𑌲)(D) ഇഴാ(𑌶𑌾) ദാ(𑌚𑌿)(H)')">Sample 3: Chevron + Swarita</button>
                 <button class="sample-chip" onclick="loadSample('വാ(𑌚)(E) ഇ(𑌚)(F)')">Sample 4: Phrasing Dandas</button>
@@ -579,10 +588,18 @@ html_template = """<!DOCTYPE html>
             <tr>
                 <td><strong>MOD-A</strong></td>
                 <td><code>(A) / (⁀)</code></td>
-                <td>Syllable Spanning Arc (Tie)</td>
+                <td>Syllable Spanning Arc (Smooth Flat)</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE004;</td>
                 <td><code>U+E004 / U+2040</code></td>
                 <td><span class="badge-above">Above (2 Syllables)</span></td>
+            </tr>
+            <tr>
+                <td><strong>MOD-A1</strong></td>
+                <td><code>(A1) / (A_1)</code></td>
+                <td>Syllable Spanning Arc over Danda</td>
+                <td style="text-align:center;" class="glyph-sample">&#xE00D;</td>
+                <td><code>U+E00D / (A1)</code></td>
+                <td><span class="badge-above">Above (2 Syllables + Danda)</span></td>
             </tr>
             <tr>
                 <td><strong>MOD-B</strong></td>
@@ -723,6 +740,10 @@ function renderPlayground() {
         'A': { cls: 'mod-a', glyph: '&#xE004;' },
         'a': { cls: 'mod-a', glyph: '&#xE004;' },
         '⁀': { cls: 'mod-a', glyph: '&#xE004;' },
+        'A1': { cls: 'mod-a1', glyph: '&#xE00D;' },
+        'a1': { cls: 'mod-a1', glyph: '&#xE00D;' },
+        'A_1': { cls: 'mod-a1', glyph: '&#xE00D;' },
+        'a_1': { cls: 'mod-a1', glyph: '&#xE00D;' },
         'B': { cls: 'mod-b', glyph: '&#xE005;' },
         'b': { cls: 'mod-b', glyph: '&#xE005;' },
         '∧': { cls: 'mod-b', glyph: '&#xE005;' },

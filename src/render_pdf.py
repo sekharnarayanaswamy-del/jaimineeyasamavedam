@@ -1404,9 +1404,10 @@ MODIFIER_DIRECT_MAP = {
 MODIFIER_KEYS = {
     "A", "B", "C", "D", "E", "F", "G", "H", "L",
     "a", "b", "c", "d", "e", "f", "g", "h", "l",
+    "A1", "a1", "A_1", "a_1",
     "^", "˄", "Ʌ", "/\\", "∧", "⁀", "͡", "╭╮", "ͦ", "˚", "ॱ", "·",
     "|", "│", "।", "┃", "╷", "⃓", "\\", "╲", "⟍", "॑", "ˈ",
-    "\uE001", "\uE002", "\uE003", "\uE004", "\uE005", "\uE006", "\uE008", "\uE00A", "\uE00B"
+    "\uE001", "\uE002", "\uE003", "\uE004", "\uE005", "\uE006", "\uE008", "\uE00A", "\uE00B", "\uE00D"
 }
 
 
@@ -1417,6 +1418,8 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
     m_clean = mod.strip("()")
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\\hspace{{-0.4em}}\uE004}}}}}}"
+    elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\\hspace{{-0.4em}}\uE00D}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\uE005}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
@@ -2789,6 +2792,8 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                                 mod_spans.append('<span class="swara-mod mod-h">&#xE00C;</span>')
                             elif m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
                                 mod_spans.append('<span class="swara-mod mod-a">&#xE004;</span>')
+                            elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
+                                mod_spans.append('<span class="swara-mod mod-a1">&#xE00D;</span>')
                             elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
                                 mod_spans.append('<span class="swara-mod mod-b">&#xE005;</span>')
                             elif m_clean in ("D", "d", "Ʌ", "\uE006"):

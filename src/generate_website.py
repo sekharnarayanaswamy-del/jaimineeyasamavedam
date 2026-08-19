@@ -361,6 +361,10 @@ MALAYALAM_MODIFIER_MAP = {
     'A': ('mod-a', '&#xE004;'),
     'a': ('mod-a', '&#xE004;'),
     '⁀': ('mod-a', '&#xE004;'),
+    'A1': ('mod-a1', '&#xE00D;'),
+    'a1': ('mod-a1', '&#xE00D;'),
+    'A_1': ('mod-a1', '&#xE00D;'),
+    'a_1': ('mod-a1', '&#xE00D;'),
     'B': ('mod-b', '&#xE005;'),
     'b': ('mod-b', '&#xE005;'),
     '^': ('mod-b', '&#xE005;'),
@@ -3346,6 +3350,14 @@ sup.footnote-ref a:hover {
     left: 100%;
     transform: translateX(-40%);
     font-size: 1.05rem;
+    pointer-events: none;
+}
+.swara-mod.mod-a1 {
+    position: absolute;
+    top: -0.28em;
+    left: 100%;
+    transform: translateX(-40%);
+    font-size: 1.25rem;
     pointer-events: none;
 }
 .swara-mod.mod-b {
