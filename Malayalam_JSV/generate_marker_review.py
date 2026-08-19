@@ -247,6 +247,36 @@ def main() -> None:
             }
         )
 
+    # Build canonical modifiers list
+    canonical_modifiers = [
+        {"id": "MOD-A", "shortcut": "(A)", "name": "Syllable Spanning Melodic Arc (⁀)", "glyph": "\uE004", "hex": "E004", "stack_pos": "Above", "inputs": ["(A)", "(a)", "(╭╮)", "(⁀)", "╭╮", "⁀"]},
+        {"id": "MOD-A1", "shortcut": "(A1)", "name": "Syllable Spanning Arc over Danda (MOD-A1)", "glyph": "\uE00D", "hex": "E00D", "stack_pos": "Above", "inputs": ["(A1)", "(a1)", "(A_1)", "(a_1)"]},
+        {"id": "MOD-B", "shortcut": "(B)", "name": "Peak Elevation Caret (∧)", "glyph": "\uE005", "hex": "E005", "stack_pos": "Above", "inputs": ["(B)", "(b)", "(^)", "(∧)", "^", "∧", "/\\", "˄"]},
+        {"id": "MOD-C", "shortcut": "(C)", "name": "Shoulder Pause Dot (·)", "glyph": "\uE001", "hex": "E001", "stack_pos": "Shoulder", "inputs": ["(C)", "(c)", "(ॱ)", "(·)", "ॱ", "·"]},
+        {"id": "MOD-D", "shortcut": "(D)", "name": "Chevron Roof (Ʌ)", "glyph": "\uE006", "hex": "E006", "stack_pos": "Above", "inputs": ["(D)", "(d)", "(Ʌ)", "Ʌ"]},
+        {"id": "MOD-E", "shortcut": "(E)", "name": "Phrasing Heavy Danda (┃)", "glyph": "\uE002", "hex": "E002", "stack_pos": "Inline", "inputs": ["(E)", "(e)", "(┃)", "(L)", "┃", "L"]},
+        {"id": "MOD-F", "shortcut": "(F)", "name": "Phrasing Light Vertical (╷)", "glyph": "\u2577", "hex": "2577", "stack_pos": "Inline", "inputs": ["(F)", "(f)", "(╷)", "╷"]},
+        {"id": "MOD-G", "shortcut": "(G)", "name": "Descending Tone Slash (\\)", "glyph": "\uE003", "hex": "E003", "stack_pos": "Below", "inputs": ["(G)", "(g)", "(\\)", "(╲)", "\\", "╲", "⟍"]},
+        {"id": "MOD-H", "shortcut": "(H)", "name": "Overhead Swarita Stroke (|)", "glyph": "\uE00C", "hex": "E00C", "stack_pos": "Above", "inputs": ["(H)", "(h)", "(|)", "(│)", "(॑)", "|", "│", "॑", "ˈ"]},
+        {"id": "INL-.", "shortcut": "(.)", "name": "Inline Staccato Dot (.)", "glyph": "\uE001", "hex": "E001", "stack_pos": "Inline", "inputs": ["(.)", "."]},
+        {"id": "INL-_", "shortcut": "(_)", "name": "Inline Prolongation Bar (_)", "glyph": "\uE007", "hex": "E007", "stack_pos": "Inline", "inputs": ["(_)", "_"]},
+        {"id": "INL-,", "shortcut": "(,)", "name": "Inline Pause Comma (,)", "glyph": "\uE00A", "hex": "E00A", "stack_pos": "Inline", "inputs": ["(,)", ","]},
+    ]
+
+    # Append modifier rows to CSV rows
+    all_csv_rows = list(rows)
+    for mod in canonical_modifiers:
+        all_csv_rows.append({
+            "marker": mod["shortcut"],
+            "count": 0,
+            "dev_char_count": len(mod["shortcut"]),
+            "grantha_hex": mod["hex"],
+            "grantha_text": mod["glyph"],
+            "sheet_entry_match": mod["id"],
+            "source": "modifier" if mod["id"].startswith("MOD") else "inline_mark",
+            "flags": f"{mod['name']} [{mod['stack_pos']}]",
+        })
+
     OUT_DATA_CSV.parent.mkdir(parents=True, exist_ok=True)
     for out_path in (OUT, OUT_DATA_CSV):
         try:
@@ -257,26 +287,10 @@ def main() -> None:
                                 "grantha_text", "sheet_entry_match", "source", "flags"],
                 )
                 writer.writeheader()
-                writer.writerows(rows)
+                writer.writerows(all_csv_rows)
             print(f"Wrote {out_path}")
         except PermissionError:
             print(f"Warning: Could not overwrite {out_path} (file may be open in viewer).")
-
-    # Build modifiers dictionary for swara_lookup_frozen.json
-    canonical_modifiers = [
-        {"id": "MOD-01", "shortcut": "(A)", "name": "Syllable Arc (Tie)", "glyph": "\uE004", "hex": "U+256D + U+256E / E004", "stack_pos": "Above", "inputs": ["(A)", "(a)", "(╭╮)", "(⁀)", "╭╮", "⁀"]},
-        {"id": "MOD-02", "shortcut": "(B)", "name": "Underbar", "glyph": "\uE007", "hex": "E007", "stack_pos": "Below", "inputs": ["(B)", "(b)", "(_)", "_"]},
-        {"id": "MOD-03", "shortcut": "(C)", "name": "Full Stop / Dot", "glyph": ".", "hex": "002E", "stack_pos": "Inline", "inputs": ["(C)", "(c)", "(.)", "."]},
-        {"id": "MOD-04", "shortcut": "(D)", "name": "Single Danda", "glyph": "।", "hex": "0964", "stack_pos": "Inline", "inputs": ["(D)", "(d)", "(|)", "(।)", "|", "।"]},
-        {"id": "MOD-05", "shortcut": "(E)", "name": "Double Danda", "glyph": "॥", "hex": "0965", "stack_pos": "Inline", "inputs": ["(E)", "(e)", "(||)", "(॥)", "||", "॥"]},
-        {"id": "MOD-06", "shortcut": "(F)", "name": "Caret / Peak", "glyph": "\uE005", "hex": "E005", "stack_pos": "Above", "inputs": ["(F)", "(f)", "(^)", "(/\\)", "^", "/\\", "˄"]},
-        {"id": "MOD-07", "shortcut": "(G)", "name": "High/Mid-Dot", "glyph": "\uE001", "hex": "E001", "stack_pos": "Above", "inputs": ["(G)", "(g)", "(ॱ)", "(·)", "ॱ", "·"]},
-        {"id": "MOD-08", "shortcut": "(H)", "name": "Low Comma", "glyph": "\uE00A", "hex": "E00A", "stack_pos": "Below", "inputs": ["(H)", "(h)", "(,)", "(ˏ)", ",", "ˏ"]},
-        {"id": "MOD-09", "shortcut": "(I)", "name": "Chevron Roof", "glyph": "\uE006", "hex": "E006", "stack_pos": "Above", "inputs": ["(I)", "(i)", "(Ʌ)", "Ʌ", "∧"]},
-        {"id": "MOD-10", "shortcut": "(J)", "name": "Heavy Vertical / Down Line", "glyph": "\uE002", "hex": "E002", "stack_pos": "Below", "inputs": ["(J)", "(j)", "(J_1)", "(┃)", "(╷)", "┃", "╷"]},
-        {"id": "MOD-11", "shortcut": "(K)", "name": "Descending Tone", "glyph": "\uE003", "hex": "E003", "stack_pos": "Below", "inputs": ["(K)", "(k)", "(\\)", "(╲)", "\\", "╲"]},
-        {"id": "MOD-12", "shortcut": "(L)", "name": "Swarita Accent", "glyph": "\u0951", "hex": "0951", "stack_pos": "Above", "inputs": ["(L)", "(l)", "(॑)", "॑"]},
-    ]
 
     modifier_input_map = {}
     for mod in canonical_modifiers:
@@ -300,7 +314,7 @@ def main() -> None:
                 "A13 Saa -> Malayalam ശ (U+0D36) per reference manuscript",
                 "A04 TTA -> U+1131F (sheet glyph corrected)",
                 "A15/A17/A19 virama clusters (pl/tr/kra) resolve to sheet entries",
-                "12 Canonical Vedic Modifiers (A-L) with separate stacking handling",
+                "Canonical Vedic Modifiers (A-H, A1) & Inline Marks with separate stacking handling",
             ],
             "occurrence_check": f"total marker occurrences: {sum(counts.values())}",
         },
