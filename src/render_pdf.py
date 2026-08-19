@@ -1466,6 +1466,89 @@ def _parse_swara_and_modifiers(swara_str: str):
     return swaras, mods
 
 
+SWARA_CANONICAL_MAP = {
+    # Sha base and combinations
+    "𑌶": "\u0D36",                 # Grantha Sha -> Malayalam Sha
+    "\u11336": "\u0D36",
+    "𑌶𑌾": "\uE010",               # Shaa
+    "\u11336\u1133E": "\uE010",
+    "ശാ": "\uE010",
+    "𑌶𑌿": "\uE011",               # Shi
+    "\u11336\u1133F": "\uE011",
+    "ശി": "\uE011",
+    "𑌶𑍀": "\uE012",               # Shii
+    "\u11336\u11340": "\uE012",
+    "ശീ": "\uE012",
+    "𑌶𑍍": "\uE013",               # Sha + Virama
+    "\u11336\u1134D": "\uE013",
+    "ശ്": "\uE013",
+    "𑌶𑍁": "\uE015",               # Shu
+    "\u11336\u11341": "\uE015",
+    "ശു": "\uE015",
+    "𑌶𑍂": "\uE016",               # Shuu
+    "\u11336\u11342": "\uE016",
+    "ശൂ": "\uE016",
+    "𑌶𑍃": "\uE017",               # Shr
+    "\u11336\u11343": "\uE017",
+    "𑌶𑍄": "\uE018",               # Shrr
+    "\u11336\u11344": "\uE018",
+    "𑌶𑍇": "\uE019",               # She
+    "\u11336\u11347": "\uE019",
+    "𑌶𑍈": "\uE01A",               # Shai
+    "\u11336\u11348": "\uE01A",
+    "𑌶𑍋": "\uE01B",               # Sho
+    "\u11336\u1134B": "\uE01B",
+    "𑌶𑍌": "\uE01C",               # Shau
+    "\u11336\u1134C": "\uE01C",
+
+    # Tra & Kra
+    "𑌤𑍍𑌰": "\uE01D",               # Tra
+    "\u11324\u1134D\u11330": "\uE01D",
+    "𑌤𑍍𑌰𑌾": "\uE01D",
+    "ത്രാ": "\uE01D",
+    "ത്ര": "\uE01D",
+    "𑌕𑍍𑌰": "\uE01E",               # Kra
+    "\u11315\u1134D\u11330": "\uE01E",
+    "ക്രം": "\uE01E",
+    "ക്ര": "\uE01E",
+    "𑌕𑍍𑌰𑍍": "\uE01F",              # Kra + Virama
+    "\u11315\u1134D\u11330\u1134D": "\uE01F",
+    "ക്ര്": "\uE01F",
+
+    # Pla family
+    "𑌪𑍍𑌲": "\uE020",               # Pla
+    "\u1132A\u1134D\u11332": "\uE020",
+    "പ്ല": "\uE020",
+    "𑌪𑍍𑌲𑌾": "\uE021",              # Plaa
+    "\u1132A\u1134D\u11332\u1133E": "\uE021",
+    "പ്ലാ": "\uE021",
+    "𑌪𑍍𑌲𑌿": "\uE022",              # Pli
+    "\u1132A\u1134D\u11332\u1133F": "\uE022",
+    "പ്ലി": "\uE022",
+    "𑌪𑍍𑌲𑍀": "\uE023",              # Plii
+    "\u1132A\u1134D\u11332\u11340": "\uE023",
+    "പ്ലീ": "\uE023",
+    "𑌪𑍍𑌲𑍁": "\uE024",              # Plu
+    "\u1132A\u1134D\u11332\u11341": "\uE024",
+    "പ്ലു": "\uE024",
+    "𑌪𑍍𑌲𑍂": "\uE025",              # Pluu
+    "\u1132A\u1134D\u11332\u11342": "\uE025",
+    "പ്ലൂ": "\uE025",
+    "𑌪𑍍𑌲𑍍": "\uE026",              # Pla + Virama
+    "\u1132A\u1134D\u11332\u1134D": "\uE026",
+    "പ്ല്": "\uE026",
+
+    # Clean composites
+    "ശൃ": "\uE027",
+    "𑌷𑍃": "\uE028",               # Shrr
+    "\u11337\u11343": "\uE028",
+    "ഷൃ": "\uE028",
+    "𑌣𑍂": "\uE029",               # Nna + U
+    "\u11323\u11342": "\uE029",
+    "ണൂ": "\uE029",
+}
+
+
 def _swara_latex(swara: str) -> str:
     """Latex for pure swara marker pitch glyphs rendered in bold SwaraRed."""
     if not swara:
@@ -1473,7 +1556,9 @@ def _swara_latex(swara: str) -> str:
     # Filter out modifiers which attach directly to Mantrakshara
     if swara in MODIFIER_KEYS or swara in ("A", "B", "C", "D", "E", "F", "G", "H", "L", "a", "b", "c", "d", "e", "f", "g", "h", "l"):
         return ""
-    return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{swara}}}}}"
+    # Resolve to canonical PUA/Malayalam ligature if mapped
+    clean_swara = SWARA_CANONICAL_MAP.get(swara, swara)
+    return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{clean_swara}}}}}"
 
 
 def wrap_latin_for_latex(text: str) -> str:
@@ -2772,17 +2857,7 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                     syl_esc = escape_for_html(syl)
                     if idx == len(syllables) - 1:
                         swara_str = "".join(swara_parts).strip("()")
-                        swara_html_map = {
-                            "𑌶𑌿": "\uE011",
-                            "\u11336\u1133F": "\uE011",
-                            "ശി": "\uE011",
-                            "𑌶𑌾": "\uE010",
-                            "𑌶𑍀": "\uE012",
-                            "𑌶𑍍": "\uE013",
-                            "𑌶𑍂": "\uE016",
-                            "𑌷𑍃": "\uE028",
-                        }
-                        swara_display = swara_html_map.get(swara_str, swara_str)
+                        swara_display = SWARA_CANONICAL_MAP.get(swara_str, swara_str)
                         mod_spans = []
                         for mod in mod_parts:
                             m_clean = mod.strip("()")

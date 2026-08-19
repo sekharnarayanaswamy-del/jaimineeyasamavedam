@@ -35,8 +35,9 @@
 \definecolor{AccentGreen}{HTML}{2e7d32}
 \definecolor{AccentBrown}{HTML}{8B4513}
 \definecolor{SwaraRed}{HTML}{c62828}
-\definecolor{ModifierDarkBlue}{HTML}{002171}
-\definecolor{ModifierGreen}{HTML}{002171}
+\definecolor{ModifierDarkBlue}{HTML}{0284c7}
+\definecolor{ModifierGreen}{HTML}{0284c7}
+\definecolor{ModifierSkyBlue}{HTML}{0284c7}
 
 % --- PACKAGES ---
 \usepackage{ragged2e} 

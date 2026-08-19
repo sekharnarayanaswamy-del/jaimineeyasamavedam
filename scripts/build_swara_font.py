@@ -798,8 +798,11 @@ def build_font() -> None:
     # 6. Update Cmap
     # Add custom mappings to Unicode and PUA codepoints
     custom_cmap = {
-        # Malayalam Sha
+        # Malayalam Sha (and redirect Grantha Sha 0x11336 to Malayalam Sha sha_mal)
         0x0D36: "sha_mal",
+        0x11336: "sha_mal",
+        0x0D4D: "virama_gran",
+        0x1134D: "virama_gran",
         # PUA Direct codepoints for Vedic Modifiers
         0xE001: "high_dot_jsv",
         0xE002: "phrasing_danda_jsv",
@@ -874,10 +877,12 @@ def build_font() -> None:
         0x1CDA: "high_dot_jsv",        # Vedic tone double-stroke fallback to dot
     }
 
-    # Inject into all cmap sub-tables
+    # Inject into all cmap sub-tables respecting subtable format limits (format 4: <= 0xFFFF, format 12: full unicode)
     for subtable in cmap_table.tables:
         if subtable.isUnicode():
-            subtable.cmap.update(custom_cmap)
+            for cp, gname in custom_cmap.items():
+                if cp <= 0xFFFF or subtable.format == 12:
+                    subtable.cmap[cp] = gname
 
     # 7. Add OpenType Layout Features (GSUB) while preserving ALL 107 native Grantha lookups
     print("Appending custom ligatures to native Grantha GSUB layout table...")
