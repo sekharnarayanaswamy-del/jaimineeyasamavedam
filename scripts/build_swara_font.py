@@ -32,7 +32,7 @@ from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 ROOT = Path(__file__).resolve().parents[1]
 GRANTHA_FONT_PATH = ROOT / "fonts" / "NotoSerifGrantha-Regular.ttf"
 MALAYALAM_FONT_PATH = ROOT / "fonts" / "NotoSerifMalayalam-Regular.ttf"
-OUT_FONT_PATH = ROOT / "fonts" / "JaimineeyaSwara.ttf"
+OUT_FONT_PATH = ROOT / "fonts" / "JaimineeyaVedicSwara.ttf"
 
 
 def init_glyph() -> Glyph:
@@ -941,13 +941,15 @@ def build_font() -> None:
     name_table = gfont["name"]
     for record in name_table.names:
         if record.nameID in (1, 4):  # Family name & Full name
-            record.string = "JaimineeyaSwara"
+            record.string = "JaimineeyaVedicSwara"
         elif record.nameID == 6:     # PostScript name
-            record.string = "JaimineeyaSwara-Regular"
+            record.string = "JaimineeyaVedicSwara-Regular"
 
     OUT_FONT_PATH.parent.mkdir(parents=True, exist_ok=True)
     gfont.save(OUT_FONT_PATH)
-    print(f"Successfully generated custom Vedic Swara font: {OUT_FONT_PATH}")
+    legacy_path = ROOT / "fonts" / "JaimineeyaSwara.ttf"
+    gfont.save(legacy_path)
+    print(f"Successfully generated custom Vedic Swara font: {OUT_FONT_PATH} and {legacy_path}")
 
 
 if __name__ == "__main__":

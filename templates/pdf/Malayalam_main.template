@@ -63,7 +63,7 @@
 \lefthyphenmin=3
 \righthyphenmin=3
 \tolerance=500
-\pretolerance=100.\sta
+\pretolerance=100
 \setlength{\emergencystretch}{1em}
 \setlength{\hfuzz}{2pt}
 \setlength{\parindent}{0pt}

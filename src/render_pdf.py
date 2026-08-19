@@ -543,8 +543,7 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
             f.write(document)
         
         try:
-            compiler = "lualatex" if ("Malayalam" in TexFileName or "Grantha" in TexFileName) else "xelatex"
-            cmd = [compiler, "-interaction=nonstopmode", tmpfilename]
+            cmd = ["xelatex", "-interaction=nonstopmode", tmpfilename]
             proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
             
             # Step 2: run makeindex if .idx file exists to generate index (.ind)
@@ -553,12 +552,12 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
                 cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
                 subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True)
                 
-            # Step 3: Pass 2 of LaTeX to resolve TOC, index, and page cross-references
+            # Step 3: Pass 2 of xelatex to resolve TOC, index, and page cross-references
             proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
             if proc.returncode != 0:
-                print(f"[WARNING] {compiler} compilation returned non-zero code {proc.returncode}")
+                print(f"[WARNING] xelatex compilation returned non-zero code {proc.returncode}")
         except Exception as e:
-            print(f"[WARNING] Failed to run {compiler}: {e}")
+            print(f"[WARNING] Failed to run xelatex: {e}")
         
         src_pdf_file=Path(f"{tmpdirname}/{PdfFileName}")
         dst_pdf_file=Path(f"{outputdir}/{PdfFileName}")
