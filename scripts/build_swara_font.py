@@ -173,31 +173,49 @@ def draw_descending_tone_slash() -> Glyph:
     return glyph
 
 
+def get_bezier_arc_coords(width: int, y_base: int = 480, thickness: int = 125, height_factor: float = 0.88) -> list:
+    import numpy as np
+    mid_x = width / 2.0
+    r_out_x = (width - 320) / 2.0
+    r_out_y = r_out_x * height_factor
+    r_in_x = r_out_x - thickness
+    r_in_y = r_out_y - thickness
+    
+    angles = np.radians([180, 150, 120, 90, 60, 30, 0])
+    ctrl_angles = np.radians([165, 135, 105, 75, 45, 15])
+    r_scale = 1.035
+    
+    outer_coords = []
+    outer_coords.append((int(mid_x + r_out_x * np.cos(angles[0])), int(y_base + r_out_y * np.sin(angles[0])), 1))
+    for i in range(len(ctrl_angles)):
+        cx = int(mid_x + r_out_x * r_scale * np.cos(ctrl_angles[i]))
+        cy = int(y_base + r_out_y * r_scale * np.sin(ctrl_angles[i]))
+        outer_coords.append((cx, cy, 0))
+        ex = int(mid_x + r_out_x * np.cos(angles[i+1]))
+        ey = int(y_base + r_out_y * np.sin(angles[i+1]))
+        outer_coords.append((ex, ey, 1))
+        
+    inner_angles = np.radians([0, 30, 60, 90, 120, 150, 180])
+    inner_ctrl_angles = np.radians([15, 45, 75, 105, 135, 165])
+    
+    inner_coords = []
+    inner_coords.append((int(mid_x + r_in_x * np.cos(inner_angles[0])), int(y_base + r_in_y * np.sin(inner_angles[0])), 1))
+    for i in range(len(inner_ctrl_angles)):
+        cx = int(mid_x + r_in_x * r_scale * np.cos(inner_ctrl_angles[i]))
+        cy = int(y_base + r_in_y * r_scale * np.sin(inner_ctrl_angles[i]))
+        inner_coords.append((cx, cy, 0))
+        ex = int(mid_x + r_in_x * np.cos(inner_angles[i+1]))
+        ey = int(y_base + r_in_y * np.sin(inner_angles[i+1]))
+        inner_coords.append((ex, ey, 1))
+        
+    return outer_coords + inner_coords
+
+
 def draw_syllable_arc(width: int = 1600) -> Glyph:
-    """Swara Modifier A: Overhead smooth, flatter curved bridge spanning across 2 syllables (spec_image1..5)."""
+    """Swara Modifier A: Overhead smooth semi-circular curved bridge spanning across 2 syllables (spec_image1..5)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    mid_x = width // 2
-    # Smooth, flatter arch with height ~890 at apex, starting from y=480, thickness ~120
-    coords = [
-        # Outer curve from left leg rising to apex and descending to right leg
-        (180, 480, 1),
-        (230, 680, 0),
-        (460, 890, 0),
-        (mid_x, 890, 1),
-        (width - 460, 890, 0),
-        (width - 230, 680, 0),
-        (width - 180, 480, 1),
-        # Right leg bottom cut / end cap
-        (width - 290, 480, 1),
-        # Inner curve returning up to inner apex and descending to left leg
-        (width - 340, 640, 0),
-        (width - 500, 770, 0),
-        (mid_x, 770, 1),
-        (500, 770, 0),
-        (340, 640, 0),
-        (290, 480, 1),
-    ]
+    coords = get_bezier_arc_coords(width, y_base=480, thickness=125, height_factor=0.88)
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
     glyph.endPtsOfContours = [len(coords) - 1]
@@ -206,30 +224,10 @@ def draw_syllable_arc(width: int = 1600) -> Glyph:
 
 
 def draw_syllable_arc_danda(width: int = 2100) -> Glyph:
-    """Swara Modifier A1 (MOD-A_1): Overhead smooth curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
+    """Swara Modifier A1 (MOD-A_1): Overhead smooth semi-circular curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    mid_x = width // 2
-    # Wider spanning arch with height ~1020 at apex (clearing danda separator), thickness ~130
-    coords = [
-        # Outer curve from left leg rising to apex and descending to right leg
-        (180, 480, 1),
-        (240, 760, 0),
-        (580, 1020, 0),
-        (mid_x, 1020, 1),
-        (width - 580, 1020, 0),
-        (width - 240, 760, 0),
-        (width - 180, 480, 1),
-        # Right leg bottom cut
-        (width - 300, 480, 1),
-        # Inner curve returning up to inner apex and descending to left leg
-        (width - 360, 710, 0),
-        (width - 630, 890, 0),
-        (mid_x, 890, 1),
-        (630, 890, 0),
-        (360, 710, 0),
-        (300, 480, 1),
-    ]
+    coords = get_bezier_arc_coords(width, y_base=480, thickness=135, height_factor=0.88)
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
     glyph.endPtsOfContours = [len(coords) - 1]
@@ -527,7 +525,18 @@ def build_font() -> None:
     glyf_table["sha_mal"] = sha_glyph
     hmtx_table["sha_mal"] = (sha_width, sha_lsb)
 
-    # 2. Custom Vedic Pla: Grantha Pa (pa_gran) + Malayalam subjoined La (lasubscriptmlym)
+    def scale_and_shift_glyph(glyph, scale, dx, dy):
+        from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
+        new_glyph = Glyph()
+        new_glyph.numberOfContours = glyph.numberOfContours
+        new_glyph.coordinates = GlyphCoordinates([(int(x * scale + dx), int(y * scale + dy)) for x, y in glyph.coordinates])
+        new_glyph.flags = bytearray(glyph.flags)
+        new_glyph.endPtsOfContours = list(glyph.endPtsOfContours)
+        new_glyph.program = copy.deepcopy(glyph.program)
+        new_glyph.recalcBounds({})
+        return new_glyph
+
+    # 2. Custom Vedic Pla: Grantha Pa (pa_gran) + Grantha La (la_gran) subjoined directly below
     g_glyph_set = gfont.getGlyphSet()
     m_glyph_set = mfont.getGlyphSet()
 
@@ -536,12 +545,13 @@ def build_font() -> None:
     pa_glyph = pen_pa.glyph()
     pa_width, pa_lsb = gfont["hmtx"]["pa_gran"]
 
-    pen_la = TTGlyphPen(m_glyph_set)
-    m_glyph_set["lasubscriptmlym"].draw(pen_la)
-    la_sub = pen_la.glyph()
+    pen_la = TTGlyphPen(g_glyph_set)
+    g_glyph_set["la_gran"].draw(pen_la)
+    la_glyph = pen_la.glyph()
 
-    # Compose Pla: Grantha Pa with Malayalam subjoined La attached at bottom-right
-    pla_glyph = compose_glyphs(pa_glyph, la_sub, 1380, 0)
+    # Scale Grantha La to subscript (0.52) and position centered below Grantha Pa
+    la_sub_gran = scale_and_shift_glyph(la_glyph, 0.52, 220, -400)
+    pla_glyph = compose_glyphs(pa_glyph, la_sub_gran, 0, 0)
     glyf_table["pla_jsv"] = pla_glyph
     hmtx_table["pla_jsv"] = (pa_width, pa_lsb)
 
@@ -697,25 +707,25 @@ def build_font() -> None:
     pii_glyph = pen_pii.glyph()
     pii_width, pii_lsb = gfont["hmtx"]["pii_gran"]
 
-    pla_aa = compose_glyphs(pla_glyph, aa_matra, pa_width + 40, 0)
+    pla_aa = compose_glyphs(pla_glyph, aa_matra, pa_width - 80, 0)
     glyf_table["pla_aa_jsv"] = pla_aa
-    hmtx_table["pla_aa_jsv"] = (pa_width + 780, pa_lsb)
+    hmtx_table["pla_aa_jsv"] = (pa_width + aa_width - 60, pa_lsb)
 
-    # Pli: pi_gran + subjoined Malayalam La
-    pla_i = compose_glyphs(pi_glyph, la_sub, 1380, 0)
+    # Pli: pi_gran + subjoined Grantha La
+    pla_i = compose_glyphs(pi_glyph, la_sub_gran, 0, 0)
     glyf_table["pla_i_jsv"] = pla_i
     hmtx_table["pla_i_jsv"] = (pi_width, pi_lsb)
 
-    # Plii: pii_gran + subjoined Malayalam La
-    pla_ii = compose_glyphs(pii_glyph, la_sub, 1380, 0)
+    # Plii: pii_gran + subjoined Grantha La
+    pla_ii = compose_glyphs(pii_glyph, la_sub_gran, 0, 0)
     glyf_table["pla_ii_jsv"] = pla_ii
     hmtx_table["pla_ii_jsv"] = (pii_width, pii_lsb)
 
-    # Plu / Pluu / Pla-virama (uu shifted to dx=1580 to avoid collision with subscript la)
-    glyf_table["pla_u_jsv"] = compose_glyphs(pla_glyph, u_matra, pa_width - 250, 0)
+    # Plu / Pluu / Pla-virama
+    glyf_table["pla_u_jsv"] = compose_glyphs(pla_glyph, u_matra, pa_width - 150, 0)
     hmtx_table["pla_u_jsv"] = (pa_width, pa_lsb)
-    glyf_table["pla_uu_jsv"] = compose_glyphs(pla_glyph, uu_matra, 1580, 0)
-    hmtx_table["pla_uu_jsv"] = (2630, pa_lsb)
+    glyf_table["pla_uu_jsv"] = compose_glyphs(pla_glyph, uu_matra, pa_width - 150, 0)
+    hmtx_table["pla_uu_jsv"] = (pa_width + 400, pa_lsb)
     glyf_table["pla_virama_jsv"] = compose_glyphs(pla_glyph, virama_mlym, pla_glyph.xMax + 50, 0)
     hmtx_table["pla_virama_jsv"] = (pla_glyph.xMax + 120, pa_lsb)
 
