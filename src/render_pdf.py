@@ -1647,10 +1647,15 @@ def _render_malayalam_mantra_body(subsection):
                             if swara_latex:
                                 stack_code = f"\\stackcenter{{\\malayalamfont {syl_esc}}}{{{swara_latex}}}"
                                 parts.append(stack_code)
+                            elif syl in ("_", ".", ",", "._", "_.", ",_", ",."):
+                                parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{syl_esc}}}}}")
                             else:
                                 parts.append(f"{{\\malayalamfont {syl_esc}}}")
                         else:
-                            parts.append(f"{{\\malayalamfont {syl_esc}}}")
+                            if syl in ("_", ".", ",", "._", "_.", ",_", ",."):
+                                parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{syl_esc}}}}}")
+                            else:
+                                parts.append(f"{{\\malayalamfont {syl_esc}}}")
                     if trailing_punct:
                         tp_esc = escape_for_latex(trailing_punct)
                         parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{tp_esc}}}}}")
@@ -1660,7 +1665,10 @@ def _render_malayalam_mantra_body(subsection):
                     syllables = split_malayalam_syllables(core_word)
                     for syl in syllables:
                         syl_esc = escape_for_latex(syl)
-                        syl_parts.append(f"{{\\malayalamfont {syl_esc}}}")
+                        if syl in ("_", ".", ",", "._", "_.", ",_", ",."):
+                            syl_parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{syl_esc}}}}}")
+                        else:
+                            syl_parts.append(f"{{\\malayalamfont {syl_esc}}}")
                     if trailing_punct:
                         tp_esc = escape_for_latex(trailing_punct)
                         syl_parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{tp_esc}}}}}")
@@ -2888,9 +2896,15 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                         
                         mod_html = "".join(mod_spans)
                         swara_html = f'<span class="swara-text">{escape_for_html(swara_display)}</span>' if swara_display else '<span class="swara-text">&nbsp;</span>'
-                        verse_tokens.append(f'<span class="mantra-word">{swara_html}<span class="mantra-text">{syl_esc}{mod_html}</span></span>')
+                        if syl in ("_", ".", ",", "._", "_.", ",_", ",."):
+                            verse_tokens.append(f'<span class="mantra-punct">{syl_esc}</span>')
+                        else:
+                            verse_tokens.append(f'<span class="mantra-word">{swara_html}<span class="mantra-text">{syl_esc}{mod_html}</span></span>')
                     else:
-                        verse_tokens.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl_esc}</span></span>')
+                        if syl in ("_", ".", ",", "._", "_.", ",_", ",."):
+                            verse_tokens.append(f'<span class="mantra-punct">{syl_esc}</span>')
+                        else:
+                            verse_tokens.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl_esc}</span></span>')
                 if trailing_punct:
                     verse_tokens.append(f'<span class="mantra-punct">{escape_for_html(trailing_punct)}</span>')
             elif t == 'footnote':
@@ -2903,7 +2917,10 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
             else:
                 extra_text = escape_for_html(tok.get('text', '').translate(_ENGLISH_DIGITS))
                 if extra_text:
-                    verse_tokens.append(f'<span class="extra-text">{extra_text}</span>')
+                    if extra_text.strip() in (".", ",", "_", "._", "_.", ",_", ",.", ";"):
+                        verse_tokens.append(f'<span class="mantra-punct">{extra_text}</span>')
+                    else:
+                        verse_tokens.append(f'<span class="extra-text">{extra_text}</span>')
 
         if verse_tokens:
             formatted_output.append(f'<div class="mantra-verse">{"".join(verse_tokens)}</div>')
