@@ -1417,9 +1417,9 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return syl_esc
     m_clean = mod.strip("()")
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.15em}}\uE004}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.15em}}\uE00D}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.22em}}\uE00D}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\uE005}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
