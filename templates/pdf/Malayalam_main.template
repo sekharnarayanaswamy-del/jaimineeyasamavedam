@@ -48,6 +48,8 @@
 \usepackage{imakeidx}    
 \usepackage{needspace}
 \usepackage{longtable}
+\usepackage{setspace}
+\setstretch{1.85}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 \usepackage[stretch=20, shrink=20]{microtype}
 % --- SPACING & BREAKING RULES ---
@@ -62,17 +64,16 @@
 \setlength{\parindent}{0pt}
 
 % --- STACKING COMMANDS: Uniform Baseline Swara ABOVE the syllable ---
-% Uses \vphantom{തീ} so all overhead swaras & accents align on a uniform baseline
-% equal to the tallest Malayalam akshara/ascender + small spacing
+% Absolute baseline-relative overlay ensuring 100% constant horizontal swara baseline
 \newlength{\swarabasew}
 \newlength{\swaratopw}
 \newcommand{\swarastack}[2]{%
   \settowidth{\swarabasew}{#1}%
   \settowidth{\swaratopw}{#2}%
   \ifdim\swaratopw>\swarabasew
-    \stackengine{5.8pt}{\vphantom{തീ}#1}{\raisebox{0pt}[\height][0pt]{#2}}{O}{l}{F}{T}{S}\hspace{\dimexpr\swaratopw-\swarabasew+1.5pt\relax}%
+    \mbox{#1\hspace{-\swarabasew}\makebox[\swaratopw][l]{\raisebox{2.35ex}[0pt][0pt]{#2}}\hspace{\dimexpr\swaratopw-\swarabasew+1.5pt\relax}}%
   \else
-    \stackengine{5.8pt}{\vphantom{തീ}#1}{\raisebox{0pt}[\height][0pt]{#2}}{O}{c}{F}{T}{S}%
+    \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{2.35ex}[0pt][0pt]{#2}}}%
   \fi
 }
 \newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}

@@ -1412,28 +1412,28 @@ MODIFIER_KEYS = {
 
 
 def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
-    """Attach a swara modifier to a Mantrakshara in ModifierDarkBlue."""
+    """Attach a swara modifier to a Mantrakshara in ModifierSkyBlue."""
     if not mod:
         return syl_esc
     m_clean = mod.strip("()")
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\\hspace{{-0.4em}}\uE004}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\\hspace{{-0.4em}}\uE00D}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE00D}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\uE005}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\uE005}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{0.30ex}}{{\\hspace{{0.05em}}\uE001}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.05em}}\uE001}}}}}}"
     elif m_clean in ("D", "d", "Ʌ", "\uE006"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.5ex}}{{\uE006}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\uE006}}}}}}"
     elif m_clean in ("E", "e", "┃", "\uE002"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\uE002}}}}"
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\uE002}}}}"
     elif m_clean in ("F", "f", "╷"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\uE002}}}}"
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\uE002}}}}"
     elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.50em}}\uE003}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.50em}}\uE003}}}}}}"
     elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierDarkBlue}}{{\\raisebox{{1.30ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.10ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
     return syl_esc
 
 
@@ -1669,13 +1669,13 @@ def _render_malayalam_mantra_body(subsection):
         if is_verse_end:
             full_paragraph = "".join(paragraph_buffer)
             formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
-            formatted_paragraphs.append(r"\par\vspace{0.5em}")
+            formatted_paragraphs.append(r"\par\vspace{0.9em}")
             paragraph_buffer = []
 
     if paragraph_buffer:
         full_paragraph = "".join(paragraph_buffer)
         formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
-        formatted_paragraphs.append(r"\par\vspace{0.6em}")
+        formatted_paragraphs.append(r"\par\vspace{0.9em}")
 
     return formatted_paragraphs
 
