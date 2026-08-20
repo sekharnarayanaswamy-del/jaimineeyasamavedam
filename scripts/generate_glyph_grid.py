@@ -732,7 +732,7 @@ def render_html_table() -> None:
     }}
     .swara-on-caret-dotted {{
         position: absolute;
-        top: -1.35em;
+        top: -1.70em;
         left: 50%;
         transform: translateX(-50%);
         color: #c62828;
@@ -875,7 +875,7 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
         position: absolute;
-        top: -1.35em;
+        top: -1.70em;
         left: 50%;
         transform: translateX(-50%);
         color: var(--swara-red);
@@ -966,7 +966,7 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
         position: absolute;
-        top: -1.35em;
+        top: -1.70em;
         left: 50%;
         transform: translateX(-50%);
         color: var(--swara-red);
@@ -1234,12 +1234,20 @@ function showTab(sectionId) {{
     with open(OUT_HTML, "w", encoding="utf-8") as f:
         f.write(html_content)
     print(f"Saved HTML Glyph Table: {OUT_HTML}")
-    
-    # Copy to artifact directory for browser viewing
-    art_html = ARTIFACT_DIR / "glyph_table.html"
-    with open(art_html, "w", encoding="utf-8") as f:
-        f.write(html_content)
-    print(f"Copied to artifact directory: {art_html}")
+
+    # Copy to Malayalam_JSV root and data/output/malayalam
+    for dst in [
+        ROOT / "Malayalam_JSV" / "glyph_table.html",
+        ROOT / "data" / "output" / "malayalam" / "glyph_table.html",
+        ARTIFACT_DIR / "glyph_table.html"
+    ]:
+        try:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            with open(dst, "w", encoding="utf-8") as f:
+                f.write(html_content)
+            print(f"Copied to: {dst}")
+        except Exception as e:
+            print(f"Warning: could not copy to {dst}: {e}")
 
 
 if __name__ == "__main__":

@@ -2859,15 +2859,77 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
     for mantra_line in mantra_array:
         clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
         tokens = tokenize_mantra_line(clean_mantra)
-        
+        consumed_swaras = set()
+
+        # Look-ahead pass: If a token has MOD-B, find its swara (either on this token or the next word token)
+        caret_swaras = {}
+        for idx_t, tok in enumerate(tokens):
+            t = tok['type']
+            if t == 'word':
+                swara = tok.get('swara', '')
+                sw_parts, md_parts = _parse_swara_and_modifiers(swara)
+                has_b = any(m.strip("()") in ("B", "b", "^", "˄", "/\\", "∧", "\uE005") for m in md_parts)
+                if has_b:
+                    if sw_parts:
+                        caret_swaras[idx_t] = "".join(sw_parts).strip("()")
+                        consumed_swaras.add(idx_t)
+                    else:
+                        # Find next word token
+                        for j in range(idx_t + 1, len(tokens)):
+                            if tokens[j]['type'] == 'word':
+                                j_sw = tokens[j].get('swara', '')
+                                j_sw_parts, _ = _parse_swara_and_modifiers(j_sw)
+                                if j_sw_parts:
+                                    caret_swaras[idx_t] = "".join(j_sw_parts).strip("()")
+                                    consumed_swaras.add(j)
+                                break
+                            elif tokens[j]['type'] == 'danda':
+                                break
+            elif t == 'marker':
+                m_clean = tok.get('marker', '').strip("()")
+                if m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+                    for j in range(idx_t + 1, len(tokens)):
+                        if tokens[j]['type'] == 'word':
+                            j_sw = tokens[j].get('swara', '')
+                            j_sw_parts, _ = _parse_swara_and_modifiers(j_sw)
+                            if j_sw_parts:
+                                caret_swaras[idx_t] = "".join(j_sw_parts).strip("()")
+                                consumed_swaras.add(j)
+                            break
+                        elif tokens[j]['type'] == 'danda':
+                            break
+
         verse_tokens = []
-        for tok in tokens:
+        for idx_t, tok in enumerate(tokens):
             t = tok['type']
             if t == 'space':
                 verse_tokens.append('<span class="word-space">&nbsp;</span>')
             elif t == 'danda':
-                danda_text = escape_for_html(tok.get('char', '।'))
+                danda_text = format_dandas_html(escape_for_html(tok['char']))
                 verse_tokens.append(f'<span class="danda">{danda_text}</span>')
+            elif t == 'marker':
+                m_str = tok.get('marker', '')
+                m_clean = m_str.strip("()")
+                if m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+                    c_sw = caret_swaras.get(idx_t, '')
+                    c_disp = SWARA_CANONICAL_MAP.get(c_sw, c_sw) if c_sw else '&nbsp;'
+                    verse_tokens.append(f'<span class="swara-mod mod-b"><span class="caret-glyph">&#xE005;</span><span class="swara-on-caret">{escape_for_html(c_disp)}</span></span>')
+                elif m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
+                    verse_tokens.append('<span class="swara-mod mod-a">&#xE004;</span>')
+                elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
+                    verse_tokens.append('<span class="swara-mod mod-a1">&#xE00D;</span>')
+                elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
+                    verse_tokens.append('<span class="swara-mod mod-c">&#xE001;</span>')
+                elif m_clean in ("D", "d", "Ʌ", "\uE006"):
+                    verse_tokens.append('<span class="swara-mod mod-d">&#xE006;</span>')
+                elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
+                    verse_tokens.append('<span class="swara-mod mod-g">&#xE003;</span>')
+                elif m_clean in ("E", "e", "┃", "\uE002", "F", "f", "╷"):
+                    verse_tokens.append('<span class="swara-mod mod-e">&#xE002;</span>')
+                elif m_clean in ("H", "h", "|", "│", "॑", "ˈ", "\uE00C"):
+                    verse_tokens.append('<span class="swara-mod mod-h">&#xE00C;</span>')
+                else:
+                    verse_tokens.append(f'<span class="mantra-marker">{escape_for_html(m_str)}</span>')
             elif t == 'word':
                 word = tok['word'].translate(_ENGLISH_DIGITS)
                 swara = tok['swara']
@@ -2883,8 +2945,11 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                     if syl in ("_", ".", ",", ";", "._", "_.", ",_"):
                         verse_tokens.append(f'<span class="mantra-punct">{syl_esc}</span>')
                     elif idx == len(syllables) - 1:
-                        swara_str = "".join(swara_parts).strip("()")
-                        swara_display = SWARA_CANONICAL_MAP.get(swara_str, swara_str)
+                        if idx_t in consumed_swaras:
+                            swara_display = ""
+                        else:
+                            swara_str = "".join(swara_parts).strip("()")
+                            swara_display = SWARA_CANONICAL_MAP.get(swara_str, swara_str)
                         mod_spans = []
                         for mod in mod_parts:
                             m_clean = mod.strip("()")
@@ -2897,7 +2962,9 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                             elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
                                 mod_spans.append('<span class="swara-mod mod-a1">&#xE00D;</span>')
                             elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
-                                mod_spans.append('<span class="swara-mod mod-b">&#xE005;</span>')
+                                c_sw = caret_swaras.get(idx_t, '')
+                                c_disp = SWARA_CANONICAL_MAP.get(c_sw, c_sw) if c_sw else '&nbsp;'
+                                mod_spans.append(f'<span class="swara-mod mod-b"><span class="caret-glyph">&#xE005;</span><span class="swara-on-caret">{escape_for_html(c_disp)}</span></span>')
                             elif m_clean in ("D", "d", "Ʌ", "\uE006"):
                                 mod_spans.append('<span class="swara-mod mod-d">&#xE006;</span>')
                             elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
