@@ -40,7 +40,7 @@ Standard typesetting engines provide no native mechanism for anchoring a glyph a
 Publishing across Web, Print PDF, and Plaintext required maintaining identical visual conventions and color hierarchies across all platforms:
 - **Mantrakshara (Base Text):** Deep Typography Black (`#0f172a`).
 - **Swara Pitch Markers:** Vedic Sacred Red (`#c62828`).
-- **Swara Modifiers:** Performance Dark Blue (`#002171`).
+- **Swara Modifiers:** Performance Sky Blue (`#0284c7`).
 
 ---
 
