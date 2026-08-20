@@ -54,7 +54,7 @@
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\malayalamfont}
 \titlespacing*{\section}{0pt}{8pt}{14pt}
 \usepackage{setspace}
-\setstretch{1.85}
+\setstretch{2.15}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 \usepackage[stretch=20, shrink=20]{microtype}
 % --- SPACING & BREAKING RULES ---

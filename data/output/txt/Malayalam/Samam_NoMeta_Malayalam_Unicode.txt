@@ -1,6 +1,6 @@
 ജൈമിനീയ സാമ സംഹിത
 
-Version 3.0 2026-08-20 07:15:57
+Version 3.0 2026-08-20 12:56:51
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
 ആഗ്നേയപാഠഃ
@@ -10,7 +10,7 @@ Version 3.0 2026-08-20 07:15:57
 പ്രഥമ ഖണ്ഡഃ
 # End of Section Title -- section_1 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_1 ## DO NOT EDIT
-॥ഗൗതമസ്യപർകഃ॥
+॥ഗൗതമസ്യപ൪കഃ॥
 # End of SubSection Title -- subsection_1 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
 ഓ(𑌤)(·) ഗ്നാ(𑌤) ഇ(𑌶) ।ആയാ(𑌥𑌾𑌚𑍍) ഹീവാ(𑌚𑌾) ഇ(𑌶) ।
@@ -21,7 +21,7 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_1 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_2 ## DO NOT EDIT
-॥കശ്യപസ്യബർഹിഷീയം॥
+॥കശ്യപസ്യബ൪ഹിഷീയം॥
 # End of SubSection Title -- subsection_2 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_2 ## DO NOT EDIT
 അഗ്നആയാ(┃)ഹീവീ(𑌤𑍂) ।തായാഇഗൃണാനോ(𑌷𑍂) ഹവ്യദാ_താ(·)(𑌟𑍀) യാ(𑌤) ഇ(𑌶)।
@@ -30,7 +30,7 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_2 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_3 ## DO NOT EDIT
-॥ഗൗതമസ്യചൈവപർകഃ॥
+॥ഗൗതമസ്യചൈവപ൪കഃ॥
 # End of SubSection Title -- subsection_3 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_3 ## DO NOT EDIT
 അഗ്നആയാഹീവാ(𑌤𑍂),  ഇതായാ(𑌤𑌿) ഇ(𑌶) । ഗൃണാനോഹവ്യദാ(𑌯𑍂). താ(𑌪) യേ(𑌶)  ।
@@ -38,11 +38,11 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_3 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_4 ## DO NOT EDIT
-॥സൗപർണഞ്ച॥
+॥സൗപ൪ണഞ്ച॥
 # End of SubSection Title -- subsection_4 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_4 ## DO NOT EDIT
 ത്വമഗ്നേയജ്ഞാനാം(𑌷𑍂), ത്വമഗ്നാ(𑌤𑌿) ഇ(𑌶)। യജ്ഞാനാംഹോതാവിശ്വേ(𑌷𑍃), ഷാം(·)ഹാ(𑌟𑌾).
-ഇതാഃ(𑌤𑌾) । ദേ(𑌕)(\)_വാഇഭാ(𑌟𑌿), ഇർമാ(𑌤𑌾) । നുഷേ(𑌤𑌾𑌚𑍍). ജ(𑌕) നാ(·)ഔ(𑌟𑌾). ഹോ(𑌖)(⁀) ബാ(𑌪𑍍𑌲)(\)। ഹോ(𑌪𑍍𑌲)(Ʌ) ഇഴാ(𑌶𑌾) ॥ 4 ॥
+ഇതാഃ(𑌤𑌾) । ദേ(𑌕)(\)_വാഇഭാ(𑌟𑌿), ഇ൪മാ(𑌤𑌾) । നുഷേ(𑌤𑌾𑌚𑍍). ജ(𑌕) നാ(·)ഔ(𑌟𑌾). ഹോ(𑌖)(⁀) ബാ(𑌪𑍍𑌲)(\)। ഹോ(𑌪𑍍𑌲)(Ʌ) ഇഴാ(𑌶𑌾) ॥ 4 ॥
 #End of Mantra Sets -- subsection_4 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_5 ## DO NOT EDIT
@@ -54,18 +54,18 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_5 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_6 ## DO NOT EDIT
-॥ശ്രൗതർഷാണിത്രീണി॥
+॥ശ്രൗത൪ഷാണിത്രീണി॥
 # End of SubSection Title -- subsection_6 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_6 ## DO NOT EDIT
-അഗ്നിർവൃത്രാ(𑌤𑍀) ।ണാ(𑌟). ഇജാ(𑌖𑌾) ഔഹോവാ(𑌶𑌿) ।ഘാ(𑌖) നാ(𑌶) ത്।
-ദ്ര(𑌚) വി(𑌶) ണാ(𑌕) സ്യുർവീപ(𑌕𑌿)_ ന്യാ,യാ(𑌟𑌾). ഓഇ,സമിദ്ധാ(𑌟𑍁)(·) ശ്ശൂ(𑌤) ।
+അഗ്നി൪വൃത്രാ(𑌤𑍀) ।ണാ(𑌟). ഇജാ(𑌖𑌾) ഔഹോവാ(𑌶𑌿) ।ഘാ(𑌖) നാ(𑌶) ത്।
+ദ്ര(𑌚) വി(𑌶) ണാ(𑌕) സ്യു൪വീപ(𑌕𑌿)_ ന്യാ,യാ(𑌟𑌾). ഓഇ,സമിദ്ധാ(𑌟𑍁)(·) ശ്ശൂ(𑌤) ।
 ക്രായാ(𑌚𑌾)_ ഹു,താഇഴാ(𑌟𑍀). ഭാ(𑌖𑌣𑍍)। ഓ(𑌪) ഇഴാ(𑌪𑍍𑌲𑌾) ॥ 6 ॥
 അഗ്നീ(𑌖𑌾) രൗഹോവാ(𑌶𑌿) ഹാഇവൃത്രാണീ(𑌶𑍁) ।ജം(·)ഘാ(𑌟𑌾)(·) നാ(𑌤).
 ദൗ(·)ഹോ(𑌟𑌾)(·) വാ(𑌤) ഇ(𑌶) ।
 ദ്രവിണാ(𑌪𑌿) സ്യൂഃ(𑌣) ।ഓഇവാഇ(𑌷𑍀),പന്യായാ(𑌟𑌿),
 സാമാഇദ്ധാ(𑌟𑍀𑌟𑍍). ശ്ശൂ(𑌖) ഔഹോവാ(𑌶𑌿) । ക്രായാ_ഹൂ(𑌟𑌿).താഃ(𑌖)॥ 7 ॥
 ഓ(𑌤)(·) ഗ്നീഃ(𑌤)। വൃത്രാണീ(𑌕𑌿)   ജംഘനാ_ദൗ(𑌕𑍀)_ ഹോഔഹോ(𑌖𑌿) വാ(𑌶) ।
-ദ്രവീ(𑌚𑌾) ണാ(𑌕) സ്യുർവീപ(𑌕𑌿)_ ന്യയാ(𑌚𑌾) ഔ(𑌕)_ ഹോഔഹോ(𑌖𑌿) വാ(𑌶) ।
+ദ്രവീ(𑌚𑌾) ണാ(𑌕) സ്യു൪വീപ(𑌕𑌿)_ ന്യയാ(𑌚𑌾) ഔ(𑌕)_ ഹോഔഹോ(𑌖𑌿) വാ(𑌶) ।
 സമിദ്ധാ(𑌚𑌿)ശ്ശുക്രയാ(𑌚𑌿)_ഔ(𑌕)_ഹോഔഹോ(𑌖𑌿).ബാ(𑌪𑍍𑌲)ഹൂ(Ʌ)തോ(𑌪𑍍𑌲𑌾)(A1)।ഹാഇ(𑌶𑌾)॥ 8 ॥
 #End of Mantra Sets -- subsection_6 ## DO NOT EDIT
 
@@ -90,13 +90,13 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_8 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_9 ## DO NOT EDIT
-॥ഇന്ദ്രസ്യസംവർഗൗവാത്രഘ്നേദ്വേ॥
+॥ഇന്ദ്രസ്യസംവ൪ഗൗവാത്രഘ്നേദ്വേ॥
 # End of SubSection Title -- subsection_9 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_9 ## DO NOT EDIT
 ത്വന്നോ(┃)യാ(𑌤𑌿) ।ഗ്നേ(𑌚) മാ_ഹോ(𑌥𑌾) ഭിഃപാ,ഹാഇവീ(𑌟𑍁)(·) ശ്വാ(𑌤) । സ്യാ(𑌚) ആ_രാതേ(𑌥𑌿𑌚𑍍)_ രൂതാ(𑌚𑌾)_ ദ്വാ(𑌯)_
 ഇഷാഃ(𑌟𑌾) ।മാ(𑌕)(\)_ ൪ത്യാ(𑌥) സ്യാഇഴാ(𑌟𑌿). ഭാ(𑌖𑌣𑍍) ।ഓ(𑌪) ഇഴാ(𑌶𑌾) ॥ 12 ॥
 ത്വാന്ത്വന്നോ(𑌷𑌿) അഗ്നേമഹോ(𑌤𑍀)(·) ഭാ(𑌤) ഇഃ(𑌶) । പാ(𑌕)(\)_ ഹിവിശ്വാ_ഔ(𑌟𑍀)(·)
-ഹോ(𑌤) സ്യാ(·)_ഔ(𑌟𑌾)(·) ഹോ(𑌤) ।ആരാതേ(𑌕𑌿𑌚𑍍)_രൂതാ(𑌚𑌾)_ദ്വാ(𑌯)_ഇഷാഃ(𑌟𑌾) ।മ,ർതോ(𑌟𑌾𑌟𑍍).
+ഹോ(𑌤) സ്യാ(·)_ഔ(𑌟𑌾)(·) ഹോ(𑌤) ।ആരാതേ(𑌕𑌿𑌚𑍍)_രൂതാ(𑌚𑌾)_ദ്വാ(𑌯)_ഇഷാഃ(𑌟𑌾) ।മ,൪തോ(𑌟𑌾𑌟𑍍).
 യാ(𑌖).ഔഹോവാ(𑌶𑌿) ।സ്യാ(𑌖) ॥ 13 ॥
 #End of Mantra Sets -- subsection_9 ## DO NOT EDIT
 
@@ -105,9 +105,9 @@ Version 3.0 2026-08-20 07:15:57
 # End of SubSection Title -- subsection_10 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_10 ## DO NOT EDIT
 ഏ(∧)ഹ്യൂ(𑌫𑌾) ഷുബ്രാവാ(𑌖𑌿) ണാഇതാഇ(𑌶𑍀) । അഗ്നഇത്ഥേ(𑌷𑍀) തരാ_ഗാ(𑌟𑌿). ഇരാഃ(𑌚𑌾) ।
-ഏ(·)ഭാ(𑌟𑌾). ഇർവാധാ(𑌚𑌿) ।സ,യാ(𑌟𑌾). ഹാ(𑌖𑌣𑍍) ഇ(𑌶) । ദോ(𑌪) (⁀)ഭോ(𑌪𑍍𑌲)(\) ।ഹാഇ(𑌶𑌾) ॥ 14 ॥
+ഏ(·)ഭാ(𑌟𑌾). ഇ൪വാധാ(𑌚𑌿) ।സ,യാ(𑌟𑌾). ഹാ(𑌖𑌣𑍍) ഇ(𑌶) । ദോ(𑌪) (⁀)ഭോ(𑌪𑍍𑌲)(\) ।ഹാഇ(𑌶𑌾) ॥ 14 ॥
 ഏഹ്യൂഷൂ(𑌷𑌿) ബ്രവൗഹോണാ(𑌤𑍀)(┃) ഇതാ(𑌤𑌾) ഇ(𑌶) ।അഗ്നഇത്ഥേതരാ(𑌯𑍂). ഗീ(𑌪) രാഃ(𑌶) ।
-ഏഭിർവാ(𑌖𑌿) ൪ദ്ധാ(𑌣) ।സ,യാ(𑌟𑌾). ഹാ(𑌖𑌣𑍍) ഇ(𑌶) ।ദോ(𑌪) (⁀)ഭോ(𑌪𑍍𑌲)(\) ।ഹാഇ(𑌶𑌾)॥ 15 ॥
+ഏഭി൪വാ(𑌖𑌿) ൪ദ്ധാ(𑌣) ।സ,യാ(𑌟𑌾). ഹാ(𑌖𑌣𑍍) ഇ(𑌶) ।ദോ(𑌪) (⁀)ഭോ(𑌪𑍍𑌲)(\) ।ഹാഇ(𑌶𑌾)॥ 15 ॥
 #End of Mantra Sets -- subsection_10 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_11 ## DO NOT EDIT
@@ -123,15 +123,15 @@ Version 3.0 2026-08-20 07:15:57
 #End of Mantra Sets -- subsection_11 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_12 ## DO NOT EDIT
-॥അഗ്നേശ്ചവൈശ്വാനരസ്യാർഷേയം॥
+॥അഗ്നേശ്ചവൈശ്വാനരസ്യാ൪ഷേയം॥
 # End of SubSection Title -- subsection_12 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_12 ## DO NOT EDIT
-ത്വാമഗ്നേപുഷ്കാ(𑌤𑍁), രാദധീ(𑌤𑌿) ।ആ(𑌚) ഥർവാ(𑌚𑌾)_ നാ_ഇരാമാ(𑌟𑍀). ന്ധാ(𑌖) താ(𑌣) ।
+ത്വാമഗ്നേപുഷ്കാ(𑌤𑍁), രാദധീ(𑌤𑌿) ।ആ(𑌚) ഥ൪വാ(𑌚𑌾)_ നാ_ഇരാമാ(𑌟𑍀). ന്ധാ(𑌖) താ(𑌣) ।
 മൂ(𑌖)(·) ൪ധ്നോ(𑌪𑍍𑌲)(·) വാ(𑌖) ഇശ്വാ(𑌣𑌾) ।സ്യാവോ(𑌪𑌾)(Ʌ) ബാ(𑌪𑍍𑌲) ഘാ(Ʌ)തോ(𑌪𑍍𑌲𑌾) (A1)।ഹാഇ(𑌶𑌾)॥ 18 ॥
 #End of Mantra Sets -- subsection_12 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_13 ## DO NOT EDIT
-॥സുമിത്രസ്യചവാർദ്ധശ്വേസ്സാമ॥
+॥സുമിത്രസ്യചവാ൪ദ്ധശ്വേസ്സാമ॥
 # End of SubSection Title -- subsection_13 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_13 ## DO NOT EDIT
 അഗ്നേവിവ(𑌷𑍀) സ്വദാഭരോവാ(𑌤𑍂)(·) ഹാ(𑌤) ഇ(𑌶) ।അസ്മാ(𑌚𑌾) ഭ്യാമൂ(𑌕𑌾𑌚𑍍). തായാ(𑌚𑌾) ഇമ,

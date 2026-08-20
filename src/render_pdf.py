@@ -1366,7 +1366,7 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
 # ----------------------------------------------------
 # MALAYALAM SAMAM-ONLY FORMATTING (Phase 1 pilot)
 # ----------------------------------------------------
-_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൫൬൭൮൯", "0123456789012356789")
+_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
 
 MODIFIER_DIRECT_MAP = {
     # Modifiers from updated Google Sheet (A..H)
@@ -1419,11 +1419,11 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.10em}}\uE00D}}}}}}"
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.55em}}\uE00D}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE005}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.05em}}\uE001}}}}}}"
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.10em}}\uE001\\hspace{{0.05em}}}}}}}}"
     elif m_clean in ("D", "d", "Ʌ", "\uE006"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\uE006}}}}}}"
     elif m_clean in ("E", "e", "┃", "\uE002"):
@@ -1435,6 +1435,66 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
     elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.10ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
     return syl_esc
+
+
+def _has_mod_a1(tok) -> bool:
+    """Check if a token carries MOD-A1 (arc over danda)."""
+    if not tok:
+        return False
+    if tok.get('type') == 'marker':
+        return tok.get('marker', '').strip("()") in ("A1", "a1", "A_1", "a_1", "\uE00D")
+    if tok.get('type') == 'word':
+        sw = tok.get('swara', '')
+        if sw:
+            _, mods = _parse_swara_and_modifiers(sw)
+            return any(m.strip("()") in ("A1", "a1", "A_1", "a_1", "\uE00D") for m in mods)
+    return False
+
+
+def _has_multiple_swaras(tok) -> bool:
+    """Check if a word token has multiple or compound swara glyphs."""
+    if not tok or tok.get('type') != 'word':
+        return False
+    sw = tok.get('swara', '')
+    if not sw:
+        return False
+    sw_parts, _ = _parse_swara_and_modifiers(sw)
+    if len(sw_parts) > 1:
+        return True
+    if sw_parts:
+        sw_text = sw_parts[0].strip("()")
+        if "\u1134D" in sw_text or "\u0D4D" in sw_text or len(sw_text) >= 3:
+            return True
+    return False
+
+
+def _match_verse_num_marker(tokens: list, idx: int) -> tuple[int, str | None]:
+    """Check if tokens starting at idx form a composite verse number marker like || N || or ॥ N ॥.
+    Returns (token_count, number_string) if matched, else (0, None).
+    """
+    if idx >= len(tokens):
+        return 0, None
+    sub = tokens[idx:]
+    if sub[0].get('type') != 'danda' or sub[0].get('char') not in ('॥', '||', '|', '।।'):
+        return 0, None
+
+    j = 1
+    while j < len(sub) and sub[j].get('type') == 'space':
+        j += 1
+    
+    if j < len(sub) and sub[j].get('type') in ('word', 'other'):
+        val = (sub[j].get('word') or sub[j].get('text') or '').translate(_ENGLISH_DIGITS).strip()
+        if re.match(r'^\d+$', val):
+            num_str = val
+            j += 1
+            while j < len(sub) and sub[j].get('type') == 'space':
+                j += 1
+            if j < len(sub) and sub[j].get('type') == 'danda' and sub[j].get('char') in ('॥', '||', '|', '।।'):
+                j += 1
+                while j < len(sub) and sub[j].get('type') == 'space':
+                    j += 1
+                return j, num_str
+    return 0, None
 
 
 def _parse_swara_and_modifiers(swara_str: str):
@@ -1588,43 +1648,59 @@ def _render_malayalam_mantra_body(subsection):
     formatted_paragraphs = []
     
     has_mod_b_pending = False
+    has_mod_a1_pending = False
     for mantra_set in mantra_sets:
         line = mantra_set.get('malayalam-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
         if not line:
             continue
-        is_verse_end = bool(re.search(r'(\|\||॥)\s*[\d०-९]+\s*(\|\||॥)', line))
+        line = line.replace('ർ', '൪').replace('ര്', '൪')
         tokens = tokenize_mantra_line(line)
         
-        for idx_t, tok in enumerate(tokens):
+        idx_t = 0
+        while idx_t < len(tokens):
+            v_count, v_num = _match_verse_num_marker(tokens, idx_t)
+            if v_count > 0:
+                paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.65em plus 0.25em minus 0.1em}}\\mbox{{\\malayalamfont ॥{v_num}॥}}")
+                full_paragraph = "".join(paragraph_buffer)
+                formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
+                formatted_paragraphs.append(r"\par\vspace{1.1em}")
+                paragraph_buffer = []
+                idx_t += v_count
+                continue
+
+            tok = tokens[idx_t]
             t = tok['type']
             if t == 'space':
-                # Check if preceding token had modifier or punctuation
-                prev_has_mod = False
-                if idx_t > 0:
-                    prev_tok = tokens[idx_t - 1]
-                    if prev_tok['type'] == 'marker':
-                        prev_has_mod = True
-                    elif prev_tok['type'] == 'word':
-                        p_word = prev_tok['word']
-                        if p_word.endswith(('_', '.', ',')) or (prev_tok.get('swara') and any(m in prev_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
-                            prev_has_mod = True
+                prev_tok = tokens[idx_t - 1] if idx_t > 0 else None
+                next_tok = tokens[idx_t + 1] if idx_t + 1 < len(tokens) else None
                 
-                # Check if succeeding token has modifier or punctuation
-                next_has_mod = False
-                if idx_t + 1 < len(tokens):
-                    next_tok = tokens[idx_t + 1]
-                    if next_tok['type'] == 'marker':
-                        next_has_mod = True
-                    elif next_tok['type'] == 'word':
-                        n_word = next_tok['word']
-                        if n_word.startswith(('_', '.', ',')) or (next_tok.get('swara') and any(m in next_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
-                            next_has_mod = True
+                # Space is suppressed around MOD-A1 and its bridging danda
+                if has_mod_a1_pending or _has_mod_a1(prev_tok) or _has_mod_a1(next_tok):
+                    idx_t += 1
+                    continue
+                if prev_tok and prev_tok.get('type') == 'danda' and idx_t > 1 and _has_mod_a1(tokens[idx_t - 2]):
+                    idx_t += 1
+                    continue
                 
-                if not (prev_has_mod or next_has_mod):
+                # Space is preserved around normal dandas / footnotes or when adjacent to multi-swaras
+                prev_is_danda = (prev_tok and prev_tok['type'] in ('danda', 'footnote'))
+                next_is_danda = (next_tok and next_tok['type'] in ('danda', 'footnote'))
+                
+                prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
+                next_multi = (next_tok and _has_multiple_swaras(next_tok))
+                
+                if prev_is_danda or next_is_danda or prev_multi or next_multi:
                     paragraph_buffer.append(" ")
+                else:
+                    paragraph_buffer.append(r"\hskip 0pt plus 1.5pt\allowbreak ")
             elif t == 'danda':
                 has_mod_b_pending = False
-                paragraph_buffer.append(format_dandas(tok['char']))
+                if has_mod_a1_pending:
+                    has_mod_a1_pending = False
+                    d_char = tok['char'].replace('|', '।')
+                    paragraph_buffer.append(f"{{\\malayalamfont {d_char}}}")
+                else:
+                    paragraph_buffer.append(format_dandas(tok['char']))
             elif t == 'footnote':
                 marker = tok.get('text', '').strip('()')
                 fn_text = footnote_data.get(marker, '')
@@ -1640,12 +1716,17 @@ def _render_malayalam_mantra_body(subsection):
                 m_str = tok['marker']
                 if m_str.strip("()") in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
                     has_mod_b_pending = True
+                if m_str.strip("()") in ("A1", "a1", "A_1", "a_1", "\uE00D"):
+                    has_mod_a1_pending = True
                 m_esc = _apply_mantrakshara_modifier("", m_str)
                 paragraph_buffer.append(m_esc)
             elif t == 'word':
-                word = tok['word'].translate(_ENGLISH_DIGITS)
+                if _has_mod_a1(tok):
+                    has_mod_a1_pending = True
+                word = tok['word']
                 swara = tok['swara']
                 if not word:
+                    idx_t += 1
                     continue
 
                 # Strip trailing punctuation (like _, ., ,) so swara marker stays on the preceding mantrakshara
@@ -1655,6 +1736,7 @@ def _render_malayalam_mantra_body(subsection):
                 if not core_word:
                     punct_esc = escape_for_latex(word)
                     paragraph_buffer.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{punct_esc}}}}}")
+                    idx_t += 1
                     continue
 
                 if swara:
@@ -1703,27 +1785,24 @@ def _render_malayalam_mantra_body(subsection):
                         syl_parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{tp_esc}}}}}")
                     paragraph_buffer.append("".join(syl_parts))
             else:
-                extra_text = tok.get("text", "").translate(_ENGLISH_DIGITS)
+                extra_text = tok.get("text", "")
                 extra_esc = escape_for_latex(extra_text)
                 if extra_text.strip() in (".", ",", "_", "._", "_.", ",_", ",.", ";"):
                     paragraph_buffer.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{extra_esc}}}}}")
                 else:
                     paragraph_buffer.append(f"{{\\malayalamfont {extra_esc}}}")
-        if is_verse_end:
+            idx_t += 1
+
+        if paragraph_buffer:
             full_paragraph = "".join(paragraph_buffer)
-            # Prevent verse number marker (e.g. ॥1॥) from wrapping onto a new line as an orphan
-            full_paragraph = re.sub(r'\s*\\mbox\{([॥|\|]+)\s*(\d+)\s*([॥|\|]+)\}', r'\\nolinebreak\\mbox{\\hspace{0.35em}\1\2\3}', full_paragraph)
-            full_paragraph = re.sub(r'\s*([॥|\|]+)\s*(\d+)\s*([॥|\|]+)\s*$', r'\\nolinebreak\\mbox{\\hspace{0.35em}\1\2\3}', full_paragraph)
             formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
-            formatted_paragraphs.append(r"\par\vspace{0.9em}")
+            formatted_paragraphs.append(r"\par\vspace{1.1em}")
             paragraph_buffer = []
 
     if paragraph_buffer:
         full_paragraph = "".join(paragraph_buffer)
-        full_paragraph = re.sub(r'\s*\\mbox\{([॥|\|]+)\s*(\d+)\s*([॥|\|]+)\}', r'\\nolinebreak\\mbox{\\hspace{0.35em}\1\2\3}', full_paragraph)
-        full_paragraph = re.sub(r'\s*([॥|\|]+)\s*(\d+)\s*([॥|\|]+)\s*$', r'\\nolinebreak\\mbox{\\hspace{0.35em}\1\2\3}', full_paragraph)
         formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\malayalamfont {full_paragraph}}}}}")
-        formatted_paragraphs.append(r"\par\vspace{0.9em}")
+        formatted_paragraphs.append(r"\par\vspace{1.1em}")
 
     return formatted_paragraphs
 
@@ -2749,16 +2828,19 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
         
     # 2. Mantra verses
     mantra_array = []
-    corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
-    if corrected_mantra_sets:
-        for corrected in corrected_mantra_sets:
-            c_mantra = corrected.get('corrected-mantra', '')
-            if c_mantra:
-                mantra_array.append(c_mantra)
-    elif subsection.get('mantra_sets'):
-        for mantra_set in subsection.get('mantra_sets', []):
+    mantra_sets = subsection.get('malayalam-mantra-sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+
+    for mset in mantra_sets:
+        m = mset.get('malayalam-mantra') or mset.get('corrected-mantra') or mset.get('mantra', '')
+        if m:
+            mantra_array.append(m)
+        elif mset.get('mantra-words'):
             words = []
-            for word_dict in mantra_set.get('mantra-words', []):
+            for word_dict in mset.get('mantra-words', []):
                 w = word_dict.get('word', '')
                 sw = word_dict.get('swara', '')
                 if sw:
@@ -2767,14 +2849,9 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                     words.append(w)
             if words:
                 mantra_array.append(" ".join(words))
-    elif subsection.get('malayalam-mantra-sets'):
-        for mset in subsection.get('malayalam-mantra-sets', []):
-            m = mset.get('malayalam-mantra', '')
-            if m:
-                mantra_array.append(m)
 
     for mantra_line in mantra_array:
-        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ').replace('ർ', '൪').replace('ര്', '൪')
         tokens = tokenize_mantra_line(clean_mantra)
         consumed_swaras = set()
 
@@ -2817,34 +2894,45 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                             break
 
         verse_tokens = []
-        for idx_t, tok in enumerate(tokens):
+        idx_t = 0
+        while idx_t < len(tokens):
+            v_count, v_num = _match_verse_num_marker(tokens, idx_t)
+            if v_count > 0:
+                verse_tokens.append(f'<span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>')
+                formatted_output.append(f'<div class="mantra-verse">{"".join(verse_tokens)}</div>')
+                verse_tokens = []
+                idx_t += v_count
+                continue
+
+            tok = tokens[idx_t]
             t = tok['type']
             if t == 'space':
-                prev_has_mod = False
-                if idx_t > 0:
-                    prev_tok = tokens[idx_t - 1]
-                    if prev_tok['type'] == 'marker':
-                        prev_has_mod = True
-                    elif prev_tok['type'] == 'word':
-                        p_word = prev_tok['word']
-                        if p_word.endswith(('_', '.', ',')) or (prev_tok.get('swara') and any(m in prev_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
-                            prev_has_mod = True
+                prev_tok = tokens[idx_t - 1] if idx_t > 0 else None
+                next_tok = tokens[idx_t + 1] if idx_t + 1 < len(tokens) else None
                 
-                next_has_mod = False
-                if idx_t + 1 < len(tokens):
-                    next_tok = tokens[idx_t + 1]
-                    if next_tok['type'] == 'marker':
-                        next_has_mod = True
-                    elif next_tok['type'] == 'word':
-                        n_word = next_tok['word']
-                        if n_word.startswith(('_', '.', ',')) or (next_tok.get('swara') and any(m in next_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
-                            next_has_mod = True
+                # Space is suppressed around MOD-A1 and its bridging danda
+                if _has_mod_a1(prev_tok) or _has_mod_a1(next_tok):
+                    idx_t += 1
+                    continue
+                if prev_tok and prev_tok.get('type') == 'danda' and idx_t > 1 and _has_mod_a1(tokens[idx_t - 2]):
+                    idx_t += 1
+                    continue
                 
-                if not (prev_has_mod or next_has_mod):
+                prev_is_danda = (prev_tok and prev_tok['type'] in ('danda', 'footnote'))
+                next_is_danda = (next_tok and next_tok['type'] in ('danda', 'footnote'))
+                prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
+                next_multi = (next_tok and _has_multiple_swaras(next_tok))
+                
+                if prev_is_danda or next_is_danda or prev_multi or next_multi:
                     verse_tokens.append('<span class="word-space">&nbsp;</span>')
             elif t == 'danda':
-                danda_text = format_dandas_html(escape_for_html(tok['char']))
-                verse_tokens.append(f'<span class="danda">{danda_text}</span>')
+                prev_tok = tokens[idx_t - 1] if idx_t > 0 else None
+                if _has_mod_a1(prev_tok):
+                    danda_text = escape_for_html(tok['char'].replace('|', '।'))
+                    verse_tokens.append(f'<span class="danda">{danda_text}</span>')
+                else:
+                    danda_text = format_dandas_html(escape_for_html(tok['char']))
+                    verse_tokens.append(f'<span class="danda">{danda_text}</span>')
             elif t == 'marker':
                 m_str = tok.get('marker', '')
                 m_clean = m_str.strip("()")
@@ -2869,9 +2957,10 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                 else:
                     verse_tokens.append(f'<span class="mantra-marker">{escape_for_html(m_str)}</span>')
             elif t == 'word':
-                word = tok['word'].translate(_ENGLISH_DIGITS)
+                word = tok['word']
                 swara = tok['swara']
                 if not word:
+                    idx_t += 1
                     continue
                 core_word = word.rstrip("_,.")
                 trailing_punct = word[len(core_word):]
@@ -2927,11 +3016,12 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                     collected_footnotes.extend(fnotes)
                     verse_tokens.append(fn_esc)
             else:
-                extra_text = escape_for_html(tok.get('text', '').translate(_ENGLISH_DIGITS))
+                extra_text = escape_for_html(tok.get('text', ''))
                 if extra_text.strip() in (".", ",", "_", "._", "_.", ",_", ",.", ";"):
                     verse_tokens.append(f'<span class="mantra-punct">{extra_text}</span>')
                 elif extra_text:
                     verse_tokens.append(f'<span class="extra-text">{extra_text}</span>')
+            idx_t += 1
 
         if verse_tokens:
             formatted_output.append(f'<div class="mantra-verse">{"".join(verse_tokens)}</div>')

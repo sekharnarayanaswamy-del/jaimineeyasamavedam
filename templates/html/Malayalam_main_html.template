@@ -114,12 +114,13 @@
             font-weight: bold;
         }
         .mantra-verse {
-            margin: 20px 0;
+            margin: 24px 0;
             display: inline-flex;
             flex-wrap: wrap;
             align-items: flex-end;
             justify-content: center;
-            line-height: 1.9;
+            row-gap: 18px;
+            line-height: 2.2;
         }
         .mantra-word {
             display: inline-flex;
@@ -243,6 +244,23 @@
             color: var(--primary-color);
             font-size: 1.4rem;
             line-height: 1.2;
+        }
+        .verse-num-marker {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+            margin-left: 0.65em;
+            vertical-align: baseline;
+        }
+        .verse-num-marker .danda {
+            margin: 0;
+        }
+        .verse-num-marker .verse-num {
+            font-family: var(--font-doc);
+            font-size: 1.35rem;
+            line-height: 1.2;
+            padding: 0 0.1em;
+            color: var(--primary-color);
         }
         .footer {
             text-align: center;

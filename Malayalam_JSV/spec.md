@@ -94,9 +94,18 @@ By parsing the existing digital Devanagari text directly from `C:\Users\sekha\On
 
 ---
 
-## 5. Execution Instructions
 
-```bash
+## 5. Roadmap & Implementation Status
+
+1. **Rik-to-Samam Cross-Linking:** Add numbering scheme linking Rik number to the respective Samam numbers (valid for both Devanagari and Malayalam).
+2. **Export to Unicode Numerals:** In the "Export to Unicode" option, convert Devanagari numerals to English numerals.
+3. **[COMPLETED] Line Spacing & Clearance:** Line spacing increased to 2.15 (LaTeX XeLaTeX) and 2.2 with 18px row-gap (HTML) to provide generous clearance for descending tone markers (`\`) and top swara stacks.
+4. **[COMPLETED] Sama Numeral Marker Formatting:** Isolated with `0.65em` horizontal spacing, enclosed in unbreakable containers (`\mbox` / `inline-flex`), with automatic line breaks initiating each new Sama on a fresh line.
+5. **[COMPLETED] Unified Repha Standard:** Unified all pre-consonantal R occurrences (`ർ` / `ര്`) to traditional Repha **`൪`** (`U+0D6A`) across all rendering layers and source data.
+6. **Space Modifier:** Introduce a fine-adjustment space modifier for advanced publisher typesetting.
+
+---
+
 ## 6. Authoritative Ayugma Swara Concordance
 
 The 19 Ayugma (odd/subscript) pitch bases follow the traditional Kerala Jaiminiya Lakshana order from the [Google Sheets Reference Concordance](https://docs.google.com/spreadsheets/d/1S0xu2DdhuhbZLVrSjJrKp-iH152Ys_QB0fWNLK6MSYI/edit?gid=0#gid=0):
@@ -130,8 +139,9 @@ The 19 Ayugma (odd/subscript) pitch bases follow the traditional Kerala Jaiminiy
 | ID / Mark | Shortcut | Modifier Name | Glyph Codepoint | Visual Position | Lakshana Role |
 | :--- | :---: | :--- | :---: | :---: | :--- |
 | **MOD-A** | `(A)` / `(⁀)` | **Syllable Spanning Arc (Tie)** | `\uE004` / `U+2040` | Stacked Above (2 Syllables) | Overhead curved arch spanning across two words for connected tone transition. |
+| **MOD-A1** | `(A1)` / `(A_1)` | **Bridging Arc over Danda** | `\uE00D` | Centered over Danda `।` | Syllable-spanning arch precisely centered over the bridging danda between phrases. |
 | **MOD-B** | `(B)` / `(∧)` | **Peak Elevation Caret** | `\uE005` / `U+2227` | Stacked Above (2 Syllables) | Elevated melodic peak over syllable transition, with swara marker sitting above apex. |
-| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot attached to the upper shoulder of the preceding syllable. |
+| **MOD-C** | `(C)` / `(·)` | **Shoulder Pause Dot** | `\uE001` / `U+00B7` | Upper-Right Shoulder | High pause dot with natural advance width to prevent syllable collision. |
 | **MOD-D** | `(D)` / `(Ʌ)` | **Chevron Roof** | `\uE006` / `U+0245` | Stacked Above (2 Syllables) | Roof-tone modulation spanning across words. |
 | **MOD-E** | `(E)` / `(┃)` | **Phrasing Heavy Danda** | `\uE002` / `U+2503` | Inline | Structural major cadence division. |
 | **MOD-F** | `(F)` / `(╷)` | **Light Vertical Line** | `\uE002` / `U+2577` | Inline | Minor phrasing tone separator. |

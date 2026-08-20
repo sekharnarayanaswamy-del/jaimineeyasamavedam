@@ -553,7 +553,7 @@
                 <th>Modifier Name</th>
                 <th style="text-align:center;">Glyph</th>
                 <th>Codepoints</th>
-                <th>Position</th>
+                <th>Position & Engine Behavior</th>
             </tr>
         </thead>
         <tbody>
@@ -563,15 +563,15 @@
                 <td>Syllable Spanning Arc (Smooth Flat)</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE004;</td>
                 <td><code>U+E004 / U+2040</code></td>
-                <td><span class="badge-above">Above (2 Syllables)</span></td>
+                <td><span class="badge-above">Above (2 Syllables)</span> Spans across adjacent syllables without danda.</td>
             </tr>
             <tr>
                 <td><strong>MOD-A1</strong></td>
                 <td><code>(A1) / (A_1)</code></td>
-                <td>Syllable Spanning Arc over Danda</td>
+                <td>Bridging Arc over Danda</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE00D;</td>
                 <td><code>U+E00D / (A1)</code></td>
-                <td><span class="badge-above">Above (2 Syllables + Danda)</span></td>
+                <td><span class="badge-above">Centered over Danda</span> Centered directly over inter-word danda <code>।</code> with auto-suppressed spacing.</td>
             </tr>
             <tr>
                 <td><strong>MOD-B</strong></td>
@@ -579,7 +579,7 @@
                 <td>Peak Elevation Caret</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE005;</td>
                 <td><code>U+E005 / U+2227</code></td>
-                <td><span class="badge-above">Above (2 Syllables)</span></td>
+                <td><span class="badge-above">Above (2 Syllables)</span> Elevates swara marker situated directly above peak apex.</td>
             </tr>
             <tr>
                 <td><strong>MOD-C</strong></td>
@@ -587,7 +587,7 @@
                 <td>Shoulder Pause Dot</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE001;</td>
                 <td><code>U+E001 / U+00B7</code></td>
-                <td><span class="badge-shoulder">Shoulder</span></td>
+                <td><span class="badge-shoulder">Shoulder</span> Natural advance width ensures clear separation from following syllables.</td>
             </tr>
             <tr>
                 <td><strong>MOD-D</strong></td>
@@ -595,7 +595,7 @@
                 <td>Chevron Roof</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE006;</td>
                 <td><code>U+E006 / U+0245</code></td>
-                <td><span class="badge-above">Above (2 Syllables)</span></td>
+                <td><span class="badge-above">Above (2 Syllables)</span> Roof-tone modulation spanning across words.</td>
             </tr>
             <tr>
                 <td><strong>MOD-E</strong></td>
@@ -603,7 +603,7 @@
                 <td>Phrasing Heavy Danda</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE002;</td>
                 <td><code>U+E002 / U+2503</code></td>
-                <td><span class="badge-inline">Inline</span></td>
+                <td><span class="badge-inline">Inline</span> Major structural cadence break.</td>
             </tr>
             <tr>
                 <td><strong>MOD-F</strong></td>
@@ -611,7 +611,7 @@
                 <td>Light Vertical Line</td>
                 <td style="text-align:center;" class="glyph-sample">&#x2577;</td>
                 <td><code>U+E002 / U+2577</code></td>
-                <td><span class="badge-inline">Inline</span></td>
+                <td><span class="badge-inline">Inline</span> Minor phrasing tone separator.</td>
             </tr>
             <tr>
                 <td><strong>MOD-G</strong></td>
@@ -619,7 +619,7 @@
                 <td>Descending Tone Slash</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE003;</td>
                 <td><code>U+E003 / U+005C</code></td>
-                <td><span class="badge-below">Center Bottom</span></td>
+                <td><span class="badge-below">Center Bottom</span> Downward sliding tone situated beneath the mantrakshara.</td>
             </tr>
             <tr>
                 <td><strong>MOD-H</strong></td>
@@ -627,7 +627,7 @@
                 <td>Overhead Swarita</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE00C;</td>
                 <td><code>U+E00C / U+007C</code></td>
-                <td><span class="badge-above">Above Consonant</span></td>
+                <td><span class="badge-above">Above Consonant</span> Vertical upper tone stroke directly atop the syllable.</td>
             </tr>
             <tr>
                 <td><strong>Dot (<code>.</code>)</strong></td>
@@ -635,7 +635,7 @@
                 <td>Pause Dot</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE001;</td>
                 <td><code>U+E001 / U+002E</code></td>
-                <td><span class="badge-inline">Inline</span></td>
+                <td><span class="badge-inline">Inline</span> Stobha and breath pause indicator.</td>
             </tr>
             <tr>
                 <td><strong>Underbar (<code>_</code>)</strong></td>
@@ -643,7 +643,7 @@
                 <td>Elongation / Low Line</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE007;</td>
                 <td><code>U+E007 / U+005F</code></td>
-                <td><span class="badge-inline">Inline</span></td>
+                <td><span class="badge-inline">Inline</span> Tone elongation / rhythmic phrasing gap.</td>
             </tr>
             <tr>
                 <td><strong>Comma (<code>,</code>)</strong></td>
@@ -651,10 +651,23 @@
                 <td>Low Comma</td>
                 <td style="text-align:center;" class="glyph-sample">&#xE00A;</td>
                 <td><code>U+E00A / U+002C</code></td>
-                <td><span class="badge-inline">Inline</span></td>
+                <td><span class="badge-inline">Inline</span> Minor cadence pause / breath comma.</td>
             </tr>
         </tbody>
     </table>
+
+    <div style="background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(99, 102, 241, 0.08)); border: 1px solid rgba(20, 184, 166, 0.3); border-radius: 12px; padding: 20px 24px; margin: 30px 0;">
+        <h3 style="margin-top: 0; color: var(--accent-teal, #0d9488); font-size: 1.15rem; display: flex; align-items: center; gap: 8px;">
+            <span>✨</span> Core Typographic & Rendering Engine Upgrades
+        </h3>
+        <ul style="margin: 0; padding-left: 20px; color: var(--text-secondary, #475569); line-height: 1.7; font-size: 0.95rem;">
+            <li><strong>Precise Bridging Danda Ties (MOD-A1):</strong> The syllable-spanning arc (<code>\uE00D</code>) is micro-positioned directly over the inter-word danda <code>।</code>, with automatic space suppression to render continuous breath ties.</li>
+            <li><strong>Non-Colliding Shoulder High Dots (MOD-C):</strong> High pause dots feature dedicated advance metrics and horizontal padding (<code>\hspace{0.10em}\uE001\hspace{0.05em}</code>) preventing overlapping with following syllables.</li>
+            <li><strong>Elevated Baseline & Descending Tone Clearance:</strong> Line spacing expanded to <code>2.15x</code> (XeLaTeX) and <code>2.2x</code> / <code>18px</code> row-gap (HTML) to eliminate vertical collisions between bottom slashes (<code>\</code>) and subsequent superscript swaras.</li>
+            <li><strong>Atomic Verse Numeral Markers (<code>॥N॥</code>):</strong> Wrapped in unbreakable <code>\mbox</code> / <code>inline-flex</code> containers with distinct <code>0.65em</code> separation, and automated linebreaks that start each new Sama in a subsection on a fresh line.</li>
+            <li><strong>Standardized Repha (<code>൪</code>, U+0D6A):</strong> Full normalization of all pre-consonantal R ligatures (<code>ർ</code> / <code>ര്</code>) to the traditional Grantha/Malayalam <strong>Repha <code>൪</code></strong> standard.</li>
+        </ul>
+    </div>
 
     <h2>5. The 3-Step Scholar Proofreading Workflow</h2>
     <div class="step-grid">
