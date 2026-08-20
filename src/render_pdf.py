@@ -1593,10 +1593,35 @@ def _render_malayalam_mantra_body(subsection):
         if not line:
             continue
         is_verse_end = bool(re.search(r'(\|\||॥)\s*[\d०-९]+\s*(\|\||॥)', line))
-        for tok in tokenize_mantra_line(line):
+        tokens = tokenize_mantra_line(line)
+        
+        for idx_t, tok in enumerate(tokens):
             t = tok['type']
             if t == 'space':
-                paragraph_buffer.append(" ")
+                # Check if preceding token had modifier or punctuation
+                prev_has_mod = False
+                if idx_t > 0:
+                    prev_tok = tokens[idx_t - 1]
+                    if prev_tok['type'] == 'marker':
+                        prev_has_mod = True
+                    elif prev_tok['type'] == 'word':
+                        p_word = prev_tok['word']
+                        if p_word.endswith(('_', '.', ',')) or (prev_tok.get('swara') and any(m in prev_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
+                            prev_has_mod = True
+                
+                # Check if succeeding token has modifier or punctuation
+                next_has_mod = False
+                if idx_t + 1 < len(tokens):
+                    next_tok = tokens[idx_t + 1]
+                    if next_tok['type'] == 'marker':
+                        next_has_mod = True
+                    elif next_tok['type'] == 'word':
+                        n_word = next_tok['word']
+                        if n_word.startswith(('_', '.', ',')) or (next_tok.get('swara') and any(m in next_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
+                            next_has_mod = True
+                
+                if not (prev_has_mod or next_has_mod):
+                    paragraph_buffer.append(" ")
             elif t == 'danda':
                 has_mod_b_pending = False
                 paragraph_buffer.append(format_dandas(tok['char']))
@@ -1647,8 +1672,6 @@ def _render_malayalam_mantra_body(subsection):
                                 if mod.strip("()") in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
                                     has_mod_b_pending = True
                                 syl_esc = _apply_mantrakshara_modifier(syl_esc, mod)
-                                if mod in ("C", "c", "ॱ", "·", "\uE001"):
-                                    syl_esc += r"\hspace{0.25em}"
                             
                             swara_str = "".join(swara_parts)
                             swara_latex = _swara_latex(swara_str)
@@ -2689,113 +2712,7 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
             
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
-def format_malayalam_samam_html(subsection, header_text='', include_metadata=False):
-    """Format Malayalam Samam content with top-stacked red swaras for HTML."""
-    from malayalam.ml_text import tokenize_mantra_line
-    from malayalam.ml_transliterate import split_malayalam_syllables
-    
-    formatted_output = []
-    
-    # Header
-    header_parts = []
-    if header_text:
-        header_title = escape_for_html(header_text).translate(_ENGLISH_DIGITS)
-        header_title = format_dandas_html(header_title)
-        header_parts.append(f'<span class="header-title">{header_title}</span>')
-    
-    if include_metadata:
-        saman_metadata = subsection.get('saman_metadata', '')
-        if saman_metadata:
-            meta = escape_for_html(saman_metadata).translate(_ENGLISH_DIGITS)
-            meta = format_dandas_html(meta, preserve_spaces=True)
-            header_parts.append(f'<span class="header-meta">{meta}</span>')
-            
-    if header_parts:
-        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
-    
-    mantra_sets = subsection.get('malayalam-mantra-sets', [])
-    for mantra_set in mantra_sets:
-        line = mantra_set.get('malayalam-mantra', '')
-        if not line:
-            continue
-        tokens = tokenize_mantra_line(line)
-        word_elements = []
-        for tok in tokens:
-            t = tok['type']
-            if t == 'space':
-                word_elements.append('<span class="word-space">&nbsp;</span>')
-            elif t == 'danda':
-                d = format_dandas_html(tok['char'])
-                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{d}</span></span>')
-            elif t == 'footnote':
-                fn_text = tok["text"].translate(_ENGLISH_DIGITS)
-                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text"><sup>{fn_text}</sup></span></span>')
-            elif t == 'marker':
-                word_elements.append(f'<span class="mantra-word"><span class="swara-text">{escape_for_html(tok["marker"])}</span><span class="mantra-text">&nbsp;</span></span>')
-            elif t == 'word':
-                word = tok['word'].translate(_ENGLISH_DIGITS)
-                swara = tok['swara']
-                if not word:
-                    continue
-                if swara:
-                    syllables = split_malayalam_syllables(word)
-                    for idx, syl in enumerate(syllables):
-                        if idx == len(syllables) - 1:
-                            s_esc = escape_for_html(swara)
-                            word_elements.append(f'<span class="mantra-word"><span class="swara-text">{s_esc}</span><span class="mantra-text">{syl}</span></span>')
-                        else:
-                            word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl}</span></span>')
-                else:
-                    word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{word}</span></span>')
-            else:
-                extra_text = tok.get("text", "").translate(_ENGLISH_DIGITS)
-                word_elements.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{extra_text}</span></span>')
-        if word_elements:
-            formatted_output.append(f'<div class="mantra-verse">{"".join(word_elements)}</div>')
-    return '\n'.join(formatted_output), 0
 
-
-def preprocess_html_data(supersections, output_mode):
-    """
-    Pre-processes the data structure to generate HTML for subsections and footnotes
-    BEFORE template rendering. This avoids global state issues in Jinja.
-    Returns: A list of dicts for the alphabetical index.
-    """
-    
-    # Store index entries as (title, anchor_id)
-    index_entries = []
-    
-    for super_key, supersection in supersections.items():
-        for section_key, section in supersection.get('sections', {}).items():
-            if section_key == 'count': continue
-
-            
-            # --- SECTION STATE ---
-            footnote_counter = 0
-            footnotes_accumulator = []
-            seen_content_map = {}
-            
-            section['html_subsections'] = [] # List of HTML strings
-            
-            prev_rik_id = None
-            
-            for subsection_key, subsection in section.get('subsections', {}).items():
-                unique_key = f"{super_key}_{section_key}_{subsection_key}"
-                
-                # Dispatch based on mode
-                html_content = ""
-                if output_mode == 'rik':
-                    html_content, footnote_counter = format_rik_only_html(
-                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                        prev_rik_id, unique_key, 
-                        footnote_counter, footnotes_accumulator, seen_content_map
-                    )
-                elif output_mode == 'rik_nometa':
-                    html_content, footnote_counter = format_rik_nometa_html(
-                        subsection, None, None, subsection.get('header', {}).get('header'), {}, 
-                        prev_rik_id, unique_key, 
-                        footnote_counter, footnotes_accumulator, seen_content_map
-                    )
 def format_malayalam_samam_html(subsection, subsection_title, include_metadata=True,
                                  footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, subsection_key=None):
     """
@@ -2903,7 +2820,28 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
         for idx_t, tok in enumerate(tokens):
             t = tok['type']
             if t == 'space':
-                verse_tokens.append('<span class="word-space">&nbsp;</span>')
+                prev_has_mod = False
+                if idx_t > 0:
+                    prev_tok = tokens[idx_t - 1]
+                    if prev_tok['type'] == 'marker':
+                        prev_has_mod = True
+                    elif prev_tok['type'] == 'word':
+                        p_word = prev_tok['word']
+                        if p_word.endswith(('_', '.', ',')) or (prev_tok.get('swara') and any(m in prev_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
+                            prev_has_mod = True
+                
+                next_has_mod = False
+                if idx_t + 1 < len(tokens):
+                    next_tok = tokens[idx_t + 1]
+                    if next_tok['type'] == 'marker':
+                        next_has_mod = True
+                    elif next_tok['type'] == 'word':
+                        n_word = next_tok['word']
+                        if n_word.startswith(('_', '.', ',')) or (next_tok.get('swara') and any(m in next_tok['swara'] for m in ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'l'))):
+                            next_has_mod = True
+                
+                if not (prev_has_mod or next_has_mod):
+                    verse_tokens.append('<span class="word-space">&nbsp;</span>')
             elif t == 'danda':
                 danda_text = format_dandas_html(escape_for_html(tok['char']))
                 verse_tokens.append(f'<span class="danda">{danda_text}</span>')
