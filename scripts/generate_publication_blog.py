@@ -740,8 +740,8 @@ function renderPlayground() {
     const raw = document.getElementById('mantraInput').value;
     const container = document.getElementById('playgroundOutput');
     
-    // Regex matching each syllable unit, danda/verse number, or explicit whitespace
-    const tokenRegex = /(?:[।॥]+[0-9०-९IVXLCDMivxlcdm]*[।॥]*|[^\\s()।॥]+(?:\\([^)]+\\)|[.,_])*|\\s+)/g;
+    // Syllable-level akshara segmentation to align each swara precisely over its target syllable
+    const tokenRegex = /(?:[।॥]+[0-9०-९IVXLCDMivxlcdm]*[।॥]*|(?:\u0D6A|[\\u0D05-\\u0D14]|(?:[\\u0D15-\\u0D3A\\u0D7A-\\u0D7F](?:\\u0D4D[\\u0D15-\\u0D3A])*))(?:[\\u0D3E-\\u0D4C\\u0D57\\u0D62\\u0D63\\u0D01-\\u0D03\\u0D3B\\u0D3C\\u0D4D]|_|,|\\.)*(?:\\([^)]+\\)|[.,_])*|[^\\s()।॥]+(?:\\([^)]+\\)|[.,_])*|\\s+)/g;
     const tokens = raw.match(tokenRegex) || [];
     let html = '<div class="mantra-display">';
 
