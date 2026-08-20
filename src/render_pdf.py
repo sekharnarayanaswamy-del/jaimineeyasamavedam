@@ -1366,7 +1366,7 @@ def format_mantra_sets_text(subsection,section_title,subsection_title):
 # ----------------------------------------------------
 # MALAYALAM SAMAM-ONLY FORMATTING (Phase 1 pilot)
 # ----------------------------------------------------
-_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
+_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൫൬൭൮൯", "0123456789012356789")
 
 MODIFIER_DIRECT_MAP = {
     # Modifiers from updated Google Sheet (A..H)
@@ -1587,6 +1587,7 @@ def _render_malayalam_mantra_body(subsection):
     paragraph_buffer = []
     formatted_paragraphs = []
     
+    has_mod_b_pending = False
     for mantra_set in mantra_sets:
         line = mantra_set.get('malayalam-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
         if not line:
@@ -1597,6 +1598,7 @@ def _render_malayalam_mantra_body(subsection):
             if t == 'space':
                 paragraph_buffer.append(" ")
             elif t == 'danda':
+                has_mod_b_pending = False
                 paragraph_buffer.append(format_dandas(tok['char']))
             elif t == 'footnote':
                 marker = tok.get('text', '').strip('()')
@@ -1611,6 +1613,8 @@ def _render_malayalam_mantra_body(subsection):
                     paragraph_buffer.append(f"\\footnote{{\\malayalamfont {fn_esc}}}")
             elif t == 'marker':
                 m_str = tok['marker']
+                if m_str.strip("()") in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+                    has_mod_b_pending = True
                 m_esc = _apply_mantrakshara_modifier("", m_str)
                 paragraph_buffer.append(m_esc)
             elif t == 'word':
@@ -1640,6 +1644,8 @@ def _render_malayalam_mantra_body(subsection):
                         elif idx == len(syllables) - 1:
                             # Attach all modifiers to the final mantrakshara syllable
                             for mod in mod_parts:
+                                if mod.strip("()") in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
+                                    has_mod_b_pending = True
                                 syl_esc = _apply_mantrakshara_modifier(syl_esc, mod)
                                 if mod in ("C", "c", "ॱ", "·", "\uE001"):
                                     syl_esc += r"\hspace{0.25em}"
@@ -1647,6 +1653,9 @@ def _render_malayalam_mantra_body(subsection):
                             swara_str = "".join(swara_parts)
                             swara_latex = _swara_latex(swara_str)
                             if swara_latex:
+                                if has_mod_b_pending:
+                                    swara_latex = f"\\hspace{{-0.85em}}\\raisebox{{0.40ex}}{{{swara_latex}}}"
+                                    has_mod_b_pending = False
                                 stack_code = f"\\stackcenter{{\\malayalamfont {syl_esc}}}{{{swara_latex}}}"
                                 parts.append(stack_code)
                             else:

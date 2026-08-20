@@ -3378,7 +3378,7 @@ sup.footnote-ref a:hover {
 }
 .swara-mod.mod-b .swara-on-caret {
     position: absolute;
-    top: -1.15em;
+    top: -1.40em;
     left: 50%;
     transform: translateX(-50%);
     color: #c62828 !important;

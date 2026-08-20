@@ -732,7 +732,7 @@ def render_html_table() -> None:
     }}
     .swara-on-caret-dotted {{
         position: absolute;
-        top: -1.05em;
+        top: -1.35em;
         left: 50%;
         transform: translateX(-50%);
         color: #c62828;
@@ -875,7 +875,7 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
         position: absolute;
-        top: -1.05em;
+        top: -1.35em;
         left: 50%;
         transform: translateX(-50%);
         color: var(--swara-red);
@@ -966,7 +966,7 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
         position: absolute;
-        top: -0.80em;
+        top: -1.35em;
         left: 50%;
         transform: translateX(-50%);
         color: var(--swara-red);
