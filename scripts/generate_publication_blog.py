@@ -249,6 +249,7 @@ html_template = """<!DOCTYPE html>
     /* Live Mantra Flexbox Display */
     .mantra-display {
         display: inline-flex;
+        flex-wrap: wrap;
         align-items: flex-end;
         background: #fffdf9;
         padding: 14px 24px;
@@ -739,8 +740,8 @@ function renderPlayground() {
     const raw = document.getElementById('mantraInput').value;
     const container = document.getElementById('playgroundOutput');
     
-    // Regex matching each syllable unit or danda/punctuation without requiring manual spaces
-    const tokenRegex = /(?:[।॥]+[0-9०-९IVXLCDMivxlcdm]*[।॥]*|[^\\s()।॥]+(?:\\([^)]+\\)|[.,_])*)/g;
+    // Regex matching each syllable unit, danda/verse number, or explicit whitespace
+    const tokenRegex = /(?:[।॥]+[0-9०-९IVXLCDMivxlcdm]*[।॥]*|[^\\s()।॥]+(?:\\([^)]+\\)|[.,_])*|\\s+)/g;
     const tokens = raw.match(tokenRegex) || [];
     let html = '<div class="mantra-display">';
 
@@ -822,8 +823,14 @@ function renderPlayground() {
     for (let i = 0; i < tokens.length; i++) {
         let t = tokens[i];
         
+        // Handle whitespace: retain explicit spaces entered by user
+        if (/^\\s+$/.test(t)) {
+            html += '<span class="word-space">&nbsp;</span>';
+            continue;
+        }
+
         // If it's a danda / verse number
-        if (t.match(/^[।॥0-9०-९IVXLCDMivxlcdm\\s]+$/)) {
+        if (/^[।॥0-9०-९IVXLCDMivxlcdm\\s]+$/.test(t)) {
             html += `<span class="mantra-word mantra-danda-block"><span class="swara-text">&nbsp;</span><span class="mantra-text mantra-danda">${t}</span></span>`;
             continue;
         }
