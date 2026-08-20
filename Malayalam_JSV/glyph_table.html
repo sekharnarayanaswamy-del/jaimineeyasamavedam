@@ -3196,17 +3196,28 @@
 </div>
 
 <script>
-function showTab(sectionId) {
+function filterTab(tabName) {
     var secs = document.querySelectorAll('.section-card');
-    for (var i = 0; i < secs.length; i++) {
-        secs[i].style.display = 'none';
-    }
     var btns = document.querySelectorAll('.tab-btn');
     for (var j = 0; j < btns.length; j++) {
         btns[j].classList.remove('active');
     }
-    document.getElementById(sectionId).style.display = 'block';
-    event.currentTarget.classList.add('active');
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
+    if (tabName === 'all') {
+        for (var i = 0; i < secs.length; i++) {
+            secs[i].style.display = 'block';
+        }
+    } else {
+        for (var i = 0; i < secs.length; i++) {
+            secs[i].style.display = 'none';
+        }
+        var target = document.getElementById('sec-' + tabName);
+        if (target) {
+            target.style.display = 'block';
+        }
+    }
 }
 </script>
 </body>
