@@ -557,13 +557,14 @@ select:focus {
 /* MOD-C: Upper Shoulder Dot */
 .rendered-vedic-preview .swara-mod.mod-c {
   font-family: var(--font-swara);
-  font-size: 1.4em;
+  font-size: 0.85rem;
   font-weight: bold;
   color: #38bdf8;
   position: absolute;
   top: -0.15em;
   right: -0.35em;
   line-height: 1;
+  pointer-events: none;
 }
 
 /* MOD-D: Chevron Roof (∧) */

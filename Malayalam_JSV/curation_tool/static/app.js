@@ -309,7 +309,7 @@ function renderVedicHTML(text) {
       while ((pm = parenRegex.exec(extras)) !== null) {
         const inner = pm[1] ? pm[1].trim() : pm[2];
         if (inner === 'C' || inner === 'c' || inner === '·') {
-          modifiersHtml += '<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">.</span>';
+          modifiersHtml += '<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span>';
         } else if (inner === 'H' || inner === 'h' || inner === '|') {
           modifiersHtml += '<span class="swara-mod mod-h" title="MOD-H: High Pitch Swarita">&#xE00C;</span>';
         } else if (inner === 'G' || inner === 'g' || inner === '\\') {
