@@ -107,7 +107,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`extract_devanagari_swaras()`**: Parses structured JSON (`data/output/Samhita_corrected_out.json`), splits verses into sentence units by dandas (`।`, `॥`), and extracts parenthesized swara tokens.
 *   **Artifacts Generated**:
     *   `data/output/Samhita_Devanagari_Swara_Table.csv`: Granular succession table (32,556 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Sama Name`, and `Swara symbol` (including explicit `|` separator rows).
-    *   `data/output/Samhita_Devanagari_Swara_By_Sama.csv`: Per-Sama table (722 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Kandah Name`, `Sama <N>`, `Sama Name`, and `Swara Symbols` partitioned by ` | `.
+    *   `data/output/Samhita_Devanagari_Swara_By_Sama.csv`: Per-Sama table (722 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Kandah Name`, `Sama Name`, and `Swara Symbols` partitioned by ` | `.
     *   `data/output/swara_devanagari/samhita_devanagari_swara_table.md`: Comprehensive Markdown documentation organized into 59 per-Kandah sub-tables.
     *   `data/output/swara_devanagari/samhita_devanagari_swara_table.html`: Interactive web explorer with live search filtering, TOC navigation chips, and browser print triggers.
     *   `data/output/swara_devanagari/samhita_devanagari_swara_table.pdf`: Print-ready PDF generated via headless Microsoft Edge/Chrome with strict page break controls (`@media print`).

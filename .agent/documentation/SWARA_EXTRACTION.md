@@ -26,11 +26,11 @@ python scripts/extract_devanagari_samhita_swaras.py
 ## 3. Generated Files & Schemas
 
 ### 1. Per-Sama CSV (`data/output/Samhita_Devanagari_Swara_By_Sama.csv`)
-722 rows covering each Sama with swaras grouped per sentence and delimited by ` | `.
-- **Schema**: `Sl No,Parva,Kandah <M>,Kandah Name,Sama <N>,Sama Name,Swara Symbols`
+722 rows covering each Sama with continuous sequential `Sl No` (1 to 722) and swaras grouped per sentence delimited by ` | `.
+- **Schema**: `Sl No,Parva,Kandah <M>,Kandah Name,Sama Name,Swara Symbols`
 - **Example**:
   ```csv
-  1,आग्नेयपाठः,Kandah 1,प्रथम खण्डः,Sama 1,गौतमस्यपर्कः,त त श | थाच् चा श | टा श टि श | चा श चि | टा श टि श | कि च | ट ट खा शि | ख श |
+  1,आग्नेयपाठः,Kandah 1,प्रथम खण्डः,गौतमस्यपर्कः,त त श | थाच् चा श | टा श टि श | चा श चि | टा श टि श | कि च | ट ट खा शि | ख श |
   ```
 
 ### 2. Granular CSV (`data/output/Samhita_Devanagari_Swara_Table.csv`)

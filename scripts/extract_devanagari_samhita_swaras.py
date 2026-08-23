@@ -124,9 +124,9 @@ def extract_devanagari_swaras():
                 total_samas += 1
                 parva_samas_count += 1
 
-                h_num = sub_val.get("header", {}).get("header_number", total_samas)
                 h_title = sub_val.get("header", {}).get("header", "").strip("॥").strip()
-                sama_label = f"Sama {h_num}"
+                if not h_title:
+                    h_title = f"Sama {total_samas}"
 
                 mantras = sub_val.get("corrected-mantra_sets", []) or sub_val.get("mantra_sets", [])
 
@@ -187,7 +187,6 @@ def extract_devanagari_swaras():
                     "Parva": parva_name,
                     "Kandah <M>": kandah_label,
                     "Kandah Name": kandah_name,
-                    "Sama <N>": sama_label,
                     "Sama Name": h_title,
                     "Swara Symbols": formatted_swaras
                 }
@@ -195,20 +194,22 @@ def extract_devanagari_swaras():
                 kandah_rows.append(row_dict)
 
             kandah_samas_end = total_samas
+            kandah_range_str = f"Sama {kandah_samas_start} – {kandah_samas_end}" if len(kandah_rows) > 1 else f"Sama {kandah_samas_start}"
             parva_kandahs_list.append({
                 "kandah_label": kandah_label,
                 "kandah_name": kandah_name,
-                "sama_range": f"Sama {kandah_samas_start} – {kandah_samas_end}" if len(kandah_rows) > 1 else f"Sama {kandah_samas_start}",
+                "sama_range": kandah_range_str,
                 "samas_count": len(kandah_rows),
                 "rows": kandah_rows
             })
 
         parva_samas_end = total_samas
+        parva_range_str = f"Sama {parva_samas_start} – {parva_samas_end}" if parva_samas_count > 1 else f"Sama {parva_samas_start}"
         hierarchy.append({
             "parva_idx": ss_idx,
             "parva_name": parva_name,
             "kandahs_count": len(sections),
-            "sama_range": f"Sama {parva_samas_start} – {parva_samas_end}" if parva_samas_count > 1 else f"Sama {parva_samas_start}",
+            "sama_range": parva_range_str,
             "total_samas": parva_samas_count,
             "total_swaras": parva_swara_count,
             "total_dandas": parva_danda_count,
@@ -227,10 +228,10 @@ def extract_devanagari_swaras():
         writer.writeheader()
         writer.writerows(granular_rows)
 
-    # 2. Write Per-Sama CSV (with Sl No)
+    # 2. Write Per-Sama CSV (with Sl No, without redundant Sama column)
     print(f"Writing Per-Sama CSV: {PER_SAMA_CSV} ({len(per_sama_rows):,} rows)")
     with open(PER_SAMA_CSV, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["Sl No", "Parva", "Kandah <M>", "Kandah Name", "Sama <N>", "Sama Name", "Swara Symbols"])
+        writer = csv.DictWriter(f, fieldnames=["Sl No", "Parva", "Kandah <M>", "Kandah Name", "Sama Name", "Swara Symbols"])
         writer.writeheader()
         writer.writerows(per_sama_rows)
 
@@ -261,7 +262,7 @@ def extract_devanagari_swaras():
 def generate_markdown_content(hierarchy, total_samas, total_swaras, total_dandas, granular_rows, per_sama_rows):
     lines = []
     lines.append("# Jaimineeya Samavedam: Devanagari Swara Tables (Per-Kandah Structure)\n")
-    lines.append("This document organizes the swara symbols occurring in **Samhita** in Devanagari script into **individual tables per Kandah** under each Parva, with sequential `Sl No` and explicit sentence **danda separators (`|`)**.\n")
+    lines.append("This document organizes the swara symbols occurring in **Samhita** in Devanagari script into **individual tables per Kandah** under each Parva, with sequential `Sl No` (1 – 722) and explicit sentence **danda separators (`|`)**.\n")
 
     total_kandahs = sum(p["kandahs_count"] for p in hierarchy)
     lines.append("## 1. Summary Statistics\n")
@@ -281,7 +282,7 @@ def generate_markdown_content(hierarchy, total_samas, total_swaras, total_dandas
     lines.append("\n---\n")
 
     lines.append("## 2. Generated Datasets\n")
-    lines.append(f"1. **Per-Sama CSV** (`Sl No, Parva, Kandah <M>, Kandah Name, Sama <N>, Sama Name, Swara Symbols`):")
+    lines.append(f"1. **Per-Sama CSV** (`Sl No, Parva, Kandah <M>, Kandah Name, Sama Name, Swara Symbols`):")
     lines.append("   - [`Samhita_Devanagari_Swara_By_Sama.csv`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/Samhita_Devanagari_Swara_By_Sama.csv)")
     lines.append(f"2. **Granular CSV** (`Sl No, Parva, Kandah <M>, Sama Name, Swara symbol`):")
     lines.append("   - [`Samhita_Devanagari_Swara_Table.csv`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/Samhita_Devanagari_Swara_Table.csv)")
@@ -295,12 +296,12 @@ def generate_markdown_content(hierarchy, total_samas, total_swaras, total_dandas
         lines.append(f"\n## {p['parva_idx']}. {p['parva_name']} ({p['sama_range']})\n")
         for k in p["kandahs"]:
             lines.append(f"### {k['kandah_label']}: {k['kandah_name']} ({k['sama_range']} — {k['samas_count']} Samas)\n")
-            lines.append("| Sl No | Sama <N> | Sama Name | Swara Symbols |")
-            lines.append("| :---: | :--- | :--- | :--- |")
+            lines.append("| Sl No | Sama Name | Swara Symbols |")
+            lines.append("| :---: | :--- | :--- |")
             for r in k["rows"]:
                 # Escape pipe inside markdown table cells
                 escaped_swaras = r['Swara Symbols'].replace('|', '\\|')
-                lines.append(f"| {r['Sl No']} | {r['Sama <N>']} | {r['Sama Name']} | {escaped_swaras} |")
+                lines.append(f"| {r['Sl No']} | {r['Sama Name']} | {escaped_swaras} |")
             lines.append("")
 
     return "\n".join(lines)
@@ -354,10 +355,9 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 swaras_html = " ".join(formatted_tokens)
 
                 table_rows += f"""
-                <tr class="sama-row" data-sama-name="{r['Sama Name']}" data-sama-num="{r['Sama <N>']}">
+                <tr class="sama-row" data-sama-name="{r['Sama Name']}" data-sl-no="{r['Sl No']}">
                     <td style="text-align: center; font-weight: bold; color: #555;">{r['Sl No']}</td>
-                    <td><strong>{r['Sama <N>']}</strong></td>
-                    <td style="font-weight: 500;">{r['Sama Name']}</td>
+                    <td style="font-weight: 600;">{r['Sama Name']}</td>
                     <td class="swara-cell">{swaras_html}</td>
                 </tr>"""
 
@@ -370,9 +370,8 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 <table class="sama-table">
                     <thead>
                         <tr>
-                            <th style="width: 65px; text-align: center;">Sl No</th>
-                            <th style="width: 105px;">Sama</th>
-                            <th style="width: 200px;">Sama Name</th>
+                            <th style="width: 75px; text-align: center;">Sl No</th>
+                            <th style="width: 220px;">Sama Name</th>
                             <th>Swara Symbols (with <code>|</code> sentence separators)</th>
                         </tr>
                     </thead>
@@ -810,7 +809,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             <h3>॥ जैमिनीय साम संहिता ॥ Devanagari Swara Explorer</h3>
         </div>
         <div class="top-nav-right">
-            <input type="text" id="searchInput" class="search-box" placeholder="Search Sama name or number..." onkeyup="filterSamaTables()">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search Sama name or Sl No..." onkeyup="filterSamaTables()">
             <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
         </div>
     </nav>
@@ -818,7 +817,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
     <div class="container">
         <div class="main-card">
             <h1>Devanagari Swara Tables (Organized by Parva & Kandah)</h1>
-            <p>This viewer organizes the complete <strong>Samhita Swara Dataset</strong> into clean, individual tables for each Kandah, featuring sequential <strong>Sl No</strong> (1 – 722) and distinct <strong>danda separators (<code>|</code>)</strong> marking sentence/verse boundaries.</p>
+            <p>This viewer organizes the complete <strong>Samhita Swara Dataset</strong> into clean, individual tables for each Kandah, featuring continuous sequential <strong>Sl No</strong> (1 – 722) and distinct <strong>danda separators (<code>|</code>)</strong> marking sentence/verse boundaries.</p>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -850,7 +849,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             <h3>Generated Downloads</h3>
             <ul class="file-links-list">
                 <li>📄 <strong>Print-Ready PDF Document</strong>: <a href="samhita_devanagari_swara_table.pdf" target="_blank">samhita_devanagari_swara_table.pdf</a></li>
-                <li>📊 <strong>Per-Sama CSV ({len(per_sama_rows):,} rows with Sl No)</strong>: <a href="../Samhita_Devanagari_Swara_By_Sama.csv">Samhita_Devanagari_Swara_By_Sama.csv</a> &nbsp; <code>[Sl No, Parva, Kandah &lt;M&gt;, Kandah Name, Sama &lt;N&gt;, Sama Name, Swara Symbols]</code></li>
+                <li>📊 <strong>Per-Sama CSV ({len(per_sama_rows):,} rows with Sl No)</strong>: <a href="../Samhita_Devanagari_Swara_By_Sama.csv">Samhita_Devanagari_Swara_By_Sama.csv</a> &nbsp; <code>[Sl No, Parva, Kandah &lt;M&gt;, Kandah Name, Sama Name, Swara Symbols]</code></li>
                 <li>📑 <strong>Granular Succession CSV ({len(granular_rows):,} rows with Sl No &amp; Dandas)</strong>: <a href="../Samhita_Devanagari_Swara_Table.csv">Samhita_Devanagari_Swara_Table.csv</a> &nbsp; <code>[Sl No, Parva, Kandah &lt;M&gt;, Sama Name, Swara symbol]</code></li>
             </ul>
 
@@ -906,10 +905,10 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
         }}
 
         rows.forEach(r => {{
-            const name = r.getAttribute('data-sama-name').toLowerCase();
-            const num = r.getAttribute('data-sama-num').toLowerCase();
+            const name = (r.getAttribute('data-sama-name') || '').toLowerCase();
+            const slNo = (r.getAttribute('data-sl-no') || '').toLowerCase();
             const text = r.textContent.toLowerCase();
-            if (name.includes(q) || num.includes(q) || text.includes(q)) {{
+            if (name.includes(q) || slNo.includes(q) || text.includes(q)) {{
                 r.style.display = '';
             }} else {{
                 r.style.display = 'none';
