@@ -28,6 +28,7 @@ output_text/lines/
 # Documents
 *.pdf
 !data/output/pdf/Malayalam/*.pdf
+!data/output/swara_devanagari/*.pdf
 *.docx
 *.xlsx
 *.doc
@@ -43,6 +44,8 @@ output_text/lines/
 *.csv
 !data/input/granular_table.csv
 !data/output/JSV_Samam_Granular_Table.csv
+!data/output/Samhita_Devanagari_Swara_Table.csv
+!data/output/Samhita_Devanagari_Swara_By_Sama.csv
 
 # Images
 *.png

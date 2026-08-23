@@ -102,6 +102,16 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`curate_jsv.py`**: Merges data from multiple JSON sources based on a text filter containing Parva.Kandah.Samam (P.K.S) identifiers.
 *   **`build_collection.py`**: Extracts specific Samams using P.K.S identifiers from a single source JSON and bundles them into a structured Collection format.
 
+### 2.9 Swara Extraction & Analysis (`scripts/extract_devanagari_samhita_swaras.py`)
+**Role**: Extracts sequential Devanagari swara symbols with explicit sentence/verse danda (`|`) markers across all 6 Parvas, 59 Kandahs, and 722 Samas in the Samhita.
+*   **`extract_devanagari_swaras()`**: Parses structured JSON (`data/output/Samhita_corrected_out.json`), splits verses into sentence units by dandas (`।`, `॥`), and extracts parenthesized swara tokens.
+*   **Artifacts Generated**:
+    *   `data/output/Samhita_Devanagari_Swara_Table.csv`: Granular succession table (32,556 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Sama Name`, and `Swara symbol` (including explicit `|` separator rows).
+    *   `data/output/Samhita_Devanagari_Swara_By_Sama.csv`: Per-Sama table (722 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Kandah Name`, `Sama <N>`, `Sama Name`, and `Swara Symbols` partitioned by ` | `.
+    *   `data/output/swara_devanagari/samhita_devanagari_swara_table.md`: Comprehensive Markdown documentation organized into 59 per-Kandah sub-tables.
+    *   `data/output/swara_devanagari/samhita_devanagari_swara_table.html`: Interactive web explorer with live search filtering, TOC navigation chips, and browser print triggers.
+    *   `data/output/swara_devanagari/samhita_devanagari_swara_table.pdf`: Print-ready PDF generated via headless Microsoft Edge/Chrome with strict page break controls (`@media print`).
+
 ---
 
 ## 3. Workflows (Main Use Cases)
