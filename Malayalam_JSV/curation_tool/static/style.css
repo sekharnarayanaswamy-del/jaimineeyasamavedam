@@ -557,12 +557,12 @@ select:focus {
 /* MOD-C: Upper Shoulder Dot */
 .rendered-vedic-preview .swara-mod.mod-c {
   font-family: var(--font-swara);
-  font-size: 0.85rem;
+  font-size: 0.70rem;
   font-weight: bold;
   color: #38bdf8;
   position: absolute;
-  top: -0.50em;
-  right: -0.20em;
+  top: -0.55em;
+  right: 0.05em;
   line-height: 1;
   pointer-events: none;
 }
