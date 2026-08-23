@@ -520,7 +520,7 @@ select:focus {
   position: absolute;
   top: -0.28em;
   left: 100%;
-  transform: translateX(-40%);
+  transform: translateX(-15%);
   font-size: 1.15rem;
   pointer-events: none;
 }
@@ -562,12 +562,12 @@ select:focus {
 /* MOD-C: Upper Shoulder Dot */
 .rendered-vedic-preview .swara-mod.mod-c {
   font-family: var(--font-swara);
-  font-size: 0.80rem;
+  font-size: 1.3rem;
   font-weight: bold;
   color: #38bdf8;
   position: absolute;
-  top: -0.55em;
-  right: 0.15em;
+  top: -0.10em;
+  right: -0.20em;
   line-height: 1;
   pointer-events: none;
 }
@@ -603,7 +603,7 @@ select:focus {
 /* MOD-G: Lower Under-Slash (\ / ⟍) - Stacked Below */
 .rendered-vedic-preview .swara-mod.mod-g {
   position: absolute;
-  bottom: -0.30em;
+  bottom: 0.30em;
   left: 50%;
   transform: translateX(-50%);
   font-size: 1.05rem;
@@ -614,7 +614,7 @@ select:focus {
 /* MOD-H: High Pitch Swarita (|) - Stacked Above */
 .rendered-vedic-preview .swara-mod.mod-h {
   position: absolute;
-  top: -0.35em;
+  top: -0.25em;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.95rem;
