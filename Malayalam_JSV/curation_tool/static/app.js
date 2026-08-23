@@ -511,11 +511,14 @@ function handleHotkeys(e) {
   if (e.altKey && !e.ctrlKey && !e.metaKey) {
     const key = e.key.toLowerCase();
     const shortcutMap = {
-      'c': '(C)',
       'h': '(H)',
       'g': '(G)',
+      'c': '(C)',
       'a': '(A)',
+      '1': '(A1)',
+      'b': '(B)',
       'd': '(D)',
+      'e': '(E)',
       'u': '_',
       '_': '_',
       ',': ',',
