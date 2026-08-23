@@ -520,7 +520,7 @@ select:focus {
   position: absolute;
   top: -0.28em;
   left: 100%;
-  transform: translateX(-15%);
+  transform: translateX(5%);
   font-size: 1.15rem;
   pointer-events: none;
 }
