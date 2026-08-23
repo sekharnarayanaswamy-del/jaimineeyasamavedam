@@ -18,7 +18,7 @@ By parsing the existing digital Devanagari text directly from `C:\Users\sekha\On
 6. **Modifier table:** This is a new artifact in Malayalam that is not present in Devangari. We need to define a scheme to introduce swara modifiers. The Unicode encoding for this could be derived from the "Modified Set" table in https://docs.google.com/spreadsheets/d/1S0xu2DdhuhbZLVrSjJrKp-iH152Ys_QB0fWNLK6MSYI/edit?gid=0#gid=0` Google Sheet. Suggestion is also given for the modifier encoding. 
 7. **Correction workflow:** The correction workflow for Devanagari is already available and we should reuse that for Malayalam as well. Manual corrections done in Unicode text file and then converted to json file with generate_json.py and then subsequently converted to html, tex/pdf and Unicode text. 
 7. **Reuse existing assets:** Use the assets available in the jaimineeyasamavedam project. The key .py files are generate_json.py, render_pdf.py, generate_website.py. Also, read the skills and documentation available in the project folder. 
-
+8. Process till Page 307 (Malayalam_JSV\scans\page_0307.png). The rest are repeated from different sections. 
 ---
 
 ## 2. Technical Architecture & Data Flow

@@ -774,7 +774,7 @@ def convert_corrections_to_json(
             for _, _, mantra_set_content in subsections_data:
                 # Need to use the same logic as the inner loop but just for counting
                 m_list, full_text = parse_mantra_set(mantra_set_content)
-                m_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_text)
+                m_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', full_text)
                 section_mantra_count += len(m_markers) if m_markers else 1
                 
             def int_to_devanagari_local(n):
@@ -812,7 +812,7 @@ def convert_corrections_to_json(
                 
                 # Count how many mantras (samams) are in this subsection by finding mantra number markers (॥N॥)
                 # Pattern matches Devanagari numerals enclosed in dandas: ॥१॥, ॥२॥, ॥१०॥, etc.
-                mantra_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_saman_text)
+                mantra_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', full_saman_text)
                 num_mantras = len(mantra_markers) if mantra_markers else 1
                 
                 # --- 1. GET SAMAM METADATA FOR ALL MANTRAS IN THIS SUBSECTION ---
@@ -1422,7 +1422,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 mantra_lines = mantra_sets_map.get(sub_id, [])
                 full_mantra_text = "\n".join(mantra_lines)
                 # Count Devanagari numeral markers inside double dandas
-                mantra_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_mantra_text)
+                mantra_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', full_mantra_text)
                 num_mantras = len(mantra_markers) if mantra_markers else 1
                 
                 # Use current global counter for CSV lookup
@@ -1513,7 +1513,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
             for sub_id, sub_data in sec_data["subsections"].items():
                 for mantra_set in sub_data.get("corrected-mantra_sets", []):
                     text = mantra_set.get("corrected-mantra", "")
-                    m_markers = re.findall(r'॥\s*[०-९]+\s*॥', text)
+                    m_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', text)
                     mantra_count += len(m_markers) if m_markers else 1
             sec_data["Count"] = int_to_devanagari_local(mantra_count) if sec_data.get("section_title") else ""
     

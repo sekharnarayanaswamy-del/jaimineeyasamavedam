@@ -3539,7 +3539,7 @@ Examples:
                     if mantra.strip():
                         has_samam_text = True
                     # Count all ॥ N ॥ markers
-                    m_markers = re.findall(r'॥\s*[०-९]+\s*॥', mantra)
+                    m_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', mantra)
                     if m_markers:
                         sub_samam_count += len(m_markers)
                 

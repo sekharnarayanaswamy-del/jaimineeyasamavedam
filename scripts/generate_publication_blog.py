@@ -371,8 +371,8 @@ html_template = """<!DOCTYPE html>
     }
     .swara-mod.mod-g {
         position: absolute;
-        bottom: -0.38em;
-        left: 28%;
+        bottom: -0.30em;
+        left: 50%;
         transform: translateX(-50%);
         font-size: 1.35rem;
     }

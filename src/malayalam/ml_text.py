@@ -42,6 +42,22 @@ from malayalam.ml_transliterate import (
 WORD_RE = re.compile(r"([^\s()।॥]+)((?:\([^)]+\))+)?([ः:]?)")
 DEVANAGARI_NUMERAL_RE = re.compile(r"^[०-९]+$")
 
+# Canonical Devanagari/Malayalam -> ASCII digit conversion for Samam
+# numerals inside danda markers (॥१॥ -> ॥1॥). Spacing is preserved
+# verbatim so only the digit characters change.
+ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
+SAMAM_NUMERAL_RE = re.compile(r"(॥\s*)([०-९\d]+)(\s*॥)")
+
+
+def normalize_malayalam_samam_numerals(text: str) -> str:
+    """Convert Devanagari/Malayalam digits inside ॥N॥ markers to ASCII."""
+    if not text:
+        return text
+    return SAMAM_NUMERAL_RE.sub(
+        lambda m: m.group(1) + m.group(2).translate(ENGLISH_DIGITS) + m.group(3),
+        text,
+    )
+
 # Source convention: a word-final anusvara is written as a separate 'म्'
 # token (e.g. 'ता(त) म् ।'). Merging it into the preceding word is
 # orthographically correct (ताम्) and required for rendering: a standalone
@@ -372,7 +388,7 @@ def render_intermediate_text(data: dict) -> str:
                 rik_text = subsection.get("rik_text", "")
                 if show_rik and rik_text:
                     lines.append(f"# Start of Rik Text -- {k} ## DO NOT EDIT")
-                    lines.append(rik_text)
+                    lines.append(normalize_malayalam_samam_numerals(rik_text))
                     lines.append(f"# End of Rik Text -- {k} ## DO NOT EDIT")
                     lines.append("")
 
@@ -392,7 +408,9 @@ def render_intermediate_text(data: dict) -> str:
                 # Mantra Sets
                 lines.append(f"#Start of Mantra Sets -- {k} ## DO NOT EDIT")
                 for mantra_set in subsection.get("malayalam-mantra-sets", []):
-                    lines.append(mantra_set["malayalam-mantra"])
+                    lines.append(
+                        normalize_malayalam_samam_numerals(mantra_set["malayalam-mantra"])
+                    )
                 lines.append(f"#End of Mantra Sets -- {k} ## DO NOT EDIT")
 
                 # Footnotes

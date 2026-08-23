@@ -23,7 +23,7 @@ def get_samam_numbers(sub_data):
         m.get('corrected-mantra', '') for m in mantras if isinstance(m, dict)
     )
     # Match ॥ followed by optional spaces, Devanagari digits, optional spaces, followed by ॥
-    matches = re.findall(r'॥\s*([०-९]+)\s*॥', mantra_text)
+    matches = re.findall(r'॥\s*([०-९\d]+)\s*॥', mantra_text)
     result = []
     for m in matches:
         # Convert Devanagari digits to int
@@ -188,8 +188,8 @@ def extract_specific_samam(mantra_text, target_s_val):
     """
     if not mantra_text:
         return ""
-    # Match ॥ followed by optional spaces, Devanagari digits, optional spaces, followed by ॥
-    pattern = r'॥\s*([०-९]+)\s*॥'
+    # Match ॥ followed by optional spaces, Devanagari or ASCII digits, optional spaces, followed by ॥
+    pattern = r'॥\s*([०-९\d]+)\s*॥'
     matches = list(re.finditer(pattern, mantra_text))
     
     prev_end = 0

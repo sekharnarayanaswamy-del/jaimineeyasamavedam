@@ -98,6 +98,8 @@ def post_process_malayalam(text: str) -> str:
     text = re.sub(r"ആ(?=[\s।॥\?!\.,;\)\"']|$)", "അ", text)
     # Word-final halant ma -> anusvara (e.g. സൂക്തമ് -> സൂക്തം)
     text = re.sub(r"മ്(?=[\s।॥\?!\.,;\)]|$)", "ം", text)
+    # Vedic transliteration rule 4: Word-final halant na -> chillu-n (ൻ) (e.g. ന്। -> ൻ।, ന്॥ -> ൻ॥)
+    text = re.sub(r"ന്(?=[\s।॥\?!\.,;\)]|$)", "ൻ", text)
     # Collapse duplicated AA matras
     text = re.sub(r"ാ+", "ാ", text)
     # Virama before ൃ/ൄ (ക്ിൃ -> കൃ)

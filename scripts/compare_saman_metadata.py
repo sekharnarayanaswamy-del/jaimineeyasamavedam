@@ -153,7 +153,7 @@ def compare_samans(ksv_data, jsv_json_path):
                     full_text += mset.get("corrected-mantra", "")
                 
                 # Markers: ॥१॥, ॥२॥ etc.
-                mantra_markers = re.findall(r'॥\s*[०-९]+\s*॥', full_text)
+                mantra_markers = re.findall(r'॥\s*[०-९\d]+\s*॥', full_text)
                 num_mantras = len(mantra_markers) if mantra_markers else 1
                 
                 # JSV metadata might contain '।।' internally
