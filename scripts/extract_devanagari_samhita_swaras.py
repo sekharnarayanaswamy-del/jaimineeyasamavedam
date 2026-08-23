@@ -5,9 +5,9 @@ Extract Devanagari Swara Symbols with Danda Separators for Jaimineeya Samavedam 
 Outputs generated:
 1. data/output/Samhita_Devanagari_Swara_Table.csv (Granular table with Sl No, swaras and sentence danda separators '|')
 2. data/output/Samhita_Devanagari_Swara_By_Sama.csv (Per-Sama summary with Sl No, dandas separating sentence swara chunks)
-3. data/output/swara_devanagari/samhita_devanagari_swara_table.md (Markdown report organized by Parva/Kandah sub-tables)
-4. data/output/swara_devanagari/samhita_devanagari_swara_table.html (Interactive HTML report with search, print & quick jump)
-5. data/output/swara_devanagari/samhita_devanagari_swara_table.pdf (Print-ready PDF report generated via headless browser)
+3. data/output/swara_devanagari/samhita_devanagari_swara_table.md (Markdown report in 2-line document format)
+4. data/output/swara_devanagari/samhita_devanagari_swara_table.html (Interactive HTML report in 2-line document format)
+5. data/output/swara_devanagari/samhita_devanagari_swara_table.pdf (Print-ready PDF report in 2-line document format)
 """
 
 import os
@@ -228,20 +228,20 @@ def extract_devanagari_swaras():
         writer.writeheader()
         writer.writerows(granular_rows)
 
-    # 2. Write Per-Sama CSV (with Sl No, without redundant Sama column)
+    # 2. Write Per-Sama CSV (with Sl No)
     print(f"Writing Per-Sama CSV: {PER_SAMA_CSV} ({len(per_sama_rows):,} rows)")
     with open(PER_SAMA_CSV, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=["Sl No", "Parva", "Kandah <M>", "Kandah Name", "Sama Name", "Swara Symbols"])
         writer.writeheader()
         writer.writerows(per_sama_rows)
 
-    # 3. Generate Markdown documentation (Grouped with Parva & Kandah headers)
+    # 3. Generate Markdown documentation (Document Format)
     print(f"Writing Markdown documentation: {SWARA_MD}")
     md_content = generate_markdown_content(hierarchy, total_samas, total_swaras_count, total_dandas_count, granular_rows, per_sama_rows)
     with open(SWARA_MD, "w", encoding="utf-8") as f:
         f.write(md_content)
 
-    # 4. Generate HTML interactive report (With collapsible/jump navigation, search, & print support)
+    # 4. Generate HTML interactive report (Document Format)
     print(f"Writing HTML interactive report: {SWARA_HTML}")
     html_content = generate_html_content(hierarchy, total_samas, total_swaras_count, total_dandas_count, granular_rows, per_sama_rows)
     with open(SWARA_HTML, "w", encoding="utf-8") as f:
@@ -261,8 +261,10 @@ def extract_devanagari_swaras():
 
 def generate_markdown_content(hierarchy, total_samas, total_swaras, total_dandas, granular_rows, per_sama_rows):
     lines = []
-    lines.append("# Jaimineeya Samavedam: Devanagari Swara Tables (Per-Kandah Structure)\n")
-    lines.append("This document organizes the swara symbols occurring in **Samhita** in Devanagari script into **individual tables per Kandah** under each Parva, with sequential `Sl No` (1 – 722) and explicit sentence **danda separators (`|`)**.\n")
+    lines.append("# Jaimineeya Samavedam: Devanagari Samhita Swaras\n")
+    lines.append("This document presents the swara symbols occurring in **Samhita** in Devanagari script structured in a **sequential 2-line document format**:\n")
+    lines.append("- **Line 1**: `<Sl No>. <Name of Samam>`")
+    lines.append("- **Line 2**: `<Swaras in the Samam>` (with explicit `|` sentence separators)\n")
 
     total_kandahs = sum(p["kandahs_count"] for p in hierarchy)
     lines.append("## 1. Summary Statistics\n")
@@ -290,19 +292,15 @@ def generate_markdown_content(hierarchy, total_samas, total_swaras, total_dandas
     lines.append("   - [`samhita_devanagari_swara_table.pdf`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/output/swara_devanagari/samhita_devanagari_swara_table.pdf)")
     lines.append("\n---\n")
 
-    lines.append("## 3. Per-Kandah Swara Tables\n")
+    lines.append("## 3. Sequential Swara Document\n")
 
     for p in hierarchy:
-        lines.append(f"\n## {p['parva_idx']}. {p['parva_name']} ({p['sama_range']})\n")
+        lines.append(f"\n# {p['parva_idx']}. {p['parva_name']} ({p['sama_range']})\n")
         for k in p["kandahs"]:
-            lines.append(f"### {k['kandah_label']}: {k['kandah_name']} ({k['sama_range']} — {k['samas_count']} Samas)\n")
-            lines.append("| Sl No | Sama Name | Swara Symbols |")
-            lines.append("| :---: | :--- | :--- |")
+            lines.append(f"## {k['kandah_label']}: {k['kandah_name']} ({k['sama_range']} — {k['samas_count']} Samas)\n")
             for r in k["rows"]:
-                # Escape pipe inside markdown table cells
-                escaped_swaras = r['Swara Symbols'].replace('|', '\\|')
-                lines.append(f"| {r['Sl No']} | {r['Sama Name']} | {escaped_swaras} |")
-            lines.append("")
+                lines.append(f"**{r['Sl No']}. {r['Sama Name']}**  ")
+                lines.append(f"`{r['Swara Symbols']}`\n")
 
     return "\n".join(lines)
 
@@ -324,7 +322,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             <td style="text-align:center; font-weight: 600;">{p['total_rows']:,}</td>
         </tr>"""
 
-    # Per-Kandah Tables HTML
+    # Document Entries HTML
     parvas_sections_html = ""
     toc_links_html = ""
 
@@ -340,9 +338,9 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             <div class="toc-chips">{toc_kandah_links}</div>
         </div>"""
 
-        kandah_tables_html = ""
+        kandah_blocks_html = ""
         for k_idx, k in enumerate(p["kandahs"], 1):
-            table_rows = ""
+            sama_entries_html = ""
             for r in k["rows"]:
                 # Colorize danda badges in the swara sequence
                 tokens = r['Swara Symbols'].split()
@@ -354,31 +352,24 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                         formatted_tokens.append(f'<span class="swara-token">{tok}</span>')
                 swaras_html = " ".join(formatted_tokens)
 
-                table_rows += f"""
-                <tr class="sama-row" data-sama-name="{r['Sama Name']}" data-sl-no="{r['Sl No']}">
-                    <td style="text-align: center; font-weight: bold; color: #555;">{r['Sl No']}</td>
-                    <td style="font-weight: 600;">{r['Sama Name']}</td>
-                    <td class="swara-cell">{swaras_html}</td>
-                </tr>"""
+                sama_entries_html += f"""
+                <div class="sama-item" data-sama-name="{r['Sama Name']}" data-sl-no="{r['Sl No']}">
+                    <div class="sama-header-line">
+                        <span class="sama-num">{r['Sl No']}.</span>
+                        <span class="sama-title">{r['Sama Name']}</span>
+                    </div>
+                    <div class="sama-swara-line">{swaras_html}</div>
+                </div>"""
 
-            kandah_tables_html += f"""
+            kandah_blocks_html += f"""
             <div class="kandah-block" id="parva-{p['parva_idx']}-kandah-{k_idx}">
                 <div class="kandah-header">
                     <span class="kandah-title">{k['kandah_label']}: {k['kandah_name']}</span>
                     <span class="kandah-meta">{k['sama_range']} &bull; {k['samas_count']} Samas</span>
                 </div>
-                <table class="sama-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 75px; text-align: center;">Sl No</th>
-                            <th style="width: 220px;">Sama Name</th>
-                            <th>Swara Symbols (with <code>|</code> sentence separators)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {table_rows}
-                    </tbody>
-                </table>
+                <div class="kandah-content">
+                    {sama_entries_html}
+                </div>
             </div>"""
 
         parvas_sections_html += f"""
@@ -387,7 +378,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 <h2>{p['parva_idx']}. {p['parva_name']}</h2>
                 <span class="parva-meta">{p['kandahs_count']} Kandahs &bull; {p['sama_range']} ({p['total_samas']} Samas)</span>
             </div>
-            {kandah_tables_html}
+            {kandah_blocks_html}
         </section>"""
 
     return f"""<!DOCTYPE html>
@@ -395,7 +386,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaimineeya Samavedam: Devanagari Swara Tables (Per-Kandah)</title>
+    <title>Jaimineeya Samavedam: Devanagari Swara Document</title>
     <style>
         :root {{
             --primary: #1a237e;
@@ -417,7 +408,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             color: var(--text);
             margin: 0;
             padding: 0;
-            line-height: 1.5;
+            line-height: 1.6;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }}
@@ -487,7 +478,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             transform: translateY(-1px);
         }}
         .container {{
-            max-width: 1300px;
+            max-width: 1200px;
             margin: 24px auto;
             padding: 0 20px;
         }}
@@ -628,38 +619,46 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             color: #546e7a;
             font-weight: 500;
         }}
-        table.sama-table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
+        .kandah-content {{
+            padding: 16px 20px;
         }}
-        table.sama-table th {{
-            background: #fafafa;
-            color: #455a64;
-            font-weight: 600;
-            padding: 10px 14px;
-            border-bottom: 2px solid var(--border);
-            text-align: left;
+        .sama-item {{
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
         }}
-        table.sama-table td {{
-            padding: 10px 14px;
-            border-bottom: 1px solid #eeeeee;
+        .sama-item:last-child {{
+            border-bottom: none;
         }}
-        table.sama-table tr:hover {{
-            background-color: #f9fbfd;
+        .sama-header-line {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
         }}
-        .swara-cell {{
+        .sama-num {{
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.05rem;
+            min-width: 32px;
+        }}
+        .sama-title {{
+            font-weight: bold;
+            font-size: 1.15rem;
+            color: #1a237e;
+        }}
+        .sama-swara-line {{
+            padding-left: 36px;
             font-family: inherit;
-            line-height: 2;
+            line-height: 2.2;
         }}
         .swara-token {{
             display: inline-block;
             background: #f3e5f5;
             color: #4a148c;
-            padding: 1px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
-            margin: 1px 2px;
-            font-size: 0.95rem;
+            margin: 2px 3px;
+            font-size: 1rem;
             font-weight: 500;
         }}
         .danda-badge {{
@@ -667,9 +666,28 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             background: #ffebee;
             color: var(--danda-color);
             font-weight: bold;
-            padding: 1px 7px;
+            padding: 2px 9px;
             border-radius: 4px;
-            margin: 1px 3px;
+            margin: 2px 4px;
+            font-size: 1rem;
+        }}
+        table.summary-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }}
+        table.summary-table th {{
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }}
+        table.summary-table td {{
+            padding: 10px 14px;
+            border: 1px solid var(--border);
         }}
         .file-links-list {{
             list-style: none;
@@ -691,12 +709,12 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
         @media print {{
             @page {{
                 size: A4 portrait;
-                margin: 14mm 10mm;
+                margin: 14mm 12mm;
             }}
             body {{
                 background: white;
                 color: black;
-                font-size: 9.5pt;
+                font-size: 10pt;
             }}
             .top-nav, .search-box, .print-btn, .toc-grid, .file-links-list {{
                 display: none !important;
@@ -758,47 +776,30 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 page-break-after: avoid !important;
                 break-after: avoid !important;
             }}
-            table.sama-table {{
-                width: 100%;
-                page-break-inside: auto;
-                break-inside: auto;
-            }}
-            table.sama-table th {{
-                background: #f0f0f0 !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                padding: 6px 10px;
-                font-size: 8.5pt;
-            }}
-            table.sama-table td {{
-                padding: 6px 10px;
-                font-size: 8.5pt;
-            }}
-            tr {{
+            .sama-item {{
                 page-break-inside: avoid;
                 break-inside: avoid;
+                padding: 8px 0;
             }}
-            thead {{
-                display: table-header-group !important;
-                page-break-after: avoid;
-                break-after: avoid;
+            .sama-swara-line {{
+                padding-left: 24px;
+                line-height: 2;
             }}
             .swara-token {{
                 background: #f3e5f5 !important;
                 color: #4a148c !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                font-size: 8.5pt;
-                padding: 0 4px;
+                font-size: 9pt;
+                padding: 1px 5px;
             }}
             .danda-badge {{
                 background: #ffebee !important;
                 color: #d32f2f !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                font-size: 8.5pt;
-                padding: 0 5px;
+                font-size: 9pt;
+                padding: 1px 6px;
             }}
         }}
     </style>
@@ -809,15 +810,15 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             <h3>॥ जैमिनीय साम संहिता ॥ Devanagari Swara Explorer</h3>
         </div>
         <div class="top-nav-right">
-            <input type="text" id="searchInput" class="search-box" placeholder="Search Sama name or Sl No..." onkeyup="filterSamaTables()">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search Sama name or Sl No..." onkeyup="filterSamaDocument()">
             <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
         </div>
     </nav>
 
     <div class="container">
         <div class="main-card">
-            <h1>Devanagari Swara Tables (Organized by Parva & Kandah)</h1>
-            <p>This viewer organizes the complete <strong>Samhita Swara Dataset</strong> into clean, individual tables for each Kandah, featuring continuous sequential <strong>Sl No</strong> (1 – 722) and distinct <strong>danda separators (<code>|</code>)</strong> marking sentence/verse boundaries.</p>
+            <h1>Devanagari Swara Document (Line 1: Title | Line 2: Swaras)</h1>
+            <p>This document presents the complete <strong>Samhita Swara Dataset</strong> structured in a clean, sequential 2-line document layout: <strong>Line 1:</strong> <code>&lt;Sl No&gt;. &lt;Sama Name&gt;</code> &bull; <strong>Line 2:</strong> <code>&lt;Swaras in the Samam&gt;</code> with explicit sentence <strong>danda separators (<code>|</code>)</strong>.</p>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -858,8 +859,8 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 {toc_links_html}
             </div>
 
-            <h3>1. Parva Summary Table</h3>
-            <table class="sama-table">
+            <h3>1. Parva Summary Statistics</h3>
+            <table class="summary-table">
                 <thead>
                     <tr>
                         <th>Parva (Supersection)</th>
@@ -886,38 +887,38 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             </table>
         </div>
 
-        <!-- Per-Kandah Tables Sections -->
+        <!-- Sequential Swara Document Blocks -->
         {parvas_sections_html}
     </div>
 
     <script>
-    function filterSamaTables() {{
+    function filterSamaDocument() {{
         const q = document.getElementById('searchInput').value.toLowerCase().trim();
-        const rows = document.querySelectorAll('.sama-row');
+        const items = document.querySelectorAll('.sama-item');
         const kandahBlocks = document.querySelectorAll('.kandah-block');
         const parvaSections = document.querySelectorAll('.parva-section');
 
         if (!q) {{
-            rows.forEach(r => r.style.display = '');
+            items.forEach(it => it.style.display = '');
             kandahBlocks.forEach(b => b.style.display = '');
             parvaSections.forEach(p => p.style.display = '');
             return;
         }}
 
-        rows.forEach(r => {{
-            const name = (r.getAttribute('data-sama-name') || '').toLowerCase();
-            const slNo = (r.getAttribute('data-sl-no') || '').toLowerCase();
-            const text = r.textContent.toLowerCase();
+        items.forEach(it => {{
+            const name = (it.getAttribute('data-sama-name') || '').toLowerCase();
+            const slNo = (it.getAttribute('data-sl-no') || '').toLowerCase();
+            const text = it.textContent.toLowerCase();
             if (name.includes(q) || slNo.includes(q) || text.includes(q)) {{
-                r.style.display = '';
+                it.style.display = '';
             }} else {{
-                r.style.display = 'none';
+                it.style.display = 'none';
             }}
         }});
 
         kandahBlocks.forEach(b => {{
-            const visibleRows = b.querySelectorAll('.sama-row:not([style*="display: none"])');
-            b.style.display = visibleRows.length > 0 ? '' : 'none';
+            const visibleItems = b.querySelectorAll('.sama-item:not([style*="display: none"])');
+            b.style.display = visibleItems.length > 0 ? '' : 'none';
         }});
 
         parvaSections.forEach(p => {{
