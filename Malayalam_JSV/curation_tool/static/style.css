@@ -16,11 +16,11 @@
   --bg-hover: #223048;
   --border-color: #2a3b5c;
   --border-focus: #f59e0b;
-  
+
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  
+
   --accent-gold: #f59e0b;
   --accent-gold-glow: rgba(245, 158, 11, 0.25);
   --accent-cyan: #38bdf8;
@@ -264,7 +264,8 @@ select:focus {
   gap: 12px;
 }
 
-.page-switcher, .zoom-tools {
+.page-switcher,
+.zoom-tools {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -289,7 +290,8 @@ select:focus {
   color: var(--text-primary);
 }
 
-#pageLabel, #zoomLevel {
+#pageLabel,
+#zoomLevel {
   font-size: 12px;
   font-family: var(--font-mono);
   padding: 0 4px;
@@ -461,7 +463,8 @@ select:focus {
 .rendered-vedic-preview rt.swara-above {
   font-family: var(--font-swara);
   font-size: 0.65em;
-  color: #ff4d4f !important; /* Clean Vivid Red */
+  color: #ff4d4f !important;
+  /* Clean Vivid Red */
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -486,7 +489,8 @@ select:focus {
 /* 4. Swara Modifiers & Marks: BLUE with JaimineeyaSwara font */
 .rendered-vedic-preview .swara-mod {
   font-family: var(--font-swara);
-  color: #38bdf8; /* Sky Blue */
+  color: #38bdf8;
+  /* Sky Blue */
   font-weight: bold;
   line-height: 1;
   display: inline-block;
@@ -495,7 +499,8 @@ select:focus {
 /* 4. Swara Modifiers & Marks: BLUE with JaimineeyaSwara font (Matching glyph_table.html) */
 .rendered-vedic-preview .swara-mod {
   font-family: var(--font-swara);
-  color: #38bdf8; /* Blue */
+  color: #38bdf8;
+  /* Blue */
   font-weight: bold;
   line-height: 1;
 }
@@ -557,12 +562,12 @@ select:focus {
 /* MOD-C: Upper Shoulder Dot */
 .rendered-vedic-preview .swara-mod.mod-c {
   font-family: var(--font-swara);
-  font-size: 0.70rem;
+  font-size: 0.80rem;
   font-weight: bold;
   color: #38bdf8;
   position: absolute;
   top: -0.55em;
-  right: 0.05em;
+  right: 0.15em;
   line-height: 1;
   pointer-events: none;
 }
@@ -665,7 +670,8 @@ select:focus {
 .swara-btn {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  color: #ef4444; /* Red Swara text */
+  color: #ef4444;
+  /* Red Swara text */
   border-radius: 5px;
   padding: 4px 6px;
   display: inline-flex;
@@ -704,7 +710,8 @@ select:focus {
 .mod-chip {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  color: #38bdf8; /* Blue modifier text */
+  color: #38bdf8;
+  /* Blue modifier text */
   border-radius: 5px;
   padding: 4px 8px;
   display: inline-flex;
@@ -757,6 +764,13 @@ kbd {
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
