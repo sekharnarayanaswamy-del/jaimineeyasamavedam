@@ -637,39 +637,40 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
         }}
         .sama-num {{
             font-weight: bold;
-            color: var(--primary);
+            color: #000000;
             font-size: 1.05rem;
             min-width: 32px;
         }}
         .sama-title {{
             font-weight: bold;
             font-size: 1.15rem;
-            color: #1a237e;
+            color: #000000;
         }}
         .sama-swara-line {{
             padding-left: 36px;
             font-family: inherit;
             line-height: 2.2;
+            color: #000000;
         }}
         .swara-token {{
             display: inline-block;
-            background: #f3e5f5;
-            color: #4a148c;
+            background: #f5f5f5;
+            color: #000000;
             padding: 2px 8px;
             border-radius: 4px;
             margin: 2px 3px;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 500;
         }}
         .danda-badge {{
             display: inline-block;
-            background: #ffebee;
-            color: var(--danda-color);
+            background: #e0e0e0;
+            color: #000000;
             font-weight: bold;
             padding: 2px 9px;
             border-radius: 4px;
             margin: 2px 4px;
-            font-size: 1rem;
+            font-size: 1.05rem;
         }}
         table.summary-table {{
             width: 100%;
@@ -705,15 +706,15 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
             text-decoration: underline;
         }}
 
-        /* Print Specific Styling */
+        /* Print Specific Styling (Pure Black and White) */
         @media print {{
             @page {{
                 size: A4 portrait;
                 margin: 14mm 12mm;
             }}
             body {{
-                background: white;
-                color: black;
+                background: #ffffff !important;
+                color: #000000 !important;
                 font-size: 10pt;
             }}
             .top-nav, .search-box, .print-btn, .toc-grid, .file-links-list {{
@@ -728,7 +729,7 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 box-shadow: none;
                 padding: 0 0 16px 0;
                 margin-bottom: 16px;
-                border-bottom: 2px solid #333;
+                border-bottom: 2px solid #000000;
                 page-break-after: always;
                 break-after: page;
             }}
@@ -742,20 +743,26 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 break-before: page;
             }}
             .parva-header {{
-                background: #1a237e !important;
-                color: white !important;
+                background: #000000 !important;
+                color: #ffffff !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 box-shadow: none;
-                padding: 10px 16px;
-                margin-bottom: 14px;
+                padding: 8px 14px;
+                margin-bottom: 12px;
                 page-break-after: avoid !important;
                 break-after: avoid !important;
             }}
+            .parva-header h2 {{
+                color: #ffffff !important;
+            }}
+            .parva-meta {{
+                color: #ffffff !important;
+            }}
             .kandah-block {{
                 box-shadow: none;
-                border: 1px solid #ccc;
-                margin-bottom: 16px;
+                border: 1px solid #000000;
+                margin-bottom: 14px;
                 page-break-before: always;
                 break-before: page;
                 page-break-inside: auto;
@@ -768,38 +775,58 @@ def generate_html_content(hierarchy, total_samas, total_swaras, total_dandas, gr
                 break-before: avoid !important;
             }}
             .kandah-header {{
-                background: #eceff1 !important;
-                color: black !important;
+                background: #f0f0f0 !important;
+                color: #000000 !important;
+                border-bottom: 1px solid #000000;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                padding: 8px 12px;
+                padding: 6px 12px;
                 page-break-after: avoid !important;
                 break-after: avoid !important;
+            }}
+            .kandah-title {{
+                color: #000000 !important;
+            }}
+            .kandah-meta {{
+                color: #333333 !important;
             }}
             .sama-item {{
                 page-break-inside: avoid;
                 break-inside: avoid;
-                padding: 8px 0;
+                padding: 6px 0;
+                border-bottom: 1px solid #e0e0e0;
+            }}
+            .sama-item:last-child {{
+                border-bottom: none;
+            }}
+            .sama-num {{
+                color: #000000 !important;
+                font-weight: bold;
+            }}
+            .sama-title {{
+                color: #000000 !important;
+                font-weight: bold;
             }}
             .sama-swara-line {{
-                padding-left: 24px;
-                line-height: 2;
+                padding-left: 20px;
+                line-height: 1.9;
+                color: #000000 !important;
             }}
             .swara-token {{
-                background: #f3e5f5 !important;
-                color: #4a148c !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                font-size: 9pt;
-                padding: 1px 5px;
+                background: none !important;
+                color: #000000 !important;
+                font-size: 9.5pt;
+                padding: 0 2px;
+                margin: 0 1px;
+                font-weight: normal;
             }}
             .danda-badge {{
-                background: #ffebee !important;
-                color: #d32f2f !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                font-size: 9pt;
-                padding: 1px 6px;
+                background: none !important;
+                color: #000000 !important;
+                font-weight: bold;
+                font-size: 9.5pt;
+                padding: 0 4px;
+                margin: 0 2px;
             }}
         }}
     </style>

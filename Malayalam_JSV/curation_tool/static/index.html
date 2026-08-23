@@ -7,7 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Noto+Serif+Grantha&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=1.3">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/malayalam-fonts@latest/fonts.min.css">
+  <link rel="stylesheet" href="style.css?v=1.8">
 </head>
 <body class="dark-theme">
   <!-- Top Navigation & Global Header -->
@@ -41,6 +42,12 @@
       <button id="layoutToggleBtn" class="btn btn-secondary" title="Toggle Layout (Side-by-Side / Stacked Top-Bottom)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line></svg>
         <span id="layoutLabel">Stacked Layout</span>
+      </button>
+
+      <!-- Font Toggle: Noto Serif vs RIT Rachana -->
+      <button id="fontToggleBtn" class="btn btn-secondary" title="Toggle Malayalam Font (Noto Serif / RIT Rachana)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+        <span id="fontLabel">Font: Noto Serif</span>
       </button>
     </div>
 

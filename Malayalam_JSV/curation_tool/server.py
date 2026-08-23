@@ -285,7 +285,14 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
                 font_path = BASE_DIR / "docs" / "malayalam" / "fonts" / font_name
             if font_path.exists():
                 self.send_response(200)
-                self.send_header("Content-Type", "font/ttf")
+                if font_name.endswith(".woff2"):
+                    self.send_header("Content-Type", "font/woff2")
+                elif font_name.endswith(".woff"):
+                    self.send_header("Content-Type", "font/woff")
+                elif font_name.endswith(".otf"):
+                    self.send_header("Content-Type", "font/otf")
+                else:
+                    self.send_header("Content-Type", "font/ttf")
                 self.send_header("Access-Control-Allow-Origin", "*")
                 self.send_header("Cache-Control", "public, max-age=86400")
                 self.end_headers()

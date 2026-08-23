@@ -31,6 +31,8 @@ const elements = {
   validateBtn: document.getElementById('validateBtn'),
   layoutToggleBtn: document.getElementById('layoutToggleBtn'),
   layoutLabel: document.getElementById('layoutLabel'),
+  fontToggleBtn: document.getElementById('fontToggleBtn'),
+  fontLabel: document.getElementById('fontLabel'),
   workspaceGrid: document.querySelector('.workspace-grid'),
   
   manuscriptImg: document.getElementById('manuscriptImg'),
@@ -54,9 +56,32 @@ const elements = {
 
 // Initialize Application
 async function init() {
+  // Restore font preference (default is Noto Serif)
+  const savedFont = localStorage.getItem('jsv_font_preference');
+  if (savedFont === 'rachana') {
+    document.body.classList.add('font-rachana');
+  } else {
+    document.body.classList.remove('font-rachana');
+  }
+  updateFontButtonLabel();
+
   setupEventListeners();
   setupPanZoom();
   await loadSamamsData();
+}
+
+function toggleFont() {
+  const isRachana = document.body.classList.toggle('font-rachana');
+  localStorage.setItem('jsv_font_preference', isRachana ? 'rachana' : 'noto');
+  updateFontButtonLabel();
+  showToast(isRachana ? "Switched font to RIT Rachana" : "Switched font to Noto Serif Malayalam", 1500);
+}
+
+function updateFontButtonLabel() {
+  const isRachana = document.body.classList.contains('font-rachana');
+  if (elements.fontLabel) {
+    elements.fontLabel.textContent = isRachana ? 'Font: Rachana' : 'Font: Noto Serif';
+  }
 }
 
 // Fetch all sections & samams from server
@@ -444,6 +469,9 @@ function setupEventListeners() {
   elements.prevBtn.addEventListener('click', () => navigateSamam(-1));
   elements.nextBtn.addEventListener('click', () => navigateSamam(1));
   elements.layoutToggleBtn.addEventListener('click', toggleLayout);
+  if (elements.fontToggleBtn) {
+    elements.fontToggleBtn.addEventListener('click', toggleFont);
+  }
 
   // Toolbar
   elements.prevPageBtn.addEventListener('click', () => loadManuscriptPage(Math.max(1, state.currentPage - 1)));
