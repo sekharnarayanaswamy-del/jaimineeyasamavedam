@@ -137,15 +137,54 @@ def draw_circle_glyph(cx: int, cy: int, r: int) -> Glyph:
 
 
 def draw_phrasing_danda() -> Glyph:
-    """Vertical line starting near the bottom of preceding akshara and extending downward."""
+    """Swara Modifier F: Phrasing Danda with distinct overhead circular dot (╷)."""
+    glyph = init_glyph()
+    
+    # Contour 1: Vertical bar extending longer downwards (x=85..165, y=-200..480)
+    coords_bar = [
+        (85, 480, 1),
+        (165, 480, 1),
+        (165, -200, 1),
+        (85, -200, 1),
+    ]
+    
+    # Contour 2: Distinct overhead circular dot (r=60, cy=630, cx=125)
+    cx, cy, r = 125, 630, 60
+    coords_dot = [
+        (cx - r, cy, 1),
+        (cx - r, cy + int(r * 0.55), 0),
+        (cx - int(r * 0.55), cy + r, 0),
+        (cx, cy + r, 1),
+        (cx + int(r * 0.55), cy + r, 0),
+        (cx + r, cy + int(r * 0.55), 0),
+        (cx + r, cy, 1),
+        (cx + r, cy - int(r * 0.55), 0),
+        (cx + int(r * 0.55), cy - r, 0),
+        (cx, cy - r, 1),
+        (cx - int(r * 0.55), cy - r, 0),
+        (cx - r, cy - int(r * 0.55), 0),
+    ]
+    
+    all_coords = [(x, y) for x, y, _ in coords_bar] + [(x, y) for x, y, _ in coords_dot]
+    all_flags = [f for _, _, f in coords_bar] + [f for _, _, f in coords_dot]
+    
+    glyph.coordinates = GlyphCoordinates(all_coords)
+    glyph.flags = bytearray(all_flags)
+    glyph.endPtsOfContours = [len(coords_bar) - 1, len(all_coords) - 1]
+    glyph.numberOfContours = 2
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_bold_tone_column() -> Glyph:
+    """Swara Modifier E: Bold solid vertical tone column extending downwards (┃)."""
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    # Starts at y=100 (near bottom of akshara) and goes down to y=-350
     coords = [
-        (100, 100, 1),
-        (155, 100, 1),
-        (155, -350, 1),
-        (100, -350, 1),
+        (85, 580, 1),
+        (175, 580, 1),
+        (175, -200, 1),
+        (85, -200, 1),
     ]
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
@@ -417,6 +456,132 @@ def draw_double_danda() -> Glyph:
     # Two vertical bars
     c1 = [(80, 550, 1), (135, 550, 1), (135, -250, 1), (80, -250, 1)]
     c2 = [(220, 550, 1), (275, 550, 1), (275, -250, 1), (220, -250, 1)]
+    coords = c1 + c2
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(c1) - 1, len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_rising_stroke_d1() -> Glyph:
+    """Swara Modifier D1 (MOD-D1): Asymmetrical inverted-V / rising diagonal with downward right hook (Larger/Bolder)."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    # Long rising left leg from syllable boundary to apex, then short downward right slope
+    coords = [
+        (80, 480, 1),
+        (360, 1140, 1),
+        (540, 840, 1),
+        (480, 780, 1),
+        (350, 1000, 1),
+        (140, 430, 1),
+    ]
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_check_tick_d2() -> Glyph:
+    """Swara Modifier D2 (MOD-D2): Bold check-mark tick stroke (✓) on upper-right shoulder."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    coords = [
+        (80, 680, 1),
+        (140, 710, 1),
+        (220, 540, 1),
+        (440, 1020, 1),
+        (375, 1050, 1),
+        (180, 460, 1),
+    ]
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_double_shoulder_dash_i() -> Glyph:
+    """Swara Modifier I (MOD-I): Two stacked parallel gently-rising dashes on upper right shoulder (Larger/Bolder)."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 2
+    # Upper parallel dash (wider and thicker)
+    coords1 = [
+        (100, 720, 1),
+        (370, 800, 1),
+        (355, 880, 1),
+        (85, 800, 1),
+    ]
+    # Lower parallel dash
+    coords2 = [
+        (100, 530, 1),
+        (370, 610, 1),
+        (355, 690, 1),
+        (85, 610, 1),
+    ]
+    all_coords = coords1 + coords2
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in all_coords])
+    glyph.flags = bytearray([f for _, _, f in all_coords])
+    glyph.endPtsOfContours = [len(coords1) - 1, len(all_coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_overhead_bar_j(width: int = 340) -> Glyph:
+    """Swara Modifier J (MOD-J): Horizontal shoulder bar (—) on upper-right shoulder (Elevated)."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    # Elevated horizontal shoulder bar from y=800 to y=880, width=340
+    coords = [
+        (100, 880, 1),
+        (100 + width, 880, 1),
+        (100 + width, 800, 1),
+        (100, 800, 1),
+    ]
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_bridging_slash_b1() -> Glyph:
+    """Swara Modifier B1 (MOD-B1): Diagonal bridging stroke (/ / ↗) spanning between syllables."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    coords = [
+        (120, 480, 1),
+        (180, 460, 1),
+        (440, 980, 1),
+        (380, 1000, 1),
+    ]
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
+def draw_shoulder_cross_k() -> Glyph:
+    """Swara Modifier K (MOD-K): Bold cross / X mark on upper-right shoulder (Larger/Bolder)."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 2
+    # Slash / (wider span 80 to 360, thicker stroke)
+    c1 = [
+        (80, 560, 1),
+        (130, 500, 1),
+        (360, 720, 1),
+        (310, 780, 1),
+    ]
+    # Backslash \
+    c2 = [
+        (80, 720, 1),
+        (310, 500, 1),
+        (360, 560, 1),
+        (130, 780, 1),
+    ]
     coords = c1 + c2
     glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
     glyph.flags = bytearray([f for _, _, f in coords])
@@ -735,10 +900,15 @@ def build_font() -> None:
     glyf_table["high_dot_jsv"] = dot_glyph
     hmtx_table["high_dot_jsv"] = (400, 105)
 
-    # Mod 2: Phrasing Danda (L) (U+E002, U+2577, U+20D3)
+    # Mod 2: Phrasing Danda with Overhead Dot (MOD-F) (U+2577, U+20D3)
     phrasing_danda = draw_phrasing_danda()
     glyf_table["phrasing_danda_jsv"] = phrasing_danda
     hmtx_table["phrasing_danda_jsv"] = (360, 80)
+
+    # Mod 2b: Bold Tone Column (MOD-E) (U+E002, U+2503)
+    bold_tone_column = draw_bold_tone_column()
+    glyf_table["bold_tone_column_jsv"] = bold_tone_column
+    hmtx_table["bold_tone_column_jsv"] = (360, 80)
 
     # Mod 3: Descending Tone slash (\) (U+E003, U+005C, U+2572, U+27CD) - Swara Modifier G
     descending_tone = draw_descending_tone_slash()
@@ -795,6 +965,36 @@ def build_font() -> None:
     glyf_table["swarita_jsv"] = swarita_glyph
     hmtx_table["swarita_jsv"] = (0, -35)
 
+    # Mod 13: Rising Stroke (MOD-D1) (U+E00E, U+2197)
+    rising_stroke_d1 = draw_rising_stroke_d1()
+    glyf_table["rising_stroke_d1_jsv"] = rising_stroke_d1
+    hmtx_table["rising_stroke_d1_jsv"] = (450, 100)
+
+    # Mod 14: Check Tick (MOD-D2) (U+E00F, U+2713)
+    check_tick_d2 = draw_check_tick_d2()
+    glyf_table["check_tick_d2_jsv"] = check_tick_d2
+    hmtx_table["check_tick_d2_jsv"] = (450, 60)
+
+    # Mod 15: Double Shoulder Dash (MOD-I) (U+E02A, U+2AF5)
+    double_dash_i = draw_double_shoulder_dash_i()
+    glyf_table["double_shoulder_dash_i_jsv"] = double_dash_i
+    hmtx_table["double_shoulder_dash_i_jsv"] = (400, 110)
+
+    # Mod 16: Overhead Horizontal Macron/Bar (MOD-J) (U+E02B, U+0304, U+00AF, U+203E)
+    overhead_bar_j = draw_overhead_bar_j()
+    glyf_table["overhead_bar_j_jsv"] = overhead_bar_j
+    hmtx_table["overhead_bar_j_jsv"] = (400, 40)
+
+    # Mod 17: Diagonal Bridging Slash (MOD-B1) (U+E02C)
+    bridging_slash_b1 = draw_bridging_slash_b1()
+    glyf_table["bridging_slash_b1_jsv"] = bridging_slash_b1
+    hmtx_table["bridging_slash_b1_jsv"] = (450, 120)
+
+    # Mod 18: Shoulder Cross Mark (MOD-K) (U+E02D, U+2A2F, U+00D7)
+    shoulder_cross_k = draw_shoulder_cross_k()
+    glyf_table["shoulder_cross_k_jsv"] = shoulder_cross_k
+    hmtx_table["shoulder_cross_k_jsv"] = (400, 120)
+
     # 6. Update Cmap
     # Add custom mappings to Unicode and PUA codepoints
     custom_cmap = {
@@ -805,7 +1005,7 @@ def build_font() -> None:
         0x1134D: "virama_gran",
         # PUA Direct codepoints for Vedic Modifiers
         0xE001: "high_dot_jsv",
-        0xE002: "phrasing_danda_jsv",
+        0xE002: "bold_tone_column_jsv",
         0xE003: "descending_tone_jsv",
         0xE004: "syllable_arc_jsv",
         0x2040: "syllable_arc_jsv",
@@ -815,13 +1015,28 @@ def build_font() -> None:
         0xE005: "caret_jsv",
         0xE006: "roof_jsv",
         0xE007: "underbar_jsv",
-        0xE008: "ascending_tone_jsv",
+        0xE008: "phrasing_danda_jsv",
         0xE009: "ring_above_jsv",
         0xE00A: "low_comma_jsv",
         0xE00B: "double_danda_jsv",
         0xE00C: "swarita_jsv",
         0x0951: "swarita_jsv",
         0xE00D: "syllable_arc_danda_jsv",
+        0xE00E: "rising_stroke_d1_jsv",
+        0x2197: "rising_stroke_d1_jsv",
+        0xE00F: "check_tick_d2_jsv",
+        0x2713: "check_tick_d2_jsv",
+        0xE02A: "double_shoulder_dash_i_jsv",
+        0x2AF5: "double_shoulder_dash_i_jsv",
+        0xE02B: "overhead_bar_j_jsv",
+        0x0304: "overhead_bar_j_jsv",
+        0x00AF: "overhead_bar_j_jsv",
+        0x203E: "overhead_bar_j_jsv",
+        0x02C9: "overhead_bar_j_jsv",
+        0xE02C: "bridging_slash_b1_jsv",
+        0xE02D: "shoulder_cross_k_jsv",
+        0x2A2F: "shoulder_cross_k_jsv",
+        0x00D7: "shoulder_cross_k_jsv",
         # Sha family
         0xE010: "sha_aa_jsv",
         0xE011: "sha_i_jsv",
@@ -949,7 +1164,16 @@ def build_font() -> None:
     gfont.save(OUT_FONT_PATH)
     legacy_path = ROOT / "fonts" / "JaimineeyaSwara.ttf"
     gfont.save(legacy_path)
-    print(f"Successfully generated custom Vedic Swara font: {OUT_FONT_PATH} and {legacy_path}")
+    
+    # Also sync to Malayalam_JSV and docs font locations
+    m_jsv_font = ROOT / "Malayalam_JSV" / "fonts" / "JaimineeyaSwara.ttf"
+    if m_jsv_font.parent.exists():
+        gfont.save(m_jsv_font)
+    docs_font = ROOT / "docs" / "malayalam" / "fonts" / "JaimineeyaSwara.ttf"
+    if docs_font.parent.exists():
+        gfont.save(docs_font)
+
+    print(f"Successfully generated custom Vedic Swara font across all locations.")
 
 
 if __name__ == "__main__":

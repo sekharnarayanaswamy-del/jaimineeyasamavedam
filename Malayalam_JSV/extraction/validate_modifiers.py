@@ -19,12 +19,13 @@ if sys.platform == "win32":
 
 # Canonical swara modifiers and inline phrasing marks per spec.md
 VALID_MODIFIERS = {
-    "A", "A1", "A_1", "B", "C", "D", "E", "F", "G", "H", "L",
-    "\\", "|", "^", "·"
+    "A", "A1", "A_1", "B", "B1", "B_1", "C", "D", "D1", "D_1", "D2", "D_2",
+    "E", "F", "G", "H", "I", "J", "K", "L",
+    "\\", "|", "^", "·", "⨯", "x", "X", "¯", "⫽", "═", "✓", "⋀", "↗"
 }
 
-# Modifiers regex pattern: (A), (C), (H), (G), etc.
-MODIFIER_TOKEN_RE = re.compile(r"\(([A-HJ-Z][0-9_]?)\)")
+# Modifiers regex pattern: (A), (C), (H), (G), (B1), (D1), (D2), (I), (J), (K), etc.
+MODIFIER_TOKEN_RE = re.compile(r"\(([A-Z][0-9_]?)\)")
 FOOTNOTE_TOKEN_RE = re.compile(r"\(s\d+\)")
 INLINE_MARKS_RE = re.compile(r"[_.,\uE001-\uE00A\u00B7]")
 GRANTHA_MARKER_RE = re.compile(r"\(([\u11300-\u1137F\u0D36\u0D37\u0D2A\u0D4D\u0D32\u0D24\u0D4D\u0D30\u0D15\u0D4D\u0D30a-zA-Z0-9\u0900-\u097F\uE000-\uE0FF]+)\)")
@@ -54,8 +55,8 @@ def normalize_text_for_comparison(text: str) -> str:
     t = text
     # Remove footnotes
     t = FOOTNOTE_TOKEN_RE.sub("", t)
-    # Remove uppercase single-letter modifiers in parens e.g. (C), (H), (G), (A), (D), (L)
-    t = re.sub(r"\(([A-HLGDEFB][0-9_]?)\)", "", t)
+    # Remove uppercase modifiers in parens e.g. (C), (H), (G), (A), (A1), (B1), (D1), (D2), (I), (J), (K), (D), (L)
+    t = re.sub(r"\(([A-Z][0-9_]?)\)", "", t)
     # Remove inline phrasing marks: _, ., ,
     t = re.sub(r"[_.,]", "", t)
     # Normalize swaras & PUA

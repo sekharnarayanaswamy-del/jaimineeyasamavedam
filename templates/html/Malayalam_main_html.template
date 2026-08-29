@@ -119,33 +119,49 @@
             flex-wrap: wrap;
             align-items: flex-end;
             justify-content: center;
-            row-gap: 18px;
+            row-gap: 24px;
             line-height: 2.2;
+            text-align: center;
         }
         .mantra-word {
             display: inline-flex;
-            flex-direction: column;
+            align-items: flex-end;
+            flex-wrap: nowrap;
+            margin: 0 3px;
+        }
+        ruby.vedic-ruby {
+            display: inline-flex;
+            flex-direction: column-reverse;
             align-items: center;
             justify-content: flex-end;
             vertical-align: bottom;
+            ruby-position: over;
+            margin: 0 2px;
             position: relative;
-            margin: 0;
-            padding: 0 1px;
         }
-        .swara-text {
+        rt.swara-above {
             font-family: var(--font-swara);
-            color: var(--swara-red);
-            font-weight: bold;
-            font-size: var(--swara-size);
+            font-size: 0.85rem;
+            color: var(--swara-red) !important;
+            font-weight: 700;
             line-height: 1;
             text-align: center;
-            min-height: 1.2em;
-            padding-bottom: 8px;
-            margin-bottom: 4px;
+            min-height: 1.1em;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 6px;
+            user-select: text;
+            white-space: nowrap;
         }
-        .mantra-text {
+        rb.akshara-base,
+        .akshara-base {
             font-family: var(--font-doc);
             font-size: 1.4rem;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
             line-height: 1.2;
             text-align: center;
             position: relative;
@@ -157,39 +173,20 @@
             line-height: 1;
             display: inline-block;
         }
-        .swara-mod.mod-c {
-            vertical-align: 0.25em;
-            margin-left: 0.05em;
-            font-size: 0.85rem;
-        }
-        .swara-mod.mod-h {
-            position: absolute;
-            top: -0.38em;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.90rem;
-        }
-        .swara-mod.mod-g {
-            position: absolute;
-            bottom: -0.16em;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.05rem;
-        }
         .swara-mod.mod-a {
             position: absolute;
-            top: -0.28em;
+            top: -0.15em;
             left: 100%;
             transform: translateX(-40%);
-            font-size: 0.95rem;
+            font-size: 0.90rem;
             pointer-events: none;
         }
         .swara-mod.mod-a1 {
             position: absolute;
             top: -0.28em;
-            left: calc(100% + 0.20em);
-            transform: translateX(-35%);
-            font-size: 1.25rem;
+            left: 100%;
+            transform: translateX(5%);
+            font-size: 1.15rem;
             pointer-events: none;
         }
         .swara-mod.mod-b {
@@ -201,6 +198,7 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
+            z-index: 5;
         }
         .swara-mod.mod-b .caret-glyph {
             display: block;
@@ -213,20 +211,141 @@
             top: -1.70em;
             left: 50%;
             transform: translateX(-50%);
-            color: var(--swara-red);
-            font-size: 0.85rem;
+            color: var(--swara-red) !important;
+            font-size: 0.70rem;
             font-weight: bold;
             font-family: var(--font-swara);
             line-height: 1;
             white-space: nowrap;
         }
+        .swara-mod.mod-c {
+            font-family: var(--font-swara);
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.12em;
+            right: -0.18em;
+            line-height: 1;
+            pointer-events: none;
+        }
         .swara-mod.mod-d {
             position: absolute;
-            top: -0.30em;
+            top: -0.15em;
             left: 100%;
             transform: translateX(-40%);
+            font-size: 0.90rem;
+            pointer-events: none;
+        }
+        .swara-mod.mod-d1 {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.05em;
+            left: 100%;
+            transform: translateX(-15%);
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-d2 {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: 0.05em;
+            right: -0.50em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-i {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.25em;
+            right: -0.25em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-j {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.28em;
+            right: -0.20em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-b1 {
+            position: absolute;
+            top: -0.35em;
+            left: 100%;
+            transform: translateX(-20%);
             font-size: 0.95rem;
             pointer-events: none;
+        }
+        .swara-mod.mod-k {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.25em;
+            right: -0.50em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-e {
+            font-family: var(--font-swara) !important;
+            position: relative;
+            margin-left: 0.25em;
+            font-size: 1.15rem;
+            top: -0.1em;
+            right: 0.1em;
+            vertical-align: -0.05em;
+            color: var(--modifier-color);
+        }
+        .swara-mod.mod-f {
+            font-family: var(--font-swara) !important;
+            position: relative;
+            margin-left: 0.30em;
+            margin-right: 0.10em;
+            font-size: 1.15rem;
+            vertical-align: 0.10em;
+            color: var(--modifier-color);
+        }
+        .swara-mod.mod-g {
+            position: absolute;
+            bottom: 0.30em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.05rem;
+            color: var(--modifier-color);
+            pointer-events: none;
+        }
+        .swara-mod.mod-h {
+            position: absolute;
+            top: 0.05em;
+            right: -0.40em;
+            left: auto;
+            transform: none;
+            font-size: 0.95rem;
+            color: var(--modifier-color);
+            pointer-events: none;
+        }
+        .swara-mod.mod-under,
+        .swara-mod.mod-comma,
+        .swara-mod.mod-dot {
+            font-family: var(--font-doc);
+            color: var(--modifier-color);
+            display: inline-block;
+            margin: 0 1px;
         }
         .mantra-punct {
             font-family: var(--font-doc);

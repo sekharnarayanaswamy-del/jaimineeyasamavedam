@@ -25,7 +25,7 @@ Inspect the attached scanned manuscript page(s) and insert the visual swara modi
    - `,`   : Low comma inline at baseline
 
 ## ATTACHED MANUSCRIPT IMAGES
-page_0134.png, page_0135.png, page_0136.png, page_0137.png, page_0138.png
+page_0105.png, page_0106.png, page_0107.png, page_0108.png, page_0109.png, page_0110.png
 
 ---
 

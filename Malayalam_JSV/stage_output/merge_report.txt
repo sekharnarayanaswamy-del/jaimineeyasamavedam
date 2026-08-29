@@ -1,9 +1,9 @@
 ======================================================================
 MERGE REPORT
-  Candidates processed : 38
-  Subsections merged   : 54
-  Subsections skipped  : 262
-  Validation errors    : 0
+  Candidates processed : 49
+  Subsections merged   : 66
+  Subsections skipped  : 354
+  Validation errors    : 21
 ======================================================================
 
 SKIP subsection_107: no changes (identical to master)
@@ -25,12 +25,109 @@ SKIP subsection_122: no changes (identical to master)
 SKIP subsection_123: no changes (identical to master)
 SKIP subsection_124: no changes (identical to master)
 SKIP subsection_125: no changes (identical to master)
-SKIP subsection_31: no changes (identical to master)
-SKIP subsection_32: no changes (identical to master)
-SKIP subsection_35: no changes (identical to master)
+ERROR subsection_14: base/Grantha mismatch
+  CAND  : 'നമസ്തൗഹോ(𑌤𑌿) ഗ്നാ(𑌤) ഇ(𑌶) ।ഓജാസാ(𑌕𑌿) ഇഗൃണാ(𑌟𑌿) ന്താ(𑌖) ഇദേ(𑌣𑌾) ।വാ(𑌚) കാ(𑌯) രിഷ്ടായാഃ(𑌟𑌿) ।ആമാഇരാ(𑌟𑍀𑌟𑍍) മാ(𑌖) ഔഹോവാ(𑌶𑌿) '
+  MASTER: 'നമസ്തൗഹോ(𑌤𑌿) ഗ്നാ(𑌤) ഇ(𑌶) ।ഓജാസാ(𑌕𑌿) ഇഗൃണാ(𑌟𑌿) ന്താ(𑌖) ഇദേ(𑌣𑌾) ।വാ(𑌚) കാ(𑌯) രിഷ്ടായാഃ(𑌟𑌿) ।ആമാഇരാ(𑌟𑍀𑌟𑍍) മാ(𑌖) ഔഹോവാ(𑌶𑌿) '
+ERROR subsection_15: base/Grantha mismatch
+  CAND  : 'ദൂ(𑌣) താം(𑌫) വോ(𑌖) വിശ്വവേദസാം(𑌶𑍁) ।ഹാ(𑌥) വ്യാവാ(𑌚) ഹാ(𑌟) മമാ(𑌟𑍁) ൪ത്താ(𑌖) യം(𑌣) ।യാ(𑌚) ജിഷ്ഠ(𑌚) മൃഞ്ജസേ(𑌟𑍁) ഹാ(𑌤) ഇ(𑌶) '
+  MASTER: 'ദൂ(𑌣) താം(𑌫) വോ(𑌖) വിശ്വവേദസാം(𑌶𑍁) ।ഹാ(𑌥) വ്യാവാ(𑌚) ഹാ(𑌟) മമാ(𑌟𑍁) ൪ത്താ(𑌖) യം(𑌣) ।യാ(𑌚) ജിഷ്ഠ(𑌚) മൃഞ്ജസേ(𑌟𑍁) ഹാ(𑌤) ഇ(𑌶) '
+ERROR subsection_16: base/Grantha mismatch
+  CAND  : 'ഉപത്വാജാ(𑌤𑍀) ।മയോ(𑌟𑌾) ഗീരാഃ(𑌟𑌾) ।ഓഇയായൂ൪ദാ(𑌷𑍁) ഇദിശതീ൪ഹാ(𑌤𑍂) വിഷ്കൃതാഃ(𑌟𑌿) ।ഓ(𑌕) ഇയായൂ(𑌟𑌿𑌚𑍍) ൪വാ(𑌕) യോരാ(𑌟𑌾) നീ(𑌤) ।കയാസ'
+  MASTER: 'ഉപത്വാജാ(𑌤𑍀)।മയോ(𑌟𑌾) ഗീരാഃ(𑌟𑌾) ।ഓഇയായൂ൪ദാ(𑌷𑍁) ഇദിശതീ൪ഹാ(𑌤𑍂) വിഷ്കൃതാഃ(𑌟𑌿) ।ഓ(𑌕) ഇയായൂ(𑌟𑌿𑌚𑍍) ൪വാ(𑌕) യോരാ(𑌟𑌾) നീ(𑌤) ।കയാസ്'
+ERROR subsection_17: base/Grantha mismatch
+  CAND  : 'ഊപാത്വാ(𑌪𑌿) ഗ്നേദിവേദിവാഇ(𑌶𑍂) ।ദോഷാ(𑌟𑌾) വാസ്താ(𑌟𑌾) ൪ദ്ധീയാ(𑌚𑌾) വായം(𑌚𑌾) ।നാമോ(𑌟𑌾) ഭാരാ(𑌟𑌾𑌚𑍍) ന്താ(𑌚) ഏ(𑌕) മാ(𑌟) സാ(𑌖𑌣𑍍) '
+  MASTER: 'ഊ പാ(𑌪𑌿) ത്വാഗ്നേദിവേദിവാഇ(𑌶𑍂) ।ദോഷാ(𑌟𑌾) വാസ്താ(𑌟𑌾) ൪ദ്ധീയാ(𑌚𑌾) വായം(𑌚𑌾) ।നാമോ(𑌟𑌾) ഭാരാ(𑌟𑌾𑌚𑍍) ന്താ(𑌚) ഏ(𑌕) മാ(𑌟) സാ(𑌖𑌣𑍍)'
+ERROR subsection_18: base/Grantha mismatch
+  CAND  : 'ജാരാ(𑌤𑌾) । ബോധാ(𑌟𑌾) ബോധാ(𑌟𑌾) താദ്വീ(𑌚𑌾) വിഢ്ഢാ(𑌚𑌾) ഇ(𑌶) । വീശേ(𑌕𑌾) വാഇശേ(𑌟𑌿) യജ്ഞോ(𑌟𑌾) യായാ(𑌖𑌾) ഔഹോവാ(𑌶𑌿) । സ്തോമം(𑌕𑌾) ര'
+  MASTER: 'ജാരാ(𑌤𑌾) । ബോധാ(𑌟𑌾)ബോധാ(𑌟𑌾) താദ്വീ(𑌚𑌾) വിഢ്ഢാ(𑌚𑌾) ഇ(𑌶) । വീശേ(𑌕𑌾) വാഇശേ(𑌟𑌿) യജ്ഞോ(𑌟𑌾) യായാ(𑌖𑌾) ഔഹോവാ(𑌶𑌿) । സ്തോമം(𑌕𑌾) രൂ'
+ERROR subsection_19: base/Grantha mismatch
+  CAND  : 'പ്രാതിത്യാ(𑌪𑌿) ഞ്ചാരൂമധ്വരാം(𑌶𑍁) । ഗോപീ(𑌥𑌾) ഥായാപ്രാ(𑌚𑌿) ഹു(𑌕) യാ(𑌖) സാ(𑌣) ഇ(𑌶) । മാരൂ(𑌚𑌾) ത്ഭീ(𑌕) രാഗ്നായാ(𑌟𑌿) ഗ(𑌚) ഹാഔ'
+  MASTER: 'പ്രാതിത്യാ(𑌪𑌿) ഞ്ചാരൂമധ്വരാം(𑌶𑍁) । ഗോപീ(𑌥𑌾) ഥായാപ്രാ(𑌚𑌿) ഹു(𑌕) യാ(𑌖) സാ(𑌣) ഇ(𑌶) । മാരൂ(𑌚𑌾)ത്ഭീ(𑌕)രാഗ്നായാ(𑌟𑌿) ഗ(𑌚)ഹാഔ(𑌟𑌾'
+ERROR subsection_20: base/Grantha mismatch
+  CAND  : 'ആശ്വാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) ।നാത്വാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) । വാരവന്തം(𑌷𑍀) വന്ദധ്യൈ(𑌤𑌿) ।ആഗ്നാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) । നമോഭി(𑌷𑌿) സ്സമ്'
+  MASTER: 'ആശ്വാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) ।നാത്വാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) । വാരവന്തം(𑌷𑍀) വന്ദദ്ധ്യൈ(𑌤𑌿) ।ആഗ്നാ(𑌟𑌾) ഔഹോ(𑌖𑌾) വാ(𑌶) । നമോഭി(𑌷𑌿) സ്സ'
+ERROR subsection_21: base/Grantha mismatch
+  CAND  : 'അശ്വന്നത്വാബുഹോ(𑌤𑍂) ഹാ(𑌤) ഇ(𑌶) ।വാരാവാ(𑌖𑌿) ന്തം(𑌶) വന്ദ(𑌕𑌾) ധ്യോ(𑌪) ഹാ(𑌣) ഇ(𑌶) ।അഗ്നാഇന്നമാ(𑌪𑍁) ഔഹോവാഇഹോ(𑌖𑍁) ഹാ(𑌣) ഇ(𑌶)।'
+  MASTER: 'അശ്വന്നത്വാബുഹോ(𑌤𑍂) ഹാ(𑌤) ഇ(𑌶) ।വാരാവാ(𑌖𑌿)ന്തം(𑌶) വം(𑌕)ദാ ദ്ധ്യോ(𑌪) ഹാ(𑌣) ഇ(𑌶) ।അഗ്നാഇന്നമാ(𑌪𑍁) ഔഹോവാഇഹോ(𑌖𑍁) ഹാ(𑌣) ഇ(𑌶)।'
+ERROR subsection_22: base/Grantha mismatch
+  CAND  : 'ഔ൪വഭൃഗുവദോ(𑌚𑍂) ഹാ(𑌤) ഇ(𑌶) ।ശോ(𑌖) ചിം(𑌶) ।ആപ്നാവാ(𑌟𑌿) നാ(𑌕) വാദാ(𑌟𑌾) ഹുവാ(𑌟𑌾) ഇഹുവായോ(𑌚𑍀) ഇ(𑌶) ।അഗ്നാ(𑌟𑌾) ഇംസാമൂ(𑌟𑌿𑌚𑍍) സാ'
+  MASTER: 'ഔ൪വഭൃഗ്വദോ(𑌚𑍂) ഹാ(𑌤) ഇ(𑌶) । ശോ(𑌖) ചിം(𑌶) । ആപ്നാവാ(𑌟𑌿) നാ(𑌕) വാദാ(𑌟𑌾) ഹുവാ(𑌟𑌾) ഇഹുവായോ(𑌚𑍀) ഇ(𑌶) । അഗ്നാ(𑌟𑌾) ഇംസാമൂ(𑌟𑌿𑌚𑍍)'
+ERROR subsection_23: base/Grantha mismatch
+  CAND  : 'അഗ്നിമി(𑌷𑌿) ന്ധാനോമനസൗഹോഔഹോവാ(𑌤𑍇) ഹാ(𑌤) ഇ(𑌶) । ധീയംസചേതമൗ(𑌟𑍂) ഹോ(𑌟) ഹാ(𑌤) ഹോവാ(𑌟𑌾) ൪ത്യാഃ(𑌤𑌾) । അഗ്നാഇമാ(𑌟𑍀𑌟𑍍) ഇന്ധാ(𑌖𑌾)'
+  MASTER: 'അഗ്നിമി(𑌷𑌿) ന്ധാനോ മനസ്യൌഹോ ഔഹോവാ(𑌤𑍇) ഹാ(𑌤) ഇ(𑌶) । ധീയംസചേതമൗ(𑌟𑍂) ഹോ(𑌟) ഹാ(𑌤) ഹോ വാ(𑌟𑌾) ൪ത്യാഃ(𑌤𑌾) । അഗ്നാഇമാ(𑌟𑍀𑌟𑍍) ഇന്ധ'
+ERROR subsection_24: base/Grantha mismatch
+  CAND  : 'ആദിപ്രത്നാ(𑌫𑍀) സ്യരേ(𑌶𑌾) തസാഃ(𑌕𑌾) ।ജ്യോതിഃപശ്യ(𑌷𑍀) ന്തിവാസാ(𑌟𑌿) രാം(𑌚) ।പാരോയാ(𑌟𑌿) തിധ്യതാ(𑌚𑌿) ഇ(𑌶) ।ദിവിഹോഇഹോഔ(𑌕𑍂) ഹോഔ('
+  MASTER: 'ആദിപ്രത്നാ(𑌫𑍀) സ്യരേ(𑌶𑌾) തസാഃ(𑌕𑌾) । ജ്യോതിഃപശ്യ(𑌷𑍀) ന്തിവാസാ(𑌟𑌿) രാം(𑌚) । പാരോ യാ(𑌟𑌿) തിധ്യതാ(𑌚𑌿) ഇ(𑌶) । ദിവിഹോഇഹോ(𑌕𑍂) ഔ'
+SKIP subsection_14: no changes (identical to master)
+SKIP subsection_15: no changes (identical to master)
+SKIP subsection_16: no changes (identical to master)
+SKIP subsection_17: no changes (identical to master)
+SKIP subsection_18: no changes (identical to master)
+SKIP subsection_19: no changes (identical to master)
+SKIP subsection_20: no changes (identical to master)
+SKIP subsection_21: no changes (identical to master)
+SKIP subsection_22: no changes (identical to master)
+SKIP subsection_23: no changes (identical to master)
+SKIP subsection_24: no changes (identical to master)
+MERGE subsection_25: +15 modifiers (was 16)
+MERGE subsection_26: +5 modifiers (was 6)
+SKIP subsection_27: no changes (identical to master)
+MERGE subsection_28: +8 modifiers (was 10)
+SKIP subsection_29: no changes (identical to master)
+SKIP subsection_30: no changes (identical to master)
+ERROR subsection_31: base/Grantha mismatch
+  CAND  : 'അഗ്നിം(𑌤𑍁) മൂ൪ധാ(𑌤𑍁) ദീ(𑌤𑍁) വഃ(𑌤𑌿) കകൂ(𑌤𑌿) ത്।പാതീഃ(𑌟𑌾) പാ൪ത്ഥീ(𑌟𑌾) വ്യാഅയാം(𑌚𑌿) ।ആപാം(𑌟𑌾) രാഇതാം(𑌟𑌿) സീ(𑌕) ജിന്വാ(𑌟𑌾) ത'
+  MASTER: 'അഗ്നിം(𑌤𑍁) മൂ൪ദ്ധാ(𑌤𑍁) ദീ(𑌤𑍁) വഃ(𑌤𑌿) കകൂ(𑌤𑌿) ത് । പാതീഃ(𑌟𑌾) പാ൪ത്ഥീ(𑌟𑌾) വ്യാഅയാം(𑌚𑌿) । ആപാം(𑌟𑌾) രാഇതാം(𑌟𑌿) സീ(𑌕) ജിന്വാ('
+ERROR subsection_32: base/Grantha mismatch
+  CAND  : 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) ।ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) ।സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥) ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) ।ആഗ്നേ(𑌟𑌾) ഹോഇദേ(𑌟𑍀)'
+  MASTER: 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) । ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) । സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥)ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) । ആഗ്നേ(𑌟𑌾) ഹോഇദേ(𑌟'
+MERGE subsection_33: +4 modifiers (was 5)
+SKIP subsection_34: no changes (identical to master)
+ERROR subsection_35: base/Grantha mismatch
+  CAND  : 'കവിമഗ്നീം(𑌤𑍀) ।ഉപാ(𑌟𑌿𑌚𑍍) സ്തു(𑌖) ഹാ(𑌶) ഔഹോവാ(𑌶) ।സത്യധ(𑌕𑍀) ൪മ്മാണം(𑌚𑌾) അധ്വ(𑌚𑌾) രേ ।ദേവാ(𑌤𑍀) മ്മ൪(𑌟𑌾) വാചാ(𑌣𑌾) താ(𑌪) നാം'
+  MASTER: 'കവിമഗ്നീം(𑌤𑍀) । ഉപാ(𑌟𑌿𑌚𑍍) സ്തു(𑌖) ഹാ(𑌶) ഔഹോവാ(𑌶) । സത്യധ(𑌕𑍀) ൪മ്മാണം(𑌚𑌾) അധ്വ(𑌚𑌾) രേ । ദേവാ(𑌤𑍀) മ്മ൪(𑌟𑌾) വാചാ(𑌣𑌾) താ(𑌪) '
+MERGE subsection_36: +4 modifiers (was 7)
+SKIP subsection_37: no changes (identical to master)
+ERROR subsection_31: base/Grantha mismatch
+  CAND  : 'അഗ്നിം(𑌤𑍁) മൂ൪ധാ(𑌤𑍁) ദീ(𑌤𑍁) വഃ(𑌤𑌿) കകൂ(𑌤𑌿) ത്।പാതീഃ(𑌟𑌾) പാ൪ത്ഥീ(𑌟𑌾) വ്യാഅയാം(𑌚𑌿) ।ആപാം(𑌟𑌾) രാഇതാം(𑌟𑌿) സീ(𑌕) ജിന്വാ(𑌟𑌾) ത'
+  MASTER: 'അഗ്നിം(𑌤𑍁) മൂ൪ദ്ധാ(𑌤𑍁) ദീ(𑌤𑍁) വഃ(𑌤𑌿) കകൂ(𑌤𑌿) ത് । പാതീഃ(𑌟𑌾) പാ൪ത്ഥീ(𑌟𑌾) വ്യാഅയാം(𑌚𑌿) । ആപാം(𑌟𑌾) രാഇതാം(𑌟𑌿) സീ(𑌕) ജിന്വാ('
+ERROR subsection_32: base/Grantha mismatch
+  CAND  : 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) ।ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) ।സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥) ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) ।ആഗ്നേ(𑌟𑌾) ഹോഇദേ(𑌟𑍀)'
+  MASTER: 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) । ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) । സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥)ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) । ആഗ്നേ(𑌟𑌾) ഹോഇദേ(𑌟'
+ERROR subsection_35: base/Grantha mismatch
+  CAND  : 'കവിമഗ്നീം(𑌤𑍀) ।ഉപാ(𑌟𑌿𑌚𑍍) സ്തു(𑌖) ഹാ(𑌶) ഔഹോവാ(𑌶) ।സത്യധ(𑌕𑍀) ൪മ്മാണം(𑌚𑌾) അധ്വ(𑌚𑌾) രേ ।ദേവാ(𑌤𑍀) മ്മ൪(𑌟𑌾) വാചാ(𑌣𑌾) താ(𑌪) നാം'
+  MASTER: 'കവിമഗ്നീം(𑌤𑍀) । ഉപാ(𑌟𑌿𑌚𑍍) സ്തു(𑌖) ഹാ(𑌶) ഔഹോവാ(𑌶) । സത്യധ(𑌕𑍀) ൪മ്മാണം(𑌚𑌾) അധ്വ(𑌚𑌾) രേ । ദേവാ(𑌤𑍀) മ്മ൪(𑌟𑌾) വാചാ(𑌣𑌾) താ(𑌪) '
 SKIP subsection_61: no changes (identical to master)
 SKIP subsection_62: no changes (identical to master)
 SKIP subsection_63: no changes (identical to master)
+MERGE subsection_25: +16 modifiers (was 15)
+MERGE subsection_26: +6 modifiers (was 5)
+SKIP subsection_27: no changes (identical to master)
+MERGE subsection_28: +10 modifiers (was 8)
+SKIP subsection_29: no changes (identical to master)
+SKIP subsection_30: no changes (identical to master)
+SKIP subsection_31: no changes (identical to master)
+SKIP subsection_32: no changes (identical to master)
+MERGE subsection_33: +5 modifiers (was 4)
+MERGE subsection_34: +5 modifiers (was 4)
+MERGE subsection_35: +1 modifiers (was 13)
+MERGE subsection_36: +7 modifiers (was 4)
+SKIP subsection_37: no changes (identical to master)
+SKIP subsection_25: no changes (identical to master)
+SKIP subsection_26: no changes (identical to master)
+SKIP subsection_27: no changes (identical to master)
+SKIP subsection_28: no changes (identical to master)
+SKIP subsection_29: no changes (identical to master)
+SKIP subsection_30: no changes (identical to master)
+SKIP subsection_31: no changes (identical to master)
+ERROR subsection_32: base/Grantha mismatch
+  CAND  : 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) । ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) । സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥) ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) । ആഗ്നേ(𑌟𑌾) ഹോഇദേ('
+  MASTER: 'ഇമമൂ(𑌤𑍀) ഷൂ(𑌤𑍀) । ത്വാമാസ്മാ(𑌟𑌿) കാം(𑌤) । സാനിം(𑌟𑌾) ഹോഇഗാ(𑌟𑍀) യാ(𑌟𑍀) ഹോ(𑌕) തൃ(𑌥)ന്നവ്യാം(𑌟𑌾) സാം(𑌤𑌾) । ആഗ്നേ(𑌟𑌾) ഹോഇദേ(𑌟'
+SKIP subsection_33: no changes (identical to master)
+MERGE subsection_34: +4 modifiers (was 5)
+MERGE subsection_35: +13 modifiers (was 1)
+SKIP subsection_36: no changes (identical to master)
+SKIP subsection_37: no changes (identical to master)
 SKIP subsection_49: no changes (identical to master)
 SKIP subsection_50: no changes (identical to master)
 SKIP subsection_51: no changes (identical to master)
@@ -76,7 +173,75 @@ SKIP subsection_103: no changes (identical to master)
 SKIP subsection_104: no changes (identical to master)
 SKIP subsection_105: no changes (identical to master)
 SKIP subsection_106: no changes (identical to master)
-MERGE subsection_252: +3 modifiers (was 7)
+ERROR subsection_348: base/Grantha mismatch
+  CAND  : 'അസൗ(𑌤𑌾) ഹോവാ(𑌤𑌾) ഹാവീ(𑌖𑌾) ദേ(𑌶) । വാംഗോഋജീ(𑌕𑍀) കമാ(𑌖𑌾) ന്ധാഃ(𑌪𑍍𑌲) । നിയൗ(𑌤𑌾) ഹോവാ(𑌤𑌾) ഹാസ്മീ(𑌖𑌾) നി(𑌶) । ദ്രോജാനൂഷേ(𑌕𑍀) '
+  MASTER: 'അസൗ(𑌤𑌾) ഹോവാ(𑌤𑌾) ഹാവീ(𑌖𑌾) ദേ(𑌶) । വാംഗോഋജീ(𑌕𑍀) കമാ(𑌖𑌾) ന്ധാഃ(𑌪𑍍𑌲) । നിയൗ(𑌤𑌾) ഹോവാ(𑌤𑌾) ഹാസ്മീ(𑌖𑌾) നി(𑌶) । ദ്രോജാനൂഷേ(𑌕𑍀) '
+SKIP subsection_349: no changes (identical to master)
+SKIP subsection_350: no changes (identical to master)
+SKIP subsection_351: no changes (identical to master)
+SKIP subsection_352: no changes (identical to master)
+SKIP subsection_353: no changes (identical to master)
+SKIP subsection_354: no changes (identical to master)
+SKIP subsection_355: no changes (identical to master)
+SKIP subsection_356: no changes (identical to master)
+SKIP subsection_357: no changes (identical to master)
+SKIP subsection_358: no changes (identical to master)
+SKIP subsection_359: no changes (identical to master)
+SKIP subsection_360: no changes (identical to master)
+SKIP subsection_361: no changes (identical to master)
+SKIP subsection_362: no changes (identical to master)
+SKIP subsection_363: no changes (identical to master)
+SKIP subsection_364: no changes (identical to master)
+SKIP subsection_365: no changes (identical to master)
+SKIP subsection_366: no changes (identical to master)
+SKIP subsection_367: no changes (identical to master)
+SKIP subsection_368: no changes (identical to master)
+SKIP subsection_369: no changes (identical to master)
+SKIP subsection_370: no changes (identical to master)
+SKIP subsection_371: no changes (identical to master)
+SKIP subsection_372: no changes (identical to master)
+SKIP subsection_373: no changes (identical to master)
+SKIP subsection_374: no changes (identical to master)
+SKIP subsection_375: no changes (identical to master)
+SKIP subsection_376: no changes (identical to master)
+SKIP subsection_377: no changes (identical to master)
+SKIP subsection_378: no changes (identical to master)
+SKIP subsection_379: no changes (identical to master)
+SKIP subsection_380: no changes (identical to master)
+SKIP subsection_381: no changes (identical to master)
+SKIP subsection_382: no changes (identical to master)
+SKIP subsection_383: no changes (identical to master)
+SKIP subsection_384: no changes (identical to master)
+SKIP subsection_385: no changes (identical to master)
+SKIP subsection_386: no changes (identical to master)
+SKIP subsection_387: no changes (identical to master)
+SKIP subsection_388: no changes (identical to master)
+SKIP subsection_389: no changes (identical to master)
+SKIP subsection_390: no changes (identical to master)
+SKIP subsection_391: no changes (identical to master)
+SKIP subsection_392: no changes (identical to master)
+SKIP subsection_393: no changes (identical to master)
+SKIP subsection_394: no changes (identical to master)
+SKIP subsection_395: no changes (identical to master)
+SKIP subsection_396: no changes (identical to master)
+SKIP subsection_397: no changes (identical to master)
+SKIP subsection_398: no changes (identical to master)
+SKIP subsection_399: no changes (identical to master)
+SKIP subsection_400: no changes (identical to master)
+SKIP subsection_401: no changes (identical to master)
+SKIP subsection_402: no changes (identical to master)
+SKIP subsection_403: no changes (identical to master)
+SKIP subsection_404: no changes (identical to master)
+SKIP subsection_405: no changes (identical to master)
+SKIP subsection_406: no changes (identical to master)
+SKIP subsection_407: no changes (identical to master)
+SKIP subsection_408: no changes (identical to master)
+SKIP subsection_409: no changes (identical to master)
+SKIP subsection_410: no changes (identical to master)
+SKIP subsection_411: no changes (identical to master)
+ERROR subsection_252: base/Grantha mismatch
+  CAND  : 'അഭിത്വാശൂ(𑌤𑍀) । രാനോനൂ(𑌟𑌿) മാ(𑌤) ഓനൂ(𑌟𑌾) മാഃ(𑌤) । ആദുഗ്ധാ(𑌕𑌿) ഇവാ(𑌚𑌾) ധാഇനാ(𑌟𑌿) വാ(𑌖) ഓഇനാ(𑌟𑌿) വാഃ(𑌤) । ആഇശാ(𑌕𑌿𑌚𑍍) നമസ്യ'
+  MASTER: 'അഭിത്വാശൂ(𑌤𑍀) । രാനോനൂ(𑌟𑌿) മാ(𑌤) ഓനൂ(𑌟𑌾) മാഃ(𑌤) । ആദുഗ്ധാ(𑌕𑌿)ഇവാ(𑌚𑌾) ധാഇനാ(𑌟𑌿) വാ(𑌖) ഓഇനാ(𑌟𑌿) വാഃ(𑌤) । ആഇശാ(𑌕𑌿𑌚𑍍) നമസ്യജ'
 MERGE subsection_253: +1 modifiers (was 1)
 MERGE subsection_254: +0 modifiers (was 0)
 MERGE subsection_255: +0 modifiers (was 0)
@@ -86,7 +251,9 @@ MERGE subsection_258: +0 modifiers (was 0)
 MERGE subsection_259: +0 modifiers (was 0)
 MERGE subsection_260: +0 modifiers (was 0)
 MERGE subsection_261: +0 modifiers (was 0)
-MERGE subsection_252: +7 modifiers (was 3)
+ERROR subsection_252: base/Grantha mismatch
+  CAND  : 'അഭിത്വാശൂ(𑌤𑍀) । രാനോനൂ(𑌟𑌿) മാ(𑌤) ഓനൂ(𑌟𑌾) മാഃ(𑌤) । ആദുഗ്ധാ(𑌕𑌿) ഇവാ(𑌚𑌾) ധാഇനാ(𑌟𑌿) വാ(𑌖) ഓഇനാ(𑌟𑌿) വാഃ(𑌤) । ആഇശാ(𑌕𑌿𑌚𑍍) നമസ്യ'
+  MASTER: 'അഭിത്വാശൂ(𑌤𑍀) । രാനോനൂ(𑌟𑌿) മാ(𑌤) ഓനൂ(𑌟𑌾) മാഃ(𑌤) । ആദുഗ്ധാ(𑌕𑌿)ഇവാ(𑌚𑌾) ധാഇനാ(𑌟𑌿) വാ(𑌖) ഓഇനാ(𑌟𑌿) വാഃ(𑌤) । ആഇശാ(𑌕𑌿𑌚𑍍) നമസ്യജ'
 MERGE subsection_253: +1 modifiers (was 1)
 MERGE subsection_254: +0 modifiers (was 0)
 MERGE subsection_255: +0 modifiers (was 0)

@@ -9,7 +9,8 @@ const state = {
   currentSectionIdx: 0,
   currentSubsecIdx: 0,
   currentSamamIdx: 0,
-  currentPage: 4,
+  currentSubNum: null,
+  currentPage: 3,
   zoom: 1.0,
   panX: 0,
   panY: 0,
@@ -25,10 +26,11 @@ const elements = {
   sectionSelect: document.getElementById('sectionSelect'),
   subsectionSelect: document.getElementById('subsectionSelect'),
   samamSelect: document.getElementById('samamSelect'),
+  directSubInput: document.getElementById('directSubInput'),
+  directSubBtn: document.getElementById('directSubBtn'),
   prevBtn: document.getElementById('prevBtn'),
   nextBtn: document.getElementById('nextBtn'),
   saveBtn: document.getElementById('saveBtn'),
-  validateBtn: document.getElementById('validateBtn'),
   layoutToggleBtn: document.getElementById('layoutToggleBtn'),
   layoutLabel: document.getElementById('layoutLabel'),
   fontToggleBtn: document.getElementById('fontToggleBtn'),
@@ -54,8 +56,56 @@ const elements = {
   toast: document.getElementById('toast')
 };
 
-// Initialize Application
-async function init() {
+// Exact Section and Subsection Ground-Truth Page Anchors
+const SECTION_PAGE_MAP = [
+  // Agneyam (SS1)
+  { subMin: 1, subMax: 13, pageMin: 3, pageMax: 6 },
+  { subMin: 14, subMax: 24, pageMin: 7, pageMax: 10 },
+  { subMin: 25, subMax: 37, pageMin: 10, pageMax: 14 },
+  { subMin: 38, subMax: 52, pageMin: 14, pageMax: 18 },
+  { subMin: 53, subMax: 63, pageMin: 19, pageMax: 24 },
+  { subMin: 64, subMax: 73, pageMin: 25, pageMax: 26 },
+  { subMin: 74, subMax: 81, pageMin: 27, pageMax: 28 },
+  { subMin: 82, subMax: 88, pageMin: 29, pageMax: 30 },
+  { subMin: 89, subMax: 97, pageMin: 31, pageMax: 32 },
+  { subMin: 98, subMax: 106, pageMin: 33, pageMax: 34 },
+  { subMin: 107, subMax: 115, pageMin: 35, pageMax: 36 },
+  { subMin: 116, subMax: 126, pageMin: 37, pageMax: 38 },
+  // Tadva (SS2)
+  { subMin: 127, subMax: 251, pageMin: 39, pageMax: 83 },
+  // Bruhati (SS3)
+  { subMin: 252, subMax: 346, pageMin: 84, pageMax: 130 },
+  // Asaavi (SS4)
+  { subMin: 348, subMax: 411, pageMin: 131, pageMax: 160 },
+  // Aindram (SS5)
+  { subMin: 1413, subMax: 1517, pageMin: 161, pageMax: 210 },
+  // Pavamanam (SS6)
+  { subMin: 519, subMax: 727, pageMin: 211, pageMax: 324 },
+];
+
+function estimateManuscriptPageForSub(sNum) {
+  for (const range of SECTION_PAGE_MAP) {
+    if (sNum >= range.subMin && sNum <= range.subMax) {
+      if (range.subMax === range.subMin) return range.pageMin;
+      const progress = (sNum - range.subMin) / (range.subMax - range.subMin);
+      const est = Math.floor(range.pageMin + progress * (range.pageMax - range.pageMin));
+      return Math.min(range.pageMax, Math.max(range.pageMin, est));
+    }
+  }
+  return 3;
+}
+
+// App Initialization
+document.addEventListener('DOMContentLoaded', initApp);
+
+async function initApp() {
+  const savedLayout = localStorage.getItem('jsv_layout_preference');
+  if (savedLayout === 'stacked') {
+    state.isStacked = true;
+    elements.workspaceGrid.classList.add('stacked');
+    elements.layoutLabel.textContent = 'Side-by-Side';
+  }
+
   // Restore font preference (default is Noto Serif)
   const savedFont = localStorage.getItem('jsv_font_preference');
   if (savedFont === 'rachana') {
@@ -101,14 +151,30 @@ async function loadSamamsData() {
   }
 }
 
-// Dropdown Populators
+// Dropdown Populators with Parva / SuperSection Grouping
 function populateSectionDropdown() {
   elements.sectionSelect.innerHTML = '';
+  
+  const groups = {};
   state.data.sections.forEach((sec, idx) => {
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = `${sec.title || sec.id} (${sec.subsections.length} Subsecs)`;
-    elements.sectionSelect.appendChild(opt);
+    const groupTitle = sec.supersection || "General Sections";
+    if (!groups[groupTitle]) {
+      groups[groupTitle] = [];
+    }
+    groups[groupTitle].push({ sec, idx });
+  });
+
+  Object.entries(groups).forEach(([groupName, items]) => {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = groupName;
+    items.forEach(({ sec, idx }) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      const tag = sec.supersection_tag ? `[${sec.supersection_tag}] ` : '';
+      opt.textContent = `${tag}${sec.title || sec.id} (${sec.subsections.length} Subs)`;
+      optgroup.appendChild(opt);
+    });
+    elements.sectionSelect.appendChild(optgroup);
   });
 }
 
@@ -120,7 +186,8 @@ function selectSection(idx) {
   sec.subsections.forEach((sub, subIdx) => {
     const opt = document.createElement('option');
     opt.value = subIdx;
-    opt.textContent = `${sub.title || sub.id} (${sub.samams.length} Samams)`;
+    const numLabel = sub.number ? `[Sub ${sub.number}] ` : '';
+    opt.textContent = `${numLabel}${sub.title || sub.id} (${sub.samams.length} Samams)`;
     elements.subsectionSelect.appendChild(opt);
   });
   
@@ -132,6 +199,13 @@ function selectSubsection(subIdx) {
   const sec = state.data.sections[state.currentSectionIdx];
   const subsec = sec.subsections[subIdx];
   
+  if (!subsec) return;
+
+  const sNum = subsec.number || parseInt(subsec.id.replace(/\D/g, ''), 10);
+  if (elements.directSubInput && sNum) {
+    elements.directSubInput.value = sNum;
+  }
+
   elements.samamSelect.innerHTML = '';
   subsec.samams.forEach((sam, samIdx) => {
     const opt = document.createElement('option');
@@ -156,15 +230,64 @@ function selectSamam(samIdx) {
   elements.subsectionSelect.value = state.currentSubsecIdx;
   elements.samamSelect.value = samIdx;
   
-  elements.curationTitle.textContent = `${sec.title} • ${subsec.title} • Samam ${samam.num}`;
+  const sNum = subsec.number || parseInt(subsec.id.replace(/\D/g, ''), 10);
+  const tag = sec.supersection_tag ? `[${sec.supersection_tag}] ` : '';
+  elements.curationTitle.textContent = `${tag}${sec.title} • Sub ${sNum} ${subsec.title} • Samam ${samam.num}`;
   elements.mainVedicEditor.value = samam.text;
   
-  // Sync manuscript page estimation
-  if (sec.page) {
-    loadManuscriptPage(sec.page);
+  // Only auto-load estimated page when transitioning to a NEW subsection
+  if (state.currentSubNum !== sNum) {
+    state.currentSubNum = sNum;
+    const estPage = estimateManuscriptPageForSub(sNum);
+    loadManuscriptPage(estPage);
   }
   
   updateDisplays();
+}
+
+// Direct Jump to any Subsection across the entire corpus
+function handleDirectSubJump() {
+  const targetSub = parseInt(elements.directSubInput.value, 10);
+  if (isNaN(targetSub)) {
+    showToast("Please enter a valid subsection number", 2000, true);
+    return;
+  }
+
+  if (!state.data || !state.data.sections) return;
+
+  let found = false;
+  for (let sIdx = 0; sIdx < state.data.sections.length; sIdx++) {
+    const sec = state.data.sections[sIdx];
+    for (let subIdx = 0; subIdx < sec.subsections.length; subIdx++) {
+      const subsec = sec.subsections[subIdx];
+      const sNum = subsec.number || parseInt(subsec.id.replace(/\D/g, ''), 10);
+      if (sNum === targetSub) {
+        state.currentSectionIdx = sIdx;
+        elements.sectionSelect.value = sIdx;
+        
+        // Populate and select subsection
+        elements.subsectionSelect.innerHTML = '';
+        sec.subsections.forEach((sub, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          const numLabel = sub.number ? `[Sub ${sub.number}] ` : '';
+          opt.textContent = `${numLabel}${sub.title || sub.id} (${sub.samams.length} Samams)`;
+          elements.subsectionSelect.appendChild(opt);
+        });
+        elements.subsectionSelect.value = subIdx;
+        
+        selectSubsection(subIdx);
+        showToast(`Jumped to Subsection ${targetSub} (${sec.supersection_tag || ''} - ${sec.title})`, 2000);
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+
+  if (!found) {
+    showToast(`Subsection ${targetSub} not found in master archive`, 3000, true);
+  }
 }
 
 // Manuscript Page Loading & Deep Zoom
@@ -246,7 +369,7 @@ function getCanonicalSwaraGlyph(str) {
   res = res.replace(/𑌕𑍍𑌰𑍍|ക്ര്|\u11315\u1134D\u11330\u1134D/g, '\uE01F');
   res = res.replace(/𑌕𑍍𑌰|ക്രം|ക്ര|\u11315\u1134D\u11330/g, '\uE01E');
 
-  // 3. Sha family
+  // 3. Sha family (Exact mapping to JaimineeyaSwara.ttf)
   res = res.replace(/𑌶𑍌|ശൌ|ശൗ/g, '\uE01C');
   res = res.replace(/𑌶𑍋|ശോ/g, '\uE01B');
   res = res.replace(/𑌶𑍈|ശൈ/g, '\uE01A');
@@ -255,14 +378,16 @@ function getCanonicalSwaraGlyph(str) {
   res = res.replace(/𑌶𑍃|ശൃ/g, '\uE017');
   res = res.replace(/𑌶𑍂|ശൂ/g, '\uE016');
   res = res.replace(/𑌶𑍁|ശു/g, '\uE015');
-  res = res.replace(/𑌶𑍀|ശീ/g, '\uE014');
+  res = res.replace(/𑌶𑍀|ശീ/g, '\uE012');
   res = res.replace(/𑌶𑌿|ശി/g, '\uE011');
-  res = res.replace(/𑌶𑌾|ശാ/g, '\uE013');
-  res = res.replace(/𑌶|ശ/g, '\uE010');
+  res = res.replace(/𑌶𑍍|ശ്/g, '\uE013');
+  res = res.replace(/𑌶𑌾|ശാ/g, '\uE010');
+  res = res.replace(/𑌶/g, 'ശ');
 
   // 4. Composites
-  res = res.replace(/𑌷𑍃|ഷൃ/g, '\uE028');
-  res = res.replace(/𑌣𑍂|ണൂ/g, '\uE029');
+  res = res.replace(/𑌶𑍍𑌰𑍂|ശ്രൂ/g, '\uE027');
+  res = res.replace(/𑌷𑍃|ശ്രൃ|ഷൃ/g, '\uE028');
+  res = res.replace(/𑌣𑍂|𑌣𑍁|ണൂ|ണു/g, '\uE029');
 
   return res;
 }
@@ -345,12 +470,24 @@ function renderVedicHTML(text) {
           modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
         } else if (inner === 'D' || inner === 'd' || inner === '∧' || inner === 'Ʌ') {
           modifiersHtml += '<span class="swara-mod mod-d" title="MOD-D: Chevron Roof (∧)">&#xE006;</span>';
+        } else if (inner === 'D1' || inner === 'd1' || inner === 'D_1' || inner === 'd_1' || inner === '↗') {
+          modifiersHtml += '<span class="swara-mod mod-d1" title="MOD-D1: Rising Stroke (↗)">&#xE00E;</span>';
+        } else if (inner === 'D2' || inner === 'd2' || inner === 'D_2' || inner === 'd_2' || inner === '✓') {
+          modifiersHtml += '<span class="swara-mod mod-d2" title="MOD-D2: Check Tick (✓)">&#xE00F;</span>';
+        } else if (inner === 'I' || inner === 'i' || inner === '⫽') {
+          modifiersHtml += '<span class="swara-mod mod-i" title="MOD-I: Double Shoulder Dash (⫽)">&#xE02A;</span>';
+        } else if (inner === 'J' || inner === 'j' || inner === '¯') {
+          modifiersHtml += '<span class="swara-mod mod-j" title="MOD-J: Overhead Horizontal Bar (¯)">&#xE02B;</span>';
+        } else if (inner === 'B1' || inner === 'b1' || inner === 'B_1' || inner === 'b_1') {
+          modifiersHtml += '<span class="swara-mod mod-b1" title="MOD-B1: Diagonal Bridging Slash (/)">&#xE02C;</span>';
+        } else if (inner === 'K' || inner === 'k' || inner === '⨯' || inner === 'x' || inner === 'X') {
+          modifiersHtml += '<span class="swara-mod mod-k" title="MOD-K: Shoulder Cross Mark (⨯)">&#xE02D;</span>';
         } else if (inner === 'B' || inner === 'b' || inner === '^') {
           hasModB = true;
         } else if (inner === 'E' || inner === 'e' || inner === '┃') {
           modifiersHtml += '<span class="swara-mod mod-e" title="MOD-E: Bold Tone Column (┃)">&#xE002;</span>';
-        } else if (inner === 'F' || inner === 'f' || inner === '╷') {
-          modifiersHtml += '<span class="swara-mod mod-f" title="MOD-F: Thin Accent Dash (╷)">\u2577</span>';
+        } else if (inner === 'F' || inner === 'f' || inner === '╷' || inner === '\uE008') {
+          modifiersHtml += '<span class="swara-mod mod-f" title="MOD-F: Danda with Overhead Dot (╷)">&#xE008;</span>';
         } else if (inner === '_') {
           modifiersHtml += '<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span>';
         } else if (inner === ',') {
@@ -464,6 +601,16 @@ function setupEventListeners() {
   elements.sectionSelect.addEventListener('change', (e) => selectSection(parseInt(e.target.value)));
   elements.subsectionSelect.addEventListener('change', (e) => selectSubsection(parseInt(e.target.value)));
   elements.samamSelect.addEventListener('change', (e) => selectSamam(parseInt(e.target.value)));
+
+  // Direct Jump
+  if (elements.directSubBtn) {
+    elements.directSubBtn.addEventListener('click', handleDirectSubJump);
+  }
+  if (elements.directSubInput) {
+    elements.directSubInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleDirectSubJump();
+    });
+  }
 
   // Navigation
   elements.prevBtn.addEventListener('click', () => navigateSamam(-1));

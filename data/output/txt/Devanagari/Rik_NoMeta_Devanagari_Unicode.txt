@@ -1,13 +1,13 @@
-जैमिनीय साम सङ्ग्रहः
+जैमिनीय साम संहिता
 
-Version 3.0 2026-03-27 22:43:47
+Version 3.2 2026-08-28 12:09:27
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
-ऋतु शान्ति जपम्
+आग्नेयपाठः
 # End of SuperSection Title -- supersection_1 ## DO NOT EDIT
 
 # Start of Section Title -- section_1 ## DO NOT EDIT
-सङ्ग्रहः
+प्रथम खण्डः
 # End of Section Title -- section_1 ## DO NOT EDIT
 
 
@@ -22,6 +22,23 @@ Version 3.0 2026-03-27 22:43:47
 
 
 
+# Start of Section Title -- section_2 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_2 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_3 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_3 ## DO NOT EDIT
 
 
 
@@ -35,6 +52,867 @@ Version 3.0 2026-03-27 22:43:47
 
 
 
+# Start of Section Title -- section_4 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_4 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_5 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_5 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_6 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_6 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_7 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_7 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_8 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_8 ## DO NOT EDIT
+
+
+
+
+
+
+
+# Start of Section Title -- section_9 ## DO NOT EDIT
+नवम खण्डः
+# End of Section Title -- section_9 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_10 ## DO NOT EDIT
+दशम खण्डः
+# End of Section Title -- section_10 ## DO NOT EDIT
+
+
+
+
+
+
+# Start of Section Title -- section_11 ## DO NOT EDIT
+एकादश खण्डः
+# End of Section Title -- section_11 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_12 ## DO NOT EDIT
+द्वादश खण्डः
+# End of Section Title -- section_12 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of SuperSection Title -- supersection_2 ## DO NOT EDIT
+तद्वपाठः
+# End of SuperSection Title -- supersection_2 ## DO NOT EDIT
+
+# Start of Section Title -- section_13 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_13 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_15 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_15 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_16 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_16 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_17 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_17 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_18 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_18 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_19 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_19 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_20 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_20 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_21 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_21 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_22 ## DO NOT EDIT
+नवम खण्डः
+# End of Section Title -- section_22 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_23 ## DO NOT EDIT
+दशम खण्डः
+# End of Section Title -- section_23 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_24 ## DO NOT EDIT
+एकादश खण्डः
+# End of Section Title -- section_24 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_25 ## DO NOT EDIT
+द्वादश खण्डः
+# End of Section Title -- section_25 ## DO NOT EDIT
+
+
+
+
+
+
+
+# Start of SuperSection Title -- supersection_3 ## DO NOT EDIT
+बृहतिपाठः
+# End of SuperSection Title -- supersection_3 ## DO NOT EDIT
+
+# Start of Section Title -- section_26 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_26 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_28 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_28 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_29 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_29 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_30 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_30 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_31 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_31 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_32 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_32 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_33 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_33 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_34 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_34 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of SuperSection Title -- supersection_4 ## DO NOT EDIT
+असाविपाठः
+# End of SuperSection Title -- supersection_4 ## DO NOT EDIT
+
+# Start of Section Title -- section_35 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_35 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_37 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_37 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_38 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_38 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_39 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_39 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_40 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_40 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_41 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_41 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of SuperSection Title -- supersection_5 ## DO NOT EDIT
+ऐन्द्रपाठः
+# End of SuperSection Title -- supersection_5 ## DO NOT EDIT
+
+# Start of Section Title -- section_42 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_42 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_44 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_44 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_45 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_45 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_46 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_46 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_47 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_47 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_48 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_48 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_49 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_49 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_50 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_50 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_51 ## DO NOT EDIT
+नवम खण्डः
+# End of Section Title -- section_51 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_52 ## DO NOT EDIT
+दशम खण्डः
+# End of Section Title -- section_52 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+# Start of SuperSection Title -- supersection_6 ## DO NOT EDIT
+पवमानपाठः
+# End of SuperSection Title -- supersection_6 ## DO NOT EDIT
+
+# Start of Section Title -- section_53 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_53 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_55 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_55 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_56 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_56 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_57 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_57 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_58 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_58 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_59 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_59 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_60 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_60 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_61 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_61 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_62 ## DO NOT EDIT
+नवम खण्डः
+# End of Section Title -- section_62 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_63 ## DO NOT EDIT
+दशम खण्डः
+# End of Section Title -- section_63 ## DO NOT EDIT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Start of Section Title -- section_64 ## DO NOT EDIT
+एकादश खण्डः
+# End of Section Title -- section_64 ## DO NOT EDIT
 
 
 

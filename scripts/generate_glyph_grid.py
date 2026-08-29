@@ -26,12 +26,18 @@ FEATURED_GLYPHS = [
     ("Modifier (A) Arc", "\uE004", "syllable_arc_jsv", "U+E004 / ╭╮", "Modifier (A)", "Above", "Syllable Spanning Arc"),
     ("Modifier (A1) Arc/|", "\uE00D", "syllable_arc_danda_jsv", "U+E00D / (A1)", "Modifier (A1)", "Above", "Syllable Spanning Arc over Danda"),
     ("Modifier (B) Caret", "\uE005", "caret_jsv", "U+E005 / /\\", "Modifier (B)", "Above", "Peak Elevation Caret"),
+    ("Modifier (B1) Slash", "\uE02C", "bridging_slash_b1_jsv", "U+E02C / (B1)", "Modifier (B1)", "Above", "Diagonal Bridging Slash"),
     ("Modifier (C) Dot", "\uE001", "high_dot_jsv", "U+E001 / ॱ", "Modifier (C)", "Shoulder", "Shoulder Pause Dot"),
     ("Modifier (D) Chevron", "\uE006", "roof_jsv", "U+E006 / Ʌ", "Modifier (D)", "Above", "Chevron Roof"),
-    ("Modifier (E) Danda", "\uE002", "phrasing_danda_jsv", "U+E002 / ┃", "Modifier (E)", "Inline", "Phrasing Heavy Danda"),
-    ("Modifier (F) Vert", "\u2577", "accent_dash_jsv", "U+2577 / ╷", "Modifier (F)", "Inline", "Light Vertical"),
+    ("Modifier (D1) Rise", "\uE00E", "rising_stroke_d1_jsv", "U+E00E / (D1)", "Modifier (D1)", "Above", "Rising Stroke (↗)"),
+    ("Modifier (D2) Tick", "\uE00F", "check_tick_d2_jsv", "U+E00F / (D2)", "Modifier (D2)", "Shoulder", "Shoulder Check-Mark Tick (✓)"),
+    ("Modifier (E) Danda", "\uE002", "bold_tone_column_jsv", "U+E002 / ┃", "Modifier (E)", "Inline", "Phrasing Heavy Danda"),
+    ("Modifier (F) Danda+Dot", "\u2577", "phrasing_danda_jsv", "U+2577 / ╷", "Modifier (F)", "Inline", "Danda with Overhead Dot"),
     ("Modifier (G) Slash", "\uE003", "descending_tone_jsv", "U+E003 / \\", "Modifier (G)", "Below", "Descending Tone Slash"),
     ("Modifier (H) Swarita", "\uE00C", "swarita_jsv", "U+E00C / ॑", "Modifier (H)", "Above", "Overhead Swarita Stroke"),
+    ("Modifier (I) Dash", "\uE02A", "double_shoulder_dash_i_jsv", "U+E02A / (I)", "Modifier (I)", "Shoulder", "Double Shoulder Dash (⫽)"),
+    ("Modifier (J) Bar", "\uE02B", "overhead_bar_j_jsv", "U+E02B / (J)", "Modifier (J)", "Shoulder", "Horizontal Shoulder Bar (—)"),
+    ("Modifier (K) Cross", "\uE02D", "shoulder_cross_k_jsv", "U+E02D / (K)", "Modifier (K)", "Shoulder", "Shoulder Cross Mark (⨯)"),
     ("Inline ( . ) Dot", ".", "dot_inline_jsv", "U+002E / .", "Inline Mark", "Inline", "Inline Staccato Dot"),
     ("Inline ( _ ) Underbar", "_", "underbar_inline_jsv", "U+005F / _", "Inline Mark", "Inline", "Inline Prolongation Bar"),
     ("Inline ( , ) Comma", ",", "comma_inline_jsv", "U+002C / ,", "Inline Mark", "Inline", "Inline Pause Comma"),
@@ -282,6 +288,20 @@ def render_html_table() -> None:
             "color_note": "Sky Blue (#0284c7) on Mantrakshara + SwaraRed (#c62828) Marker above Apex"
         },
         {
+            "id": "MOD-B1",
+            "shortcut": "(B1)",
+            "name": "Diagonal Bridging Slash (/ / ↗)",
+            "glyph": "\uE02C",
+            "codepoint": "U+E02C / (B1)",
+            "input_methods": "<code>(B1)</code> / <code>(b1)</code>",
+            "stack_pos": "Stacked Above",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-b1-dotted'>&#xE02C;</span></span></span>",
+            "example_text": "സ്രൗ(𑌵)(B1) ധാഃ",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌵</span><span class='mantra-text'>സ്രൗ<span class='swara-mod mod-b1'>&#xE02C;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>ധാഃ</span></span></div>",
+            "meaning": "Diagonal bridging slash rising between syllables with swara above.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
             "id": "MOD-C",
             "shortcut": "(C)",
             "name": "Upper Shoulder Dot (· / ॱ)",
@@ -310,6 +330,34 @@ def render_html_table() -> None:
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
+            "id": "MOD-D1",
+            "shortcut": "(D1)",
+            "name": "Asymmetrical Inverted-V / Hooked Rise (⋀)",
+            "glyph": "\uE00E",
+            "codepoint": "U+E00E / (D1) / ↗",
+            "input_methods": "<code>(D1)</code> / <code>(d1)</code> / <code>↗</code>",
+            "stack_pos": "Stacked Above",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;&nbsp;◌<span class='swara-mod-dotted mod-d1-dotted'>&#xE00E;</span></span></span>",
+            "example_text": "യാ(𑌯)(D1) വാ",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌯</span><span class='mantra-text'>യാ<span class='swara-mod mod-d1'>&#xE00E;</span></span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>&nbsp;</span><span class='mantra-text'>വാ</span></span></div>",
+            "meaning": "Asymmetrical inverted-V with a long rising left leg and a shorter downward-sloping right hook.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-D2",
+            "shortcut": "(D2)",
+            "name": "Shoulder Check-Mark Tick (✓)",
+            "glyph": "\uE00F",
+            "codepoint": "U+E00F / (D2) / ✓",
+            "input_methods": "<code>(D2)</code> / <code>(d2)</code> / <code>✓</code>",
+            "stack_pos": "Shoulder",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-d2-dotted'>&#xE00F;</span></span></span>",
+            "example_text": "ണോ(𑌣)(D2)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌣</span><span class='mantra-text'>ണോ<span class='swara-mod mod-d2'>&#xE00F;</span></span></span></div>",
+            "meaning": "Check-mark tick stroke placed directly on the upper-right shoulder.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
             "id": "MOD-E",
             "shortcut": "(E)",
             "name": "Bold Tone Column (┃)",
@@ -326,15 +374,15 @@ def render_html_table() -> None:
         {
             "id": "MOD-F",
             "shortcut": "(F)",
-            "name": "Thin Accent Dash (╷)",
+            "name": "Danda with Overhead Dot (╷ with Dot Above)",
             "glyph": "\u2577",
-            "codepoint": "U+2577 / ╷",
+            "codepoint": "U+2577 / (F)",
             "input_methods": "<code>(F)</code> / <code>(f)</code> / <code>(╷)</code>",
             "stack_pos": "Inline",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-f-dotted'>&#x2577;</span></span></span>",
             "example_text": "ഇ(𑌚)(F)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚</span><span class='mantra-text'>ഇ<span class='swara-mod mod-f'>&#x2577;</span></span></span></div>",
-            "meaning": "Light vertical measure boundary tick for sub-cadence pauses.",
+            "meaning": "Inline vertical stroke with a distinct dot positioned directly above it.",
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
@@ -363,6 +411,48 @@ def render_html_table() -> None:
             "example_text": "ദാ(𑌚𑌿)(H)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌚𑌿</span><span class='mantra-text'>ദാ<span class='swara-mod mod-h'>&#xE00C;</span></span></span></div>",
             "meaning": "Vedic high pitch tone marker placed directly above the mantrakshara.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-I",
+            "shortcut": "(I)",
+            "name": "Two Stacked Parallel Shoulder Dashes (═)",
+            "glyph": "\uE02A",
+            "codepoint": "U+E02A / (I) / ═",
+            "input_methods": "<code>(I)</code> / <code>(i)</code> / <code>═</code>",
+            "stack_pos": "Shoulder",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-i-dotted'>&#xE02A;</span></span></span>",
+            "example_text": "ഗ്നാ(𑌤)(I)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>ഗ്നാ<span class='swara-mod mod-i'>&#xE02A;</span></span></span></div>",
+            "meaning": "Two stacked parallel gently-rising bars attached directly to the upper-right shoulder.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-J",
+            "shortcut": "(J)",
+            "name": "Horizontal Shoulder Bar (—)",
+            "glyph": "\uE02B",
+            "codepoint": "U+E02B / (J) / —",
+            "input_methods": "<code>(J)</code> / <code>(j)</code> / <code>—</code>",
+            "stack_pos": "Shoulder",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-j-dotted'>&#xE02B;</span></span></span>",
+            "example_text": "ഹോ(𑌖)(J)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌖</span><span class='mantra-text'>ഹോ<span class='swara-mod mod-j'>&#xE02B;</span></span></span></div>",
+            "meaning": "Horizontal straight bar attached directly on the upper-right shoulder.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-K",
+            "shortcut": "(K)",
+            "name": "Shoulder Cross Mark (⨯ / x)",
+            "glyph": "\uE02D",
+            "codepoint": "U+E02D / (K) / ⨯",
+            "input_methods": "<code>(K)</code> / <code>(k)</code> / <code>⨯</code> / <code>x</code>",
+            "stack_pos": "Shoulder",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-k-dotted'>&#xE02D;</span></span></span>",
+            "example_text": "വാ(𑌵)(K)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌵</span><span class='mantra-text'>വാ<span class='swara-mod mod-k'>&#xE02D;</span></span></span></div>",
+            "meaning": "Small cross / X mark on upper-right shoulder.",
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
@@ -536,7 +626,10 @@ def render_html_table() -> None:
 <style>
     @font-face {{
         font-family: 'JaimineeyaSwara';
-        src: url('data:font/truetype;charset=utf-8;base64,{jaimineeya_swara_b64}') format('truetype');
+        src: url('../fonts/JaimineeyaSwara.ttf') format('truetype'),
+             url('./fonts/JaimineeyaSwara.ttf') format('truetype'),
+             url('/fonts/JaimineeyaSwara.ttf') format('truetype'),
+             url('data:font/truetype;charset=utf-8;base64,{jaimineeya_swara_b64}') format('truetype');
     }}
     @font-face {{
         font-family: 'Noto Serif Malayalam';
@@ -757,6 +850,50 @@ def render_html_table() -> None:
         font-size: 1.15em;
         color: var(--mod-blue);
     }}
+    .swara-mod-dotted.mod-b1-dotted {{
+        position: absolute;
+        top: -0.22em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.15em;
+        color: var(--mod-blue);
+    }}
+    .swara-mod-dotted.mod-d1-dotted {{
+        position: absolute;
+        top: -0.28em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.45em;
+        color: var(--mod-blue);
+    }}
+    .swara-mod-dotted.mod-d2-dotted {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.38em;
+        font-size: 1.45em;
+        color: var(--mod-blue);
+    }}
+    .swara-mod-dotted.mod-i-dotted {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.38em;
+        font-size: 1.45em;
+        color: var(--mod-blue);
+    }}
+    .swara-mod-dotted.mod-j-dotted {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.38em;
+        font-size: 1.45em;
+        color: var(--mod-blue);
+    }}
+    .swara-mod-dotted.mod-k-dotted {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.38em;
+        font-size: 1.45em;
+        color: var(--mod-blue);
+    }}
     .swara-mod-dotted.mod-e-dotted {{
         position: relative;
         margin-left: 0.15em;
@@ -885,6 +1022,137 @@ def render_html_table() -> None:
         line-height: 1;
         white-space: nowrap;
     }}
+    .mantra-preview-flex .swara-mod.mod-b1 {{
+        position: absolute;
+        top: -0.22em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-c {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.35em;
+        font-size: 0.85rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-d {{
+        position: absolute;
+        top: -0.30em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-d1 {{
+        position: absolute;
+        top: -0.28em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 1.25rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-d2 {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.35em;
+        font-size: 1.25rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-e {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-f {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-g {{
+        position: absolute;
+        bottom: -0.38em;
+        left: 28%;
+        transform: translateX(-50%);
+        font-size: 1.05rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-h {{
+        position: absolute;
+        top: -0.35em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.95rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-i {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.35em;
+        font-size: 1.25rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-j {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.35em;
+        font-size: 1.25rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-k {{
+        position: absolute;
+        top: -0.22em;
+        right: -0.35em;
+        font-size: 1.25rem;
+    }}mod.mod-d2 {{
+        position: absolute;
+        top: -0.24em;
+        left: 100%;
+        transform: translateX(-40%);
+        font-size: 0.95rem;
+        pointer-events: none;
+    }}
+    .mantra-preview-flex .swara-mod.mod-e {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-f {{
+        position: relative;
+        margin-left: 0.15em;
+        font-size: 1.15rem;
+        vertical-align: -0.05em;
+    }}
+    .mantra-preview-flex .swara-mod.mod-g {{
+        position: absolute;
+        bottom: -0.38em;
+        left: 28%;
+        transform: translateX(-50%);
+        font-size: 1.05rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-h {{
+        position: absolute;
+        top: -0.35em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.95rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-i {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.35em;
+        font-size: 0.85rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-j {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.25em;
+        font-size: 0.85rem;
+    }}
+    .mantra-preview-flex .swara-mod.mod-k {{
+        position: absolute;
+        top: -0.15em;
+        right: -0.25em;
+        font-size: 0.85rem;
+    }}
     .mantra-preview-flex .mantra-punct {{
         font-family: 'Noto Serif Malayalam', serif;
         font-size: 1.35rem;
@@ -940,79 +1208,6 @@ def render_html_table() -> None:
     }}
     .mod-glyph {{
         color: var(--primary-blue);
-    }}
-
-        position: absolute;
-        top: -0.28em;
-        left: 100%;
-        transform: translateX(-40%);
-        font-size: 0.95rem;
-        pointer-events: none;
-    }}
-    .mantra-preview-flex .swara-mod.mod-b {{
-        position: absolute;
-        top: -0.28em;
-        left: 100%;
-        transform: translateX(-50%);
-        pointer-events: none;
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-    }}
-    .mantra-preview-flex .swara-mod.mod-b .caret-glyph {{
-        display: block;
-        color: var(--primary-blue);
-        font-size: 0.95rem;
-    }}
-    .mantra-preview-flex .swara-mod.mod-b .swara-on-caret {{
-        position: absolute;
-        top: -1.70em;
-        left: 50%;
-        transform: translateX(-50%);
-        color: var(--swara-red);
-        font-size: 0.90rem;
-        font-weight: bold;
-        font-family: 'JaimineeyaSwara', serif;
-    }}
-    .mantra-preview-flex .swara-mod.mod-c {{
-        position: absolute;
-        top: -0.15em;
-        right: -0.35em;
-        font-size: 0.85rem;
-    }}
-    .mantra-preview-flex .swara-mod.mod-d {{
-        position: absolute;
-        top: -0.30em;
-        left: 100%;
-        transform: translateX(-40%);
-        font-size: 0.95rem;
-        pointer-events: none;
-    }}
-    .mantra-preview-flex .swara-mod.mod-e {{
-        position: relative;
-        margin-left: 0.15em;
-        font-size: 1.15rem;
-        vertical-align: -0.05em;
-    }}
-    .mantra-preview-flex .swara-mod.mod-f {{
-        position: relative;
-        margin-left: 0.15em;
-        font-size: 1.15rem;
-        vertical-align: -0.05em;
-    }}
-    .mantra-preview-flex .swara-mod.mod-g {{
-        position: absolute;
-        bottom: -0.38em;
-        left: 28%;
-        transform: translateX(-50%);
-        font-size: 1.05rem;
-    }}
-    .mantra-preview-flex .swara-mod.mod-h {{
-        position: absolute;
-        top: -0.35em;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.95rem;
     }}
 
     .shortcut-tag {{

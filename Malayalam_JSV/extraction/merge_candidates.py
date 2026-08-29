@@ -21,8 +21,8 @@ MASTER = REPO / "data/input/Malayalam/Samam_Malayalam_Unicode.txt"
 CANDIDATES_DIR = REPO / "Malayalam_JSV/stage_output/candidates"
 REPORT = REPO / "Malayalam_JSV/stage_output/merge_report.txt"
 
-# Canonical modifier token pattern  (A),(B),(C),(D),(E),(F),(G),(H),(A1)
-MODIFIER_RE = re.compile(r"\(([A-HJ-Z][0-9_]?)\)")
+# Canonical modifier token pattern (A), (B), (B1), (C), (D), (D1), (D2), (I), (J), (K), etc.
+MODIFIER_RE = re.compile(r"\(([A-Z][0-9_]?)\)")
 FOOTNOTE_RE = re.compile(r"\(s\d+\)")
 
 SUBSECTION_RE = re.compile(

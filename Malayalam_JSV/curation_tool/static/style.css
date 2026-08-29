@@ -22,9 +22,10 @@
 
 @font-face {
   font-family: 'JaimineeyaSwara';
-  src: url('/fonts/JaimineeyaSwara.ttf') format('truetype');
+  src: url('/fonts/JaimineeyaSwara.ttf?v=3.5') format('truetype');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 
 :root {
@@ -150,15 +151,89 @@ select {
 }
 
 #sectionSelect {
-  max-width: 170px;
+  max-width: 260px;
+  font-weight: 500;
+}
+
+#sectionSelect optgroup {
+  background-color: #0f172a;
+  color: #38bdf8;
+  font-weight: 700;
+  font-style: normal;
+  padding: 4px;
+}
+
+#sectionSelect option {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  font-weight: 400;
+  padding: 3px 6px;
 }
 
 #subsectionSelect {
-  max-width: 220px;
+  max-width: 240px;
 }
 
 #samamSelect {
   max-width: 140px;
+}
+
+.direct-jump-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 2px 4px 2px 8px;
+  transition: all 0.15s ease;
+}
+
+.direct-jump-box:focus-within {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.jump-prefix {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.direct-jump-box input {
+  width: 54px;
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+  padding: 3px 0;
+  text-align: center;
+}
+
+.direct-jump-box input::-webkit-inner-spin-button,
+.direct-jump-box input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.direct-jump-box .btn-sm {
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  height: 24px;
+  border-radius: 4px;
+  background: #334155;
+  color: #f8fafc;
+}
+
+.direct-jump-box .btn-sm:hover {
+  background: #38bdf8;
+  color: #000;
 }
 
 select:focus {
@@ -602,21 +677,102 @@ select:focus {
   pointer-events: none;
 }
 
+/* MOD-D1: Asymmetrical Inverted-V / Hooked Rise (⋀) */
+.rendered-vedic-preview .swara-mod.mod-d1 {
+  font-family: var(--font-swara);
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: #38bdf8;
+  position: absolute;
+  top: -0.05em;
+  left: 100%;
+  transform: translateX(-15%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* MOD-D2: Shoulder Check Tick (✓) */
+.rendered-vedic-preview .swara-mod.mod-d2 {
+  font-family: var(--font-swara);
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: #38bdf8;
+  position: absolute;
+  top: 0.05em;
+  right: -0.50em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* MOD-I: Double Shoulder Dash (═) */
+.rendered-vedic-preview .swara-mod.mod-i {
+  font-family: var(--font-swara);
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: #38bdf8;
+  position: absolute;
+  top: -0.25em;
+  right: -0.25em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* MOD-J: Horizontal Shoulder Bar (—) */
+.rendered-vedic-preview .swara-mod.mod-j {
+  font-family: var(--font-swara);
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: #38bdf8;
+  position: absolute;
+  top: -0.28em;
+  right: -0.20em;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* MOD-B1: Diagonal Bridging Slash (/) */
+.rendered-vedic-preview .swara-mod.mod-b1 {
+  position: absolute;
+  top: -0.35em;
+  left: 100%;
+  transform: translateX(-20%);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+/* MOD-K: Shoulder Cross Mark (⨯) */
+.rendered-vedic-preview .swara-mod.mod-k {
+  font-family: var(--font-swara);
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: #38bdf8;
+  position: absolute;
+  top: -0.25em;
+  right: -0.50em;
+  line-height: 1;
+  pointer-events: none;
+}
+
 /* MOD-E: Bold Tone Column (┃) - Inline */
 .rendered-vedic-preview .swara-mod.mod-e {
+  font-family: var(--font-swara) !important;
   position: relative;
-  margin-left: 0.15em;
+  margin-left: 0.25em;
   font-size: 1.15rem;
+  top: -0.1em;
+  right: 0.1em;
   vertical-align: -0.05em;
   color: #38bdf8;
 }
 
-/* MOD-F: Thin Accent Dash (╷) - Inline */
+/* MOD-F: Thin Accent Dash / Tick (╷) - Inline */
 .rendered-vedic-preview .swara-mod.mod-f {
+  font-family: var(--font-swara) !important;
   position: relative;
-  margin-left: 0.15em;
+  margin-left: 0.30em;
+  margin-right: 0.10em;
   font-size: 1.15rem;
-  vertical-align: -0.05em;
+  vertical-align: 0.10em;
   color: #38bdf8;
 }
 
@@ -631,13 +787,14 @@ select:focus {
   pointer-events: none;
 }
 
-/* MOD-H: High Pitch Swarita (|) - Stacked Above */
+/* MOD-H: High Pitch Swarita / Tick (|) - Shoulder Positioned */
 .rendered-vedic-preview .swara-mod.mod-h {
   position: absolute;
-  top: -0.30em;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.90rem;
+  top: 0.05em;
+  right: -0.40em;
+  left: auto;
+  transform: none;
+  font-size: 0.95rem;
   color: #38bdf8;
   pointer-events: none;
 }

@@ -4,6 +4,7 @@ Comprehensive internal technical reference and developer documentation for proce
 
 ## Documentation Index
 
+*   **[Visual Curation Tool Guide](VISUAL_CURATION_TOOL.md)**: Interactive split-screen web application, deep zoom scan viewer, hotkeys, and active-learning accuracy tracking.
 *   **[CLI Usage Guide](CLI_USAGE.md)**: Detailed instructions and CLI commands for both Devanagari and Malayalam processing pipelines.
 *   **[Developer Guide](DEVELOPER_GUIDE.md)**: Architectural overview, AST data model, and correction workflows.
 *   **[LaTeX Workflow Guide](LATEX_GUIDE.md)**: Stacking macros, XeLaTeX/LuaLaTeX compilation pipeline, and font setup.

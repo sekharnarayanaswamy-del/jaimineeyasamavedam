@@ -139,20 +139,29 @@ def tokenize_mantra_line(text: str) -> list[dict]:
 
 
 MODIFIER_DIRECT_MAP = {
-    # Modifiers from updated Google Sheet (A..H)
-    "A": "\uE004",  # Syllable Arc (Tie) ╭╮ / ⁀
-    "B": "\uE005",  # Caret / Peak /\ / ^
-    "C": "\uE001",  # High/Mid-Dot ॱ / ·
-    "D": "\uE006",  # Chevron Roof Ʌ
-    "E": "\uE002",  # Heavy Vertical ┃
-    "F": "\uE002",  # Light Vertical ╷
-    "G": "\uE003",  # Descending Tone \ / ⟍
-    "H": "\uE00C",  # Swarita ॑ / |
-    "L": "\uE00C",  # Swarita ॑ / |
+    # Modifiers from updated Google Sheet & Curation Tool (A..K)
+    "A": "\uE004",   # Syllable Arc (Tie) ╭╮ / ⁀
+    "A1": "\uE00D",  # Arc over Danda
+    "B": "\uE005",   # Caret / Peak /\ / ^
+    "B1": "\uE02C",  # Diagonal Bridging Slash /
+    "C": "\uE001",   # High/Mid-Dot ॱ / ·
+    "D": "\uE006",   # Chevron Roof Ʌ
+    "D1": "\uE00E",  # Rising Stroke / Hooked Rise ↗ / ⋀
+    "D2": "\uE00F",  # Check Tick ✓
+    "E": "\uE002",   # Heavy Vertical ┃
+    "F": "\uE008",   # Phrasing Danda with overhead dot ╷
+    "G": "\uE003",   # Descending Tone \ / ⟍
+    "H": "\uE00C",   # Swarita ॑ / |
+    "I": "\uE02A",   # Double Shoulder Dash ⫽
+    "J": "\uE02B",   # Horizontal Shoulder Bar —
+    "K": "\uE02D",   # Shoulder Cross Mark ⨯
+    "L": "\uE00C",   # Swarita ॑ / |
 
     # Lowercase variants
-    "a": "\uE004", "b": "\uE005", "c": "\uE001", "d": "\uE006",
-    "e": "\uE002", "f": "\uE002", "g": "\uE003", "h": "\uE00C", "l": "\uE00C",
+    "a": "\uE004", "a1": "\uE00D", "b": "\uE005", "b1": "\uE02C",
+    "c": "\uE001", "d": "\uE006", "d1": "\uE00E", "d2": "\uE00F",
+    "e": "\uE002", "f": "\uE008", "g": "\uE003", "h": "\uE00C",
+    "i": "\uE02A", "j": "\uE02B", "k": "\uE02D", "l": "\uE00C",
 
     # Direct Symbols matching "How to enter" column
     "^": "\uE005", "˄": "\uE005",

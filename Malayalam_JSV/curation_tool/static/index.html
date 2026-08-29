@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Noto+Serif+Grantha&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/malayalam-fonts@latest/fonts.min.css">
-  <link rel="stylesheet" href="style.css?v=1.8">
+  <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body class="dark-theme">
   <!-- Top Navigation & Global Header -->
@@ -23,9 +23,16 @@
 
       <!-- Section / Kandah Selector -->
     <div class="navigator-controls">
-      <select id="sectionSelect" aria-label="Select Kandah"></select>
+      <select id="sectionSelect" aria-label="Select Kandah / Parva"></select>
       <select id="subsectionSelect" aria-label="Select Subsection"></select>
       <select id="samamSelect" aria-label="Select Samam"></select>
+      
+      <!-- Direct Subsection Jump -->
+      <div class="direct-jump-box" title="Directly jump to any subsection number (e.g. 252, 348)">
+        <span class="jump-prefix">Sub #</span>
+        <input type="number" id="directSubInput" placeholder="252" min="1" max="1517" aria-label="Direct Subsection Number">
+        <button id="directSubBtn" class="btn btn-secondary btn-sm" title="Jump to Subsection">Go</button>
+      </div>
       
       <div class="nav-buttons">
         <button id="prevBtn" class="btn btn-secondary" title="Previous Samam (Alt + Left)">
@@ -53,10 +60,6 @@
 
     <!-- Action Buttons -->
     <div class="header-actions">
-      <button id="validateBtn" class="btn btn-outline" title="Verify Syntax">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        Validate
-      </button>
       <button id="saveBtn" class="btn btn-primary" title="Save changes directly to Samam_Malayalam_Unicode.txt (Ctrl + S)">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
         Save to Master
@@ -141,13 +144,41 @@
                 <span class="mod-icon">^</span>
                 <span class="mod-name">Caret <kbd>(B)</kbd></span>
               </button>
+              <button class="mod-chip" data-mod="(B1)" title="Bridging Slash">
+                <span class="mod-icon">/</span>
+                <span class="mod-name">Slash <kbd>(B1)</kbd></span>
+              </button>
               <button class="mod-chip" data-mod="(D)" title="Chevron Roof (Hotkey: Alt+D)">
                 <span class="mod-icon">∧</span>
                 <span class="mod-name">Roof <kbd>(D)</kbd></span>
               </button>
+              <button class="mod-chip" data-mod="(D1)" title="Asymmetrical Inverted-V / Hooked Rise">
+                <span class="mod-icon">⋀</span>
+                <span class="mod-name">Rise <kbd>(D1)</kbd></span>
+              </button>
+              <button class="mod-chip" data-mod="(D2)" title="Check Tick">
+                <span class="mod-icon">✓</span>
+                <span class="mod-name">Tick <kbd>(D2)</kbd></span>
+              </button>
+              <button class="mod-chip" data-mod="(I)" title="Two Stacked Parallel Shoulder Dashes">
+                <span class="mod-icon">═</span>
+                <span class="mod-name">Dash <kbd>(I)</kbd></span>
+              </button>
+              <button class="mod-chip" data-mod="(J)" title="Horizontal Shoulder Bar">
+                <span class="mod-icon">—</span>
+                <span class="mod-name">Bar <kbd>(J)</kbd></span>
+              </button>
+              <button class="mod-chip" data-mod="(K)" title="Shoulder Cross Mark">
+                <span class="mod-icon">⨯</span>
+                <span class="mod-name">Cross <kbd>(K)</kbd></span>
+              </button>
               <button class="mod-chip" data-mod="(E)" title="Heavy Tone Column (Hotkey: Alt+E)">
                 <span class="mod-icon">┃</span>
                 <span class="mod-name">Col <kbd>(E)</kbd></span>
+              </button>
+              <button class="mod-chip" data-mod="(F)" title="Danda with Overhead Dot">
+                <span class="mod-icon">&#x2577;</span>
+                <span class="mod-name">Danda+Dot <kbd>(F)</kbd></span>
               </button>
               <button class="mod-chip" data-mod="_" title="Connector Underbar (Hotkey: Alt+U or Alt+_)">
                 <span class="mod-icon">_</span>
@@ -190,6 +221,6 @@
   <!-- Notification Toast -->
   <div id="toast" class="toast"></div>
 
-  <script src="app.js?v=1.2"></script>
+  <script src="app.js?v=2.4"></script>
 </body>
 </html>

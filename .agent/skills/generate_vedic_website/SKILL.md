@@ -48,3 +48,8 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
     *   `section` scope → Link at section (Kandah) header
     *   `subsection` scope → Link at individual sama level
 *   **No Duplicate**: Section/supersection-scoped links only appear at header level, not on individual samams (unless subsection scope)
+
+## 6. Swara Modifier & Font File Synchronization
+> [!IMPORTANT]
+> **The positioning of the swara modifiers in the JSV Curation tool should be reflected to the font file as well.**
+> Whenever visual accents or swara modifiers are adjusted in CSS preview (`style.css`), the respective glyph vector contours in `scripts/build_swara_font.py` must be updated and rebuilt (`python scripts/build_swara_font.py`) to keep the standalone TrueType/OpenType font binaries in exact geometric parity.

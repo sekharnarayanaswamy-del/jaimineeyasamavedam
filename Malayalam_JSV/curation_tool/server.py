@@ -28,15 +28,52 @@ SCANS_DIR.mkdir(parents=True, exist_ok=True)
 SWARA_CHARS = r"[\U00011300-\U0001137F]"
 MOD_REGEX = re.compile(r"\((?:[CDGBHE]|A1?)\)")
 
-# Mapping estimates: Section -> starting manuscript page
+SUPERSECTION_INFO = [
+    (1, 12, "SuperSection 1: Agneyam (ആഗ്നേയം)", "SS1"),
+    (13, 25, "SuperSection 2: Tadva / Aindram (തദ്വാ)", "SS2"),
+    (26, 34, "SuperSection 3: Bruhati (ബൃഹതീ)", "SS3"),
+    (35, 41, "SuperSection 4: Asaavi (അസാവി)", "SS4"),
+    (42, 52, "SuperSection 5: Aindram (ഐന്ദ്രം)", "SS5"),
+    (53, 64, "SuperSection 6: Pavamanam (പവമാനം)", "SS6"),
+]
+
 PAGE_ESTIMATES = {
-    "section_1": 4,   # Kandah 1 starts around page 4
-    "section_2": 7,   # Kandah 2 starts on page 7
-    "section_3": 10,  # Kandah 3 starts on page 10
-    "section_4": 14,  # Kandah 4 starts on page 14
-    "section_5": 20,  # Kandah 5 starts on page 20
-    "section_6": 26,  # Kandah 6 starts on page 26
+    # SS1: Agneyam
+    "section_1": 3,
+    "section_2": 6,
+    "section_3": 9,
+    "section_4": 13,
+    "section_5": 19,
+    "section_6": 25,
+    "section_7": 27,
+    "section_8": 29,
+    "section_9": 31,
+    "section_10": 33,
+    "section_11": 35,
+    "section_12": 37,
+    # SS2: Tadva
+    "section_13": 39,
+    # SS3: Bruhati
+    "section_26": 84,
+    # SS4: Asaavi
+    "section_35": 131,
+    # SS5: Aindram
+    "section_42": 161,
+    # SS6: Pavamanam
+    "section_53": 211,
 }
+
+
+def get_supersection_meta(sec_id_or_num):
+    if isinstance(sec_id_or_num, str):
+        m = re.search(r"\d+", sec_id_or_num)
+        snum = int(m.group(0)) if m else 1
+    else:
+        snum = int(sec_id_or_num)
+    for start, end, title, tag in SUPERSECTION_INFO:
+        if start <= snum <= end:
+            return {"title": title, "tag": tag, "id": f"supersection_{tag}"}
+    return {"title": "General", "tag": "GEN", "id": "supersection_0"}
 
 
 def parse_master_file():
@@ -62,10 +99,15 @@ def parse_master_file():
         m_sec_start = re.match(r"^# Start of Section Title -- (section_\d+)", line_str)
         if m_sec_start:
             sec_id = m_sec_start.group(1)
+            sec_num = int(sec_id.split("_")[1])
             sec_counter += 1
+            ss_meta = get_supersection_meta(sec_num)
             current_sec = {
                 "id": sec_id,
+                "number": sec_num,
                 "title": "",
+                "supersection": ss_meta["title"],
+                "supersection_tag": ss_meta["tag"],
                 "subsections": [],
                 "page": PAGE_ESTIMATES.get(sec_id, 4 + sec_counter * 3)
             }
@@ -80,16 +122,22 @@ def parse_master_file():
         m_subsec_start = re.match(r"^# Start of SubSection Title -- (subsection_\d+)", line_str)
         if m_subsec_start:
             subsec_id = m_subsec_start.group(1)
+            subsec_num = int(subsec_id.split("_")[1])
             current_subsec = {
                 "id": subsec_id,
+                "number": subsec_num,
                 "title": "",
                 "samams": [],
                 "line_start": idx + 1
             }
             if current_sec is None:
+                ss_meta = get_supersection_meta(1)
                 current_sec = {
                     "id": "section_1",
+                    "number": 1,
                     "title": "പ്രഥമ ഖണ്ഡഃ",
+                    "supersection": ss_meta["title"],
+                    "supersection_tag": ss_meta["tag"],
                     "subsections": [],
                     "page": 4
                 }
@@ -279,7 +327,7 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
         if path.startswith("/fonts/"):
-            font_name = os.path.basename(path)
+            font_name = os.path.basename(path.split("?")[0])
             font_path = BASE_DIR / "fonts" / font_name
             if not font_path.exists():
                 font_path = BASE_DIR / "docs" / "malayalam" / "fonts" / font_name
@@ -294,7 +342,7 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
                 else:
                     self.send_header("Content-Type", "font/ttf")
                 self.send_header("Access-Control-Allow-Origin", "*")
-                self.send_header("Cache-Control", "public, max-age=86400")
+                self.send_header("Cache-Control", "no-cache, must-revalidate")
                 self.end_headers()
                 with open(font_path, "rb") as f:
                     self.wfile.write(f.read())
