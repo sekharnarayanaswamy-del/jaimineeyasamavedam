@@ -413,7 +413,7 @@
             position: absolute;
             top: -0.32em;
             left: 50%;
-            transform: translateX(-30%);
+            transform: translateX(10%);
             font-size: 0.60em;
             pointer-events: none;
             z-index: 2;
