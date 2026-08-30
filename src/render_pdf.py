@@ -544,16 +544,16 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         
         try:
             cmd = ["xelatex", "-interaction=nonstopmode", tmpfilename]
-            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
+            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
             
             # Step 2: run makeindex if .idx file exists to generate index (.ind)
             idx_file = Path(tmpdirname) / f"{Path(TexFileName).stem}.idx"
             if idx_file.exists() and idx_file.stat().st_size > 0:
                 cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
-                subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True)
+                subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
                 
             # Step 3: Pass 2 of xelatex to resolve TOC, index, and page cross-references
-            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True)
+            proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
             if proc.returncode != 0:
                 print(f"[WARNING] xelatex compilation returned non-zero code {proc.returncode}")
         except Exception as e:
@@ -643,7 +643,7 @@ def escape_for_latex(data):
     if isinstance(data, dict):
         new_data = {}
         for key in data.keys():
-            if key == 'malayalam-mantra-sets':
+            if key in ('malayalam-mantra-sets', 'corrected-mantra_sets', 'mantra_sets'):
                 new_data[key] = data[key]
             else:
                 new_data[key] = escape_for_latex(data[key])
@@ -659,9 +659,355 @@ def escape_for_latex(data):
         }
         return "".join([latex_special_chars.get(c, c) for c in data])
 
-    return data
+def _format_deva_word_latex(word: str, with_modifiers: bool = True) -> str:
+    """Format any inline swara modifiers inside Devanagari words with a small gap."""
+    if not word:
+        return ""
+    if not with_modifiers:
+        for m_ch in ('_', '·', 'ॱ', '.', ',', '\\', '┃', 'L', '╷', '^', '⁀', '∧', '✓'):
+            word = word.replace(m_ch, '')
+        return word.replace('&', r'\&').replace('%', r'\%').replace('$', r'\$').replace('#', r'\#')
+        
+    gap = r"\hspace{0.18em}"
+    res = []
+    i = 0
+    while i < len(word):
+        ch = word[i]
+        if ch == '_':
+            res.append(f"{{\\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.1ex}}{{\\rule{{0.3em}}{{0.13ex}}}}}}{gap}}}")
+        elif ch in ('·', 'ॱ'):
+            res.append(f"{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.04em}}\\char\"E001}}}}{gap}}}")
+        elif ch == '.':
+            res.append(f"{{\\textcolor{{ModifierSkyBlue}}{{\\textbf{{.}}}}{gap}}}")
+        elif ch == ',':
+            res.append(f"{{\\textcolor{{ModifierSkyBlue}}{{\\textbf{{,}}}}{gap}}}")
+        elif ch == '\\':
+            res.append(f"{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.50ex}}{{\\hspace{{-0.20em}}\\char\"E003}}}}{gap}}}")
+        elif ch in ('┃', 'L'):
+            res.append(f"{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{0.06em}}\\char\"E002}}}}\\hspace{{0.18em}}}}")
+        elif ch == '╷':
+            res.append(f"{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.15ex}}{{\\hspace{{0.04em}}\\char\"E008}}}}{gap}}}")
+        elif ch == '&':
+            res.append(r"\&")
+        elif ch == '%':
+            res.append(r"\%")
+        elif ch == '$':
+            res.append(r"\$")
+        elif ch == '#':
+            res.append(r"\#")
+        else:
+            res.append(ch)
+        i += 1
+    return "".join(res)
 
-    return data
+
+def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
+    """Apply swara modifier styling in LaTeX with zero horizontal footprint and a small following gap."""
+    m = mod.strip('()')
+    gap = r"\hspace{0.18em}"
+    if m in ('C', 'c', '·', 'ॱ', '\uE001'):
+        # Upper shoulder dot (MOD-C)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{0.04em}\char" + '"E001}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('E', 'e', '┃', '\uE002'):
+        # Tone Column (MOD-E) rendered AFTER the preceding akshara without overlapping 'a' extender
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.35ex}{\hspace{0.06em}\char" + '"E002}}}' + r"\hspace{0.18em}"
+        return f"{chunk}{glyph}"
+    elif m in ('G', 'g', '\\', '\uE003'):
+        # Lower Under-Slash (MOD-G)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.50ex}{\hspace{-0.20em}\char" + '"E003}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('A', 'a', '⁀', '\uE004'):
+        # Melodic Arc (MOD-A)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.38em}\char" + '"E004}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('D', 'd', '∧', 'Ʌ', '\uE006'):
+        # Chevron Roof (MOD-D)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E006}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
+        # Arc over Danda (MOD-A1)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('D1', 'd1', 'D_1', 'd_1', '↗', '\uE00E'):
+        # Rising Stroke (MOD-D1)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E00E}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('D2', 'd2', 'D_2', 'd_2', '✓', '\uE00F'):
+        # Check Tick (MOD-D2)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E00F}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('H', 'h', '|', '\uE00C'):
+        # High-Pitch Swarita (MOD-H)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{0.04em}\char" + '"E00C}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('F', 'f', '╷', '\uE008'):
+        # Danda with Dot (MOD-F)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E008}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m == '_':
+        glyph = r"\rlap{\textcolor{ModifierSkyBlue}{\raisebox{-0.1ex}{\rule{0.3em}{0.13ex}}}}" + gap
+        return f"{chunk}{glyph}"
+    elif m == '.':
+        glyph = r"{\textcolor{ModifierSkyBlue}{\textbf{.}}}" + gap
+        return f"{chunk}{glyph}"
+    elif m == ',':
+        glyph = r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}" + gap
+        return f"{chunk}{glyph}"
+    else:
+        return f"{chunk}({mod}){gap}"
+
+
+def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None):
+    """Format a single Devanagari word token with swara stacking and modifiers."""
+    if exclude_mods is None:
+        exclude_mods = set()
+    word = tok.get('word', '')
+    swara = tok.get('swara', '')
+    visarga = tok.get('visarga', '')
+    if visarga:
+        word += visarga
+    
+    if with_modifiers:
+        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+        trailing_punct = word[len(core_word):]
+        sw_parts, mods = _parse_swara_and_modifiers(swara)
+        mods = [m for m in mods if m not in exclude_mods and m.strip('()') not in exclude_mods]
+    else:
+        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+        trailing_punct = ''
+        sw_parts, _ = _parse_swara_and_modifiers(swara)
+        mods = []
+    
+    sw_str = " ".join(sw_parts) if sw_parts else ""
+    
+    syllables = split_deva_syllables(core_word) if core_word else []
+    last_syl = syllables.pop() if syllables else ''
+    
+    word_chunks = []
+    for syl in syllables:
+        syl_formatted = _format_deva_word_latex(syl, with_modifiers=with_modifiers)
+        word_chunks.append(syl_formatted)
+    
+    last_syl_formatted = _format_deva_word_latex(last_syl, with_modifiers=with_modifiers) if last_syl else ''
+    
+    if sw_str and last_syl_formatted:
+        clean_sw = sw_str.replace('{', '').replace('}', '')
+        sw_styled = f"{{\\smallredfont \\bfseries \\textcolor{{SwaraRed}}{{{sw_str}}}}}"
+        if len(clean_sw) > 1:
+            chunk = f"\\stackleft{{{last_syl_formatted}}}{{{sw_styled}}}"
+        else:
+            chunk = f"\\stackcenter{{{last_syl_formatted}}}{{{sw_styled}}}"
+    elif sw_str and not last_syl_formatted:
+        sw_styled = f"{{\\smallredfont \\bfseries \\textcolor{{SwaraRed}}{{{sw_str}}}}}"
+        chunk = f"\\stackcenter{{\\phantom{{अ}}}}{{{sw_styled}}}"
+    else:
+        chunk = f"{{{last_syl_formatted}}}"
+    
+    if with_modifiers:
+        if trailing_punct:
+            for p in trailing_punct:
+                if p not in exclude_mods:
+                    chunk = _apply_deva_modifier_latex(chunk, p)
+        for mod in mods:
+            chunk = _apply_deva_modifier_latex(chunk, mod)
+    
+    word_chunks.append(chunk)
+    return "".join(word_chunks)
+
+
+def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers=None, with_modifiers: bool = None):
+    """Helper to render Devanagari mantra body with swaras and modifiers."""
+    if seen_markers is None:
+        seen_markers = set()
+    if with_modifiers is None:
+        global CURRENT_WITH_SWARA_MODIFIERS
+        with_modifiers = CURRENT_WITH_SWARA_MODIFIERS
+        
+    from malayalam.ml_text import tokenize_mantra_line
+    
+    mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+    if not mantra_sets:
+        return []
+
+    MOD_A_SET = {'A', 'a', '⁀', '\uE004', '╭╮', '͡'}
+    MOD_A1_SET = {'A1', 'a1', 'A_1', 'a_1', '\uE00D'}
+    MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '✓', '↗', 'D1', 'd1', 'D2', 'd2', '\uE006', '\uE00E', '\uE00F'}
+    DEVA_DIGITS = str.maketrans('0123456789', '०१२३४५६७८९')
+    
+    footnote_data = subsection.get('footnotes', {})
+    formatted_paragraphs = []
+    
+    for mantra_set in mantra_sets:
+        line = mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
+        if not line:
+            continue
+        tokens = tokenize_mantra_line(line)
+        paragraph_buffer = []
+        
+        idx = 0
+        while idx < len(tokens):
+            v_count, v_num = _match_verse_num_marker(tokens, idx)
+            if v_count > 0:
+                v_num_deva = str(v_num).translate(DEVA_DIGITS)
+                paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.35em}}\\mbox{{॥ {v_num_deva} ॥}}")
+                full_paragraph = "".join(paragraph_buffer)
+                formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}}}")
+                formatted_paragraphs.append(r"\par\vspace{0.8em}")
+                paragraph_buffer = []
+                idx += v_count
+                continue
+            
+            tok = tokens[idx]
+            t = tok['type']
+            
+            if t == 'space':
+                prev_is_danda = (idx > 0 and tokens[idx-1]['type'] == 'danda')
+                if prev_is_danda:
+                    paragraph_buffer.append(r"\hspace{0.35em}")
+            elif t == 'danda':
+                ch = tok['char']
+                if ch == '।':
+                    paragraph_buffer.append(r"\nolinebreak\hspace{0.12em}।\hspace{0.35em}")
+                elif ch == '॥':
+                    paragraph_buffer.append(r"\nolinebreak\hspace{0.15em}॥\hspace{0.35em}")
+                else:
+                    paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.12em}}{ch}\\hspace{{0.35em}}")
+            elif t == 'marker':
+                if with_modifiers:
+                    m_str = tok['marker'].strip('()')
+                    if m_str in MOD_A_SET:
+                        next_w_idx = idx + 1
+                        while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                            next_w_idx += 1
+                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word' and paragraph_buffer:
+                            prev_chunk = paragraph_buffer.pop()
+                            next_tok = tokens[next_w_idx]
+                            chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                            arc_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.38em}\char" + '"E004}}}'
+                            paragraph_buffer.append(f"\\mbox{{{prev_chunk}{arc_glyph}\\hspace{{0.08em}}{chunk2}}}")
+                            idx = next_w_idx + 1
+                            continue
+                    elif m_str in MOD_D_SET:
+                        next_w_idx = idx + 1
+                        while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                            next_w_idx += 1
+                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word' and paragraph_buffer:
+                            prev_chunk = paragraph_buffer.pop()
+                            next_tok = tokens[next_w_idx]
+                            chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                            d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
+                            paragraph_buffer.append(f"\\mbox{{{prev_chunk}{d_glyph}\\hspace{{0.08em}}{chunk2}}}")
+                            idx = next_w_idx + 1
+                            continue
+                    m_esc = _apply_deva_modifier_latex("", tok['marker'])
+                    paragraph_buffer.append(m_esc)
+            elif t == 'footnote':
+                marker = tok.get('text', '').strip('()')
+                fn_text = footnote_data.get(marker, '')
+                if fn_text:
+                    safe_key = subsection_key if subsection_key else "unknown"
+                    label = f"fn:{safe_key}:{marker}"
+                    if marker in seen_markers:
+                        paragraph_buffer.append(f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}")
+                    else:
+                        paragraph_buffer.append(f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{fn_text}\\label{{{label}}}}}")
+                        seen_markers.add(marker)
+            elif t == 'word':
+                sw = tok.get('swara', '')
+                _, tok_mods = _parse_swara_and_modifiers(sw)
+                has_mod_a1 = any(m.strip('()') in MOD_A1_SET for m in tok_mods)
+                has_mod_a = any(m.strip('()') in MOD_A_SET for m in tok_mods)
+                has_mod_d = any(m.strip('()') in MOD_D_SET for m in tok_mods)
+                
+                if has_mod_d and with_modifiers:
+                    next_w_idx = idx + 1
+                    while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                        next_w_idx += 1
+                    
+                    if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word':
+                        next_tok = tokens[next_w_idx]
+                        next_sw = next_tok.get('swara', '')
+                        _, next_mods = _parse_swara_and_modifiers(next_sw)
+                        next_has_a1 = any(m.strip('()') in MOD_A1_SET for m in next_mods)
+                        
+                        if next_has_a1:
+                            # Chained MOD-D + MOD-A1 over danda: e.g. बाहू(Ʌ)तो(A1) । हाइ
+                            d_idx = next_w_idx + 1
+                            while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
+                                d_idx += 1
+                            if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda':
+                                d_char = tokens[d_idx]['char']
+                                third_w_idx = d_idx + 1
+                                while third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'space':
+                                    third_w_idx += 1
+                                if third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'word':
+                                    third_tok = tokens[third_w_idx]
+                                    chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
+                                    chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET)
+                                    chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
+                                    d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
+                                    arc_danda_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}'
+                                    combined_mbox = f"\\mbox{{{chunk1}{d_glyph}\\hspace{{0.08em}}{chunk2}\\hspace{{0.12em}}{arc_danda_glyph}{d_char}\\hspace{{0.12em}}{chunk3}}}"
+                                    paragraph_buffer.append(combined_mbox)
+                                    idx = third_w_idx + 1
+                                    continue
+                        
+                        chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
+                        chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                        d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
+                        combined_mbox = f"\\mbox{{{chunk1}{d_glyph}\\hspace{{0.08em}}{chunk2}}}"
+                        paragraph_buffer.append(combined_mbox)
+                        idx = next_w_idx + 1
+                        continue
+
+                if has_mod_a1 and with_modifiers:
+                    d_idx = idx + 1
+                    while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
+                        d_idx += 1
+                    if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda':
+                        d_char = tokens[d_idx]['char']
+                        next_w_idx = d_idx + 1
+                        while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                            next_w_idx += 1
+                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word':
+                            next_tok = tokens[next_w_idx]
+                            chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A1_SET)
+                            chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                            arc_danda_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}'
+                            combined_mbox = f"\\mbox{{{chunk1}\\hspace{{0.12em}}{arc_danda_glyph}{d_char}\\hspace{{0.12em}}{chunk2}}}"
+                            paragraph_buffer.append(combined_mbox)
+                            idx = next_w_idx + 1
+                            continue
+                
+                if has_mod_a and with_modifiers:
+                    next_w_idx = idx + 1
+                    while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                        next_w_idx += 1
+                    
+                    if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word':
+                        next_tok = tokens[next_w_idx]
+                        chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A_SET)
+                        chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                        arc_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.38em}\char" + '"E004}}}'
+                        combined_mbox = f"\\mbox{{{chunk1}{arc_glyph}\\hspace{{0.08em}}{chunk2}}}"
+                        paragraph_buffer.append(combined_mbox)
+                        idx = next_w_idx + 1
+                        continue
+                
+                chunk = _format_single_deva_word_latex(tok, with_modifiers=with_modifiers)
+                paragraph_buffer.append(chunk)
+            idx += 1
+            
+        if paragraph_buffer:
+            full_paragraph = "".join(paragraph_buffer)
+            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}}}")
+            formatted_paragraphs.append(r"\par\vspace{0.8em}")
+            
+    return formatted_paragraphs
+
 
 def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section'):
     
@@ -797,125 +1143,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     formatted_output.append(r"\nopagebreak")
 
     # --- MANTRA CONTENT RENDERING ---
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    paragraph_buffer = []
-    
-    footnotes_map = {}
-    raw_footnotes = subsection.get('footnotes', []) 
-    for note in raw_footnotes:
-        if 'word' in note and 'content' in note:
-            footnotes_map[note['word']] = note['content']
-
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        
-        is_verse_end = False
-        if mantra_row:
-            for token in reversed(mantra_row):
-                if "SPACE_TOKEN" in token: continue
-                if "॥" in token or "||" in token:
-                    is_verse_end = True
-                break 
-
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            # Clean Stack Arguments
-            text_part = clean_stack_arg(text_part)
-            text_part = format_dandas(text_part)
-            swara_part = swara_chunk.strip().replace('{}', '')
-            swara_part = clean_stack_arg(swara_part)
-
-            if "SPACE_TOKEN" in text_part:
-                paragraph_buffer.append("")
-                continue 
-
-            extras = "" 
-            
-            # --- FOOTNOTE TRACKING (Ensure initialized at start of function too) ---
-            # Extract footnotes from text_part if present
-            # We look for (sX) patterns
-            # First, sanitize invisible characters that can break matching
-            invisible_chars_pattern = r'[\u200b\u200c\u200d\ufeff\u2060\u180e\u00ad]'
-            text_part = re.sub(invisible_chars_pattern, '', text_part)
-            
-            if '(' in text_part and ')' in text_part:
-                # Find all markers
-                markers = re.findall(r'\((s\d+)\)', text_part)
-                footnote_data = subsection.get('footnotes', {})
-                for marker in markers:
-                    # Remove marker from text_part so it doesn't go into stack
-                    text_part = text_part.replace(f'({marker})', '')
-                    
-                    # Logic: If seen, use ref. If new, use footnote+label
-                    # Use subsection_key to make label unique
-                    # If subsection_key is None, fallback to unique-ish string or random
-                    safe_key = subsection_key if subsection_key else "unknown"
-                    label = f"fn:{safe_key}:{marker}"
-                    
-                    if marker in seen_markers:
-                        # Refer to existing
-                        # Use rule for top alignment + raisebox for template match
-                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
-                    else:
-                        # Create new
-                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
-                        extras += f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{fn_text}\\label{{{label}}}}}"
-                        seen_markers.add(marker)
-            
-            # (Deleted old loop: for fn_text in found_footnotes...)
-
-            if swara_part:
-                clean_swara = swara_part.replace('{', '').replace('}', '')
-                if len(clean_swara) > 1:
-                    # LEFT STACK
-                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
-                    spacing = "\\hspace{0.05em}"
-                else:
-                    # CENTER STACK
-                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
-                    spacing = "" # standard spacing handled by stackgap or none
-            else:
-                stack_base = text_part
-                spacing = ""
-            
-            # Handle empty text_part (footnote marker was the only content)
-            # Also handle "{}" which is left when marker like "{(s1)}" is stripped
-            if (not text_part.strip() or text_part.strip() == '{}') and extras:
-                # Output only the footnote, no empty braces or spacing
-                token = extras
-            else:
-                # Normal case: stack + extras + spacing
-                token = stack_base + extras + spacing
-
-            if token and token != '{}':
-                paragraph_buffer.append(token)
-                paragraph_buffer.append("\\allowbreak")
-
-        if is_verse_end:
-            full_paragraph = "".join(paragraph_buffer)
-            formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-            formatted_output.append(r"\par\vspace{0.5em}") 
-            paragraph_buffer = [] 
-
-    # --- FINAL SPACING ---
-    # The user wants an extra line between this subsection and the next metadata
-    # if this subsection contains both Rik and Samam.
-    is_mixed = bool(string_2.strip()) and bool(subsection.get('mantra_sets'))
-    trailing_space = r"\par\vspace{1.5em}" if is_mixed else r"\par\vspace{0.6em}"
-
-    if paragraph_buffer:
-        full_paragraph = "".join(paragraph_buffer)
-        formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-        formatted_output.append(trailing_space)
-    elif is_verse_end:
-        # Update the last spacer if the paragraph ended exactly at a verse boundary
-        if formatted_output and formatted_output[-1] == r"\par\vspace{0.5em}":
-            formatted_output[-1] = trailing_space
+    body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
+    formatted_output.extend(body_paras)
 
     return "\n\n".join(formatted_output)
 
@@ -1038,110 +1267,8 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     formatted_output.append(r"\nopagebreak")
 
     # Mantra Content Rendering (Samam text only - no Rik text)
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    paragraph_buffer = []
-    
-    footnotes_map = {}
-    raw_footnotes = subsection.get('footnotes', []) 
-    for note in raw_footnotes:
-        if 'word' in note and 'content' in note:
-            footnotes_map[note['word']] = note['content']
-
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        
-        is_verse_end = False
-        if mantra_row:
-            for token in reversed(mantra_row):
-                if "SPACE_TOKEN" in token: continue
-                if "॥" in token or "||" in token:
-                    is_verse_end = True
-                break 
-
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            text_part = clean_stack_arg(text_part)
-            text_part = format_dandas(text_part)
-            swara_part = swara_chunk.strip().replace('{}', '')
-            swara_part = clean_stack_arg(swara_part)
-
-            if "SPACE_TOKEN" in text_part:
-                paragraph_buffer.append("")
-                continue 
-
-            extras = "" 
-            
-            # --- FOOTNOTE TRACKING (Ensure initialized at start of function too) ---
-            # Extract footnotes from text_part if present
-            # We look for (sX) patterns
-            if '(' in text_part and ')' in text_part:
-                # Find all markers
-                markers = re.findall(r'\((s\d+)\)', text_part)
-                footnote_data = subsection.get('footnotes', {})
-                for marker in markers:
-                    # Remove marker from text_part so it doesn't go into stack
-                    text_part = text_part.replace(f'({marker})', '')
-                    
-                    # Logic: If seen, use ref. If new, use footnote+label
-                    # Use subsection_key to make label unique
-                    # If subsection_key is None, fallback to unique-ish string or random
-                    safe_key = subsection_key if subsection_key else "unknown"
-                    label = f"fn:{safe_key}:{marker}"
-                    
-                    if marker in seen_markers:
-                        # Refer to existing
-                        # Use rule for top alignment + raisebox for template match
-                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
-                    else:
-                        # Create new
-                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
-                        extras += f"\\vphantom{{\\char\"0951}}\\footnote{{{fn_text}\\label{{{label}}}}}"
-                        seen_markers.add(marker)
-            
-            # (Deleted old loop: for fn_text in found_footnotes...)
-
-            if swara_part:
-                clean_swara = swara_part.replace('{', '').replace('}', '')
-                if len(clean_swara) > 1:
-                    # LEFT STACK
-                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
-                    spacing = "\\hspace{0.05em}"
-                else:
-                    # CENTER STACK
-                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
-                    spacing = ""
-            else:
-                stack_base = text_part
-                spacing = ""
-                      
-            # Handle empty text_part (footnote marker was the only content)
-            # Also handle "{}" which is left when marker like "{(s1)}" is stripped
-            if (not text_part.strip() or text_part.strip() == '{}') and extras:
-                # Output only the footnote, no empty braces or spacing
-                token = extras
-            else:
-                # Normal case: stack + extras + spacing
-                token = stack_base + extras + spacing
-
-            if token and token != '{}':
-                paragraph_buffer.append(token)
-                paragraph_buffer.append("\\allowbreak")
-
-        if is_verse_end:
-            full_paragraph = "".join(paragraph_buffer)
-            formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-            formatted_output.append(r"\par\vspace{0.5em}") 
-            paragraph_buffer = [] 
-
-    if paragraph_buffer:
-        full_paragraph = "".join(paragraph_buffer)
-        formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-        formatted_output.append(r"\par\vspace{0.5em}")
+    body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
+    formatted_output.extend(body_paras)
 
     return "\n\n".join(formatted_output)
 
@@ -1237,90 +1364,8 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
     formatted_output.append(r"\nopagebreak")
 
     # Mantra Content Rendering (Samam text only - no metadata)
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    paragraph_buffer = []
-    
-    footnotes_map = {}
-    raw_footnotes = subsection.get('footnotes', []) 
-    for note in raw_footnotes:
-        if 'word' in note and 'content' in note:
-            footnotes_map[note['word']] = note['content']
-
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        
-        is_verse_end = False
-        if mantra_row:
-            for token in reversed(mantra_row):
-                if "SPACE_TOKEN" in token: continue
-                if "॥" in token or "||" in token:
-                    is_verse_end = True
-                break 
-
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            text_part = clean_stack_arg(text_part)
-            text_part = format_dandas(text_part)
-            swara_part = swara_chunk.strip().replace('{}', '')
-            swara_part = clean_stack_arg(swara_part)
-
-            if "SPACE_TOKEN" in text_part:
-                paragraph_buffer.append("")
-                continue 
-
-            extras = "" 
-            
-            if '(' in text_part and ')' in text_part:
-                markers = re.findall(r'\((s\d+)\)', text_part)
-                footnote_data = subsection.get('footnotes', {})
-                for marker in markers:
-                    text_part = text_part.replace(f'({marker})', '')
-                    safe_key = subsection_key if subsection_key else "unknown"
-                    label = f"fn:{safe_key}:{marker}"
-                    
-                    if marker in seen_markers:
-                        extras += f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
-                    else:
-                        fn_text = footnote_data.get(marker, f"Missing footnote: {marker}")
-                        extras += f"\\vphantom{{\\char\"0951}}\\footnote{{{fn_text}\\label{{{label}}}}}"
-                        seen_markers.add(marker)
-
-            if swara_part:
-                clean_swara = swara_part.replace('{', '').replace('}', '')
-                if len(clean_swara) > 1:
-                    stack_base = f"\\stackleft{{{text_part}}}{{{swara_part}}}"
-                    spacing = "\\hspace{0.05em}"
-                else:
-                    stack_base = f"\\stackcenter{{{text_part}}}{{{swara_part}}}"
-                    spacing = ""
-            else:
-                stack_base = text_part
-                spacing = ""
-                      
-            if (not text_part.strip() or text_part.strip() == '{}') and extras:
-                token = extras
-            else:
-                token = stack_base + extras + spacing
-
-            if token and token != '{}':
-                paragraph_buffer.append(token)
-                paragraph_buffer.append("\\allowbreak")
-
-        if is_verse_end:
-            full_paragraph = "".join(paragraph_buffer)
-            formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-            formatted_output.append(r"\par\vspace{0.5em}") 
-            paragraph_buffer = [] 
-
-    if paragraph_buffer:
-        full_paragraph = "".join(paragraph_buffer)
-        formatted_output.append(f"{{\\noindent\\justifying\\sloppy {full_paragraph}}}")
-        formatted_output.append(r"\par\vspace{0.5em}")
+    body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
+    formatted_output.extend(body_paras)
 
     return "\n\n".join(formatted_output)
 
@@ -2351,7 +2396,7 @@ def handle_consecutive_trikamba_html(text):
     # We insert a thin space character after the first character following (4)
     # when another (4) follows soon after
     
-    # Match: (4) + short text (1-3 chars) + (4)
+# Match: (4) + short text (1-3 chars) + (4)
     # Replace with: (4) + short text + thin space + (4)
     pattern = r'\(4\)([^\(\)]{1,3})\(4\)'
     replacement = r'(4)\1 (4)'  # Insert a regular space before the second (4)
@@ -2360,49 +2405,243 @@ def handle_consecutive_trikamba_html(text):
     
     return text
 
-def replace_accents_html(text):
-    """
-    Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Positioning is controlled by CSS classes in the template.
-    """
-    if not text:
-        return text
+HTML_MOD_MAP = {
+    'C': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
+    'c': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
+    '·': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
+    'ॱ': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
+    'H': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
+    'h': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
+    '|': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
+    'G': ('mod-g', '&#xE003;', 'Lower Under-Slash (\\)'),
+    'g': ('mod-g', '&#xE003;', 'Lower Under-Slash (\\)'),
+    '\\': ('mod-g', '&#xE003;', 'Lower Under-Slash (\\)'),
+    'A': ('mod-a', '&#xE004;', 'Melodic Arc (⁀)'),
+    'a': ('mod-a', '&#xE004;', 'Melodic Arc (⁀)'),
+    '⁀': ('mod-a', '&#xE004;', 'Melodic Arc (⁀)'),
+    'A1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
+    'a1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
+    'A_1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
+    'a_1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
+    'D': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
+    'd': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
+    '∧': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
+    'Ʌ': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
+    'd1': ('mod-d1', '&#xE00E;', 'Rising Stroke (↗)'),
+    'D2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
+    'd2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
+    'I': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
+    'i': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
+    'J': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
+    'j': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
+    'B1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
+    'b1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
+    'K': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
+    'k': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
+    'B': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
+    'b': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
+    '^': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
+    'E': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
+    'e': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
+    '┃': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
+    'F': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
+    'f': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
+    '╷': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
+    '_': ('mod-under', '_', 'Underbar'),
+    ',': ('mod-comma', ',', 'Comma'),
+    '.': ('mod-dot', '.', 'Dot')
+}
+
+def render_mod_html(mod_str: str) -> str:
+    m = mod_str.strip('()')
+    if m in HTML_MOD_MAP:
+        cls, glyph, title = HTML_MOD_MAP[m]
+        return f'<span class="swara-mod {cls}" title="{title}">{glyph}</span>'
+    return f'<span class="swara-mod">{mod_str}</span>'
+
+DEVA_SYLLABLE_RE = re.compile(
+    r'(?:[\u0904-\u0914]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094C\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓])*'
+)
+
+def split_deva_syllables(text: str):
+    res = DEVA_SYLLABLE_RE.findall(text)
+    return res if res else ([text] if text else [])
+
+def format_deva_syl_html(syl: str, with_modifiers: bool = True) -> str:
+    if not with_modifiers:
+        return syl.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+    m = re.match(r'^(.*?)([_,.\\·ॱ┃L╷^⁀∧✓]*)$', syl)
+    base = m.group(1) if m else syl
+    extras = m.group(2) if m else ''
+    extras_html = ''.join([render_mod_html(e) for e in extras])
+    return base + extras_html
+
+def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
+    """Render a Devanagari mantra line to flexbox-stacked HTML matching visual baseline."""
+    from malayalam.ml_text import tokenize_mantra_line
+    tokens = tokenize_mantra_line(line)
     
-    replacements = [
-        # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
-        # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
-        # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
-        # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
-    ]
+    # Identify spanning markers that attach to the preceding word
+    SPANNING_MARKERS = {'A', 'a', '⁀', 'A1', 'a1', 'A_1', 'a_1', 'D', 'd', '∧', 'Ʌ', 'B', 'b', '^', 'B1', 'b1'}
     
-    for marker, replacement in replacements:
-        text = text.replace(marker, replacement)
+    rendered_items = []
     
-    # Wrap visarga in span for CSS targeting (fixes NotoSansDevanagari circle issue)
-    text = text.replace('ः', '<span class="visarga">ः</span>')
-    
-    return text
+    idx = 0
+    while idx < len(tokens):
+        v_count, v_num = _match_verse_num_marker(tokens, idx)
+        if v_count > 0:
+            rendered_items.append({
+                'type': 'verse_num',
+                'html': f'<span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+            })
+            idx += v_count
+            continue
+            
+        tok = tokens[idx]
+        t = tok['type']
+        
+        if t == 'space':
+            prev_is_danda = (idx > 0 and tokens[idx-1]['type'] == 'danda')
+            if prev_is_danda:
+                rendered_items.append({
+                    'type': 'space',
+                    'html': '<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>'
+                })
+        elif t == 'danda':
+            rendered_items.append({
+                'type': 'danda',
+                'html': f'<span class="mantra-word"><span class="mantra-text danda">{tok["char"]}</span><span class="swara-text">&nbsp;</span></span>'
+            })
+        elif t == 'marker':
+            m_val = tok.get('marker', '').strip('()')
+            if with_modifiers and m_val in SPANNING_MARKERS:
+                # Attach to preceding word item if available
+                mod_h = render_mod_html(m_val)
+                attached = False
+                for prev_item in reversed(rendered_items):
+                    if prev_item['type'] == 'word':
+                        prev_item['spanning_mod'] = mod_h
+                        prev_item['spanning_type'] = m_val
+                        attached = True
+                        break
+                if not attached:
+                    rendered_items.append({
+                        'type': 'marker',
+                        'html': f'<span class="mantra-word"><span class="mantra-text">{mod_h}</span><span class="swara-text">&nbsp;</span></span>'
+                    })
+            elif with_modifiers:
+                mod_h = render_mod_html(tok['marker'])
+                rendered_items.append({
+                    'type': 'marker',
+                    'html': f'<span class="mantra-word"><span class="mantra-text">{mod_h}</span><span class="swara-text">&nbsp;</span></span>'
+                })
+        elif t == 'footnote':
+            rendered_items.append({
+                'type': 'footnote',
+                'html': f'<sup>{tok["text"]}</sup>'
+            })
+        elif t == 'word':
+            word = tok.get('word', '')
+            swara = tok.get('swara', '')
+            visarga = tok.get('visarga', '')
+            if visarga:
+                word += visarga
+            
+            if not with_modifiers:
+                core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+                punct_html = ''
+                mods_html = ''
+                sw_parts, _ = _parse_swara_and_modifiers(swara)
+            else:
+                core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+                trailing_punct = word[len(core_word):]
+                punct_html = ''.join([render_mod_html(p) for p in trailing_punct])
+                sw_parts, mods = _parse_swara_and_modifiers(swara)
+                mods_html = ''.join([render_mod_html(m) for m in mods])
+            
+            sw_letter = ' '.join(sw_parts) if sw_parts else ''
+            syllables = split_deva_syllables(core_word) if core_word else []
+            last_syl = syllables.pop() if syllables else ''
+            
+            w_html_parts = []
+            for syl in syllables:
+                syl_formatted = format_deva_syl_html(syl, with_modifiers=with_modifiers)
+                w_html_parts.append(f'<span class="mantra-word"><span class="mantra-text">{syl_formatted}</span><span class="swara-text">&nbsp;</span></span>')
+            
+            last_syl_formatted = format_deva_syl_html(last_syl, with_modifiers=with_modifiers) if last_syl else ''
+            
+            rendered_items.append({
+                'type': 'word',
+                'prefix_syls_html': ''.join(w_html_parts),
+                'last_syl_formatted': last_syl_formatted,
+                'mods_html': mods_html,
+                'punct_html': punct_html,
+                'bot_content': sw_letter if sw_letter else "&nbsp;",
+                'spanning_mod': None,
+                'spanning_type': None
+            })
+        idx += 1
+
+    # Now assemble final HTML, wrapping connected spanning groups in <span class="mantra-connected-group">
+    final_output = []
+    i = 0
+    while i < len(rendered_items):
+        item = rendered_items[i]
+        if item['type'] == 'word' and item.get('spanning_mod'):
+            # This word has a spanning modifier connecting to next word (and possibly danda)
+            # Find the span extent
+            group_items = []
+            j = i
+            # Add this item
+            group_items.append(item)
+            j += 1
+            # Collect until next word is included
+            while j < len(rendered_items):
+                next_it = rendered_items[j]
+                group_items.append(next_it)
+                j += 1
+                if next_it['type'] == 'word' and not next_it.get('spanning_mod'):
+                    break
+                # If the next word also has a spanning mod (chained, e.g. D then A1), continue chaining!
+            
+            # Render all items in group_items inside connected group
+            group_html = []
+            for g_item in group_items:
+                if g_item['type'] == 'word':
+                    span_mod_str = g_item.get('spanning_mod') or ''
+                    top_content = f"{g_item['last_syl_formatted']}{g_item['mods_html']}{g_item['punct_html']}{span_mod_str}" if (g_item['last_syl_formatted'] or g_item['mods_html'] or g_item['punct_html'] or span_mod_str) else "&nbsp;"
+                    bot_content = g_item['bot_content']
+                    word_html = f"{g_item['prefix_syls_html']}<span class=\"mantra-word\"><span class=\"mantra-text\">{top_content}</span><span class=\"swara-text\">{bot_content}</span></span>"
+                    group_html.append(word_html)
+                else:
+                    group_html.append(g_item['html'])
+            
+            final_output.append(f'<span class="mantra-connected-group">{"".join(group_html)}</span>')
+            i = j
+        else:
+            if item['type'] == 'word':
+                top_content = f"{item['last_syl_formatted']}{item['mods_html']}{item['punct_html']}" if (item['last_syl_formatted'] or item['mods_html'] or item['punct_html']) else "&nbsp;"
+                bot_content = item['bot_content']
+                word_html = f"{item['prefix_syls_html']}<span class=\"mantra-word\"><span class=\"mantra-text\">{top_content}</span><span class=\"swara-text\">{bot_content}</span></span>"
+                final_output.append(word_html)
+            else:
+                final_output.append(item['html'])
+            i += 1
+            
+    return ''.join(final_output)
+
 
 def format_mantra_sets_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, 
-                              footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
+                              footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, with_modifiers=True):
     """
-    Formats mantra data as HTML using table-based layout for word/swara stacking.
-    Uses tables similar to existing HTML output in the project.
+    Formats mantra data as HTML using ruby-based layout for word/swara stacking.
     Only renders rik_metadata and rik_text if rik_id differs from prev_rik_id.
     """
-    # Use passed state objects
-    # global HTML_FOOTNOTE_COUNTER, HTML_SEEN_CONTENT_MAP -- REMOVED globals
-    
     HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
     seen_markers_map = seen_content_map if seen_content_map is not None else {}
 
-    
     # --- DATA EXTRACTION ---
     current_rik_id = subsection.get('rik_id')
     current_rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
@@ -2411,14 +2650,8 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     string_3 = subsection.get('saman_metadata', '')
     footnote_data = subsection.get('footnotes', {})
     
-    # Determine if we should show rik_metadata and rik_text
-    # Show if: first subsection, OR if any rik_id in current rik_ids differs from prev_rik_id
-    # This ensures that when a subsection spans multiple Riks (e.g., [7, 8]) and Rik 7 was already
-    # shown, we still display the combined text that includes Rik 8
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
-    # Also show if rik_ids contains multiple Riks and the last one differs from prev
     if not show_rik_info and len(current_rik_ids) > 1:
-        # If we have multiple Riks in this subsection, check if the MAX Rik ID is new
         max_rik_id = max(current_rik_ids) if current_rik_ids else None
         if max_rik_id is not None and max_rik_id != prev_rik_id:
             show_rik_info = True
@@ -2429,9 +2662,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     # 1. Rik Metadata - Only if rik_id changed
     if string_1 and show_rik_info:
         s1 = escape_for_html(string_1)
-        # PRESERVE SPACES FOR METADATA
         s1 = format_dandas_html(s1, preserve_spaces=True)
-
         s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata sanskrit-text">{s1}</div>')
@@ -2439,16 +2670,12 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     # 2. Rik Text (With accents) - Only if rik_id changed
     if string_2 and show_rik_info:
         s2 = remove_mantra_spaces(string_2)
-        # Remove LaTeX newline commands that shouldn't appear in HTML
         s2 = s2.replace('\\newline%', '').replace('\\newline', '')
         s2 = escape_for_html(s2)
-        # Process footnotes
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
-        
-        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
+        s2 = handle_consecutive_trikamba_html(s2)
         s2 = replace_accents_html(s2)
-        # Split multi-Rik text so each Rik is on its own line
         s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text sanskrit-text">{s2}</div>')
@@ -2461,9 +2688,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
-        # PRESERVE SPACES FOR METADATA
         meta = format_dandas_html(meta, preserve_spaces=True)
-
         meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
@@ -2471,66 +2696,51 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     if header_parts:
         formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
 
-    # --- MANTRA CONTENT RENDERING (Inline-block for wrapping) ---
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        
-        is_verse_end = False
-        if mantra_row:
-            for token in reversed(mantra_row):
-                if "SPACE_TOKEN" in token:
-                    continue
-                if "॥" in token or "||" in token:
-                    is_verse_end = True
-                break
+    # --- MANTRA CONTENT RENDERING ---
+    mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
 
-        # Build inline-block elements for mantra and swara stacking
-        word_elements = []
+    mantra_array = []
+    for mset in mantra_sets:
+        m = mset.get('corrected-mantra') or mset.get('mantra', '')
+        if m:
+            mantra_array.append(m)
+        elif mset.get('mantra-words'):
+            words = []
+            for word_dict in mset.get('mantra-words', []):
+                w = word_dict.get('word', '')
+                sw = word_dict.get('swara', '')
+                if sw:
+                    words.append(f"{w}({sw})")
+                else:
+                    words.append(w)
+            if words:
+                mantra_array.append(" ".join(words))
+
+    for mantra_line in mantra_array:
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        clean_mantra, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(clean_mantra, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+        collected_footnotes.extend(fnotes)
         
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            text_part = text_part.replace('{', '').replace('}', '').strip()
+        verse_parts = re.split(r'(॥\s*[\d०-९]+\s*॥)', clean_mantra)
+        
+        for idx_v in range(0, len(verse_parts), 2):
+            v_text = verse_parts[idx_v].strip()
+            v_marker = verse_parts[idx_v + 1] if idx_v + 1 < len(verse_parts) else ''
             
-            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
-            # Remove LaTeX formatting commands from swara
-            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').replace('\\smallredfont ', '').strip()
-
-            if "SPACE_TOKEN" in text_part:
-                # Skip space tokens - CSS will handle spacing
+            if not v_text and not v_marker:
                 continue
-
-            # Escape and format for HTML
-            text_part = escape_for_html(text_part)
-            text_part = format_dandas_html(text_part)
-            
-            # Process footnotes in mantra text
-            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
-            collected_footnotes.extend(fnotes)
-
-            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
-            
-            # Create stacked word element
-            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
-            word_elements.append(word_html)
-
-        # Create verse div with flowing content
-        if word_elements:
-            verse_html = ''.join(word_elements)
-            # Add extra margin if this is a mixed subsection (Rik + Samam)
+                
+            v_html = render_deva_html_from_line(v_text, with_modifiers=with_modifiers)
+            if v_marker:
+                v_num_match = re.search(r'[\d०-९]+', v_marker)
+                v_num = v_num_match.group(0) if v_num_match else ''
+                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                
             is_mixed = bool(string_2.strip())
             style = ' style="margin-bottom: 2.5rem;"' if is_mixed else ''
-            formatted_output.append(f'<div class="mantra-verse"{style}>{verse_html}</div>')
-
-    # If no mantra verses were added but it was a rik-only or header-only section, 
-    # we don't necessarily add the extra margin here as it might be handled by the next section's top margin.
-    # However, to be safe, if it's a mixed section and we only have Rik text so far (unlikely for mantra_sets),
-    # we'd add it to the last div.
+            formatted_output.append(f'<div class="mantra-verse"{style}>{v_html}</div>')
 
     # Accumulate footnotes for section-level rendering (don't render inline)
     if collected_footnotes and footnotes_accumulator is not None:
@@ -2539,16 +2749,12 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
 
-# ----------------------------------------------------
-# RIK-ONLY HTML FORMATTING (for separate output mode)
-# ----------------------------------------------------
 def format_rik_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
                          footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
     """
     Format only Rik content (rik_metadata and rik_text) for HTML separate output mode.
     Skips all Samam-related content.
     """
-    # Use passed state
     HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
@@ -2559,59 +2765,84 @@ def format_rik_only_html(subsection, supersection_title, section_title, subsecti
     string_1 = subsection.get('rik_metadata', '')
     string_2 = subsection.get('rik_text', '')
     
-    # Skip if no Rik content
     if not string_1 and not string_2:
         return "", HTML_FOOTNOTE_COUNTER
     
-    # Only show if rik_id changed (avoid duplicates)
     show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
     if not show_rik_info:
         return "", HTML_FOOTNOTE_COUNTER
     
-    # Rik Metadata
     if string_1:
         s1 = escape_for_html(string_1)
-        # PRESERVE SPACES FOR METADATA
         s1 = format_dandas_html(s1, preserve_spaces=True)
-
         s1, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s1, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         formatted_output.append(f'<div class="rik-metadata sanskrit-text">{s1}</div>')
 
-    # Rik Text (with accents)
     if string_2:
         s2 = remove_mantra_spaces(string_2)
-        # Remove LaTeX newline commands that shouldn't appear in HTML
         s2 = s2.replace('\\newline%', '').replace('\\newline', '')
         s2 = escape_for_html(s2)
-        
         s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
-        
-        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
+        s2 = handle_consecutive_trikamba_html(s2)
         s2 = replace_accents_html(s2)
-        # Split multi-Rik text so each Rik is on its own line
         s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
         formatted_output.append(f'<div class="rik-text sanskrit-text">{s2}</div>')
 
-    # Accumulate footnotes for section-level rendering (don't render inline)
     if collected_footnotes and footnotes_accumulator is not None:
         footnotes_accumulator.extend(collected_footnotes)
 
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
 
-# ----------------------------------------------------
-# SAMAM-ONLY HTML FORMATTING (for separate output mode)
-# ----------------------------------------------------
-def format_samam_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+def format_rik_nometa_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
                            footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
+    """
+    Format only Rik text (without rik_metadata) for HTML nometa output mode.
+    Skips all Samam-related content and metadata.
+    """
+    HTML_FOOTNOTE_COUNTER = footnote_counter
+    formatted_output = []
+    collected_footnotes = []
+    footnote_data = subsection.get('footnotes', {})
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+    
+    current_rik_id = subsection.get('rik_id')
+    string_2 = subsection.get('rik_text', '')
+    
+    if not string_2:
+        return "", HTML_FOOTNOTE_COUNTER
+    
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info:
+        return "", HTML_FOOTNOTE_COUNTER
+    
+    if string_2:
+        s2 = remove_mantra_spaces(string_2)
+        s2 = s2.replace('\\newline%', '').replace('\\newline', '')
+        s2 = escape_for_html(s2)
+        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+        collected_footnotes.extend(fnotes)
+        s2 = handle_consecutive_trikamba_html(s2)
+        s2 = replace_accents_html(s2)
+        s2 = split_rik_lines_html(s2)
+        s2 = format_dandas_html(s2)
+        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
+
+    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
+
+
+def format_samam_only_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
+                           footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, with_modifiers=True):
     """
     Format only Samam content (header, saman_metadata, mantra text) for HTML separate output mode.
     Skips all Rik-related content.
     """
-    # Use passed state
     HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
@@ -2623,7 +2854,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
     # Clean titles
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
 
-    # Combined Header: subsection title + samam metadata
+    # Header
     header_parts = []
     if display_sub_title:
         header_title = escape_for_html(display_sub_title)
@@ -2631,9 +2862,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
         header_parts.append(f'<span class="header-title">{header_title}</span>')
     if string_3:
         meta = escape_for_html(string_3)
-        # PRESERVE SPACES FOR METADATA
         meta = format_dandas_html(meta, preserve_spaces=True)
-
         meta, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(meta, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         header_parts.append(f'<span class="header-meta">{meta}</span>')
@@ -2642,164 +2871,120 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
         formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
 
     # Mantra Content
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        word_elements = []
-        
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            text_part = text_part.replace('{', '').replace('}', '').strip()
-            
-            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
-            # Remove LaTeX formatting commands from swara
-            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').replace('\\smallredfont ', '').strip()
+    mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
 
-            if "SPACE_TOKEN" in text_part:
-                continue
+    mantra_array = []
+    for mset in mantra_sets:
+        m = mset.get('corrected-mantra') or mset.get('mantra', '')
+        if m:
+            mantra_array.append(m)
+        elif mset.get('mantra-words'):
+            words = []
+            for word_dict in mset.get('mantra-words', []):
+                w = word_dict.get('word', '')
+                sw = word_dict.get('swara', '')
+                if sw:
+                    words.append(f"{w}({sw})")
+                else:
+                    words.append(w)
+            if words:
+                mantra_array.append(" ".join(words))
 
-            text_part = escape_for_html(text_part)
-            text_part = format_dandas_html(text_part)
-            
-            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
-            collected_footnotes.extend(fnotes)
-
-            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
-            
-            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
-            word_elements.append(word_html)
-
-        if word_elements:
-            verse_html = ''.join(word_elements)
-            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
-
-    # Accumulate footnotes for section-level rendering (don't render inline)
-    if collected_footnotes and footnotes_accumulator is not None:
-        footnotes_accumulator.extend(collected_footnotes)
-            
-    return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
-
-
-# ----------------------------------------------------
-# RIK NO-METADATA HTML FORMATTING (for nometa output mode)
-# ----------------------------------------------------
-def format_rik_nometa_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
-                           footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
-    """
-    Format only Rik text (without rik_metadata) for HTML nometa output mode.
-    Skips all Samam-related content and metadata.
-    """
-    # Use passed state
-    HTML_FOOTNOTE_COUNTER = footnote_counter
-    formatted_output = []
-    collected_footnotes = []
-    footnote_data = subsection.get('footnotes', {})
-    seen_markers_map = seen_content_map if seen_content_map is not None else {}
-    
-    current_rik_id = subsection.get('rik_id')
-    string_2 = subsection.get('rik_text', '')
-    
-    # Skip if no Rik content
-    if not string_2:
-        return "", HTML_FOOTNOTE_COUNTER
-    
-    # Only show if rik_id changed (avoid duplicates)
-    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
-    if not show_rik_info:
-        return "", HTML_FOOTNOTE_COUNTER
-    
-    # Rik Text (with accents) - NO METADATA
-    if string_2:
-        s2 = remove_mantra_spaces(string_2)
-        # Remove LaTeX newline commands that shouldn't appear in HTML
-        s2 = s2.replace('\\newline%', '').replace('\\newline', '')
-        s2 = escape_for_html(s2)
-        
-        s2, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(s2, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+    for mantra_line in mantra_array:
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        clean_mantra, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(clean_mantra, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
         collected_footnotes.extend(fnotes)
         
-        s2 = handle_consecutive_trikamba_html(s2)  # Fix overlap for consecutive trikamba
-        s2 = replace_accents_html(s2)
-        # Split multi-Rik text so each Rik is on its own line
-        s2 = split_rik_lines_html(s2)
-        s2 = format_dandas_html(s2)
-        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+        verse_parts = re.split(r'(॥\s*[\d०-९]+\s*॥)', clean_mantra)
+        
+        for idx_v in range(0, len(verse_parts), 2):
+            v_text = verse_parts[idx_v].strip()
+            v_marker = verse_parts[idx_v + 1] if idx_v + 1 < len(verse_parts) else ''
+            
+            if not v_text and not v_marker:
+                continue
+                
+            v_html = render_deva_html_from_line(v_text, with_modifiers=with_modifiers)
+            if v_marker:
+                v_num_match = re.search(r'[\d०-९]+', v_marker)
+                v_num = v_num_match.group(0) if v_num_match else ''
+                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                
+            formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 
-    # Accumulate footnotes for section-level rendering (don't render inline)
     if collected_footnotes and footnotes_accumulator is not None:
         footnotes_accumulator.extend(collected_footnotes)
-
+            
     return '\n'.join(formatted_output), HTML_FOOTNOTE_COUNTER
 
 
-# ----------------------------------------------------
-# SAMAM NO-METADATA HTML FORMATTING (for nometa output mode)
-# ----------------------------------------------------
 def format_samam_nometa_html(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None,
-                             footnote_counter=0, footnotes_accumulator=None, seen_content_map=None):
+                             footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, with_modifiers=True):
     """
     Format only Samam content (header, mantra text) for HTML nometa output mode.
     Skips all Rik-related content and saman_metadata.
     """
-    # Use passed state
     HTML_FOOTNOTE_COUNTER = footnote_counter
     formatted_output = []
     collected_footnotes = []
     footnote_data = subsection.get('footnotes', {})
     seen_markers_map = seen_content_map if seen_content_map is not None else {}
     
-    # Clean titles - NO saman_metadata
+    # Clean titles
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
 
-    # Header only (NO saman_metadata)
+    # Header - ONLY subsection header, no metadata
     if display_sub_title:
         header_title = escape_for_html(display_sub_title)
         header_title = format_dandas_html(header_title)
         formatted_output.append(f'<div class="subsection-header"><span class="header-title">{header_title}</span></div>')
 
     # Mantra Content
-    all_mantra_rows, all_swara_rows = parse_mantra_for_latex(
-        subsection, 
-        supersection_title, 
-        section_title, 
-        subsection_title
-    )
-    
-    for mantra_row, swara_row in zip(all_mantra_rows, all_swara_rows):
-        word_elements = []
+    mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+
+    mantra_array = []
+    for mset in mantra_sets:
+        m = mset.get('corrected-mantra') or mset.get('mantra', '')
+        if m:
+            mantra_array.append(m)
+        elif mset.get('mantra-words'):
+            words = []
+            for word_dict in mset.get('mantra-words', []):
+                w = word_dict.get('word', '')
+                sw = word_dict.get('swara', '')
+                if sw:
+                    words.append(f"{w}({sw})")
+                else:
+                    words.append(w)
+            if words:
+                mantra_array.append(" ".join(words))
+
+    for mantra_line in mantra_array:
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        clean_mantra, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(clean_mantra, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
+        collected_footnotes.extend(fnotes)
         
-        for i, (mantra_chunk, swara_chunk) in enumerate(zip(mantra_row, swara_row)):
-            text_part = mantra_chunk.strip().replace(":", "ः")
-            text_part = text_part.replace('{', '').replace('}', '').strip()
+        verse_parts = re.split(r'(॥\s*[\d०-९]+\s*॥)', clean_mantra)
+        
+        for idx_v in range(0, len(verse_parts), 2):
+            v_text = verse_parts[idx_v].strip()
+            v_marker = verse_parts[idx_v + 1] if idx_v + 1 < len(verse_parts) else ''
             
-            swara_part = swara_chunk.strip().replace('{}', '').replace('{', '').replace('}', '')
-            # Remove LaTeX formatting commands from swara
-            swara_part = swara_part.replace('\\textcolor{SwaraRed} ', '').replace('\\smallredfont ', '').strip()
-
-            if "SPACE_TOKEN" in text_part:
+            if not v_text and not v_marker:
                 continue
+                
+            v_html = render_deva_html_from_line(v_text, with_modifiers=with_modifiers)
+            if v_marker:
+                v_num_match = re.search(r'[\d०-९]+', v_marker)
+                v_num = v_num_match.group(0) if v_num_match else ''
+                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                
+            formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 
-            text_part = escape_for_html(text_part)
-            text_part = format_dandas_html(text_part)
-            
-            text_part, fnotes, HTML_FOOTNOTE_COUNTER = process_footnotes_html(text_part, footnote_data, HTML_FOOTNOTE_COUNTER, seen_markers_map, subsection_key)
-            collected_footnotes.extend(fnotes)
-
-            swara_part = escape_for_html(swara_part) if swara_part else '&nbsp;'
-            
-            word_html = f'<span class="mantra-word"><span class="mantra-text">{text_part}</span><span class="swara-text">{swara_part}</span></span>'
-            word_elements.append(word_html)
-
-        if word_elements:
-            verse_html = ''.join(word_elements)
-            formatted_output.append(f'<div class="mantra-verse">{verse_html}</div>')
-
-    # Accumulate footnotes for section-level rendering (don't render inline)
     if collected_footnotes and footnotes_accumulator is not None:
         footnotes_accumulator.extend(collected_footnotes)
             
@@ -3042,7 +3227,7 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
     return '\n'.join(formatted_output), footnote_counter
 
 
-def preprocess_html_data(supersections, output_mode='combined'):
+def preprocess_html_data(supersections, output_mode='combined', script='devanagari', with_modifiers=True):
     """
     Pre-processes all subsection content for HTML template rendering.
     """
@@ -3063,7 +3248,7 @@ def preprocess_html_data(supersections, output_mode='combined'):
             
             for subsection_key, subsection in section.get('subsections', {}).items():
                 unique_key = f"{super_key}_{section_key}_{subsection_key}"
-                is_malayalam = bool(subsection.get('malayalam-mantra-sets') or subsection.get('corrected-mantra_sets'))
+                is_malayalam = (script == 'malayalam')
                 
                 # Dispatch based on mode
                 html_content = ""
@@ -3090,7 +3275,8 @@ def preprocess_html_data(supersections, output_mode='combined'):
                         html_content, footnote_counter = format_samam_only_html(
                             subsection, None, None, subsection.get('header', {}).get('header'), {}, 
                             prev_rik_id, unique_key, 
-                            footnote_counter, footnotes_accumulator, seen_content_map
+                            footnote_counter, footnotes_accumulator, seen_content_map,
+                            with_modifiers=with_modifiers
                         )
                 elif output_mode == 'samam_nometa':
                     if is_malayalam:
@@ -3103,7 +3289,8 @@ def preprocess_html_data(supersections, output_mode='combined'):
                         html_content, footnote_counter = format_samam_nometa_html(
                             subsection, None, None, subsection.get('header', {}).get('header'), {}, 
                             prev_rik_id, unique_key, 
-                            footnote_counter, footnotes_accumulator, seen_content_map
+                            footnote_counter, footnotes_accumulator, seen_content_map,
+                            with_modifiers=with_modifiers
                         )
                 else:
                     if is_malayalam:
@@ -3124,7 +3311,8 @@ def preprocess_html_data(supersections, output_mode='combined'):
                         html_content, footnote_counter = format_mantra_sets_html(
                             subsection, None, None, subsection.get('header', {}).get('header'), {}, 
                             prev_rik_id, unique_key, 
-                            footnote_counter, footnotes_accumulator, seen_content_map
+                            footnote_counter, footnotes_accumulator, seen_content_map,
+                            with_modifiers=with_modifiers
                         )
                 
                 # INDEX COLLECT
@@ -3204,7 +3392,7 @@ def clean_toc_title(raw_title):
 
 
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -3234,7 +3422,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     HTML_FOOTNOTE_COUNTER = 0 # Not used in pre-process mode but kept for safety
     
     # PRE-PROCESS DATA
-    html_index = preprocess_html_data(data, output_mode)
+    html_index = preprocess_html_data(data, output_mode, script=script, with_modifiers=with_modifiers)
     
     if not jsv_version or not generated_at:
         from utils import get_generated_metadata
@@ -3273,6 +3461,21 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         f.write(document)
     
     print(f"HTML file created: {output_path}")
+    
+    # Auto-sync to data/output/html/<script>/
+    try:
+        script_dir = "Malayalam" if script == 'malayalam' else "Devanagari"
+        sync_dir = Path("data/output/html") / script_dir
+        sync_dir.mkdir(parents=True, exist_ok=True)
+        import shutil
+        shutil.copy2(output_path, sync_dir / HtmlFileName)
+        # Also sync base name without redundant script suffix if present
+        clean_name = HtmlFileName.replace('_Devanagari.html', '.html').replace('_Malayalam.html', '.html')
+        if clean_name != HtmlFileName:
+            shutil.copy2(output_path, sync_dir / clean_name)
+    except Exception:
+        pass
+
     return exit_code
 
 
@@ -3322,10 +3525,16 @@ Examples:
                         choices=['devanagari', 'malayalam'], default='devanagari',
                         help='Rendering script: devanagari (default) or malayalam (Phase 1 Samam-only pilot)')
     
-    # NEW CLI OPTION
+    # CLI OPTION for Swara Modifiers in Devanagari
+    parser.add_argument('--swara-modifiers', dest='swara_modifiers', action='store_true', default=True,
+                        help='Include swara modifiers in Devanagari (default: True)')
+    parser.add_argument('--no-swara-modifiers', dest='swara_modifiers', action='store_false',
+                        help='Exclude swara modifiers in Devanagari')
+    
+    # Color Mode Option (Defaults to color for rich Vedic rendering)
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
-                        choices=['bw', 'color'], default=None,
-                        help='Color mode for PDF output: bw or color')
+                        choices=['bw', 'color'], default='color',
+                        help='Color mode for PDF output: color (default) or bw')
                         
     parser.add_argument('--toc-level', dest='toc_level',
                         choices=['section', 'subsection', 'both'], default=None,
@@ -3337,6 +3546,18 @@ Examples:
     parser.add_argument('--output', '-o', dest='output', default=None,
                         help='Override the default output basename or specify a full output path.')
     
+    # Target format filters
+    parser.add_argument('--html-only', dest='html_only', action='store_true', default=False,
+                        help='Generate only HTML output (skips PDF and text generation)')
+    parser.add_argument('--pdf-only', dest='pdf_only', action='store_true', default=False,
+                        help='Generate only PDF output (skips HTML and text generation)')
+    parser.add_argument('--txt-only', dest='txt_only', action='store_true', default=False,
+                        help='Generate only Text output (skips PDF and HTML generation)')
+    parser.add_argument('--samam-only', dest='samam_only', action='store_true', default=False,
+                        help='Generate only Samam output (skips Rik output in separate/nometa modes)')
+    parser.add_argument('--rik-only', dest='rik_only', action='store_true', default=False,
+                        help='Generate only Rik output (skips Samam output in separate/nometa modes)')
+    
     args = parser.parse_args()
     mode_type = args.type
     type_settings = cfg_types.get(mode_type, {})
@@ -3345,13 +3566,22 @@ Examples:
     output_mode = args.output_mode or type_settings.get('output_mode') or cfg_defaults.get('output_mode', 'combined')
     pdf_font = args.pdf_font or type_settings.get('pdf_font') or cfg_defaults.get('pdf_font', 'AdishilaVedic')
     html_font = args.html_font or type_settings.get('html_font') or cfg_defaults.get('html_font', "'AdishilaVedic', 'AdishilaSanVedic'")
-    pdf_color_mode = args.pdf_color_mode or type_settings.get('pdf_color_mode') or cfg_defaults.get('pdf_color_mode', 'bw')
+    pdf_color_mode = args.pdf_color_mode or type_settings.get('pdf_color_mode') or 'color'
     toc_level = args.toc_level or type_settings.get('toc_level') or cfg_defaults.get('toc_level', 'section')
     
     global CURRENT_PDF_FONT
     CURRENT_PDF_FONT = pdf_font
     global CURRENT_TOC_LEVEL
     CURRENT_TOC_LEVEL = toc_level
+    global CURRENT_WITH_SWARA_MODIFIERS
+    CURRENT_WITH_SWARA_MODIFIERS = args.swara_modifiers
+    
+    # Target format dispatch flags
+    gen_pdf = not (args.html_only or args.txt_only)
+    gen_txt = not (args.html_only or args.pdf_only)
+    gen_html = not (args.pdf_only or args.txt_only)
+    gen_rik = not args.samam_only
+    gen_samam = not args.rik_only
     
     # Handle output path overrides
     out_dir = None
@@ -3499,16 +3729,9 @@ Examples:
                     except Exception:
                         pass
 
-    supersections = data_Devanagari.get('supersection', {})
+    supersections = data_Devanagari.get('supersections', data_Devanagari.get('supersection', {}))
     supersections = sanitize_data_structure(supersections)
-    closing_mantras = data_Devanagari.get('closing_mantras', [])
-    
-    # Pre-processing section titles (if needed)
-    for ss_key, ss_data in supersections.items():
-        for sec_key, sec_data in ss_data.get('sections', {}).items():
-            if sec_key == 'count': continue
-            # Keep original title without prepended continuous numbering
-            pass
+    closing_mantras = data_Devanagari.get('closing-mantras', data_Devanagari.get('closing_mantras', []))
     
     # Generate Summary Table
     summary_table = []
@@ -3516,13 +3739,14 @@ Examples:
     total_samams = 0
     
     for ss_key, ss_data in supersections.items():
-        patha_name = ss_data.get('supersection_title', '').replace('॥', '').strip()
+        if ss_key == 'count': continue
+        patha_name = ss_data.get('supersection_title', ss_key).replace('॥', '').strip()
         patha_riks = 0
         patha_samams = 0
         khanda_rows = []
         for sec_key, sec_data in ss_data.get('sections', {}).items():
             if sec_key == 'count': continue
-            khanda_name = sec_data.get('section_title', '').replace('॥', '').replace(':', 'ः').strip()
+            khanda_name = sec_data.get('section_title', sec_key).replace('॥', '').replace(':', 'ः').strip()
             
             seen_riks = set()
             samam_count = 0
@@ -3722,9 +3946,12 @@ Examples:
         text_template_file = latex_jinja_env.get_template(text_template_file_src)
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
-        CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_pdf:
+            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_txt:
+            CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_html:
+            CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':
@@ -3734,18 +3961,26 @@ Examples:
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         # Rik-only output: Pass output_mode='rik' to template
-        print("Generating Rik-only output (with metadata)...")
-        final_out_name = f"{out_name}_Rik" if out_name else "Rik"
-        CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Rik", doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_rik:
+            print("Generating Rik-only output (with metadata)...")
+            final_out_name = f"{out_name}_Rik" if out_name else "Rik"
+            if gen_pdf:
+                CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_txt:
+                CreateTextFile(text_template_file, f"Rik", doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_html:
+                CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
         
         # Samam-only output: Pass output_mode='samam' to template
-        print("Generating Samam-only output (with metadata)...")
-        final_out_name = f"{out_name}_Samam" if out_name else "Samam"
-        CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Samam", doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_samam:
+            print("Generating Samam-only output (with metadata)...")
+            final_out_name = f"{out_name}_Samam" if out_name else "Samam"
+            if gen_pdf:
+                CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_txt:
+                CreateTextFile(text_template_file, f"Samam", doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_html:
+                CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
         
         print("Success! Generated separate Rik and Samam output files.")
         
@@ -3756,18 +3991,26 @@ Examples:
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         # Rik-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='rik_nometa' to template
-        print("Generating Rik-only output (without metadata)...")
-        final_out_name = f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta"
-        CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Rik_NoMeta", doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_rik:
+            print("Generating Rik-only output (without metadata)...")
+            final_out_name = f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta"
+            if gen_pdf:
+                CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_txt:
+                CreateTextFile(text_template_file, f"Rik_NoMeta", doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_html:
+                CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
         
         # Samam-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='samam_nometa' to template
-        print("Generating Samam-only output (without metadata)...")
-        final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
-        CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateTextFile(text_template_file, f"Samam_NoMeta", doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
-        CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+        if gen_samam:
+            print("Generating Samam-only output (without metadata)...")
+            final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
+            if gen_pdf:
+                CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_txt:
+                CreateTextFile(text_template_file, f"Samam_NoMeta", doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if gen_html:
+                CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
         
         print("Success! Generated separate Rik and Samam output files without metadata.")
 

@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>॥ \VAR{doc_title_sa} ॥</title>
     <style>
+        @font-face {
+            font-family: 'JaimineeyaSwara';
+            \BLOCK{ if jaimineeya_swara_b64 }
+            src: url('data:font/truetype;charset=utf-8;base64,\VAR{jaimineeya_swara_b64}') format('truetype');
+            \BLOCK{ else }
+            src: url('../../../fonts/JaimineeyaSwara.ttf') format('truetype'),
+                 url('../../fonts/JaimineeyaSwara.ttf') format('truetype'),
+                 url('../fonts/JaimineeyaSwara.ttf') format('truetype'),
+                 url('fonts/JaimineeyaSwara.ttf') format('truetype');
+            \BLOCK{ endif }
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
             --font-doc: \VAR{html_font}, 'Noto Sans Devanagari', 'Siddhanta', 'AdishilaVedic', 'Arial Unicode MS', sans-serif;
+            --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', sans-serif;
             
             \BLOCK{ if 'Noto' in html_font }
             /* Noto Sans specific accent offsets */
@@ -25,7 +40,8 @@
             --accent-green: #1b5e20;
             --accent-purple: #4a148c;
             --accent-brown: #4e342e;
-            --swara-red: #b71c1c;
+            --swara-red: #c62828;
+            --modifier-color: #0284c7;
             --bg-light: #f8f9fa;
             --bg-card: #EFE6D5;
             --border-color: #dee2e6;
@@ -48,7 +64,7 @@
             font-size: 1.3rem;
             line-height: 1.8;
             color: var(--primary-color);
-            background: var(--bg-light);
+            background-color: var(--bg-light);
             margin: 0;
             padding: 0;
         }
@@ -67,7 +83,7 @@
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background: white;
@@ -75,25 +91,37 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         
-        /* Header Styles */
+        /* Title Page */
         .title-page {
             text-align: center;
             padding: 60px 20px;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 3px double var(--accent-purple);
             margin-bottom: 40px;
         }
         
         .title-page h1 {
             font-size: 2.5rem;
             color: var(--primary-color);
-            margin: 0;
+            margin-bottom: 20px;
+        }
+        
+        .title-page .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 15px;
+        }
+        
+        .title-page .version-info {
+            font-size: 1rem;
+            color: #666;
         }
         
         /* Table of Contents */
         .toc {
-            padding: 20px;
             background: var(--bg-light);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            padding: 25px;
             margin-bottom: 40px;
         }
         
@@ -102,10 +130,18 @@
             color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 20px;
+            font-size: 1.8rem;
         }
         
         .toc-content {
-            display: block;
+            columns: 2;
+            column-gap: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .toc-content {
+                columns: 1;
+            }
         }
         
         .toc-group {
@@ -113,143 +149,166 @@
             margin-bottom: 20px;
         }
         
+        .toc-chapter {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--accent-purple);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .toc-chapter a {
+            color: var(--accent-purple);
+            text-decoration: none;
+        }
+        
+        .toc-chapter a:hover {
+            text-decoration: underline;
+        }
+        
         .toc ul {
             list-style: none;
             padding-left: 0;
             margin: 0;
-            columns: 3;
-            column-gap: 20px;
         }
         
-        .toc a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            display: inline-block;
-            max-width: 100%;
+        .toc li {
+            padding: 4px 0;
         }
         
-        .toc a:hover {
-            text-decoration: underline;
-        }
-        
-        .toc-chapter {
-            font-weight: bold;
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+        .toc li a {
             color: var(--primary-color);
-            text-align: left;
-            break-after: avoid;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
         }
         
-        .toc-section {
-            padding: 2px 0;
-            font-size: 1.2rem;
-            line-height: 1.2;
-            text-align: left;
-            break-inside: avoid;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
+        .toc li a:hover {
+            color: var(--accent-blue);
         }
         
-        /* Chapter/Section Styles */
+        .toc .samam-count {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Content Sections */
         .chapter {
-            page-break-before: always;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 3px solid var(--accent-purple);
+            margin-bottom: 50px;
         }
         
         .chapter-title {
             text-align: center;
             font-size: 2rem;
             color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-purple);
+            padding-bottom: 10px;
             margin-bottom: 30px;
         }
         
         .section {
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
+            margin-bottom: 35px;
         }
         
         .section-title {
             text-align: center;
-            font-size: 1.5rem;
-            color: var(--primary-color); 
-            margin-bottom: 8px;
-        }
-
-        .section-samam-count {
-            font-size: 1.2rem;
-            color: var(--accent-green);
-            font-weight: normal;
-        }
-        
-        /* Mantra Styles */
-        .subsection {
-            margin: 0;
-            padding: 3px 10px;
-            background: var(--bg-card);
-            border-left: 4px solid var(--accent-blue);
-            text-align: center;
-        }
-        
-        .rik-metadata {
-            text-align: center;
+            font-size: 1.85rem;
+            font-weight: bold;
             color: var(--accent-purple);
-            font-size: 1.5rem;
-            line-height: 2;
-            margin: 0;
-            white-space: pre-wrap;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed var(--border-color);
         }
         
-        .rik-text {
+        .subsection {
+            background: var(--bg-card);
+            border-radius: 6px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             text-align: center;
-            color: var(--accent-blue);
-            font-size: 1.5rem;
-            line-height: 2;
-            letter-spacing: 0.02em;
-            margin-bottom: 0;
         }
         
         .subsection-header {
             text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            margin-bottom: 12px;
         }
         
         .subsection-header .header-title {
             color: var(--accent-green);
             font-weight: bold;
+            font-size: 1.65rem;
+            line-height: 1.4;
+            display: inline-block;
         }
         
         .subsection-header .header-meta {
             color: var(--accent-brown);
-            white-space: pre-wrap;
+            font-size: 1.2rem;
+            margin-left: 10px;
         }
-
         
+        /* Rik-Samam Separate Layout */
+        .rik-metadata {
+            color: var(--accent-purple);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .rik-text {
+            color: var(--accent-blue);
+            font-size: 1.5rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dotted var(--border-color);
+        }
+        
+        .samam-metadata {
+            color: var(--accent-brown);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .samam-text {
+            font-size: 1.5rem;
+            line-height: 2;
+            letter-spacing: 0.02em;
+            margin-bottom: 0;
+        }
         /* Mantra display - flexbox for no whitespace and natural wrapping */
         .mantra-verse {
-            margin: 5px 0;
+            margin: 6px 0;
             display: inline-flex;
             flex-wrap: wrap;
             align-items: flex-start;
+            justify-content: center;
             text-align: center;
             gap: 0;
+            width: 100%;
         }
         
-        /* Wrapper to center the inline-flex mantra-verse */
         .subsection {
             text-align: center;
         }
         
+        .mantra-connected-group {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            white-space: nowrap;
+            margin: 0;
+            padding: 0;
+        }
+
         .mantra-word {
             display: inline-flex;
             flex-direction: column;
-            align-items: stretch;
+            align-items: center;
             vertical-align: top;
             margin: 0;
             padding: 0;
@@ -259,34 +318,171 @@
             font-family: var(--font-doc);
             font-size: 1.5rem;
             line-height: 1.2;
+            white-space: nowrap;
+            position: relative;
         }
         
         .swara-text {
             font-family: var(--font-doc);
             color: var(--swara-red);
-            font-size: var(--swara-size);
-            line-height: 1;
+            font-size: 1.15rem;
+            line-height: 1.2;
             text-align: center;
-            margin-top: -0.25em;
-            min-height: 1em;
-            border-right: 1px solid transparent;
-            padding-right: 2px;
+            min-height: 1.2em;
+            white-space: nowrap;
         }
         
         .word-space {
-            width: 0.3em;
+            width: 0.35em;
         }
         
         /* Danda and Mantra Number */
         .danda {
-            margin: 0 0.2em;
+            font-family: var(--font-doc);
+            font-size: 1.5rem;
+            line-height: 1.2;
+            margin: 0 0.20em;
         }
         
-        .mantra-number {
+        .verse-num-marker {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 0.35em;
+            white-space: nowrap;
+        }
+        .verse-num {
+            font-size: 1.50rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0 2px;
+        }
+        
+        /* Swara Modifiers - Proportionate and delicate in Sky Blue */
+        .swara-mod {
+            font-family: var(--font-swara), var(--font-doc);
+            color: var(--modifier-color);
+            font-weight: bold;
+            line-height: 1;
+            display: inline-block;
+            vertical-align: baseline;
+        }
+        
+        /* Spanning Modifiers positioned between syllables */
+        .swara-mod.mod-a {
+            position: absolute;
+            top: -0.32em;
+            left: 100%;
+            transform: translateX(-40%);
+            font-size: 0.60em;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .swara-mod.mod-a1 {
+            position: absolute;
+            top: -0.32em;
+            left: 100%;
+            transform: translateX(8%);
+            font-size: 0.50em;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .swara-mod.mod-b {
+            position: absolute;
+            top: -0.28em;
+            left: 100%;
+            transform: translateX(-45%);
+            font-size: 1.00em;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .swara-mod.mod-c {
+            font-size: 0.60em;
+            margin-left: 1px;
+            vertical-align: 0.50em;
+        }
+        .swara-mod.mod-d {
+            position: absolute;
+            top: -0.28em;
+            left: 100%;
+            transform: translateX(-45%);
+            font-size: 0.60em;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .swara-mod.mod-d1 {
+            font-size: 0.48em;
+            margin-left: 1px;
+            vertical-align: 0.35em;
+        }
+        .swara-mod.mod-d2 {
+            font-size: 0.48em;
+            margin-left: 1px;
+            vertical-align: 0.35em;
+        }
+        .swara-mod.mod-e {
+            font-size: 0.50em;
+            margin-left: 1px;
+            vertical-align: -0.15em;
+        }
+        .swara-mod.mod-f {
+            font-size: 0.50em;
+            margin-left: 1px;
+            vertical-align: 0.15em;
+        }
+        .swara-mod.mod-g {
+            font-size: 0.48em;
+            margin-left: -0.12em;
+            vertical-align: -0.20em;
+        }
+        .swara-mod.mod-h {
+            font-size: 0.50em;
+            margin-left: -0.2em;
+            vertical-align: 0.75em;
+        }
+        .swara-mod.mod-under {
+            font-family: var(--font-doc);
+            font-size: 1.0em;
+            color: var(--modifier-color);
+            display: inline-block;
+            margin: 0;
+            font-weight: bold;
+            vertical-align: 0.10em;
+        }
+        .swara-mod.mod-comma,
+        .swara-mod.mod-dot {
+            font-family: var(--font-doc);
+            color: var(--modifier-color);
+            display: inline-block;
+            margin: 0;
+            font-size: 0.80em;
+            font-weight: bold;
+            vertical-align: baseline;
+        }
+        
+        .danda {
             display: inline-block;
             white-space: nowrap;
             color: var(--primary-color);
             font-weight: bold;
+            font-size: 1.55rem;
+            line-height: 1;
+            margin: 0 4px;
+            vertical-align: baseline;
+        }
+        
+        .verse-num-marker {
+            display: inline-flex;
+            align-items: baseline;
+            margin-left: 6px;
+            vertical-align: baseline;
+        }
+        
+        .verse-num {
+            font-size: 1.35rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 0 2px;
+            vertical-align: baseline;
         }
         
         /* Accent marks - zero-width positioning for fonts without native Vedic support */

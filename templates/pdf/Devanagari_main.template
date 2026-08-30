@@ -12,18 +12,24 @@
 \usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
 
 % --- CUSTOM COLORS (Matching HTML color scheme conditionally) ---
-\BLOCK{ if pdf_color_mode == 'color' }
+\BLOCK{ if pdf_color_mode == 'color' or pdf_color_mode is not defined or not pdf_color_mode }
 \definecolor{AccentBlue}{HTML}{1565c0}      % Rik text - matches HTML --accent-blue
 \definecolor{AccentPurple}{HTML}{7b1fa2}    % Metadata - matches HTML --accent-purple
 \definecolor{AccentGreen}{HTML}{2e7d32}     % Headers - matches HTML --accent-green
 \definecolor{AccentBrown}{HTML}{8B4513}     % Samam Metadata - matches HTML
-\definecolor{SwaraRed}{HTML}{c62828}        % Swara marks - matches HTML --swara-red
+\definecolor{SwaraRed}{HTML}{C62828}
+\definecolor{ModifierDarkBlue}{HTML}{006699}
+\definecolor{ModifierGreen}{HTML}{00994C}
+\definecolor{ModifierSkyBlue}{HTML}{0284C7}
 \BLOCK{ else }
 \definecolor{AccentBlue}{HTML}{000000}      
 \definecolor{AccentPurple}{HTML}{000000}    
 \definecolor{AccentGreen}{HTML}{000000}     
 \definecolor{AccentBrown}{HTML}{000000}     
 \definecolor{SwaraRed}{HTML}{000000}        
+\definecolor{ModifierDarkBlue}{HTML}{000000}
+\definecolor{ModifierGreen}{HTML}{000000}
+\definecolor{ModifierSkyBlue}{HTML}{000000}
 \BLOCK{ endif }
 
 \setmainfont[
@@ -37,15 +43,23 @@
 ]{\VAR{font_family}}
 
 \newfontfamily\smallredfont[
-    Scale=1.0,  
+    Scale=1.12,  
     Script=Devanagari,
     Ligatures=TeX,
     Color=SwaraRed,
+    AutoFakeBold=2.0,
     AutoFakeSlant\BLOCK{ if font_path },
     Path = \VAR{font_path},
     Extension = .ttf,
     UprightFont = *\BLOCK{ endif }
 ]{\VAR{font_family}}
+
+\BLOCK{ if font_path }
+\newfontfamily\swarafont[Scale=0.92, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\BLOCK{ else }
+\newfontfamily\swarafont[Scale=0.92, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant]{JaimineeyaSwara}
+\BLOCK{ endif }
+
 \setcounter{tocdepth}{3}
 
 % --- PACKAGES ---
@@ -55,7 +69,6 @@
 \usepackage[perpage]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
 \usepackage{hyperref}    
 \usepackage{imakeidx}    
-\usepackage{emoji}       
 \usepackage{needspace}
 \usepackage{longtable}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -110,14 +123,7 @@
     pdfpagemode=UseOutlines, 
 }
 
-% --- EMOJI ---
-\BLOCK{ if os == "Windows" }
-    \setemojifont{Segoe UI Emoji}
-\BLOCK{ elif os == "Darwin" }
-    \setemojifont{Apple Color Emoji}
-\BLOCK{ else }
-    \setemojifont{Noto Color Emoji}
-\BLOCK{ endif }
+
 
 % --- STACK CONFIG ---
 \def\stackalignment{c} 

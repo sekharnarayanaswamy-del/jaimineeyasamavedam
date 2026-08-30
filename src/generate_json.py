@@ -1333,7 +1333,9 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         # Sanitize invisible characters (Redundant if global is done, but keeps logic localized/independent)
         # Also normalize pipes/dandas as requested ("visarga handling" interpreted as punctuation normalization)
         mantra_text = sanitize_invisible_chars(mantra_text_raw.strip())
+        mantra_text = re.sub(r'\(\|\|?\)', lambda m: '(__PIPE__)' if len(m.group(0)) == 3 else '(__DBLPIPE__)', mantra_text)
         mantra_text = mantra_text.replace('||', '॥').replace('|', '।')
+        mantra_text = mantra_text.replace('(__PIPE__)', '(|)').replace('(__DBLPIPE__)', '(||)')
         # Apply Visarga Accent Preprocessing
         mantra_text = step_preprocess_visarga_accent(mantra_text)
         
