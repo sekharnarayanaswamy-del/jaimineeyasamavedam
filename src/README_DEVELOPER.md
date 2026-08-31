@@ -111,9 +111,10 @@ graph TD
 ```
 
 #### Detailed Components
-- **`CreatePdf()`**: Orchestrates LaTeX template rendering and invokes the LaTeX compiler (XeLaTeX).
+- **`CreatePdf()`**: Orchestrates LaTeX template rendering and invokes the LaTeX compiler (XeLaTeX). Supports standard swara-below stacking or Kodunthirapully (`-kpully`) swara-above stacking.
 - **`CreateTextFile()`**: Generates `.txt` files with Vedic text and metadata.
-- **`CreateHtmlFile()`**: Generates standalone `.html` files (distinct from the full website generation).
+- **`CreateHtmlFile()`**: Generates standalone `.html` files (distinct from the full website generation), supporting standard swara-below and `-kpully` swara-above layouts.
+- **`-kpully` / `--kpully` CLI Mode**: Renders Devanagari Samam with swara marks positioned directly **above** the mantra text (in PDF via `\stackon` and in HTML via flex `column-reverse`), whereas standard mode positions swaras below.
 - **`accumulate_footnotes()`**: Aggregates footprint mappings defined in the AST.
 - **`format_*()` Functions**: Specialized delegates for PDF, Text, and HTML modes (e.g., `format_rik_only_text`, `format_samam_only_html`).
 - **`split_rik_lines_*()`**: Format-specific line splitters that maintain structural integrity for LaTeX, HTML, or Plain Text.

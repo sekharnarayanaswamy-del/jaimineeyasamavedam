@@ -73,6 +73,11 @@ python -X utf8 src/generate_json.py data/input/Samhita_corrected.txt --output da
    ```powershell
    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json --output-mode nometa
    ```
+4. **Kodunthirapully Variant (`-kpully`):**
+   Render Devanagari Samam with red swara markings positioned **above** the mantra text (default without `-kpully` places swaras below the mantra syllables):
+   ```powershell
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json -kpully --output-mode nometa
+   ```
 
 ---
 
