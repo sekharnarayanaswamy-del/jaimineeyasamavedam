@@ -449,15 +449,12 @@
         }
         .swara-mod.mod-under {
             font-family: var(--font-doc);
-            font-size: 0.90em;
+            font-size: 1.0em;
             color: var(--modifier-color);
-            position: absolute;
-            bottom: 0.18em;
-            left: 50%;
-            transform: translateX(-20%);
+            display: inline;
             margin: 0;
             font-weight: bold;
-            pointer-events: none;
+            vertical-align: baseline;
             line-height: 1;
         }
         .swara-mod.mod-comma,
