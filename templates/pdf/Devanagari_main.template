@@ -91,9 +91,23 @@
 
 % --- STACKING COMMANDS (Strictly No Phantom Spaces) ---
 
-% 1. CENTERED Stack (Single Swara)
-% Natural width. No \useanchorwidth{T}.
-% The % signs are CRITICAL to prevent invisible spaces.
+\BLOCK{ if kpully }
+% 1. KPULLY (Kodunthirapully Paddhati): Swara markings ABOVE the mantra text
+\newcommand{\stackcenter}[2]{%
+  \begingroup%
+  \def\stackalignment{c}%
+  \stackon{#1}{#2}%
+  \endgroup%
+}
+
+\newcommand{\stackleft}[2]{%
+  \begingroup%
+  \def\stackalignment{c}%
+  \stackon{#1}{#2}%
+  \endgroup%
+}
+\BLOCK{ else }
+% 1. STANDARD: Swara markings BELOW the mantra text
 \newcommand{\stackcenter}[2]{%
   \begingroup%
   \def\stackalignment{c}%
@@ -101,14 +115,13 @@
   \endgroup%
 }
 
-% 2. LEFT Stack (Multi Swara) - NOW USING CENTER FOR BETTER ALIGNMENT
-% Changed from 'l' to 'c' to center mantra above swara
 \newcommand{\stackleft}[2]{%
   \begingroup%
   \def\stackalignment{c}%
   \stackunder{#1}{#2}%
   \endgroup%
 }
+\BLOCK{ endif }
 
 % --- INDEX INITIALIZATION ---
 \makeindex[columns=2, title=Alphabetical Index, intoc]

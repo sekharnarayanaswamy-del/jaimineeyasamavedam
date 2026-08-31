@@ -314,6 +314,13 @@
             padding: 0;
         }
         
+        \BLOCK{ if kpully }
+        /* KPULLY (Kodunthirapully Paddhati): Swara text rendered ABOVE the mantra text */
+        .mantra-word {
+            flex-direction: column-reverse;
+        }
+        \BLOCK{ endif }
+        
         .mantra-text {
             font-family: var(--font-doc);
             font-size: 1.5rem;

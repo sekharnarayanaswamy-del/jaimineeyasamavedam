@@ -488,7 +488,7 @@ def clean_stack_arg(text):
     return text.strip()
 
                         
-def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None):
+def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False):
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -531,7 +531,8 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         toc_level=toc_level,
         has_riks=has_riks,
         has_samams=has_samams,
-        prayogas=prayogas or []
+        prayogas=prayogas or [],
+        kpully=kpully
     )
     
 
@@ -3401,7 +3402,7 @@ def clean_toc_title(raw_title):
 
 
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True, kpully=False):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -3462,7 +3463,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         toc_level=toc_level,
         has_riks=has_riks,
         has_samams=has_samams,
-        jaimineeya_swara_b64=jaimineeya_swara_b64
+        jaimineeya_swara_b64=jaimineeya_swara_b64,
+        kpully=kpully
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
@@ -3964,11 +3966,11 @@ Examples:
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         if gen_pdf:
-            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
         if gen_txt:
             CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
         if gen_html:
-            CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
+            CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         print("Success! Generated combined output files.")
         
     elif output_mode == 'separate':
@@ -3982,22 +3984,22 @@ Examples:
             print("Generating Rik-only output (with metadata)...")
             final_out_name = f"{out_name}_Rik" if out_name else "Rik"
             if gen_pdf:
-                CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Rik", doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
-                CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
+                CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
         # Samam-only output: Pass output_mode='samam' to template
         if gen_samam:
             print("Generating Samam-only output (with metadata)...")
             final_out_name = f"{out_name}_Samam" if out_name else "Samam"
             if gen_pdf:
-                CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Samam", doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
-                CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
+                CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
         print("Success! Generated separate Rik and Samam output files.")
         
@@ -4012,22 +4014,22 @@ Examples:
             print("Generating Rik-only output (without metadata)...")
             final_out_name = f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta"
             if gen_pdf:
-                CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Rik_NoMeta", doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
-                CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
+                CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
         # Samam-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='samam_nometa' to template
         if gen_samam:
             print("Generating Samam-only output (without metadata)...")
             final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
             if gen_pdf:
-                CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Samam_NoMeta", doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
-                CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers)
+                CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
         print("Success! Generated separate Rik and Samam output files without metadata.")
 
