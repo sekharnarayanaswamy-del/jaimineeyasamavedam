@@ -396,9 +396,13 @@
             z-index: 2;
         }
         .swara-mod.mod-c {
+            position: absolute;
+            top: -0.15em;
+            left: 100%;
+            transform: translateX(-0.15em);
             font-size: 0.60em;
-            margin-left: 1px;
-            vertical-align: 0.50em;
+            pointer-events: none;
+            z-index: 2;
         }
         .swara-mod.mod-d {
             position: absolute;
