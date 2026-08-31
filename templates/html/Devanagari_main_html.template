@@ -444,17 +444,21 @@
         }
         .swara-mod.mod-h {
             font-size: 0.50em;
-            margin-left: -0.2em;
+            margin-left: -0.3em;
             vertical-align: 0.75em;
         }
         .swara-mod.mod-under {
             font-family: var(--font-doc);
-            font-size: 1.0em;
+            font-size: 0.90em;
             color: var(--modifier-color);
-            display: inline-block;
+            position: absolute;
+            bottom: 0.18em;
+            left: 50%;
+            transform: translateX(-20%);
             margin: 0;
             font-weight: bold;
-            vertical-align: 0.10em;
+            pointer-events: none;
+            line-height: 1;
         }
         .swara-mod.mod-comma,
         .swara-mod.mod-dot {
