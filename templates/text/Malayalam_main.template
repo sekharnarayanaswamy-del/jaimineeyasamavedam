@@ -16,7 +16,7 @@ Version \VAR{version} \VAR{generated_at}
 # End of Section Title -- \VAR{j} ## DO NOT EDIT
 \BLOCK{ set ns = namespace(prev_rik_id=none) }
 \BLOCK{ for k, subsection in section.get('subsections', {}).items() }
-%- set header = subsection.get('header', {}).get('header', 'Untitled Header') 
+%- set header = subsection.get('header', {}).get('header', 'Untitled Header') | replace('൪', 'ർ') 
 %- set rik_metadata = subsection.get('rik_metadata', '') 
 %- set rik_text = subsection.get('rik_text', '') 
 %- set saman_metadata = subsection.get('saman_metadata', '') 

@@ -26,7 +26,18 @@ Version \VAR{version} \VAR{generated_at}
 \BLOCK{ if output_mode == 'rik' }
 \VAR{subsection|format_rik_only_text(j,k,ns.prev_rik_id)}
 \BLOCK{ elif output_mode == 'samam' }
-\VAR{subsection|format_samam_only_text(j,k)}
+# Start of SubSection Title -- \VAR{k} ## DO NOT EDIT
+\VAR{ header }
+# End of SubSection Title -- \VAR{k} ## DO NOT EDIT
+\BLOCK{ if saman_metadata }
+# Start of Samam Metadata -- \VAR{k} ## DO NOT EDIT
+\VAR{ saman_metadata }
+# End of Samam Metadata -- \VAR{k} ## DO NOT EDIT
+\BLOCK{ endif }
+#Start of Mantra Sets -- \VAR{k} ## DO NOT EDIT
+\VAR{subsection|format_samam_nometa_text(j,k)}
+#End of Mantra Sets -- \VAR{k} ## DO NOT EDIT
+
 \BLOCK{ elif output_mode == 'rik_nometa' }
 \BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) or (rik_ids|length > 1 and max_rik_id != ns.prev_rik_id) }
 \BLOCK{ if show_rik and rik_text }

@@ -2069,12 +2069,13 @@ def _normalize_malayalam_samam_text_line(line: str) -> str:
     1. Converts Devanagari/Malayalam numerals to ASCII English numerals (e.g. ॥१॥ -> ॥ 1 ॥).
     2. Converts any internal PUA characters to standard Grantha Unicode equivalents.
     3. Converts swara modifier shorthand tags (A..H) to their authentic Unicode symbols.
+    4. Converts Vedic digit 4 (൪) back to standard Malayalam chillu-r (ർ) for Unicode text.
     """
     if not line:
         return ""
     
     # 1. Convert verse numerals to ASCII English digits with clean spacing
-    line = re.sub(r'॥\s*([०-९\d]+)\s*॥', lambda m: f"॥ {m.group(1).translate(_ENGLISH_DIGITS)} ॥", line)
+    line = re.sub(r'॥\s*([०-९\d൦-൯]+)\s*॥', lambda m: f"॥ {m.group(1).translate(_ENGLISH_DIGITS)} ॥", line)
     
     # 2. Map PUA swara characters to authentic Grantha characters
     pua_to_grantha = {
@@ -2098,11 +2099,18 @@ def _normalize_malayalam_samam_text_line(line: str) -> str:
     # 3. Map Swara Modifier codes to Unicode symbols (using non-combining characters for standalone text rendering)
     mod_to_unicode = {
         'A': '⁀', 'a': '⁀', '\uE004': '⁀', '╭╮': '⁀',
-        'B': '∧', 'b': '∧', '\uE005': '∧',
+        'A1': '⁀', 'a1': '⁀', 'A_1': '⁀', 'a_1': '⁀', '\uE00D': '⁀',
+        'B': '^', 'b': '^', '\uE005': '^',
         'C': '·', 'c': '·', '\uE001': '·', 'ॱ': '·',
-        'D': 'Ʌ', 'd': 'Ʌ', '\uE006': 'Ʌ',
+        'D': '∧', 'd': '∧', '\uE006': '∧', 'Ʌ': '∧',
+        'D1': '↗', 'd1': '↗', 'D_1': '↗', 'd_1': '↗', '\uE00E': '↗',
+        'D2': '✓', 'd2': '✓', 'D_2': '✓', 'd_2': '✓', '\uE00F': '✓',
+        'I': '⫽', 'i': '⫽', '\uE02A': '⫽',
+        'J': '¯', 'j': '¯', '\uE02B': '¯',
+        'B1': '/', 'b1': '/', 'B_1': '/', 'b_1': '/', '\uE02C': '/',
+        'K': '⨯', 'k': '⨯', '\uE02D': '⨯',
         'E': '┃', 'e': '┃', '\uE002': '┃',
-        'F': '╷', 'f': '╷',
+        'F': '╷', 'f': '╷', '\uE008': '╷',
         'G': '\\', 'g': '\\', '\uE003': '\\',
         'H': '|', 'h': '|', '\uE00C': '|',
         'L': '|', 'l': '|',
@@ -2115,6 +2123,8 @@ def _normalize_malayalam_samam_text_line(line: str) -> str:
         return m.group(0)
     
     line = re.sub(r'\(([^)]+)\)', _rep_paren, line)
+    # Convert Vedic repha ൪ back to chillu-r ർ in text export
+    line = line.replace('൪', 'ർ')
     return line
 
 
@@ -2122,7 +2132,15 @@ def format_malayalam_samam_text(subsection, section_title, subsection_title):
     """Plain-text artifact for Malayalam Samam with Grantha swara markers and Unicode modifiers."""
     formatted_sets = []
     
-    # 1. Check corrected-mantra_sets (preserves Grantha swara markers)
+    # 1. Prioritize malayalam-mantra-sets (contains native Malayalam with Grantha swaras and modifiers)
+    for mantra_set in subsection.get('malayalam-mantra-sets', []):
+        mantra = mantra_set.get('malayalam-mantra', '')
+        if mantra:
+            formatted_sets.append(_normalize_malayalam_samam_text_line(mantra))
+    if formatted_sets:
+        return "\n".join(formatted_sets)
+        
+    # 2. Check corrected-mantra_sets
     corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
     if corrected_mantra_sets:
         for corrected in corrected_mantra_sets:
@@ -2132,14 +2150,6 @@ def format_malayalam_samam_text(subsection, section_title, subsection_title):
         if formatted_sets:
             return "\n".join(formatted_sets)
 
-    # 2. Check malayalam-mantra-sets
-    for mantra_set in subsection.get('malayalam-mantra-sets', []):
-        mantra = mantra_set.get('malayalam-mantra', '')
-        if mantra:
-            formatted_sets.append(_normalize_malayalam_samam_text_line(mantra))
-    if formatted_sets:
-        return "\n".join(formatted_sets)
-        
     # 3. Check mantra_sets
     for mantra_set in subsection.get('mantra_sets', []):
         words = []
@@ -2502,7 +2512,7 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
         if v_count > 0:
             rendered_items.append({
                 'type': 'verse_num',
-                'html': f'<span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                'html': f'<span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
             })
             idx += v_count
             continue
@@ -2525,7 +2535,12 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
         elif t == 'marker':
             m_val = tok.get('marker', '').strip('()')
             if with_modifiers and m_val in SPANNING_MARKERS:
-                # Attach to preceding word item if available
+                if m_val in ('A', 'a', '⁀', '\uE004'):
+                    d_idx = idx + 1
+                    while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
+                        d_idx += 1
+                    if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda' and tokens[d_idx]['char'] == '।':
+                        m_val = 'A1'
                 mod_h = render_mod_html(m_val)
                 attached = False
                 for prev_item in reversed(rendered_items):
@@ -2557,6 +2572,8 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
             if visarga:
                 word += visarga
             
+            span_mod_html = None
+            span_mod_type = None
             if not with_modifiers:
                 core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
                 punct_html = ''
@@ -2567,7 +2584,26 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
                 trailing_punct = word[len(core_word):]
                 punct_html = ''.join([render_mod_html(p) for p in trailing_punct])
                 sw_parts, mods = _parse_swara_and_modifiers(swara)
-                mods_html = ''.join([render_mod_html(m) for m in mods])
+                
+                # Look ahead to check if followed by danda
+                next_is_danda = False
+                n_idx = idx + 1
+                while n_idx < len(tokens) and tokens[n_idx]['type'] == 'space':
+                    n_idx += 1
+                if n_idx < len(tokens) and tokens[n_idx]['type'] == 'danda' and tokens[n_idx]['char'] == '।':
+                    next_is_danda = True
+                
+                reg_mods = []
+                for m in mods:
+                    m_clean = m.strip('()')
+                    if m_clean in SPANNING_MARKERS:
+                        if m_clean in ('A', 'a', '⁀', '\uE004') and next_is_danda:
+                            m_clean = 'A1'
+                        span_mod_html = render_mod_html(m_clean)
+                        span_mod_type = m_clean
+                    else:
+                        reg_mods.append(m)
+                mods_html = ''.join([render_mod_html(m) for m in reg_mods])
             
             sw_letter = ' '.join(sw_parts) if sw_parts else ''
             syllables = split_deva_syllables(core_word) if core_word else []
@@ -2587,8 +2623,8 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
                 'mods_html': mods_html,
                 'punct_html': punct_html,
                 'bot_content': sw_letter if sw_letter else "&nbsp;",
-                'spanning_mod': None,
-                'spanning_type': None
+                'spanning_mod': span_mod_html,
+                'spanning_type': span_mod_type
             })
         idx += 1
 
@@ -2599,22 +2635,19 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
         item = rendered_items[i]
         if item['type'] == 'word' and item.get('spanning_mod'):
             # This word has a spanning modifier connecting to next word (and possibly danda)
-            # Find the span extent
-            group_items = []
-            j = i
-            # Add this item
-            group_items.append(item)
-            j += 1
-            # Collect until next word is included
+            group_items = [item]
+            j = i + 1
             while j < len(rendered_items):
                 next_it = rendered_items[j]
+                if next_it['type'] == 'space':
+                    # Remove whitespace around danda inside spanning connected groups
+                    j += 1
+                    continue
                 group_items.append(next_it)
                 j += 1
                 if next_it['type'] == 'word' and not next_it.get('spanning_mod'):
                     break
-                # If the next word also has a spanning mod (chained, e.g. D then A1), continue chaining!
             
-            # Render all items in group_items inside connected group
             group_html = []
             for g_item in group_items:
                 if g_item['type'] == 'word':
@@ -2746,7 +2779,7 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             is_mixed = bool(string_2.strip())
             style = ' style="margin-bottom: 2.5rem;"' if is_mixed else ''
@@ -2920,7 +2953,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 
@@ -2991,7 +3024,7 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 
@@ -3226,7 +3259,7 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
             if v_marker:
                 num_m = re.search(r'[\d०-९]+', v_marker)
                 v_num = num_m.group(0).translate(_ENGLISH_DIGITS) if num_m else ''
-                v_marker_html = f'<span class="verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span>'
+                v_marker_html = f'<span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 formatted_output.append(f'<div class="mantra-verse">{v_html} {v_marker_html}</div>')
             elif v_html:
                 formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
@@ -3896,6 +3929,8 @@ Examples:
     
     current_os = platform.system()
 
+    deva_doc_title_sa = doc_title_sa
+
     # Malayalam script: transliterate the title on the title page
     if script == 'malayalam' and doc_title_sa:
         from malayalam.ml_transliterate import devanagari_to_malayalam
@@ -3959,6 +3994,10 @@ Examples:
         text_template_file_src = text_templateFile_Devanagari
         html_template_file_src = html_templateFile_Devanagari
 
+    # Dual text generation helper for Malayalam script mode
+    deva_text_template_file = latex_jinja_env.get_template(text_templateFile_Devanagari) if script == 'malayalam' else None
+    from malayalam.ml_transliterate import convert_malayalam_data_to_devanagari
+
     if output_mode == 'combined':
         # Default: Combined output (Rik + Samam together)
         template_file = latex_jinja_env.get_template(template_file_src)
@@ -3969,6 +4008,9 @@ Examples:
             CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
         if gen_txt:
             CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
+            if script == 'malayalam':
+                deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                CreateTextFile(deva_text_template_file, f"{file_prefix}", 'Devanagari', deva_supersections, output_mode='combined', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
         if gen_html:
             CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         print("Success! Generated combined output files.")
@@ -3987,6 +4029,9 @@ Examples:
                 CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Rik", doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                if script == 'malayalam':
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    CreateTextFile(deva_text_template_file, f"Rik", 'Devanagari', deva_supersections, output_mode='rik', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, f"Rik", doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
@@ -3998,6 +4043,9 @@ Examples:
                 CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Samam", doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                if script == 'malayalam':
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    CreateTextFile(deva_text_template_file, f"Samam", 'Devanagari', deva_supersections, output_mode='samam', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, f"Samam", doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
@@ -4017,6 +4065,9 @@ Examples:
                 CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Rik_NoMeta", doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                if script == 'malayalam':
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    CreateTextFile(deva_text_template_file, f"Rik_NoMeta", 'Devanagari', deva_supersections, output_mode='rik_nometa', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, f"Rik_NoMeta", doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         
@@ -4028,6 +4079,9 @@ Examples:
                 CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
                 CreateTextFile(text_template_file, f"Samam_NoMeta", doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
+                if script == 'malayalam':
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    CreateTextFile(deva_text_template_file, f"Samam_NoMeta", 'Devanagari', deva_supersections, output_mode='samam_nometa', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, f"Samam_NoMeta", doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
         

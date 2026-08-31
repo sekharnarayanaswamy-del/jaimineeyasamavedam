@@ -305,6 +305,9 @@ def transform_subsection(subsection: dict, warnings: list, stats: Counter) -> di
             }
         except Exception:
             pass
+    if sub.get("malayalam-mantra-sets"):
+        return sub
+        
     mantra_sets = sub.get("corrected-mantra_sets") or sub.get("mantra_sets") or []
     malayalam_sets = []
     for mantra_set in mantra_sets:

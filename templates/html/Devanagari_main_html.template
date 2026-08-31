@@ -348,20 +348,28 @@
             font-family: var(--font-doc);
             font-size: 1.5rem;
             line-height: 1.2;
-            margin: 0 0.20em;
+            margin: 0 0.05em;
+            vertical-align: baseline;
         }
         
         .verse-num-marker {
             display: inline-flex;
-            align-items: center;
+            align-items: baseline;
             margin-left: 0.35em;
             white-space: nowrap;
+            font-family: var(--font-doc);
+            font-size: 1.5rem;
+            line-height: 1.2;
+            vertical-align: baseline;
         }
         .verse-num {
+            font-family: var(--font-doc);
             font-size: 1.50rem;
             font-weight: bold;
             color: var(--primary-color);
-            margin: 0 2px;
+            margin: 0 0.15em;
+            line-height: 1.2;
+            vertical-align: baseline;
         }
         
         /* Swara Modifiers - Proportionate and delicate in Sky Blue */
@@ -388,8 +396,8 @@
             position: absolute;
             top: -0.32em;
             left: 100%;
-            transform: translateX(8%);
-            font-size: 0.50em;
+            transform: translateX(-8%);
+            font-size: 0.60em;
             pointer-events: none;
             z-index: 2;
         }
@@ -398,7 +406,7 @@
             top: -0.28em;
             left: 100%;
             transform: translateX(-45%);
-            font-size: 1.00em;
+            font-size: 0.50em;
             pointer-events: none;
             z-index: 2;
         }
@@ -484,6 +492,9 @@
             line-height: 1;
             margin: 0 4px;
             vertical-align: baseline;
+        }
+        .mantra-connected-group .danda {
+            margin: 0 1px;
         }
         
         .verse-num-marker {

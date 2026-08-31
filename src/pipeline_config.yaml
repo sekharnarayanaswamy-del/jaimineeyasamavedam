@@ -177,7 +177,7 @@ generate_website:
 #   --pdf-color-mode        Color mode for PDF: bw, color (default: bw)
 #   --toc-level             TOC headers: section, subsection, both (default: section)
 #   --title                 Custom Sanskrit title for the document
-#   -kpully, --kpully       Render Devanagari with swara markings below the mantra text (Kodunthirapully paddhati)
+#   -kpully, --kpully       Render Devanagari with swara markings above mantra text (Kodunthirapully paddhati)
 #
 # Output Modes:
 #   combined   - Single output with both Rik and Samam content (default)
