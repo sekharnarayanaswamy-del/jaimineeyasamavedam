@@ -2480,7 +2480,7 @@ def render_mod_html(mod_str: str) -> str:
     return f'<span class="swara-mod">{mod_str}</span>'
 
 DEVA_SYLLABLE_RE = re.compile(
-    r'(?:[\u0904-\u0914]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094C\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓])*'
+    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094C\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓])*'
 )
 
 def split_deva_syllables(text: str):
