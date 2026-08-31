@@ -177,6 +177,7 @@ generate_website:
 #   --pdf-color-mode        Color mode for PDF: bw, color (default: bw)
 #   --toc-level             TOC headers: section, subsection, both (default: section)
 #   --title                 Custom Sanskrit title for the document
+#   -kpully, --kpully       Render Devanagari with swara markings below the mantra text (Kodunthirapully paddhati)
 #
 # Output Modes:
 #   combined   - Single output with both Rik and Samam content (default)
@@ -187,6 +188,7 @@ generate_website:
 #   python render_pdf.py input.json
 #   python render_pdf.py input.json --output-mode separate
 #   python render_pdf.py input.json --output-mode nometa
+#   python render_pdf.py input.json -kpully
 #
 render:
   defaults:
@@ -195,6 +197,7 @@ render:
     html_font: "'AdishilaVedic', 'AdishilaSanVedic'"
     pdf_color_mode: "bw"
     toc_level: "section"
+    kpully: false
   
   types:
     samhita:

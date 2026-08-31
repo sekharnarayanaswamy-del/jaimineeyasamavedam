@@ -3540,6 +3540,10 @@ Examples:
     parser.add_argument('--no-swara-modifiers', dest='swara_modifiers', action='store_false',
                         help='Exclude swara modifiers in Devanagari')
     
+    # CLI OPTION for Kodunthirapully variant (swaras below mantra text)
+    parser.add_argument('-kpully', '--kpully', dest='kpully', action='store_true', default=False,
+                        help='Render Devanagari with swara markings stacked below the mantra text (Kodunthirapully paddhati)')
+    
     # Color Mode Option (Defaults to color for rich Vedic rendering)
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
                         choices=['bw', 'color'], default='color',
@@ -3578,12 +3582,16 @@ Examples:
     pdf_color_mode = args.pdf_color_mode or type_settings.get('pdf_color_mode') or 'color'
     toc_level = args.toc_level or type_settings.get('toc_level') or cfg_defaults.get('toc_level', 'section')
     
+    kpully_mode = args.kpully or type_settings.get('kpully') or cfg_defaults.get('kpully', False)
+    
     global CURRENT_PDF_FONT
     CURRENT_PDF_FONT = pdf_font
     global CURRENT_TOC_LEVEL
     CURRENT_TOC_LEVEL = toc_level
     global CURRENT_WITH_SWARA_MODIFIERS
     CURRENT_WITH_SWARA_MODIFIERS = args.swara_modifiers
+    global CURRENT_KPULLY_MODE
+    CURRENT_KPULLY_MODE = kpully_mode
     
     # Target format dispatch flags
     gen_pdf = not (args.html_only or args.txt_only)
