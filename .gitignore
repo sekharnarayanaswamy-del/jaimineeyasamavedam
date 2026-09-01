@@ -22,30 +22,44 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Output lines folder
-output_text/lines/
-
-# Documents
+# Generated Documents & Output Files
 *.pdf
-!data/output/pdf/Malayalam/*.pdf
-!data/output/swara_devanagari/*.pdf
+*.html
+*.mhtml
 *.docx
 *.xlsx
 *.doc
 *.xls
-
-# Data files
 *.json
-!corrections_003_merged_out.json
-!Rik_Processing/corrections_003_merged_out.json
-!data/output/malayalam/*.json
-
-# *.txt
 *.csv
-!data/input/granular_table.csv
-!data/output/JSV_Samam_Granular_Table.csv
-!data/output/Samhita_Devanagari_Swara_Table.csv
-!data/output/Samhita_Devanagari_Swara_By_Sama.csv
+
+# Generated outputs
+data/output/*.html
+data/output/*.pdf
+data/output/*.json
+data/output/*.csv
+data/output/html/
+data/output/txt/
+data/output/pdf/
+Malayalam_JSV/malayalam/*.json
+Malayalam_JSV/stage_output/*.json
+Malayalam_JSV/*.json
+output_text/
+vedavms/.cache/
+vedavms/build/
+scratch/
+deprecated/
+
+# Allow templates, mockups, and docs static assets
+!templates/**
+!html_templates/**
+!pdf_templates/**
+!text_templates/**
+!vedavms/mockup/**
+!docs/**/*.html
+!docs/**/*.css
+!docs/**/*.js
+!.vscode/*.json
 
 # Images
 *.png
@@ -140,14 +154,5 @@ test_regex.py
 test_rik_parser.py
 test_strip_output.txt
 test_strip.py
-extracted_output.txt
-corrections_003_merged_out.json
-!output_text/txt/Devanagari/*.txt
-Devanagari_standalone/corrections_003_rishi_chandas.txt
-Devanagari_standalone/Devanagari_main.template
-!html_templates/Devanagari_main_html.template
-!output_text\txt\Devanagari\Full_Samhita_ip_with_FN.txt
-!Full_Samhita_ip_with_FN_out.json
-
 # Allow GitHub Pages website folder
 !docs/

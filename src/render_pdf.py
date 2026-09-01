@@ -145,6 +145,22 @@ def replace_accents(text):
     
     return text
 
+def replace_accents_html(text):
+    """
+    Replaces ASCII markers with HTML Unicode entities wrapped in spans for positioning.
+    """
+    if not text:
+        return text
+    replacements = [
+        ('(1)', '<span class="accent-swarita">&#x0951;</span>'),  # Swarita
+        ('(2)', '<span class="accent-anudatta">&#x1CD2;</span>'),  # Anudatta
+        ('(3)', '<span class="accent-kampa">&#x1CF8;</span>'),  # Kampa
+        ('(4)', '<span class="accent-trikampa">&#x1CF9;</span>'),  # Trikampa
+    ]
+    for marker, replacement in replacements:
+        text = text.replace(marker, replacement)
+    return text
+
 # ----------------------------------------------------
 # 2. NEW UTILITY: Consecutive Accent Handler
 # ----------------------------------------------------
