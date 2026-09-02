@@ -401,6 +401,15 @@
             pointer-events: none;
             z-index: 2;
         }
+        .swara-mod.mod-a2 {
+            position: absolute;
+            top: -0.32em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.60em;
+            pointer-events: none;
+            z-index: 2;
+        }
         .swara-mod.mod-b {
             position: absolute;
             top: -0.28em;
@@ -461,6 +470,47 @@
             font-size: 0.50em;
             margin-left: -0.3em;
             vertical-align: 0.75em;
+        }
+        .swara-mod.mod-i {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.25em;
+            right: -0.25em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-j {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.28em;
+            right: -0.20em;
+            line-height: 1;
+            pointer-events: none;
+        }
+        .swara-mod.mod-b1 {
+            position: absolute;
+            top: -0.35em;
+            left: 100%;
+            transform: translateX(-20%);
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+        .swara-mod.mod-k {
+            font-family: var(--font-swara);
+            font-size: 1.45rem;
+            font-weight: bold;
+            color: var(--modifier-color);
+            position: absolute;
+            top: -0.25em;
+            right: -0.50em;
+            line-height: 1;
+            pointer-events: none;
         }
         .swara-mod.mod-under {
             font-family: var(--font-doc);

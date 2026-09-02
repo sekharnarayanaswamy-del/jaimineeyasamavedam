@@ -102,6 +102,21 @@ def tokenize_mantra_line(text: str) -> list[dict]:
         m = WORD_RE.match(text[i:])
         if m and m.group(1):
             swara_group = m.group(2) or ""
+            matched_len = m.end()
+            word_str = m.group(1)
+            # If immediately followed by underscore after swara, attach _ as suffix to word
+            # and continue consuming any further parenthesized swara/modifier groups
+            while i + matched_len < n:
+                if text[i + matched_len] == "_":
+                    word_str += "_"
+                    matched_len += 1
+                m_more = re.match(r"^((?:\([^)]+\))+)", text[i + matched_len:])
+                if m_more:
+                    swara_group = (swara_group or "") + m_more.group(1)
+                    matched_len += len(m_more.group(1))
+                    continue
+                break
+
             fn_tokens = []
             if swara_group:
                 all_parens = re.findall(r"\(([^)]+)\)", swara_group)
@@ -114,12 +129,6 @@ def tokenize_mantra_line(text: str) -> list[dict]:
                 swara_val = "".join(f"({m_val})" for m_val in swara_markers) if len(swara_markers) > 1 else (swara_markers[0] if swara_markers else None)
             else:
                 swara_val = None
-            matched_len = m.end()
-            word_str = m.group(1)
-            # If immediately followed by underscore after swara, attach _ as suffix to word
-            if i + matched_len < n and text[i + matched_len] == "_" and swara_group:
-                word_str += "_"
-                matched_len += 1
 
             tokens.append(
                 {

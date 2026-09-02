@@ -2487,6 +2487,7 @@ HTML_MOD_MAP = {
     'a2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
     'A_2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
     'a_2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
+    '\uE02E': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
     'D': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
     'd': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
     '∧': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
