@@ -88,8 +88,9 @@ def main():
     )
     parser.add_argument(
         "--publish",
-        action="store_true",
-        help="Copy generated HTML files to docs/ folder for GitHub Pages publishing",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Build Malayalam website and copy generated HTML files to docs/ (default: True, use --no-publish to skip)",
     )
     parser.add_argument(
         "--skip-kpully",
@@ -185,7 +186,7 @@ def main():
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF)")
 
-    # 3. Optional publish to docs/
+    # 3. Publishing step: Copy HTML files to docs/
     if args.publish:
         print("\n[PIPELINE] Step 3: Publishing HTML files to docs/...")
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
@@ -193,13 +194,26 @@ def main():
         malayalam_docs_dir.mkdir(parents=True, exist_ok=True)
 
         copied = []
+        # 3a. Copy generated pipeline HTML files to docs/ and docs/malayalam/
         for html_file in output_prefix.parent.glob(f"{output_prefix.name}*.html"):
-            target = malayalam_docs_dir / html_file.name
-            shutil.copy2(html_file, target)
-            copied.append(target)
-            print(f"  Copied -> {target.relative_to(ROOT_DIR)}")
+            target_mal = malayalam_docs_dir / html_file.name
+            shutil.copy2(html_file, target_mal)
+            target_root = DOCS_DIR / html_file.name
+            shutil.copy2(html_file, target_root)
+            copied.extend([target_mal, target_root])
+            print(f"  Copied -> {target_root.relative_to(ROOT_DIR)}")
 
-        # Also publish Devanagari Kpully HTML if present
+        # 3b. Copy standalone full Malayalam HTML (Samam_Malayalam_Malayalam.html)
+        main_mal_html = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_Malayalam_Malayalam.html"
+        if main_mal_html.exists():
+            target_mal = malayalam_docs_dir / main_mal_html.name
+            shutil.copy2(main_mal_html, target_mal)
+            target_root = DOCS_DIR / main_mal_html.name
+            shutil.copy2(main_mal_html, target_root)
+            copied.extend([target_mal, target_root])
+            print(f"  Copied -> {target_root.relative_to(ROOT_DIR)}")
+
+        # 3c. Copy Devanagari Kpully HTML if present
         kpully_html_candidates = [
             ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samhita_Devanagari.html",
             ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.html",
