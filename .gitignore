@@ -57,8 +57,11 @@ deprecated/
 !text_templates/**
 !vedavms/mockup/**
 !docs/**/*.html
+!docs/*.html
 !docs/**/*.css
 !docs/**/*.js
+!docs/**/*.pdf
+!docs/*.pdf
 !.vscode/*.json
 
 # Images

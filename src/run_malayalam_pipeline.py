@@ -186,9 +186,9 @@ def main():
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF)")
 
-    # 3. Publishing step: Copy HTML files to docs/
+    # 3. Publishing step: Copy HTML & PDF files to docs/
     if args.publish:
-        print("\n[PIPELINE] Step 3: Publishing HTML files to docs/...")
+        print("\n[PIPELINE] Step 3: Publishing HTML and PDF files to docs/...")
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
         malayalam_docs_dir = DOCS_DIR / "malayalam"
         malayalam_docs_dir.mkdir(parents=True, exist_ok=True)
@@ -226,19 +226,55 @@ def main():
                 print(f"  Copied -> {target_kpully.relative_to(ROOT_DIR)}")
                 break
 
+        # 3d. Copy Malayalam PDFs if present
+        mal_pdf_candidates = [
+            output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.pdf",
+            output_prefix.parent / f"{output_prefix.name}_Malayalam.pdf",
+            ROOT_DIR / "data" / "output" / "pdf" / "Malayalam" / "Samam_Malayalam.pdf",
+        ]
+        for src_pdf in mal_pdf_candidates:
+            if src_pdf.exists():
+                target_pdf_root = DOCS_DIR / "Samam_Malayalam.pdf"
+                shutil.copy2(src_pdf, target_pdf_root)
+                target_pdf_mal = malayalam_docs_dir / "Samam_Malayalam.pdf"
+                shutil.copy2(src_pdf, target_pdf_mal)
+                copied.extend([target_pdf_root, target_pdf_mal])
+                print(f"  Copied -> {target_pdf_root.relative_to(ROOT_DIR)}")
+                break
+
+        # 3e. Copy Devanagari Kpully PDF if present
+        kpully_pdf_candidates = [
+            ROOT_DIR / "data" / "output" / "pdf" / "Devanagari" / "Samhita_Devanagari.pdf",
+            ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.pdf",
+        ]
+        for src_pdf in kpully_pdf_candidates:
+            if src_pdf.exists():
+                target_kpully_pdf = DOCS_DIR / "Samhita_kpully_Devanagari.pdf"
+                shutil.copy2(src_pdf, target_kpully_pdf)
+                copied.append(target_kpully_pdf)
+                print(f"  Copied -> {target_kpully_pdf.relative_to(ROOT_DIR)}")
+                break
+
         if copied:
-            print(f"[INFO] Published {len(copied)} HTML files to docs/")
+            print(f"[INFO] Published {len(copied)} files (HTML + PDF) to docs/")
 
     print("\n" + "=" * 60)
     print(" Pipeline completed successfully!")
     print("=" * 60)
     print(" Generated Artifacts:")
     print(f"  - Malayalam HTMLs : {output_prefix.parent / 'html' / 'Malayalam'}")
+    print(f"  - Malayalam PDF   : {output_prefix.parent / f'{output_prefix.name}_Samam_Malayalam.pdf'}")
     print(f"  - Plaintext TXTs  : {output_prefix.parent / 'txt' / 'Malayalam'}")
     print(f"  - Devanagari TXTs : {output_prefix.parent / 'txt' / 'Devanagari'}")
     if not args.skip_kpully:
         print(f"  - Devanagari Kpully HTML: {ROOT_DIR / 'data' / 'output' / 'html' / 'Devanagari' / 'Samhita_Devanagari.html'}")
         print(f"  - Devanagari Kpully PDF : {ROOT_DIR / 'data' / 'output' / 'pdf' / 'Devanagari' / 'Samhita_Devanagari.pdf'}")
+    if args.publish:
+        print(" Published to docs/:")
+        print(f"  - Malayalam HTML: {DOCS_DIR / 'Samam_Malayalam_Malayalam.html'}")
+        print(f"  - Malayalam PDF : {DOCS_DIR / 'Samam_Malayalam.pdf'}")
+        print(f"  - Devanagari Kpully HTML: {DOCS_DIR / 'Samhita_kpully_Devanagari.html'}")
+        print(f"  - Devanagari Kpully PDF : {DOCS_DIR / 'Samhita_kpully_Devanagari.pdf'}")
     print("=" * 60 + "\n")
 
 
