@@ -26,7 +26,7 @@ SCANS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Grantha Swara regex & Modifiers
 SWARA_CHARS = r"[\U00011300-\U0001137F]"
-MOD_REGEX = re.compile(r"\((?:[CDGBHE]|A1?)\)")
+MOD_REGEX = re.compile(r"\((?:[CDGBHE]|A[12]?)\)")
 
 SUPERSECTION_INFO = [
     (1, 12, "SuperSection 1: Agneyam (ആഗ്നേയം)", "SS1"),
@@ -194,10 +194,20 @@ def parse_master_file():
     return {"sections": sections}
 
 
-def save_samam_edit(subsec_id, samam_num, new_text):
-    """Saves edited Samam text back into the master file with safety validation."""
+def save_samam_edit(subsec_id: str, samam_num: int, new_text: str, new_title: str = None) -> dict:
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         content = f.read()
+
+    # If new_title is provided, update the SubSection Title block
+    if new_title is not None and new_title.strip():
+        title_pattern = re.compile(
+            rf"(# Start of SubSection Title -- {subsec_id} ## DO NOT EDIT\n)(.*?)(\n# End of SubSection Title -- {subsec_id} ## DO NOT EDIT)",
+            re.DOTALL
+        )
+        t_match = title_pattern.search(content)
+        if t_match:
+            t_header, old_title, t_footer = t_match.groups()
+            content = content[:t_match.start()] + t_header + new_title.strip() + t_footer + content[t_match.end():]
 
     # Locate subsection block
     subsec_pattern = re.compile(
@@ -294,6 +304,12 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(STATIC_DIR), **kwargs)
 
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
@@ -365,8 +381,9 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
             subsec_id = req_data.get("subsec_id")
             samam_num = int(req_data.get("samam_num", 1))
             new_text = req_data.get("new_text", "")
+            new_title = req_data.get("new_title")
 
-            result = save_samam_edit(subsec_id, samam_num, new_text)
+            result = save_samam_edit(subsec_id, samam_num, new_text, new_title=new_title)
 
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")

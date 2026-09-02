@@ -22,7 +22,7 @@
 
 @font-face {
   font-family: 'JaimineeyaSwara';
-  src: url('/fonts/JaimineeyaSwara.ttf?v=3.5') format('truetype');
+  src: url('/fonts/JaimineeyaSwara.ttf?v=3.6') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -518,13 +518,54 @@ select:focus {
   box-shadow: 0 0 0 2px var(--accent-gold-glow);
 }
 
+/* Subsection Header Input Row in Editor */
+.header-input-container {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+}
+
+.header-input-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.subsec-title-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #4ade80;
+  font-family: var(--font-malayalam);
+  font-size: 1.25rem;
+  font-weight: 700;
+  outline: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.subsec-title-input:focus {
+  background: rgba(74, 222, 128, 0.08);
+  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.35);
+}
+
 /* Rendered Vedic Preview - Stacked Chanting Notation */
 .rendered-vedic-preview {
   font-family: var(--font-malayalam);
   font-size: 26px;
   line-height: 2.6;
   color: #ffffff;
-  padding: 16px 20px;
+  padding: 20px 24px;
   background-color: var(--bg-card);
   border-radius: 6px;
   border: 1px solid rgba(245, 158, 11, 0.35);
@@ -533,9 +574,64 @@ select:focus {
   user-select: text;
   min-height: 80px;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Subsection / Samam Header in Live Rendered Display */
+.rendered-subsection-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.rendered-header-kandah {
+  font-family: 'Cinzel', 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+.rendered-header-title {
+  font-family: var(--font-malayalam);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #4ade80; /* Vedic Green */
+  text-shadow: 0 0 16px rgba(74, 222, 128, 0.25);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.rendered-header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #38bdf8;
+  font-weight: 500;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 3px 12px;
+  border-radius: 9999px;
+  line-height: 1.2;
+}
+
+.rendered-mantra-body {
+  width: 100%;
+  display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 8px 4px;
+  line-height: 2.6;
 }
 
 .rendered-vedic-preview .mantra-word {
@@ -616,6 +712,16 @@ select:focus {
   top: -0.28em;
   left: 100%;
   transform: translateX(5%);
+  font-size: 1.15rem;
+  pointer-events: none;
+}
+
+/* MOD-A2: Overhead Conjunct Arc */
+.rendered-vedic-preview .swara-mod.mod-a2 {
+  position: absolute;
+  top: -0.45em;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1.15rem;
   pointer-events: none;
 }
@@ -787,14 +893,13 @@ select:focus {
   pointer-events: none;
 }
 
-/* MOD-H: High Pitch Swarita / Tick (|) - Shoulder Positioned */
+/* MOD-H: High Pitch Swarita / Overhead Vertical Stroke (|) - Centered Above Preceding Syllable */
 .rendered-vedic-preview .swara-mod.mod-h {
   position: absolute;
-  top: 0.05em;
-  right: -0.40em;
-  left: auto;
-  transform: none;
-  font-size: 0.95rem;
+  top: -0.28em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.05rem;
   color: #38bdf8;
   pointer-events: none;
 }

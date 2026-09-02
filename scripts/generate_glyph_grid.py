@@ -25,6 +25,7 @@ FEATURED_GLYPHS = [
     # Row 1: The Canonical Vedic Swara Modifiers & Inline Marks
     ("Modifier (A) Arc", "\uE004", "syllable_arc_jsv", "U+E004 / ╭╮", "Modifier (A)", "Above", "Syllable Spanning Arc"),
     ("Modifier (A1) Arc/|", "\uE00D", "syllable_arc_danda_jsv", "U+E00D / (A1)", "Modifier (A1)", "Above", "Syllable Spanning Arc over Danda"),
+    ("Modifier (A2) Conjunct", "\uE02E", "syllable_arc_conjunct_a2_jsv", "U+E02E / (A2)", "Modifier (A2)", "Above", "Overhead Conjunct Arc"),
     ("Modifier (B) Caret", "\uE005", "caret_jsv", "U+E005 / /\\", "Modifier (B)", "Above", "Peak Elevation Caret"),
     ("Modifier (B1) Slash", "\uE02C", "bridging_slash_b1_jsv", "U+E02C / (B1)", "Modifier (B1)", "Above", "Diagonal Bridging Slash"),
     ("Modifier (C) Dot", "\uE001", "high_dot_jsv", "U+E001 / ॱ", "Modifier (C)", "Shoulder", "Shoulder Pause Dot"),
@@ -271,6 +272,20 @@ def render_html_table() -> None:
             "example_text": "തൊ(𑌤)(A1) । ഹാ(𑌟𑌾)",
             "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>തൊ<span class='swara-mod mod-a1'>&#xE00D;</span></span></span><span class='mantra-text'><span class='danda'>।</span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌟𑌾</span><span class='mantra-text'>ഹാ</span></span></div>",
             "meaning": "Overhead melodic slur bridging two adjacent syllables across a danda separator.",
+            "color_note": "Sky Blue (#0284c7) on Mantrakshara"
+        },
+        {
+            "id": "MOD-A2",
+            "shortcut": "(A2)",
+            "name": "Overhead Conjunct Arc (MOD-A2)",
+            "glyph": "\uE02E",
+            "codepoint": "U+E02E / (A2) / (A_2)",
+            "input_methods": "<code>(A2)</code> / <code>(a2)</code> / <code>(A_2)</code> / <code>(a_2)</code>",
+            "stack_pos": "Stacked Above (Over Conjunct)",
+            "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌<span class='swara-mod-dotted mod-a2-dotted'>&#xE02E;</span></span></span>",
+            "example_text": "ഹൊ(A2)",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='mantra-text'>ഹൊ<span class='swara-mod mod-a2'>&#xE02E;</span></span></span></div>",
+            "meaning": "Overhead curved melodic arc centered directly over the previous conjunct syllable.",
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
         {
@@ -815,6 +830,14 @@ def render_html_table() -> None:
         font-size: 1.25em;
         color: var(--mod-blue);
     }}
+    .swara-mod-dotted.mod-a2-dotted {{
+        position: absolute;
+        top: -0.22em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.15em;
+        color: var(--mod-blue);
+    }}
     .swara-mod-dotted.mod-b-dotted {{
         position: absolute;
         top: -0.22em;
@@ -994,6 +1017,14 @@ def render_html_table() -> None:
         font-size: 1.15rem;
         pointer-events: none;
     }}
+    .mantra-preview-flex .swara-mod.mod-a2 {{
+        position: absolute;
+        top: -0.45em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.15rem;
+        pointer-events: none;
+    }}
     .mantra-preview-flex .swara-mod.mod-b {{
         position: absolute;
         top: -0.22em;
@@ -1079,10 +1110,10 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-h {{
         position: absolute;
-        top: -0.35em;
+        top: -0.28em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 0.95rem;
+        font-size: 1.05rem;
     }}
     .mantra-preview-flex .swara-mod.mod-i {{
         position: absolute;
@@ -1130,10 +1161,10 @@ def render_html_table() -> None:
     }}
     .mantra-preview-flex .swara-mod.mod-h {{
         position: absolute;
-        top: -0.35em;
+        top: -0.28em;
         left: 50%;
         transform: translateX(-50%);
-        font-size: 0.95rem;
+        font-size: 1.05rem;
     }}
     .mantra-preview-flex .swara-mod.mod-i {{
         position: absolute;

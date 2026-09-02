@@ -13,7 +13,7 @@ Version 3.0 2026-08-16 21:16:13
 ॥ ഭാരദ്വാജോ ബാ൪ഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ॥
 # End of Rik Metadata -- subsection_1 ## DO NOT EDIT
 # Start of Rik Text -- subsection_1 ## DO NOT EDIT
-അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യാദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(१)॥ 1 ॥
+അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(१)॥ 1 ॥
 # End of Rik Text -- subsection_1 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_1 ## DO NOT EDIT
 ॥ഗൗതമസ്യപ൪കഃ॥
@@ -24,7 +24,7 @@ Version 3.0 2026-08-16 21:16:13
 #Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
 ഓ(𑌤)(C) ഗ്നാ(𑌤) ഇ(ശ) ।ആയാ(𑌥𑌾𑌚𑍍) ഹീവാ(𑌚𑌾) ഇ(ശ) । 
 താ(C)യാ(𑌟𑌾)_ഇ(ശ). (s1) താ(C)യാ(𑌟𑌿)_ഇ(ശ) । 
-ഗൃണാ(𑌚𑌾) നോ(ശ)_ ഹവ്യാ_ദാ(𑌚𑌿)(L) ।
+ഗൃണാ(𑌚𑌾) നോ(ശ)_ ഹവ്യ_ദാ(𑌚𑌿)(L) ।
 താ(C)യാ_(𑌟𑌾). ഇ(ശ)(s2)താ(C)യാ(𑌟𑌿) ഇ(ശ) । 
 നാഇഹോ_(𑌕𑌿) താ(𑌚)(H) । സാ(𑌟)_ത്സാ(𑌟). ഇബാ(𑌖𑌾) ഔഹോവാ() । 
 ഹീ(𑌖) ഷി(ശ) ॥१॥
@@ -39,7 +39,7 @@ s3 - Random foonote
 ॥ ഭാരദ്വാജോ ബാ൪ഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ॥
 # End of Rik Metadata -- subsection_2 ## DO NOT EDIT
 # Start of Rik Text -- subsection_2 ## DO NOT EDIT
-അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യാദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(s1)॥ 1 ॥
+അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(s1)॥ 1 ॥
 # End of Rik Text -- subsection_2 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_2 ## DO NOT EDIT
 ॥കശ്യപസ്യബ൪ഹിഷീയം॥
@@ -57,7 +57,7 @@ s3 - Random foonote
 ॥ ഭാരദ്വാജോ ബാ൪ഹസ്പത്യഃ അഗ്നിഃ ഗായത്രീ॥
 # End of Rik Metadata -- subsection_3 ## DO NOT EDIT
 # Start of Rik Text -- subsection_3 ## DO NOT EDIT
-അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യാദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(s1)॥ 1 ॥
+അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബ൪ഹീഷി(1)(s1)॥ 1 ॥
 # End of Rik Text -- subsection_3 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_3 ## DO NOT EDIT
 ॥ഗൗതമസ്യചൈവപ൪കഃ॥
@@ -158,7 +158,7 @@ s2 - Thogur Padhati (ത)
 ॥ സുദീതിപുരുമീഢാ വാംഗിരസൗ തയോ൪വാഽന്യതരഃ ഗായത്൪യഗ്നിഃ ॥
 # End of Rik Metadata -- subsection_9 ## DO NOT EDIT
 # Start of Rik Text -- subsection_9 ## DO NOT EDIT
-ത്വന്നോആഗ്നേമാ(2)ഹോ(1)ഭിഃ । പാഹീ വിശ്വാ(1)സ്യാആ(2)രാ(1)തേഃ । ഊത(2)ദ്വീഷോ മ൪ക്ത്യാ(1)സ്യാ ॥ 6 ॥
+ത്വന്നോആഗ്നേമാ(2)ഹോ(1)ഭിഃ । പാഹീ വിശ്വാ(1)സ്യാആ(2)രാ(1)തേഃ । ഊത(2)ദ്വിഷോ മ൪ക്ത്യാ(1)സ്യാ ॥ 6 ॥
 # End of Rik Text -- subsection_9 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_9 ## DO NOT EDIT
 ॥ഇന്ദ്രസ്യസംവ൪ഗൗവാത്രഘ്നേദ്വേ॥

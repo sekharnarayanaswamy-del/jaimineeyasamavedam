@@ -66,9 +66,15 @@ def main():
     parser.add_argument(
         "--modes",
         nargs="+",
-        choices=["combined", "separate", "nometa"],
-        default=["combined", "separate", "nometa"],
-        help="Output modes to render (default: combined separate nometa)",
+        choices=["separate", "nometa", "combined"],
+        default=["separate"],
+        help="Output modes to render (default: separate [Samam-only])",
+    )
+    parser.add_argument(
+        "--samam-only",
+        action="store_true",
+        default=True,
+        help="Generate only Samam output (default: True)",
     )
     parser.add_argument(
         "--html-only",
@@ -122,8 +128,10 @@ def main():
     ]
     run_cmd(generate_json_cmd, description="Step 1: Generating JSON AST")
 
-    # 2. Rendering across selected modes
+    # 2. Rendering across selected modes (Samam-only)
     extra_flags = []
+    if args.samam_only:
+        extra_flags.append("--samam-only")
     if args.html_only:
         extra_flags.append("--html-only")
     elif args.pdf_only:

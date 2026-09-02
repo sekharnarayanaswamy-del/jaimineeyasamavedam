@@ -189,6 +189,14 @@
             font-size: 1.15rem;
             pointer-events: none;
         }
+        .swara-mod.mod-a2 {
+            position: absolute;
+            top: -0.45em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.15rem;
+            pointer-events: none;
+        }
         .swara-mod.mod-b {
             position: absolute;
             top: -0.22em;
@@ -331,11 +339,10 @@
         }
         .swara-mod.mod-h {
             position: absolute;
-            top: 0.05em;
-            right: -0.40em;
-            left: auto;
-            transform: none;
-            font-size: 0.95rem;
+            top: -0.28em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.05rem;
             color: var(--modifier-color);
             pointer-events: none;
         }

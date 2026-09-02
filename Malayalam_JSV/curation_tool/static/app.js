@@ -51,6 +51,11 @@ const elements = {
   
   curationTitle: document.getElementById('curationTitle'),
   curationStatus: document.getElementById('curationStatus'),
+  subsecTitleInput: document.getElementById('subsecTitleInput'),
+  renderedHeaderTitle: document.getElementById('renderedHeaderTitle'),
+  renderedHeaderKandah: document.getElementById('renderedHeaderKandah'),
+  renderedHeaderMeta: document.getElementById('renderedHeaderMeta'),
+  renderedMantraBody: document.getElementById('renderedMantraBody'),
   mainVedicEditor: document.getElementById('mainVedicEditor'),
   renderedVedicDisplay: document.getElementById('renderedVedicDisplay'),
   toast: document.getElementById('toast')
@@ -232,8 +237,23 @@ function selectSamam(samIdx) {
   
   const sNum = subsec.number || parseInt(subsec.id.replace(/\D/g, ''), 10);
   const tag = sec.supersection_tag ? `[${sec.supersection_tag}] ` : '';
-  elements.curationTitle.textContent = `${tag}${sec.title} • Sub ${sNum} ${subsec.title} • Samam ${samam.num}`;
+  const subTitle = subsec.title || '';
+  elements.curationTitle.textContent = `${tag}${sec.title} • Sub ${sNum} ${subTitle} • Samam ${samam.num}`;
   elements.mainVedicEditor.value = samam.text;
+  
+  if (elements.subsecTitleInput) {
+    elements.subsecTitleInput.value = subTitle;
+  }
+  if (elements.renderedHeaderKandah) {
+    elements.renderedHeaderKandah.textContent = `${sec.supersection || ''} • ${sec.title}`;
+  }
+  if (elements.renderedHeaderTitle) {
+    elements.renderedHeaderTitle.textContent = subTitle || `॥ സാമ ${sNum} ॥`;
+  }
+  if (elements.renderedHeaderMeta) {
+    const dandaLabel = samam.danda ? ` (${samam.danda})` : '';
+    elements.renderedHeaderMeta.textContent = `Subsection ${sNum} • Samam ${samam.num} of ${subsec.samams.length}${dandaLabel}`;
+  }
   
   // Only auto-load estimated page when transitioning to a NEW subsection
   if (state.currentSubNum !== sNum) {
@@ -468,6 +488,8 @@ function renderVedicHTML(text) {
           modifiersHtml += '<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>';
         } else if (inner === 'A1' || inner === 'a1' || inner === 'A_1' || inner === 'a_1') {
           modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+        } else if (inner === 'A2' || inner === 'a2' || inner === 'A_2' || inner === 'a_2' || inner === '\uE02E') {
+          modifiersHtml += '<span class="swara-mod mod-a2" title="MOD-A2: Overhead Conjunct Arc">&#xE02E;</span>';
         } else if (inner === 'D' || inner === 'd' || inner === '∧' || inner === 'Ʌ') {
           modifiersHtml += '<span class="swara-mod mod-d" title="MOD-D: Chevron Roof (∧)">&#xE006;</span>';
         } else if (inner === 'D1' || inner === 'd1' || inner === 'D_1' || inner === 'd_1' || inner === '↗') {
@@ -530,7 +552,15 @@ function renderVedicHTML(text) {
 
 function updateDisplays() {
   const rawText = elements.mainVedicEditor.value;
-  elements.renderedVedicDisplay.innerHTML = renderVedicHTML(rawText);
+  const mantraHtml = renderVedicHTML(rawText);
+  if (elements.renderedMantraBody) {
+    elements.renderedMantraBody.innerHTML = mantraHtml;
+  } else if (elements.renderedVedicDisplay) {
+    elements.renderedVedicDisplay.innerHTML = mantraHtml;
+  }
+  if (elements.renderedHeaderTitle && elements.subsecTitleInput) {
+    elements.renderedHeaderTitle.textContent = elements.subsecTitleInput.value || '';
+  }
 }
 
 // Insert Text at Cursor Position
@@ -564,6 +594,7 @@ async function saveCurrentSamam() {
   const subsec = sec.subsections[state.currentSubsecIdx];
   const samam = subsec.samams[state.currentSamamIdx];
   const newText = elements.mainVedicEditor.value;
+  const newTitle = elements.subsecTitleInput ? elements.subsecTitleInput.value : subsec.title;
 
   elements.saveBtn.disabled = true;
   elements.curationStatus.textContent = "Saving & Validating...";
@@ -575,7 +606,8 @@ async function saveCurrentSamam() {
       body: JSON.stringify({
         subsec_id: subsec.id,
         samam_num: samam.num,
-        new_text: newText
+        new_text: newText,
+        new_title: newTitle
       })
     });
 
@@ -584,6 +616,9 @@ async function saveCurrentSamam() {
       showToast("Saved & Validated 100% in Master File!");
       elements.curationStatus.textContent = "Saved & Valid";
       samam.text = newText;
+      if (newTitle) {
+        subsec.title = newTitle;
+      }
     } else {
       showToast(`Save Error: ${res.error}`, 5000, true);
       elements.curationStatus.textContent = "Validation Failed";
@@ -634,6 +669,28 @@ function setupEventListeners() {
 
   // Editor Input
   elements.mainVedicEditor.addEventListener('input', updateDisplays);
+  if (elements.subsecTitleInput) {
+    elements.subsecTitleInput.addEventListener('input', () => {
+      const sec = state.data.sections[state.currentSectionIdx];
+      const subsec = sec.subsections[state.currentSubsecIdx];
+      const samam = subsec.samams[state.currentSamamIdx];
+      const sNum = subsec.number || parseInt(subsec.id.replace(/\D/g, ''), 10);
+      const tag = sec.supersection_tag ? `[${sec.supersection_tag}] ` : '';
+      
+      subsec.title = elements.subsecTitleInput.value;
+      if (elements.renderedHeaderTitle) {
+        elements.renderedHeaderTitle.textContent = subsec.title;
+      }
+      elements.curationTitle.textContent = `${tag}${sec.title} • Sub ${sNum} ${subsec.title} • Samam ${samam.num}`;
+      
+      // Update option label in dropdown
+      const selOpt = elements.subsectionSelect.options[state.currentSubsecIdx];
+      if (selOpt) {
+        const numLabel = subsec.number ? `[Sub ${subsec.number}] ` : '';
+        selOpt.textContent = `${numLabel}${subsec.title || subsec.id} (${subsec.samams.length} Samams)`;
+      }
+    });
+  }
   elements.saveBtn.addEventListener('click', saveCurrentSamam);
 
   // Modifier Palette Clicks
@@ -691,6 +748,7 @@ function handleHotkeys(e) {
       'c': '(C)',
       'a': '(A)',
       '1': '(A1)',
+      '2': '(A2)',
       'b': '(B)',
       'd': '(D)',
       'e': '(E)',

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Noto+Serif+Grantha&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/malayalam-fonts@latest/fonts.min.css">
-  <link rel="stylesheet" href="style.css?v=3.1">
+  <link rel="stylesheet" href="style.css?v=3.9">
 </head>
 <body class="dark-theme">
   <!-- Top Navigation & Global Header -->
@@ -140,6 +140,10 @@
                 <span class="mod-icon">⌒|</span>
                 <span class="mod-name">Danda Arc <kbd>(A1)</kbd></span>
               </button>
+              <button class="mod-chip" data-mod="(A2)" title="Overhead Conjunct Arc (Hotkey: Alt+2)">
+                <span class="mod-icon">⌒</span>
+                <span class="mod-name">Conjunct Arc <kbd>(A2)</kbd></span>
+              </button>
               <button class="mod-chip" data-mod="(B)" title="Peak Caret (Hotkey: Alt+B)">
                 <span class="mod-icon">^</span>
                 <span class="mod-name">Caret <kbd>(B)</kbd></span>
@@ -202,6 +206,13 @@
             <div class="card-label">Live Vedic Accent Editor</div>
             <div class="editor-hints">Type or click modifiers above to insert at cursor • <kbd>Ctrl+S</kbd> to save</div>
           </div>
+          <div class="header-input-container">
+            <label for="subsecTitleInput" class="header-input-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+              Subsection Header:
+            </label>
+            <input type="text" id="subsecTitleInput" class="subsec-title-input" placeholder="॥ സാമ നാമം ॥" spellcheck="false" title="Subsection Title / Samam Header">
+          </div>
           <textarea id="mainVedicEditor" rows="4" spellcheck="false" placeholder="Enter Malayalam Vedic text with Grantha swaras and modifiers..."></textarea>
         </div>
 
@@ -209,7 +220,14 @@
         <div class="card render-card">
           <div class="card-label">Live Rendered Chanting Display (<span style="color:#ef4444;">Red Swara Letter</span>, <span style="color:#38bdf8;">Blue Modifiers</span>)</div>
           <div class="rendered-vedic-preview" id="renderedVedicDisplay">
-            <!-- Dynamically formatted preview -->
+            <div class="rendered-subsection-header">
+              <div class="rendered-header-kandah" id="renderedHeaderKandah">SuperSection 1 • പ്രഥമ ഖണ്ഡഃ</div>
+              <div class="rendered-header-title" id="renderedHeaderTitle">॥ സാമ നാമം ॥</div>
+              <div class="rendered-header-meta" id="renderedHeaderMeta">Subsection 1 • Samam 1</div>
+            </div>
+            <div class="rendered-mantra-body" id="renderedMantraBody">
+              <!-- Dynamically formatted preview -->
+            </div>
           </div>
         </div>
 
@@ -221,6 +239,6 @@
   <!-- Notification Toast -->
   <div id="toast" class="toast"></div>
 
-  <script src="app.js?v=2.4"></script>
+  <script src="app.js?v=3.8"></script>
 </body>
 </html>

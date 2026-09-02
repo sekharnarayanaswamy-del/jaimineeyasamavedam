@@ -430,10 +430,10 @@
         }
         .swara-mod.mod-d1 {
             position: absolute;
-            top: -0.32em;
-            left: 50%;
-            transform: translateX(10%);
-            font-size: 0.60em;
+            top: -0.24em;
+            left: 100%;
+            transform: translateX(-35%);
+            font-size: 0.85em;
             pointer-events: none;
             z-index: 2;
         }

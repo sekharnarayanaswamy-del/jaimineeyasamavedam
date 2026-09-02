@@ -19,7 +19,7 @@ if sys.platform == "win32":
 
 # Canonical swara modifiers and inline phrasing marks per spec.md
 VALID_MODIFIERS = {
-    "A", "A1", "A_1", "B", "B1", "B_1", "C", "D", "D1", "D_1", "D2", "D_2",
+    "A", "A1", "A_1", "A2", "A_2", "B", "B1", "B_1", "C", "D", "D1", "D_1", "D2", "D_2",
     "E", "F", "G", "H", "I", "J", "K", "L",
     "\\", "|", "^", "·", "⨯", "x", "X", "¯", "⫽", "═", "✓", "⋀", "↗"
 }

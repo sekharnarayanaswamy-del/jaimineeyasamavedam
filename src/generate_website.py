@@ -365,6 +365,10 @@ MALAYALAM_MODIFIER_MAP = {
     'a1': ('mod-a1', '&#xE00D;'),
     'A_1': ('mod-a1', '&#xE00D;'),
     'a_1': ('mod-a1', '&#xE00D;'),
+    'A2': ('mod-a2', '&#xE02E;'),
+    'a2': ('mod-a2', '&#xE02E;'),
+    'A_2': ('mod-a2', '&#xE02E;'),
+    'a_2': ('mod-a2', '&#xE02E;'),
     'B': ('mod-b', '&#xE005;'),
     'b': ('mod-b', '&#xE005;'),
     '^': ('mod-b', '&#xE005;'),
@@ -379,6 +383,36 @@ MALAYALAM_MODIFIER_MAP = {
     'e': ('mod-e', '&#xE002;'),
     '┃': ('mod-e', '&#xE002;'),
     'L': ('mod-e', '&#xE002;'),
+    'D1': ('mod-d1', '&#xE00E;'),
+    'd1': ('mod-d1', '&#xE00E;'),
+    'D_1': ('mod-d1', '&#xE00E;'),
+    'd_1': ('mod-d1', '&#xE00E;'),
+    '↗': ('mod-d1', '&#xE00E;'),
+    '\uE00E': ('mod-d1', '&#xE00E;'),
+    'D2': ('mod-d2', '&#xE00F;'),
+    'd2': ('mod-d2', '&#xE00F;'),
+    'D_2': ('mod-d2', '&#xE00F;'),
+    'd_2': ('mod-d2', '&#xE00F;'),
+    '✓': ('mod-d2', '&#xE00F;'),
+    '\uE00F': ('mod-d2', '&#xE00F;'),
+    'I': ('mod-i', '&#xE02A;'),
+    'i': ('mod-i', '&#xE02A;'),
+    '⫽': ('mod-i', '&#xE02A;'),
+    '\uE02A': ('mod-i', '&#xE02A;'),
+    'J': ('mod-j', '&#xE02B;'),
+    'j': ('mod-j', '&#xE02B;'),
+    '¯': ('mod-j', '&#xE02B;'),
+    '\uE02B': ('mod-j', '&#xE02B;'),
+    'B1': ('mod-b1', '&#xE02C;'),
+    'b1': ('mod-b1', '&#xE02C;'),
+    'B_1': ('mod-b1', '&#xE02C;'),
+    'b_1': ('mod-b1', '&#xE02C;'),
+    '/': ('mod-b1', '&#xE02C;'),
+    '\uE02C': ('mod-b1', '&#xE02C;'),
+    'K': ('mod-k', '&#xE02D;'),
+    'k': ('mod-k', '&#xE02D;'),
+    '⨯': ('mod-k', '&#xE02D;'),
+    '\uE02D': ('mod-k', '&#xE02D;'),
     'F': ('mod-f', '&#x2577;'),
     'f': ('mod-f', '&#x2577;'),
     '╷': ('mod-f', '&#x2577;'),
@@ -3360,6 +3394,14 @@ sup.footnote-ref a:hover {
     font-size: 1.25rem;
     pointer-events: none;
 }
+.swara-mod.mod-a2 {
+    position: absolute;
+    top: -0.45em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.15rem;
+    pointer-events: none;
+}
 .swara-mod.mod-b {
     position: absolute;
     top: -0.22em;
@@ -3423,7 +3465,7 @@ sup.footnote-ref a:hover {
 }
 .swara-mod.mod-h {
     position: absolute;
-    top: -0.35em;
+    top: -0.28em;
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.05rem;

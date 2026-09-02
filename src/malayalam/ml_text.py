@@ -142,6 +142,9 @@ MODIFIER_DIRECT_MAP = {
     # Modifiers from updated Google Sheet & Curation Tool (A..K)
     "A": "\uE004",   # Syllable Arc (Tie) ╭╮ / ⁀
     "A1": "\uE00D",  # Arc over Danda
+    "A_1": "\uE00D",
+    "A2": "\uE02E",  # Overhead Conjunct Arc
+    "A_2": "\uE02E",
     "B": "\uE005",   # Caret / Peak /\ / ^
     "B1": "\uE02C",  # Diagonal Bridging Slash /
     "C": "\uE001",   # High/Mid-Dot ॱ / ·
@@ -158,7 +161,7 @@ MODIFIER_DIRECT_MAP = {
     "L": "\uE00C",   # Swarita ॑ / |
 
     # Lowercase variants
-    "a": "\uE004", "a1": "\uE00D", "b": "\uE005", "b1": "\uE02C",
+    "a": "\uE004", "a1": "\uE00D", "a_1": "\uE00D", "a2": "\uE02E", "a_2": "\uE02E", "b": "\uE005", "b1": "\uE02C",
     "c": "\uE001", "d": "\uE006", "d1": "\uE00E", "d2": "\uE00F",
     "e": "\uE002", "f": "\uE008", "g": "\uE003", "h": "\uE00C",
     "i": "\uE02A", "j": "\uE02B", "k": "\uE02D", "l": "\uE00C",
@@ -177,6 +180,11 @@ MODIFIER_DIRECT_MAP = {
     ",": "\uE00A", "ˏ": "\uE00A", "̦": "\uE00A",
     "||": "\uE00B", "॥": "\uE00B",
     "॑": "\uE00C", "ˈ": "\uE00C",
+    "↗": "\uE00E",
+    "✓": "\uE00F",
+    "⫽": "\uE02A",
+    "¯": "\uE02B",
+    "⨯": "\uE02D",
 }
 
 

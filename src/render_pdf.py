@@ -746,6 +746,10 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
         # Arc over Danda (MOD-A1)
         glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}' + gap
         return f"{chunk}{glyph}"
+    elif m in ('A2', 'a2', 'A_2', 'a_2', '\uE02E'):
+        # Overhead Conjunct Arc (MOD-A2)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{0.10em}\char" + '"E02E}}}' + gap
+        return f"{chunk}{glyph}"
     elif m in ('D1', 'd1', 'D_1', 'd_1', '↗', '\uE00E'):
         # Rising Stroke (MOD-D1)
         glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E00E}}}' + gap
@@ -851,6 +855,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
     MOD_A_SET = {'A', 'a', '⁀', '\uE004', '╭╮', '͡'}
     MOD_A1_SET = {'A1', 'a1', 'A_1', 'a_1', '\uE00D'}
+    MOD_A2_SET = {'A2', 'a2', 'A_2', 'a_2', '\uE02E'}
     MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '✓', '↗', 'D1', 'd1', 'D2', 'd2', '\uE006', '\uE00E', '\uE00F'}
     DEVA_DIGITS = str.maketrans('0123456789', '०१२३४५६७८९')
     
@@ -1467,11 +1472,15 @@ MODIFIER_KEYS = {
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
     "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
     "A1", "a1", "A_1", "a_1",
-    "B1", "b1", "D1", "d1", "D2", "d2",
+    "A2", "a2", "A_2", "a_2",
+    "B1", "b1", "B_1", "b_1",
+    "D1", "d1", "D_1", "d_1",
+    "D2", "d2", "D_2", "d_2",
     "^", "˄", "Ʌ", "/\\", "∧", "⁀", "͡", "╭╮", "ͦ", "˚", "ॱ", "·",
     "|", "│", "।", "┃", "╷", "⃓", "\\", "╲", "⟍", "॑", "ˈ",
+    "↗", "✓", "⫽", "¯", "/", "⨯",
     "\uE001", "\uE002", "\uE003", "\uE004", "\uE005", "\uE006", "\uE008", "\uE00A", "\uE00B", "\uE00C", "\uE00D",
-    "\uE00E", "\uE00F", "\uE02A", "\uE02B", "\uE02C", "\uE02D"
+    "\uE00E", "\uE00F", "\uE02A", "\uE02B", "\uE02C", "\uE02D", "\uE02E"
 }
 
 
@@ -1484,17 +1493,19 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.55em}}\uE00D}}}}}}"
+    elif m_clean in ("A2", "a2", "A_2", "a_2", "\uE02E"):
+        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.10em}}\uE02E}}}}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE005}}}}}}"
-    elif m_clean in ("B1", "b1", "\uE02C"):
+    elif m_clean in ("B1", "b1", "B_1", "b_1", "/", "\uE02C"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.35em}}\uE02C}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.10em}}\uE001\\hspace{{0.05em}}}}}}}}"
-    elif m_clean in ("D", "d", "Ʌ", "\uE006"):
+    elif m_clean in ("D", "d", "Ʌ", "∧", "\uE006"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\uE006}}}}}}"
-    elif m_clean in ("D1", "d1", "\uE00E"):
+    elif m_clean in ("D1", "d1", "D_1", "d_1", "↗", "\uE00E"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE00E}}}}}}"
-    elif m_clean in ("D2", "d2", "\uE00F"):
+    elif m_clean in ("D2", "d2", "D_2", "d_2", "✓", "\uE00F"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE00F\\hspace{{0.05em}}}}}}}}"
     elif m_clean in ("E", "e", "┃", "\uE002"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.05ex}}{{\\hspace{{0.05em}}\uE002}}}}}}"
@@ -1504,7 +1515,7 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.35ex}}{{\\hspace{{-0.65em}}\uE003}}}}}}"
     elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.10ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
-    elif m_clean in ("I", "i", "\uE02A"):
+    elif m_clean in ("I", "i", "⫽", "\uE02A"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE02A\\hspace{{0.05em}}}}}}}}"
     elif m_clean in ("J", "j", "\uE02B"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.80ex}}{{\\hspace{{0.10em}}\uE02B\\hspace{{0.05em}}}}}}}}"
@@ -1588,8 +1599,8 @@ def _parse_swara_and_modifiers(swara_str: str):
         if p in MODIFIER_KEYS:
             mods.append(p)
         else:
-            # Check if p has trailing modifier char (e.g. \uE001, \uE003, \uE004, etc.)
-            m = re.search(r"([\uE001-\uE00C\^\\/\|\_]+)$", p)
+            # Check if p has trailing modifier char (e.g. \uE001-\uE02E, ↗, ✓, etc.)
+            m = re.search(r"([\uE001-\uE02E\^\\/\|\_↗✓·ॱ∧⁀⫽¯⨯]+)$", p)
             if m:
                 base = p[:m.start()]
                 trailing_mods = p[m.start():]
@@ -2116,6 +2127,7 @@ def _normalize_malayalam_samam_text_line(line: str) -> str:
     mod_to_unicode = {
         'A': '⁀', 'a': '⁀', '\uE004': '⁀', '╭╮': '⁀',
         'A1': '⁀', 'a1': '⁀', 'A_1': '⁀', 'a_1': '⁀', '\uE00D': '⁀',
+        'A2': '⁀', 'a2': '⁀', 'A_2': '⁀', 'a_2': '⁀', '\uE02E': '⁀',
         'B': '^', 'b': '^', '\uE005': '^',
         'C': '·', 'c': '·', '\uE001': '·', 'ॱ': '·',
         'D': '∧', 'd': '∧', '\uE006': '∧', 'Ʌ': '∧',
@@ -2450,6 +2462,10 @@ HTML_MOD_MAP = {
     'a1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
     'A_1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
     'a_1': ('mod-a1', '&#xE00D;', 'Arc over Danda'),
+    'A2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
+    'a2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
+    'A_2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
+    'a_2': ('mod-a2', '&#xE02E;', 'Overhead Conjunct Arc'),
     'D': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
     'd': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
     '∧': ('mod-d', '&#xE006;', 'Chevron Roof (∧)'),
@@ -2459,30 +2475,43 @@ HTML_MOD_MAP = {
     'D_1': ('mod-d1', '&#xE00E;', 'Rising Stroke (↗)'),
     'd_1': ('mod-d1', '&#xE00E;', 'Rising Stroke (↗)'),
     '↗': ('mod-d1', '&#xE00E;', 'Rising Stroke (↗)'),
+    '\uE00E': ('mod-d1', '&#xE00E;', 'Rising Stroke (↗)'),
     'D2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
     'd2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
     'D_2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
     'd_2': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
     '✓': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
+    '\uE00F': ('mod-d2', '&#xE00F;', 'Check Tick (✓)'),
     'I': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
     'i': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
+    '⫽': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
+    '\uE02A': ('mod-i', '&#xE02A;', 'Double Shoulder Dash (⫽)'),
     'J': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
     'j': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
+    '¯': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
+    '\uE02B': ('mod-j', '&#xE02B;', 'Overhead Horizontal Bar (¯)'),
     'B1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
     'b1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
     'B_1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
     'b_1': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
+    '/': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
+    '\uE02C': ('mod-b1', '&#xE02C;', 'Diagonal Bridging Slash (/)'),
     'K': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
     'k': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
+    '⨯': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
+    '\uE02D': ('mod-k', '&#xE02D;', 'Shoulder Cross Mark (⨯)'),
     'B': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
     'b': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
     '^': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
+    '\uE005': ('mod-b', '&#xE005;', 'Peak Elevation Caret (∧)'),
     'E': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
     'e': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
     '┃': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
+    '\uE002': ('mod-e', '&#xE002;', 'Bold Tone Column (┃)'),
     'F': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
     'f': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
     '╷': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
+    '\uE008': ('mod-f', '&#xE008;', 'Danda with Overhead Dot (╷)'),
     '_': ('mod-under', '_', 'Underbar'),
     ',': ('mod-comma', ',', 'Comma'),
     '.': ('mod-dot', '.', 'Dot')
@@ -2496,7 +2525,7 @@ def render_mod_html(mod_str: str) -> str:
     return f'<span class="swara-mod">{mod_str}</span>'
 
 DEVA_SYLLABLE_RE = re.compile(
-    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓])*'
+    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓↗])*'
 )
 
 def split_deva_syllables(text: str):
@@ -2505,8 +2534,8 @@ def split_deva_syllables(text: str):
 
 def format_deva_syl_html(syl: str, with_modifiers: bool = True) -> str:
     if not with_modifiers:
-        return syl.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
-    m = re.match(r'^(.*?)([_,.\\·ॱ┃L╷^⁀∧✓]*)$', syl)
+        return syl.rstrip('_,.\\·ॱ┃L╷^⁀∧✓↗')
+    m = re.match(r'^(.*?)([_,.\\·ॱ┃L╷^⁀∧✓↗]*)$', syl)
     base = m.group(1) if m else syl
     extras = m.group(2) if m else ''
     extras_html = ''.join([render_mod_html(e) for e in extras])
@@ -3152,6 +3181,8 @@ def render_vedic_html_from_line(text: str) -> str:
                     modifiers_html.append('<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>')
                 elif inner in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
                     modifiers_html.append('<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>')
+                elif inner in ('A2', 'a2', 'A_2', 'a_2', '\uE02E'):
+                    modifiers_html.append('<span class="swara-mod mod-a2" title="MOD-A2: Overhead Conjunct Arc">&#xE02E;</span>')
                 elif inner in ('D', 'd', '∧', 'Ʌ', '\uE006'):
                     modifiers_html.append('<span class="swara-mod mod-d" title="MOD-D: Chevron Roof (∧)">&#xE006;</span>')
                 elif inner in ('D1', 'd1', 'D_1', 'd_1', '↗', '\uE00E'):

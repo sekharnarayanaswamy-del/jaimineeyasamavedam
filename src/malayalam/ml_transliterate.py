@@ -104,6 +104,14 @@ def post_process_malayalam(text: str) -> str:
     text = re.sub(r"ാ+", "ാ", text)
     # Virama before ൃ/ൄ (ക്ിൃ -> കൃ)
     text = text.replace("്ൃ", "ൃ").replace("്ൄ", "ൄ")
+    # Vedic transliteration rule 5: Root gira- shortening (e.g. ഗീരാഃ -> ഗിരാഃ)
+    text = text.replace("ഗീരാഃ", "ഗിരാഃ")
+    # Vedic transliteration rule 6: Conjunct dvi- shortening (e.g. ദ്വീ -> ദ്വി)
+    text = text.replace("ദ്വീ", "ദ്വി")
+    # Vedic transliteration rule 7: viśā shortening (e.g. വീശാ -> വിശാ)
+    text = text.replace("വീശാ", "വിശാ")
+    # Vedic transliteration rule 8: Conjunct jñi- shortening (e.g. ജ്ഞീ -> ജ്ഞി)
+    text = text.replace("ജ്ഞീ", "ജ്ഞി")
     # Convert all numerals to English ASCII digits
     text = text.translate(_DIGITS_TO_ENGLISH)
     return text
@@ -237,6 +245,7 @@ _MOD_CODE_TO_UNICODE = {
     'H': '|', 'h': '|', '\uE00C': '|', 'L': '|', 'l': '|',
     'A': '⁀', 'a': '⁀', '\uE004': '⁀', '╭╮': '⁀',
     'A1': '⁀', 'a1': '⁀', 'A_1': '⁀', 'a_1': '⁀', '\uE00D': '⁀',
+    'A2': '⁀', 'a2': '⁀', 'A_2': '⁀', 'a_2': '⁀', '\uE02E': '⁀',
     'B': '^', 'b': '^', '\uE005': '^',
     'D': '∧', 'd': '∧', '\uE006': '∧', 'Ʌ': '∧',
     'D1': '↗', 'd1': '↗', 'D_1': '↗', 'd_1': '↗', '\uE00E': '↗', '↗': '↗',

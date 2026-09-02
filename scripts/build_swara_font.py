@@ -274,6 +274,18 @@ def draw_syllable_arc_danda(width: int = 2250) -> Glyph:
     return glyph
 
 
+def draw_syllable_arc_conjunct(width: int = 2250) -> Glyph:
+    """Swara Modifier A2 (MOD-A2): Overhead smooth semi-circular curved arc spanning across full conjunct syllable."""
+    glyph = init_glyph()
+    glyph.numberOfContours = 1
+    coords = get_bezier_arc_coords(width, y_base=560, thickness=110, height_factor=0.52)
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
+    glyph.flags = bytearray([f for _, _, f in coords])
+    glyph.endPtsOfContours = [len(coords) - 1]
+    glyph.recalcBounds({})
+    return glyph
+
+
 def draw_caret(width: int = 1500) -> Glyph:
     """Swara Modifier B: Crisp, bold peak elevation caret (/ \\) spanning across 2 syllables."""
     glyph = init_glyph()
@@ -925,6 +937,11 @@ def build_font() -> None:
     glyf_table["syllable_arc_danda_jsv"] = syllable_arc_danda
     hmtx_table["syllable_arc_danda_jsv"] = (2300, 120)
 
+    # Mod 4c: Syllable Conjunct Arc (U+E02E) - Swara Modifier A2
+    syllable_arc_conjunct = draw_syllable_arc_conjunct()
+    glyf_table["syllable_arc_conjunct_a2_jsv"] = syllable_arc_conjunct
+    hmtx_table["syllable_arc_conjunct_a2_jsv"] = (2250, 160)
+
     # Mod 5: Caret (^) (U+E005, U+005E, U+02C4) - Swara Modifier B (spans 2 syllables)
     caret_glyph = draw_caret()
     glyf_table["caret_jsv"] = caret_glyph
@@ -1037,6 +1054,7 @@ def build_font() -> None:
         0xE02D: "shoulder_cross_k_jsv",
         0x2A2F: "shoulder_cross_k_jsv",
         0x00D7: "shoulder_cross_k_jsv",
+        0xE02E: "syllable_arc_conjunct_a2_jsv",
         # Sha family
         0xE010: "sha_aa_jsv",
         0xE011: "sha_i_jsv",
