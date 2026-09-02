@@ -766,6 +766,26 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
         # Danda with Dot (MOD-F)
         glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E008}}}' + gap
         return f"{chunk}{glyph}"
+    elif m in ('B', 'b', '^', '˄', '/\\', '\uE005'):
+        # Peak Elevation Caret (MOD-B)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E005}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('B1', 'b1', 'B_1', 'b_1', '/', '\uE02C'):
+        # Diagonal Bridging Slash (MOD-B1)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E02C}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('I', 'i', '⫽', '\uE02A'):
+        # Double Shoulder Dash (MOD-I)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02A}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('J', 'j', '¯', '\uE02B'):
+        # Overhead Horizontal Bar (MOD-J)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.80ex}{\hspace{0.04em}\char" + '"E02B}}}' + gap
+        return f"{chunk}{glyph}"
+    elif m in ('K', 'k', '⨯', '\uE02D'):
+        # Shoulder Cross Mark (MOD-K)
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02D}}}' + gap
+        return f"{chunk}{glyph}"
     elif m == '_':
         glyph = r"\rlap{\textcolor{ModifierSkyBlue}{\raisebox{-0.1ex}{\rule{0.3em}{0.13ex}}}}" + gap
         return f"{chunk}{glyph}"
@@ -776,7 +796,8 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
         glyph = r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}" + gap
         return f"{chunk}{glyph}"
     else:
-        return f"{chunk}({mod}){gap}"
+        clean_mod = mod.replace('^', r'\^{}').replace('_', r'\_').replace('\\', r'\textbackslash{}').replace('$', r'\$')
+        return f"{chunk}({clean_mod}){gap}"
 
 
 def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None):

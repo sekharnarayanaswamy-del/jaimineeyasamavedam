@@ -91,6 +91,11 @@ def main():
         action="store_true",
         help="Copy generated HTML files to docs/ folder for GitHub Pages publishing",
     )
+    parser.add_argument(
+        "--skip-kpully",
+        action="store_true",
+        help="Skip Devanagari Kpully HTML+PDF generation",
+    )
 
     args = parser.parse_args()
 
@@ -128,6 +133,22 @@ def main():
     ]
     run_cmd(generate_json_cmd, description="Step 1: Generating JSON AST")
 
+    # 1b. Generate / Sync Devanagari AST for Kpully rendering
+    kpully_json_path = ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_kpully_Devanagari_json.json"
+    if not args.skip_kpully:
+        try:
+            from malayalam.ml_transliterate import convert_malayalam_data_to_devanagari
+            import json
+            with open(json_path, "r", encoding="utf-8") as f_in:
+                mal_data = json.load(f_in)
+            deva_data = convert_malayalam_data_to_devanagari(mal_data)
+            kpully_json_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(kpully_json_path, "w", encoding="utf-8") as f_out:
+                json.dump(deva_data, f_out, ensure_ascii=False, indent=2)
+            print(f"[INFO] Synced Devanagari AST -> {kpully_json_path.relative_to(ROOT_DIR)}")
+        except Exception as e:
+            print(f"[WARN] Could not update {kpully_json_path.name}: {e}")
+
     # 2. Rendering across selected modes (Samam-only)
     extra_flags = []
     if args.samam_only:
@@ -151,6 +172,19 @@ def main():
         ] + extra_flags
         run_cmd(render_cmd, description=f"Step 2: Rendering in '{mode}' mode")
 
+    # 2b. Devanagari Kpully Rendering (HTML + PDF)
+    if not args.skip_kpully and kpully_json_path.exists():
+        kpully_cmd = [
+            sys.executable,
+            "-X", "utf8",
+            str(ROOT_DIR / "src" / "render_pdf.py"),
+            str(kpully_json_path),
+            "--script",
+            "devanagari",
+            "-kpully",
+        ] + extra_flags
+        run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF)")
+
     # 3. Optional publish to docs/
     if args.publish:
         print("\n[PIPELINE] Step 3: Publishing HTML files to docs/...")
@@ -165,8 +199,21 @@ def main():
             copied.append(target)
             print(f"  Copied -> {target.relative_to(ROOT_DIR)}")
 
+        # Also publish Devanagari Kpully HTML if present
+        kpully_html_candidates = [
+            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samhita_Devanagari.html",
+            ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.html",
+        ]
+        for src_candidate in kpully_html_candidates:
+            if src_candidate.exists():
+                target_kpully = DOCS_DIR / "Samhita_kpully_Devanagari.html"
+                shutil.copy2(src_candidate, target_kpully)
+                copied.append(target_kpully)
+                print(f"  Copied -> {target_kpully.relative_to(ROOT_DIR)}")
+                break
+
         if copied:
-            print(f"[INFO] Published {len(copied)} HTML files to docs/malayalam/")
+            print(f"[INFO] Published {len(copied)} HTML files to docs/")
 
     print("\n" + "=" * 60)
     print(" Pipeline completed successfully!")
@@ -175,6 +222,9 @@ def main():
     print(f"  - Malayalam HTMLs : {output_prefix.parent / 'html' / 'Malayalam'}")
     print(f"  - Plaintext TXTs  : {output_prefix.parent / 'txt' / 'Malayalam'}")
     print(f"  - Devanagari TXTs : {output_prefix.parent / 'txt' / 'Devanagari'}")
+    if not args.skip_kpully:
+        print(f"  - Devanagari Kpully HTML: {ROOT_DIR / 'data' / 'output' / 'html' / 'Devanagari' / 'Samhita_Devanagari.html'}")
+        print(f"  - Devanagari Kpully PDF : {ROOT_DIR / 'data' / 'output' / 'pdf' / 'Devanagari' / 'Samhita_Devanagari.pdf'}")
     print("=" * 60 + "\n")
 
 

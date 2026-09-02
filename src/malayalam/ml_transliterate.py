@@ -344,7 +344,12 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
     
     MALAYALAM_CHAR_RE = re.compile(r'[\u0D00-\u0D7F]')
     
-    for super_k, super_v in deva_data.items():
+    if isinstance(deva_data, dict) and 'supersection' in deva_data and isinstance(deva_data['supersection'], dict):
+        target_supersections = deva_data['supersection']
+    else:
+        target_supersections = deva_data
+        
+    for super_k, super_v in target_supersections.items():
         if not isinstance(super_v, dict):
             continue
         if 'supersection_title' in super_v and MALAYALAM_CHAR_RE.search(super_v['supersection_title']):
@@ -413,5 +418,10 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
                     sub_v['corrected-mantra_sets'] = new_corrected
                 if 'malayalam-mantra-sets' in sub_v:
                     del sub_v['malayalam-mantra-sets']
+
+    if isinstance(deva_data, dict) and 'closing_mantras' in deva_data and isinstance(deva_data['closing_mantras'], list):
+        for cm in deva_data['closing_mantras']:
+            if isinstance(cm, dict) and 'mantra' in cm and MALAYALAM_CHAR_RE.search(cm['mantra']):
+                cm['mantra'] = malayalam_to_devanagari_mantra_line(cm['mantra'])
                         
     return deva_data
