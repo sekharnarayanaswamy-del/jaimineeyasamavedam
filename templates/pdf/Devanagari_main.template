@@ -96,14 +96,14 @@
 \newcommand{\stackcenter}[2]{%
   \begingroup%
   \def\stackalignment{c}%
-  \stackon{#1}{#2}%
+  \stackon[1.4ex]{\vphantom{ई}#1}{#2}%
   \endgroup%
 }
 
 \newcommand{\stackleft}[2]{%
   \begingroup%
   \def\stackalignment{c}%
-  \stackon{#1}{#2}%
+  \stackon[1.4ex]{\vphantom{ई}#1}{#2}%
   \endgroup%
 }
 \BLOCK{ else }
@@ -122,6 +122,14 @@
   \endgroup%
 }
 \BLOCK{ endif }
+
+% --- DANDA WITH ARC MACRO (MOD-A1: Centered Over Danda) ---
+\newcommand{\dandaWithArc}[2][\char"E00D]{%
+  \begingroup%
+  \settowidth{\dimen0}{#2}%
+  \mbox{\hspace{0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.5\dimen0}#2}%
+  \endgroup%
+}
 
 % --- INDEX INITIALIZATION ---
 \makeindex[columns=2, title=Alphabetical Index, intoc]

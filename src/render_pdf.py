@@ -692,7 +692,7 @@ def _format_deva_word_latex(word: str, with_modifiers: bool = True) -> str:
         ch = word[i]
         if ch == '_':
             res.append(f"{{\\textcolor{{ModifierSkyBlue}}{{\\raisebox{{-0.1ex}}{{\\rule{{0.3em}}{{0.13ex}}}}}}{gap}}}")
-        elif ch in ('·', 'ॱ'):
+        elif ch in ('·', 'ॱ', '़'):
             res.append(f"{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{0.04em}}\\char\"E001}}}}{gap}}}")
         elif ch == '.':
             res.append(f"{{\\textcolor{{ModifierSkyBlue}}{{\\textbf{{.}}}}{gap}}}")
@@ -722,7 +722,7 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
     """Apply swara modifier styling in LaTeX with zero horizontal footprint and a small following gap."""
     m = mod.strip('()')
     gap = r"\hspace{0.18em}"
-    if m in ('C', 'c', '·', 'ॱ', '\uE001'):
+    if m in ('C', 'c', '·', 'ॱ', '़', '\uE001'):
         # Upper shoulder dot (MOD-C)
         glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{0.04em}\char" + '"E001}}}' + gap
         return f"{chunk}{glyph}"
@@ -744,7 +744,7 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
         return f"{chunk}{glyph}"
     elif m in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
         # Arc over Danda (MOD-A1)
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}' + gap
+        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\char" + '"E00D}}}' + gap
         return f"{chunk}{glyph}"
     elif m in ('A2', 'a2', 'A_2', 'a_2', '\uE02E'):
         # Overhead Conjunct Arc (MOD-A2)
@@ -811,12 +811,12 @@ def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None):
         word += visarga
     
     if with_modifiers:
-        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓़')
         trailing_punct = word[len(core_word):]
         sw_parts, mods = _parse_swara_and_modifiers(swara)
         mods = [m for m in mods if m not in exclude_mods and m.strip('()') not in exclude_mods]
     else:
-        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+        core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓़')
         trailing_punct = ''
         sw_parts, _ = _parse_swara_and_modifiers(swara)
         mods = []
@@ -863,8 +863,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
     if seen_markers is None:
         seen_markers = set()
     if with_modifiers is None:
-        global CURRENT_WITH_SWARA_MODIFIERS
-        with_modifiers = CURRENT_WITH_SWARA_MODIFIERS
+        with_modifiers = True
         
     from malayalam.ml_text import tokenize_mantra_line
     
@@ -921,11 +920,24 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
             elif t == 'marker':
                 if with_modifiers:
                     m_str = tok['marker'].strip('()')
-                    if m_str in MOD_A_SET:
+                    if m_str in MOD_A_SET or m_str in MOD_A1_SET:
                         next_w_idx = idx + 1
                         while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
                             next_w_idx += 1
-                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word' and paragraph_buffer:
+                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'danda' and paragraph_buffer:
+                            # Standalone arc over danda
+                            d_char = tokens[next_w_idx]['char']
+                            third_idx = next_w_idx + 1
+                            while third_idx < len(tokens) and tokens[third_idx]['type'] == 'space':
+                                third_idx += 1
+                            if third_idx < len(tokens) and tokens[third_idx]['type'] == 'word':
+                                prev_chunk = paragraph_buffer.pop()
+                                next_tok = tokens[third_idx]
+                                chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                                paragraph_buffer.append(f"\\mbox{{{prev_chunk}\\hspace{{0.15em}}\\dandaWithArc{{{d_char}}}\\hspace{{0.15em}}{chunk2}}}")
+                                idx = third_idx + 1
+                                continue
+                        elif next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word' and paragraph_buffer:
                             prev_chunk = paragraph_buffer.pop()
                             next_tok = tokens[next_w_idx]
                             chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
@@ -965,6 +977,17 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                 has_mod_a = any(m.strip('()') in MOD_A_SET for m in tok_mods)
                 has_mod_d = any(m.strip('()') in MOD_D_SET for m in tok_mods)
                 
+                # Check if this word is followed by a danda
+                d_idx = idx + 1
+                while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
+                    d_idx += 1
+                next_is_danda = (d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda')
+                
+                # If mod is MOD-A / ⁀ but followed by danda, it is an arc over danda (MOD-A1)
+                if has_mod_a and next_is_danda:
+                    has_mod_a1 = True
+                    has_mod_a = False
+                
                 if has_mod_d and with_modifiers:
                     next_w_idx = idx + 1
                     while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
@@ -975,28 +998,31 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                         next_sw = next_tok.get('swara', '')
                         _, next_mods = _parse_swara_and_modifiers(next_sw)
                         next_has_a1 = any(m.strip('()') in MOD_A1_SET for m in next_mods)
+                        next_has_a = any(m.strip('()') in MOD_A_SET for m in next_mods)
                         
-                        if next_has_a1:
-                            # Chained MOD-D + MOD-A1 over danda: e.g. बाहू(Ʌ)तो(A1) । हाइ
-                            d_idx = next_w_idx + 1
-                            while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
-                                d_idx += 1
-                            if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda':
-                                d_char = tokens[d_idx]['char']
-                                third_w_idx = d_idx + 1
-                                while third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'space':
-                                    third_w_idx += 1
-                                if third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'word':
-                                    third_tok = tokens[third_w_idx]
-                                    chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
-                                    chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET)
-                                    chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
-                                    d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
-                                    arc_danda_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}'
-                                    combined_mbox = f"\\mbox{{{chunk1}{d_glyph}\\hspace{{0.08em}}{chunk2}\\hspace{{0.12em}}{arc_danda_glyph}{d_char}\\hspace{{0.12em}}{chunk3}}}"
-                                    paragraph_buffer.append(combined_mbox)
-                                    idx = third_w_idx + 1
-                                    continue
+                        d2_idx = next_w_idx + 1
+                        while d2_idx < len(tokens) and tokens[d2_idx]['type'] == 'space':
+                            d2_idx += 1
+                        next_tok_next_is_danda = (d2_idx < len(tokens) and tokens[d2_idx]['type'] == 'danda')
+                        if next_has_a and next_tok_next_is_danda:
+                            next_has_a1 = True
+                        
+                        if next_has_a1 and next_tok_next_is_danda:
+                            # Chained MOD-D + MOD-A1 over danda: e.g. बाहू(∧)तो(A1) । हाइ
+                            d_char = tokens[d2_idx]['char']
+                            third_w_idx = d2_idx + 1
+                            while third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'space':
+                                third_w_idx += 1
+                            if third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'word':
+                                third_tok = tokens[third_w_idx]
+                                chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
+                                chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET | MOD_A_SET)
+                                chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
+                                d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
+                                combined_mbox = f"\\mbox{{{chunk1}{d_glyph}\\hspace{{0.08em}}{chunk2}\\hspace{{0.15em}}\\dandaWithArc{{{d_char}}}\\hspace{{0.15em}}{chunk3}}}"
+                                paragraph_buffer.append(combined_mbox)
+                                idx = third_w_idx + 1
+                                continue
                         
                         chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
                         chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
@@ -1006,24 +1032,19 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                         idx = next_w_idx + 1
                         continue
 
-                if has_mod_a1 and with_modifiers:
-                    d_idx = idx + 1
-                    while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
-                        d_idx += 1
-                    if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda':
-                        d_char = tokens[d_idx]['char']
-                        next_w_idx = d_idx + 1
-                        while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
-                            next_w_idx += 1
-                        if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word':
-                            next_tok = tokens[next_w_idx]
-                            chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A1_SET)
-                            chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
-                            arc_danda_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.58em}\char" + '"E00D}}}'
-                            combined_mbox = f"\\mbox{{{chunk1}\\hspace{{0.12em}}{arc_danda_glyph}{d_char}\\hspace{{0.12em}}{chunk2}}}"
-                            paragraph_buffer.append(combined_mbox)
-                            idx = next_w_idx + 1
-                            continue
+                if has_mod_a1 and with_modifiers and next_is_danda:
+                    d_char = tokens[d_idx]['char']
+                    next_w_idx = d_idx + 1
+                    while next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'space':
+                        next_w_idx += 1
+                    if next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word':
+                        next_tok = tokens[next_w_idx]
+                        chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_A_SET)
+                        chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                        combined_mbox = f"\\mbox{{{chunk1}\\hspace{{0.15em}}\\dandaWithArc{{{d_char}}}\\hspace{{0.15em}}{chunk2}}}"
+                        paragraph_buffer.append(combined_mbox)
+                        idx = next_w_idx + 1
+                        continue
                 
                 if has_mod_a and with_modifiers:
                     next_w_idx = idx + 1
@@ -1497,7 +1518,7 @@ MODIFIER_KEYS = {
     "B1", "b1", "B_1", "b_1",
     "D1", "d1", "D_1", "d_1",
     "D2", "d2", "D_2", "d_2",
-    "^", "˄", "Ʌ", "/\\", "∧", "⁀", "͡", "╭╮", "ͦ", "˚", "ॱ", "·",
+    "^", "˄", "Ʌ", "/\\", "∧", "⁀", "͡", "╭╮", "ͦ", "˚", "ॱ", "·", "़",
     "|", "│", "।", "┃", "╷", "⃓", "\\", "╲", "⟍", "॑", "ˈ",
     "↗", "✓", "⫽", "¯", "/", "⨯",
     "\uE001", "\uE002", "\uE003", "\uE004", "\uE005", "\uE006", "\uE008", "\uE00A", "\uE00B", "\uE00C", "\uE00D",
@@ -1520,7 +1541,7 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE005}}}}}}"
     elif m_clean in ("B1", "b1", "B_1", "b_1", "/", "\uE02C"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.35em}}\uE02C}}}}}}"
-    elif m_clean in ("C", "c", "ॱ", "·", "\uE001"):
+    elif m_clean in ("C", "c", "ॱ", "·", "़", "\uE001"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.10em}}\uE001\\hspace{{0.05em}}}}}}}}"
     elif m_clean in ("D", "d", "Ʌ", "∧", "\uE006"):
         return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\uE006}}}}}}"
@@ -2470,6 +2491,7 @@ HTML_MOD_MAP = {
     'c': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
     '·': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
     'ॱ': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
+    '़': ('mod-c', '&#xE001;', 'Upper Shoulder Dot (·)'),
     'H': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
     'h': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
     '|': ('mod-h', '&#xE00C;', 'High Pitch Swarita (|)'),
