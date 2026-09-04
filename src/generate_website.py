@@ -477,17 +477,26 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
         r'([^\s\|।॥()]+(?:\([^)]+\))*|\([^)]+\))'
     )
 
-    for m in token_re.finditer(text):
+    matches = list(token_re.finditer(text))
+    skip_next_space = False
+
+    for idx_m in range(len(matches)):
+        m = matches[idx_m]
         space, danda, fn, word_match = m.groups()
         if space:
-            html_parts.append('<span class="word-space">&nbsp;</span>')
+            if not skip_next_space:
+                html_parts.append('<span class="word-space">&nbsp;</span>')
+            skip_next_space = False
             continue
         elif danda:
+            is_adjacent = skip_next_space
+            skip_next_space = False
             m_num = re.match(r'॥\s*([\d०-९]+)\s*॥', danda)
             if m_num:
                 html_parts.append(f'<span class="danda">॥</span><span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text"><span class="mantra-number">{m_num.group(1)}</span></span></span><span class="danda">॥</span><div class="mantra-break"></div>')
             else:
-                html_parts.append(f'<span class="danda">{danda}</span>')
+                adj_cls = ' danda-adjacent' if is_adjacent else ''
+                html_parts.append(f'<span class="danda{adj_cls}">{danda}</span>')
             continue
         elif fn:
             marker_key = fn.strip('()')
@@ -527,6 +536,16 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
                 html_parts.append('<span class="mantra-punct">,</span>')
                 continue
 
+            # Look ahead: is the next non-space match a danda?
+            next_is_danda = False
+            for k in range(idx_m + 1, len(matches)):
+                sp_k, d_k, _, _ = matches[k].groups()
+                if sp_k:
+                    continue
+                if d_k:
+                    next_is_danda = True
+                break
+
             # Word with swara / modifier parens
             base = re.sub(r'\([^)]+\)', '', tok).strip()
             parens = re.findall(r'\(([^)]+)\)', tok)
@@ -534,13 +553,26 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
             swara_val = ''
             mods = []
             fn_marker = None
+            has_mod_a1 = False
             for p in parens:
-                if p in MALAYALAM_MODIFIER_MAP:
+                if p in ('A1', 'a1', 'A_1', 'a_1'):
+                    mods.append(('mod-a1', '&#xE00D;'))
+                    has_mod_a1 = True
+                elif p in ('A', 'a', '⁀'):
+                    if next_is_danda:
+                        mods.append(('mod-a1', '&#xE00D;'))
+                        has_mod_a1 = True
+                    else:
+                        mods.append(('mod-a', '&#xE004;'))
+                elif p in MALAYALAM_MODIFIER_MAP:
                     mods.append(MALAYALAM_MODIFIER_MAP[p])
                 elif re.match(r's\d+', p):
                     fn_marker = p
                 else:
                     swara_val = MALAYALAM_SWARA_SUBS.get(p, p)
+
+            if has_mod_a1 and next_is_danda:
+                skip_next_space = True
 
             core_word = base.rstrip("_,.")
             trailing_punct = base[len(core_word):]
@@ -551,16 +583,17 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
             syllables = split_malayalam_clusters(core_word) if core_word != '&nbsp;' else ['&nbsp;']
 
             mod_html = ''
+            has_mod_g = False
             for m_cls, m_glyph in mods:
-                if m_cls == 'mod-b':
+                if m_cls == 'mod-g':
+                    has_mod_g = True
+                elif m_cls == 'mod-b':
                     mod_html += f'<span class="swara-mod mod-b"><span class="caret-glyph">&#xE005;</span><span class="swara-on-caret">{swara_val or "&nbsp;"}</span></span>'
                     swara_val = ''
                 elif m_cls == 'mod-c':
                     mod_html += '<span class="swara-mod mod-c">&#xE001;</span>'
                 elif m_cls == 'mod-h':
                     mod_html += '<span class="swara-mod mod-h">&#xE00C;</span>'
-                elif m_cls == 'mod-g':
-                    mod_html += '<span class="swara-mod mod-g">&#xE003;</span>'
                 elif m_cls == 'mod-e':
                     mod_html += '<span class="swara-mod mod-e">&#xE002;</span>'
                 elif m_cls == 'mod-f':
@@ -587,7 +620,8 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
             for idx, syl in enumerate(syllables):
                 if idx == len(syllables) - 1:
                     sw_disp = swara_val if swara_val else '&nbsp;'
-                    html_parts.append(f'<span class="mantra-word"><span class="swara-text">{sw_disp}</span><span class="mantra-text">{syl}{mod_html}</span></span>{fn_html}')
+                    syl_core = f'<span class="syl-mod-g-wrap">{syl}<span class="swara-mod mod-g">&#xE003;</span></span>' if (has_mod_g and syl != '&nbsp;') else syl
+                    html_parts.append(f'<span class="mantra-word"><span class="swara-text">{sw_disp}</span><span class="mantra-text">{syl_core}{mod_html}</span></span>{fn_html}')
                 else:
                     html_parts.append(f'<span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text">{syl}</span></span>')
 
@@ -3388,11 +3422,15 @@ sup.footnote-ref a:hover {
 }
 .swara-mod.mod-a1 {
     position: absolute;
-    top: -0.28em;
+    top: -0.32em;
     left: 100%;
-    transform: translateX(-40%);
-    font-size: 1.25rem;
+    transform: translateX(-38%);
+    font-size: 1.15rem;
     pointer-events: none;
+}
+.danda.danda-adjacent {
+    margin-left: 0 !important;
+    margin-right: 0.25em;
 }
 .swara-mod.mod-a2 {
     position: absolute;
@@ -3456,12 +3494,20 @@ sup.footnote-ref a:hover {
     font-size: 1.15rem;
     vertical-align: -0.05em;
 }
-.swara-mod.mod-g {
+.syl-mod-g-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+}
+.swara-mod.mod-g,
+.syl-mod-g-wrap .swara-mod.mod-g {
     position: absolute;
-    bottom: -0.38em;
-    left: 28%;
+    bottom: -0.32em;
+    left: 50%;
     transform: translateX(-50%);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    color: #0284c7;
+    pointer-events: none;
 }
 .swara-mod.mod-h {
     position: absolute;

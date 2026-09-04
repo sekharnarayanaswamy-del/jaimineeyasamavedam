@@ -652,6 +652,9 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
 *   **HTML Metadata Formatting**: To preserve scholar-aligned metadata in HTML, the renderer selectively skips whitespace normalization for `rik_metadata` and `saman_metadata` fields, paired with `white-space: pre-wrap` in CSS.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
+*   **Vedic Swara Modifier Alignment (`MOD-G` and `MOD-A1`)**:
+    *   **`MOD-G` (Descending Tone Slash `\uE003`)**: Centered strictly under the core base syllable/akshara, isolated from any trailing punctuation or secondary modifier marks. In LaTeX templates (`Malayalam_main.template`, `Devanagari_main.template`), `\modGUnder` applies a `-0.255em` glyph compensation to counter the asymmetric font metric in `JaimineeyaSwara.ttf`. In HTML/Curation tool, the base syllable is isolated in `<span class="syl-mod-g-wrap">{syl}<span class="swara-mod mod-g">&#xE003;</span></span>`.
+    *   **`MOD-A1` (Arc over Danda `\uE00D`)**: Intervening whitespace before danda stems is removed across all generators. In LaTeX, `\dandaWithArc` shifts the arc apex (`0.50\dimen0` Malayalam, `0.53\dimen0` Devanagari) to align over the danda stem. In HTML and the JSV Visual Curation Tool, look-ahead automatically promotes `(⁀)`/`(A)` before a danda to `MOD-A1`, suppresses whitespace, and attaches `.danda-adjacent`.
 
 ### 5.3 Footnote Syntax
 Footnotes in the source text must follow the `(sN)` pattern **immediately following** the swara, with no space.

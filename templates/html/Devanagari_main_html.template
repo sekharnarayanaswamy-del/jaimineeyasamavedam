@@ -394,9 +394,9 @@
         }
         .swara-mod.mod-a1 {
             position: absolute;
-            top: -0.32em;
+            top: -0.30em;
             left: 100%;
-            transform: translateX(-8%);
+            transform: translateX(-40%);
             font-size: 0.60em;
             pointer-events: none;
             z-index: 2;
@@ -461,10 +461,19 @@
             margin-left: 1px;
             vertical-align: 0.15em;
         }
-        .swara-mod.mod-g {
-            font-size: 0.48em;
-            margin-left: -0.12em;
-            vertical-align: -0.20em;
+        .syl-mod-g-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: flex-end;
+        }
+        .swara-mod.mod-g,
+        .syl-mod-g-wrap .swara-mod.mod-g {
+            position: absolute;
+            bottom: -0.32em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.50em;
+            pointer-events: none;
         }
         .swara-mod.mod-h {
             font-size: 0.50em;
@@ -544,7 +553,11 @@
             vertical-align: baseline;
         }
         .mantra-connected-group .danda {
-            margin: 0 1px;
+            margin: 0;
+        }
+        .danda.danda-adjacent {
+            margin-left: -0.28em !important;
+            margin-right: 2px !important;
         }
         
         .verse-num-marker {

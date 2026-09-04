@@ -7,6 +7,7 @@
 \usepackage{fontspec}
 \usepackage{polyglossia}
 \setdefaultlanguage{sanskrit}
+\usepackage{etoolbox}
 
 % --- COLOR SETUP ---
 \usepackage[dvipsnames]{xcolor} % <--- ADDED for \textcolor support
@@ -32,32 +33,49 @@
 \definecolor{ModifierSkyBlue}{HTML}{000000}
 \BLOCK{ endif }
 
-\setmainfont[
-    Scale=1.5, 
-    Script=Devanagari,
-    Ligatures=TeX,
-    AutoFakeSlant\BLOCK{ if font_path },
-    Path = \VAR{font_path},
-    Extension = .ttf,
-    UprightFont = *\BLOCK{ endif }
-]{\VAR{font_family}}
-
-\newfontfamily\smallredfont[
-    Scale=1.12,  
-    Script=Devanagari,
-    Ligatures=TeX,
-    Color=SwaraRed,
-    AutoFakeBold=2.0,
-    AutoFakeSlant\BLOCK{ if font_path },
-    Path = \VAR{font_path},
-    Extension = .ttf,
-    UprightFont = *\BLOCK{ endif }
-]{\VAR{font_family}}
-
+\BLOCK{ if font_family == 'NotoSansDevanagari' or font_family == 'Noto Sans Devanagari' or font_family == 'NotoSans' }
 \BLOCK{ if font_path }
-\newfontfamily\swarafont[Scale=0.92, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
+\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
+\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSansDevanagari-Bold.ttf}
+\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSansDevanagari.ttf}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\newfontfamily\swarafont[Scale=0.92, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant]{JaimineeyaSwara}
+\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
+\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
+\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX]{NotoSansDevanagari-Bold}
+\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSansDevanagari}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\BLOCK{ endif }
+\BLOCK{ elif font_family == 'NotoSerifDevanagari' or font_family == 'Noto Serif Devanagari' or font_family == 'NotoSerif' }
+\BLOCK{ if font_path }
+\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\BLOCK{ else }
+\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
+\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
+\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0]{NotoSerifDevanagari-Regular}
+\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSerifDevanagari-Regular}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\BLOCK{ endif }
+\BLOCK{ else }
+% Default: AdishilaVedic
+\BLOCK{ if font_path }
+\setmainfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\devafont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\headerfont[Scale=1.25, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
+\newfontfamily\smallredfont[Scale=0.82, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\BLOCK{ else }
+\setmainfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\devafont[Scale=1.15, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\headerfont[Scale=1.25, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
+\newfontfamily\smallredfont[Scale=0.82, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
+\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\BLOCK{ endif }
 \BLOCK{ endif }
 
 \setcounter{tocdepth}{3}
@@ -71,9 +89,30 @@
 \usepackage{imakeidx}    
 \usepackage{needspace}
 \usepackage{longtable}
+\usepackage{titlesec}
+\titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\headerfont}
+\titlespacing*{\chapter}{0pt}{-25pt}{12pt}
+\titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
+\titlespacing*{\section}{0pt}{8pt}{14pt}
+\usepackage{setspace}
+\setstretch{2.15}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
+
+% --- GEOMETRY ---
+\usepackage[a4paper, margin=1.5cm, top=2.5cm, bottom=2.0cm]{geometry} 
+
+% --- FOOTNOTE LINE SETUP ---
+\usepackage[norule]{footmisc} 
+\newcommand{\drawstarline}{%
+  \begin{center}
+    \vspace{-0.2em}
+    \textcolor{SwaraRed}{* * *}
+    \vspace{-0.5em}
+  \end{center}
+}
+
 % --- SPACING & BREAKING RULES ---
 % 1. Reduce the "Cost" of breaking a word.
 %    Default is 50. Lower means "Please break here instead of stretching spaces."
@@ -92,20 +131,14 @@
 % --- STACKING COMMANDS (Strictly No Phantom Spaces) ---
 
 \BLOCK{ if kpully }
-% 1. KPULLY (Kodunthirapully Paddhati): Swara markings ABOVE the mantra text
-\newcommand{\stackcenter}[2]{%
-  \begingroup%
-  \def\stackalignment{c}%
-  \stackon[1.4ex]{\vphantom{ई}#1}{#2}%
-  \endgroup%
+% 1. KPULLY (Kodunthirapully Paddhati): Swara markings ABOVE the mantra text with zero horizontal expansion
+\newlength{\swarabasew}
+\newcommand{\swarastack}[2]{%
+  \settowidth{\swarabasew}{#1}%
+  \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{2.35ex}[0pt][0pt]{#2}}}%
 }
-
-\newcommand{\stackleft}[2]{%
-  \begingroup%
-  \def\stackalignment{c}%
-  \stackon[1.4ex]{\vphantom{ई}#1}{#2}%
-  \endgroup%
-}
+\newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}
+\newcommand{\stackleft}[2]{\swarastack{#1}{#2}}
 \BLOCK{ else }
 % 1. STANDARD: Swara markings BELOW the mantra text
 \newcommand{\stackcenter}[2]{%
@@ -124,11 +157,54 @@
 \BLOCK{ endif }
 
 % --- DANDA WITH ARC MACRO (MOD-A1: Centered Over Danda) ---
+\BLOCK{ if font_family == 'NotoSansDevanagari' or font_family == 'Noto Sans Devanagari' or font_family == 'NotoSans' or font_family == 'NotoSerifDevanagari' or font_family == 'Noto Serif Devanagari' or font_family == 'NotoSerif' }
 \newcommand{\dandaWithArc}[2][\char"E00D]{%
+  \begingroup%
+  \settowidth{\dimen0}{#2}%
+  \mbox{\hspace{0.50\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.50\dimen0}#2}%
+  \hspace{0.10em}%
+  \endgroup%
+}
+\BLOCK{ else }
+% AdishilaVedic: Compensate for built-in ~0.36em left side bearing of uni0964
+\newcommand{\dandaWithArc}[2][\char"E00D]{%
+  \begingroup%
+  \settowidth{\dimen0}{#2}%
+  \hspace{-0.28em}% Pull danda close to previous syllable, removing huge gap
+  \mbox{\hspace{0.53\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.53\dimen0}#2}%
+  \hspace{0.10em}%
+  \endgroup%
+}
+\BLOCK{ endif }
+
+% --- OVERHEAD CONJUNCT ARC (MOD-A2: Centered Over Syllable) ---
+\newcommand{\arcOverSyllable}[2][\char"E02E]{%
   \begingroup%
   \settowidth{\dimen0}{#2}%
   \mbox{\hspace{0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.5\dimen0}#2}%
   \endgroup%
+}
+
+% --- LOWER UNDER-SLASH (MOD-G: Centered Below Syllable) ---
+\newcommand{\modGUnder}[1]{%
+  \begingroup%
+  \settowidth{\dimen0}{#1}%
+  \mbox{#1\hspace{-0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.50ex}[0pt][0pt]{\hspace{-0.255em}\char"E003\hspace{0.255em}}}}}\hspace{0.5\dimen0}}%
+  \endgroup%
+}
+
+% --- UNDERBAR MODIFIER (MOD-UNDERBAR: In-line Under-dash to the Right) ---
+\newcommand{\underbarMark}{\hspace{0.05em}{\textcolor{ModifierSkyBlue}{\raisebox{-0.18ex}{\rule{0.30em}{0.14ex}}}}\hspace{0.06em}}
+
+% --- PEAK ELEVATION CARET (MOD-B: Spans 2 Syllables with Swara on Apex) ---
+\newcommand{\caretWithSwara}[1]{%
+  \rlap{%
+    \swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\char"E005}}%
+    \settowidth{\dimen0}{\swarafont\char"E005}%
+    \hspace{-0.5\dimen0}%
+    \makebox[0pt][c]{\raisebox{2.60ex}{{\smallredfont \textcolor{SwaraRed}{#1}}}}%
+    \hspace{0.5\dimen0}%
+  }%
 }
 
 % --- INDEX INITIALIZATION ---
@@ -198,9 +274,7 @@
 
 \begin{titlepage}
     \begin{center}
-        \begin{sanskrit}
-            { \Huge \VAR{doc_title_sa} }
-        \end{sanskrit}
+        { \Huge \textbf{\VAR{doc_title_sa}} }
         \vfill
         \large v\VAR{version} \\
         Generated: \VAR{generated_at} \\

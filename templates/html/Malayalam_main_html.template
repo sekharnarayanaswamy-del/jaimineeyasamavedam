@@ -183,9 +183,9 @@
         }
         .swara-mod.mod-a1 {
             position: absolute;
-            top: -0.28em;
+            top: -0.32em;
             left: 100%;
-            transform: translateX(5%);
+            transform: translateX(-38%);
             font-size: 1.15rem;
             pointer-events: none;
         }
@@ -328,9 +328,15 @@
             vertical-align: 0.10em;
             color: var(--modifier-color);
         }
-        .swara-mod.mod-g {
+        .syl-mod-g-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: flex-end;
+        }
+        .swara-mod.mod-g,
+        .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: 0.30em;
+            bottom: -0.32em;
             left: 50%;
             transform: translateX(-50%);
             font-size: 1.05rem;
@@ -370,6 +376,10 @@
             color: var(--primary-color);
             font-size: 1.4rem;
             line-height: 1.2;
+        }
+        .danda.danda-adjacent {
+            margin-left: 0 !important;
+            margin-right: 0.25em;
         }
         .verse-num-marker {
             display: inline-flex;

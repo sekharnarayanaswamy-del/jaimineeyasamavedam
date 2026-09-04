@@ -446,16 +446,33 @@ function renderVedicHTML(text) {
   const tokens = text.split(/(\s+|[।॥])/g);
   let html = '';
 
-  for (const token of tokens) {
+  let skipNextSpace = false;
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
     if (!token) continue;
     if (/^\s+$/.test(token)) {
-      html += ' ';
+      if (!skipNextSpace) {
+        html += ' ';
+      }
+      skipNextSpace = false;
       continue;
     }
     if (token === '।' || token === '॥') {
-      html += `<span class="danda">${token}</span>`;
+      const isAdjacent = skipNextSpace;
+      html += `<span class="danda${isAdjacent ? ' danda-adjacent' : ''}">${token}</span>`;
+      skipNextSpace = false;
       continue;
     }
+
+    // Look ahead: is the next non-whitespace token a danda?
+    let nextNonSpace = '';
+    for (let j = i + 1; j < tokens.length; j++) {
+      if (tokens[j] && !/^\s+$/.test(tokens[j])) {
+        nextNonSpace = tokens[j];
+        break;
+      }
+    }
+    const nextIsDanda = (nextNonSpace === '।' || nextNonSpace === '॥');
 
     // Match chunks: BaseAksharas + (SwaraLetterOrModifier)*
     let wordHtml = '';
@@ -472,6 +489,7 @@ function renderVedicHTML(text) {
       let swaraLetter = '';
       let modifiersHtml = '';
       let hasModB = false;
+      let hasModG = false;
 
       // Parse all parens and punctuation in extras
       const parenRegex = /\(([^()]+)\)|(_|,|\.)/g;
@@ -483,11 +501,17 @@ function renderVedicHTML(text) {
         } else if (inner === 'H' || inner === 'h' || inner === '|') {
           modifiersHtml += '<span class="swara-mod mod-h" title="MOD-H: High Pitch Swarita">&#xE00C;</span>';
         } else if (inner === 'G' || inner === 'g' || inner === '\\') {
-          modifiersHtml += '<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\\)">&#xE003;</span>';
-        } else if (inner === 'A' || inner === 'a' || inner === '⁀') {
-          modifiersHtml += '<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>';
+          hasModG = true;
         } else if (inner === 'A1' || inner === 'a1' || inner === 'A_1' || inner === 'a_1') {
           modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+          if (nextIsDanda) skipNextSpace = true;
+        } else if (inner === 'A' || inner === 'a' || inner === '⁀') {
+          if (nextIsDanda) {
+            modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+            skipNextSpace = true;
+          } else {
+            modifiersHtml += '<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>';
+          }
         } else if (inner === 'A2' || inner === 'a2' || inner === 'A_2' || inner === 'a_2' || inner === '\uE02E') {
           modifiersHtml += '<span class="swara-mod mod-a2" title="MOD-A2: Overhead Conjunct Arc">&#xE02E;</span>';
         } else if (inner === 'D' || inner === 'd' || inner === '∧' || inner === 'Ʌ') {
@@ -531,16 +555,20 @@ function renderVedicHTML(text) {
         wordHtml += `<span class="akshara-base">${syl}</span>`;
       }
 
+      const sylCore = (hasModG && lastSyllable)
+        ? `<span class="syl-mod-g-wrap">${lastSyllable}<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\\)">&#xE003;</span></span>`
+        : (lastSyllable || (hasModG ? '<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\\)">&#xE003;</span>' : ''));
+
       // If this syllable has Mod-B (Peak Caret with embedded swara on peak)
       if (hasModB) {
         const caretGroup = `<span class="swara-mod mod-b"><span class="caret-glyph">&#xE005;</span><span class="swara-on-caret">${swaraLetter}</span></span>`;
-        wordHtml += `<span class="akshara-base">${lastSyllable}${modifiersHtml}${caretGroup}</span>`;
+        wordHtml += `<span class="akshara-base">${sylCore}${modifiersHtml}${caretGroup}</span>`;
       } else if (swaraLetter && lastSyllable) {
-        wordHtml += `<ruby class="vedic-ruby"><rb class="akshara-base">${lastSyllable}${modifiersHtml}</rb><rt class="swara-above">${swaraLetter}</rt></ruby>`;
+        wordHtml += `<ruby class="vedic-ruby"><rb class="akshara-base">${sylCore}${modifiersHtml}</rb><rt class="swara-above">${swaraLetter}</rt></ruby>`;
       } else if (swaraLetter && !lastSyllable) {
-        wordHtml += `<ruby class="vedic-ruby"><rb class="akshara-base">&nbsp;${modifiersHtml}</rb><rt class="swara-above">${swaraLetter}</rt></ruby>`;
-      } else if (lastSyllable || modifiersHtml) {
-        wordHtml += `<span class="akshara-base">${lastSyllable}${modifiersHtml}</span>`;
+        wordHtml += `<ruby class="vedic-ruby"><rb class="akshara-base">&nbsp;${sylCore}${modifiersHtml}</rb><rt class="swara-above">${swaraLetter}</rt></ruby>`;
+      } else if (sylCore || modifiersHtml) {
+        wordHtml += `<span class="akshara-base">${sylCore}${modifiersHtml}</span>`;
       }
     }
 

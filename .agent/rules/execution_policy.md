@@ -3,7 +3,7 @@ trigger: always_on
 ---
 
 ---
-description: Autonomous execution policy for ArthaSutra workspace
+description: Autonomous execution policy for Jaimineeya Sama Veda workspace
 always_apply: true
 ---
 

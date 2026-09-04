@@ -69,17 +69,11 @@
 \setlength{\parindent}{0pt}
 
 % --- STACKING COMMANDS: Uniform Baseline Swara ABOVE the syllable ---
-% Absolute baseline-relative overlay ensuring 100% constant horizontal swara baseline
+% Absolute baseline-relative overlay ensuring 100% constant horizontal swara baseline with zero horizontal expansion
 \newlength{\swarabasew}
-\newlength{\swaratopw}
 \newcommand{\swarastack}[2]{%
   \settowidth{\swarabasew}{#1}%
-  \settowidth{\swaratopw}{#2}%
-  \ifdim\swaratopw>\swarabasew
-    \mbox{#1\hspace{-\swarabasew}\makebox[\swaratopw][l]{\raisebox{2.35ex}[0pt][0pt]{#2}}\hspace{\dimexpr\swaratopw-\swarabasew+1.5pt\relax}}%
-  \else
-    \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{2.35ex}[0pt][0pt]{#2}}}%
-  \fi
+  \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{2.35ex}[0pt][0pt]{#2}}}%
 }
 \newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}
 \newcommand{\stackleft}[2]{\swarastack{#1}{#2}}
@@ -107,6 +101,42 @@
 \newcommand{\rikKampa}[1]{\rikstack{#1}{{\devafont\fontsize{15pt}{15pt}\selectfont\raisebox{-0.1pt}{\char"1CF8}}}}
 \newcommand{\rikTrikampa}[1]{\rikstack{#1}{{\devafont\fontsize{15pt}{15pt}\selectfont\raisebox{-0.1pt}{\char"1CF9}}}}
 \newcommand{\accentmark}[2]{{\devafont\fontsize{#1pt}{#1pt}\selectfont #2}}
+
+% --- OVERHEAD CONJUNCT ARC (MOD-A2: Centered Over Syllable) ---
+\newcommand{\arcOverSyllable}[2][\char"E02E]{%
+  \begingroup%
+  \settowidth{\dimen0}{#2}%
+  \mbox{\hspace{0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.5\dimen0}#2}%
+  \endgroup%
+}
+
+% --- DANDA WITH ARC MACRO (MOD-A1: Centered Over Danda) ---
+\newcommand{\dandaWithArc}[2][\char"E00D]{%
+  \begingroup%
+  \settowidth{\dimen0}{#2}%
+  \mbox{\hspace{0.50\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.50\dimen0}#2}%
+  \hspace{0.10em}%
+  \endgroup%
+}
+
+% --- LOWER UNDER-SLASH (MOD-G: Centered Below Syllable) ---
+\newcommand{\modGUnder}[1]{%
+  \begingroup%
+  \settowidth{\dimen0}{#1}%
+  \mbox{#1\hspace{-0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.50ex}[0pt][0pt]{\hspace{-0.255em}\char"E003\hspace{0.255em}}}}}\hspace{0.5\dimen0}}%
+  \endgroup%
+}
+
+% --- PEAK ELEVATION CARET (MOD-B: Spanning Syllables with Swara Centered on Apex) ---
+\newcommand{\caretWithSwara}[1]{%
+  \rlap{%
+    \swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\char"E005}}%
+    \settowidth{\dimen0}{\swarafont\char"E005}%
+    \hspace{-0.5\dimen0}%
+    \makebox[0pt][c]{\raisebox{2.60ex}{{\swarafont \bfseries \textcolor{SwaraRed}{#1}}}}%
+    \hspace{0.5\dimen0}%
+  }%
+}
 
 % --- INDEX INITIALIZATION ---
 \makeindex[columns=2, title={\malayalamfont അനുക്രമണിക}, intoc]

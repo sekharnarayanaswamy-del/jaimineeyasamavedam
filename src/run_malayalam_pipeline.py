@@ -228,38 +228,44 @@ def main():
 
         # 3d. Copy Malayalam PDFs if present
         mal_pdf_candidates = [
+            ROOT_DIR / "data" / "output" / "pdf" / "Malayalam" / "Samam_Malayalam_preview.pdf",
+            output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam_preview.pdf",
+            output_prefix.parent / f"{output_prefix.name}_preview.pdf",
             output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.pdf",
             output_prefix.parent / f"{output_prefix.name}_Malayalam.pdf",
             ROOT_DIR / "data" / "output" / "pdf" / "Malayalam" / "Samam_Malayalam.pdf",
         ]
-        for src_pdf in mal_pdf_candidates:
-            if src_pdf.exists():
-                target_pdf_root = DOCS_DIR / "Samam_Malayalam.pdf"
-                target_pdf_mal = malayalam_docs_dir / "Samam_Malayalam.pdf"
-                try:
-                    shutil.copy2(src_pdf, target_pdf_root)
-                    shutil.copy2(src_pdf, target_pdf_mal)
-                    copied.extend([target_pdf_root, target_pdf_mal])
-                    print(f"  Copied -> {target_pdf_root.relative_to(ROOT_DIR)}")
-                except PermissionError:
-                    print(f"  [WARN] {target_pdf_root.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
+        existing_mal_pdfs = [p for p in mal_pdf_candidates if p.exists()]
+        existing_mal_pdfs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        for src_pdf in existing_mal_pdfs:
+            target_pdf_root = DOCS_DIR / "Samam_Malayalam.pdf"
+            target_pdf_mal = malayalam_docs_dir / "Samam_Malayalam.pdf"
+            try:
+                shutil.copy2(src_pdf, target_pdf_root)
+                shutil.copy2(src_pdf, target_pdf_mal)
+                copied.extend([target_pdf_root, target_pdf_mal])
+                print(f"  Copied ({src_pdf.name}) -> {target_pdf_root.relative_to(ROOT_DIR)}")
                 break
+            except PermissionError:
+                print(f"  [WARN] {target_pdf_root.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
 
         # 3e. Copy Devanagari Kpully PDF if present
         kpully_pdf_candidates = [
+            ROOT_DIR / "data" / "output" / "pdf" / "Devanagari" / "Samhita_Devanagari_preview.pdf",
             ROOT_DIR / "data" / "output" / "pdf" / "Devanagari" / "Samhita_Devanagari.pdf",
             ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.pdf",
         ]
-        for src_pdf in kpully_pdf_candidates:
-            if src_pdf.exists():
-                target_kpully_pdf = DOCS_DIR / "Samhita_kpully_Devanagari.pdf"
-                try:
-                    shutil.copy2(src_pdf, target_kpully_pdf)
-                    copied.append(target_kpully_pdf)
-                    print(f"  Copied -> {target_kpully_pdf.relative_to(ROOT_DIR)}")
-                except PermissionError:
-                    print(f"  [WARN] {target_kpully_pdf.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
+        existing_kpully_pdfs = [p for p in kpully_pdf_candidates if p.exists()]
+        existing_kpully_pdfs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        for src_pdf in existing_kpully_pdfs:
+            target_kpully_pdf = DOCS_DIR / "Samhita_kpully_Devanagari.pdf"
+            try:
+                shutil.copy2(src_pdf, target_kpully_pdf)
+                copied.append(target_kpully_pdf)
+                print(f"  Copied ({src_pdf.name}) -> {target_kpully_pdf.relative_to(ROOT_DIR)}")
                 break
+            except PermissionError:
+                print(f"  [WARN] {target_kpully_pdf.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
 
         if copied:
             print(f"[INFO] Published {len(copied)} files (HTML + PDF) to docs/")
