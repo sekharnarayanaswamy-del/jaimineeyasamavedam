@@ -127,6 +127,10 @@
   \endgroup%
 }
 
+% --- LOW UNDERBAR CONNECTOR (MOD-4: Sustain underbar between syllables/words) ---
+\newcommand{\underbarMark}{\hspace{0.05em}{\textcolor{ModifierSkyBlue}{\raisebox{-0.16ex}{\rule{0.30em}{0.14ex}}}}\hspace{0.06em}}
+
+
 % --- PEAK ELEVATION CARET (MOD-B: Spanning Syllables with Swara Centered on Apex) ---
 \newcommand{\caretWithSwara}[1]{%
   \rlap{%

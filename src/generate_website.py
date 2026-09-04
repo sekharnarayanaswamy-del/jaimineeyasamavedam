@@ -3424,7 +3424,7 @@ sup.footnote-ref a:hover {
     position: absolute;
     top: -0.32em;
     left: 100%;
-    transform: translateX(-38%);
+    transform: translateX(0%);
     font-size: 1.15rem;
     pointer-events: none;
 }

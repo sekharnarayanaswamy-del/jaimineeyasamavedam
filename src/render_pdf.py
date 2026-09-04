@@ -1608,6 +1608,8 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.80ex}}{{\\hspace{{0.10em}}\uE02B\\hspace{{0.05em}}}}}}}}"
     elif m_clean in ("K", "k", "\uE02D"):
         return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE02D\\hspace{{0.05em}}}}}}}}"
+    elif m_clean == "_":
+        return f"{syl_esc}\\underbarMark{{}}"
     return syl_esc
 
 
@@ -1840,7 +1842,7 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
             elif syl == ',':
                 parts.append(r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}")
             elif syl == '_':
-                parts.append(r"\rlap{\textcolor{ModifierSkyBlue}{\raisebox{-0.1ex}{\rule{0.3em}{0.13ex}}}}")
+                parts.append(r"\underbarMark{}")
             else:
                 parts.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{syl_esc}}}}}")
         elif idx == len(syllables) - 1:
@@ -1867,7 +1869,7 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
                 for p in trailing_punct:
                     if p not in exclude_mods:
                         if p == '_':
-                            stack_code += r"\rlap{\textcolor{ModifierSkyBlue}{\raisebox{-0.1ex}{\rule{0.3em}{0.13ex}}}}"
+                            stack_code += r"\underbarMark{}"
                         elif p == '.':
                             stack_code += r"{\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
                         elif p == ',':
