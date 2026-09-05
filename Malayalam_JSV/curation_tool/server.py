@@ -398,7 +398,7 @@ class CurationHandler(http.server.SimpleHTTPRequestHandler):
 def run_server(port=8080):
     STATIC_DIR.mkdir(parents=True, exist_ok=True)
     socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", port), CurationHandler) as httpd:
+    with socketserver.ThreadingTCPServer(("", port), CurationHandler) as httpd:
         print(f"==================================================")
         print(f" JSV Visual Curation Server running at:")
         print(f" http://localhost:{port}/")
