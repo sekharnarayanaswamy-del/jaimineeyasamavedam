@@ -210,7 +210,7 @@ python src/generate_Rik_for_samhita.py -f html
 
 ---
 
-## 4. `generate_granular_table.py`
+## 5. `generate_granular_table.py`
 
 This script generates a detailed Excel/CSV table listing every individual Samam with its metadata.
 
@@ -244,7 +244,7 @@ python src/generate_granular_table.py
 
 ---
 
-## 5. `apply_excel_corrections.py`
+## 6. `apply_excel_corrections.py`
 
 This script reads corrections from the Excel file and applies them back to the JSON data. This enables an **Excel-based metadata correction workflow**.
 
@@ -270,7 +270,7 @@ python src/apply_excel_corrections.py
 
 ### Workflow
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │  1. Generate Excel from JSON                                    │
 │     python src/generate_granular_table.py                       │
@@ -310,7 +310,7 @@ python src/apply_excel_corrections.py
 
 ---
 
-## 6. `curate_jsv.py`
+## 7. `curate_jsv.py`
 
 This script curates a subset of JSON files based on a list of P.K.S (Parva, Kandah, Samam) identifiers. It supports merging from multiple sources (Samhita, Aaranam, etc.) into a standalone curated JSON (Sooktamala).
 
@@ -362,7 +362,7 @@ python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter my_filt
 
 ---
 
-## 7. `renumber_sooktam.py`
+## 8. `renumber_sooktam.py`
 
 This script renumbers IDs (`supersection_N`, `section_N`, `subsection_N`) and mantra markers (`॥ N ॥`) in both `.txt` and `.json` files.
 
@@ -414,7 +414,7 @@ python src/tools/renumber_sooktam.py MyText.txt --start-super 5 --start-section 
 
 ---
 
-## 7. Footnote Formatting Guide
+## 9. Footnote Formatting Guide
 
 This section describes how to correctly format footnotes in the source text file.
 
@@ -428,13 +428,13 @@ Footnotes use the format `(sN)` where N is a number (e.g., `(s1)`, `(s2)`, `(s3)
 > **Footnote markers must be placed immediately after the swara** with NO space.
 
 **Correct:**
-```
+```text
 इ(श)(s1)     ← footnote attaches to इ (correct)
 वा(चा)(s2)   ← footnote attaches to वा (correct)
 ```
 
 **Incorrect:**
-```
+```text
 इ(श) (s1)    ← space before footnote - may attach to wrong character
 इ (s1)(श)    ← footnote before swara - incorrect placement
 ```
@@ -442,7 +442,7 @@ Footnotes use the format `(sN)` where N is a number (e.g., `(s1)`, `(s2)`, `(s3)
 ### Pattern
 
 The general pattern for a mantra character with swara and footnote is:
-```
+```text
 Word(Swara)(sN)
 ```
 
@@ -454,7 +454,7 @@ Where:
 ### Footnote Definitions
 
 Footnotes are defined in a separate block in the source file:
-```
+```text
 # Start of Footnote -- subsection_1 ## DO NOT EDIT
 s1: Kerala Padhati explanation here
 s2: Thogur Padhati explanation here
@@ -468,7 +468,7 @@ s2: Thogur Padhati explanation here
 
 ---
 
-## 8. Malayalam Script Pipeline (CLI Guide)
+## 10. Malayalam Script Pipeline (CLI Guide)
 
 The Malayalam workflow converts, transliterates, and renders the Jaimineeya Samaveda into Malayalam base text with Grantha superscript swara notations and Vedic modifiers.
 
@@ -518,5 +518,122 @@ To re-build the custom font or regenerate the interactive HTML glyph table:
 python scripts/build_swara_font.py
 python scripts/generate_glyph_grid.py
 ```
+
+---
+
+## 11. YAML Configuration Files Reference
+
+The repository uses several YAML (`.yaml` / `.yml`) configuration files to centralize pipeline settings, render defaults, procedure mappings, web collections, and automated deployment.
+
+### Overview of YAML Files
+
+| File Path | Component / Role | Consumed By |
+| :--- | :--- | :--- |
+| [`src/pipeline_config.yaml`](../../src/pipeline_config.yaml) | **Master Pipeline Switchboard**: Centralized settings for input/output paths, default flags, and modes for all scripts. | `utils.py`, `renumber_sooktam.py`, `generate_json.py`, `curate_jsv.py`, `generate_rik_table.py`, `generate_website.py`, `render_pdf.py` |
+| [`src/render_config.yaml`](../../src/render_config.yaml) | **Dedicated Rendering Configuration**: Font, color, TOC levels, and text-type presets for PDF/HTML output. | `render_pdf.py` |
+| [`data/input/prayoga/prayoga_index.yaml`](../../data/input/prayoga/prayoga_index.yaml) | **Prayoga (Procedure) Linking Index**: Maps ritual procedure Markdown guides to mantra structure sections. | `generate_json.py` (`--procedures`), `generate_website.py`, `render_pdf.py` |
+| [`docs/collection_config.yaml`](../../docs/collection_config.yaml) | **Gateway Homepage Collection Registry**: Configures curated collections showcased on the gateway landing page. | `docs/index.html` (Website Gateway) |
+| [`.github/workflows/deploy-to-hostinger.yml`](../../.github/workflows/deploy-to-hostinger.yml) | **CI/CD Deployment Workflow**: Automates FTP sync of `docs/` to Hostinger production hosting upon git push. | GitHub Actions Runner |
+
+---
+
+### 11.1 `src/pipeline_config.yaml` (Master Pipeline Switchboard)
+
+The primary central configuration file for the entire processing pipeline. Instead of remembering complex CLI arguments, scripts look up defaults in this file.
+
+*   **Location:** `src/pipeline_config.yaml`
+*   **Key Sections:**
+    *   `project`: Project name, current version (`3.12`), `input_root`, and `output_root`.
+    *   `renumber_sooktam`: Default offsets and flags for Samhita (`start_super: 1`, `reset_per_super: true`) and Aaranam (`start_super: 7`, `reset_per_super: false`).
+    *   `generate_json`: Source paths for auxiliary files (`rik_meta`, `saman_meta`, `rik_text`), and type-specific paths for `samhita` and `aaranam`.
+    *   `generate_rik_table`: Input JSON, output CSV, reconciliation Excel, and final Vargeekaran JSON destinations.
+    *   `generate_aaranam_rik_table`: Path mappings for Aaranam baseline table creation.
+    *   `curate_jsv`: Default sources, filter files, and output paths for custom collection extractions.
+    *   `build_collection`: Default source and target output for themed collections.
+    *   `generate_website`: Web generation defaults (`docs/`, audio directory, font) and per-type output configurations (`docs/samhita`, `docs/aaranam`, `docs/collection`).
+    *   `render`: Rendering defaults (`output_mode`, `pdf_font`, `html_font`, `pdf_color_mode`, `toc_level`, `kpully`), document titles, template directories, and character normalization flags (`replace_colons_with_visarga`, `sanitize_invisible_chars`, `enable_footnote_consolidation`).
+    *   `procedures`: Enables prayoga linking and specifies the index file location (`data/input/prayoga/prayoga_index.yaml`).
+
+```yaml
+# Example excerpt from src/pipeline_config.yaml:
+project:
+  name: "Jaimineeya Samavedam"
+  version: "3.12"
+  output_root: "data/output"
+  input_root: "data/input"
+
+generate_json:
+  samhita:
+    input: "data/input/Samhita_corrected.txt"
+    output: "data/output/Samhita_corrected_out.json"
+    mode: "correction"
+```
+
+---
+
+### 11.2 `src/render_config.yaml` (Standalone Render Configuration)
+
+Provides a lightweight configuration file specifically tailored for document rendering when calling `render_pdf.py` without specifying long command-line options.
+
+*   **Location:** `src/render_config.yaml`
+*   **Key Sections:**
+    *   `defaults`: Default output style (`combined`, `separate`, `nometa`), fonts (`AdishilaVedic`), color mode (`bw` vs `color`), and table-of-contents depth (`section` or `subsection`).
+    *   `types`: Presets for `samhita`, `aaranam`, and `collection` (input file paths, Sanskrit document titles `doc_title`, summary table titles `summary_title`, and file prefixes).
+    *   `paths`: Paths to LaTeX/HTML/text templates (`templates/`) and logs.
+    *   `advanced`: Toggle flags for summary table generation, footnote consolidation, colon-to-visarga replacement, and invisible character cleanup.
+
+---
+
+### 11.3 `data/input/prayoga/prayoga_index.yaml` (Prayoga Procedure Index)
+
+Maps procedural ritual descriptions written in Markdown (`data/input/prayoga/*.md`) to structured mantra units in the text hierarchy.
+
+*   **Location:** `data/input/prayoga/prayoga_index.yaml`
+*   **How it works:**
+    *   Each entry defines a `scope` (`supersection`, `section`, or `subsection`), a target structural `id` (e.g., `supersection_22`, `section_1`), the relative Markdown `file` name, and a display `title`.
+    *   **Resolution Order**: Subsection-level mappings take precedence over section-level, which take precedence over supersection-level.
+    *   **CLI Usage**: Pass to `generate_json.py` via `--procedures data/input/prayoga/prayoga_index.yaml` to inject procedure metadata into the generated JSON.
+    *   **Downstream Effect**:
+        *   `generate_website.py` produces dedicated readable procedure HTML pages and adds navigation links at section/subsection headers.
+        *   `render_pdf.py` renders the Markdown into a LaTeX appendix (`॥ परिशिष्टम् ॥`) with automatic footnote hyperlinks pointing to the appendix.
+
+```yaml
+# Example entry from data/input/prayoga/prayoga_index.yaml:
+procedures:
+  - scope: section
+    id: section_1
+    file: aupasanam.md
+    title: औपासनम् - विधिः
+  - scope: supersection
+    id: supersection_22
+    file: udakashanti.md
+    title: उदकशान्ति - विधिः
+```
+
+---
+
+### 11.4 `docs/collection_config.yaml` (Gateway Collections Registry)
+
+Controls the curated collections cards featured on the gateway homepage (`docs/index.html`).
+
+*   **Location:** `docs/collection_config.yaml`
+*   **Key Fields per Collection:**
+    *   `id`: Unique identifier (e.g. `sooktamala`, `prayogamala-purva`, `prayogamala-uttara`).
+    *   `title_sa`: Devanagari Sanskrit title (e.g. `साम सूक्तमाला`).
+    *   `title_en`: English transliterated title (e.g. `Sama Sooktamala`).
+    *   `description`: Brief description of the collection's contents and ritual purpose.
+    *   `path`: Relative link to the collection entry page (e.g. `collection/sooktamala/index.html`).
+    *   `icon`: Visual emoji icon representing the collection card.
+
+---
+
+### 11.5 `.github/workflows/deploy-to-hostinger.yml` (CI/CD Deployment Workflow)
+
+Automates the build and deployment process via GitHub Actions.
+
+*   **Location:** `.github/workflows/deploy-to-hostinger.yml`
+*   **Trigger**: Triggered automatically on push to the `master` / `main` branch when changes are made.
+*   **Action**: Uses FTPS / FTP action with repository secrets (`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) to synchronize the generated static website directory (`docs/`) directly to the production Hostinger web host.
+
 
 

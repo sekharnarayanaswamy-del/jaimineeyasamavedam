@@ -30,6 +30,7 @@ jaimineeyasamavedam/
     - [`data/input/Aaranam_latest.txt`](../../data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
     - [`data/input/Rik Reconciliation table (JSV-KSV).xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29.xlsx): The reference for Samhita metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
     - [`data/input/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29%20-%20Aaranam.xlsx): The reference for Aaranam metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
+    - [`data/input/prayoga/prayoga_index.yaml`](../../data/input/prayoga/prayoga_index.yaml): The index mapping ritual procedure Markdown descriptions to specific mantra sections/subsections.
     
 - **Output Data**:
 - The json files represent the single source of truth in the project. 
@@ -49,16 +50,21 @@ jaimineeyasamavedam/
 - [`generate_rik_table.py`](../../src/generate_rik_table.py): Integrates metadata from Excel sheets into the main JSON database.
 - [`generate_website.py`](../../src/generate_website.py): The "Static Site Generator" that creates the beautiful parchment-styled web pages.
 - [`render_pdf.py`](../../src/render_pdf.py): A complex wrapper for LuaLaTeX that produces high-quality Vedic PDFs with accurate accents.
-- [`pipeline_config.yaml`](../../src/pipeline_config.yaml): The central switchboard for mapping input files to output paths.
+- [`pipeline_config.yaml`](../../src/pipeline_config.yaml): The central switchboard for mapping input files to output paths and configuring script defaults.
+- [`render_config.yaml`](../../src/render_config.yaml): Dedicated rendering configuration for fonts, colors, TOC levels, and text-type presets.
 
 ### **C. The Web Engine (`docs/`)**
 - [`index.html`](../../docs/index.html): The project gateway (Dashboard).
+- [`collection_config.yaml`](../../docs/collection_config.yaml): Configuration registry defining the collection cards featured on the gateway page.
 - [`main.js`](../../docs/samhita/js/main.js): The navigation and client-side search engine (Samhita example).
 - [`styles.css`](../../docs/samhita/css/styles.css): The design system, including font-specific Vedic accent alignments.
 - [`search-index.js`](../../docs/samhita/search-index.js): An offline-ready database for ultra-fast mantra searching.
 
-### **D. The Agent Workspace (`.agent/`)**
-- **`documentation/`**: Architectural guides and technical manuals for developers/AI.
+### **D. CI/CD & Deployment (`.github/`)**
+- [`.github/workflows/deploy-to-hostinger.yml`](../../.github/workflows/deploy-to-hostinger.yml): GitHub Actions workflow for automated FTPS deployment of `docs/` to Hostinger on push.
+
+### **E. The Agent Workspace (`.agent/`)**
+- **`documentation/`**: Architectural guides, CLI usage manuals, and technical references.
 - **`workflows/`**: Step-by-step guides for common tasks (e.g., committing changes).
 - **`skills/`**: Specialized instructions for project-specific operations.
 
