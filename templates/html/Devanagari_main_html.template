@@ -316,14 +316,21 @@
         
         \BLOCK{ if kpully }
         /* KPULLY (Kodunthirapully Paddhati): Swara text rendered ABOVE the mantra text */
+        .mantra-verse {
+            align-items: flex-end;
+        }
         .mantra-word {
             flex-direction: column-reverse;
+            justify-content: flex-end;
+        }
+        .mantra-connected-group {
+            align-items: flex-end;
         }
         \BLOCK{ endif }
         
         .mantra-text {
             font-family: var(--font-doc);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             line-height: 1.2;
             white-space: nowrap;
             position: relative;
@@ -332,7 +339,7 @@
         .swara-text {
             font-family: var(--font-doc);
             color: var(--swara-red);
-            font-size: 1.15rem;
+            font-size: 1.35rem;
             line-height: 1.2;
             text-align: center;
             min-height: 1.2em;
@@ -346,30 +353,31 @@
         /* Danda and Mantra Number */
         .danda {
             font-family: var(--font-doc);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             line-height: 1.2;
             margin: 0 0.05em;
             vertical-align: baseline;
+            display: inline;
         }
         
         .verse-num-marker {
-            display: inline-flex;
-            align-items: baseline;
+            display: inline;
             margin-left: 0.35em;
             white-space: nowrap;
             font-family: var(--font-doc);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             line-height: 1.2;
             vertical-align: baseline;
         }
         .verse-num {
             font-family: var(--font-doc);
-            font-size: 1.50rem;
+            font-size: 1.75rem;
             font-weight: bold;
             color: var(--primary-color);
             margin: 0 0.15em;
             line-height: 1.2;
             vertical-align: baseline;
+            display: inline;
         }
         
         /* Swara Modifiers - Proportionate and delicate in Sky Blue */
@@ -392,15 +400,49 @@
             pointer-events: none;
             z-index: 2;
         }
+        \BLOCK{ if 'Noto' in html_font }
+        .danda-word-a1,
+        .mantra-word:has(.danda-with-arc),
+        .danda.danda-with-arc:not(.danda-word-a1 *) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .danda-with-arc {
+            position: relative;
+            display: inline-block;
+        }
+        .danda-with-arc .swara-mod.mod-a1,
         .swara-mod.mod-a1 {
             position: absolute;
-            top: -0.30em;
-            left: 100%;
-            transform: translateX(-40%);
-            font-size: 0.60em;
+            top: -0.22em;
+            left: 62%;
+            transform: translateX(-50%);
+            font-size: 1.0em;
             pointer-events: none;
             z-index: 2;
         }
+        \BLOCK{ else }
+        .danda-word-a1,
+        .mantra-word:has(.danda-with-arc),
+        .danda.danda-with-arc:not(.danda-word-a1 *) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .danda-with-arc {
+            position: relative;
+            display: inline-block;
+        }
+        .danda-with-arc .swara-mod.mod-a1,
+        .swara-mod.mod-a1 {
+            position: absolute;
+            top: -0.22em;
+            left: 80.2%;
+            transform: translateX(-50%);
+            font-size: 1.0em;
+            pointer-events: none;
+            z-index: 2;
+        }
+        \BLOCK{ endif }
         .swara-mod.mod-a2 {
             position: absolute;
             top: -0.32em;
@@ -542,37 +584,12 @@
             vertical-align: baseline;
         }
         
-        .danda {
-            display: inline-block;
-            white-space: nowrap;
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.55rem;
-            line-height: 1;
-            margin: 0 4px;
-            vertical-align: baseline;
-        }
         .mantra-connected-group .danda {
             margin: 0;
         }
         .danda.danda-adjacent {
             margin-left: -0.28em !important;
             margin-right: 2px !important;
-        }
-        
-        .verse-num-marker {
-            display: inline-flex;
-            align-items: baseline;
-            margin-left: 6px;
-            vertical-align: baseline;
-        }
-        
-        .verse-num {
-            font-size: 1.35rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 0 2px;
-            vertical-align: baseline;
         }
         
         /* Accent marks - zero-width positioning for fonts without native Vedic support */

@@ -447,6 +447,7 @@ function renderVedicHTML(text) {
   let html = '';
 
   let skipNextSpace = false;
+  let pendingDandaHasA1 = false;
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
     if (!token) continue;
@@ -454,13 +455,24 @@ function renderVedicHTML(text) {
       if (!skipNextSpace) {
         html += ' ';
       }
-      skipNextSpace = false;
       continue;
     }
     if (token === '।' || token === '॥') {
-      const isAdjacent = skipNextSpace;
+      let isAdjacent = false;
+      if (pendingDandaHasA1) {
+        html = html.replace(/\s+$/, '') + ' ';
+        const arcHtml = '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+        html += `<span class="danda danda-with-arc">${token}${arcHtml}</span> `;
+        skipNextSpace = true;
+        pendingDandaHasA1 = false;
+        continue;
+      } else {
+        isAdjacent = skipNextSpace;
+        skipNextSpace = false;
+      }
+      const arcHtml = '';
+      const arcCls = '';
       html += `<span class="danda${isAdjacent ? ' danda-adjacent' : ''}">${token}</span>`;
-      skipNextSpace = false;
       continue;
     }
 
@@ -473,6 +485,7 @@ function renderVedicHTML(text) {
       }
     }
     const nextIsDanda = (nextNonSpace === '।' || nextNonSpace === '॥');
+    let wordHasModA1Danda = false;
 
     // Match chunks: BaseAksharas + (SwaraLetterOrModifier)*
     let wordHtml = '';
@@ -503,12 +516,18 @@ function renderVedicHTML(text) {
         } else if (inner === 'G' || inner === 'g' || inner === '\\') {
           hasModG = true;
         } else if (inner === 'A1' || inner === 'a1' || inner === 'A_1' || inner === 'a_1') {
-          modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
-          if (nextIsDanda) skipNextSpace = true;
+          if (nextIsDanda) {
+            pendingDandaHasA1 = true;
+            skipNextSpace = true;
+            wordHasModA1Danda = true;
+          } else {
+            modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+          }
         } else if (inner === 'A' || inner === 'a' || inner === '⁀') {
           if (nextIsDanda) {
-            modifiersHtml += '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>';
+            pendingDandaHasA1 = true;
             skipNextSpace = true;
+            wordHasModA1Danda = true;
           } else {
             modifiersHtml += '<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>';
           }
@@ -573,6 +592,9 @@ function renderVedicHTML(text) {
     }
 
     html += `<span class="mantra-word">${wordHtml || token}</span>`;
+    if (!wordHasModA1Danda) {
+      skipNextSpace = false;
+    }
   }
 
   return html;

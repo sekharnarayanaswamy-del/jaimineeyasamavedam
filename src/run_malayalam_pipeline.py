@@ -250,11 +250,9 @@ def main():
                 print(f"  [WARN] {target_pdf_root.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
 
         # 3e. Copy Devanagari Kpully PDF if present
-        kpully_pdf_candidates = [
-            ROOT_DIR / "data" / "output" / "pdf" / "Devanagari" / "Samhita_Devanagari_preview.pdf",
-            ROOT_DIR / "data" / "output" / "pdf" / "Devanagari" / "Samhita_Devanagari.pdf",
-            ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.pdf",
-        ]
+        deva_pdf_dir = ROOT_DIR / "data" / "output" / "pdf" / "Devanagari"
+        kpully_pdf_candidates = list(deva_pdf_dir.glob("Samhita_Devanagari*.pdf")) if deva_pdf_dir.exists() else []
+        kpully_pdf_candidates.append(ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.pdf")
         existing_kpully_pdfs = [p for p in kpully_pdf_candidates if p.exists()]
         existing_kpully_pdfs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
         for src_pdf in existing_kpully_pdfs:

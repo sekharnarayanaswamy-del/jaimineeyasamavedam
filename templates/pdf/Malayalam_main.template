@@ -18,6 +18,7 @@
 \newfontfamily\malayalamfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifMalayalam-Regular.ttf}
 \newfontfamily\granthafont[Scale=0.8, Script=Grantha, Ligatures=TeX, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifGrantha-Regular.ttf}
 \newfontfamily\swarafont[Scale=0.68, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontMal[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
 \setmainfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant]{Noto Serif Malayalam}
 \newfontfamily\latinfont[Scale=1.0, Ligatures=TeX, AutoFakeSlant]{Noto Serif Devanagari}
@@ -25,6 +26,7 @@
 \newfontfamily\malayalamfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant]{Noto Serif Malayalam}
 \newfontfamily\granthafont[Scale=0.8, Script=Grantha, Ligatures=TeX, AutoFakeSlant]{Noto Serif Grantha}
 \newfontfamily\swarafont[Scale=0.68, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontMal[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \setcounter{tocdepth}{3}
 
@@ -114,8 +116,9 @@
 \newcommand{\dandaWithArc}[2][\char"E00D]{%
   \begingroup%
   \settowidth{\dimen0}{#2}%
-  \mbox{\hspace{0.50\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.50\dimen0}#2}%
-  \hspace{0.10em}%
+  \hspace{-0.14\dimen0}%
+  \mbox{\hspace{0.644\dimen0}\makebox[0pt][c]{{\arcfontMal \textcolor{ModifierSkyBlue}{\raisebox{0.85ex}{#1}}}}\hspace{-0.644\dimen0}#2}%
+  \hspace{0.14\dimen0}%
   \endgroup%
 }
 

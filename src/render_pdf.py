@@ -895,10 +895,10 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
             v_count, v_num = _match_verse_num_marker(tokens, idx)
             if v_count > 0:
                 v_num_deva = str(v_num).translate(DEVA_DIGITS)
-                paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.35em}}\\mbox{{॥ {v_num_deva} ॥}}")
+                paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.20em}}\\mbox{{॥ {v_num_deva} ॥}}")
                 full_paragraph = "".join(paragraph_buffer)
-                formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}}}")
-                formatted_paragraphs.append(r"\par\vspace{0.8em}")
+                formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}\\par}}")
+                formatted_paragraphs.append(r"\vspace{0.35em}")
                 paragraph_buffer = []
                 idx += v_count
                 continue
@@ -907,17 +907,47 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
             t = tok['type']
             
             if t == 'space':
-                prev_is_danda = (idx > 0 and tokens[idx-1]['type'] == 'danda')
-                if prev_is_danda:
-                    paragraph_buffer.append(r"\hspace{0.35em}")
+                prev_tok = tokens[idx - 1] if idx > 0 else None
+                next_tok = tokens[idx + 1] if idx + 1 < len(tokens) else None
+                
+                prev_is_danda = (prev_tok and prev_tok['type'] in ('danda', 'footnote'))
+                next_is_danda = (next_tok and next_tok['type'] in ('danda', 'footnote'))
+                
+                if prev_is_danda or next_is_danda:
+                    paragraph_buffer.append(" ")
+                else:
+                    prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
+                    next_multi = (next_tok and _has_multiple_swaras(next_tok))
+                    if prev_multi or next_multi:
+                        paragraph_buffer.append(r"\hspace{0.18em} ")
+                    else:
+                        paragraph_buffer.append(r"\hskip 0pt plus 1.5pt\allowbreak ")
             elif t == 'danda':
                 ch = tok['char']
+                next_m_idx = idx + 1
+                while next_m_idx < len(tokens) and tokens[next_m_idx]['type'] == 'space':
+                    next_m_idx += 1
+                if with_modifiers and next_m_idx < len(tokens) and tokens[next_m_idx]['type'] == 'marker':
+                    m_str = tokens[next_m_idx]['marker'].strip('()')
+                    if m_str in MOD_A1_SET and paragraph_buffer:
+                        third_w_idx = next_m_idx + 1
+                        while third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'space':
+                            third_w_idx += 1
+                        if third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'word':
+                            while paragraph_buffer and ('\\hskip' in paragraph_buffer[-1] or '\\hspace' in paragraph_buffer[-1] or paragraph_buffer[-1].isspace()):
+                                paragraph_buffer.pop()
+                            prev_chunk = paragraph_buffer.pop() if paragraph_buffer else ""
+                            next_tok = tokens[third_w_idx]
+                            chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
+                            paragraph_buffer.append(f"\\mbox{{{prev_chunk} \\dandaWithArc{{{ch}}} {chunk2}}}")
+                            idx = third_w_idx + 1
+                            continue
                 if ch == '।':
-                    paragraph_buffer.append(r"\nolinebreak\hspace{0.12em}।\hspace{0.35em}")
+                    paragraph_buffer.append(r"\nolinebreak\hspace{0.04em}।\allowbreak\hspace{0.20em} ")
                 elif ch == '॥':
-                    paragraph_buffer.append(r"\nolinebreak\hspace{0.15em}॥\hspace{0.35em}")
+                    paragraph_buffer.append(r"\nolinebreak\hspace{0.06em}॥\allowbreak\hspace{0.22em} ")
                 else:
-                    paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.12em}}{ch}\\hspace{{0.35em}}")
+                    paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.04em}}{ch}\\allowbreak\\hspace{{0.20em}} ")
             elif t == 'marker':
                 if with_modifiers:
                     m_str = tok['marker'].strip('()')
@@ -932,10 +962,12 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                             while third_idx < len(tokens) and tokens[third_idx]['type'] == 'space':
                                 third_idx += 1
                             if third_idx < len(tokens) and tokens[third_idx]['type'] == 'word':
-                                prev_chunk = paragraph_buffer.pop()
+                                while paragraph_buffer and ('\\hskip' in paragraph_buffer[-1] or '\\hspace' in paragraph_buffer[-1] or paragraph_buffer[-1].isspace()):
+                                    paragraph_buffer.pop()
+                                prev_chunk = paragraph_buffer.pop() if paragraph_buffer else ""
                                 next_tok = tokens[third_idx]
                                 chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
-                                paragraph_buffer.append(f"\\mbox{{{prev_chunk}\\dandaWithArc{{{d_char}}}{chunk2}}}")
+                                paragraph_buffer.append(f"\\mbox{{{prev_chunk} \\dandaWithArc{{{d_char}}} {chunk2}}}")
                                 idx = third_idx + 1
                                 continue
                         elif next_w_idx < len(tokens) and tokens[next_w_idx]['type'] == 'word' and paragraph_buffer:
@@ -1021,7 +1053,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                                 chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_B_SET, exclude_swara=True)
                                 chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_A_SET)
                                 chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
-                                combined_mbox = f"\\mbox{{{chunk1}\\caretWithSwara{{{sw_label}}}{chunk2}\\dandaWithArc{{{d_char}}}{chunk3}}}"
+                                combined_mbox = f"\\mbox{{{chunk1}\\caretWithSwara{{{sw_label}}}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx = third_w_idx + 1
                                 continue
@@ -1064,7 +1096,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                                 chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET | MOD_A_SET)
                                 chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
                                 d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
-                                combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2}\\dandaWithArc{{{d_char}}}{chunk3}}}"
+                                combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx = third_w_idx + 1
                                 continue
@@ -1086,7 +1118,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                         next_tok = tokens[next_w_idx]
                         chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_A_SET)
                         chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
-                        combined_mbox = f"\\mbox{{{chunk1}\\dandaWithArc{{{d_char}}}{chunk2}}}"
+                        combined_mbox = f"\\mbox{{{chunk1} \\dandaWithArc{{{d_char}}} {chunk2}}}"
                         paragraph_buffer.append(combined_mbox)
                         idx = next_w_idx + 1
                         continue
@@ -1112,8 +1144,8 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
             
         if paragraph_buffer:
             full_paragraph = "".join(paragraph_buffer)
-            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}}}")
-            formatted_paragraphs.append(r"\par\vspace{0.8em}")
+            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}\\par}}")
+            formatted_paragraphs.append(r"\vspace{0.8em}")
             
     return formatted_paragraphs
 
@@ -1248,7 +1280,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     # Keep header with mantra text
     formatted_output.append(r"\nopagebreak")                
-    formatted_output.append(r"\vspace{0.4em}")
+    formatted_output.append(r"\vspace{0.15em}")
     formatted_output.append(r"\nopagebreak")
 
     # --- MANTRA CONTENT RENDERING ---
@@ -1944,7 +1976,27 @@ def _render_malayalam_mantra_body(subsection):
                 else:
                     paragraph_buffer.append(r"\hskip 0pt plus 1.5pt\allowbreak ")
             elif t == 'danda':
-                paragraph_buffer.append(format_dandas(tok['char']))
+                ch = tok['char']
+                next_m_idx = idx_t + 1
+                while next_m_idx < len(tokens) and tokens[next_m_idx]['type'] == 'space':
+                    next_m_idx += 1
+                if next_m_idx < len(tokens) and tokens[next_m_idx]['type'] == 'marker':
+                    m_str = tokens[next_m_idx]['marker'].strip('()')
+                    if m_str in MOD_A1_SET and paragraph_buffer:
+                        third_w_idx = next_m_idx + 1
+                        while third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'space':
+                            third_w_idx += 1
+                        if third_w_idx < len(tokens) and tokens[third_w_idx]['type'] == 'word':
+                            while paragraph_buffer and ('\\hskip' in paragraph_buffer[-1] or '\\hspace' in paragraph_buffer[-1] or paragraph_buffer[-1].isspace() or paragraph_buffer[-1] == ' '):
+                                paragraph_buffer.pop()
+                            prev_chunk = paragraph_buffer.pop() if paragraph_buffer else ""
+                            next_tok = tokens[third_w_idx]
+                            chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True)
+                            d_char = ch.replace('|', '।')
+                            paragraph_buffer.append(f"\\mbox{{{prev_chunk} \\dandaWithArc{{{d_char}}} {chunk2}}}")
+                            idx_t = third_w_idx + 1
+                            continue
+                paragraph_buffer.append(format_dandas(ch))
             elif t == 'footnote':
                 marker = tok.get('text', '').strip('()')
                 fn_text = footnote_data.get(marker, '')
@@ -2013,7 +2065,7 @@ def _render_malayalam_mantra_body(subsection):
                                 chunk1 = _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=MOD_B_SET, exclude_swara=True)
                                 chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_A_SET)
                                 chunk3 = _format_single_malayalam_word_latex(third_tok, with_modifiers=True)
-                                combined_mbox = f"\\mbox{{{chunk1}\\caretWithSwara{{{sw_label}}}{chunk2}\\dandaWithArc{{{d_char}}}{chunk3}}}"
+                                combined_mbox = f"\\mbox{{{chunk1}\\caretWithSwara{{{sw_label}}}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx_t = third_w_idx + 1
                                 continue
@@ -2056,7 +2108,7 @@ def _render_malayalam_mantra_body(subsection):
                                 chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET | MOD_A_SET)
                                 chunk3 = _format_single_malayalam_word_latex(third_tok, with_modifiers=True)
                                 d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
-                                combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2}\\dandaWithArc{{{d_char}}}{chunk3}}}"
+                                combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx_t = third_w_idx + 1
                                 continue
@@ -2079,7 +2131,7 @@ def _render_malayalam_mantra_body(subsection):
                         next_tok = tokens[next_w_idx]
                         chunk1 = _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_A_SET)
                         chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True)
-                        combined_mbox = f"\\mbox{{{chunk1}\\dandaWithArc{{{d_char}}}{chunk2}}}"
+                        combined_mbox = f"\\mbox{{{chunk1} \\dandaWithArc{{{d_char}}} {chunk2}}}"
                         paragraph_buffer.append(combined_mbox)
                         idx_t = next_w_idx + 1
                         continue
@@ -2786,7 +2838,7 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
     tokens = tokenize_mantra_line(line)
     
     # Identify spanning markers that attach to the preceding word
-    SPANNING_MARKERS = {'A', 'a', '⁀', 'A1', 'a1', 'A_1', 'a_1', 'D', 'd', '∧', 'Ʌ', 'B', 'b', '^', 'B1', 'b1'}
+    SPANNING_MARKERS = {'A', 'a', '⁀', 'A1', 'a1', 'A_1', 'a_1', '\uE00D', 'D', 'd', '∧', 'Ʌ', 'B', 'b', '^', 'B1', 'b1'}
     
     rendered_items = []
     
@@ -2814,6 +2866,7 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
         elif t == 'danda':
             rendered_items.append({
                 'type': 'danda',
+                'char': tok["char"],
                 'html': f'<span class="mantra-word"><span class="mantra-text danda">{tok["char"]}</span><span class="swara-text">&nbsp;</span></span>'
             })
         elif t == 'marker':
@@ -2937,14 +2990,21 @@ def render_deva_html_from_line(line: str, with_modifiers: bool = True) -> str:
                 if next_it['type'] == 'word' and not next_it.get('spanning_mod'):
                     break
             
+            has_a1_group = any(g.get('spanning_type') in ('A1', 'a1', 'A_1', 'a_1', '\uE00D') for g in group_items if g['type'] == 'word')
             group_html = []
             for g_item in group_items:
                 if g_item['type'] == 'word':
-                    span_mod_str = g_item.get('spanning_mod') or ''
+                    span_mod_str = '' if (g_item.get('spanning_type') in ('A1', 'a1', 'A_1', 'a_1', '\uE00D')) else (g_item.get('spanning_mod') or '')
                     top_content = f"{g_item['last_syl_formatted']}{g_item['mods_html']}{g_item['punct_html']}{span_mod_str}" if (g_item['last_syl_formatted'] or g_item['mods_html'] or g_item['punct_html'] or span_mod_str) else "&nbsp;"
                     bot_content = g_item['bot_content']
                     word_html = f"{g_item['prefix_syls_html']}<span class=\"mantra-word\"><span class=\"mantra-text\">{top_content}</span><span class=\"swara-text\">{bot_content}</span></span>"
                     group_html.append(word_html)
+                elif g_item['type'] == 'danda' and has_a1_group:
+                    a1_html = render_mod_html('A1')
+                    d_ch = g_item.get("char", "।")
+                    group_html.append('<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>')
+                    group_html.append(f'<span class="mantra-word danda-word-a1"><span class="mantra-text danda danda-with-arc">{d_ch}{a1_html}</span><span class="swara-text">&nbsp;</span></span>')
+                    group_html.append('<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>')
                 else:
                     group_html.append(g_item['html'])
             
@@ -3393,6 +3453,7 @@ def render_vedic_html_from_line(text: str) -> str:
     paren_re = re.compile(r'\(([^()]+)\)|(_|,|\.)')
     
     skip_next_space = False
+    pending_danda_has_a1 = False
     for i in range(len(tokens)):
         token = tokens[i]
         if not token:
@@ -3400,13 +3461,22 @@ def render_vedic_html_from_line(text: str) -> str:
         if token.isspace():
             if not skip_next_space:
                 html_parts.append(' ')
-            skip_next_space = False
             continue
         if token in ('।', '॥'):
+            if pending_danda_has_a1:
+                while html_parts and (html_parts[-1] == ' ' or html_parts[-1].isspace()):
+                    html_parts.pop()
+                html_parts.append(' ')
+                arc_html = '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>'
+                html_parts.append(f'<span class="danda danda-with-arc">{token}{arc_html}</span> ')
+                skip_next_space = True
+                pending_danda_has_a1 = False
+                continue
+            else:
+                skip_next_space = False
             is_adjacent = skip_next_space
             adj_cls = ' danda-adjacent' if is_adjacent else ''
             html_parts.append(f'<span class="danda{adj_cls}">{token}</span>')
-            skip_next_space = False
             continue
         
         # Look ahead: is the next non-whitespace token a danda?
@@ -3416,6 +3486,7 @@ def render_vedic_html_from_line(text: str) -> str:
                 next_non_space = tokens[j]
                 break
         next_is_danda = (next_non_space in ('।', '॥'))
+        word_has_mod_a1_danda = False
 
         word_html = []
         for m in chunk_re.finditer(token):
@@ -3438,13 +3509,17 @@ def render_vedic_html_from_line(text: str) -> str:
                 elif inner in ('G', 'g', '\\', '\uE003'):
                     has_mod_g = True
                 elif inner in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
-                    modifiers_html.append('<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>')
                     if next_is_danda:
+                        pending_danda_has_a1 = True
                         skip_next_space = True
+                        word_has_mod_a1_danda = True
+                    else:
+                        modifiers_html.append('<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>')
                 elif inner in ('A', 'a', '⁀', '\uE004'):
                     if next_is_danda:
-                        modifiers_html.append('<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>')
+                        pending_danda_has_a1 = True
                         skip_next_space = True
+                        word_has_mod_a1_danda = True
                     else:
                         modifiers_html.append('<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>')
                 elif inner in ('A2', 'a2', 'A_2', 'a_2', '\uE02E'):
@@ -3503,6 +3578,8 @@ def render_vedic_html_from_line(text: str) -> str:
                 word_html.append(f'<span class="akshara-base">{syl_core}{mods_str}</span>')
         
         html_parts.append(f'<span class="mantra-word">{"".join(word_html) or token}</span>')
+        if not word_has_mod_a1_danda:
+            skip_next_space = False
     
     return ''.join(html_parts)
 

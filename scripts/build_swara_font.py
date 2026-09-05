@@ -262,14 +262,50 @@ def draw_syllable_arc(width: int = 1600) -> Glyph:
     return glyph
 
 
-def draw_syllable_arc_danda(width: int = 2250) -> Glyph:
-    """Swara Modifier A1 (MOD-A_1): Overhead smooth semi-circular curved arch spanning across 2 syllables with a danda separator (spec_image6..8)."""
+def draw_syllable_arc_danda(width: int = 1100, y_base: int = 500, thickness: int = 125, height: int = 260) -> Glyph:
+    """Swara Modifier A1 (MOD-A1): Overhead bridging curved arch centered directly over danda, reaching slightly over preceding and succeeding syllables."""
+    import numpy as np
     glyph = init_glyph()
     glyph.numberOfContours = 1
-    coords = get_bezier_arc_coords(width, y_base=480, thickness=95, height_factor=0.78)
-    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in coords])
-    glyph.flags = bytearray([f for _, _, f in coords])
-    glyph.endPtsOfContours = [len(coords) - 1]
+    
+    mid_x = width / 2.0
+    margin = 70
+    r_out_x = (width - 2 * margin) / 2.0
+    r_out_y = height
+    r_in_x = r_out_x - thickness
+    r_in_y = max(30, r_out_y - thickness)
+    
+    angles = np.radians([180, 150, 120, 90, 60, 30, 0])
+    ctrl_angles = np.radians([165, 135, 105, 75, 45, 15])
+    r_scale = 1.035
+    
+    outer_coords = []
+    outer_coords.append((int(mid_x + r_out_x * np.cos(angles[0])), int(y_base + r_out_y * np.sin(angles[0])), 1))
+    for i in range(len(ctrl_angles)):
+        cx = int(mid_x + r_out_x * r_scale * np.cos(ctrl_angles[i]))
+        cy = int(y_base + r_out_y * r_scale * np.sin(ctrl_angles[i]))
+        outer_coords.append((cx, cy, 0))
+        ex = int(mid_x + r_out_x * np.cos(angles[i+1]))
+        ey = int(y_base + r_out_y * np.sin(angles[i+1]))
+        outer_coords.append((ex, ey, 1))
+        
+    inner_angles = np.radians([0, 30, 60, 90, 120, 150, 180])
+    inner_ctrl_angles = np.radians([15, 45, 75, 105, 135, 165])
+    
+    inner_coords = []
+    inner_coords.append((int(mid_x + r_in_x * np.cos(inner_angles[0])), int(y_base + r_in_y * np.sin(inner_angles[0])), 1))
+    for i in range(len(inner_ctrl_angles)):
+        cx = int(mid_x + r_in_x * r_scale * np.cos(inner_ctrl_angles[i]))
+        cy = int(y_base + r_in_y * r_scale * np.sin(inner_ctrl_angles[i]))
+        inner_coords.append((cx, cy, 0))
+        ex = int(mid_x + r_in_x * np.cos(inner_angles[i+1]))
+        ey = int(y_base + r_in_y * np.sin(inner_angles[i+1]))
+        inner_coords.append((ex, ey, 1))
+        
+    all_coords = outer_coords + inner_coords
+    glyph.coordinates = GlyphCoordinates([(x, y) for x, y, _ in all_coords])
+    glyph.flags = bytearray([f for _, _, f in all_coords])
+    glyph.endPtsOfContours = [len(all_coords) - 1]
     glyph.recalcBounds({})
     return glyph
 
@@ -935,7 +971,7 @@ def build_font() -> None:
     # Mod 4b: Syllable Spanning Arc over Danda (U+E00D) - Swara Modifier A1
     syllable_arc_danda = draw_syllable_arc_danda()
     glyf_table["syllable_arc_danda_jsv"] = syllable_arc_danda
-    hmtx_table["syllable_arc_danda_jsv"] = (2300, 120)
+    hmtx_table["syllable_arc_danda_jsv"] = (1100, 70)
 
     # Mod 4c: Syllable Conjunct Arc (U+E02E) - Swara Modifier A2
     syllable_arc_conjunct = draw_syllable_arc_conjunct()

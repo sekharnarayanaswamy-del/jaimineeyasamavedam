@@ -1,7 +1,4 @@
 \documentclass[12pt, a4paper, openany]{book}
-\usepackage[margin=1in]{geometry}
-\usepackage{titlesec} 
-\titlespacing*{\chapter}{0pt}{-10pt}{10pt}
 
 % --- LANGUAGE & FONT SETUP ---
 \usepackage{fontspec}
@@ -40,12 +37,14 @@
 \newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSansDevanagari-Bold.ttf}
 \newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSansDevanagari.ttf}
 \newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
 \setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
 \newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
 \newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX]{NotoSansDevanagari-Bold}
 \newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSansDevanagari}
 \newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ elif font_family == 'NotoSerifDevanagari' or font_family == 'Noto Serif Devanagari' or font_family == 'NotoSerif' }
 \BLOCK{ if font_path }
@@ -54,27 +53,31 @@
 \newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
 \newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
 \newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
 \setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
 \newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
 \newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0]{NotoSerifDevanagari-Regular}
 \newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSerifDevanagari-Regular}
 \newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ else }
 % Default: AdishilaVedic
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\devafont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\headerfont[Scale=1.25, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=0.82, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
+\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\devafont[Scale=1.15, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\headerfont[Scale=1.25, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=0.82, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
+\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.0, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ endif }
 
@@ -84,7 +87,7 @@
 \usepackage{ragged2e} 
 \usepackage{stackengine} 
 \usepackage{fancyhdr}    
-\usepackage[perpage]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
+\usepackage[perpage,norule]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
 \usepackage{hyperref}    
 \usepackage{imakeidx}    
 \usepackage{needspace}
@@ -95,16 +98,15 @@
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
 \titlespacing*{\section}{0pt}{8pt}{14pt}
 \usepackage{setspace}
-\setstretch{2.15}
+\setstretch{2.50}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
 
 % --- GEOMETRY ---
-\usepackage[a4paper, margin=1.5cm, top=2.5cm, bottom=2.0cm]{geometry} 
+\usepackage[a4paper, margin=2.0cm, top=2.5cm, bottom=2.0cm]{geometry} 
 
 % --- FOOTNOTE LINE SETUP ---
-\usepackage[norule]{footmisc} 
 \newcommand{\drawstarline}{%
   \begin{center}
     \vspace{-0.2em}
@@ -161,18 +163,17 @@
 \newcommand{\dandaWithArc}[2][\char"E00D]{%
   \begingroup%
   \settowidth{\dimen0}{#2}%
-  \mbox{\hspace{0.50\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.50\dimen0}#2}%
-  \hspace{0.10em}%
+  \mbox{\hspace{0.50\dimen0}\makebox[0pt][c]{{\arcfontDeva \textcolor{ModifierSkyBlue}{\raisebox{1.10ex}{#1}}}}\hspace{-0.50\dimen0}#2}%
   \endgroup%
 }
 \BLOCK{ else }
-% AdishilaVedic: Compensate for built-in ~0.36em left side bearing of uni0964
+% AdishilaVedic: Stem is at 0.802*dimen0. Balance whitespace around danda:
 \newcommand{\dandaWithArc}[2][\char"E00D]{%
   \begingroup%
   \settowidth{\dimen0}{#2}%
-  \hspace{-0.28em}% Pull danda close to previous syllable, removing huge gap
-  \mbox{\hspace{0.53\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{#1}}}}\hspace{-0.53\dimen0}#2}%
-  \hspace{0.10em}%
+  \hspace{-0.30\dimen0}%
+  \mbox{\hspace{0.802\dimen0}\makebox[0pt][c]{{\arcfontDeva \textcolor{ModifierSkyBlue}{\raisebox{0.92ex}{#1}}}}\hspace{-0.802\dimen0}#2}%
+  \hspace{0.30\dimen0}%
   \endgroup%
 }
 \BLOCK{ endif }
@@ -189,7 +190,7 @@
 \newcommand{\modGUnder}[1]{%
   \begingroup%
   \settowidth{\dimen0}{#1}%
-  \mbox{#1\hspace{-0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.50ex}[0pt][0pt]{\hspace{-0.255em}\char"E003\hspace{0.255em}}}}}\hspace{0.5\dimen0}}%
+  \mbox{#1\hspace{-0.5\dimen0}\makebox[0pt][c]{{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{-0.18ex}[0pt][0pt]{\hspace{0.22em}\char"E003}}}}\hspace{0.5\dimen0}}%
   \endgroup%
 }
 
@@ -202,7 +203,7 @@
     \swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\char"E005}}%
     \settowidth{\dimen0}{\swarafont\char"E005}%
     \hspace{-0.5\dimen0}%
-    \makebox[0pt][c]{\raisebox{2.60ex}{{\smallredfont \textcolor{SwaraRed}{#1}}}}%
+    \makebox[0pt][c]{{\devafont\raisebox{2.35ex}[0pt][0pt]{{\smallredfont \textcolor{SwaraRed}{#1}}}}}%
     \hspace{0.5\dimen0}%
   }%
 }

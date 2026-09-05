@@ -479,6 +479,7 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
 
     matches = list(token_re.finditer(text))
     skip_next_space = False
+    pending_danda_has_a1 = False
 
     for idx_m in range(len(matches)):
         m = matches[idx_m]
@@ -486,17 +487,26 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
         if space:
             if not skip_next_space:
                 html_parts.append('<span class="word-space">&nbsp;</span>')
-            skip_next_space = False
             continue
         elif danda:
-            is_adjacent = skip_next_space
-            skip_next_space = False
+            if pending_danda_has_a1:
+                while html_parts and (html_parts[-1] == ' ' or html_parts[-1].isspace() or 'word-space' in html_parts[-1]):
+                    html_parts.pop()
+                html_parts.append('<span class="word-space">&nbsp;</span>')
+                arc_html = '<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>'
+                html_parts.append(f'<span class="danda danda-with-arc">{danda}{arc_html}</span><span class="word-space">&nbsp;</span>')
+                skip_next_space = True
+                pending_danda_has_a1 = False
+                continue
             m_num = re.match(r'॥\s*([\d०-९]+)\s*॥', danda)
             if m_num:
                 html_parts.append(f'<span class="danda">॥</span><span class="mantra-word"><span class="swara-text">&nbsp;</span><span class="mantra-text"><span class="mantra-number">{m_num.group(1)}</span></span></span><span class="danda">॥</span><div class="mantra-break"></div>')
+                skip_next_space = False
             else:
+                is_adjacent = skip_next_space
                 adj_cls = ' danda-adjacent' if is_adjacent else ''
                 html_parts.append(f'<span class="danda{adj_cls}">{danda}</span>')
+                skip_next_space = False
             continue
         elif fn:
             marker_key = fn.strip('()')
@@ -556,11 +566,14 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
             has_mod_a1 = False
             for p in parens:
                 if p in ('A1', 'a1', 'A_1', 'a_1'):
-                    mods.append(('mod-a1', '&#xE00D;'))
-                    has_mod_a1 = True
+                    if next_is_danda:
+                        pending_danda_has_a1 = True
+                        has_mod_a1 = True
+                    else:
+                        mods.append(('mod-a1', '&#xE00D;'))
                 elif p in ('A', 'a', '⁀'):
                     if next_is_danda:
-                        mods.append(('mod-a1', '&#xE00D;'))
+                        pending_danda_has_a1 = True
                         has_mod_a1 = True
                     else:
                         mods.append(('mod-a', '&#xE004;'))
@@ -573,6 +586,8 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
 
             if has_mod_a1 and next_is_danda:
                 skip_next_space = True
+            else:
+                skip_next_space = False
 
             core_word = base.rstrip("_,.")
             trailing_punct = base[len(core_word):]
@@ -3420,15 +3435,25 @@ sup.footnote-ref a:hover {
     font-size: 1.05rem;
     pointer-events: none;
 }
+.danda-with-arc,
+.danda.danda-with-arc {
+    position: relative;
+    display: inline-block;
+    margin-left: 0;
+    margin-right: 0;
+}
+.danda-with-arc .swara-mod.mod-a1,
+.danda.danda-with-arc .swara-mod.mod-a1,
 .swara-mod.mod-a1 {
     position: absolute;
-    top: -0.32em;
-    left: 100%;
-    transform: translateX(0%);
-    font-size: 1.15rem;
+    top: -0.22em;
+    left: 64.4%;
+    transform: translateX(-50%);
+    font-size: 1.0rem;
     pointer-events: none;
+    z-index: 2;
 }
-.danda.danda-adjacent {
+.danda.danda-adjacent:not(.danda-with-arc) {
     margin-left: 0 !important;
     margin-right: 0.25em;
 }

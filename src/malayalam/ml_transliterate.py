@@ -317,6 +317,9 @@ def malayalam_to_devanagari_mantra_line(line: str) -> str:
     # Clean up verse numbers to Devanagari digits
     _MAL_DIGITS_TO_DEVA = str.maketrans("0123456789൦൧൨൩൪൫൬൭൮൯", "०१२३४५६७८९०१२३४५६७८९")
     result = re.sub(r'॥\s*([०-९\d൦-൯]+)\s*॥', lambda m: f"॥{m.group(1).translate(_MAL_DIGITS_TO_DEVA)}॥", result)
+    # Retain exactly 1 whitespace around danda when Mod-A1 occurs
+    result = re.sub(r'\s*(\((?:A1|a1|A_1|a_1|\uE00D)\))\s*।\s*', r'\1 । ', result)
+    result = re.sub(r'\s*।\s*(\((?:A1|a1|A_1|a_1|\uE00D)\))\s*', r' ।\1 ', result)
     return result
 
 

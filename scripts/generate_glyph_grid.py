@@ -270,7 +270,7 @@ def render_html_table() -> None:
             "stack_pos": "Stacked Above (Over Danda)",
             "dotted_rep": "<span class='dotted-sample'><span class='base-circle-box'>◌&nbsp;।&nbsp;◌<span class='swara-mod-dotted mod-a1-dotted'>&#xE00D;</span></span></span>",
             "example_text": "തൊ(𑌤)(A1) । ഹാ(𑌟𑌾)",
-            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>തൊ<span class='swara-mod mod-a1'>&#xE00D;</span></span></span><span class='mantra-text'><span class='danda'>।</span></span><span class='word-space'>&nbsp;</span><span class='mantra-word'><span class='swara-text'>𑌟𑌾</span><span class='mantra-text'>ഹാ</span></span></div>",
+            "example_preview": "<div class='mantra-preview-flex'><span class='mantra-word'><span class='swara-text'>𑌤</span><span class='mantra-text'>തൊ</span></span><span class='mantra-text danda danda-with-arc'>।<span class='swara-mod mod-a1'>&#xE00D;</span></span><span class='mantra-word'><span class='swara-text'>𑌟𑌾</span><span class='mantra-text'>ഹാ</span></span></div>",
             "meaning": "Overhead melodic slur bridging two adjacent syllables across a danda separator.",
             "color_note": "Sky Blue (#0284c7) on Mantrakshara"
         },
@@ -1007,15 +1007,21 @@ def render_html_table() -> None:
         left: 100%;
         transform: translateX(-40%);
         font-size: 0.95rem;
-        pointer-events: none;
+    .danda-with-arc {{
+        position: relative;
+        display: inline-block;
+        margin-left: 0;
+        margin-right: 0;
     }}
+    .danda-with-arc .swara-mod.mod-a1,
     .mantra-preview-flex .swara-mod.mod-a1 {{
         position: absolute;
-        top: -0.28em;
-        left: 100%;
-        transform: translateX(-40%);
-        font-size: 1.15rem;
+        top: -0.22em;
+        left: 64.4%;
+        transform: translateX(-50%);
+        font-size: 1.0rem;
         pointer-events: none;
+        z-index: 2;
     }}
     .mantra-preview-flex .swara-mod.mod-a2 {{
         position: absolute;

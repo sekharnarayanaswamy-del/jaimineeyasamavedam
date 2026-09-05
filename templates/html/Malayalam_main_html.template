@@ -181,13 +181,23 @@
             font-size: 0.90rem;
             pointer-events: none;
         }
+        .danda-with-arc,
+        .danda.danda-with-arc {
+            position: relative;
+            display: inline-block;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .danda-with-arc .swara-mod.mod-a1,
+        .danda.danda-with-arc .swara-mod.mod-a1,
         .swara-mod.mod-a1 {
             position: absolute;
-            top: -0.32em;
-            left: 100%;
-            transform: translateX(0%);
-            font-size: 1.15rem;
+            top: -0.22em;
+            left: 64.4%;
+            transform: translateX(-50%);
+            font-size: 1.0rem;
             pointer-events: none;
+            z-index: 2;
         }
         .swara-mod.mod-a2 {
             position: absolute;
@@ -377,9 +387,24 @@
             font-size: 1.4rem;
             line-height: 1.2;
         }
-        .danda.danda-adjacent {
+        .danda.danda-adjacent:not(.danda-with-arc) {
             margin-left: 0 !important;
             margin-right: 0.25em;
+        }
+        .danda.danda-with-arc {
+            position: relative;
+            display: inline-block;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .danda.danda-with-arc .swara-mod.mod-a1 {
+            position: absolute;
+            top: -0.22em;
+            left: 64.4%;
+            transform: translateX(-50%);
+            font-size: 1.0em;
+            pointer-events: none;
+            z-index: 2;
         }
         .verse-num-marker {
             display: inline-flex;

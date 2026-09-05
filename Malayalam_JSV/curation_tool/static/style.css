@@ -707,16 +707,25 @@ select:focus {
 }
 
 /* MOD-A1: Arc over Danda */
+.danda-with-arc,
+.danda.danda-with-arc {
+  position: relative;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0;
+}
+.danda-with-arc .swara-mod.mod-a1,
 .rendered-vedic-preview .swara-mod.mod-a1 {
   position: absolute;
-  top: -0.32em;
-  left: 100%;
-  transform: translateX(0%);
-  font-size: 1.15rem;
+  top: -0.22em;
+  left: 64.4%;
+  transform: translateX(-50%);
+  font-size: 1.0rem;
   pointer-events: none;
+  z-index: 2;
 }
 
-.rendered-vedic-preview .danda.danda-adjacent {
+.rendered-vedic-preview .danda.danda-adjacent:not(.danda-with-arc) {
   margin-left: 0;
   margin-right: 0.25em;
 }
