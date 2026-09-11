@@ -25,7 +25,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 
 DEFAULT_INPUT_TXT = ROOT_DIR / "data" / "input" / "Malayalam" / "Samam_Malayalam_Unicode.txt"
 DEFAULT_JSON_OUT = ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_Malayalam_out.json"
-DEFAULT_OUTPUT_BASE = ROOT_DIR / "data" / "output" / "Malayalam" / "Samam_Malayalam"
+DEFAULT_OUTPUT_BASE = "Samam_Malayalam"
 DOCS_DIR = ROOT_DIR / "docs"
 
 
@@ -60,8 +60,8 @@ def main():
     parser.add_argument(
         "--output",
         "-o",
-        default=str(DEFAULT_OUTPUT_BASE),
-        help=f"Output file basename or prefix (default: {DEFAULT_OUTPUT_BASE.relative_to(ROOT_DIR)})",
+        default=DEFAULT_OUTPUT_BASE,
+        help=f"Output file basename or prefix (default: {DEFAULT_OUTPUT_BASE})",
     )
     parser.add_argument(
         "--modes",
@@ -107,21 +107,20 @@ def main():
 
     input_path = Path(args.input_file).resolve()
     json_path = Path(args.json_output).resolve()
-    output_prefix = Path(args.output).resolve()
+    output_base_name = Path(args.output).stem if Path(args.output).suffix else Path(args.output).name
 
     if not input_path.exists():
         print(f"[ERROR] Input file not found: {input_path}", file=sys.stderr)
         sys.exit(1)
 
     json_path.parent.mkdir(parents=True, exist_ok=True)
-    output_prefix.parent.mkdir(parents=True, exist_ok=True)
 
     print("=" * 60)
     print(" Malayalam Jaimineeya Samavedam Pipeline")
     print("=" * 60)
     print(f" Input File : {input_path.relative_to(ROOT_DIR)}")
     print(f" JSON AST   : {json_path.relative_to(ROOT_DIR)}")
-    print(f" Output Pfx : {output_prefix.relative_to(ROOT_DIR)}")
+    print(f" Output Base: {output_base_name}")
     print(f" Modes      : {', '.join(args.modes)}")
     if args.html_only:
         print(" Flags      : --html-only")
@@ -169,6 +168,7 @@ def main():
     for mode in args.modes:
         render_cmd = [
             sys.executable,
+            "-X", "utf8",
             str(ROOT_DIR / "src" / "render_pdf.py"),
             str(json_path),
             "--script",
@@ -176,15 +176,11 @@ def main():
             "--output-mode",
             mode,
             "-o",
-            str(output_prefix),
+            output_base_name,
         ] + extra_flags
         run_cmd(render_cmd, description=f"Step 2: Rendering in '{mode}' mode")
 
-    # 2b. Devanagari Kpully Rendering (HTML + PDF)
-    deva_output_dir = ROOT_DIR / "data" / "output" / "Devanagari"
-    deva_output_dir.mkdir(parents=True, exist_ok=True)
-    deva_output_prefix = deva_output_dir / "Samhita_kpully_Devanagari"
-
+    # 2b. Devanagari Kpully Rendering (HTML + PDF) - Samam only, no Rik mode
     if not args.skip_kpully and kpully_json_path.exists():
         kpully_cmd = [
             sys.executable,
@@ -194,47 +190,19 @@ def main():
             "--script",
             "devanagari",
             "-kpully",
+            "--output-mode",
+            "separate",
+            "--samam-only",
             "-o",
-            str(deva_output_prefix),
-        ] + extra_flags
-        run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF)")
-
-    # 2c. Create standardized convenience aliases in data/output/Malayalam and data/output/Devanagari
-    mal_main_pdf = output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.pdf"
-    mal_target_pdf = output_prefix.parent / "Samam_Malayalam.pdf"
-    if mal_main_pdf.exists() and mal_main_pdf != mal_target_pdf:
-        try:
-            shutil.copy2(mal_main_pdf, mal_target_pdf)
-        except Exception:
-            pass
-
-    mal_main_html = output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.html"
-    mal_target_html = output_prefix.parent / "Samam_Malayalam.html"
-    if mal_main_html.exists() and mal_main_html != mal_target_html:
-        try:
-            shutil.copy2(mal_main_html, mal_target_html)
-        except Exception:
-            pass
-
-    deva_pdfs = list(deva_output_dir.glob("Samhita_kpully_Devanagari*.pdf"))
-    if deva_pdfs:
-        deva_target_pdf = deva_output_dir / "Samhita_kpully_Devanagari.pdf"
-        deva_src_pdf = [p for p in deva_pdfs if p != deva_target_pdf]
-        if deva_src_pdf:
-            try:
-                shutil.copy2(deva_src_pdf[0], deva_target_pdf)
-            except Exception:
-                pass
-
-    deva_htmls = list(deva_output_dir.glob("Samhita_kpully_Devanagari*.html"))
-    if deva_htmls:
-        deva_target_html = deva_output_dir / "Samhita_kpully_Devanagari.html"
-        deva_src_html = [p for p in deva_htmls if p != deva_target_html]
-        if deva_src_html:
-            try:
-                shutil.copy2(deva_src_html[0], deva_target_html)
-            except Exception:
-                pass
+            "Samhita_kpully_Devanagari",
+        ]
+        if args.html_only:
+            kpully_cmd.append("--html-only")
+        elif args.pdf_only:
+            kpully_cmd.append("--pdf-only")
+        if args.legacy_html:
+            kpully_cmd.append("--legacy-html")
+        run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
     # 3. Publishing step: Reserved for src/generate_website.py
     if args.publish:
@@ -243,8 +211,9 @@ def main():
         malayalam_docs_dir = DOCS_DIR / "malayalam"
         malayalam_docs_dir.mkdir(parents=True, exist_ok=True)
 
+        html_dir = ROOT_DIR / "data" / "output" / "html" / "Malayalam"
         copied = []
-        for html_file in output_prefix.parent.glob(f"{output_prefix.name}*.html"):
+        for html_file in html_dir.glob(f"{output_base_name}*.html"):
             target_mal = malayalam_docs_dir / html_file.name
             shutil.copy2(html_file, target_mal)
             copied.append(target_mal)
@@ -257,9 +226,13 @@ def main():
     print(" Pipeline completed successfully!")
     print("=" * 60)
     print(" Generated Artifacts:")
-    print(f"  - Malayalam Outputs : {output_prefix.parent}")
+    print(f"  - HTML     : data/output/html/Malayalam/{output_base_name}.html")
+    print(f"  - PDF      : data/output/pdf/Malayalam/{output_base_name}.pdf")
+    print(f"  - TXT      : data/output/txt/Malayalam/{output_base_name}_Unicode.txt")
     if not args.skip_kpully:
-        print(f"  - Devanagari Outputs: {deva_output_dir}")
+        print(f"  - KPully HTML: data/output/html/Devanagari/Samhita_kpully_Devanagari.html")
+        print(f"  - KPully PDF : data/output/pdf/Devanagari/Samhita_kpully_Devanagari.pdf")
+        print(f"  - KPully TXT : data/output/txt/Devanagari/Samhita_kpully_Devanagari_Unicode.txt")
     print(f"  Note: 'docs/' folder is reserved for 'src/generate_website.py'.")
     print("=" * 60 + "\n")
 

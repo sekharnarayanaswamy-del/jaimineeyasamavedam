@@ -515,10 +515,16 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
     name = name_override or name
     outputdir = output_dir_override or f"{outputdir}/pdf/{DocfamilyName}"
     
-    TexFileName=f"{name}_{DocfamilyName}.tex"
-    PdfFileName=f"{name}_{DocfamilyName}.pdf"
-    TocFileName=f"{name}_{DocfamilyName}.toc"
-    LogFileName=f"{name}_{DocfamilyName}.log"
+    if name.endswith(f"_{DocfamilyName}"):
+        TexFileName=f"{name}.tex"
+        PdfFileName=f"{name}.pdf"
+        TocFileName=f"{name}.toc"
+        LogFileName=f"{name}.log"
+    else:
+        TexFileName=f"{name}_{DocfamilyName}.tex"
+        PdfFileName=f"{name}_{DocfamilyName}.pdf"
+        TocFileName=f"{name}_{DocfamilyName}.toc"
+        LogFileName=f"{name}_{DocfamilyName}.log"
     template = templateFileName
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
@@ -620,13 +626,23 @@ def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="com
     logdir="data/output/logs"
     exit_code=0
     
-    TexFileName=f"{name}_{DocfamilyName}_Unicode.tex"
-    PdfFileName=f"{name}_{DocfamilyName}_Unicode.pdf"
-    TextFileName=f"{name}_{DocfamilyName}_Unicode.txt"
-    TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
-    LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
+    # Use overrides if provided
+    name = name_override or name
+    outputdir = output_dir_override or f"{outputdir}/txt/{DocfamilyName}"
+
+    if name.endswith(f"_{DocfamilyName}"):
+        TexFileName=f"{name}_Unicode.tex"
+        PdfFileName=f"{name}_Unicode.pdf"
+        TextFileName=f"{name}_Unicode.txt"
+        TocFileName=f"{name}_Unicode.toc"
+        LogFileName=f"{name}_Unicode.log"
+    else:
+        TexFileName=f"{name}_{DocfamilyName}_Unicode.tex"
+        PdfFileName=f"{name}_{DocfamilyName}_Unicode.pdf"
+        TextFileName=f"{name}_{DocfamilyName}_Unicode.txt"
+        TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
+        LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
     template = templateFileName
-    outputdir = f"{outputdir}/txt/{DocfamilyName}"  # Use DocfamilyName for directory
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
     
@@ -3876,6 +3892,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     
     if name.endswith('.html'):
         HtmlFileName = name
+    elif name.endswith(f"_{DocfamilyName}"):
+        HtmlFileName = f"{name}.html"
     else:
         HtmlFileName = f"{name}_{DocfamilyName}.html"
     template = templateFileName
@@ -4141,7 +4159,11 @@ Examples:
             out_dir = str(out_path)
             out_name = None
         else:
-            out_dir = str(out_path.parent) if str(out_path.parent) != '.' else None
+            parent_str = str(out_path.parent).replace('\\', '/').rstrip('/')
+            if parent_str in ('.', 'data/output', 'data/output/Malayalam', 'data/output/Devanagari') or parent_str.endswith('/data/output') or parent_str.endswith('/data/output/Malayalam') or parent_str.endswith('/data/output/Devanagari'):
+                out_dir = None
+            else:
+                out_dir = str(out_path.parent)
             out_name = out_path.name
     
     # Auto-select default input file
@@ -4550,7 +4572,7 @@ Examples:
         # Rik-only output: Pass output_mode='rik' to template
         if gen_rik:
             print("Generating Rik-only output (with metadata)...")
-            final_out_name = f"{out_name}_Rik" if out_name else "Rik"
+            final_out_name = out_name if (out_name and (out_name.endswith("_Rik") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Rik" if out_name else "Rik")
             if gen_pdf:
                 CreatePdf(template_file, f"Rik", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
@@ -4564,7 +4586,7 @@ Examples:
         # Samam-only output: Pass output_mode='samam' to template
         if gen_samam:
             print("Generating Samam-only output (with metadata)...")
-            final_out_name = f"{out_name}_Samam" if out_name else "Samam"
+            final_out_name = out_name if (out_name and (out_name.endswith("_Samam") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Samam" if out_name else "Samam")
             if gen_pdf:
                 CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
@@ -4586,7 +4608,7 @@ Examples:
         # Rik-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='rik_nometa' to template
         if gen_rik:
             print("Generating Rik-only output (without metadata)...")
-            final_out_name = f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta"
+            final_out_name = out_name if (out_name and (out_name.endswith("_Rik_NoMeta") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Rik_NoMeta" if out_name else "Rik_NoMeta")
             if gen_pdf:
                 CreatePdf(template_file, f"Rik_NoMeta", doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
@@ -4600,7 +4622,7 @@ Examples:
         # Samam-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='samam_nometa' to template
         if gen_samam:
             print("Generating Samam-only output (without metadata)...")
-            final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
+            final_out_name = out_name if (out_name and (out_name.endswith("_Samam_NoMeta") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta")
             if gen_pdf:
                 CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
