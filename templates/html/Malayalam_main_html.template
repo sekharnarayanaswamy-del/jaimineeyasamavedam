@@ -346,9 +346,9 @@
         .swara-mod.mod-g,
         .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: -0.32em;
+            bottom: 0.12em;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateX(-0.16em);
             font-size: 1.05rem;
             color: var(--modifier-color);
             pointer-events: none;

@@ -652,9 +652,15 @@ python src/tools/copy_rik_ids.py [OPTIONS]
 *   **Aggregate Counting**: Section headers in `collection` mode support mixed-content aggregation. If a section contains both Riks and Samams, it displays a combined count `(ऋ-N, सा-M)`. This ensures accurate statistics for diverse collections like the *Sooktamala*.
 *   **HTML Metadata Formatting**: To preserve scholar-aligned metadata in HTML, the renderer selectively skips whitespace normalization for `rik_metadata` and `saman_metadata` fields, paired with `white-space: pre-wrap` in CSS.
 *   **Font Path Configuration**: To support flexible compilation environments, absolute font paths are calculated in Python and passed to LaTeX templates, allowing `fontspec` to locate project-local fonts.
-*   **Vedic Swara Modifier Alignment (`MOD-G` and `MOD-A1`)**:
-    *   **`MOD-G` (Descending Tone Slash `\uE003`)**: Centered strictly under the core base syllable/akshara, isolated from any trailing punctuation or secondary modifier marks. In LaTeX templates (`Malayalam_main.template`, `Devanagari_main.template`), `\modGUnder` applies a `-0.255em` glyph compensation to counter the asymmetric font metric in `JaimineeyaSwara.ttf`. In HTML/Curation tool, the base syllable is isolated in `<span class="syl-mod-g-wrap">{syl}<span class="swara-mod mod-g">&#xE003;</span></span>`.
+*   **Vedic Swara Modifier Alignment (`MOD-G`, `MOD-H`, `MOD-A1`)**:
+    *   **`MOD-G` (Descending Tone Slash `\uE003`)**: Centered strictly under the core base syllable/akshara, isolated from any trailing punctuation or secondary modifier marks. In LaTeX templates (`Malayalam_main.template`, `Devanagari_main.template`), `\modGUnder` applies a `-0.255em` glyph compensation to counter the asymmetric font metric in `JaimineeyaSwara.ttf`. In HTML templates (`Devanagari_main_html.template`, `Malayalam_main_html.template`), `.swara-mod.mod-g` is positioned at `bottom: 0.12em; left: 50%; transform: translateX(-50%) translateX(-0.16em)` to bring the slash tightly under the preceding syllable's bottom centre.
+    *   **`MOD-H` (High Pitch Swarita `\uE00C`)**: Elevated above the mantrakshara. In HTML templates, `.swara-mod.mod-h` uses `position: absolute; top: -0.32em; left: 100%; transform: translateX(-0.40em); font-size: 0.55em; pointer-events: none;` to clear the base syllable's shirorekha and vertical stem without inflating the line box or displacing the red swara line above.
     *   **`MOD-A1` (Arc over Danda `\uE00D`)**: Intervening whitespace before danda stems is removed across all generators. In LaTeX, `\dandaWithArc` shifts the arc apex (`0.50\dimen0` Malayalam, `0.53\dimen0` Devanagari) to align over the danda stem. In HTML and the JSV Visual Curation Tool, look-ahead automatically promotes `(⁀)`/`(A)` before a danda to `MOD-A1`, suppresses whitespace, and attaches `.danda-adjacent`.
+*   **HTML Heading Hierarchy & Typography**:
+    *   Supersection (`.chapter-heading` / Parva): `2.25rem bold` maroon banner.
+    *   Section (`.section-title` / Khanda): `1.85rem bold` divider with count.
+    *   Subsection (`.subsection-header .header-title` / Samam hymn): `1.45rem bold` green header.
+    *   All headings inherit `var(--font-doc)`, ensuring consistent scaling when switching between `AdishilaVedic` and other fonts.
 
 ### 5.3 Footnote Syntax
 Footnotes in the source text must follow the `(sN)` pattern **immediately following** the swara, with no space.

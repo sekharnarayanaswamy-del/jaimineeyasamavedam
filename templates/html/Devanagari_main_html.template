@@ -34,10 +34,26 @@
             \BLOCK{ endif }
             font-weight: normal;
             font-style: normal;
+            size-adjust: 135%;
+        }
+
+        @font-face {
+            font-family: 'AdishilaVedic';
+            \BLOCK{ if adishila_vedic_bold_b64 }
+            src: url('data:font/truetype;charset=utf-8;base64,\VAR{adishila_vedic_bold_b64}') format('truetype');
+            \BLOCK{ else }
+            src: url('../../../fonts/AdishilaVedicBold.ttf') format('truetype'),
+                 url('../../fonts/AdishilaVedicBold.ttf') format('truetype'),
+                 url('../fonts/AdishilaVedicBold.ttf') format('truetype'),
+                 url('fonts/AdishilaVedicBold.ttf') format('truetype');
+            \BLOCK{ endif }
+            font-weight: bold;
+            font-style: normal;
+            size-adjust: 135%;
         }
 
         :root {
-            --font-doc: 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+            --font-doc: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', sans-serif;
             --font-size: 1.3rem;
             --mantra-size: calc(var(--font-size) * 1.25);
@@ -406,15 +422,15 @@
         }
 
         .main-title h1 {
-            font-family: 'Noto Serif Devanagari', serif;
-            font-size: 2.25rem;
+            font-family: var(--font-doc);
+            font-size: 2.75rem;
             color: var(--maroon);
             margin-bottom: 0.5rem;
             letter-spacing: 0.5px;
         }
 
         .main-title .sub-heading {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             color: var(--saffron);
             font-weight: 600;
         }
@@ -429,9 +445,10 @@
             padding: 0.85rem 1.5rem;
             border-radius: 8px;
             text-align: center;
-            font-size: 1.45rem;
+            font-size: 2.25rem;
+            font-weight: bold;
             margin-bottom: 1.75rem;
-            font-family: 'Noto Serif Devanagari', serif;
+            font-family: var(--font-doc);
             box-shadow: 0 3px 8px rgba(123,17,19,0.25);
         }
 
@@ -441,13 +458,13 @@
 
         .section-title {
             text-align: center;
-            font-size: 1.65rem;
+            font-size: 1.85rem;
             font-weight: bold;
             color: var(--maroon);
             margin-bottom: 1.25rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px dashed #E0D0C0;
-            font-family: 'Noto Serif Devanagari', serif;
+            font-family: var(--font-doc);
         }
 
         .section-samam-count {
@@ -480,7 +497,7 @@
         .subsection-header .header-title {
             color: var(--accent-green);
             font-weight: bold;
-            font-size: 1.55rem;
+            font-size: 1.45rem;
             line-height: 1.4;
             display: inline-block;
         }
@@ -728,16 +745,19 @@
         .swara-mod.mod-g,
         .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: -0.32em;
+            bottom: 0.12em;
             left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.50em;
+            transform: translateX(-50%) translateX(-0.16em);
+            font-size: 0.55em;
             pointer-events: none;
         }
         .swara-mod.mod-h {
-            font-size: 0.50em;
-            margin-left: -0.3em;
-            vertical-align: 0.75em;
+            position: absolute;
+            top: -0.32em;
+            left: 100%;
+            transform: translateX(-0.40em);
+            font-size: 0.55em;
+            pointer-events: none;
         }
         .swara-mod.mod-i {
             font-family: var(--font-swara);
@@ -1147,7 +1167,7 @@
                 \BLOCK{ if html_index }
                 <a href="#index" class="btn-ctrl" title="Alphabetical Index">॥ वर्णानुक्रमणिका ॥</a>
                 \BLOCK{ endif }
-                <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: Noto Serif</button>
+                <button class="btn-ctrl" id="font-toggle-btn" onclick="toggleFont()" title="Toggle Sanskrit Font">Font: AdiShila Vedic</button>
                 <button class="btn-ctrl" onclick="adjustFont(-1)" title="Decrease Font Size (A-)">A-</button>
                 <span id="font-size-val" onclick="resetFontSize()" style="font-size: 0.85rem; padding: 0.15rem 0.45rem; color: #FFF; font-family: monospace; font-weight: 600; min-width: 44px; text-align: center; display: inline-block; cursor: pointer; border-radius: 4px; background: rgba(255,255,255,0.14); transition: transform 0.15s ease;" title="Click to reset font size to 100%">100%</span>
                 <button class="btn-ctrl" onclick="adjustFont(1)" title="Increase Font Size (A+)">A+</button>

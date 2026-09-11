@@ -3940,6 +3940,12 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         with open(adishila_file, "rb") as f_font:
             adishila_vedic_b64 = base64.b64encode(f_font.read()).decode("ascii")
     
+    adishila_vedic_bold_b64 = ""
+    adishila_bold_file = Path("fonts/AdishilaVedicBold.ttf")
+    if adishila_bold_file.exists():
+        with open(adishila_bold_file, "rb") as f_font:
+            adishila_vedic_bold_b64 = base64.b64encode(f_font.read()).decode("ascii")
+    
     document = template.render(
         supersections=data, 
         html_font=html_font, 
@@ -3958,6 +3964,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         has_samams=has_samams,
         jaimineeya_swara_b64=jaimineeya_swara_b64,
         adishila_vedic_b64=adishila_vedic_b64,
+        adishila_vedic_bold_b64=adishila_vedic_bold_b64,
         kpully=kpully
     )
     
