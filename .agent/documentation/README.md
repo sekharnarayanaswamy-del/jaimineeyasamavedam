@@ -10,5 +10,6 @@ Comprehensive internal technical reference and developer documentation for proce
 *   **[LaTeX Workflow Guide](LATEX_GUIDE.md)**: Stacking macros, XeLaTeX/LuaLaTeX compilation pipeline, and font setup.
 *   **[Typography & Font Guide](typography_guide.md)**: Font hierarchy, Malayalam stacking geometry, and the 11 Vedic Swara Modifiers.
 *   **[Pipeline Architecture](PIPELINE_ARCHITECTURE.md)**: End-to-end data flow from raw text to PDF/HTML/TXT.
+*   **[HTML Rendering Modes](HTML_RENDERING_MODES.md)**: Modern 2-column interactive reader vs legacy mode, Rachana/Malayalam web fonts, and fast cached printing.
 *   **[Website Architecture](WEBSITE_ARCHITECTURE.md)**: Static site generation and online curation gateway.
 *   **[Project Structure](PROJECT_STRUCTURE.md)**: Directory layout and module responsibilities.

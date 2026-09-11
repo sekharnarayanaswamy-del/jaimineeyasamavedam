@@ -3945,6 +3945,18 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     if adishila_bold_file.exists():
         with open(adishila_bold_file, "rb") as f_font:
             adishila_vedic_bold_b64 = base64.b64encode(f_font.read()).decode("ascii")
+
+    rachana_regular_b64 = ""
+    rachana_reg_file = Path("fonts/RIT-Rachana-Regular.woff2")
+    if rachana_reg_file.exists():
+        with open(rachana_reg_file, "rb") as f_font:
+            rachana_regular_b64 = base64.b64encode(f_font.read()).decode("ascii")
+
+    rachana_bold_b64 = ""
+    rachana_bld_file = Path("fonts/RIT-Rachana-Bold.woff2")
+    if rachana_bld_file.exists():
+        with open(rachana_bld_file, "rb") as f_font:
+            rachana_bold_b64 = base64.b64encode(f_font.read()).decode("ascii")
     
     document = template.render(
         supersections=data, 
@@ -3965,6 +3977,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         jaimineeya_swara_b64=jaimineeya_swara_b64,
         adishila_vedic_b64=adishila_vedic_b64,
         adishila_vedic_bold_b64=adishila_vedic_bold_b64,
+        rachana_regular_b64=rachana_regular_b64,
+        rachana_bold_b64=rachana_bold_b64,
         kpully=kpully
     )
     
@@ -4332,8 +4346,8 @@ Examples:
                     khanda_rows.append({
                         'khanda': khanda_name,
                         'id': f"{ss_key}-{sec_key}",
-                        'riks': to_devanagari_numeral(sec_riks),
-                        'samams': to_devanagari_numeral(samam_count)
+                        'riks': str(sec_riks) if script == 'malayalam' else to_devanagari_numeral(sec_riks),
+                        'samams': str(samam_count) if script == 'malayalam' else to_devanagari_numeral(samam_count)
                     })
                 patha_riks += sec_riks
                 patha_samams += samam_count
@@ -4343,7 +4357,7 @@ Examples:
             count_parts = []
             if script == 'malayalam':
                 if sec_riks > 0 and samam_count > 0:
-                    count_parts.append(f"ऋ-{sec_riks}")
+                    count_parts.append(f"ഋ-{sec_riks}")
                     count_parts.append(f"സാ-{samam_count}")
                 elif sec_riks > 0:
                     count_parts.append(str(sec_riks))
@@ -4368,7 +4382,7 @@ Examples:
         ss_count_parts = []
         if script == 'malayalam':
             if patha_riks > 0 and patha_samams > 0:
-                ss_count_parts.append(f"ऋ-{patha_riks}")
+                ss_count_parts.append(f"ഋ-{patha_riks}")
                 ss_count_parts.append(f"സാ-{patha_samams}")
             elif patha_riks > 0:
                 ss_count_parts.append(str(patha_riks))
@@ -4389,13 +4403,13 @@ Examples:
             summary_table.append({
                 'patha': patha_name,
                 'id': ss_key,
-                'patha_riks': to_devanagari_numeral(patha_riks),
-                'patha_samams': to_devanagari_numeral(patha_samams),
+                'patha_riks': str(patha_riks) if script == 'malayalam' else to_devanagari_numeral(patha_riks),
+                'patha_samams': str(patha_samams) if script == 'malayalam' else to_devanagari_numeral(patha_samams),
                 'khandas': khanda_rows
             })
                 
-    total_riks_dev = to_devanagari_numeral(total_riks)
-    total_samams_dev = to_devanagari_numeral(total_samams)
+    total_riks_dev = str(total_riks) if script == 'malayalam' else to_devanagari_numeral(total_riks)
+    total_samams_dev = str(total_samams) if script == 'malayalam' else to_devanagari_numeral(total_samams)
     
     # Define Sanskrit title based on type (for PDF/html generation)
     # Priority: CLI > JSON Meta title (if Sanskrit/Devanagari) > Config Type default > Hardcoded default
@@ -4420,18 +4434,33 @@ Examples:
         else:
             doc_title_sa = "जैमिनीय साम संहिता"
             summary_title_sa = "संहिता सङ्ख्या"
+    elif not summary_title_sa:
+        if mode_type == 'aaranam':
+            summary_title_sa = "आरण्यम् सङ्ख्या"
+        elif mode_type == 'collection':
+            summary_title_sa = "सूक्तम् सङ्ख्या"
+        else:
+            summary_title_sa = "संहिता सङ्ख्या"
     
     current_os = platform.system()
 
     deva_doc_title_sa = doc_title_sa
 
-    # Malayalam script: transliterate the title on the title page
-    if script == 'malayalam' and doc_title_sa:
+    # Malayalam script: transliterate the title on the title page and summary table title
+    if script == 'malayalam':
         from malayalam.ml_transliterate import devanagari_to_malayalam
-        try:
-            doc_title_sa = devanagari_to_malayalam(doc_title_sa)
-        except Exception:
-            pass
+        if doc_title_sa:
+            try:
+                doc_title_sa = devanagari_to_malayalam(doc_title_sa)
+            except Exception:
+                pass
+        if summary_title_sa:
+            try:
+                summary_title_sa = devanagari_to_malayalam(summary_title_sa)
+            except Exception:
+                pass
+        else:
+            summary_title_sa = "സംഹിതാ സംഖ്യ"
     
     print(f"Processing {input_file} in '{output_mode}' mode...")
     print(f"Document Title: {doc_title_sa}")
@@ -4480,7 +4509,10 @@ Examples:
     if script == 'malayalam':
         template_file_src = templateFile_Malayalam
         text_template_file_src = f"{text_template_dir}/Malayalam_main.template"
-        html_template_file_src = f"{html_template_dir}/Malayalam_main_html.template"
+        if getattr(args, 'legacy_html', False):
+            html_template_file_src = f"{html_template_dir}/Malayalam_main_html_legacy.template"
+        else:
+            html_template_file_src = f"{html_template_dir}/Malayalam_main_html.template"
         pdf_font = "NotoSerifMalayalam"
         html_font = "Noto Serif Malayalam"
     else:

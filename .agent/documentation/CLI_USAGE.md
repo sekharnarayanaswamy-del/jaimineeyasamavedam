@@ -86,6 +86,8 @@ python src/render_pdf.py [INPUT_FILE] [OPTIONS]
 | `--pdf-color-mode` | Color mode for PDF: `bw` or `color`. | `bw` |
 | `--toc-level` | TOC headers: `section`, `subsection`, or `both`. | `section` |
 | `--title` | Custom Sanskrit title for the document. | From `pipeline_config.yaml` or input JSON metadata. |
+| `--html-only` | Generate only HTML output (skips PDF and TXT generation). | `False` |
+| `--legacy-html` | Use legacy single-page HTML layout instead of modern 2-column interactive reader layout. | `False` |
 
 ### Output Modes
 

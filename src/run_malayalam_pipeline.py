@@ -97,6 +97,11 @@ def main():
         action="store_true",
         help="Skip Devanagari Kpully HTML+PDF generation",
     )
+    parser.add_argument(
+        "--legacy-html",
+        action="store_true",
+        help="Use legacy single-page HTML layout instead of modern VedaVMS reader layout",
+    )
 
     args = parser.parse_args()
 
@@ -158,6 +163,8 @@ def main():
         extra_flags.append("--html-only")
     elif args.pdf_only:
         extra_flags.append("--pdf-only")
+    if args.legacy_html:
+        extra_flags.append("--legacy-html")
 
     for mode in args.modes:
         render_cmd = [
