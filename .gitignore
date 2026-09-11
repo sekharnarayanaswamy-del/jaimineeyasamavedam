@@ -41,6 +41,8 @@ data/output/*.csv
 data/output/html/
 data/output/txt/
 data/output/pdf/
+data/output/Malayalam/
+data/output/Devanagari/
 Malayalam_JSV/malayalam/*.json
 Malayalam_JSV/stage_output/*.json
 Malayalam_JSV/*.json
@@ -60,8 +62,6 @@ deprecated/
 !docs/*.html
 !docs/**/*.css
 !docs/**/*.js
-!docs/**/*.pdf
-!docs/*.pdf
 !.vscode/*.json
 !src/config.json
 !vedavms_html/config.json

@@ -25,7 +25,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 
 DEFAULT_INPUT_TXT = ROOT_DIR / "data" / "input" / "Malayalam" / "Samam_Malayalam_Unicode.txt"
 DEFAULT_JSON_OUT = ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_Malayalam_out.json"
-DEFAULT_OUTPUT_BASE = ROOT_DIR / "data" / "output" / "Samam_Malayalam"
+DEFAULT_OUTPUT_BASE = ROOT_DIR / "data" / "output" / "Malayalam" / "Samam_Malayalam"
 DOCS_DIR = ROOT_DIR / "docs"
 
 
@@ -89,8 +89,8 @@ def main():
     parser.add_argument(
         "--publish",
         action=argparse.BooleanOptionalAction,
-        default=True,
-        help="Build Malayalam website and copy generated HTML files to docs/ (default: True, use --no-publish to skip)",
+        default=False,
+        help="Publish to docs/ (default: False; docs/ is reserved for src/generate_website.py)",
     )
     parser.add_argument(
         "--skip-kpully",
@@ -181,6 +181,10 @@ def main():
         run_cmd(render_cmd, description=f"Step 2: Rendering in '{mode}' mode")
 
     # 2b. Devanagari Kpully Rendering (HTML + PDF)
+    deva_output_dir = ROOT_DIR / "data" / "output" / "Devanagari"
+    deva_output_dir.mkdir(parents=True, exist_ok=True)
+    deva_output_prefix = deva_output_dir / "Samhita_kpully_Devanagari"
+
     if not args.skip_kpully and kpully_json_path.exists():
         kpully_cmd = [
             sys.executable,
@@ -190,10 +194,49 @@ def main():
             "--script",
             "devanagari",
             "-kpully",
+            "-o",
+            str(deva_output_prefix),
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF)")
 
-    # 3. Publishing step: Copy HTML & PDF files to docs/
+    # 2c. Create standardized convenience aliases in data/output/Malayalam and data/output/Devanagari
+    mal_main_pdf = output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.pdf"
+    mal_target_pdf = output_prefix.parent / "Samam_Malayalam.pdf"
+    if mal_main_pdf.exists() and mal_main_pdf != mal_target_pdf:
+        try:
+            shutil.copy2(mal_main_pdf, mal_target_pdf)
+        except Exception:
+            pass
+
+    mal_main_html = output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.html"
+    mal_target_html = output_prefix.parent / "Samam_Malayalam.html"
+    if mal_main_html.exists() and mal_main_html != mal_target_html:
+        try:
+            shutil.copy2(mal_main_html, mal_target_html)
+        except Exception:
+            pass
+
+    deva_pdfs = list(deva_output_dir.glob("Samhita_kpully_Devanagari*.pdf"))
+    if deva_pdfs:
+        deva_target_pdf = deva_output_dir / "Samhita_kpully_Devanagari.pdf"
+        deva_src_pdf = [p for p in deva_pdfs if p != deva_target_pdf]
+        if deva_src_pdf:
+            try:
+                shutil.copy2(deva_src_pdf[0], deva_target_pdf)
+            except Exception:
+                pass
+
+    deva_htmls = list(deva_output_dir.glob("Samhita_kpully_Devanagari*.html"))
+    if deva_htmls:
+        deva_target_html = deva_output_dir / "Samhita_kpully_Devanagari.html"
+        deva_src_html = [p for p in deva_htmls if p != deva_target_html]
+        if deva_src_html:
+            try:
+                shutil.copy2(deva_src_html[0], deva_target_html)
+            except Exception:
+                pass
+
+    # 3. Publishing step: Reserved for src/generate_website.py
     if args.publish:
         print("\n[PIPELINE] Step 3: Publishing HTML and PDF files to docs/...")
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
@@ -201,97 +244,23 @@ def main():
         malayalam_docs_dir.mkdir(parents=True, exist_ok=True)
 
         copied = []
-        # 3a. Copy generated pipeline HTML files to docs/ and docs/malayalam/
         for html_file in output_prefix.parent.glob(f"{output_prefix.name}*.html"):
             target_mal = malayalam_docs_dir / html_file.name
             shutil.copy2(html_file, target_mal)
-            target_root = DOCS_DIR / html_file.name
-            shutil.copy2(html_file, target_root)
-            copied.extend([target_mal, target_root])
-            print(f"  Copied -> {target_root.relative_to(ROOT_DIR)}")
-
-        # 3b. Copy standalone full Malayalam HTML (Samam_Malayalam_Malayalam.html)
-        main_mal_html = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_Malayalam_Malayalam.html"
-        if main_mal_html.exists():
-            target_mal = malayalam_docs_dir / main_mal_html.name
-            shutil.copy2(main_mal_html, target_mal)
-            target_root = DOCS_DIR / main_mal_html.name
-            shutil.copy2(main_mal_html, target_root)
-            copied.extend([target_mal, target_root])
-            print(f"  Copied -> {target_root.relative_to(ROOT_DIR)}")
-
-        # 3c. Copy Devanagari Kpully HTML if present
-        kpully_html_candidates = [
-            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samhita_Devanagari.html",
-            ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.html",
-        ]
-        for src_candidate in kpully_html_candidates:
-            if src_candidate.exists():
-                target_kpully = DOCS_DIR / "Samhita_kpully_Devanagari.html"
-                shutil.copy2(src_candidate, target_kpully)
-                copied.append(target_kpully)
-                print(f"  Copied -> {target_kpully.relative_to(ROOT_DIR)}")
-                break
-
-        # 3d. Copy Malayalam PDFs if present
-        mal_pdf_candidates = [
-            ROOT_DIR / "data" / "output" / "pdf" / "Malayalam" / "Samam_Malayalam_preview.pdf",
-            output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam_preview.pdf",
-            output_prefix.parent / f"{output_prefix.name}_preview.pdf",
-            output_prefix.parent / f"{output_prefix.name}_Samam_Malayalam.pdf",
-            output_prefix.parent / f"{output_prefix.name}_Malayalam.pdf",
-            ROOT_DIR / "data" / "output" / "pdf" / "Malayalam" / "Samam_Malayalam.pdf",
-        ]
-        existing_mal_pdfs = [p for p in mal_pdf_candidates if p.exists()]
-        existing_mal_pdfs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-        for src_pdf in existing_mal_pdfs:
-            target_pdf_root = DOCS_DIR / "Samam_Malayalam.pdf"
-            target_pdf_mal = malayalam_docs_dir / "Samam_Malayalam.pdf"
-            try:
-                shutil.copy2(src_pdf, target_pdf_root)
-                shutil.copy2(src_pdf, target_pdf_mal)
-                copied.extend([target_pdf_root, target_pdf_mal])
-                print(f"  Copied ({src_pdf.name}) -> {target_pdf_root.relative_to(ROOT_DIR)}")
-                break
-            except PermissionError:
-                print(f"  [WARN] {target_pdf_root.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
-
-        # 3e. Copy Devanagari Kpully PDF if present
-        deva_pdf_dir = ROOT_DIR / "data" / "output" / "pdf" / "Devanagari"
-        kpully_pdf_candidates = list(deva_pdf_dir.glob("Samhita_Devanagari*.pdf")) if deva_pdf_dir.exists() else []
-        kpully_pdf_candidates.append(ROOT_DIR / "data" / "output" / "Samhita_kpully_Devanagari_Devanagari.pdf")
-        existing_kpully_pdfs = [p for p in kpully_pdf_candidates if p.exists()]
-        existing_kpully_pdfs.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-        for src_pdf in existing_kpully_pdfs:
-            target_kpully_pdf = DOCS_DIR / "Samhita_kpully_Devanagari.pdf"
-            try:
-                shutil.copy2(src_pdf, target_kpully_pdf)
-                copied.append(target_kpully_pdf)
-                print(f"  Copied ({src_pdf.name}) -> {target_kpully_pdf.relative_to(ROOT_DIR)}")
-                break
-            except PermissionError:
-                print(f"  [WARN] {target_kpully_pdf.relative_to(ROOT_DIR)} is currently open in another process/viewer. Skipped overwriting.")
-
+            copied.append(target_mal)
         if copied:
-            print(f"[INFO] Published {len(copied)} files (HTML + PDF) to docs/")
+            print(f"[INFO] Published {len(copied)} files to docs/")
+    else:
+        print("\n[INFO] 'docs/' directory is reserved for 'src/generate_website.py'. Pipeline outputs are preserved in data/output/.")
 
     print("\n" + "=" * 60)
     print(" Pipeline completed successfully!")
     print("=" * 60)
     print(" Generated Artifacts:")
-    print(f"  - Malayalam HTMLs : {output_prefix.parent / 'html' / 'Malayalam'}")
-    print(f"  - Malayalam PDF   : {output_prefix.parent / f'{output_prefix.name}_Samam_Malayalam.pdf'}")
-    print(f"  - Plaintext TXTs  : {output_prefix.parent / 'txt' / 'Malayalam'}")
-    print(f"  - Devanagari TXTs : {output_prefix.parent / 'txt' / 'Devanagari'}")
+    print(f"  - Malayalam Outputs : {output_prefix.parent}")
     if not args.skip_kpully:
-        print(f"  - Devanagari Kpully HTML: {ROOT_DIR / 'data' / 'output' / 'html' / 'Devanagari' / 'Samhita_Devanagari.html'}")
-        print(f"  - Devanagari Kpully PDF : {ROOT_DIR / 'data' / 'output' / 'pdf' / 'Devanagari' / 'Samhita_Devanagari.pdf'}")
-    if args.publish:
-        print(" Published to docs/:")
-        print(f"  - Malayalam HTML: {DOCS_DIR / 'Samam_Malayalam_Malayalam.html'}")
-        print(f"  - Malayalam PDF : {DOCS_DIR / 'Samam_Malayalam.pdf'}")
-        print(f"  - Devanagari Kpully HTML: {DOCS_DIR / 'Samhita_kpully_Devanagari.html'}")
-        print(f"  - Devanagari Kpully PDF : {DOCS_DIR / 'Samhita_kpully_Devanagari.pdf'}")
+        print(f"  - Devanagari Outputs: {deva_output_dir}")
+    print(f"  Note: 'docs/' folder is reserved for 'src/generate_website.py'.")
     print("=" * 60 + "\n")
 
 
