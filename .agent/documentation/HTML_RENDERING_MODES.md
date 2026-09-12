@@ -173,4 +173,8 @@ On smaller viewports ($\le 850$px and $\le 420$px), the reader dynamically shift
      - Tapping any chapter, section, or Samam link in the drawer.
      - Pressing the `Escape` key.
      - Resizing the browser window back above 850px.
-
+3. **Bidirectional Auto-Rotate & Orientation Trapping**:
+   - The reader traps `resize`, mobile `orientationchange`, `window.screen.orientation` change events, and `matchMedia('(orientation: portrait)')` media queries.
+   - **Reverse Rotation (Landscape $\rightarrow$ Portrait)**: Cleans up any desktop-mode `.layout.sidebar-collapsed` state and restores toggle button text to `☰ ഉള്ളടക്കം` / `☰ सूची`.
+   - **Landscape Phone Optimization**: Implements `@media (max-height: 520px) and (orientation: landscape)` to compress header height into a single row, preserving vertical recitation reading space.
+   - **Viewport Protection**: Sets `overflow-x: clip` on `html` and `body` to prevent subpixel overflows from locking mobile browser viewport scale during rotation.
