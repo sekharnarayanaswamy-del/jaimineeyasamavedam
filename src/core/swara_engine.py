@@ -19,8 +19,8 @@ HALANT = '\u094D'               # ्
 DANDA_SINGLE = '\u0964'         # ।
 DANDA_DOUBLE = '\u0965'         # ॥
 
-# Unified pattern for Samam markers: ॥ N ॥ or || N ||
-SAMAM_PATTERN = re.compile(r'(?:॥|\|\|)\s*[\d०-९]+\s*(?:॥|\|\|)')
+# Unified pattern for Samam markers: ॥ N ॥, ॥N॥, or || N [क/a] ||
+SAMAM_PATTERN = re.compile(r'(?:॥|\|\|)\s*[\d०-९]+(?:\s*[a-zA-Zक-ह])?\s*(?:॥|\|\|)')
 
 # Numeral translation tables
 DEVA_TO_ARABIC_TABLE = str.maketrans('०१२३४५६७८९', '0123456789')
@@ -70,9 +70,12 @@ def fix_visarga_accent_order(text: str) -> str:
     text = text.replace(':', VISARGA)
     # Remove space before Visarga
     text = re.sub(r'\s+ः', VISARGA, text)
-    # Swap Visarga and Accent (e.g., ः(1) -> (1)ः)
+    # Swap Visarga and Accent markup (e.g., ः(1) -> (1)ः)
     pattern = r'([ः])\s*(\([^)]+\))'
-    return re.sub(pattern, r'\2\1', text)
+    text = re.sub(pattern, r'\2\1', text)
+    # Also swap Unicode accents if already converted (e.g., ः॑ -> ॑ः)
+    text = re.sub(r'([ः])([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\2\1', text)
+    return text
 
 
 def count_samams(text: str) -> int:

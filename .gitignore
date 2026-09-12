@@ -38,6 +38,7 @@ data/output/*.html
 data/output/*.pdf
 data/output/*.json
 data/output/*.csv
+data/output/*.txt
 data/output/html/
 data/output/txt/
 data/output/pdf/

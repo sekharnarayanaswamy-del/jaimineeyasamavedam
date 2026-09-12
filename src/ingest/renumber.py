@@ -10,7 +10,10 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 # Use centralized core utilities
-from src.core.swara_engine import int_to_devanagari, devanagari_to_int
+try:
+    from core.swara_engine import int_to_devanagari, devanagari_to_int
+except ImportError:
+    from src.core.swara_engine import int_to_devanagari, devanagari_to_int
 
 
 class RenumberEngine:
@@ -76,3 +79,7 @@ class RenumberEngine:
             no_renumber=no_renumber,
             backup=backup
         )
+
+# Module-level convenience function
+validate_structural_tags = RenumberEngine.validate_structural_tags
+

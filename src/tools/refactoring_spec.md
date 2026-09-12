@@ -153,10 +153,8 @@ Decompose the 4,639-line `render_pdf.py` into focused, testable components:
   - Maintain exact compatibility with GitHub Pages (`docs/samhita/`, `docs/aaranam/`).
 
 ### 4.4 Subsystem D: Unified Ingestion & Tools (`src/ingest/` and `src/tools/`)
-- **Unify Renumbering**: Consolidate `renumber_sooktam.py` and `renumber_sections.py` into `src/ingest/renumber.py` with consistent CLI flags.
-- **Clean Baraha Ingestion**: Standardize `baraha_reader.py` as a standalone converter:
-  $$\text{DOCX} \xrightarrow{\text{baraha\_reader.py}} \text{Canonical JSON AST} \xrightarrow{\text{renderers}} \text{PDF / HTML / TXT}$$
-  Completely remove Baraha special-case branching from the rendering layer.
+- **Unify Renumbering**: Consolidate `renumber_sooktam.py` and `renumber_sections.py` into `src/ingest/renumber.py` with consistent CLI flags and pre-flight structural tag balance checks.
+- **Decommission Legacy Baraha Ingestion**: Experimental Baraha DOCX ingestion and reader generation were evaluated from the external `vedavms` project for Devanagari HTML templates and subsequently retired. We purge `baraha_reader.py`, `transliterate.py`, `build_reader.py`, and eliminate all Baraha/Taittiriya conditional branches from `render_pdf.py`. The JSV pipeline strictly focuses on pure Jaimineeya canonical texts.
 - **Curate `src/tools/`**:
   - Keep active, high-value tools: `check_continuity.py`, `convert_docx.py`, `copy_rik_ids.py`.
   - Provide unified CLI help and exit codes.
@@ -191,6 +189,11 @@ To eliminate confusion after gaps of several months, this subsystem introduces s
    - All refactoring and restructuring work takes place on the isolated `refactor` branch.
    - Master/stable branches (`format-mantras`, `main`) remain protected until full regression verification is completed.
 
+5. **3-Tier Versioning Architecture**:
+   - **Tier 1 (Engine Version)**: Automatically derived via `git describe --tags --always --dirty` (e.g. `v4.0.0+6dec1989`). Eliminates manual editing of version files for software changes.
+   - **Tier 2 (Corpus Editions)**: Independent version strings per corpus defined in `pipeline_config.yaml` (`samhita: 3.28`, `aaranam: 1.14`, `sooktamala: 2.05`). Editing Aaranam does not falsely increment Samhita.
+   - **Tier 3 (Content Fingerprint)**: Cryptographic SHA-256 hash of the input file embedded in output metadata, enabling immediate staleness detection.
+
 ---
 
 ## 5. Phase-by-Phase Migration Roadmap
@@ -199,9 +202,10 @@ To eliminate confusion after gaps of several months, this subsystem introduces s
 |---|---|---|---|
 | **Phase 1** | **Core Domain & Swara Engine** | Create `src/core/models.py`, `src/core/swara_engine.py`, unit tests | Low (Additive) |
 | **Phase 2** | **Filter & Render Separation** | Extract Jinja filters into `src/renderers/filters/`; decompose `render_pdf.py` | Medium |
-| **Phase 3** | **Baraha & Ingestion Decoupling** | Standalone `baraha_reader.py` CLI; remove `--baraha` hooks from renderer | Low |
-| **Phase 4** | **HTML & Site Unification** | Harmonize `build_reader.py` with standalone HTML templates | Medium |
+| **Phase 3** | **Baraha Purge & Decoupling** | Purge legacy Baraha scripts (`baraha_reader.py`, `transliterate.py`); strip Baraha branches from renderer | Low |
+| **Phase 4** | **HTML & Site Cleanliness** | Clean up standalone HTML renderers and harmonize with static site | Low |
 | **Phase 5** | **Baselining, Traceability & Tools** | Implement `src/tools/baseline.py`, `src/tools/check_status.py`, archive cleanup | Low |
+| **Phase 6** | **3-Tier Versioning Engine** | Create `src/core/version.py`, git metadata injection, deprecate blind counter | Low |
 
 ---
 
@@ -212,5 +216,7 @@ To ensure that refactoring does not alter liturgical accents, layout formatting,
 2. **Text Export Diff**: Verify character-for-character equality on generated plaintext files (`data/output/txt/...`).
 3. **LaTeX Output Hash**: Compare generated `.tex` files byte-for-byte on identical inputs.
 4. **HTML Search & Navigation Verification**: Verify that P.K.S jump navigation, Suchi sync, and Lunr search queries return identical matches.
-5. **Baseline Integrity Check**: `python src/tools/baseline.py verify` passes with 0 checksum mismatches.
+5. **Baseline Integrity Check**: `python src/tools/baseline.py status` passes with 0 checksum mismatches.
+6. **Automated Versioning Check**: `get_engine_version()` accurately tracks git commits and dirty working state without unintended file modifications.
+
 
