@@ -40,6 +40,11 @@ jaimineeyasamavedam/
     - [`data/output/Vargeekaran.json`](../../data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita enriched with Rishi, Devata, Chandas metadata for website publishing.
     - [`data/output/Aaranam_vargeekaran.json`](../../data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam enriched with Rishi, Devata, Chandas metadata for website publishing.
 
+- **Pipeline Document Outputs (`data/output/`)**:
+    - `data/output/html/<language>/`: Interactive HTML readers (e.g., `Malayalam/Samam_Malayalam.html`, `Devanagari/Samhita_kpully_Devanagari.html`).
+    - `data/output/pdf/<language>/`: Publication-grade PDFs (e.g., `Malayalam/Samam_Malayalam.pdf`, `Devanagari/Samhita_kpully_Devanagari.pdf`).
+    - `data/output/txt/<language>/`: Plaintext Unicode exports with standard swaras and mnemonics.
+    *Note: `docs/` is reserved for static website generation via `src/generate_website.py`.*
         
 - Rik text and Rik/Samam metadata from initial mode of generate_json.py is the starting point for the csv file below. 
 - It is then combined with the Rik table from KSV to create the Rik Rishi/Devata/Chandas Reconciliation file mentioned above.  

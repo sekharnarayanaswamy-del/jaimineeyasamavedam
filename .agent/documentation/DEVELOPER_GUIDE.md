@@ -62,6 +62,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **`TOC Configuration`**: Supports a configurable Table of Contents level (`section`, `subsection`, or `both`) for both PDF (using `\addcontentsline`) and HTML (using conditional template rendering).
 *   **Interactive HTML Reader vs Legacy Mode**:
     *   **Modern Interactive Reader (Default)**: Renders a 2-column responsive layout (`Devanagari_main_html.template`, `Malayalam_main_html.template`) with sticky topbar navigation, collapsible sidebar TOC, real-time scroll-spy, live font switcher, font sizing controls, and a fast cached printing modal.
+        *   **Mobile Responsive Navigation**: Features a split header (`.header-main-bar` + wrap-aware `.controls`) and a slide-out off-canvas drawer for Suchi/TOC on screens $\le 850$px with backdrop blur overlay, dedicated close button (`✕`), Escape key dismissal, and auto-closing on link navigation.
     *   **Legacy Mode (`--legacy-html`)**: Renders a lightweight single-column linear layout (`Devanagari_main_html_legacy.template`, `Malayalam_main_html_legacy.template`).
     *   **Typography & Font Embedding**: Base64 embeds `JaimineeyaSwara`, `AdishilaVedic`, and `RIT Rachana` (for traditional Malayalam ligatures) with CDN fallbacks. In Malayalam mode, summary tables feature localized titles (`॥ സംഹിത സംഖ്യ ॥`) and standard English numerals.
 *   **`remove_mantra_spaces`**: Implements the *scriptio continua* logic (removing space between words) while preserving formatting lines.

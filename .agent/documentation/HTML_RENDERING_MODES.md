@@ -17,9 +17,10 @@ The pipeline provides two HTML generation templates for each supported script fa
 
 | Feature | Modern Interactive Reader (Default) | Legacy Mode (`--legacy-html`) |
 | :--- | :--- | :--- |
-| **Layout** | **2-Column Responsive Grid**: Sticky TOC sidebar + reading pane | Single-column linear layout with static top TOC |
-| **Header** | Sticky header bar with dynamic navigation controls | Static text banner |
+| **Layout** | **2-Column Responsive Grid**: Sticky TOC sidebar + reading pane (desktop); **Off-canvas slide-out drawer** with backdrop blur (mobile $\le 850$px) | Single-column linear layout with static top TOC |
+| **Header** | Responsive split header (`.header-main-bar` + wrap-aware `.controls`) with quick actions | Static text banner |
 | **TOC Navigation** | Multi-level collapsible tree (Chapters, Kandahs, Samams) with Samam counts | Simple unordered bullet list at top of page |
+| **Mobile Drawer** | Slide-out off-canvas drawer (`transform: translateX(-105%)`), backdrop overlay, header bar with close `✕`, escape key & auto-close on link click | None |
 | **Scroll-Spy** | Real-time `IntersectionObserver` highlighting active Samam & Kandah in TOC | None |
 | **Font Switcher** | Live font dropdown/toggle button | None (fixed font stack) |
 | **Font Resizing** | `A-`, percentage indicator (with reset), `A+` controls with localStorage persistence | None |
@@ -153,3 +154,23 @@ The modern reader avoids browser lock-up on large multi-megabyte Samhita documen
 3. Caching the extracted markup in a JavaScript `Map` (`printCache`).
 4. Calling `.focus()` and `.print()` on the isolated frame.
 5. Intercepting `Ctrl+P` / `Cmd+P` to open the print options dialog instead of printing 800+ pages unfiltered.
+
+### 4.3 Mobile Responsive Architecture & Suchi Drawer
+
+On smaller viewports ($\le 850$px and $\le 420$px), the reader dynamically shifts to a touch-optimized layout:
+1. **Header Structure**:
+   - Split into `.header-main-bar` (branding and primary quick actions like `☰ ഉള്ളടക്കം` / `☰ सूची`, counts summary, alphabetical index) and `.controls` (font switcher, `.zoom-controls`, print, top).
+   - `.zoom-controls` groups `A-`, percentage reset, and `A+` together as a single flex pill to prevent awkward button breaks.
+   - Fluid wrapping ensures no button overflows off-screen on phones.
+2. **Off-Canvas Suchi Drawer**:
+   - The `.toc-sidebar` converts from a grid column to a fixed drawer (`position: fixed; width: min(85vw, 340px); z-index: 2500; transform: translateX(-105%)`).
+   - Clicking `☰ ഉള്ളടക്കം` / `☰ सूची` toggles `body.mobile-toc-active`, sliding the drawer into view (`transform: translateX(0)`).
+   - A semi-transparent backdrop overlay (`.toc-backdrop`) dims the text and blurs the background (`backdrop-filter: blur(2px)`).
+   - The drawer includes a `.toc-header-bar` with an explicit close button (`✕`).
+   - Dismissal triggers:
+     - Tapping the backdrop overlay.
+     - Tapping the `✕` close button or header toggle.
+     - Tapping any chapter, section, or Samam link in the drawer.
+     - Pressing the `Escape` key.
+     - Resizing the browser window back above 850px.
+
