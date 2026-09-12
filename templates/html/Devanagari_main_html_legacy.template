@@ -23,7 +23,7 @@
         }
 
         :root {
-            --font-doc: \VAR{html_font}, 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', 'Siddhanta', 'AdishilaVedic', 'Arial Unicode MS', sans-serif;
+            --font-doc: \VAR{html_font}, 'AdishilaVedic', 'Adishila San', 'Noto Sans Devanagari', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', 'Siddhanta', 'Arial Unicode MS', sans-serif;
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', sans-serif;
             
             \BLOCK{ if 'Noto' in html_font }

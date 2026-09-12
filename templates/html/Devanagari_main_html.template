@@ -53,7 +53,7 @@
         }
 
         :root {
-            --font-doc: 'AdishilaVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+            --font-doc: 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', sans-serif;
             --font-size: 1.3rem;
             --mantra-size: calc(var(--font-size) * 1.25);
@@ -1730,10 +1730,10 @@
 
     <script>
         const fontList = [
-            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Noto Serif Devanagari', serif" },
-            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif" },
-            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif" },
-            { label: "Noto Sans", font: "'Noto Sans Devanagari', sans-serif" }
+            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif" },
+            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif" },
+            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif" },
+            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif" }
         ];
         let currentFontIndex = 0;
         function setFont(idx) {

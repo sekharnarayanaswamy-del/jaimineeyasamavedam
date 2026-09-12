@@ -54,11 +54,14 @@ In Malayalam mode (`--script malayalam`), the viewer defaults to **Noto Serif Ma
 ### 2.2 Devanagari Fonts
 
 In Devanagari mode (`--script devanagari`), the viewer includes:
-1. **AdiShila Vedic** (`'AdishilaVedic', 'Noto Serif Devanagari', serif`)
-   - Custom font designed with metric adjustments for Jaimineeya Vedic swaras and conjuncts.
-2. **Noto Serif** (`'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif`)
-3. **Tiro Sanskrit** (`'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif`)
-4. **Noto Sans** (`'Noto Sans Devanagari', sans-serif`)
+1. **AdiShila Vedic** (`'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif`)
+   - Custom font designed with metric adjustments for Jaimineeya Vedic swaras and conjuncts. Embedded directly as base64 in the generated HTML.
+2. **Noto Serif** (`'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif`)
+   - High legibility classical serif font, with automatic fallback to **AdiShila Vedic** ensuring rare Vedic marks like Double Anusvara Antargomukha `(gg)` (`U+1CFA`) render faithfully across all mobile/Android systems.
+3. **Tiro Sanskrit** (`'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif`)
+   - Traditional typography with graceful fallback to **AdiShila Vedic**.
+4. **Noto Sans** (`'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif`)
+   - Clean sans-serif type with graceful fallback to **AdiShila Vedic**.
 
 ### 2.3 Vedic Swara Font
 

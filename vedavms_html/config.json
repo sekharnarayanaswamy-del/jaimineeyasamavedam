@@ -13,17 +13,22 @@
   "fonts": [
     {
       "label": "Noto Serif",
-      "font": "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif",
+      "font": "'Noto Serif Devanagari', 'Adishila San', 'AdishilaVedic', 'Tiro Devanagari Sanskrit', serif",
+      "weight": "500"
+    },
+    {
+      "label": "Adishila San",
+      "font": "'Adishila San', 'AdishilaVedic', 'Noto Serif Devanagari', serif",
       "weight": "500"
     },
     {
       "label": "Tiro Sanskrit",
-      "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif",
+      "font": "'Tiro Devanagari Sanskrit', 'Adishila San', 'AdishilaVedic', 'Noto Serif Devanagari', serif",
       "weight": "400"
     },
     {
       "label": "Noto Sans",
-      "font": "'Noto Sans Devanagari', sans-serif",
+      "font": "'Noto Sans Devanagari', 'Adishila San', 'AdishilaVedic', sans-serif",
       "weight": "500"
     }
   ],
