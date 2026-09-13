@@ -557,8 +557,7 @@
             margin-bottom: 1.75rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
             text-align: center;
-            content-visibility: auto;
-            contain-intrinsic-size: auto 360px;
+
         }
 
         .subsection-header {
@@ -2257,15 +2256,24 @@
 
             document.querySelectorAll('.subsection').forEach(el => samamObserver.observe(el));
 
-            // Direct click on Suchi item immediately highlights without waiting
+            // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-item a, .toc-ch-title a, .toc-sec-title').forEach(link => {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
                     if (window.innerWidth <= 850) {
                         closeMobileToc();
                     }
                     const href = this.getAttribute('href');
                     if (href && href.startsWith('#')) {
-                        highlightSamamInToc(href.slice(1));
+                        const targetId = href.slice(1);
+                        highlightSamamInToc(targetId);
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            if (history.pushState) {
+                                history.pushState(null, '', href);
+                            }
+                        }
                     }
                 });
             });
