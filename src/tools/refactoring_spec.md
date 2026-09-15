@@ -136,9 +136,15 @@ Decompose the 4,639-line `render_pdf.py` into focused, testable components:
   - Pure LuaLaTeX/XeLaTeX generation.
   - Handles geometry, page breaks, Prayoga appendix injection, and color themes.
   - Delegates accent markup to LaTeX filters.
-- **`src/renderers/html_renderer.py`**:
-  - Generates standalone responsive HTML readers.
-  - Merges the responsive features of `build_reader.py` (Suchi drawer, font switcher, auto-orientation) with the Jinja template power of `Devanagari_main_html.template`.
+- **`src/renderers/html_renderer.py` (Universal Vedic HTML Viewer Engine)**:
+  - Generates standalone responsive HTML readers with decoupled presentation and content layers.
+  - **Viewer Shell & Runtime Abstraction**:
+    - Abstract the viewer engine (responsive 2-column/drawer layout, Suchi table of contents, orientation change handling with dynamic viewport reset, font switcher, theme modes, smooth anchor navigation, search modal) from the underlying text corpus.
+    - Treat Vedic texts as structured inputs (`VedicDocument` AST or JSON stream) with standardized sections, subsections, verses, swara modifiers, and metadata.
+    - Provide a single reusable viewer core capable of ingesting:
+      1. **JSV Corpora**: Jaimineeya Samhita, Aaranam, Sooktamala collections.
+      2. **VedaVMS Corpora**: Taittiriya Upanishad, Aruna Prashnam, Udaka Shanti, Shanti Japam, etc.
+    - Eliminates duplicate template code, divergent CSS breakpoints, and redundant orientation bug fixes across repositories.
 - **`src/renderers/text_renderer.py`**:
   - Clean plaintext Unicode exports (Combined, Rik-only, Samam-only, Nometa).
 - **`src/renderers/filters/`**:
@@ -203,7 +209,7 @@ To eliminate confusion after gaps of several months, this subsystem introduces s
 | **Phase 1** | **Core Domain & Swara Engine** | Create `src/core/models.py`, `src/core/swara_engine.py`, unit tests | Low (Additive) |
 | **Phase 2** | **Filter & Render Separation** | Extract Jinja filters into `src/renderers/filters/`; decompose `render_pdf.py` | Medium |
 | **Phase 3** | **Baraha Purge & Decoupling** | Purge legacy Baraha scripts (`baraha_reader.py`, `transliterate.py`); strip Baraha branches from renderer | Low |
-| **Phase 4** | **HTML & Site Cleanliness** | Clean up standalone HTML renderers and harmonize with static site | Low |
+| **Phase 4** | **Universal HTML Viewer Abstraction & Site Harmonization** | Abstract common HTML viewer (shell, responsive CSS, orientation/viewport runtime) to consume JSV and VedaVMS content as input; harmonize with static site | Low |
 | **Phase 5** | **Baselining, Traceability & Tools** | Implement `src/tools/baseline.py`, `src/tools/check_status.py`, archive cleanup | Low |
 | **Phase 6** | **3-Tier Versioning Engine** | Create `src/core/version.py`, git metadata injection, deprecate blind counter | Low |
 
