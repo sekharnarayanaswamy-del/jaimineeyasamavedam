@@ -151,6 +151,14 @@ def replace_accents_html(text):
     """
     if not text:
         return text
+    # Fix Visarga after accent marker:
+    # In HTML, placing Visarga after a </span> boundary causes the browser's OpenType
+    # text shaper to treat Visarga as an orphaned combining mark without a base consonant,
+    # rendering an unwanted dotted circle (◌ः). Moving Visarga before the accent marker
+    # ensures Visarga attaches to the base syllable cleanly without any dotted circle.
+    text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
+
     replacements = [
         ('(1)', '<span class="accent-swarita">&#x0951;</span>'),  # Swarita
         ('(2)', '<span class="accent-anudatta">&#x1CD2;</span>'),  # Anudatta
