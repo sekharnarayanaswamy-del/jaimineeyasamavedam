@@ -1123,7 +1123,7 @@
             color: #666;
         }
 
-        @media (max-width: 960px), (max-height: 550px) and (orientation: landscape) {
+        @media (max-width: 600px), (max-width: 850px) and (pointer: coarse), (max-height: 550px) and (orientation: landscape) and (pointer: coarse) {
             .header {
                 padding: 0.45rem 0.6rem;
             }
@@ -1872,7 +1872,11 @@
         }
 
         function isMobileView() {
-            return window.innerWidth <= 960 || (window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches);
+            const isTouch = window.matchMedia('(pointer: coarse)').matches;
+            const isNarrow = window.innerWidth <= 600;
+            const isTouchTablet = isTouch && window.innerWidth <= 850;
+            const isTouchLandscape = isTouch && window.innerHeight <= 550 && window.matchMedia('(orientation: landscape)').matches;
+            return isNarrow || isTouchTablet || isTouchLandscape;
         }
 
         function closeMobileToc() {
@@ -1901,7 +1905,7 @@
                 if (!layout) return;
                 layout.classList.toggle('sidebar-collapsed');
                 const collapsed = layout.classList.contains('sidebar-collapsed');
-                localStorage.setItem('jsv-ml-sidebar-collapsed', collapsed);
+                sessionStorage.setItem('jsv-ml-sidebar-collapsed', collapsed);
                 if (btn) btn.textContent = collapsed ? '☰' : ('☰ ' + label);
             }
         }
@@ -1913,23 +1917,21 @@
             const label = btn ? (btn.getAttribute('data-label') || 'ഉള്ളടക്കം') : 'ഉള്ളടക്കം';
 
             if (isMobile) {
-                // Return to mobile portrait view (<= 850px)
-                // Clean up any desktop collapsed layout state that would conflict with mobile drawer
+                // Mobile view (narrow or touch device)
                 if (layout) {
                     layout.classList.remove('sidebar-collapsed');
                 }
-                // Synchronize toggle button icon and text
                 const isOpen = document.body.classList.contains('mobile-toc-active');
                 if (btn) {
                     btn.textContent = isOpen ? ('✕ ' + label) : ('☰ ' + label);
                 }
             } else {
-                // Desktop landscape view (> 850px)
+                // Desktop landscape view
                 // Dismiss mobile off-canvas drawer and backdrop
                 document.body.classList.remove('mobile-toc-active');
 
-                // Restore desktop sidebar collapsed state
-                const collapsed = localStorage.getItem('jsv-ml-sidebar-collapsed') === 'true';
+                // Restore desktop sidebar collapsed state for active session only
+                const collapsed = sessionStorage.getItem('jsv-ml-sidebar-collapsed') === 'true';
                 if (layout) {
                     if (collapsed) layout.classList.add('sidebar-collapsed');
                     else layout.classList.remove('sidebar-collapsed');
