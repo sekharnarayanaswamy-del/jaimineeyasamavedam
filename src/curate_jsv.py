@@ -312,7 +312,7 @@ def main():
     curated_data = {
         "meta": {
             "version": "1.1",
-            "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "generated_at": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
             "source_file": ", ".join(sources),
             "filter_file": str(filter_file),
             "title": title,

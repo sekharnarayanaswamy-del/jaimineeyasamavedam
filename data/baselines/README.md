@@ -8,3 +8,4 @@ When resuming work after months, check `LATEST.json` or run `python src/tools/ba
 | Timestamp | Baseline Tag | Version | Commit | Total Samas | Description |
 |---|---|---|---|---|---|
 | `2026-09-12 17:53:12` | **baseline-sep2026-v3.28** | v3.28 | `4c8d244a` | 722 | Initial formal baseline on refactor branch before modular migration |
+| `15-09-2026 15:33:03` | **baseline-sep2026-v3.28-expanded** | v3.28 | `5de12980` | 722 | Expanded baseline tracking Devanagari, Malayalam, and Collections datasets |

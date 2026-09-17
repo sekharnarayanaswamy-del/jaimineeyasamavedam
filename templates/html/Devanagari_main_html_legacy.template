@@ -28,13 +28,13 @@
             
             \BLOCK{ if 'Noto' in html_font }
             /* Noto Sans specific accent offsets */
-            --swarita-bottom: 0.15em;
-            --anudatta-bottom: -0.15em;
+            --swarita-bottom: 0.42em;
+            --anudatta-bottom: 0.40em;
             --swara-size: 1.1rem;
             \BLOCK{ else }
             /* Default accent offsets (Adishila-optimized) */
-            --swarita-bottom: 0.05em;
-            --anudatta-bottom: 0.1em;
+            --swarita-bottom: 0.42em;
+            --anudatta-bottom: 0.40em;
             --swara-size: 1.3rem;
             \BLOCK{ endif }
 

@@ -530,10 +530,13 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
     Path(logdir).mkdir(parents=True, exist_ok=True)
     
     if not jsv_version or not generated_at:
-        from utils import get_generated_metadata
+        from utils import get_generated_metadata, normalize_to_dd_mm_yyyy
         meta = get_generated_metadata()
         jsv_version = jsv_version or meta['version']
-        generated_at = generated_at or meta['generated_at']
+        generated_at = normalize_to_dd_mm_yyyy(generated_at or meta['generated_at'])
+    else:
+        from utils import normalize_to_dd_mm_yyyy
+        generated_at = normalize_to_dd_mm_yyyy(generated_at)
     
     document = template.render(
         supersections=data, 
@@ -646,7 +649,7 @@ def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="com
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
     
-    from utils import get_generated_metadata
+    from utils import get_generated_metadata, normalize_to_dd_mm_yyyy
     meta = get_generated_metadata()
     
     document = template.render(
@@ -654,7 +657,7 @@ def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="com
         output_mode=output_mode,
         doc_title_sa=doc_title_sa,
         version=jsv_version or meta['version'],
-        generated_at=generated_at or meta['generated_at'],
+        generated_at=normalize_to_dd_mm_yyyy(generated_at or meta['generated_at']),
         closing_mantras=closing_mantras or [],
         toc_level=toc_level
     )
@@ -3903,47 +3906,17 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     HTML_FOOTNOTE_COUNTER = 0 # Not used in pre-process mode but kept for safety
     
     # PRE-PROCESS DATA
-    is_baraha = any(
-        'content_lines' in sub
-        for ss in data.values() if isinstance(ss, dict)
-        for s in ss.get('sections', {}).values() if isinstance(s, dict)
-        for sub in s.get('subsections', {}).values() if isinstance(sub, dict)
-    )
-    if is_baraha:
-        try:
-            try:
-                from build_reader import ast_to_chapters, generate_reader_html
-            except ImportError:
-                sys.path.insert(0, str(Path(__file__).resolve().parent))
-                from build_reader import ast_to_chapters, generate_reader_html
-            chapters = ast_to_chapters({'supersections': data})
-            fonts = [
-                {"label": "Noto Serif", "font": "'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif", "weight": "500"},
-                {"label": "Tiro Sanskrit", "font": "'Tiro Devanagari Sanskrit', 'Noto Serif Devanagari', serif", "weight": "400"},
-                {"label": "Noto Sans", "font": "'Noto Sans Devanagari', sans-serif", "weight": "500"}
-            ]
-            book_meta = {
-                "title": doc_title_sa,
-                "subtitle": "कृष्ण यजुर्वेदीय तैत्तिरीय आरण्यकम् (वेदमन्त्राः सस्वराः)" if "तैत्तिरीय" in doc_title_sa else doc_title_sa,
-                "back_link": "documents.html",
-                "back_label": "← Documents Index"
-            }
-            document = generate_reader_html(book_meta, chapters, fonts)
-            output_path = Path(f"{outputdir}/{HtmlFileName}")
-            with open(output_path, "w", encoding="utf-8") as f:
-                f.write(document)
-            print(f"[INFO] Generated VedaVMS Reader HTML: {output_path} ({os.path.getsize(output_path):,} bytes)")
-            return
-        except Exception as e:
-            print(f"[WARN] Failed to render VedaVMS reader HTML, falling back: {e}")
 
     html_index = preprocess_html_data(data, output_mode, script=script, with_modifiers=with_modifiers)
     
     if not jsv_version or not generated_at:
-        from utils import get_generated_metadata
+        from utils import get_generated_metadata, normalize_to_dd_mm_yyyy
         meta = get_generated_metadata()
         jsv_version = jsv_version or meta['version']
-        generated_at = generated_at or meta['generated_at']
+        generated_at = normalize_to_dd_mm_yyyy(generated_at or meta['generated_at'])
+    else:
+        from utils import normalize_to_dd_mm_yyyy
+        generated_at = normalize_to_dd_mm_yyyy(generated_at)
     
     import base64
     jaimineeya_swara_b64 = ""
@@ -4017,15 +3990,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         clean_name = HtmlFileName.replace('_Devanagari.html', '.html').replace('_Malayalam.html', '.html')
         if clean_name != HtmlFileName:
             shutil.copy2(output_path, sync_dir / clean_name)
-        # If this is tu_baraha or taittiriya, also keep vedavms html in sync if present
-        if "tu_baraha" in str(name).lower() or "taittiriya" in str(name).lower():
-            v_dir = Path("vedavms html")
-            if v_dir.exists():
-                v_target = v_dir / "taittiriya_upanishad_sanskrit.html"
-                if output_path.resolve() != v_target.resolve():
-                    shutil.copy2(output_path, v_target)
-    except Exception:
-        pass
+
     except Exception:
         pass
 
@@ -4084,9 +4049,9 @@ Examples:
     parser.add_argument('--no-swara-modifiers', dest='swara_modifiers', action='store_false',
                         help='Exclude swara modifiers in Devanagari')
     
-    # CLI OPTION for Kodunthirapully variant (swaras below mantra text)
+    # CLI OPTION for Kodunthirapully variant (swaras above mantra text)
     parser.add_argument('-kpully', '--kpully', dest='kpully', action='store_true', default=False,
-                        help='Render Devanagari with swara markings stacked below the mantra text (Kodunthirapully paddhati)')
+                        help='Render Devanagari with swara markings stacked above the mantra text (Kodunthirapully paddhati)')
     
 
     
@@ -4181,6 +4146,8 @@ Examples:
         "Aaranam" if mode_type == 'aaranam' else 
         "Collection" if mode_type == 'collection' else "Samhita"
     )
+    if kpully_mode and not args.output and not out_name:
+        file_prefix = f"{file_prefix}_kpully"
 
     # Path configuration
     tpl_paths = cfg_paths.get('templates', {})

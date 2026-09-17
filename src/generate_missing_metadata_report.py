@@ -220,7 +220,7 @@ def check_missing_metadata(mode='combined'):
     if not rows:
         return
 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
     # Compute issues based on mode
     rik_issues = []

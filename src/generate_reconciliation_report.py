@@ -60,7 +60,7 @@ def generate_report():
                     continuity_issues.append(line.strip())
     
     # 3. Generate Markdown
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     
     md = f"""# Jaimineeya Samaveda Samhita - Data Reconciliation Report
 

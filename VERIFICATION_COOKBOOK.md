@@ -165,20 +165,131 @@ python -c "from src.core.version import get_engine_version, get_corpus_edition, 
 
 ---
 
-## 📦 How to Baseline After Verified Milestone Changes
+---
 
-When you have completed a set of verified improvements and want to freeze the new state as an authoritative baseline:
+## 🏛️ The Two-Manifest Architecture (Golden Anchor vs. Active Run)
 
+In active liturgical curation, source texts are **meant to change**. If verification tools merely flag bitwise hash mismatches, maintainers suffer from **alert fatigue** and begin ignoring warnings.
+
+To provide true confidence without alert fatigue, the pipeline separates the **Golden Baseline Anchor** from the **Active Curation Run**:
+
+```mermaid
+graph TD
+    subgraph "The Golden Anchor (Frozen & Verified)"
+        GB["<b>Golden Baseline Manifest</b><br/><i>data/baselines/golden/samhita_manifest.json</i><br/>- Canonical Input Text<br/>- Canonical AST & Vargeekaran<br/>- Canonical Output Counts (1226 Samas)"]
+    end
+
+    subgraph "The Active Curation Run (Working Draft)"
+        Edit["Maintainer edits Samhita.txt<br/><i>(e.g., fixes swara in Khanda 3, Sama 2)</i>"]
+        --> Run["Run Pipeline<br/><i>(generate_json.py -> generate_rik_table.py)</i>"]
+        --> RM["<b>Active Run Manifest</b><br/><i>data/corpora/samhita/run_manifest.json</i><br/>- Stage: Finished<br/>- Modified Verses: 1<br/>- Status: PENDING_VALIDATION"]
+    end
+
+    GB --> Diff["<b>Semantic Diff & Validation Suite</b><br/><i>python src/tools/validate_run.py samhita</i>"]
+    RM --> Diff
+
+    Diff --> Decision{"Did only the intended<br/>correction change?"}
+    Decision -->|"Yes (Verified)"| Promote["<b>Promote to New Golden Baseline</b><br/><i>python src/tools/baseline.py promote samhita</i><br/>Status: PASSED (New Anchor v3.29)"]
+    Decision -->|"No (Regression)"| Alert["Alert: Structural break or<br/>unintended verse altered!"]
+```
+
+---
+
+## 🔁 Two Distinct Verification Workflows
+
+Depending on whether you are **refactoring code** or **curating text**, follow the corresponding protocol:
+
+### Protocol A: Engine Refactoring Verification (Code Changed, Input Unchanged)
+Use when modifying parsers, renderers, or build scripts to prove zero regressions against known-good inputs:
+
+1. **Quick Health Check (7 Invariants)**:
+   ```bash
+   python src/tools/run_regression_suite.py
+   ```
+2. **Golden AST Replica Check**:
+   ```bash
+   python src/tools/baseline.py verify
+   ```
+   - Re-executes `generate_json.py` and `generate_rik_table.py` from scratch on frozen golden inputs.
+   - Normalizes volatile build metadata timestamps (`generated_at`).
+   - Asserts **100% semantic AST equivalence** against `data/baselines/LATEST.json`.
+
+---
+
+### Protocol B: Active Text Curation Workflow (Input Edited)
+Use when correcting accents, modifying swaras, or editing verses in canonical texts:
+
+1. **Edit Source Text**:
+   - Edit verse in `data/input/Samhita_corrected.txt` (or `data/corpora/samhita/01_input/Samhita.txt`).
+2. **Run Corpus Pipeline**:
+   ```bash
+   python src/generate_json.py data/input/Samhita_corrected.txt --type samhita
+   python src/generate_rik_table.py --type samhita
+   ```
+3. **Run Semantic Curation Audit**:
+   ```bash
+   python src/tools/validate_run.py samhita
+   ```
+   **Expected Output**:
+   ```text
+   ================================================================================
+     SAMHITA CURATION AUDIT vs GOLDEN BASELINE (v3.28)
+   ================================================================================
+     [MACRO INVARIANTS]
+     - Pathas : 6 / 6   [MATCH]
+     - Khandas: 59 / 59 [MATCH]
+     - Samas  : 1226    [MATCH]
+
+     [CONTENT MODIFICATIONS: 1 VERSE]
+     - Khanda 3, SubSection 2 (Sama 2):
+         Baseline: अग्नआयाहीवा(तू) इताया(ति)...
+         Run     : अग्नआयाहीवा(यू) ता(प) ये(श)...
+     - Remaining 1,225 Samas: [IDENTICAL]
+
+     [STATUS]: ALL MACRO INVARIANTS PRESERVED. 1 INTENDED CORRECTION IDENTIFIED.
+   ================================================================================
+   ```
+4. **Promote to New Golden Baseline (Once Verified)**:
+   ```bash
+   python src/tools/baseline.py promote samhita -m "Corrected swara in K3.S2"
+   ```
+   - Updates the Golden Baseline Anchor.
+   - Sets run manifest status to `PASSED`.
+   - Clears alerts for future runs.
+
+---
+
+## 🛠️ Complete Refactoring & Validation Step-by-Step Checklist
+
+When refactoring code or updating input texts, follow this complete 5-step checklist:
+
+### Step 1: Run the Automated 7-Point Health Check
 ```bash
-# 1. Create a new baseline snapshot
+python src/tools/run_regression_suite.py
+```
+*Validates 6 Pathas, 59 Khandas, 1226 Samas, Typed AST models, Swara Visarga-accent ordering rules, and tag balance.*
+
+### Step 2: Perform End-to-End Golden Replica Verification
+```bash
+python src/tools/baseline.py verify
+```
+*Re-runs the pipeline from scratch on golden inputs and asserts 100% semantic AST parity against `LATEST.json`.*
+
+### Step 3: Check Verse Continuity
+```bash
+python src/tools/check_continuity.py data/output/Vargeekaran.json
+```
+*Verifies that Sama numbers within every section run sequentially (`1, 2, 3...`) with zero gaps or duplicate verse numbers.*
+
+### Step 4: Check Domain Metrics Summary
+```bash
+python src/generate_json_summary.py
+```
+*Confirms exact macro counts across all 6 Pathas and 59 Khandas.*
+
+### Step 5: Freeze a New Baseline Snapshot (After Verified Milestone Changes)
+```bash
 python src/tools/baseline.py create baseline-<date>-<milestone> -d "Description of milestone"
-
-# 2. Verify that the new baseline is active
-python src/tools/baseline.py status
-
-# 3. Commit the new baseline manifest to git
-git add data/baselines/
-git commit -m "chore: record baseline snapshot <milestone>"
 ```
 
 ---
@@ -190,4 +301,5 @@ git commit -m "chore: record baseline snapshot <milestone>"
 | `Total Samas != 1226` | Verse delimiter tag (`॥ N ॥`) missing, malformed, or split line | Run `python src/tools/check_continuity.py data/output/Vargeekaran.json` and check reported line |
 | `Unclosed structural tags` | Missing `# End of SubSection` or Section boundary tag in input text | Run `python src/ingest/renumber.py data/input/Samhita_corrected.txt` to see exact line number |
 | `Dotted circle on Visarga (ः) or Anusvara (ं)` | Accent combining mark placed before base character | Run `from src.core.swara_engine import fix_visarga_accent_order` on target text |
-| `Baseline status shows [MODIFIED]` | Input or output file changed since last snapshot | Run `git diff <file>` to verify if change was intentional; if intentional, record new baseline |
+| `Baseline status shows [MODIFIED]` | Input or output file changed since last snapshot | Run `python src/tools/baseline.py verify` to check if change was intentional AST edit or unintended regression |
+

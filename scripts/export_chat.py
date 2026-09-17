@@ -79,7 +79,7 @@ def export_transcript():
         "",
         f"- **Project**: Jaimineeya Samavedam (`sekharnarayanaswamy-del/jaimineeyasamavedam`)",
         f"- **Conversation ID**: `2c4604c7-af52-4f94-8cf1-3032a9cf77a0`",
-        f"- **Export Date**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+        f"- **Export Date**: {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}",
         f"- **Total Dialogue Turns**: {len(turns)}",
         "",
         "---",

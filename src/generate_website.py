@@ -656,8 +656,8 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     if not mantra_text:
         return "", []
 
-    # Detect Malayalam / Grantha content
-    if re.search(r'[\u0D00-\u0D7F\u11300-\u1137F\uE000-\uE02F]', mantra_text):
+    # Detect Malayalam / Grantha content (Grantha requires \U00011300-\U0001137F with 8 hex digits)
+    if re.search(r'[\u0D00-\u0D7F\U00011300-\U0001137F]', mantra_text):
         return format_malayalam_mantra_html(mantra_text, footnotes_dict, counter_obj, seen_map, accumulator)
 
     # --- Preprocess Visarga/Accents with ZWJ ---
@@ -1196,15 +1196,18 @@ class WebsiteGenerator:
         self.labels = self._get_labels()
         
         # Standardize metadata - priority: passed metadata > system metadata
-        from utils import get_generated_metadata
+        from utils import get_generated_metadata, normalize_to_dd_mm_yyyy
         sys_meta = get_generated_metadata()
+        
+        raw_generated_at = metadata.get("generated_at", sys_meta["generated_at"]) if metadata else sys_meta["generated_at"]
+        clean_generated_at = normalize_to_dd_mm_yyyy(raw_generated_at)
         
         self.metadata = {
             "version": metadata.get("version", sys_meta["version"]) if metadata else sys_meta["version"],
-            "generated_at": sys_meta["generated_at"],
-            "last_updated": datetime.now().strftime("%Y-%m-%d")
+            "generated_at": clean_generated_at,
+            "last_updated": datetime.now().strftime("%d-%m-%Y")
         }
-        self.generated_at = self.metadata["generated_at"]
+        self.generated_at = clean_generated_at
         
         # Initialize indices and counts (populated later by _collect_indices)
         self.rishi_index = {}
@@ -1222,7 +1225,7 @@ class WebsiteGenerator:
                 'arsheyam': 'ആർഷേയമ്',
                 'rik': 'ഋക്',
                 'home': 'മുഖ്യപുറം (Home)',
-                'search': '🔍 അന്വേഷണം (Search)',
+                'search': 'അന്വേഷണം (Search)',
                 'jump_placeholder': 'ഉദാ. 1.1.1',
                 'indices': 'മറ്റു വർഗ്ഗീകരണങ്ങൾ (Indices)',
                 'rishi': 'ഋഷയഃ',
@@ -1240,7 +1243,7 @@ class WebsiteGenerator:
                 'arsheyam': 'आर्षेयम्',
                 'rik': 'ऋक्',
                 'home': 'मुख्यपृष्ठम् (Home)',
-                'search': '🔍 अन्वेषणम् (Search)',
+                'search': 'अन्वेषणम् (Search)',
                 'jump_placeholder': 'e.g. 1.1.1 or 1.45',
                 'indices': 'अन्य वर्गीकरणम् (Indices)',
                 'rishi': 'ऋषयः',
@@ -1312,15 +1315,15 @@ class WebsiteGenerator:
         """Generate CSS stylesheet - Configured Palette"""
         # Determine font-specific offsets (matching renderPDF.py logic)
         if 'notosans' in self.font.lower():
-            sw_off = '0.1em'
-            ka_off = '0.1em'
-            tr_off = '0.1em'
-            an_off = '-0.25em'
+            sw_off = '0.40em'
+            ka_off = '0.40em'
+            tr_off = '0.40em'
+            an_off = '0.40em'
         else: # Default/Adishila
-            sw_off = '0.06em'
-            ka_off = '0.06em'
-            tr_off = '0.06em'
-            an_off = '0.25em'
+            sw_off = '0.40em'
+            ka_off = '0.40em'
+            tr_off = '0.40em'
+            an_off = '0.40em'
 
         css = '''/* Jaimineeya Samavedam Website Styles */
 /* User Defined Palette */
@@ -1336,7 +1339,7 @@ class WebsiteGenerator:
 
 /* Theme Semantic Mapping */
 --primary-maroon: var(--color-accent); /* Headings/Links = Saffron */
---primary-gold: #C08535;    /* Earthy Gold */
+--primary-gold: #8B5A2B;    /* High-contrast Dark Earthy Gold */
 --accent-orange: #D2691E;   /* Chocolate */
 
 /* Backgrounds */
@@ -4302,7 +4305,7 @@ const highlightText = (text, query, devanagariQuery) => {
 
     <div class="nav-section">
         <a href="#" class="search-btn">
-            {L['search']}
+            <i class="nav-icon">🔍</i> {L['search']}
         </a>
     </div>
 

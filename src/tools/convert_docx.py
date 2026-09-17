@@ -228,7 +228,7 @@ def convert_docx_to_html(input_file, output_path):
         home_path=paths["home"],
         index_path=paths["index"],
         version=version,
-        date=datetime.datetime.now().strftime("%d %B %Y")
+        date=datetime.datetime.now().strftime("%d-%m-%Y")
     )
     
     with open(output_path, "w", encoding="utf-8") as html_file:

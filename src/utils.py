@@ -52,6 +52,12 @@ def set_project_version(version):
         print(f"[WARNING] Failed to set version: {e}")
         return False
 
+def normalize_to_dd_mm_yyyy(date_str):
+    """Converts YYYY-MM-DD date or timestamp string to DD-MM-YYYY format."""
+    if not date_str:
+        return ""
+    return re.sub(r'\b(\d{4})-(\d{2})-(\d{2})\b', r'\3-\2-\1', str(date_str))
+
 def get_generated_metadata(increment=False):
     """Returns a dictionary with version and generation timestamp.
     If increment=True, rolls over the version number in src/VERSION.
@@ -59,13 +65,15 @@ def get_generated_metadata(increment=False):
     version = increment_project_version() if increment else get_project_version()
     return {
         "version": version,
-        "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "generated_at": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
 
 def inject_metadata_to_text(content, version, timestamp=None):
     """Prepends a standardized metadata block to the text content."""
     if not timestamp:
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    else:
+        timestamp = normalize_to_dd_mm_yyyy(timestamp)
     
     metadata_block = [
         "# [JSV METADATA]",
@@ -85,13 +93,13 @@ def extract_metadata_from_text(content):
     # Default metadata
     meta = {
         "version": "3.0",
-        "generated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "generated_at": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
     
     match = re.search(r'# \[JSV METADATA\].*?# Version:\s*(?P<version>.*?)\n.*?# Generated At:\s*(?P<at>.*?)\n.*?# \[END METADATA\]', content, re.DOTALL)
     if match:
         meta["version"] = match.group("version").strip()
-        meta["generated_at"] = match.group("at").strip()
+        meta["generated_at"] = normalize_to_dd_mm_yyyy(match.group("at").strip())
     
     return meta
 

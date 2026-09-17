@@ -63,7 +63,7 @@
             --saffron: #D84315;
             --maroon: #7B1113;
             --cream: #FFFDF9;
-            --gold: #C68A1E;
+            --gold: #8B5A2B;
             --dark-brown: #2D1E18;
             --white: #FFFFFF;
             --border-color: #EADDC9;
@@ -80,18 +80,17 @@
             --bg-light: #FBF8F2;
             --bg-card: #FFFFFF;
 
-            /* Accent offsets */
-            --swarita-bottom: 0.15em;
-            --anudatta-bottom: -0.15em;
+            /* Accent offsets - clearance above mantra line */
+            --swarita-bottom: 0.42em;
+            --anudatta-bottom: 0.40em;
             --swara-size: var(--font-size);
         }
 
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 5rem;
-            overflow-x: hidden;
+            overflow-x: clip;
             width: 100%;
-            max-width: 100%;
         }
 
         .chapter-container, .section, .subsection, .closing-mantras-section, #summary-table, #index, [id] {
@@ -121,9 +120,6 @@
             -moz-osx-font-smoothing: grayscale;
             overflow-x: clip;
             width: 100%;
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
             margin: 0;
             padding: 0;
         }
@@ -1852,7 +1848,7 @@
             const btn = document.getElementById('sidebar-toggle-btn');
             if (btn) {
                 const label = btn.getAttribute('data-label') || 'सूची';
-                if (window.innerWidth <= 850) {
+                if (isMobileView()) {
                     btn.textContent = '☰ ' + label;
                 } else {
                     const collapsed = document.querySelector('.layout')?.classList.contains('sidebar-collapsed');
@@ -1864,7 +1860,7 @@
         function toggleSidebar() {
             const btn = document.getElementById('sidebar-toggle-btn');
             const label = btn ? (btn.getAttribute('data-label') || 'सूची') : 'सूची';
-            if (window.innerWidth <= 850) {
+            if (isMobileView()) {
                 document.body.classList.toggle('mobile-toc-active');
                 const isOpen = document.body.classList.contains('mobile-toc-active');
                 if (btn) btn.textContent = isOpen ? ('✕ ' + label) : ('☰ ' + label);
@@ -2209,85 +2205,73 @@
             }
         }
 
-                let activeContextId = null;
+        function highlightSamamInToc(samamId) {
+            if (!samamId || samamId === activeSamamId) return;
+            activeSamamId = samamId;
 
-        function updateActiveContext(activeEl) {
-            if (!activeEl) return;
-
-            let subsectionEl = activeEl.classList.contains('subsection') 
-                ? activeEl 
-                : activeEl.querySelector('.subsection');
-            let sectionEl = activeEl.classList.contains('section') 
-                ? activeEl 
-                : activeEl.closest('.section');
-            let chapterEl = activeEl.classList.contains('chapter-container') 
-                ? activeEl 
-                : activeEl.closest('.chapter-container');
-
-            if (!chapterEl && sectionEl) {
-                chapterEl = sectionEl.closest('.chapter-container');
-            }
-
-            const contextKey = activeEl.id;
-            if (contextKey === activeContextId) return;
-            activeContextId = contextKey;
-
-            // 1. Chapter / Supersection Active State
-            let tocChItem = null;
-            if (chapterEl) {
-                tocChItem = document.getElementById('toc-ss-' + chapterEl.id);
-                document.querySelectorAll('.toc-chapter.active-chapter').forEach(el => {
-                    if (el !== tocChItem) el.classList.remove('active-chapter');
-                });
-                if (tocChItem) {
-                    tocChItem.classList.add('active-chapter');
-                    if (tocChItem.classList.contains('collapsed')) {
-                        tocChItem.classList.remove('collapsed');
-                    }
-                }
-            }
-
-            // 2. Section / Kandah Active State
-            let tocSecItem = null;
-            let secHeader = null;
-            if (sectionEl) {
-                tocSecItem = document.getElementById('toc-sec-' + sectionEl.id);
+            // Handle special non-subsection targets: summary-table and index
+            if (samamId === 'summary-table' || samamId === 'index') {
+                document.querySelectorAll('.toc-sub-item a.active').forEach(el => el.classList.remove('active'));
                 document.querySelectorAll('.toc-sec-header.active').forEach(el => el.classList.remove('active'));
-                if (tocSecItem) {
-                    secHeader = tocSecItem.querySelector('.toc-sec-header');
-                    if (secHeader) secHeader.classList.add('active');
-                    if (tocSecItem.classList.contains('collapsed')) {
-                        tocSecItem.classList.remove('collapsed');
+                document.querySelectorAll('.toc-chapter.active-chapter').forEach(el => el.classList.remove('active-chapter'));
+                const specialLink = document.querySelector(`.toc-ch-title a[href="#${samamId}"]`);
+                if (specialLink) {
+                    const parentCh = specialLink.closest('.toc-chapter');
+                    if (parentCh) parentCh.classList.add('active-chapter');
+                    scrollSidebarToTarget(specialLink);
+                }
+                return;
+            }
+
+            let targetLink = document.querySelector(`.toc-sub-item a[href="#${samamId}"]`);
+            if (!targetLink) {
+                const targetNode = document.getElementById(samamId);
+                if (targetNode) {
+                    const firstSub = targetNode.querySelector('.subsection');
+                    if (firstSub) {
+                        targetLink = document.querySelector(`.toc-sub-item a[href="#${firstSub.id}"]`);
                     }
                 }
+            }
+            if (!targetLink) return;
+
+            // Remove previous active highlights
+            document.querySelectorAll('.toc-sub-item a.active').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.toc-sec-header.active').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.toc-chapter.active-chapter').forEach(el => el.classList.remove('active-chapter'));
+
+            // Highlight the active Samam link
+            targetLink.classList.add('active');
+
+            let wasCollapsed = false;
+
+            // Uncollapse parent Kandah and mark active
+            const parentSec = targetLink.closest('.toc-section-block');
+            if (parentSec) {
+                if (parentSec.classList.contains('collapsed')) {
+                    parentSec.classList.remove('collapsed');
+                    wasCollapsed = true;
+                }
+                const secHeader = parentSec.querySelector('.toc-sec-header');
+                if (secHeader) secHeader.classList.add('active');
+            }
+
+            // Uncollapse parent Chapter and mark active
+            const parentCh = targetLink.closest('.toc-chapter');
+            if (parentCh) {
+                if (parentCh.classList.contains('collapsed')) {
+                    parentCh.classList.remove('collapsed');
+                    wasCollapsed = true;
+                }
+                parentCh.classList.add('active-chapter');
+            }
+
+            // Smoothly scroll the sidebar to keep active Samam centered in view
+            if (wasCollapsed) {
+                setTimeout(() => scrollSidebarToTarget(targetLink), 150);
             } else {
-                document.querySelectorAll('.toc-sec-header.active').forEach(el => el.classList.remove('active'));
+                scrollSidebarToTarget(targetLink);
             }
-
-            // 3. Subsection / Samam Active State
-            let targetSubLink = null;
-            if (subsectionEl) {
-                targetSubLink = document.querySelector(`.toc-sub-item a[href="#${subsectionEl.id}"]`);
-            }
-
-            document.querySelectorAll('.toc-sub-item a.active').forEach(el => {
-                if (el !== targetSubLink) el.classList.remove('active');
-            });
-
-            if (targetSubLink) {
-                targetSubLink.classList.add('active');
-                scrollSidebarToTarget(targetSubLink);
-            } else if (secHeader) {
-                scrollSidebarToTarget(secHeader);
-            } else if (tocChItem) {
-                const chLink = tocChItem.querySelector('.toc-ch-title a');
-                scrollSidebarToTarget(chLink || tocChItem);
-            }
-        }
-
-        function highlightSamamInToc(targetId) {
-            const el = document.getElementById(targetId);
-            if (el) updateActiveContext(el);
         }
 
         // IntersectionObserver for tracking current section during scroll
@@ -2295,7 +2279,7 @@
             populateParvaDropdown();
             populateKandahDropdown();
 
-            // Track active Samam/Kandah/Chapter during scroll and sync Suchi / Index
+            // Track active Samam during scroll and sync Suchi / Index
             const samamObserver = new IntersectionObserver((entries) => {
                 let bestEntry = null;
                 let minDistance = Infinity;
@@ -2311,19 +2295,32 @@
                 });
 
                 if (bestEntry) {
-                    updateActiveContext(bestEntry.target);
-                    currentActiveSectionId = bestEntry.target.id;
-                    const headerNode = bestEntry.target.querySelector('.header-title') || 
-                                       bestEntry.target.querySelector('.subsection-header') || 
-                                       bestEntry.target.querySelector('.section-title') || 
-                                       bestEntry.target.querySelector('.chapter-heading');
-                    if (headerNode) {
-                        currentActiveSectionTitle = headerNode.textContent.trim();
+                    const targetEl = bestEntry.target;
+                    highlightSamamInToc(targetEl.id);
+                    currentActiveSectionId = targetEl.id;
+
+                    const sec = targetEl.closest('.section');
+                    if (sec) {
+                        const titleNode = sec.querySelector('.section-title-text') || sec.querySelector('.section-title');
+                        if (titleNode) {
+                            const clone = titleNode.cloneNode(true);
+                            const countNode = clone.querySelector('.section-samam-count');
+                            if (countNode) clone.removeChild(countNode);
+                            const btnNode = clone.querySelector('.btn-heading-print');
+                            if (btnNode) clone.removeChild(btnNode);
+                            currentActiveSectionTitle = clone.textContent.trim();
+                        }
+                    }
+                    const ch = targetEl.closest('.chapter-container');
+                    if (ch) {
+                        currentActiveChapterId = ch.id;
+                        const chTitle = ch.querySelector('.chapter-heading-text') || ch.querySelector('.chapter-heading');
+                        if (chTitle) currentActiveChapterTitle = chTitle.textContent.trim();
                     }
                 }
-            }, { rootMargin: '-75px 0px -70% 0px', threshold: 0 });
+            }, { rootMargin: '-75px 0px -75% 0px', threshold: 0 });
 
-            document.querySelectorAll('.chapter-container, .section, .subsection').forEach(el => samamObserver.observe(el));
+            document.querySelectorAll('.subsection, #summary-table, #index').forEach(el => samamObserver.observe(el));
 
             // Direct click on Suchi item immediately highlights and smoothly scrolls to target
             document.querySelectorAll('.toc-sub-item a, .toc-ch-title a, .toc-sec-title').forEach(link => {
@@ -2341,12 +2338,11 @@
                             if (history.pushState) {
                                 history.pushState(null, '', href);
                             }
-                            updateActiveContext(target);
+                            highlightSamamInToc(targetId);
                         }
                     }
                 });
             });
-
 
             // Close mobile Suchi on Escape key
             document.addEventListener('keydown', function(e) {
@@ -2357,7 +2353,6 @@
 
             function onOrientationOrResize() {
                 handleLayoutChange();
-                // Ensure viewport zoom and scaling reset cleanly on mobile orientation switch
                 const viewportMeta = document.querySelector('meta[name="viewport"]');
                 if (viewportMeta) {
                     viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
@@ -2399,56 +2394,6 @@
                     tocTimeout = setTimeout(() => { isUserInteractingWithToc = false; }, 1500);
                 }, { passive: true });
             }
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const ch = entry.target.closest('.chapter-container');
-                        if (ch) {
-                            currentActiveChapterId = ch.id;
-                            const chTitle = ch.querySelector('.chapter-heading-text') || ch.querySelector('.chapter-heading');
-                            if (chTitle) currentActiveChapterTitle = chTitle.textContent.trim();
-                        }
-                        const sec = entry.target.classList.contains('section') ? entry.target : entry.target.querySelector('.section');
-                        if (sec) {
-                            currentActiveSectionId = sec.id;
-                            const titleNode = sec.querySelector('.section-title-text') || sec.querySelector('.section-title');
-                            if (titleNode) {
-                                const clone = titleNode.cloneNode(true);
-                                const countNode = clone.querySelector('.section-samam-count');
-                                if (countNode) clone.removeChild(countNode);
-                                const btnNode = clone.querySelector('.btn-heading-print');
-                                if (btnNode) clone.removeChild(btnNode);
-                                currentActiveSectionTitle = clone.textContent.trim();
-                            }
-                        }
-                    }
-                });
-            }, { rootMargin: '-60px 0px -65% 0px' });
-
-            document.querySelectorAll('.chapter-container, .section').forEach(el => observer.observe(el));
-
-            // Smooth scrolling for anchors that prevents no-op hash collision and verifies arrival
-            document.addEventListener('click', function(e) {
-                const link = e.target.closest('a[href^="#"]');
-                if (!link) return;
-                const href = link.getAttribute('href');
-                if (!href || href === '#') return;
-                const targetId = href.slice(1);
-                const target = document.getElementById(targetId);
-                if (target) {
-                    e.preventDefault();
-                    history.pushState(null, '', '#' + targetId);
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    // Verify arrival after layout rendering
-                    setTimeout(() => {
-                        const rect = target.getBoundingClientRect();
-                        if (Math.abs(rect.top - 80) > 40) {
-                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 350);
-                }
-            });
 
             // Initial hash arrival check
             if (window.location.hash) {

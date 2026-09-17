@@ -8,6 +8,7 @@ Tier 3: Content Fingerprint (SHA-256 hash of master input files)
 
 import os
 import sys
+import re
 import subprocess
 import hashlib
 import datetime
@@ -182,7 +183,7 @@ def get_build_metadata(
     edition = get_corpus_edition(corpus_name)
     engine = get_engine_version()
     git = get_git_info()
-    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now_str = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     
     file_sha = None
     if input_file:
@@ -228,6 +229,8 @@ def format_build_stamp(meta: Dict[str, Any]) -> str:
     engine = meta.get("engine_version", "")
     commit = meta.get("git_commit", "")
     timestamp = meta.get("generated_at", "")
+    if timestamp:
+        timestamp = re.sub(r'\b(\d{4})-(\d{2})-(\d{2})\b', r'\3-\2-\1', str(timestamp))
     
     parts = [f"Edition {edition}"]
     if engine:

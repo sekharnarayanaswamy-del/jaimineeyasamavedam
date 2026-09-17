@@ -71,7 +71,7 @@ graph TD
     subgraph Ingestion & Ingestion Tools ["1. Ingestion Layer (src/ingest/)"]
         Grantha["convert_grantha.py"]
         Renumber["renumber.py (Unified)"]
-        Baraha["baraha_ingest.py"]
+        MalayalamIngest["ml_text.py (Malayalam Ingestion)"]
         ASTBuilder["ast_builder.py"]
     end
 
@@ -85,11 +85,12 @@ graph TD
     subgraph Rendering Engines ["3. Rendering Layer (src/renderers/)"]
         BaseRenderer["base_renderer.py"]
         LaTeXRenderer["latex_renderer.py (PDF Engine)"]
-        HTMLReaderRenderer["reader_renderer.py (VedaVMS/Single-Page Reader)"]
+        HTMLReaderRenderer["html_renderer.py (JSV Single-Page Reader)"]
         SiteRenderer["site_renderer.py (Static Multi-page Site)"]
         TextRenderer["text_renderer.py (Unicode Plaintext)"]
         Filters["filters/ (LaTeX, HTML, Text swara filters)"]
     end
+
 
     subgraph Analysis & Tools ["4. Analysis & Reports (src/reports/ & src/tools/)"]
         RikTables["rik_tables.py (Granular / Reconciliation)"]
@@ -165,40 +166,116 @@ Decompose the 4,639-line `render_pdf.py` into focused, testable components:
   - Keep active, high-value tools: `check_continuity.py`, `convert_docx.py`, `copy_rik_ids.py`.
   - Provide unified CLI help and exit codes.
 
-### 4.5 Subsystem E: Dataset Lifecycle, Naming Conventions, Baselining & Maintainer Traceability
-To eliminate confusion after gaps of several months, this subsystem introduces strict conventions and automated traceability:
+### 4.5 Subsystem E: Dataset Lifecycle, Lineage Tracking & Two-Manifest Architecture
+To eliminate file proliferation across `data/input/` and `data/output/`, prevent maintainer memory loss after project gaps, and avoid "alert fatigue" during active text curation, this subsystem establishes a rigorous stage-based structure and a Two-Manifest lineage architecture.
 
-1. **Canonical Directory & Naming Structure**:
-   - Master inputs are clearly designated:
-     - `data/input/Samhita_master.txt` (active canonical text, mapped to `Samhita_corrected.txt`)
-     - `data/input/Aaranam_master.txt` (active canonical text, mapped to `Aaranam_latest.txt`)
-   - Non-canonical, duplicate, and temporary scratch files (`* - Copy*`, `broken_test.txt`, `*.pdf`) are relocated to `data/input/archive/`.
-   - Generated outputs are organized into structured directories:
-     - `data/output/json/` for canonical ASTs (`Samhita.json`, `Aaranam.json`, `Sooktamala.json`).
-     - `data/output/tables/` for generated CSV/XLSX tables.
-     - `data/output/reports/` for continuity, reconciliation, and structure summaries.
+#### 1. Stage-Numbered Corpus Organization (`data/corpora/<corpus>/`)
+Instead of dumping intermediate files into flat unstructured folders, each corpus follows an explicit stage progression:
 
-2. **Automated Baseline Manifest Engine (`src/tools/baseline.py`)**:
-   - Provides deterministic baselining commands:
-     - `python src/tools/baseline.py create <tag>`: Computes SHA-256 hashes for all master input/output files, captures domain metrics (1226 Samas, Riks, Khandas), Git commit hash, branch, and version from `src/VERSION`. Writes manifest to `data/baselines/manifest_<timestamp>_<tag>.json` and updates `data/baselines/LATEST.json` and `data/baselines/README.md`.
-     - `python src/tools/baseline.py list`: Lists all historical baselines with dates, versions, and metrics.
-     - `python src/tools/baseline.py verify`: Checks whether current files match the active baseline hashes.
+```text
+data/corpora/
+├── samhita/
+│   ├── 01_input/           # Single source of truth (e.g. Samhita.txt)
+│   ├── 02_ast/             # Parsed JSON AST (Samhita_ast.json)
+│   ├── 03_reconciliation/  # Human editorial workbooks (JSV_KSV_Recon.xlsx)
+│   ├── 04_canonical/       # Fully annotated AST (Vargeekaran.json)
+│   ├── 05_renders/         # Formatted outputs (LaTeX, TXT, standalone HTML)
+│   ├── 06_reports/         # Continuity logs, summary CSVs, metric reports
+│   └── run_manifest.json   # Active Run Manifest for the latest generation
+├── aaranam/
+│   └── ... (same stage structure)
+└── collections/
+    └── ... (Sooktamala curated sub-corpora)
+```
 
-3. **Maintainer Status & "Where We Left Off" Tool (`src/tools/check_status.py`)**:
-   - Running `python src/tools/check_status.py` immediately outputs:
-     - Current git branch (`refactor`), commit, and project version.
-     - Last baseline name, date, and metrics.
-     - File staleness check: Are outputs older than inputs or modified?
-     - Immediate next steps / pipeline commands to execute.
+**Benefits**:
+- Human curation assets (`03_reconciliation/`) are permanently separated from ephemeral build outputs (`05_renders/`).
+- Every transformation step corresponds to an explicit folder transition ($01 \rightarrow 02 \rightarrow 04 \rightarrow 05$).
+- Archival files (`* - Copy*`, experimental drafts) are moved out of the active path into `data/archive/`.
 
-4. **Dedicated Git Branching Workflow**:
-   - All refactoring and restructuring work takes place on the isolated `refactor` branch.
-   - Master/stable branches (`format-mantras`, `main`) remain protected until full regression verification is completed.
+---
 
-5. **3-Tier Versioning Architecture**:
-   - **Tier 1 (Engine Version)**: Automatically derived via `git describe --tags --always --dirty` (e.g. `v4.0.0+6dec1989`). Eliminates manual editing of version files for software changes.
-   - **Tier 2 (Corpus Editions)**: Independent version strings per corpus defined in `pipeline_config.yaml` (`samhita: 3.28`, `aaranam: 1.14`, `sooktamala: 2.05`). Editing Aaranam does not falsely increment Samhita.
-   - **Tier 3 (Content Fingerprint)**: Cryptographic SHA-256 hash of the input file embedded in output metadata, enabling immediate staleness detection.
+#### 2. The Two-Manifest Architecture (Golden Baseline vs. Active Run)
+In active curation, text *is supposed* to change. A rigid bitwise hash alone creates alert fatigue by flagging every single edit as a red violation. To solve this, the pipeline decouples the **Golden Baseline Anchor** from the **Active Curation Run**:
+
+```mermaid
+graph TD
+    subgraph "The Golden Anchor (Frozen & Verified)"
+        GB["<b>Golden Baseline Manifest</b><br/><i>data/baselines/golden/samhita_manifest.json</i><br/>- Canonical Input Text<br/>- Canonical AST & Vargeekaran<br/>- Canonical Output Counts (1226 Samas)"]
+    end
+
+    subgraph "The Active Curation Run (Working Draft)"
+        Edit["Maintainer edits Samhita.txt<br/><i>(e.g., fixes swara in Khanda 3, Sama 2)</i>"]
+        --> Run["Run Pipeline<br/><i>(generate_json.py -> generate_rik_table.py)</i>"]
+        --> RM["<b>Active Run Manifest</b><br/><i>data/corpora/samhita/run_manifest.json</i><br/>- Stage: Finished<br/>- Modified Verses: 1<br/>- Status: PENDING_VALIDATION"]
+    end
+
+    GB --> Diff["<b>Semantic Diff & Validation Suite</b><br/><i>python src/tools/validate_run.py samhita</i>"]
+    RM --> Diff
+
+    Diff --> Decision{"Did only the intended<br/>correction change?"}
+    Decision -->|"Yes (Verified)"| Promote["<b>Promote to New Golden Baseline</b><br/><i>python src/tools/baseline.py promote samhita</i><br/>Status: PASSED (New Anchor v3.29)"]
+    Decision -->|"No (Regression)"| Alert["Alert: Structural break or<br/>unintended verse altered!"]
+```
+
+---
+
+#### 3. Dual-Track Validation: Engine Invariance vs. Semantic Curation Diff
+When `python src/tools/validate_run.py` executes, it performs two distinct checks:
+
+1. **Track A: Engine Regression Test (Code Sanity)**:
+   - Feeds the **Golden Baseline Input** into current code.
+   - Asserts 100% byte-for-byte and AST equivalence against the Golden Baseline Output.
+   - Proves that recent code refactoring or tool adjustments did not break known-good behavior.
+
+2. **Track B: Semantic Content Diff Test (Curation Sanity)**:
+   - Compares the **Active Run AST** against the **Golden Baseline AST**.
+   - Verifies all macro invariants:
+     - 6 Pathas, 59 Khandas, 1226 Samas intact.
+     - Section tag balance uncorrupted.
+   - Emits a precise verse-by-verse liturgical diff (e.g. *"Khanda 3, Sama 2: 1 verse modified; remaining 1,225 verses identical"*).
+   - Gives maintainers high-confidence verification without alert fatigue.
+
+---
+
+#### 4. Decoupled Corpus Lifecycles
+Each corpus (`samhita`, `aaranam`, `collections`) maintains an independent baseline lifecycle:
+- Work can proceed on Samhita for days or weeks (moving from `v3.28` to `v3.29`) without invalidating or touching Aaranam's baseline (`v1.14`).
+- Static site publishing (`docs/`) references the latest verified canonical AST of each corpus.
+
+---
+
+#### 5. Pipeline Lineage Dashboard (`src/tools/pipeline.py`)
+A single unified CLI command provides full visibility into file dependencies, checksums, and staleness:
+
+```bash
+python src/tools/pipeline.py status samhita
+```
+
+```text
+================================================================================
+  JAIMINEEYA PIPELINE LINEAGE: SAMHITA
+================================================================================
+[01_input]         Samhita.txt            (SHA: 737facc9)   [UP TO DATE]
+       │
+       ▼ (src/generate_json.py)
+[02_ast]           Samhita_ast.json       (SHA: 17a93dda)   [UP TO DATE]
+       │
+       ├─ (03_reconciliation/JSV_KSV_Recon.xlsx)
+       ▼ (src/generate_rik_table.py)
+[04_canonical]     Vargeekaran.json       (SHA: 9b12c4ef)   [UP TO DATE]
+       │
+       ├─► (src/render_pdf.py)       ──► 05_renders/ (PDF, TXT, HTML)
+       └─► (src/generate_website.py) ──► docs/samhita/ (Live Site)
+================================================================================
+```
+
+---
+
+#### 6. 3-Tier Versioning Architecture
+- **Tier 1 (Engine Version)**: Automatically derived via `git describe --tags --always --dirty` (e.g. `v4.0.0+6dec1989`). Eliminates manual editing of version files for software changes.
+- **Tier 2 (Corpus Editions)**: Independent version strings per corpus defined in `pipeline_config.yaml` (`samhita: 3.28`, `aaranam: 1.14`, `sooktamala: 2.05`). Editing Aaranam does not falsely increment Samhita.
+- **Tier 3 (Content Fingerprint)**: Cryptographic SHA-256 hash of the input file embedded in output metadata, enabling immediate staleness detection.
 
 ---
 
@@ -209,7 +286,7 @@ To eliminate confusion after gaps of several months, this subsystem introduces s
 | **Phase 1** | **Core Domain & Swara Engine** | Create `src/core/models.py`, `src/core/swara_engine.py`, unit tests | Low (Additive) |
 | **Phase 2** | **Filter & Render Separation** | Extract Jinja filters into `src/renderers/filters/`; decompose `render_pdf.py` | Medium |
 | **Phase 3** | **Baraha Purge & Decoupling** | Purge legacy Baraha scripts (`baraha_reader.py`, `transliterate.py`); strip Baraha branches from renderer | Low |
-| **Phase 4** | **Universal HTML Viewer Abstraction & Site Harmonization** | Abstract common HTML viewer (shell, responsive CSS, orientation/viewport runtime) to consume JSV and VedaVMS content as input; harmonize with static site | Low |
+| **Phase 4** | **Universal HTML Viewer Abstraction & Site Harmonization** | Abstract common JSV HTML viewer (shell, responsive CSS, swara font alignment); harmonize with static site | Low |
 | **Phase 5** | **Baselining, Traceability & Tools** | Implement `src/tools/baseline.py`, `src/tools/check_status.py`, archive cleanup | Low |
 | **Phase 6** | **3-Tier Versioning Engine** | Create `src/core/version.py`, git metadata injection, deprecate blind counter | Low |
 

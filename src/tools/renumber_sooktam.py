@@ -45,7 +45,7 @@ def get_generated_metadata():
     from datetime import datetime
     return {
         "version": get_project_version(),
-        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "generated_at": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
 
 def validate_structural_tags(lines):
@@ -272,7 +272,10 @@ def renumber_text_file(input_file, output_file=None, preserve_super=False, reset
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(final_content)
 
-    print(f"Success! Final state: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections. Total Samams: {global_samam_total}, Total Riks: {global_rik_total}")
+    if no_renumber:
+        print("Success! Verified tag balance and metadata injected (inject-only mode).")
+    else:
+        print(f"Success! Final state: {max(0, current_sup)} SuperSections, {max(0, current_sec)} Sections, {max(0, current_sub)} SubSections. Total Samams: {global_samam_total}, Total Riks: {global_rik_total}")
 
 def main():
     import yaml
