@@ -335,13 +335,30 @@
             color: var(--modifier-color);
             pointer-events: none;
         }
-        .swara-mod.mod-under,
-        .swara-mod.mod-comma,
-        .swara-mod.mod-dot {
+                        .swara-mod.mod-under,
+        .swara-mod.mod-underbar {
+            font-family: var(--font-doc);
+            font-size: 1.1em;
+            color: var(--modifier-color);
+            display: inline;
+            margin-left: -0.04em;
+            margin-right: 0.02em;
+            font-weight: 900;
+            -webkit-text-stroke: 0.04em currentColor;
+            position: relative;
+            bottom: 0.12em;
+            line-height: 1;
+        }
+                .swara-mod.mod-dot,
+        .swara-mod.mod-comma {
             font-family: var(--font-doc);
             color: var(--modifier-color);
             display: inline-block;
-            margin: 0 1px;
+            margin: 0;
+            font-size: 1.25em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.035em currentColor;
+            vertical-align: baseline;
         }
         
         /* Combining Accent Fallback for Rik Text */
@@ -433,7 +450,7 @@
         <div class="title-page">
             <h1>॥ ജൈമിനീയ സാമ സംഹിത ॥</h1>
             <p style="font-size: 1.1rem; color: var(--accent-blue); margin-top: 10px;">
-                പതിപ്പ്:  | നിർമ്മിതം: 19-09-2026 17:45:00
+                പതിപ്പ്:  | നിർമ്മിതം: 19-09-2026 18:35:00
             </p>
         </div>
 

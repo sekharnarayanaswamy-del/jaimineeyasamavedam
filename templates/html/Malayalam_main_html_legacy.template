@@ -369,7 +369,7 @@
             font-size: 1.1em;
             color: var(--modifier-color);
             display: inline;
-            margin-left: -0.06em;
+            margin-left: -0.04em;
             margin-right: 0.02em;
             font-weight: 900;
             -webkit-text-stroke: 0.04em currentColor;
@@ -377,12 +377,16 @@
             bottom: 0.12em;
             line-height: 1;
         }
-        .swara-mod.mod-comma,
-        .swara-mod.mod-dot {
+        .swara-mod.mod-dot,
+        .swara-mod.mod-comma {
             font-family: var(--font-doc);
             color: var(--modifier-color);
             display: inline-block;
-            margin: 0 1px;
+            margin: 0;
+            font-size: 1.25em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.035em currentColor;
+            vertical-align: baseline;
         }
         .mantra-punct {
             font-family: var(--font-doc);
