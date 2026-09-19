@@ -53,7 +53,8 @@ vedavms/build/
 scratch/
 deprecated/
 
-# Allow templates, mockups, and docs static assets
+# Allow templates, mockups, docs, and baselines
+!data/baselines/**
 !templates/**
 !html_templates/**
 !pdf_templates/**

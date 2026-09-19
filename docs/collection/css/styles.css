@@ -12,7 +12,7 @@
 
 /* Theme Semantic Mapping */
 --primary-maroon: var(--color-accent); /* Headings/Links = Saffron */
---primary-gold: #C08535;    /* Earthy Gold */
+--primary-gold: #8B5A2B;    /* High-contrast Dark Earthy Gold */
 --accent-orange: #D2691E;   /* Chocolate */
 
 /* Backgrounds */
@@ -1277,7 +1277,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.15em;
     isolation: isolate;
 }
 
@@ -1290,7 +1290,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.25em;
+    bottom: 0.1em;
     isolation: isolate;
 }
 
@@ -1303,7 +1303,7 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.1em;
 }
 
 .accent-trikampa {
@@ -1315,7 +1315,11 @@ background: var(--bg-sidebar);
     font-size: 1.2em;
     position: relative;
     left: -0.1em;
-    bottom: 0.06em;
+    bottom: 0.1em;
+}
+
+.accent-visarga {
+    left: -0.42em !important;
 }
 
 .footnote-separator, .closing-separator {

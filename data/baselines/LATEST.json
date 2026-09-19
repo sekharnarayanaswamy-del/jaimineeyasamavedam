@@ -1,0 +1,110 @@
+{
+  "tag": "baseline-sep2026-v3.28-expanded",
+  "description": "Expanded baseline tracking Devanagari, Malayalam, and Collections datasets",
+  "version": "3.28",
+  "timestamp": "15-09-2026 15:33:03",
+  "git": {
+    "branch": "refactor",
+    "commit": "5de12980",
+    "author_date": "2026-09-15 12:54:02 +0530"
+  },
+  "metrics": {
+    "total_pathas": 6,
+    "total_khandas": 59,
+    "total_samas": 722
+  },
+  "inputs": {
+    "data/input/Samhita_corrected.txt": {
+      "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
+      "size_bytes": 836261,
+      "modified": "14-09-2026 14:12:04"
+    },
+    "data/input/Aaranam_latest.txt": {
+      "sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4",
+      "size_bytes": 513097,
+      "modified": "26-04-2026 16:13:56"
+    },
+    "data/input/Malayalam/Samhita_Malayalam_corrected.txt": {
+      "sha256": "355120551cc69775a3a8d29ae31840263137e2dbececb7acdb3b4e4c085b4b7f",
+      "size_bytes": 1461186,
+      "modified": "02-09-2026 09:39:20"
+    },
+    "data/input/Malayalam/Samam_Malayalam_Unicode_full.txt": {
+      "sha256": "53a43f09c2cfc22ba568537d981e66ef97146e869e41781237d70e2a7b75c6b3",
+      "size_bytes": 893490,
+      "modified": "02-09-2026 09:39:20"
+    },
+    "data/input/PM-PB_filter.txt": {
+      "sha256": "2d66508f95d9c300c546652252375c839de46c676726bd316d231ca1ef268483",
+      "size_bytes": 6128,
+      "modified": "13-04-2026 13:16:13"
+    },
+    "data/input/PM-UB_filter.txt": {
+      "sha256": "d347f51a8019b501f2a2b91224af7ababd0c69d6d02bc60ee02d88b6036fea15",
+      "size_bytes": 1196,
+      "modified": "02-04-2026 18:52:57"
+    },
+    "data/input/Filter_file_superset.txt": {
+      "sha256": "aa5097c4722b9afd90a02f1f9447e0227789fc476255fb78effc06db15ff77b7",
+      "size_bytes": 4026,
+      "modified": "12-04-2026 19:15:42"
+    },
+    "data/input/rishi_devata_chandas_for_rik.txt": {
+      "sha256": "eba83833c46e84172c89b9d072a766a41dc28d77cd342c30232aefbb4bb933c4",
+      "size_bytes": 68431,
+      "modified": "23-04-2026 18:32:27"
+    },
+    "data/input/sama_rishi_chandas_out.txt": {
+      "sha256": "b75d61b0a1dc87453fca87cf795015c43d39d0462e03d350f104451f84124eda",
+      "size_bytes": 143120,
+      "modified": "28-04-2026 22:45:51"
+    }
+  },
+  "outputs": {
+    "data/output/Samhita_corrected_out.json": {
+      "sha256": "a7c16dc696e6bc8b25b1b21099c7dc48191f388aed6bf31303ab07f53bbaeca6",
+      "size_bytes": 1454234,
+      "modified": "14-09-2026 14:11:06"
+    },
+    "data/output/Aaranam_latest_out.json": {
+      "sha256": "8b87dd683b3abc3acc5ebeed9c7a661b9196370ab8658a59f12a8c89d4f554cc",
+      "size_bytes": 620501,
+      "modified": "31-08-2026 23:03:56"
+    },
+    "data/output/Vargeekaran.json": {
+      "sha256": "982b2c5066155ba972e32b371eb3a03bce764ae4442dd811d1b61b351b473723",
+      "size_bytes": 2003725,
+      "modified": "14-09-2026 14:11:34"
+    },
+    "data/output/Samhita_Malayalam_out.json": {
+      "sha256": "0653dc16f4f577c7f13e9318b961c5fcbfe36d6f8dbf4377b0c1a5b0b0ebf358",
+      "size_bytes": 1980205,
+      "modified": "28-08-2026 12:18:17"
+    },
+    "data/output/Prayogamala-Purvabhagam.json": {
+      "sha256": "20cea15e737c906eff55ab44014126d51dca2345897b20971d91b0bfe8fae85e",
+      "size_bytes": 367197,
+      "modified": "17-04-2026 12:50:46"
+    },
+    "data/output/prayogamala-Uttarabhagam.json": {
+      "sha256": "a53a89ed46731e782392a8ff907ba46c5a4a14ba35fb1b5dd328696d2f59230d",
+      "size_bytes": 109865,
+      "modified": "17-04-2026 12:50:57"
+    },
+    "data/output/Sooktamala.json": {
+      "sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9",
+      "size_bytes": 327979,
+      "modified": "17-04-2026 12:51:04"
+    },
+    "data/output/JSV_Structure_Summary.csv": {
+      "sha256": "bf0c33a2701e2b08a7eb1fa9c8449ef8d76f505b7c702bb09bbf6f6a0c1d40f3",
+      "size_bytes": 3859,
+      "modified": "14-09-2026 15:49:14"
+    },
+    "data/output/JSV_Structure_Summary.txt": {
+      "sha256": "061198309bbc769db96621e68e0de940e7703a7d03bf777c970b428aa7d29815",
+      "size_bytes": 6580,
+      "modified": "14-09-2026 15:49:14"
+    }
+  }
+}

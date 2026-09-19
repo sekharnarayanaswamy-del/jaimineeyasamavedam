@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper, openany]{book}
+\documentclass[12pt, a4paper, openany, oneside]{book}
 
 % --- LANGUAGE & FONT SETUP ---
 \usepackage{fontspec}
@@ -98,13 +98,13 @@
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
 \titlespacing*{\section}{0pt}{8pt}{14pt}
 \usepackage{setspace}
-\setstretch{2.50}
+\setstretch{1.90}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
 % This allows LaTeX to stretch letters by 20% to avoid gaps between words 
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
 
 % --- GEOMETRY ---
-\usepackage[a4paper, margin=2.0cm, top=2.5cm, bottom=2.0cm]{geometry} 
+\usepackage[a4paper, margin=1.8cm, top=2.0cm, bottom=1.8cm]{geometry} 
 
 % --- FOOTNOTE LINE SETUP ---
 \newcommand{\drawstarline}{%
@@ -126,15 +126,15 @@
 \righthyphenmin=3     % Never split last 2 letters (e.g., prevents "-ih")
 \tolerance=500       % Lower tolerance forces better breaks (standard is 200)
 \pretolerance=100     % Tries to break without hyphens first
-\setlength{\emergencystretch}{1em} % Reduced stretch (forces breaks over gaps)
+\setlength{\emergencystretch}{3em} % Allows line breaks without spilling into margin
 \setlength{\hfuzz}{2pt}
 \setlength{\parindent}{0pt} 
 
 % --- STACKING COMMANDS (Strictly No Phantom Spaces) ---
 
+\newlength{\swarabasew}
 \BLOCK{ if kpully }
 % 1. KPULLY (Kodunthirapully Paddhati): Swara markings ABOVE the mantra text with zero horizontal expansion
-\newlength{\swarabasew}
 \newcommand{\swarastack}[2]{%
   \settowidth{\swarabasew}{#1}%
   \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{2.35ex}[0pt][0pt]{#2}}}%
@@ -142,20 +142,13 @@
 \newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}
 \newcommand{\stackleft}[2]{\swarastack{#1}{#2}}
 \BLOCK{ else }
-% 1. STANDARD: Swara markings BELOW the mantra text
-\newcommand{\stackcenter}[2]{%
-  \begingroup%
-  \def\stackalignment{c}%
-  \stackunder{#1}{#2}%
-  \endgroup%
+% 1. STANDARD: Swara markings BELOW the mantra text with zero horizontal expansion
+\newcommand{\swarastack}[2]{%
+  \settowidth{\swarabasew}{#1}%
+  \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{-1.05ex}[0pt][0pt]{#2}}}%
 }
-
-\newcommand{\stackleft}[2]{%
-  \begingroup%
-  \def\stackalignment{c}%
-  \stackunder{#1}{#2}%
-  \endgroup%
-}
+\newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}
+\newcommand{\stackleft}[2]{\swarastack{#1}{#2}}
 \BLOCK{ endif }
 
 % --- DANDA WITH ARC MACRO (MOD-A1: Centered Over Danda) ---
@@ -297,7 +290,7 @@
 \BLOCK{ for key, supersection in supersections.items() }
 
     % --- SUPERSECTION ---
-    \cleardoublepage           
+    \clearpage           
     \phantomsection              
     \BLOCK{ if supersection.supersection_title }
     \chapter*{\centering \VAR{supersection.supersection_title}}
@@ -313,7 +306,8 @@
         \BLOCK{ if section_key != 'count' }
         
             \BLOCK{ if not ns_sec.first_section }
-            \clearpage
+            \par\vspace{1.8em}
+            \needspace{6\baselineskip}
             \BLOCK{ endif }
             \BLOCK{ set ns_sec.first_section = false }
 
@@ -369,7 +363,7 @@
 
 \BLOCK{ if summary_table }
 % --- Summary Table ---
-\cleardoublepage
+\clearpage
 \phantomsection
 \markboth{\VAR{summary_title}}{\VAR{summary_title}}
 \fancyhead[LO]{\VAR{summary_title}}
@@ -425,7 +419,7 @@
 \BLOCK{ endif }
 \BLOCK{ if prayogas }
 % --- PRAYOGA APPENDIX ---
-\cleardoublepage
+\clearpage
 \phantomsection
 \markboth{परिशिष्टम्}{परिशिष्टम्}
 \fancyhead[LO]{परिशिष्टम्}

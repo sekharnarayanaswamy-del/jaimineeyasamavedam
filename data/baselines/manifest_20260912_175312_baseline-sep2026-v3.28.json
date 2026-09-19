@@ -1,0 +1,60 @@
+{
+  "tag": "baseline-sep2026-v3.28",
+  "description": "Initial formal baseline on refactor branch before modular migration",
+  "version": "3.28",
+  "timestamp": "2026-09-12 17:53:12",
+  "git": {
+    "branch": "refactor",
+    "commit": "4c8d244a",
+    "author_date": "2026-09-12 17:08:35 +0530"
+  },
+  "metrics": {
+    "total_pathas": 6,
+    "total_khandas": 59,
+    "total_samas": 722
+  },
+  "inputs": {
+    "data/input/Samhita_corrected.txt": {
+      "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
+      "size_bytes": 836261,
+      "modified": "2026-08-15 23:18:11"
+    },
+    "data/input/Aaranam_latest.txt": {
+      "sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4",
+      "size_bytes": 513097,
+      "modified": "2026-04-26 16:13:56"
+    },
+    "data/input/rishi_devata_chandas_for_rik.txt": {
+      "sha256": "eba83833c46e84172c89b9d072a766a41dc28d77cd342c30232aefbb4bb933c4",
+      "size_bytes": 68431,
+      "modified": "2026-04-23 18:32:27"
+    },
+    "data/input/sama_rishi_chandas_out.txt": {
+      "sha256": "b75d61b0a1dc87453fca87cf795015c43d39d0462e03d350f104451f84124eda",
+      "size_bytes": 143120,
+      "modified": "2026-04-28 22:45:51"
+    }
+  },
+  "outputs": {
+    "data/output/Samhita_corrected_out.json": {
+      "sha256": "17a93ddaaf6e627bdae57d41c9475ef8f8488d71858a4b0b434c3dadb974b2fa",
+      "size_bytes": 1454233,
+      "modified": "2026-08-28 12:08:54"
+    },
+    "data/output/Aaranam_latest_out.json": {
+      "sha256": "8b87dd683b3abc3acc5ebeed9c7a661b9196370ab8658a59f12a8c89d4f554cc",
+      "size_bytes": 620501,
+      "modified": "2026-08-31 23:03:56"
+    },
+    "data/output/JSV_Structure_Summary.csv": {
+      "sha256": "bf0c33a2701e2b08a7eb1fa9c8449ef8d76f505b7c702bb09bbf6f6a0c1d40f3",
+      "size_bytes": 3859,
+      "modified": "2026-09-12 17:40:32"
+    },
+    "data/output/JSV_Structure_Summary.txt": {
+      "sha256": "5bcb7368c8f5230f0796dd1b9b8a4b5a88b2604bd7a7ab300eb2b4bf47c37f8a",
+      "size_bytes": 6580,
+      "modified": "2026-09-12 17:40:32"
+    }
+  }
+}

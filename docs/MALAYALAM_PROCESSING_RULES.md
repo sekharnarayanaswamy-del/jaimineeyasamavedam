@@ -70,7 +70,7 @@ Implemented in [`src/run_malayalam_pipeline.py`](file:///c:/Users/sekha/OneDrive
 
 - **Default Execution**: Configured to run in **Samam-only mode** (`--modes separate --samam-only`).
 - **Generated Outputs**:
-  - **HTML**: `data/output/Samam_Malayalam_Samam_Malayalam.html`
-  - **Plaintext TXT (Malayalam)**: `data/output/txt/Malayalam/Samam_Malayalam_Samam.txt`
-  - **Devanagari TXT**: `data/output/txt/Devanagari/Samam_Malayalam_Samam.txt`
+  - **HTML**: `data/output/html/Malayalam/Samam_Malayalam_Samam.html`
+  - **Plaintext TXT (Malayalam)**: `data/output/txt/Malayalam/Samam_Malayalam_Samam_Unicode.txt`
+  - **Devanagari TXT**: `data/output/txt/Devanagari/Samam_Malayalam_Samam_Unicode.txt`
 - **Bypassed**: All Rik-only (`*_Rik_*.html`) and combined (`*_Malayalam.html`) outputs are bypassed to keep execution fast and focused exclusively on the Malayalam Samam corpus.

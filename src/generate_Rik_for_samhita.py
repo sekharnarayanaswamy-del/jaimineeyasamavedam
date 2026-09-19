@@ -470,13 +470,40 @@ def generate_and_compile_latex(input_text, base_filename='vedic_output'):
 def replace_accents_html(text):
     """
     Replaces ASCII markers with HTML Unicode entities wrapped in spans for positioning.
-    Matches the style of Rik_Devanagari_Unicode.html
+    Fixes dotted circle issue across all fonts by keeping Visarga contiguous to the syllable.
     """
+    if not text:
+        return text
+
+    # Step 1: Reorder any accent marker that precedes a Visarga so syllable + ः remain contiguous
+    text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'([\u0951\u1CD2\u1CF8\u1CF9])\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
+
+    # Step 2: Accents following Visarga receive .accent-visarga to shift backwards over the syllable
+    visarga_replacements = [
+        ('ः(1)', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>'),
+        ('ः(2)', 'ः<span class="accent-anudatta accent-visarga">&#x1CD2;</span>'),
+        ('ः(3)', 'ः<span class="accent-kampa accent-visarga">&#x1CF8;</span>'),
+        ('ः(4)', 'ः<span class="accent-trikampa accent-visarga">&#x1CF9;</span>'),
+        ('ः\u0951', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>'),
+        ('ः\u1CD2', 'ः<span class="accent-anudatta accent-visarga">&#x1CD2;</span>'),
+        ('ः\u1CF8', 'ः<span class="accent-kampa accent-visarga">&#x1CF8;</span>'),
+        ('ः\u1CF9', 'ः<span class="accent-trikampa accent-visarga">&#x1CF9;</span>'),
+    ]
+    for marker, replacement in visarga_replacements:
+        text = text.replace(marker, replacement)
+
+    # Step 3: Standard accents (on syllables without Visarga)
     replacements = [
         ('(1)', '<span class="accent-swarita">&#x0951;</span>'),  # Swarita
         ('(2)', '<span class="accent-anudatta">&#x1CD2;</span>'),  # Anudatta
         ('(3)', '<span class="accent-kampa">&#x1CF8;</span>'),  # Kampa
         ('(4)', '<span class="accent-trikampa">&#x1CF9;</span>'),  # Trikampa
+        ('\u0951', '<span class="accent-swarita">&#x0951;</span>'),
+        ('\u1CD2', '<span class="accent-anudatta">&#x1CD2;</span>'),
+        ('\u1CF8', '<span class="accent-kampa">&#x1CF8;</span>'),
+        ('\u1CF9', '<span class="accent-trikampa">&#x1CF9;</span>'),
     ]
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
@@ -775,6 +802,10 @@ def generate_html(input_text, base_filename):
             position: relative;
             left: -0.1em;
             top: -0.15em;
+        }}
+        
+        .accent-visarga {{
+            left: -0.42em !important;
         }}
         
         /* TOC Styles */

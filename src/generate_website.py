@@ -127,26 +127,43 @@ def local_escape_for_html(text):
 def local_replace_accents_html(text):
     """
     Replaces ASCII accent markers with Unicode Vedic accent characters for HTML.
-    Uses spans with zero-width positioning for correct display (matching renderPDF.py).
+    Fixes dotted circle issue across all fonts by keeping Visarga contiguous to the syllable.
     """
     if not text:
         return text
-    
-    # Use spans with zero-width CSS positioning (matching the working renderPDF.py output)
-    replacements = [
-        # Swarita (Vertical line above) - U+0951
-        ('(1)', '<span class="accent-swarita">\u0951</span>'),
-        # Anudatta (Horizontal line below) - U+1CD2
-        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
-        # Kampa (Curve) - U+1CF8
-        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
-        # Trikampa - U+1CF9
-        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
+
+    # Step 1: Reorder any accent marker that precedes a Visarga so syllable + ः remain contiguous
+    text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'([\u0951\u1CD2\u1CF8\u1CF9])\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
+
+    # Step 2: Accents following Visarga receive .accent-visarga to shift backwards over the syllable
+    visarga_replacements = [
+        ('ः(1)', 'ः<span class="accent-swarita accent-visarga">\u0951</span>'),
+        ('ः(2)', 'ः<span class="accent-anudatta accent-visarga">\u1CD2</span>'),
+        ('ः(3)', 'ः<span class="accent-kampa accent-visarga">\u1CF8</span>'),
+        ('ः(4)', 'ः<span class="accent-trikampa accent-visarga">\u1CF9</span>'),
+        ('ः\u0951', 'ः<span class="accent-swarita accent-visarga">\u0951</span>'),
+        ('ः\u1CD2', 'ः<span class="accent-anudatta accent-visarga">\u1CD2</span>'),
+        ('ः\u1CF8', 'ः<span class="accent-kampa accent-visarga">\u1CF8</span>'),
+        ('ः\u1CF9', 'ः<span class="accent-trikampa accent-visarga">\u1CF9</span>'),
     ]
-    
+    for marker, replacement in visarga_replacements:
+        text = text.replace(marker, replacement)
+
+    # Step 3: Standard accents (on syllables without Visarga)
+    replacements = [
+        ('(1)', '<span class="accent-swarita">\u0951</span>'),
+        ('(2)', '<span class="accent-anudatta">\u1CD2</span>'),
+        ('(3)', '<span class="accent-kampa">\u1CF8</span>'),
+        ('(4)', '<span class="accent-trikampa">\u1CF9</span>'),
+        ('\u0951', '<span class="accent-swarita">\u0951</span>'),
+        ('\u1CD2', '<span class="accent-anudatta">\u1CD2</span>'),
+        ('\u1CF8', '<span class="accent-kampa">\u1CF8</span>'),
+        ('\u1CF9', '<span class="accent-trikampa">\u1CF9</span>'),
+    ]
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
-    
     return text
 
 
@@ -1315,15 +1332,15 @@ class WebsiteGenerator:
         """Generate CSS stylesheet - Configured Palette"""
         # Determine font-specific offsets (matching renderPDF.py logic)
         if 'notosans' in self.font.lower():
-            sw_off = '0.40em'
-            ka_off = '0.40em'
-            tr_off = '0.40em'
-            an_off = '0.40em'
+            sw_off = '0.15em'
+            ka_off = '0.1em'
+            tr_off = '0.1em'
+            an_off = '0.1em'
         else: # Default/Adishila
-            sw_off = '0.40em'
-            ka_off = '0.40em'
-            tr_off = '0.40em'
-            an_off = '0.40em'
+            sw_off = '0.15em'
+            ka_off = '0.1em'
+            tr_off = '0.1em'
+            an_off = '0.1em'
 
         css = '''/* Jaimineeya Samavedam Website Styles */
 /* User Defined Palette */
@@ -2643,6 +2660,10 @@ background: var(--bg-sidebar);
     position: relative;
     left: -0.1em;
     bottom: {tr_off};
+}
+
+.accent-visarga {
+    left: -0.42em !important;
 }
 
 .footnote-separator, .closing-separator {

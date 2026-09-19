@@ -148,22 +148,41 @@ def replace_accents(text):
 def replace_accents_html(text):
     """
     Replaces ASCII markers with HTML Unicode entities wrapped in spans for positioning.
+    Fixes dotted circle issue across all fonts by ensuring Visarga (ः) attaches
+    directly to the base syllable, with accents following Visarga styled with .accent-visarga.
     """
     if not text:
         return text
-    # Fix Visarga after accent marker:
-    # In HTML, placing Visarga after a </span> boundary causes the browser's OpenType
-    # text shaper to treat Visarga as an orphaned combining mark without a base consonant,
-    # rendering an unwanted dotted circle (◌ः). Moving Visarga before the accent marker
-    # ensures Visarga attaches to the base syllable cleanly without any dotted circle.
+
+    # Step 1: Reorder any accent marker that precedes a Visarga so syllable + ः remain contiguous
     text = re.sub(r'(\([1-4]\))\s*([ः:])', r'ः\1', text)
+    text = re.sub(r'([\u0951\u1CD2\u1CF8\u1CF9])\s*([ः:])', r'ः\1', text)
     text = re.sub(r'(<span class="accent-[^"]+">[^<]+</span>)\s*([ः:])', r'ः\1', text)
 
+    # Step 2: Accents following Visarga receive .accent-visarga to shift backwards over the syllable
+    visarga_replacements = [
+        ('ः(1)', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>'),
+        ('ः(2)', 'ः<span class="accent-anudatta accent-visarga">&#x1CD2;</span>'),
+        ('ः(3)', 'ः<span class="accent-kampa accent-visarga">&#x1CF8;</span>'),
+        ('ः(4)', 'ः<span class="accent-trikampa accent-visarga">&#x1CF9;</span>'),
+        ('ः\u0951', 'ः<span class="accent-swarita accent-visarga">&#x0951;</span>'),
+        ('ः\u1CD2', 'ः<span class="accent-anudatta accent-visarga">&#x1CD2;</span>'),
+        ('ः\u1CF8', 'ः<span class="accent-kampa accent-visarga">&#x1CF8;</span>'),
+        ('ः\u1CF9', 'ः<span class="accent-trikampa accent-visarga">&#x1CF9;</span>'),
+    ]
+    for marker, replacement in visarga_replacements:
+        text = text.replace(marker, replacement)
+
+    # Step 3: Standard accents (on syllables without Visarga)
     replacements = [
         ('(1)', '<span class="accent-swarita">&#x0951;</span>'),  # Swarita
         ('(2)', '<span class="accent-anudatta">&#x1CD2;</span>'),  # Anudatta
         ('(3)', '<span class="accent-kampa">&#x1CF8;</span>'),  # Kampa
         ('(4)', '<span class="accent-trikampa">&#x1CF9;</span>'),  # Trikampa
+        ('\u0951', '<span class="accent-swarita">&#x0951;</span>'),
+        ('\u1CD2', '<span class="accent-anudatta">&#x1CD2;</span>'),
+        ('\u1CF8', '<span class="accent-kampa">&#x1CF8;</span>'),
+        ('\u1CF9', '<span class="accent-trikampa">&#x1CF9;</span>'),
     ]
     for marker, replacement in replacements:
         text = text.replace(marker, replacement)
@@ -512,6 +531,30 @@ def clean_stack_arg(text):
     return text.strip()
 
                         
+def normalize_output_basename(name, doc_family):
+    """
+    Normalizes the output base name to prevent repeating Devanagari or Malayalam strings.
+    E.g.
+      Samhita_kpully_Devanagari_Devanagari -> Samhita_kpully_Devanagari
+      Samam_Malayalam_Samam_Malayalam      -> Samam_Malayalam_Samam
+      Samam_Malayalam_Samam               -> Samam_Malayalam_Samam
+      Samhita_kpully_Devanagari           -> Samhita_kpully_Devanagari
+      Samhita                             -> Samhita_Devanagari
+    """
+    if not name:
+        return doc_family
+    for ext in ['.html', '.pdf', '.tex', '.txt', '.toc', '.log']:
+        if name.endswith(ext):
+            name = name[:-len(ext)]
+            break
+    while f"_{doc_family}_{doc_family}" in name:
+        name = name.replace(f"_{doc_family}_{doc_family}", f"_{doc_family}")
+    if name.endswith(f"_{doc_family}") and (f"_{doc_family}" in name[:-len(doc_family)-1] or name.startswith(f"{doc_family}_")):
+        name = name[:-len(doc_family)-1]
+    if doc_family not in name:
+        name = f"{name}_{doc_family}"
+    return name
+
 def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False):
     data=escape_for_latex(data)
     
@@ -520,19 +563,13 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
     exit_code=0
     
     # Use overrides if provided
-    name = name_override or name
+    name = normalize_output_basename(name_override or name, DocfamilyName)
     outputdir = output_dir_override or f"{outputdir}/pdf/{DocfamilyName}"
     
-    if name.endswith(f"_{DocfamilyName}"):
-        TexFileName=f"{name}.tex"
-        PdfFileName=f"{name}.pdf"
-        TocFileName=f"{name}.toc"
-        LogFileName=f"{name}.log"
-    else:
-        TexFileName=f"{name}_{DocfamilyName}.tex"
-        PdfFileName=f"{name}_{DocfamilyName}.pdf"
-        TocFileName=f"{name}_{DocfamilyName}.toc"
-        LogFileName=f"{name}_{DocfamilyName}.log"
+    TexFileName=f"{name}.tex"
+    PdfFileName=f"{name}.pdf"
+    TocFileName=f"{name}.toc"
+    LogFileName=f"{name}.log"
     template = templateFileName
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
@@ -638,21 +675,14 @@ def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="com
     exit_code=0
     
     # Use overrides if provided
-    name = name_override or name
+    name = normalize_output_basename(name_override or name, DocfamilyName)
     outputdir = output_dir_override or f"{outputdir}/txt/{DocfamilyName}"
 
-    if name.endswith(f"_{DocfamilyName}"):
-        TexFileName=f"{name}_Unicode.tex"
-        PdfFileName=f"{name}_Unicode.pdf"
-        TextFileName=f"{name}_Unicode.txt"
-        TocFileName=f"{name}_Unicode.toc"
-        LogFileName=f"{name}_Unicode.log"
-    else:
-        TexFileName=f"{name}_{DocfamilyName}_Unicode.tex"
-        PdfFileName=f"{name}_{DocfamilyName}_Unicode.pdf"
-        TextFileName=f"{name}_{DocfamilyName}_Unicode.txt"
-        TocFileName=f"{name}_{DocfamilyName}_Unicode.toc"
-        LogFileName=f"{name}_{DocfamilyName}_Unicode.log"
+    TexFileName=f"{name}_Unicode.tex"
+    PdfFileName=f"{name}_Unicode.pdf"
+    TextFileName=f"{name}_Unicode.txt"
+    TocFileName=f"{name}_Unicode.toc"
+    LogFileName=f"{name}_Unicode.log"
     template = templateFileName
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     Path(logdir).mkdir(parents=True, exist_ok=True)
@@ -3898,15 +3928,10 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         return
     
     # Use overrides if provided
-    name = name_override or name
+    name = normalize_output_basename(name_override or name, DocfamilyName)
     outputdir = output_dir_override or f"{outputdir}/html/{DocfamilyName}"
     
-    if name.endswith('.html'):
-        HtmlFileName = name
-    elif name.endswith(f"_{DocfamilyName}"):
-        HtmlFileName = f"{name}.html"
-    else:
-        HtmlFileName = f"{name}_{DocfamilyName}.html"
+    HtmlFileName = f"{name}.html"
     template = templateFileName
     Path(outputdir).mkdir(parents=True, exist_ok=True)
     
@@ -4561,7 +4586,12 @@ Examples:
         # Samam-only output: Pass output_mode='samam' to template
         if gen_samam:
             print("Generating Samam-only output (with metadata)...")
-            final_out_name = out_name if (out_name and (out_name.endswith("_Samam") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Samam" if out_name else "Samam")
+            if kpully_mode:
+                final_out_name = out_name if out_name else f"{file_prefix}"
+            elif out_name and out_name.endswith("_Samam"):
+                final_out_name = out_name
+            else:
+                final_out_name = f"{out_name}_Samam" if out_name else "Samam"
             if gen_pdf:
                 CreatePdf(template_file, f"Samam", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:
@@ -4597,7 +4627,12 @@ Examples:
         # Samam-only output (no metadata, jsv_version=jsv_version, generated_at=generated_at): Pass output_mode='samam_nometa' to template
         if gen_samam:
             print("Generating Samam-only output (without metadata)...")
-            final_out_name = out_name if (out_name and (out_name.endswith("_Samam_NoMeta") or out_name.endswith(f"_{doc_family}"))) else (f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta")
+            if kpully_mode:
+                final_out_name = out_name if out_name else f"{file_prefix}"
+            elif out_name and out_name.endswith("_Samam_NoMeta"):
+                final_out_name = out_name
+            else:
+                final_out_name = f"{out_name}_Samam_NoMeta" if out_name else "Samam_NoMeta"
             if gen_pdf:
                 CreatePdf(template_file, f"Samam_NoMeta", doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode)
             if gen_txt:

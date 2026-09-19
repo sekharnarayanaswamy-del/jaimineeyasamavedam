@@ -1,5 +1,5 @@
-\documentclass[12pt, a4paper, openany]{book}
-\usepackage[margin=1in]{geometry}
+\documentclass[12pt, a4paper, openany, oneside]{book}
+\usepackage[a4paper, margin=1.8cm, top=2.0cm, bottom=1.8cm]{geometry}
 \usepackage{titlesec} 
 \titlespacing*{\chapter}{0pt}{-10pt}{10pt}
 
@@ -213,7 +213,7 @@
 \BLOCK{ for key, supersection in supersections.items() }
 
     % --- SUPERSECTION ---
-    \cleardoublepage
+    \clearpage
     \phantomsection
     \BLOCK{ if supersection.supersection_title }
     \chapter*{\centering {\malayalamfont \VAR{supersection.supersection_title}}}
@@ -229,7 +229,8 @@
         \BLOCK{ if section_key != 'count' }
 
             \BLOCK{ if not ns_sec.first_section }
-            \clearpage
+            \par\vspace{1.8em}
+            \needspace{6\baselineskip}
             \BLOCK{ endif }
             \BLOCK{ set ns_sec.first_section = false }
 

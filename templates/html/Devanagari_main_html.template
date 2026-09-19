@@ -80,9 +80,9 @@
             --bg-light: #FBF8F2;
             --bg-card: #FFFFFF;
 
-            /* Accent offsets - clearance above mantra line */
-            --swarita-bottom: 0.42em;
-            --anudatta-bottom: 0.40em;
+            /* Accent offsets - finetuned values */
+            --swarita-bottom: 0.15em;
+            --anudatta-bottom: 0.1em;
             --swara-size: var(--font-size);
         }
 
@@ -954,7 +954,10 @@
             font-size: 1.2em;
             position: relative;
             left: 0;
-            bottom: var(--swarita-bottom);
+            bottom: var(--anudatta-bottom);
+        }
+        .accent-visarga {
+            left: -0.42em !important;
         }
 
         /* Footnotes */
@@ -1772,16 +1775,22 @@
 
     <script>
         const fontList = [
-            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif" },
-            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif" },
-            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif" },
-            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif" }
+            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
+            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
+            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
+            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" }
         ];
         let currentFontIndex = 0;
         function setFont(idx) {
             currentFontIndex = ((idx % fontList.length) + fontList.length) % fontList.length;
             const chosen = fontList[currentFontIndex];
             document.documentElement.style.setProperty('--font-doc', chosen.font);
+            if (chosen.swaritaBottom) {
+                document.documentElement.style.setProperty('--swarita-bottom', chosen.swaritaBottom);
+            }
+            if (chosen.anudattaBottom) {
+                document.documentElement.style.setProperty('--anudatta-bottom', chosen.anudattaBottom);
+            }
             const btn = document.getElementById('font-toggle-btn');
             if (btn) btn.innerText = 'Font: ' + chosen.label;
             localStorage.setItem('jsv-reader-font-idx', currentFontIndex);

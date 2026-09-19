@@ -25,7 +25,7 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 
 DEFAULT_INPUT_TXT = ROOT_DIR / "data" / "input" / "Malayalam" / "Samam_Malayalam_Unicode.txt"
 DEFAULT_JSON_OUT = ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_Malayalam_out.json"
-DEFAULT_OUTPUT_BASE = "Samam_Malayalam"
+DEFAULT_OUTPUT_BASE = "Samam_Malayalam_Samam"
 DOCS_DIR = ROOT_DIR / "docs"
 
 

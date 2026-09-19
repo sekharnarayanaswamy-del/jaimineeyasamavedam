@@ -27,14 +27,14 @@
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', sans-serif;
             
             \BLOCK{ if 'Noto' in html_font }
-            /* Noto Sans specific accent offsets */
-            --swarita-bottom: 0.42em;
-            --anudatta-bottom: 0.40em;
+            /* Noto Sans specific accent offsets - finetuned values */
+            --swarita-bottom: 0.15em;
+            --anudatta-bottom: 0.1em;
             --swara-size: 1.1rem;
             \BLOCK{ else }
-            /* Default accent offsets (Adishila-optimized) */
-            --swarita-bottom: 0.42em;
-            --anudatta-bottom: 0.40em;
+            /* Default accent offsets - finetuned values */
+            --swarita-bottom: 0.15em;
+            --anudatta-bottom: 0.1em;
             --swara-size: 1.3rem;
             \BLOCK{ endif }
 
@@ -651,7 +651,7 @@
             font-size: 1.2em;
             position: relative;
             left: 0;
-            bottom: var(--swarita-bottom);
+            bottom: var(--anudatta-bottom);
         }
         
         .accent-trikampa {
@@ -663,7 +663,11 @@
             font-size: 1.2em;
             position: relative;
             left: 0;
-            bottom: var(--swarita-bottom);
+            bottom: var(--anudatta-bottom);
+        }
+        
+        .accent-visarga {
+            left: -0.42em !important;
         }
         
         /* Footnote Section Styles */
