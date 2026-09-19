@@ -853,11 +853,13 @@
         }
 
         .swara-mod.mod-f {
-            font-size: 0.85em;
-            font-weight: 800;
-            -webkit-text-stroke: 0.025em currentColor;
-            margin-left: 1px;
-            vertical-align: 0.15em;
+            font-size: 0.95em;
+            font-weight: 900 !important;
+            -webkit-text-stroke: 0.055em currentColor;
+            text-shadow: 0.02em 0 currentColor, -0.02em 0 currentColor;
+            margin-left: 2px;
+            vertical-align: 0.12em;
+            display: inline-block;
         }
 
         .syl-mod-g-wrap {
@@ -921,18 +923,19 @@
             pointer-events: none;
         }
 
-        .swara-mod.mod-under {
+        .swara-mod.mod-under,
+        .swara-mod.mod-underbar {
             font-family: var(--font-doc);
-            font-size: 1.0em;
+            font-size: 1.45em;
             color: var(--modifier-color);
-            display: inline;
-            margin: 0;
-            font-weight: bold;
+            display: inline-block;
+            margin: 0 1px;
+            font-weight: 900;
+            -webkit-text-stroke: 0.04em currentColor;
             vertical-align: baseline;
             line-height: 1;
         }
 
-        .swara-mod.mod-comma,
         .swara-mod.mod-dot {
             font-family: var(--font-doc);
             color: var(--modifier-color);
@@ -941,7 +944,17 @@
             font-size: 1.25em;
             font-weight: 800;
             -webkit-text-stroke: 0.035em currentColor;
-            font-weight: bold;
+            vertical-align: baseline;
+        }
+
+        .swara-mod.mod-comma {
+            font-family: var(--font-doc);
+            color: var(--modifier-color);
+            display: inline-block;
+            margin: 0;
+            font-size: 0.95em;
+            font-weight: normal;
+            -webkit-text-stroke: 0;
             vertical-align: baseline;
         }
 
@@ -4395,7 +4408,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ ജൈമിനീയ സാമ സംഹിത ॥</h1>
-                <div class="sub-heading">പതിപ്പ്: 3.0 | നിർമ്മിതം: 17-09-2026 18:29:10</div>
+                <div class="sub-heading">പതിപ്പ്: 3.0 | നിർമ്മിതം: 19-09-2026 15:25:31</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->

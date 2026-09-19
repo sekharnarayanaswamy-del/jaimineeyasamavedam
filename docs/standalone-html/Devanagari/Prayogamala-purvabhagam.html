@@ -431,11 +431,13 @@
             vertical-align: -0.15em;
         }
         .swara-mod.mod-f {
-            font-size: 0.85em;
-            font-weight: 800;
-            -webkit-text-stroke: 0.025em currentColor;
-            margin-left: 1px;
-            vertical-align: 0.15em;
+            font-size: 0.95em;
+            font-weight: 900 !important;
+            -webkit-text-stroke: 0.055em currentColor;
+            text-shadow: 0.02em 0 currentColor, -0.02em 0 currentColor;
+            margin-left: 2px;
+            vertical-align: 0.12em;
+            display: inline-block;
         }
         .swara-mod.mod-g {
             font-size: 0.48em;
@@ -447,17 +449,18 @@
             margin-left: -0.3em;
             vertical-align: 0.75em;
         }
-        .swara-mod.mod-under {
+        .swara-mod.mod-under,
+        .swara-mod.mod-underbar {
             font-family: var(--font-doc);
-            font-size: 1.0em;
+            font-size: 1.45em;
             color: var(--modifier-color);
-            display: inline;
-            margin: 0;
-            font-weight: bold;
+            display: inline-block;
+            margin: 0 1px;
+            font-weight: 900;
+            -webkit-text-stroke: 0.04em currentColor;
             vertical-align: baseline;
             line-height: 1;
         }
-        .swara-mod.mod-comma,
         .swara-mod.mod-dot {
             font-family: var(--font-doc);
             color: var(--modifier-color);
@@ -466,7 +469,17 @@
             font-size: 1.25em;
             font-weight: 800;
             -webkit-text-stroke: 0.035em currentColor;
-            font-weight: bold;
+            vertical-align: baseline;
+        }
+
+        .swara-mod.mod-comma {
+            font-family: var(--font-doc);
+            color: var(--modifier-color);
+            display: inline-block;
+            margin: 0;
+            font-size: 0.95em;
+            font-weight: normal;
+            -webkit-text-stroke: 0;
             vertical-align: baseline;
         }
         
@@ -774,7 +787,7 @@
         <div class="title-page">
             <h1>॥ जैमिनीय साम सङ्ग्रहः ॥</h1>
             <p style="font-size: 1.2rem; margin-top: 10px; color: var(--accent-blue);">
-                संस्करणम्: 3.0 | निर्मितम्: 2026-08-31 23:17:06
+                संस्करणम्: 3.0 | निर्मितम्: 19-09-2026 15:25:31
             </p>
         </div>
         
