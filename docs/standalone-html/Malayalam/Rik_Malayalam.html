@@ -131,18 +131,28 @@
             color: var(--swara-red);
             font-weight: bold;
             font-size: var(--swara-size);
-            line-height: 1;
+            line-
             text-align: center;
-            min-height: 1.2em;
+            min-
             padding-bottom: 8px;
-            margin-bottom: 4px;
+            line-height: 1;
+            height: 1.35em;
+            min-height: 1.35em;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-bottom: 2px;
         }
         .mantra-text {
             font-family: var(--font-doc);
             font-size: 1.4rem;
-            line-height: 1.2;
+            line-
             text-align: center;
             position: relative;
+            height: 1.7em;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
         }
         .swara-mod {
             font-family: var(--font-swara);
@@ -223,6 +233,47 @@
             font-size: 0.95rem;
             pointer-events: none;
         }
+        
+        /* Combining Accent Fallback for Rik Text */
+        .accent-swarita {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--swarita-bottom, 0.15em);
+            isolation: isolate;
+        }
+        .accent-anudatta {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--anudatta-bottom, -0.15em);
+            isolation: isolate;
+        }
+        .accent-kampa, .accent-trikampa {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--anudatta-bottom, -0.15em);
+        }
+
         .mantra-punct {
             font-family: var(--font-doc);
             font-size: 1.4rem;
@@ -255,7 +306,7 @@
         <div class="title-page">
             <h1>॥ ജൈമിനീയ സാമ സംഹിത ॥</h1>
             <p style="font-size: 1.1rem; color: var(--accent-blue); margin-top: 10px;">
-                പതിപ്പ്:  | നിർമ്മിതം: 19-09-2026 15:25:31
+                പതിപ്പ്:  | നിർമ്മിതം: 19-09-2026 15:50:00
             </p>
         </div>
 

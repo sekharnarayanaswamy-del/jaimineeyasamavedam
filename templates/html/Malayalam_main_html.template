@@ -681,6 +681,8 @@
             color: var(--swara-red) !important;
             font-weight: 700;
             line-height: 1;
+            height: 1.35em;
+            min-height: 1.35em;
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -694,6 +696,7 @@
             font-family: var(--font-doc);
             font-size: var(--mantra-size);
             color: var(--primary-color);
+            height: 1.7em;
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;
@@ -958,12 +961,12 @@
         .swara-mod.mod-under,
         .swara-mod.mod-underbar {
             font-family: var(--font-doc);
-            font-size: 1.45em;
+            font-size: 1.0em;
             color: var(--modifier-color);
-            display: inline-block;
-            margin: 0 1px;
-            font-weight: 900;
-            -webkit-text-stroke: 0.04em currentColor;
+            display: inline;
+            margin: 0;
+            font-weight: normal;
+            -webkit-text-stroke: 0;
             vertical-align: baseline;
             line-height: 1;
         }
@@ -1004,6 +1007,46 @@
         .danda.danda-adjacent {
             margin-left: -0.28em !important;
             margin-right: 2px !important;
+        }
+
+        /* Combining Accent Fallback for Rik Text */
+        .accent-swarita {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--swarita-bottom);
+            isolation: isolate;
+        }
+        .accent-anudatta {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--anudatta-bottom);
+            isolation: isolate;
+        }
+        .accent-kampa, .accent-trikampa {
+            display: inline-block;
+            width: 0;
+            overflow: visible;
+            color: inherit;
+            font-family: 'AdishilaVedic', 'Noto Sans Devanagari', 'JaimineeyaSwara', sans-serif;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: relative;
+            left: 0;
+            bottom: var(--anudatta-bottom);
         }
 
         /* Footnotes */

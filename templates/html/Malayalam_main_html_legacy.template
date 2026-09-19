@@ -146,11 +146,12 @@
             font-weight: 700;
             line-height: 1;
             text-align: center;
-            min-height: 1.1em;
+            height: 1.35em;
+            min-height: 1.35em;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             user-select: text;
             white-space: nowrap;
         }
@@ -159,6 +160,7 @@
             font-family: var(--font-doc);
             font-size: 1.4rem;
             color: var(--primary-color);
+            height: 1.7em;
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;

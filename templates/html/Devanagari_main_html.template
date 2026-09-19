@@ -669,6 +669,7 @@
         .mantra-word {
             flex-direction: column-reverse;
             justify-content: flex-end;
+            vertical-align: bottom;
         }
         .mantra-connected-group {
             align-items: flex-end;
@@ -681,16 +682,25 @@
             line-height: 1.25;
             white-space: nowrap;
             position: relative;
+            height: 1.7em;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
         }
 
         .swara-text {
             font-family: var(--font-doc);
             color: var(--swara-red);
             font-size: var(--swara-size);
-            line-height: 1.25;
+            line-height: 1;
             text-align: center;
-            min-height: 1.2em;
+            height: 1.35em;
+            min-height: 1.35em;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
             white-space: nowrap;
+            margin-bottom: 2px;
         }
 
         .word-space {
@@ -901,12 +911,12 @@
         .swara-mod.mod-under,
         .swara-mod.mod-underbar {
             font-family: var(--font-doc);
-            font-size: 1.45em;
+            font-size: 1.0em;
             color: var(--modifier-color);
-            display: inline-block;
-            margin: 0 1px;
-            font-weight: 900;
-            -webkit-text-stroke: 0.04em currentColor;
+            display: inline;
+            margin: 0;
+            font-weight: normal;
+            -webkit-text-stroke: 0;
             vertical-align: baseline;
             line-height: 1;
         }
