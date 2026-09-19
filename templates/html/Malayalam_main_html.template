@@ -703,9 +703,9 @@
         }
 
         \BLOCK{ if kpully }
-        /* KPULLY (Kodunthirapully Paddhati) */
+        /* KPULLY (Kodunthirapully Paddhati): Swara text rendered ABOVE mantra text */
         ruby.vedic-ruby {
-            flex-direction: column;
+            flex-direction: column-reverse;
             align-items: center;
         }
         \BLOCK{ endif }
