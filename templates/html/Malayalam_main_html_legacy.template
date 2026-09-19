@@ -369,11 +369,12 @@
             font-size: 1.1em;
             color: var(--modifier-color);
             display: inline;
-            margin-left: -0.12em;
+            margin-left: -0.06em;
             margin-right: 0.02em;
             font-weight: 900;
             -webkit-text-stroke: 0.04em currentColor;
-            vertical-align: baseline;
+            position: relative;
+            bottom: 0.12em;
             line-height: 1;
         }
         .swara-mod.mod-comma,
