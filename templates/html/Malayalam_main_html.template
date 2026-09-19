@@ -681,8 +681,6 @@
             color: var(--swara-red) !important;
             font-weight: 700;
             line-height: 1;
-            height: 1.35em;
-            min-height: 1.35em;
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -696,7 +694,6 @@
             font-family: var(--font-doc);
             font-size: var(--mantra-size);
             color: var(--primary-color);
-            height: 1.7em;
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;
@@ -961,12 +958,13 @@
         .swara-mod.mod-under,
         .swara-mod.mod-underbar {
             font-family: var(--font-doc);
-            font-size: 1.0em;
+            font-size: 1.1em;
             color: var(--modifier-color);
             display: inline;
-            margin: 0;
-            font-weight: normal;
-            -webkit-text-stroke: 0;
+            margin-left: -0.12em;
+            margin-right: 0.02em;
+            font-weight: 900;
+            -webkit-text-stroke: 0.04em currentColor;
             vertical-align: baseline;
             line-height: 1;
         }

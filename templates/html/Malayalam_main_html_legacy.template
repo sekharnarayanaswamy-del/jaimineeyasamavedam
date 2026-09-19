@@ -146,12 +146,11 @@
             font-weight: 700;
             line-height: 1;
             text-align: center;
-            height: 1.35em;
-            min-height: 1.35em;
+            min-height: 1.1em;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             user-select: text;
             white-space: nowrap;
         }
@@ -160,7 +159,6 @@
             font-family: var(--font-doc);
             font-size: 1.4rem;
             color: var(--primary-color);
-            height: 1.7em;
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;
@@ -366,6 +364,18 @@
             pointer-events: none;
         }
         .swara-mod.mod-under,
+        .swara-mod.mod-underbar {
+            font-family: var(--font-doc);
+            font-size: 1.1em;
+            color: var(--modifier-color);
+            display: inline;
+            margin-left: -0.12em;
+            margin-right: 0.02em;
+            font-weight: 900;
+            -webkit-text-stroke: 0.04em currentColor;
+            vertical-align: baseline;
+            line-height: 1;
+        }
         .swara-mod.mod-comma,
         .swara-mod.mod-dot {
             font-family: var(--font-doc);
