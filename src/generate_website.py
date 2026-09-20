@@ -482,6 +482,7 @@ def format_malayalam_mantra_html(mantra_text, footnotes_dict=None, counter_obj=N
     collected_footnotes = []
 
     text = mantra_text.replace('\n', ' ').strip()
+    text = re.sub(r'(\S)\s+\(', r'\1(', text)
     text = re.sub(r'\|\|', '॥', text)
     text = re.sub(r'\|\s*\|', '॥', text)
     text = re.sub(r'।।', '॥', text)
@@ -700,6 +701,7 @@ def format_mantra_text_html(mantra_text, footnotes_dict=None, counter_obj=None, 
     # Pattern: Word + (Swara) where Swara is in parentheses
     i = 0
     text = mantra_text.replace('\n', ' ').replace('\r', '').strip()
+    text = re.sub(r'(\S)\s+\(', r'\1(', text)
     
     # --- Normalize Dandas for Parsing ---
     # Convert various forms (ASCII pipes, spaced pipes, double singles) to Standard Devanagari

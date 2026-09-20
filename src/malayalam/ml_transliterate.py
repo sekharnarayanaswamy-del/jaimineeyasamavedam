@@ -264,6 +264,7 @@ def malayalam_to_devanagari_mantra_line(line: str) -> str:
     """Convert a Malayalam Samam mantra line (with Grantha swara markers and modifiers) to Devanagari."""
     if not line:
         return ""
+    line = re.sub(r'(\S)\s+\(', r'\1(', line)
     
     # 1. Normalize PUA Grantha characters if any
     pua_to_grantha = {

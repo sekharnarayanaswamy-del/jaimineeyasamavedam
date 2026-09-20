@@ -255,7 +255,12 @@ def step_preprocess_visarga_accent(text):
     # accents are like (1), (2), (3), (4) or (cha), (ki) etc in Samam
     pattern = r'([ः])\s*(\([^)]+\))'
     # Replace with: Accent Marker first, then Visarga
-    return re.sub(pattern, r'\2\1', text)
+    text = re.sub(pattern, r'\2\1', text)
+
+    # 4. Remove space between syllable/token and opening parenthesis
+    # e.g. "ए (तच्)आयुषे (टिख्)।" -> "ए(तच्)आयुषे(टिख्)।"
+    text = re.sub(r'(\S)\s+\(', r'\1(', text)
+    return text
 
 # --- End of Moved Functions ---
 

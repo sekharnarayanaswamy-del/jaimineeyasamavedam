@@ -45,7 +45,94 @@ def run_check(name, fn):
         print(f"{RED}[ERROR]{RESET} ({elapsed:.2f}s) {e}")
         return False
 
-# --- 1. Domain Metric Invariants ---
+# --- 1. Live Ingestion from Raw Unicode Texts ---
+def check_live_ingestion():
+    """Execute generate_json.py from raw Unicode texts to guarantee live pipeline viability."""
+    samhita_in = REPO_ROOT / "data" / "input" / "Samhita_corrected.txt"
+    aaranam_in = REPO_ROOT / "data" / "input" / "Aaranam_latest.txt"
+    
+    if not samhita_in.exists():
+        return False, f"Missing {samhita_in}"
+    if not aaranam_in.exists():
+        return False, f"Missing {aaranam_in}"
+
+    # 1. Ingest Samhita
+    cmd_samhita = [
+        sys.executable,
+        str(REPO_ROOT / "src" / "generate_json.py"),
+        str(samhita_in),
+        "--type", "samhita",
+        "--output", "data/output/Samhita_corrected_out.json"
+    ]
+    res_sam = subprocess.run(cmd_samhita, cwd=REPO_ROOT, capture_output=True, text=True)
+    if res_sam.returncode != 0:
+        return False, f"Samhita ingestion failed: {res_sam.stderr.strip() or res_sam.stdout.strip()}"
+
+    # 2. Ingest Aaranam
+    cmd_aaranam = [
+        sys.executable,
+        str(REPO_ROOT / "src" / "generate_json.py"),
+        str(aaranam_in),
+        "--type", "aaranam",
+        "--output", "data/output/Aaranam_latest_out.json"
+    ]
+    res_aar = subprocess.run(cmd_aaranam, cwd=REPO_ROOT, capture_output=True, text=True)
+    if res_aar.returncode != 0:
+        return False, f"Aaranam ingestion failed: {res_aar.stderr.strip() or res_aar.stdout.strip()}"
+
+    # 3. Regenerate Structure Summary CSV
+    cmd_summary = [
+        sys.executable,
+        str(REPO_ROOT / "src" / "generate_json_summary.py")
+    ]
+    res_sum = subprocess.run(cmd_summary, cwd=REPO_ROOT, capture_output=True, text=True)
+    if res_sum.returncode != 0:
+        return False, f"Summary generation failed: {res_sum.stderr.strip()}"
+
+    # 4. Verify in-memory structure counts
+    from core.swara_engine import count_samams
+    with open(REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json", "r", encoding="utf-8") as f:
+        sam_data = json.load(f)
+    sam_supers = sam_data.get("supersection", {})
+    sam_sections = sum(len(sup.get("sections", {})) for sup in sam_supers.values())
+    sam_subsections = sum(
+        sum(len(sec.get("subsections", {})) for sec in sup.get("sections", {}).values())
+        for sup in sam_supers.values()
+    )
+    sam_samas = sum(
+        sum(
+            sum(count_samams(ms.get("corrected-mantra", "")) for ms in sub.get("corrected-mantra_sets", []))
+            for sub in sec.get("subsections", {}).values()
+        )
+        for sup in sam_supers.values()
+        for sec in sup.get("sections", {}).values()
+    )
+    if len(sam_supers) != 6 or sam_sections != 59 or sam_subsections != 722 or sam_samas != 1226:
+        return False, f"Samhita live counts mismatch: {len(sam_supers)} Pathas, {sam_sections} Khandas, {sam_subsections} Riks, {sam_samas} Samas"
+
+    with open(REPO_ROOT / "data" / "output" / "Aaranam_latest_out.json", "r", encoding="utf-8") as f:
+        aar_data = json.load(f)
+    aar_supers = aar_data.get("supersection", {})
+    aar_sections = sum(len(sup.get("sections", {})) for sup in aar_supers.values())
+    aar_subsections = sum(
+        sum(len(sec.get("subsections", {})) for sec in sup.get("sections", {}).values())
+        for sup in aar_supers.values()
+    )
+    aar_samas = sum(
+        sum(
+            sum(count_samams(ms.get("corrected-mantra", "")) for ms in sub.get("corrected-mantra_sets", []))
+            for sub in sec.get("subsections", {}).values()
+        )
+        for sup in aar_supers.values()
+        for sec in sup.get("sections", {}).values()
+    )
+    if len(aar_supers) != 6 or aar_sections != 25 or aar_subsections != 154 or aar_samas != 295:
+        return False, f"Aaranam live counts mismatch: {len(aar_supers)} Parvas, {aar_sections} Kandahs, {aar_subsections} Subsections, {aar_samas} Samas"
+
+    return True, f"Samhita ({sam_subsections} Riks, {sam_samas} Samas) & Aaranam ({aar_subsections} Subsections, {aar_samas} Samas) parsed live"
+
+
+# --- 2. Domain Metric Invariants ---
 def check_domain_metrics():
     summary_path = REPO_ROOT / "data" / "output" / "JSV_Structure_Summary.csv"
     if not summary_path.exists():
@@ -214,13 +301,14 @@ def main():
     print(f"  Python   : {sys.version.split()[0]}\n")
     
     checks = [
-        ("1. Domain Invariants (6 Pathas, 59 Khandas, 1226 Samas)", check_domain_metrics),
-        ("2. Typed AST Lossless Roundtrip", check_ast_models),
-        ("3. Swara Engine & Visarga-Accent Rules", check_swara_engine),
-        ("4. Structural Tag Balance & Integrity", check_structural_tags),
-        ("5. 3-Tier Version & Build Metadata", check_version_engine),
-        ("6. Active Baseline Input Checksums", check_baseline_integrity),
-        ("7. Modular Rendering Engines", check_renderers),
+        ("1. Live Ingestion from Raw Unicode Texts", check_live_ingestion),
+        ("2. Domain Invariants (6 Pathas, 59 Khandas, 1226 Samas)", check_domain_metrics),
+        ("3. Typed AST Lossless Roundtrip", check_ast_models),
+        ("4. Swara Engine & Visarga-Accent Rules", check_swara_engine),
+        ("5. Structural Tag Balance & Integrity", check_structural_tags),
+        ("6. 3-Tier Version & Build Metadata", check_version_engine),
+        ("7. Active Baseline Input Checksums", check_baseline_integrity),
+        ("8. Modular Rendering Engines", check_renderers),
     ]
     
     results = []

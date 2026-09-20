@@ -39,7 +39,7 @@ from malayalam.ml_transliterate import (
     malayalam_syllable_count,
 )
 
-WORD_RE = re.compile(r"([^\s()।॥]+)((?:\([^)]+\))+)?([ः:]?)")
+from core.swara_engine import WORD_RE, tokenize_mantra_line
 DEVANAGARI_NUMERAL_RE = re.compile(r"^[०-९]+$")
 
 # Canonical Devanagari/Malayalam -> ASCII digit conversion for Samam
@@ -65,86 +65,6 @@ def normalize_malayalam_samam_numerals(text: str) -> str:
 # as a dotted circle in the PDF.
 ANUSVARA_FORMS = {"\u092E\u094D", "\u0902", "\u092E\u094D\u0903"}  # म्, ं, म्ः
 
-
-def tokenize_mantra_line(text: str) -> list[dict]:
-    """Split a mantra line into ordered tokens.
-
-    Token types: word (with optional swara marker + trailing visarga),
-    danda, footnote ((sN)), marker (standalone swara), space, other.
-    """
-    tokens: list[dict] = []
-    i = 0
-    n = len(text)
-    while i < n:
-        ch = text[i]
-        if ch.isspace():
-            tokens.append({"type": "space"})
-            i += 1
-            continue
-        if ch in "।॥|":
-            tokens.append({"type": "danda", "char": ch})
-            i += 1
-            continue
-        if ch == "(":
-            m = re.match(r"\(s\d+\)", text[i:])
-            if m:
-                tokens.append({"type": "footnote", "text": m.group(0)})
-                i += len(m.group(0))
-                continue
-            m = re.match(r"\(([^)]+)\)", text[i:])
-            if m:
-                tokens.append({"type": "marker", "marker": m.group(1)})
-                i += len(m.group(0))
-                continue
-            tokens.append({"type": "other", "text": ch})
-            i += 1
-            continue
-        m = WORD_RE.match(text[i:])
-        if m and m.group(1):
-            swara_group = m.group(2) or ""
-            matched_len = m.end()
-            word_str = m.group(1)
-            # If immediately followed by underscore after swara, attach _ as suffix to word
-            # and continue consuming any further parenthesized swara/modifier groups
-            while i + matched_len < n:
-                if text[i + matched_len] == "_":
-                    word_str += "_"
-                    matched_len += 1
-                m_more = re.match(r"^((?:\([^)]+\))+)", text[i + matched_len:])
-                if m_more:
-                    swara_group = (swara_group or "") + m_more.group(1)
-                    matched_len += len(m_more.group(1))
-                    continue
-                break
-
-            fn_tokens = []
-            if swara_group:
-                all_parens = re.findall(r"\(([^)]+)\)", swara_group)
-                swara_markers = []
-                for p in all_parens:
-                    if re.match(r"^s\d+$", p):
-                        fn_tokens.append(f"({p})")
-                    else:
-                        swara_markers.append(p)
-                swara_val = "".join(f"({m_val})" for m_val in swara_markers) if len(swara_markers) > 1 else (swara_markers[0] if swara_markers else None)
-            else:
-                swara_val = None
-
-            tokens.append(
-                {
-                    "type": "word",
-                    "word": word_str,
-                    "swara": swara_val,
-                    "visarga": m.group(3),
-                }
-            )
-            for fn in fn_tokens:
-                tokens.append({"type": "footnote", "text": fn})
-            i += matched_len
-            continue
-        tokens.append({"type": "other", "text": ch})
-        i += 1
-    return tokens
 
 
 MODIFIER_DIRECT_MAP = {

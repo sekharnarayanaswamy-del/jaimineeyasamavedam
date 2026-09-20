@@ -5,11 +5,14 @@ Uses the shared samam_utils module for consistent counting.
 """
 import json
 import csv
+import os
+import sys
 from collections import OrderedDict
 from samam_utils import count_samams_with_fallback
 from utils import get_generated_metadata
 
-INPUT_FILE = r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
+default_input = r'data\output\Samhita_corrected_out.json' if os.path.exists(r'data\output\Samhita_corrected_out.json') else r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
+INPUT_FILE = sys.argv[1] if len(sys.argv) > 1 else default_input
 OUTPUT_CSV = r'data\output\JSV_Structure_Summary.csv'
 OUTPUT_TXT = r'data\output\JSV_Structure_Summary.txt'
 
