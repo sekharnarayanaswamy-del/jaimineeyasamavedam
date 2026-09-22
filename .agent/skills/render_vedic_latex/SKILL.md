@@ -48,20 +48,20 @@ When generating "Rik Samhita" (Continuous Text):
 
 ### Step A: Generate JSON from Malayalam Text
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json
+python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json
 ```
 
 ### Step B: Compile PDF / HTML / TXT Outputs
 *   **Combined Mode (Default):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam
     ```
 *   **Separate Mode (Rik & Samam with metadata):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate
     ```
 *   **NoMeta Mode (Mantra texts only):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
     ```
 

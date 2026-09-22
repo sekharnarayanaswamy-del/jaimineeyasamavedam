@@ -4,16 +4,33 @@ A production-grade Vedic text processing, transliteration, and typesetting syste
 
 ---
 
-## 📖 Quick Start & CLI Workflows
+## 🚀 One-Shot Master Pipeline (Devanagari & Malayalam)
+
+To build the **entire pipeline for both Devanagari and Malayalam in one shot** (generating **HTML, PDF, and TXT**):
+
+```powershell
+python src/run_pipeline.py
+```
+
+### Useful Options:
+- `--modes combined separate nometa`: Render all three layout variants in one shot.
+- `--html-only`: Fast generation of HTML & TXT (skips LaTeX compilation).
+- `--pdf-only`: Compile only PDFs via XeLaTeX/LuaLaTeX.
+- `--script devanagari` or `--script malayalam`: Target a single script.
+- `--no-kpully`: Skip Kodunthirapully variant generation.
+
+---
+
+## 📖 Step-by-Step & Individual CLI Workflows
 
 ### 1. Malayalam Pipeline (Full Samhita, Rik + Samam + RDC)
 
 The Malayalam workflow supports interactive editing of Unicode text files, JSON AST conversion, and rendering to PDF, HTML, and Unicode TXT.
 
 #### Step A: Generate JSON from Text / Corrections
-Whenever you edit or correct [`data/input/Malayalam/Samhita_Malayalam_corrected.txt`](data/input/Malayalam/Samhita_Malayalam_corrected.txt), convert it into the AST JSON:
+Whenever you edit or correct [`data/input/Malayalam/Samam_Malayalam_Unicode.txt`](data/input/Malayalam/Samam_Malayalam_Unicode.txt), convert it into the AST JSON:
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json
+python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json
 ```
 
 #### Step B: Render PDF, HTML, and TXT
@@ -21,16 +38,16 @@ Run `src/render_pdf.py` with `--script malayalam` in one of the three output mod
 
 1. **Combined Mode (Default — Rik + Samam + Rishi/Devata/Chandas):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam
    ```
    *Generates:*
-   - `data/output/pdf/Malayalam/Samhita_Malayalam.pdf`
-   - `data/output/html/Malayalam/Samhita_Malayalam.html`
-   - `data/output/txt/Malayalam/Samhita_Malayalam_Unicode.txt`
+   - `data/output/pdf/Malayalam/Samam_Malayalam.pdf`
+   - `data/output/html/Malayalam/Samam_Malayalam.html`
+   - `data/output/txt/Malayalam/Samam_Malayalam_Unicode.txt`
 
 2. **Separate Mode (Separate Rik and Samam files with Metadata):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate
    ```
    *Generates:*
    - `data/output/pdf/Malayalam/Rik_Malayalam.pdf` & `Samam_Malayalam.pdf`
@@ -39,7 +56,7 @@ Run `src/render_pdf.py` with `--script malayalam` in one of the three output mod
 
 3. **No-Metadata Mode (Mantra Texts Only, no RDC headers):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
    ```
    *Generates:*
    - `data/output/pdf/Malayalam/Rik_NoMeta_Malayalam.pdf` & `Samam_NoMeta_Malayalam.pdf`
@@ -48,7 +65,7 @@ Run `src/render_pdf.py` with `--script malayalam` in one of the three output mod
 
 #### All-in-One Malayalam Generation Command
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corrected.txt --output data/output/malayalam/Samhita_Malayalam.json; $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode separate; python -X utf8 src/render_pdf.py data/output/malayalam/Samhita_Malayalam.json --script malayalam --output-mode nometa
+python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json; $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
 ```
 
 ---
@@ -57,7 +74,7 @@ python -X utf8 src/generate_json.py data/input/Malayalam/Samhita_Malayalam_corre
 
 #### Step A: Generate JSON from Devanagari Source
 ```powershell
-python -X utf8 src/generate_json.py data/input/Samhita_corrected.txt --output data/output/Samhita_corrected_out.json
+python -X utf8 src/generate_json.py data/input/Samhita_Devanagari_Unicode.txt --output data/output/Samhita_corrected_out.json
 ```
 
 #### Step B: Render Devanagari Outputs

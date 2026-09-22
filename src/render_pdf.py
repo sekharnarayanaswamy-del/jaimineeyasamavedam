@@ -648,6 +648,10 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
             proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
             if proc.returncode != 0:
                 print(f"[WARNING] xelatex compilation returned non-zero code {proc.returncode}")
+                lines = proc.stdout.splitlines()
+                for i, line in enumerate(lines):
+                    if line.startswith("!"):
+                        print("\n".join(lines[i:i+4]))
         except Exception as e:
             print(f"[WARNING] Failed to run xelatex: {e}")
         
@@ -809,16 +813,16 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
     
     # Standalone punctuation/spacing modifiers
     if m in ('C', 'c', '·', 'ॱ', '़', '\uE001'):
-        glyph = r"{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.25ex}{\hspace{0.08em}\char" + '"E001}}}' + r"\hspace{0.12em}"
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.78ex}{\hspace{0.02em}\char" + '"E001}}}}'
         return f"{chunk}{glyph}"
     elif m in ('E', 'e', '┃', '\uE002'):
-        glyph = r"{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.05ex}{\hspace{0.05em}\char" + '"E002}}}' + r"\hspace{0.12em}"
+        glyph = r"{\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{-0.18ex}{\hspace{0.05em}\char" + '"E002}}}}' + r"\hspace{0.12em}"
         return f"{chunk}{glyph}"
     elif m == '.':
-        glyph = r"{\textcolor{ModifierSkyBlue}{\textbf{.}}}" + r"\hspace{0.08em}"
+        glyph = r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}" + r"\hspace{0.08em}"
         return f"{chunk}{glyph}"
     elif m == ',':
-        glyph = r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}" + r"\hspace{0.08em}"
+        glyph = r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}" + r"\hspace{0.08em}"
         return f"{chunk}{glyph}"
         
     # Overhead Conjunct Arc (MOD-A2): centered over the syllable itself
@@ -829,40 +833,40 @@ def _apply_deva_modifier_latex(chunk: str, mod: str) -> str:
     elif m in ('G', 'g', '\\', '\uE003'):
         return f"\\modGUnder{{{chunk}}}"
     elif m in ('A', 'a', '⁀', '\uE004'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.38em}\char" + '"E004}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.18ex}{\hspace{-0.38em}\char" + '"E004}}}}'
         return f"{chunk}{glyph}"
     elif m in ('D', 'd', '∧', 'Ʌ', '\uE006'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E006}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E006}}}}'
         return f"{chunk}{glyph}"
     elif m in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\char" + '"E00D}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.18ex}{\char" + '"E00D}}}}'
         return f"{chunk}{glyph}"
     elif m in ('D1', 'd1', 'D_1', 'd_1', '↗', '\uE00E'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E00E}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.05ex}{\hspace{0.04em}\char" + '"E00E}}}}'
         return f"{chunk}{glyph}"
     elif m in ('D2', 'd2', 'D_2', 'd_2', '✓', '\uE00F'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E00F}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.05ex}{\hspace{0.04em}\char" + '"E00F}}}}'
         return f"{chunk}{glyph}"
     elif m in ('H', 'h', '|', '\uE00C'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{0.04em}\char" + '"E00C}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.48ex}{\hspace{-0.18em}\char" + '"E00C}}}}'
         return f"{chunk}{glyph}"
     elif m in ('F', 'f', '╷', '\uE008'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.15ex}{\hspace{0.04em}\char" + '"E008}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.05ex}{\hspace{0.04em}\char" + '"E008}}}}'
         return f"{chunk}{glyph}"
     elif m in ('B', 'b', '^', '˄', '/\\', '\uE005'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E005}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E005}}}}'
         return f"{chunk}{glyph}"
     elif m in ('B1', 'b1', 'B_1', 'b_1', '/', '\uE02C'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E02C}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.15ex}{\hspace{-0.32em}\char" + '"E02C}}}}'
         return f"{chunk}{glyph}"
     elif m in ('I', 'i', '⫽', '\uE02A'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02A}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02A}}}}'
         return f"{chunk}{glyph}"
     elif m in ('J', 'j', '¯', '\uE02B'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.80ex}{\hspace{0.04em}\char" + '"E02B}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.80ex}{\hspace{0.04em}\char" + '"E02B}}}}'
         return f"{chunk}{glyph}"
     elif m in ('K', 'k', '⨯', '\uE02D'):
-        glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02D}}}'
+        glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.50ex}{\hspace{0.04em}\char" + '"E02D}}}}'
         return f"{chunk}{glyph}"
     elif m == '_':
         return f"{chunk}\\underbarMark{{}}"
@@ -881,17 +885,45 @@ def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None, 
     if visarga:
         word += visarga
     
+    if not word or word in ('.', ','):
+        if word == '.':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+        elif word == ',':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
+        return ""
+    
     if with_modifiers:
         core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓़')
         trailing_punct = word[len(core_word):]
-        sw_parts, mods = _parse_swara_and_modifiers(swara)
+        sw_parts, mods = _parse_swara_and_modifiers(swara) if swara else ([], [])
         mods = [m for m in mods if m not in exclude_mods and m.strip('()') not in exclude_mods]
     else:
         core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓़')
         trailing_punct = ''
-        sw_parts, _ = _parse_swara_and_modifiers(swara)
+        sw_parts, _ = _parse_swara_and_modifiers(swara) if swara else ([], [])
         mods = []
     
+    if not core_word:
+        res = []
+        for p in word:
+            if p == '.':
+                res.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}")
+            elif p == ',':
+                res.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}")
+            elif p == '_':
+                res.append(r"\underbarMark{}")
+            else:
+                res.append(_format_deva_word_latex(p, with_modifiers=with_modifiers))
+        return "".join(res)
+
+    mod_c_set = {'C', 'c', '·', 'ॱ', '़', '\uE001'}
+    mod_h_set = {'H', 'h', '|', '│', '॑', 'ˈ', '\uE00C'}
+    
+    has_mod_c = any(m.strip('()') in mod_c_set for m in mods)
+    has_mod_h = any(m.strip('()') in mod_h_set for m in mods)
+    
+    mods = [m for m in mods if m.strip('()') not in mod_c_set and m.strip('()') not in mod_h_set]
+
     sw_str = "" if exclude_swara else (" ".join(sw_parts) if sw_parts else "")
     
     syllables = split_deva_syllables(core_word) if core_word else []
@@ -904,31 +936,63 @@ def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None, 
     
     last_syl_formatted = _format_deva_word_latex(last_syl, with_modifiers=with_modifiers) if last_syl else ''
     
-    # MOD-G: Centered beneath the base syllable itself, before trailing punctuation like underbar is added
+    # Syllable-level modifiers applied directly to last_syl_formatted before stacking
     if with_modifiers and last_syl_formatted:
         has_mod_g = any(m.strip('()') in ('G', 'g', '\\', '\uE003') for m in mods)
         if has_mod_g:
             mods = [m for m in mods if m.strip('()') not in ('G', 'g', '\\', '\uE003')]
             last_syl_formatted = f"\\modGUnder{{{last_syl_formatted}}}"
 
+        # Attach MOD-C (upper shoulder dot) at ~0.78ex height right above top-right of syllable
+        if has_mod_c:
+            last_syl_formatted += r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.4ex}{\hspace{-0.1em}\char" + '"E001}}}}'
+            
+        # Attach MOD-H (high pitch swarita) at ~0.48ex height
+        if has_mod_h:
+            last_syl_formatted += r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.2ex}{\hspace{-0.3em}\char" + '"E00C}}}}'
+
+        syl_mods = []
+        outer_mods = []
+        for m in mods:
+            m_clean = m.strip('()')
+            if m_clean in ('E', 'e', '┃', '\uE002', '_', '.', ','):
+                syl_mods.append(m)
+            else:
+                outer_mods.append(m)
+        
+        if trailing_punct:
+            for p in trailing_punct:
+                if p not in exclude_mods:
+                    if p == '.':
+                        last_syl_formatted += r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+                    elif p == ',':
+                        last_syl_formatted += r"{}\hspace{0.04em}{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
+                    elif p == '_':
+                        last_syl_formatted += r"\underbarMark{}"
+                    else:
+                        last_syl_formatted = _apply_deva_modifier_latex(last_syl_formatted, p)
+        for sm in syl_mods:
+            if sm == '.':
+                last_syl_formatted += r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+            elif sm == ',':
+                last_syl_formatted += r"{}\hspace{0.04em}{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
+            elif sm == '_':
+                last_syl_formatted += r"\underbarMark{}"
+            else:
+                last_syl_formatted = _apply_deva_modifier_latex(last_syl_formatted, sm)
+        
+        mods = outer_mods
+
     if sw_str and last_syl_formatted:
-        clean_sw = sw_str.replace('{', '').replace('}', '')
         sw_styled = f"{{\\smallredfont \\textcolor{{SwaraRed}}{{{sw_str}}}}}"
-        if len(clean_sw) > 1:
-            chunk = f"\\stackleft{{{last_syl_formatted}}}{{{sw_styled}}}"
-        else:
-            chunk = f"\\stackcenter{{{last_syl_formatted}}}{{{sw_styled}}}"
+        chunk = f"\\stackcenter{{{last_syl_formatted}}}{{{sw_styled}}}"
     elif sw_str and not last_syl_formatted:
         sw_styled = f"{{\\smallredfont \\textcolor{{SwaraRed}}{{{sw_str}}}}}"
         chunk = f"\\stackcenter{{\\phantom{{अ}}}}{{{sw_styled}}}"
     else:
         chunk = f"{{{last_syl_formatted}}}"
     
-    if with_modifiers:
-        if trailing_punct:
-            for p in trailing_punct:
-                if p not in exclude_mods:
-                    chunk = _apply_deva_modifier_latex(chunk, p)
+    if with_modifiers and mods:
         for mod in mods:
             chunk = _apply_deva_modifier_latex(chunk, mod)
     
@@ -964,7 +1028,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
     MOD_A1_SET = {'A1', 'a1', 'A_1', 'a_1', '\uE00D'}
     MOD_A2_SET = {'A2', 'a2', 'A_2', 'a_2', '\uE02E'}
     MOD_B_SET = {'B', 'b', '^', '˄', '/\\', '\uE005'}
-    MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '✓', '↗', 'D1', 'd1', 'D2', 'd2', '\uE006', '\uE00E', '\uE00F'}
+    MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '\uE006'}
     DEVA_DIGITS = str.maketrans('0123456789', '०१२३४५६७८९')
     
     footnote_data = subsection.get('footnotes', {})
@@ -1006,7 +1070,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                     prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
                     next_multi = (next_tok and _has_multiple_swaras(next_tok))
                     if prev_multi or next_multi:
-                        paragraph_buffer.append(r"\hspace{0.18em} ")
+                        paragraph_buffer.append(r"\hspace{0.30em} ")
                     else:
                         paragraph_buffer.append(r"\hskip 0pt plus 1.5pt\allowbreak ")
             elif t == 'danda':
@@ -1073,7 +1137,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                             prev_chunk = paragraph_buffer.pop()
                             next_tok = tokens[next_w_idx]
                             chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
-                            d_glyph = r"\rlap{\swarafont \textcolor{ModifierSkyBlue}{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}'
+                            d_glyph = r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{1.18ex}{\hspace{-0.32em}\char" + '"E006}}}}'
                             paragraph_buffer.append(f"\\mbox{{{prev_chunk}{d_glyph}{chunk2}}}")
                             idx = next_w_idx + 1
                             continue
@@ -1182,7 +1246,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                                 chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
                                 chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET | MOD_A_SET)
                                 chunk3 = _format_single_deva_word_latex(third_tok, with_modifiers=True)
-                                d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
+                                d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\char"E006}}}}\hspace{0.18em}'
                                 combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx = third_w_idx + 1
@@ -1190,7 +1254,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                         
                         chunk1 = _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
                         chunk2 = _format_single_deva_word_latex(next_tok, with_modifiers=True)
-                        d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
+                        d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\char"E006}}}}\hspace{0.18em}'
                         combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2}}}"
                         paragraph_buffer.append(combined_mbox)
                         idx = next_w_idx + 1
@@ -1696,37 +1760,37 @@ def _apply_mantrakshara_modifier(syl_esc: str, mod: str) -> str:
         return syl_esc
     m_clean = mod.strip("()")
     if m_clean in ("A", "a", "╭╮", "⁀", "\uE004"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE004}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\\char\"E004}}}}}}}}"
     elif m_clean in ("A1", "a1", "A_1", "a_1", "\uE00D"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.55em}}\uE00D}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.55em}}\\char\"E00D}}}}}}}}"
     elif m_clean in ("A2", "a2", "A_2", "a_2", "\uE02E"):
         return f"\\arcOverSyllable{{{syl_esc}}}"
     elif m_clean in ("B", "b", "^", "˄", "/\\", "∧", "\uE005"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE005}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\\char\"E005}}}}}}}}"
     elif m_clean in ("B1", "b1", "B_1", "b_1", "/", "\uE02C"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.35em}}\uE02C}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.35em}}\\char\"E02C}}}}}}}}"
     elif m_clean in ("C", "c", "ॱ", "·", "़", "\uE001"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.25ex}}{{\\hspace{{0.10em}}\uE001\\hspace{{0.05em}}}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.38ex}}{{\\hspace{{0.02em}}\\char\"E001}}}}}}}}"
     elif m_clean in ("D", "d", "Ʌ", "∧", "\uE006"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\uE006}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.65em}}\\char\"E006}}}}}}}}"
     elif m_clean in ("D1", "d1", "D_1", "d_1", "↗", "\uE00E"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\uE00E}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{1.15ex}}{{\\hspace{{-0.40em}}\\char\"E00E}}}}}}}}"
     elif m_clean in ("D2", "d2", "D_2", "d_2", "✓", "\uE00F"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE00F\\hspace{{0.05em}}}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\\char\"E00F\\hspace{{0.05em}}}}}}}}}}"
     elif m_clean in ("E", "e", "┃", "\uE002"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.05ex}}{{\\hspace{{0.05em}}\uE002}}}}}}"
+        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{-0.18ex}}{{\\hspace{{0.05em}}\\char\"E002}}}}}}}}"
     elif m_clean in ("F", "f", "╷", "\uE008"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.05ex}}{{\\hspace{{0.05em}}\uE008}}}}}}"
+        return f"{syl_esc}{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.05ex}}{{\\hspace{{0.05em}}\\char\"E008}}}}}}}}"
     elif m_clean in ("G", "g", "\\", "╲", "⟍", "\uE003"):
         return f"\\modGUnder{{{syl_esc}}}"
     elif m_clean in ("H", "h", "L", "l", "|", "│", "॑", "ˈ", "\uE00C"):
-        return f"{syl_esc}\\rlap{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{1.10ex}}{{\\hspace{{-0.55em}}\uE00C}}}}}}"
+        return f"{syl_esc}\\rlap{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.48ex}}{{\\hspace{{-0.18em}}\\char\"E00C}}}}}}}}"
     elif m_clean in ("I", "i", "⫽", "\uE02A"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE02A\\hspace{{0.05em}}}}}}}}"
+        return f"{syl_esc}{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\\char\"E02A\\hspace{{0.05em}}}}}}}}}}"
     elif m_clean in ("J", "j", "\uE02B"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.80ex}}{{\\hspace{{0.10em}}\uE02B\\hspace{{0.05em}}}}}}}}"
+        return f"{syl_esc}{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.80ex}}{{\\hspace{{0.10em}}\\char\"E02B\\hspace{{0.05em}}}}}}}}}}"
     elif m_clean in ("K", "k", "\uE02D"):
-        return f"{syl_esc}{{\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\uE02D\\hspace{{0.05em}}}}}}}}"
+        return f"{syl_esc}{{\\Large\\swarafont \\textcolor{{ModifierSkyBlue}}{{\\textbf{{\\raisebox{{0.50ex}}{{\\hspace{{0.10em}}\\char\"E02D\\hspace{{0.05em}}}}}}}}}}"
     elif m_clean == "_":
         return f"{syl_esc}\\underbarMark{{}}"
     return syl_esc
@@ -1758,7 +1822,7 @@ def _has_multiple_swaras(tok) -> bool:
         return True
     if sw_parts:
         sw_text = sw_parts[0].strip("()")
-        if "\u1134D" in sw_text or "\u0D4D" in sw_text or len(sw_text) >= 3:
+        if "\u1134D" in sw_text or "\u0D4D" in sw_text or "\u094D" in sw_text or len(sw_text) >= 3:
             return True
     return False
 
@@ -1912,7 +1976,9 @@ def _swara_latex(swara: str) -> str:
     if swara in MODIFIER_KEYS or swara in ("A", "B", "C", "D", "E", "F", "G", "H", "L", "a", "b", "c", "d", "e", "f", "g", "h", "l"):
         return ""
     # Resolve to canonical PUA/Malayalam ligature if mapped
-    clean_swara = SWARA_CANONICAL_MAP.get(swara, swara)
+    from malayalam.ml_map import marker_to_grantha
+    g_swara = marker_to_grantha(swara)
+    clean_swara = SWARA_CANONICAL_MAP.get(g_swara, g_swara)
     return f"{{\\swarafont \\bfseries \\textcolor{{SwaraRed}}{{{clean_swara}}}}}"
 
 
@@ -1927,11 +1993,29 @@ def wrap_latin_for_latex(text: str) -> str:
 
 def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=None, exclude_swara=False):
     """Format a single Malayalam word token with swara stack and modifiers."""
-    from malayalam.ml_transliterate import split_malayalam_syllables
+    from malayalam.ml_transliterate import split_malayalam_syllables, devanagari_to_malayalam
     
     word = tok.get('word', '')
     swara = tok.get('swara', '')
     if not word:
+        return ""
+        
+    # Extract embedded parenthesized swara modifiers from word if present
+    if "(" in word:
+        embedded_mods = re.findall(r"\(([^)]+)\)", word)
+        if embedded_mods:
+            word = re.sub(r"\([^)]*\)", "", word)
+            swara = (swara or "") + "".join(f"({m})" for m in embedded_mods)
+        
+    word = devanagari_to_malayalam(word)
+    if swara:
+        swara = devanagari_to_malayalam(swara)
+    
+    if word in ('.', ','):
+        if word == '.':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+        elif word == ',':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
         return ""
     
     exclude_mods = exclude_mods or set()
@@ -1939,16 +2023,34 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
     trailing_punct = word[len(core_word):]
     
     if not core_word:
-        punct_esc = escape_for_latex(word)
-        return f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{punct_esc}}}}}"
+        res = []
+        for p in word:
+            if p == '.':
+                res.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}")
+            elif p == ',':
+                res.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}")
+            elif p == '_':
+                res.append(r"\underbarMark{}")
+            else:
+                p_esc = escape_for_latex(p)
+                res.append(f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{p_esc}}}}}")
+        return "".join(res)
     
     MOD_A2_SET = {'A2', 'a2', 'A_2', 'a_2', '\uE02E'}
+    mod_c_set = {'C', 'c', '·', 'ॱ', '़', '\uE001'}
+    mod_h_set = {'H', 'h', '|', '│', '॑', 'ˈ', '\uE00C'}
     
     swara_parts, mod_parts = _parse_swara_and_modifiers(swara) if swara else ([], [])
     active_mods = [m for m in mod_parts if m.strip("()") not in exclude_mods]
     
     has_mod_a2 = any(m.strip("()") in MOD_A2_SET for m in active_mods)
     active_mods = [m for m in active_mods if m.strip("()") not in MOD_A2_SET]
+    
+    has_mod_c = any(m.strip("()") in mod_c_set for m in active_mods)
+    has_mod_h = any(m.strip("()") in mod_h_set for m in active_mods)
+    
+    if with_modifiers:
+        active_mods = [m for m in active_mods if m.strip("()") not in mod_c_set and m.strip("()") not in mod_h_set]
     
     syllables = split_malayalam_syllables(core_word)
     parts = []
@@ -1957,9 +2059,9 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
         syl_esc = escape_for_latex(syl)
         if syl in ("_", ".", ",", ";", "._", "_.", ",_"):
             if syl == '.':
-                parts.append(r"{\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}")
+                parts.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}")
             elif syl == ',':
-                parts.append(r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}")
+                parts.append(r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}")
             elif syl == '_':
                 parts.append(r"\underbarMark{}")
             else:
@@ -1971,11 +2073,16 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
                 active_mods = [m for m in active_mods if m.strip("()") not in ("G", "g", "\\", "╲", "⟍", "\uE003")]
                 if has_mod_g:
                     syl_mod = f"\\modGUnder{{{syl_mod}}}"
+                if has_mod_c:
+                    syl_mod += r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.38ex}{\hspace{0.02em}\char" + '"E001}}}}'
+                if has_mod_h:
+                    syl_mod += r"\rlap{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\raisebox{0.48ex}{\hspace{-0.18em}\char" + '"E00C}}}}'
                 for mod in active_mods:
                     syl_mod = _apply_mantrakshara_modifier(syl_mod, mod)
             
             swara_str = "".join(swara_parts)
             swara_latex = _swara_latex(swara_str) if (not exclude_swara and swara_str) else ""
+                
             if swara_latex:
                 stack_code = f"\\stackcenter{{\\malayalamfont {syl_mod}}}{{{swara_latex}}}"
             else:
@@ -1990,9 +2097,9 @@ def _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=N
                         if p == '_':
                             stack_code += r"\underbarMark{}"
                         elif p == '.':
-                            stack_code += r"{\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+                            stack_code += r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
                         elif p == ',':
-                            stack_code += r"{\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
+                            stack_code += r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
                         else:
                             p_esc = escape_for_latex(p)
                             stack_code += f"{{\\malayalamfont \\textcolor{{ModifierSkyBlue}}{{{p_esc}}}}}"
@@ -2020,7 +2127,7 @@ def _render_malayalam_mantra_body(subsection):
     MOD_A1_SET = {'A1', 'a1', 'A_1', 'a_1', '\uE00D'}
     MOD_A2_SET = {'A2', 'a2', 'A_2', 'a_2', '\uE02E'}
     MOD_B_SET = {'B', 'b', '^', '˄', '/\\', '\uE005'}
-    MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '✓', '↗', 'D1', 'd1', 'D2', 'd2', '\uE006', '\uE00E', '\uE00F'}
+    MOD_D_SET = {'D', 'd', '∧', 'Ʌ', '\uE006'}
 
     footnote_data = subsection.get('footnotes', {})
     paragraph_buffer = []
@@ -2030,6 +2137,7 @@ def _render_malayalam_mantra_body(subsection):
         line = mantra_set.get('malayalam-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
         if not line:
             continue
+        line = devanagari_to_malayalam(line)
         line = line.replace('ർ', '൪').replace('ര്', '൪')
         tokens = tokenize_mantra_line(line)
         
@@ -2194,7 +2302,7 @@ def _render_malayalam_mantra_body(subsection):
                                 chunk1 = _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
                                 chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True, exclude_mods=MOD_A1_SET | MOD_D_SET | MOD_A_SET)
                                 chunk3 = _format_single_malayalam_word_latex(third_tok, with_modifiers=True)
-                                d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
+                                d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\char"E006}}}}\hspace{0.18em}'
                                 combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2} \\dandaWithArc{{{d_char}}} {chunk3}}}"
                                 paragraph_buffer.append(combined_mbox)
                                 idx_t = third_w_idx + 1
@@ -2202,7 +2310,7 @@ def _render_malayalam_mantra_body(subsection):
                         
                         chunk1 = _format_single_malayalam_word_latex(tok, with_modifiers=True, exclude_mods=MOD_D_SET)
                         chunk2 = _format_single_malayalam_word_latex(next_tok, with_modifiers=True)
-                        d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\swarafont \textcolor{ModifierSkyBlue}{\char"E006}}}\hspace{0.18em}'
+                        d_glyph = r'\hspace{0.18em}\makebox[0pt][c]{\raisebox{1.18ex}{\Large\swarafont \textcolor{ModifierSkyBlue}{\textbf{\char"E006}}}}\hspace{0.18em}'
                         combined_mbox = f"\\mbox{{{chunk1}{d_glyph}{chunk2}}}"
                         paragraph_buffer.append(combined_mbox)
                         idx_t = next_w_idx + 1
@@ -2896,7 +3004,7 @@ def render_mod_html(mod_str: str) -> str:
     return f'<span class="swara-mod">{mod_str}</span>'
 
 DEVA_SYLLABLE_RE = re.compile(
-    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ┃L╷^⁀∧✓↗])*'
+    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ़┃L╷^⁀∧✓↗])*'
 )
 
 def split_deva_syllables(text: str):
@@ -2905,8 +3013,8 @@ def split_deva_syllables(text: str):
 
 def format_deva_syl_html(syl: str, with_modifiers: bool = True) -> str:
     if not with_modifiers:
-        return syl.rstrip('_,.\\·ॱ┃L╷^⁀∧✓↗')
-    m = re.match(r'^(.*?)([_,.\\·ॱ┃L╷^⁀∧✓↗]*)$', syl)
+        return syl.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
+    m = re.match(r'^(.*?)([_,.\\·ॱ़┃L╷^⁀∧✓↗]*)$', syl)
     base = m.group(1) if m else syl
     extras = m.group(2) if m else ''
     extras_list = []
@@ -3049,12 +3157,12 @@ def render_deva_html_from_line(
             span_mod_html = None
             span_mod_type = None
             if not with_modifiers:
-                core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+                core_word = word.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
                 punct_html = ''
                 mods_html = ''
                 sw_parts, _ = _parse_swara_and_modifiers(swara)
             else:
-                core_word = word.rstrip('_,.\\·ॱ┃L╷^⁀∧✓')
+                core_word = word.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
                 trailing_punct = word[len(core_word):]
                 punct_html = ''.join([render_mod_html(p) for p in trailing_punct])
                 sw_parts, mods = _parse_swara_and_modifiers(swara)
@@ -3581,8 +3689,9 @@ def render_vedic_html_from_line(
     """Exact Python equivalent of renderVedicHTML from Curation Tool app.js.
     Renders stacked red swaras with <ruby> and blue modifiers with .swara-mod.
     """
-    from malayalam.ml_transliterate import split_malayalam_syllables
+    from malayalam.ml_transliterate import split_malayalam_syllables, devanagari_to_malayalam
 
+    text = devanagari_to_malayalam(text)
     text = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', text)
     text = re.sub(r'\u200d(?=\()', '', text)
     text = re.sub(r'(\S)\s+\(', r'\1(', text)
@@ -3677,11 +3786,11 @@ def render_vedic_html_from_line(
             
             for pm in paren_re.finditer(extras):
                 inner = (pm.group(1) or pm.group(2) or '').strip()
-                if inner in ('C', 'c', '·', '\uE001'):
+                if inner in ('C', 'c', '·', 'ॱ', '़', '\uE001'):
                     modifiers_html.append('<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span>')
-                elif inner in ('H', 'h', '|', '\uE00C'):
+                elif inner in ('H', 'h', 'L', 'l', '|', '│', '॑', 'ˈ', '\uE00C'):
                     modifiers_html.append('<span class="swara-mod mod-h" title="MOD-H: High Pitch Swarita">&#xE00C;</span>')
-                elif inner in ('G', 'g', '\\', '\uE003'):
+                elif inner in ('G', 'g', '\\', '╲', '⟍', '\uE003'):
                     has_mod_g = True
                 elif inner in ('A1', 'a1', 'A_1', 'a_1', '\uE00D'):
                     if next_is_danda:
@@ -3690,7 +3799,7 @@ def render_vedic_html_from_line(
                         word_has_mod_a1_danda = True
                     else:
                         modifiers_html.append('<span class="swara-mod mod-a1" title="MOD-A1: Arc over Danda">&#xE00D;</span>')
-                elif inner in ('A', 'a', '⁀', '\uE004'):
+                elif inner in ('A', 'a', '╭╮', '⁀', '\uE004'):
                     if next_is_danda:
                         pending_danda_has_a1 = True
                         skip_next_space = True
@@ -3699,7 +3808,7 @@ def render_vedic_html_from_line(
                         modifiers_html.append('<span class="swara-mod mod-a" title="MOD-A: Melodic Arc (⁀)">&#xE004;</span>')
                 elif inner in ('A2', 'a2', 'A_2', 'a_2', '\uE02E'):
                     modifiers_html.append('<span class="swara-mod mod-a2" title="MOD-A2: Overhead Conjunct Arc">&#xE02E;</span>')
-                elif inner in ('D', 'd', '∧', 'Ʌ', '\uE006'):
+                elif inner in ('D', 'd', '∧', 'Ʌ', '/\\', '\uE006'):
                     modifiers_html.append('<span class="swara-mod mod-d" title="MOD-D: Chevron Roof (∧)">&#xE006;</span>')
                 elif inner in ('D1', 'd1', 'D_1', 'd_1', '↗', '\uE00E'):
                     modifiers_html.append('<span class="swara-mod mod-d1" title="MOD-D1: Rising Stroke (↗)">&#xE00E;</span>')
@@ -3709,11 +3818,11 @@ def render_vedic_html_from_line(
                     modifiers_html.append('<span class="swara-mod mod-i" title="MOD-I: Double Shoulder Dash (⫽)">&#xE02A;</span>')
                 elif inner in ('J', 'j', '¯', '\uE02B'):
                     modifiers_html.append('<span class="swara-mod mod-j" title="MOD-J: Overhead Horizontal Bar (¯)">&#xE02B;</span>')
-                elif inner in ('B1', 'b1', 'B_1', 'b_1', '\uE02C'):
+                elif inner in ('B1', 'b1', 'B_1', 'b_1', '/', '\uE02C'):
                     modifiers_html.append('<span class="swara-mod mod-b1" title="MOD-B1: Diagonal Bridging Slash (/)">&#xE02C;</span>')
                 elif inner in ('K', 'k', '⨯', 'x', 'X', '\uE02D'):
                     modifiers_html.append('<span class="swara-mod mod-k" title="MOD-K: Shoulder Cross Mark (⨯)">&#xE02D;</span>')
-                elif inner in ('B', 'b', '^', '\uE005'):
+                elif inner in ('B', 'b', '^', '˄', '/\\', '\uE005'):
                     has_mod_b = True
                 elif inner in ('E', 'e', '┃', '\uE002'):
                     modifiers_html.append('<span class="swara-mod mod-e" title="MOD-E: Bold Tone Column (┃)">&#xE002;</span>')
@@ -3759,7 +3868,9 @@ def render_vedic_html_from_line(
                         fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}">{dev_num}</a></sup>'
                     modifiers_html.append(fn_html)
                 else:
-                    swara_letter = SWARA_CANONICAL_MAP.get(inner, inner)
+                    from malayalam.ml_map import marker_to_grantha
+                    g_swara = marker_to_grantha(inner)
+                    swara_letter = SWARA_CANONICAL_MAP.get(g_swara, g_swara)
             
             mods_str = ''.join(modifiers_html)
             syllables = split_malayalam_syllables(base) if base else []

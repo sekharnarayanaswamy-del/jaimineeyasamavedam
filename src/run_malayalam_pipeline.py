@@ -180,7 +180,25 @@ def main():
         ] + extra_flags
         run_cmd(render_cmd, description=f"Step 2: Rendering in '{mode}' mode")
 
-    # 2b. Devanagari Kpully Rendering (HTML + PDF) - Samam only, no Rik mode
+    # 2b. Malayalam Kpully Rendering (HTML + PDF) - Samam only
+    if not args.skip_kpully:
+        mal_kpully_cmd = [
+            sys.executable,
+            "-X", "utf8",
+            str(ROOT_DIR / "src" / "render_pdf.py"),
+            str(json_path),
+            "--script",
+            "malayalam",
+            "-kpully",
+            "--output-mode",
+            "separate",
+            "--samam-only",
+            "-o",
+            "Samam_kpully_Malayalam",
+        ] + extra_flags
+        run_cmd(mal_kpully_cmd, description="Step 2b: Rendering Malayalam Kpully (HTML + PDF, Samam-only)")
+
+    # 2c. Devanagari Kpully Rendering (HTML + PDF) - Samam only, no Rik mode
     if not args.skip_kpully and kpully_json_path.exists():
         kpully_cmd = [
             sys.executable,
@@ -195,14 +213,8 @@ def main():
             "--samam-only",
             "-o",
             "Samhita_kpully_Devanagari",
-        ]
-        if args.html_only:
-            kpully_cmd.append("--html-only")
-        elif args.pdf_only:
-            kpully_cmd.append("--pdf-only")
-        if args.legacy_html:
-            kpully_cmd.append("--legacy-html")
-        run_cmd(kpully_cmd, description="Step 2b: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
+        ] + extra_flags
+        run_cmd(kpully_cmd, description="Step 2c: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
     # 3. Publishing step: Reserved for src/generate_website.py
     if args.publish:
@@ -230,9 +242,12 @@ def main():
     print(f"  - PDF      : data/output/pdf/Malayalam/{output_base_name}.pdf")
     print(f"  - TXT      : data/output/txt/Malayalam/{output_base_name}_Unicode.txt")
     if not args.skip_kpully:
-        print(f"  - KPully HTML: data/output/html/Devanagari/Samhita_kpully_Devanagari.html")
-        print(f"  - KPully PDF : data/output/pdf/Devanagari/Samhita_kpully_Devanagari.pdf")
-        print(f"  - KPully TXT : data/output/txt/Devanagari/Samhita_kpully_Devanagari_Unicode.txt")
+        print(f"  - Malayalam KPully HTML : data/output/html/Malayalam/Samam_kpully_Malayalam.html")
+        print(f"  - Malayalam KPully PDF  : data/output/pdf/Malayalam/Samam_kpully_Malayalam.pdf")
+        print(f"  - Malayalam KPully TXT  : data/output/txt/Malayalam/Samam_kpully_Malayalam_Unicode.txt")
+        print(f"  - Devanagari KPully HTML: data/output/html/Devanagari/Samhita_kpully_Devanagari.html")
+        print(f"  - Devanagari KPully PDF : data/output/pdf/Devanagari/Samhita_kpully_Devanagari.pdf")
+        print(f"  - Devanagari KPully TXT : data/output/txt/Devanagari/Samhita_kpully_Devanagari_Unicode.txt")
     print(f"  Note: 'docs/' folder is reserved for 'src/generate_website.py'.")
     print("=" * 60 + "\n")
 

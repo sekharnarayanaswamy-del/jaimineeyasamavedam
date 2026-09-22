@@ -3553,9 +3553,9 @@ sup.footnote-ref a:hover {
 .swara-mod.mod-g,
 .syl-mod-g-wrap .swara-mod.mod-g {
     position: absolute;
-    bottom: -0.32em;
+    bottom: -0.42em;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateX(0.35em);
     font-size: 1.05rem;
     color: #0284c7;
     pointer-events: none;

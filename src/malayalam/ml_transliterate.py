@@ -123,6 +123,10 @@ def devanagari_to_malayalam(text: str) -> str:
     The caller is responsible for masking swara markers (ml_text.py).
     Non-Devanagari runs (spaces, dandas, footnote markers) are preserved.
     """
+    if not text:
+        return text
+    # Pre-preserve Vedic swara modifier symbols before aksharamukha strips them
+    text = text.replace("़", "·").replace("ॱ", "·").replace("॑", "|").replace("॒", "_")
     text = text.replace("।।", "॥").replace("||", "॥")
     text = text.replace("॥", _DANDA2).replace("।", _DANDA1)
     tokens = _DEVANAGARI_RE.split(text)

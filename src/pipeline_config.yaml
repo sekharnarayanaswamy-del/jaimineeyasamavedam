@@ -28,7 +28,7 @@ renumber_sooktam:
     no_increment: false
     no_renumber: false
   samhita:
-    input: "data/input/Samhita_corrected.txt"
+    input: "data/input/Samhita_Devanagari_Unicode.txt"
     start_super: 1
     start_section: 1
     start_subsection: 1
@@ -70,7 +70,7 @@ generate_json:
   
   # Type-specific input/output paths
   samhita:
-    input: "data/input/Samhita_corrected.txt"
+    input: "data/input/Samhita_Devanagari_Unicode.txt"
     output: "data/output/Samhita_corrected_out.json"
     mode: "correction"
   aaranam:

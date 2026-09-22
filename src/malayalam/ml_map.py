@@ -41,15 +41,29 @@ def marker_to_grantha(marker: str) -> str:
     Prefers the reviewed 'grantha_text' characters (may include non-Grantha
     script characters, e.g. A13 Saa resolves to Malayalam ശ per the reference
     manuscript); falls back to assembling from grantha_codepoints.
-
-    Unknown markers (not present in the frozen table) raise KeyError; the
-    caller decides the fallback (spec: render literally / QA flag).
     """
-    entry = load_lookup()["lookup"][marker]
-    text = entry.get("grantha_text")
-    if text:
-        return text
-    return "".join(chr(int(cp, 16)) for cp in entry["grantha_codepoints"])
+    lookup = load_lookup()["lookup"]
+    if marker in lookup:
+        entry = lookup[marker]
+        text = entry.get("grantha_text")
+        if text:
+            return text
+        return "".join(chr(int(cp, 16)) for cp in entry["grantha_codepoints"])
+
+    # Fallback for Malayalam-script swara markers: convert to Devanagari first
+    try:
+        from aksharamukha import transliterate
+        deva_marker = transliterate.process("Malayalam", "Devanagari", marker)
+        if deva_marker in lookup:
+            entry = lookup[deva_marker]
+            text = entry.get("grantha_text")
+            if text:
+                return text
+            return "".join(chr(int(cp, 16)) for cp in entry["grantha_codepoints"])
+    except Exception:
+        pass
+
+    return marker
 
 
 def marker_source(marker: str) -> str:
