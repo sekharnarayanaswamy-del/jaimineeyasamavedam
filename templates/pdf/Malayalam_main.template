@@ -16,16 +16,16 @@
 \newfontfamily\latinfont[Scale=1.0, Ligatures=TeX, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
 \newfontfamily\devafont[Scale=1.1, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaSanVedicBold.ttf}
 \newfontfamily\malayalamfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifMalayalam-Regular.ttf}
-\newfontfamily\granthafont[Scale=0.85, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifGrantha-Regular.ttf}
-\newfontfamily\swarafont[Scale=0.80, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\granthafont[Scale=0.72, Script=Grantha, Ligatures=TeX, AutoFakeBold=1.8, AutoFakeSlant, Path=\VAR{font_path}]{NotoSerifGrantha-Regular.ttf}
+\newfontfamily\swarafont[Scale=0.74, Ligatures=TeX, AutoFakeBold=3.0, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \newfontfamily\arcfontMal[Scale=1.15, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
 \setmainfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant]{Noto Serif Malayalam}
 \newfontfamily\latinfont[Scale=1.0, Ligatures=TeX, AutoFakeSlant]{Noto Serif Devanagari}
 \newfontfamily\devafont[Scale=1.1, Script=Devanagari, Ligatures=TeX]{AdishilaSanVedicBold}
 \newfontfamily\malayalamfont[Scale=1.0, Script=Malayalam, Ligatures=TeX, AutoFakeSlant]{Noto Serif Malayalam}
-\newfontfamily\granthafont[Scale=0.85, Script=Grantha, Ligatures=TeX, AutoFakeBold=2.5, AutoFakeSlant]{Noto Serif Grantha}
-\newfontfamily\swarafont[Scale=0.80, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\granthafont[Scale=0.72, Script=Grantha, Ligatures=TeX, AutoFakeBold=1.8, AutoFakeSlant]{Noto Serif Grantha}
+\newfontfamily\swarafont[Scale=0.74, Ligatures=TeX, AutoFakeBold=3.0, AutoFakeSlant]{JaimineeyaSwara}
 \newfontfamily\arcfontMal[Scale=1.15, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \setcounter{tocdepth}{3}
@@ -79,9 +79,9 @@
   \settowidth{\swarabasew}{#1}%
   \settowidth{\swarasw}{#2}%
   \ifdim\swarasw>\swarabasew
-    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{1.55ex}[1.75ex][0pt]{#2}}\hspace{0.15em}}%
+    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{1.90ex}[2.10ex][0pt]{#2}}\hspace{0.15em}}%
   \else
-    \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{1.55ex}[1.75ex][0pt]{#2}}}%
+    \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{1.90ex}[2.10ex][0pt]{#2}}}%
   \fi
 }
 \newcommand{\stackcenter}[2]{\swarastack{#1}{#2}}

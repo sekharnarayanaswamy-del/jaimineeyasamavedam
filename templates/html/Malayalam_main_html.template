@@ -59,7 +59,7 @@
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', serif;
             --font-size: 1.3rem;
             --mantra-size: calc(var(--font-size) * 1.25);
-            --swara-size: var(--font-size);
+            --swara-size: calc(var(--font-size) * 0.78);
 
             /* VedaVMS Palette */
             --saffron: #D84315;
