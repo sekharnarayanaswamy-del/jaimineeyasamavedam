@@ -777,19 +777,23 @@
         }
         .swara-mod.mod-d {
             position: absolute;
-            top: -0.28em;
+            top: -0.32em;
             left: 100%;
             transform: translateX(-45%);
-            font-size: 0.60em;
+            font-size: 0.90em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
             z-index: 2;
         }
         .swara-mod.mod-d1 {
             position: absolute;
-            top: -0.24em;
+            top: -0.26em;
             left: 100%;
             transform: translateX(-35%);
-            font-size: 0.85em;
+            font-size: 1.10em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
             z-index: 2;
         }
@@ -820,18 +824,22 @@
         .swara-mod.mod-g,
         .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: 0.35em;
+            bottom: -0.1em;
             left: 50%;
-            transform: translateX(-50%) translateX(-0.16em);
-            font-size: 0.55em;
+            transform: translateX(-50%) translateX(0.45em);
+            font-size: 0.85em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
         }
         .swara-mod.mod-h {
             position: absolute;
-            top: -0.32em;
+            top: -0.28em;
             left: 100%;
-            transform: translateX(-0.40em);
-            font-size: 0.55em;
+            transform: translateX(-0.35em);
+            font-size: 0.90em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
         }
         .swara-mod.mod-i {
@@ -973,6 +981,30 @@
             font-weight: bold;
             margin-right: 0.5em;
             min-width: 1.5em;
+        }
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+        }
+        .mantra-verse > sup.footnote-ref {
+            align-self: flex-start;
+            margin-top: 0.2em;
+            top: 0;
+        }
+        .mantra-verse > sup.footnote-ref {
+            align-self: flex-end;
+            margin-bottom: 0.2em;
+        }
+        sup.footnote-ref a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        sup.footnote-ref a:hover {
+            text-decoration: underline;
         }
 
         /* Footer */
@@ -1670,7 +1702,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ जैमिनीय साम संहिता ॥</h1>
-                <div class="sub-heading">संस्करणम्: 3.0 | निर्मितम्: 19-09-2026 18:51:49</div>
+                <div class="sub-heading">संस्करणम्: 3.0 | निर्मितम्: 23-09-2026 20:01:57</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
