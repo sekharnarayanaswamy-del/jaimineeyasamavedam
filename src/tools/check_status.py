@@ -33,11 +33,12 @@ def print_maintainer_dashboard():
     check_baseline_status()
 
     print("--- Quick Pipeline Commands ---")
-    print("  1. Verify Baseline Integrity : python src/tools/baseline.py status")
-    print("  2. Create New Baseline       : python src/tools/baseline.py create <tag_name>")
-    print("  3. Summary Verification      : python src/generate_json_summary.py")
-    print("  4. Regenerate Website        : python src/generate_website.py")
-    print("  5. Render Documents          : python src/render_pdf.py")
+    print("  1. Run Full Audit Suite      : python src/tools/audit.py")
+    print("  2. Verify Baseline Integrity : python src/tools/baseline.py status")
+    print("  3. Create New Baseline       : python src/tools/baseline.py create <tag_name>")
+    print("  4. Summary Verification      : python src/generate_json_summary.py")
+    print("  5. Regenerate Website        : python src/generate_website.py")
+    print("  6. Render Documents          : python src/render_pdf.py")
     print("=" * 70 + "\n")
 
 

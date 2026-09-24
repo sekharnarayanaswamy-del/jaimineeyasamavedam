@@ -106,7 +106,7 @@ def verify_samhita_equivalence() -> bool:
     if not corpus_dir.exists():
         corpus_dir = GOLDEN_ROOT / "samhita"
     inputs_dir = corpus_dir / "inputs"
-    golden_out_dir = corpus_dir / "outputs"
+    golden_out_dir = corpus_dir / "outputs" / "Others" if (corpus_dir / "outputs" / "Others").exists() else corpus_dir / "outputs"
     sandbox_dir = corpus_dir / "sandbox_run"
     
     input_txt = inputs_dir / "Samhita_Devanagari_Unicode.txt"
@@ -165,7 +165,8 @@ def verify_samhita_equivalence() -> bool:
         print(f"      - Samhita AST Equivalence   : {status_ast}")
         
         # Vargeekaran match
-        v_ok, v_issues = compare_json_trees(gen_vargeekaran, golden_out_dir / "Vargeekaran.json")
+        golden_v_path = golden_out_dir / "Vargeekaran.json" if (golden_out_dir / "Vargeekaran.json").exists() else golden_out_dir / "Vargeekaran_latest.json"
+        v_ok, v_issues = compare_json_trees(gen_vargeekaran, golden_v_path)
         status_v = "[PASS] 100% MATCH" if v_ok else f"[FAIL] {v_issues}"
         print(f"      - Vargeekaran Equivalence   : {status_v}")
         

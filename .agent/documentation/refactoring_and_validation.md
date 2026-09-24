@@ -62,26 +62,38 @@ The baseline snapshot system ([`data/baselines/LATEST.json`](file:///c:/Users/se
 
 ## 🚀 4. Step-by-Step Validation Workflow
 
-Whenever refactoring code or modifying pipeline logic, execute the following 5 validation steps:
+### One-Shot Master Audit
+Execute the entire unified verification and audit suite in one command:
+```bash
+python src/tools/audit.py
+```
+This runs the 8-point regression invariants, verse/samam continuity check, missing metadata audit, structure summary & cross-table reconciliation, and active baseline status, outputting a consolidated executive dashboard.
+
+### Focused Audits & Individual Steps
+Whenever performing targeted debugging or modifying specific pipeline subsystems:
 
 ```bash
-# Step 1: Run Automated 7-Point Health Check
-python src/tools/run_regression_suite.py
+# Focused Step: Missing Metadata Audit (Rik & Samam)
+python src/tools/audit.py --metadata
+# Alternatively: python src/generate_missing_metadata_report.py --mode combined
+
+# Focused Step: Verse & Samam Continuity Check
+python src/tools/audit.py --continuity
+# Alternatively: python src/tools/check_continuity.py data/output/Samhita_corrected_out.json
+
+# Focused Step: Automated 8-Point Invariant Regression Check
+python src/tools/audit.py --regression
 # Validates: 6 Pathas, 59 Khandas, 1226 Samas, Typed AST models, Swara Visarga rules, Tag balance, Versioning, Renderers
 
-# Step 2: Perform End-to-End Golden Replica Verification
-python src/tools/baseline.py verify
-# Re-runs pipeline from scratch on golden inputs and asserts 100% semantic AST parity against LATEST.json
+# Focused Step: Structure Summary & Cross-Table Reconciliation
+python src/tools/audit.py --reconciliation
+# Synchronizes JSV_Structure_Summary, JSV_Samhita_Reconciliation_Report, and JSV_Consolidated_Report
 
-# Step 3: Check Verse Continuity
-python src/tools/check_continuity.py data/output/Vargeekaran.json
-# Verifies verse numbers within every section run sequentially (1, 2, 3...) without gaps or duplicates
+# Focused Step: Baseline Manifest Check
+python src/tools/audit.py --baseline
+# Alternatively: python src/tools/baseline.py status
 
-# Step 4: Verify Domain Metrics Breakdown
-python src/generate_json_summary.py
-# Confirms exact macro counts across all 6 Pathas and 59 Khandas
-
-# Step 5: Freeze New Baseline Snapshot (After Verified Milestone Changes)
+# Freeze New Baseline Snapshot (After Verified Milestone Changes)
 python src/tools/baseline.py create baseline-<date>-<milestone> -d "Description of milestone"
 git add data/baselines/
 git commit -m "chore: record baseline snapshot <milestone>"
