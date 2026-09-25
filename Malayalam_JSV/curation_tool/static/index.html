@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Noto+Serif+Grantha&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/malayalam-fonts@latest/fonts.min.css">
-  <link rel="stylesheet" href="style.css?v=3.9">
+  <link rel="stylesheet" href="style.css?v=4.0">
 </head>
 <body class="dark-theme">
   <!-- Top Navigation & Global Header -->
@@ -200,11 +200,56 @@
           </div>
         </div>
 
+        <!-- Unicode Character Quick-Insert Toolbar -->
+        <div class="card unicode-tool-card">
+          <div class="unicode-tool-header">
+            <div class="unicode-tool-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span>Unicode Character Tool</span>
+              <span class="unicode-help-hint">(Hold <kbd>Alt</kbd>+type hex e.g. <kbd>0D4E</kbd>, or type hex + <kbd>Alt+X</kbd>)</span>
+            </div>
+            <div class="unicode-input-group">
+              <span class="unicode-prefix">U+</span>
+              <input type="text" id="unicodeInput" class="unicode-input" placeholder="0D4E, 11301" maxlength="7" spellcheck="false" title="Enter Unicode Hex Code Point and press Enter">
+              <span id="unicodeCharPreview" class="unicode-char-preview" title="Character Glyph Preview"></span>
+              <button id="unicodeInsertBtn" class="btn btn-secondary btn-sm" title="Insert Character at Cursor (Enter)">Insert</button>
+            </div>
+          </div>
+          <!-- Common Vedic & Grantha Special Symbols Quick Palette -->
+          <div class="unicode-quick-chips">
+            <span class="chips-label">Quick Glyphs:</span>
+            <button class="uni-chip" data-char="ൎ" data-hex="0D4E" title="Malayalam Dot Reph (U+0D4E)"><span class="chip-glyph">ൎ</span><span class="chip-code">0D4E</span></button>
+            <button class="uni-chip" data-char="𑌪𑍍𑌲𑍁" data-hex="1132A..." title="Grantha Plu Conjunct (𑌪𑍍𑌲𑍁)"><span class="chip-glyph">𑌪𑍍𑌲𑍁</span><span class="chip-code">plu</span></button>
+            <button class="uni-chip" data-char="ഽ" data-hex="0D3D" title="Malayalam Avagraha (U+0D3D)"><span class="chip-glyph">ഽ</span><span class="chip-code">0D3D</span></button>
+            <button class="uni-chip" data-char="·" data-hex="00B7" title="Middle Dot (U+00B7)"><span class="chip-glyph">·</span><span class="chip-code">00B7</span></button>
+            <button class="uni-chip" data-char="।" data-hex="0964" title="Danda (U+0964)"><span class="chip-glyph">।</span><span class="chip-code">0964</span></button>
+            <button class="uni-chip" data-char="॥" data-hex="0965" title="Double Danda (U+0965)"><span class="chip-glyph">॥</span><span class="chip-code">0965</span></button>
+            <button class="uni-chip" data-char="ർ" data-hex="0D7C" title="Chillu RR (U+0D7C)"><span class="chip-glyph">ർ</span><span class="chip-code">0D7C</span></button>
+            <button class="uni-chip" data-char="ൻ" data-hex="0D7B" title="Chillu N (U+0D7B)"><span class="chip-glyph">ൻ</span><span class="chip-code">0D7B</span></button>
+            <button class="uni-chip" data-char="ൽ" data-hex="0D7D" title="Chillu L (U+0D7D)"><span class="chip-glyph">ൽ</span><span class="chip-code">0D7D</span></button>
+            <button class="uni-chip" data-char="ൾ" data-hex="0D7E" title="Chillu LL (U+0D7E)"><span class="chip-glyph">ൾ</span><span class="chip-code">0D7E</span></button>
+            <button class="uni-chip" data-char="ൿ" data-hex="0D7F" title="Chillu K (U+0D7F)"><span class="chip-glyph">ൿ</span><span class="chip-code">0D7F</span></button>
+            <button class="uni-chip" data-char="𑌁" data-hex="11301" title="Grantha Candrabindu (U+11301)"><span class="chip-glyph">𑌁</span><span class="chip-code">11301</span></button>
+            <button class="uni-chip" data-char="𑌕" data-hex="11315" title="Grantha Ka (U+11315)"><span class="chip-glyph">𑌕</span><span class="chip-code">11315</span></button>
+            <button class="uni-chip" data-char="𑌖" data-hex="11316" title="Grantha Kha (U+11316)"><span class="chip-glyph">𑌖</span><span class="chip-code">11316</span></button>
+            <button class="uni-chip" data-char="𑌚" data-hex="1131A" title="Grantha Ca (U+1131A)"><span class="chip-glyph">𑌚</span><span class="chip-code">1131A</span></button>
+            <button class="uni-chip" data-char="𑌟" data-hex="1131F" title="Grantha Tta (U+1131F)"><span class="chip-glyph">𑌟</span><span class="chip-code">1131F</span></button>
+            <button class="uni-chip" data-char="𑌤" data-hex="11324" title="Grantha Ta (U+11324)"><span class="chip-glyph">𑌤</span><span class="chip-code">11324</span></button>
+            <button class="uni-chip" data-char="𑌶" data-hex="11336" title="Grantha Sha (U+11336)"><span class="chip-glyph">𑌶</span><span class="chip-code">11336</span></button>
+            <button class="uni-chip" data-char="𑌾" data-hex="1133E" title="Grantha Vowel Sign AA (U+1133E)"><span class="chip-glyph">𑌾</span><span class="chip-code">1133E</span></button>
+            <button class="uni-chip" data-char="𑌿" data-hex="1133F" title="Grantha Vowel Sign I (U+1133F)"><span class="chip-glyph">𑌿</span><span class="chip-code">1133F</span></button>
+            <button class="uni-chip" data-char="𑍀" data-hex="11340" title="Grantha Vowel Sign II (U+11340)"><span class="chip-glyph">𑍀</span><span class="chip-code">11340</span></button>
+            <button class="uni-chip" data-char="𑍁" data-hex="11341" title="Grantha Vowel Sign U (U+11341)"><span class="chip-glyph">𑍁</span><span class="chip-code">11341</span></button>
+            <button class="uni-chip" data-char="𑍂" data-hex="11342" title="Grantha Vowel Sign UU (U+11342)"><span class="chip-glyph">𑍂</span><span class="chip-code">11342</span></button>
+            <button class="uni-chip" data-char="𑍍" data-hex="1134D" title="Grantha Virama (U+1134D)"><span class="chip-glyph">𑍍</span><span class="chip-code">1134D</span></button>
+          </div>
+        </div>
+
         <!-- Live Vedic Accent Editor -->
         <div class="card editor-card">
           <div class="card-header-bar">
             <div class="card-label">Live Vedic Accent Editor</div>
-            <div class="editor-hints">Type or click modifiers above to insert at cursor • <kbd>Ctrl+S</kbd> to save</div>
+            <div class="editor-hints">Type or click modifiers • <kbd>Alt+X</kbd> to toggle Unicode • <kbd>Ctrl+S</kbd> to save</div>
           </div>
           <div class="header-input-container">
             <label for="subsecTitleInput" class="header-input-label">
@@ -239,6 +284,6 @@
   <!-- Notification Toast -->
   <div id="toast" class="toast"></div>
 
-  <script src="app.js?v=3.8"></script>
+  <script src="app.js?v=4.1"></script>
 </body>
 </html>

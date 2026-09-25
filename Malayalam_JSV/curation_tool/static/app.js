@@ -58,6 +58,9 @@ const elements = {
   renderedMantraBody: document.getElementById('renderedMantraBody'),
   mainVedicEditor: document.getElementById('mainVedicEditor'),
   renderedVedicDisplay: document.getElementById('renderedVedicDisplay'),
+  unicodeInput: document.getElementById('unicodeInput'),
+  unicodeInsertBtn: document.getElementById('unicodeInsertBtn'),
+  unicodeCharPreview: document.getElementById('unicodeCharPreview'),
   toast: document.getElementById('toast')
 };
 
@@ -429,7 +432,8 @@ function splitMalayalamSyllables(text) {
     if (syllables.length > 0 && (
       syllables[syllables.length - 1].endsWith(VIRAMA) ||
       (syllables[syllables.length - 1].length === 1 && syllables[syllables.length - 1] >= '\u0D7A' && syllables[syllables.length - 1] <= '\u0D7F') ||
-      syllables[syllables.length - 1] === '൪'
+      syllables[syllables.length - 1] === '൪' ||
+      syllables[syllables.length - 1] === '\u0D4E'
     )) {
       syllables[syllables.length - 1] += g;
     } else {
@@ -442,6 +446,9 @@ function splitMalayalamSyllables(text) {
 // Live Vedic HTML Accent Renderer (Stacked Red Swaras above without parens, Blue Modifiers)
 function renderVedicHTML(text) {
   if (!text) return '';
+
+  // Collapse any accidental blank/space immediately after Dot Reph so it joins cleanly with the following akshara
+  text = text.replace(/\u0D4E\s+/gu, '\u0D4E');
 
   const tokens = text.split(/(\s+|[।॥])/g);
   let html = '';
@@ -613,21 +620,129 @@ function updateDisplays() {
   }
 }
 
-// Insert Text at Cursor Position
+// Active input tracking between mainVedicEditor and subsecTitleInput
+let lastActiveInput = null;
+
+function getActiveTextTarget() {
+  if (document.activeElement === elements.subsecTitleInput || lastActiveInput === elements.subsecTitleInput) {
+    return elements.subsecTitleInput;
+  }
+  return elements.mainVedicEditor;
+}
+
+// Insert Text at Cursor Position (targets active editor or title input)
 function insertAtCursor(textToInsert) {
-  const textarea = elements.mainVedicEditor;
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const text = textarea.value;
+  const target = getActiveTextTarget();
+  if (!target) return;
+
+  const start = target.selectionStart ?? target.value.length;
+  const end = target.selectionEnd ?? target.value.length;
+  const text = target.value;
 
   const before = text.substring(0, start);
   const after = text.substring(end, text.length);
 
-  textarea.value = before + textToInsert + after;
-  textarea.selectionStart = textarea.selectionEnd = start + textToInsert.length;
-  textarea.focus();
+  target.value = before + textToInsert + after;
+  target.selectionStart = target.selectionEnd = start + textToInsert.length;
+  target.focus();
   
-  updateDisplays();
+  if (target === elements.subsecTitleInput) {
+    target.dispatchEvent(new Event('input'));
+  } else {
+    updateDisplays();
+  }
+}
+
+// Alt+X: Universal Windows Hex-to-Unicode and Unicode-to-Hex toggle
+function handleAltX() {
+  const target = getActiveTextTarget();
+  if (!target) return;
+
+  const start = target.selectionStart ?? target.value.length;
+  const end = target.selectionEnd ?? target.value.length;
+  const val = target.value;
+
+  // Case 1: Highlighted/selected text
+  if (start !== end) {
+    const sel = val.substring(start, end).trim();
+    if (/^(?:U\+|u\+|0x)?([0-9a-fA-F]{1,6})$/.test(sel)) {
+      const hex = sel.replace(/^(?:U\+|u\+|0x)/, '');
+      const cp = parseInt(hex, 16);
+      if (cp <= 0x10FFFF) {
+        const char = String.fromCodePoint(cp);
+        insertAtCursor(char);
+        showToast(`Converted ${sel} → ${char} (U+${cp.toString(16).toUpperCase().padStart(4, '0')})`);
+        return;
+      }
+    } else {
+      const hexList = Array.from(sel)
+        .map(c => 'U+' + c.codePointAt(0).toString(16).toUpperCase().padStart(4, '0'))
+        .join(' ');
+      insertAtCursor(hexList);
+      showToast(`Converted ${sel} → ${hexList}`);
+      return;
+    }
+  }
+
+  // Case 2: Inspect text immediately before cursor
+  const textBefore = val.substring(0, start);
+  const hexMatch = textBefore.match(/(?:U\+|u\+|0x)?([0-9a-fA-F]{1,6})$/);
+
+  if (hexMatch && hexMatch[1]) {
+    const fullMatch = hexMatch[0];
+    const hex = hexMatch[1];
+    const cp = parseInt(hex, 16);
+    if (cp <= 0x10FFFF) {
+      const char = String.fromCodePoint(cp);
+      const matchStart = start - fullMatch.length;
+      target.value = val.substring(0, matchStart) + char + val.substring(start);
+      target.selectionStart = target.selectionEnd = matchStart + char.length;
+      target.focus();
+      if (target === elements.subsecTitleInput) {
+        target.dispatchEvent(new Event('input'));
+      } else {
+        updateDisplays();
+      }
+      showToast(`Converted ${fullMatch} → ${char} (U+${cp.toString(16).toUpperCase().padStart(4, '0')})`);
+      return;
+    }
+  }
+
+  // Case 3: Toggle preceding character back to hex
+  if (textBefore.length > 0) {
+    const chars = Array.from(textBefore);
+    const lastChar = chars[chars.length - 1];
+    const cp = lastChar.codePointAt(0);
+    const hex = cp.toString(16).toUpperCase().padStart(4, '0');
+    const matchStart = start - lastChar.length;
+    target.value = val.substring(0, matchStart) + hex + val.substring(start);
+    target.selectionStart = target.selectionEnd = matchStart + hex.length;
+    target.focus();
+    if (target === elements.subsecTitleInput) {
+      target.dispatchEvent(new Event('input'));
+    } else {
+      updateDisplays();
+    }
+    showToast(`Converted ${lastChar} → ${hex} (U+${hex})`);
+  }
+}
+
+// Insert character from Unicode input bar
+function insertUnicodeFromInput() {
+  if (!elements.unicodeInput) return;
+  const val = elements.unicodeInput.value.trim().replace(/^(?:U\+|u\+|0x)/, '');
+  if (/^[0-9a-fA-F]{1,6}$/.test(val)) {
+    const cp = parseInt(val, 16);
+    if (cp <= 0x10FFFF) {
+      const char = String.fromCodePoint(cp);
+      insertAtCursor(char);
+      showToast(`Inserted Unicode U+${cp.toString(16).toUpperCase().padStart(4, '0')} (${char})`);
+      elements.unicodeInput.value = '';
+      if (elements.unicodeCharPreview) elements.unicodeCharPreview.textContent = '';
+      return;
+    }
+  }
+  showToast('Invalid hex code point (e.g. 0D4E, 04DE, 11301)', 3000, true);
 }
 
 // Toggle Side-by-Side vs Stacked Top-Bottom Layout
@@ -717,10 +832,30 @@ function setupEventListeners() {
     elements.manuscriptImg.classList.toggle('inverted', state.inverted);
   });
 
+  // Auto-collapse stray spaces between Dot Reph (ൎ) and following Malayalam aksharas
+  const cleanDotRephSpaces = (inputEl) => {
+    if (!inputEl) return;
+    const val = inputEl.value;
+    if (/\u0D4E\s+[\u0D00-\u0D7F]/u.test(val)) {
+      const start = inputEl.selectionStart;
+      const end = inputEl.selectionEnd;
+      const cleaned = val.replace(/(\u0D4E)\s+([\u0D00-\u0D7F])/gu, '$1$2');
+      const diff = val.length - cleaned.length;
+      inputEl.value = cleaned;
+      inputEl.selectionStart = Math.max(0, start - diff);
+      inputEl.selectionEnd = Math.max(0, end - diff);
+    }
+  };
+
   // Editor Input
-  elements.mainVedicEditor.addEventListener('input', updateDisplays);
+  elements.mainVedicEditor.addEventListener('input', () => {
+    cleanDotRephSpaces(elements.mainVedicEditor);
+    updateDisplays();
+  });
+
   if (elements.subsecTitleInput) {
     elements.subsecTitleInput.addEventListener('input', () => {
+      cleanDotRephSpaces(elements.subsecTitleInput);
       const sec = state.data.sections[state.currentSectionIdx];
       const subsec = sec.subsections[state.currentSubsecIdx];
       const samam = subsec.samams[state.currentSamamIdx];
@@ -743,13 +878,109 @@ function setupEventListeners() {
   }
   elements.saveBtn.addEventListener('click', saveCurrentSamam);
 
-  // Modifier Palette Clicks
+  // Track last active input
+  elements.mainVedicEditor.addEventListener('focus', () => { lastActiveInput = elements.mainVedicEditor; });
+  if (elements.subsecTitleInput) {
+    elements.subsecTitleInput.addEventListener('focus', () => { lastActiveInput = elements.subsecTitleInput; });
+  }
+
+  // Unicode Toolbar Controls
+  if (elements.unicodeInput) {
+    elements.unicodeInput.addEventListener('input', () => {
+      const val = elements.unicodeInput.value.trim().replace(/^(?:U\+|u\+|0x)/, '');
+      if (/^[0-9a-fA-F]{1,6}$/.test(val)) {
+        const cp = parseInt(val, 16);
+        if (cp <= 0x10FFFF) {
+          if (elements.unicodeCharPreview) {
+            elements.unicodeCharPreview.textContent = String.fromCodePoint(cp);
+          }
+          return;
+        }
+      }
+      if (elements.unicodeCharPreview) elements.unicodeCharPreview.textContent = '';
+    });
+
+    elements.unicodeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        insertUnicodeFromInput();
+      }
+    });
+  }
+
+  if (elements.unicodeInsertBtn) {
+    elements.unicodeInsertBtn.addEventListener('click', insertUnicodeFromInput);
+  }
+
+  // Modifier Palette Clicks - mousedown preventDefault ensures textarea never loses focus / triggers IME blank
   document.querySelectorAll('.mod-chip').forEach(btn => {
+    btn.addEventListener('mousedown', (e) => e.preventDefault());
     btn.addEventListener('click', () => insertAtCursor(btn.getAttribute('data-mod')));
+  });
+
+  // Quick Unicode Glyphs Palette Clicks - preventDefault on mousedown to prevent focus loss/blanks
+  document.querySelectorAll('.uni-chip').forEach(btn => {
+    btn.addEventListener('mousedown', (e) => e.preventDefault());
+    btn.addEventListener('click', () => {
+      const char = btn.getAttribute('data-char');
+      const hex = btn.getAttribute('data-hex');
+      insertAtCursor(char);
+      showToast(`Inserted ${char} (${hex})`);
+    });
   });
 
   // Global & In-Editor Hotkeys
   window.addEventListener('keydown', handleHotkeys);
+
+  // Suppress synthetic trailing whitespace Windows OS produces on Alt+Numpad code releases
+  let suppressSyntheticAltCharTime = 0;
+
+  const suppressSyntheticInput = (e) => {
+    if (Date.now() < suppressSyntheticAltCharTime) {
+      if (e.data === ' ' || e.data === '?' || !e.data) {
+        if (e.preventDefault) e.preventDefault();
+      }
+    }
+  };
+  elements.mainVedicEditor.addEventListener('beforeinput', suppressSyntheticInput);
+  if (elements.subsecTitleInput) {
+    elements.subsecTitleInput.addEventListener('beforeinput', suppressSyntheticInput);
+  }
+
+  // Alt-Sequence Release (e.g. Alt+0D4E, Alt+04DE, etc.)
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Alt' || !e.altKey) {
+      if (isAltCodeMode && altCodeBuffer.length > 0) {
+        suppressSyntheticAltCharTime = Date.now() + 200;
+        const clean = altCodeBuffer.replace(/^\+/, '');
+        const cp = parseInt(clean, 16);
+        if (!isNaN(cp) && cp > 0 && cp <= 0x10FFFF) {
+          const char = String.fromCodePoint(cp);
+          insertAtCursor(char);
+          showToast(`Inserted Unicode U+${cp.toString(16).toUpperCase().padStart(4, '0')} (${char})`);
+        }
+      }
+      isAltCodeMode = false;
+      altCodeBuffer = '';
+    }
+  });
+
+  window.addEventListener('blur', () => {
+    isAltCodeMode = false;
+    altCodeBuffer = '';
+  });
+}
+
+// Alt-sequence state
+let isAltCodeMode = false;
+let altCodeBuffer = '';
+
+function normalizeKey(e) {
+  if (e.code && e.code.startsWith('Numpad') && e.code.length === 7) {
+    const d = e.code[6];
+    if (d >= '0' && d <= '9') return d;
+  }
+  return e.key;
 }
 
 function navigateSamam(delta) {
@@ -789,9 +1020,36 @@ function handleHotkeys(e) {
     return;
   }
 
-  // 3. In-Editor Modifier Insertion Shortcuts (Alt + Key)
+  // 3. Alt+X: Universal Windows Hex-to-Unicode and Unicode-to-Hex toggle
+  if (e.altKey && !e.ctrlKey && !e.metaKey && (e.key === 'x' || e.key === 'X')) {
+    e.preventDefault();
+    handleAltX();
+    return;
+  }
+
+  // 4. Alt + Hex Sequence Accumulation (e.g. Alt+0D4E, Alt+04DE, Alt++0D4E)
   if (e.altKey && !e.ctrlKey && !e.metaKey) {
-    const key = e.key.toLowerCase();
+    const k = normalizeKey(e);
+
+    // If Alt sequence is already in progress:
+    if (isAltCodeMode) {
+      if (/^[0-9a-fA-F]$/i.test(k) || k === '+') {
+        e.preventDefault();
+        altCodeBuffer += k;
+        return;
+      }
+    }
+
+    // Trigger Alt-code accumulation mode on '0', '+', or numeric keypad digits
+    if (!isAltCodeMode && (k === '0' || k === '+' || (e.code && e.code.startsWith('Numpad')) || (k >= '3' && k <= '9'))) {
+      isAltCodeMode = true;
+      altCodeBuffer = (k === '+' || (k >= '0' && k <= '9')) ? k : '';
+      e.preventDefault();
+      return;
+    }
+
+    // 5. In-Editor Modifier Insertion Shortcuts (Alt + Key) when not entering an Alt code
+    const key = k.toLowerCase();
     const shortcutMap = {
       'h': '(H)',
       'g': '(G)',
@@ -808,9 +1066,9 @@ function handleHotkeys(e) {
       '.': '.'
     };
 
-    if (shortcutMap[key] || shortcutMap[e.key]) {
+    if (shortcutMap[key] || shortcutMap[k]) {
       e.preventDefault();
-      insertAtCursor(shortcutMap[key] || shortcutMap[e.key]);
+      insertAtCursor(shortcutMap[key] || shortcutMap[k]);
       return;
     }
   }

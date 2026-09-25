@@ -90,8 +90,8 @@ def post_process_malayalam(text: str) -> str:
     text = normalize_combining_marks(text)
     # Vedic transliteration rule 2: Devanagari ळ (U+0933) -> Malayalam ഴ (U+0D34)
     text = text.replace("ള", "ഴ").replace("ൾ", "ഴ്")
-    # Vedic transliteration rule 1: Vocalic r / Repha before consonants (e.g. र्हा -> ൪ഹാ)
-    text = re.sub(r"(?:ർ|ര\u0D4D)(?=[ക-ഹ])", "൪", text)
+    # Vedic transliteration rule 1: Vocalic r / Repha before consonants (e.g. र्हा -> ൎഹാ)
+    text = re.sub(r"(?:ർ|ര\u0D4D|൪)(?=[ക-ഹ])", "\u0D4E", text)
     # Vedic transliteration rule 3: Word-final AA swara / matra -> short vowel (അ)
     # e.g. സംഹിതാ -> സംഹിത, മാലാ -> മാല, സൂക്തമാലാ -> സൂക്തമാല
     text = re.sub(r"ാ(?=[\s।॥\?!\.,;\)\"']|$)", "", text)
@@ -198,6 +198,7 @@ def split_malayalam_syllables(text: str) -> list[str]:
         if merged and (
             merged[-1].endswith(_MALAYALAM_VIROMA)
             or (len(merged[-1]) == 1 and "\u0D7A" <= merged[-1] <= "\u0D7F")
+            or merged[-1] in ("\u0D4E", "൪")
         ):
             merged[-1] += cluster
         else:
@@ -295,8 +296,8 @@ def malayalam_to_devanagari_mantra_line(line: str) -> str:
     
     line = re.sub(r'\(([^)]+)\)', _rep_marker, line)
     
-    # 3. Handle Vedic repha ൪ before consonants in base words
-    line = re.sub(r'൪(?=[ക-ഹ])', 'ര്', line)
+    # 3. Handle Vedic repha ൎ / ൪ before consonants in base words
+    line = re.sub(r'[൪\u0D4E](?=[ക-ഹ])', 'ര്', line)
     
     # 4. Transliterate Malayalam base text tokens to Devanagari
     tokens = re.split(r'(\s+|[।॥]|\([^)]+\)|_|\.)', line)
@@ -335,8 +336,8 @@ def malayalam_to_devanagari(text: str) -> str:
     if transliterate is None:
         return text
     try:
-        # Handle Vedic repha ൪ before consonants in headers / words
-        t = re.sub(r'൪(?=[ക-ഹ])', 'ര്', text)
+        # Handle Vedic repha ൎ / ൪ before consonants in headers / words
+        t = re.sub(r'[൪\u0D4E](?=[ക-ഹ])', 'ര്', text)
         res = transliterate.process("Malayalam", "Devanagari", t)
         # Convert Malayalam ഴ / ऴ -> ळ
         res = res.replace('ऴ्', 'ळ्').replace('ऴ', 'ळ')

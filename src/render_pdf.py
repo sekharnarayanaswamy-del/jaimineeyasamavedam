@@ -2138,7 +2138,7 @@ def _render_malayalam_mantra_body(subsection):
         if not line:
             continue
         line = devanagari_to_malayalam(line)
-        line = line.replace('ർ', '൪').replace('ര്', '൪')
+        line = line.replace('ർ', 'ൎ').replace('ര്', 'ൎ').replace('൪', 'ൎ')
         tokens = tokenize_mantra_line(line)
         
         idx_t = 0
@@ -2628,8 +2628,8 @@ def _normalize_malayalam_samam_text_line(line: str) -> str:
         return m.group(0)
     
     line = re.sub(r'\(([^)]+)\)', _rep_paren, line)
-    # Convert Vedic repha ൪ back to chillu-r ർ in text export
-    line = line.replace('൪', 'ർ')
+    # Convert any legacy digit ൪ to authentic Vedic Repha ൎ in text export
+    line = line.replace('൪', 'ൎ')
     return line
 
 
@@ -3959,7 +3959,7 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
 
     fn_counter_obj = [footnote_counter]
     for mantra_line in mantra_array:
-        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ').replace('ർ', '൪').replace('ര്', '൪')
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ').replace('ർ', 'ൎ').replace('ര്', 'ൎ').replace('൪', 'ൎ')
         clean_mantra = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', clean_mantra)
         clean_mantra = re.sub(r'\u200d(?=\()', '', clean_mantra)
         clean_mantra = re.sub(r'(\S)\s+\(', r'\1(', clean_mantra)

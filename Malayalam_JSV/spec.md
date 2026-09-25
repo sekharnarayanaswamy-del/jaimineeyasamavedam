@@ -101,7 +101,7 @@ By parsing the existing digital Devanagari text directly from `C:\Users\sekha\On
 2. **Export to Unicode Numerals:** In the "Export to Unicode" option, convert Devanagari numerals to English numerals.
 3. **[COMPLETED] Line Spacing & Clearance:** Line spacing increased to 2.15 (LaTeX XeLaTeX) and 2.2 with 18px row-gap (HTML) to provide generous clearance for descending tone markers (`\`) and top swara stacks.
 4. **[COMPLETED] Sama Numeral Marker Formatting:** Isolated with `0.65em` horizontal spacing, enclosed in unbreakable containers (`\mbox` / `inline-flex`), with automatic line breaks initiating each new Sama on a fresh line.
-5. **[COMPLETED] Unified Repha Standard:** Unified all pre-consonantal R occurrences (`ർ` / `ര്`) to traditional Repha **`൪`** (`U+0D6A`) across all rendering layers and source data.
+5. **[COMPLETED] Unified Repha Standard:** Unified all pre-consonantal R occurrences (`ർ` / `ര്` / `൪`) to authentic traditional Dot Reph **`ൎ`** (`U+0D4E`) across all rendering layers and source data.
 6. **Space Modifier:** Introduce a fine-adjustment space modifier for advanced publisher typesetting.
 
 ---

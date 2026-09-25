@@ -1054,6 +1054,138 @@ kbd {
   color: var(--accent-cyan);
 }
 
+/* ==========================================================================
+   Unicode Tool & Quick Glyphs
+   ========================================================================== */
+.unicode-tool-card {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.unicode-tool-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.unicode-tool-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.unicode-help-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.unicode-input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unicode-prefix {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.unicode-input {
+  width: 95px;
+  padding: 4px 8px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.unicode-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 6px var(--accent-gold-glow);
+}
+
+.unicode-char-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 6px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: var(--font-malayalam), var(--font-swara), serif;
+  font-size: 14px;
+  color: var(--accent-gold);
+}
+
+.unicode-quick-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chips-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.uni-chip {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 4px;
+  padding: 2px 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 11px;
+}
+
+.uni-chip:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 0 6px var(--accent-gold-glow);
+}
+
+.chip-glyph {
+  font-family: var(--font-malayalam), var(--font-swara), serif;
+  font-size: 13px;
+  color: #38bdf8;
+}
+
+.chip-code {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
 /* Toast Notification */
 .toast {
   position: fixed;
