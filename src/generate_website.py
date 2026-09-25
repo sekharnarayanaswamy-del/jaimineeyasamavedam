@@ -2587,7 +2587,7 @@ background: var(--bg-sidebar);
 .swara-text {
     font-family: var(--font-sanskrit);
     color: #c62828;
-    font-size: 1.02rem;
+    font-size: 1.3rem;
     line-height: 1;
     text-align: center;
     margin-top: -0.2em;
