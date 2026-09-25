@@ -253,6 +253,12 @@ METADATA = {
         "description": "Kpully baseline edition of Malayalam Samam chants.",
         "featured": True,
     },
+    "Samam_kpully_Malayalam.html": {
+        "title": "Samam (Malayalam, KPully Edition)",
+        "category": "Samam / Rik",
+        "description": "KPully baseline edition of Malayalam Samam chants featuring KPully swara modifier glyphs.",
+        "featured": True,
+    },
     "Samam_Malayalam_legacy_Samam.html": {
         "title": "Samam (Malayalam, Legacy Reader)",
         "category": "Samam / Rik",

@@ -216,9 +216,20 @@ def main():
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2c: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
-    # 3. Publishing step: Reserved for src/generate_website.py
+    # 3. Copy standalone HTML to docs/standalone-html/Malayalam
+    standalone_mal_dir = ROOT_DIR / "docs" / "standalone-html" / "Malayalam"
+    standalone_mal_dir.mkdir(parents=True, exist_ok=True)
+    mal_kpully_src = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html"
+    if mal_kpully_src.exists():
+        shutil.copy2(mal_kpully_src, standalone_mal_dir / mal_kpully_src.name)
+        print(f"[INFO] Copied {mal_kpully_src.name} -> {standalone_mal_dir.relative_to(ROOT_DIR)}")
+
+    publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
+    if publish_script.exists():
+        run_cmd([sys.executable, str(publish_script)], description="Syncing standalone HTML catalog")
+
     if args.publish:
-        print("\n[PIPELINE] Step 3: Publishing HTML and PDF files to docs/...")
+        print("\n[PIPELINE] Step 4: Publishing HTML and PDF files to docs/...")
         DOCS_DIR.mkdir(parents=True, exist_ok=True)
         malayalam_docs_dir = DOCS_DIR / "malayalam"
         malayalam_docs_dir.mkdir(parents=True, exist_ok=True)

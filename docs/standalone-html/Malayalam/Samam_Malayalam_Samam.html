@@ -34,7 +34,7 @@
             --font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', serif;
             --font-size: 1.3rem;
             --mantra-size: calc(var(--font-size) * 1.25);
-            --swara-size: var(--font-size);
+            --swara-size: calc(var(--font-size) * 0.78);
 
             /* VedaVMS Palette */
             --saffron: #D84315;
@@ -822,20 +822,24 @@
 
         .swara-mod.mod-d {
             position: absolute;
-            top: -0.28em;
+            top: -0.32em;
             left: 100%;
             transform: translateX(-45%);
-            font-size: 0.60em;
+            font-size: 0.90em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
             z-index: 2;
         }
 
         .swara-mod.mod-d1 {
             position: absolute;
-            top: -0.24em;
+            top: -0.26em;
             left: 100%;
             transform: translateX(-35%);
-            font-size: 0.85em;
+            font-size: 1.10em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
             z-index: 2;
         }
@@ -871,19 +875,23 @@
         .swara-mod.mod-g,
         .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: 0.35em;
+            bottom: 0.1em;
             left: 50%;
-            transform: translateX(-50%) translateX(-0.16em);
-            font-size: 0.55em;
+            transform: translateX(-50%) translateX(0.75em);
+            font-size: 0.85em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
         }
 
         .swara-mod.mod-h {
             position: absolute;
-            top: -0.32em;
+            top: -0.28em;
             left: 100%;
-            transform: translateX(-0.40em);
-            font-size: 0.55em;
+            transform: translateX(-0.35em);
+            font-size: 0.90em;
+            font-weight: 800;
+            -webkit-text-stroke: 0.04em currentColor;
             pointer-events: none;
         }
 
@@ -1030,6 +1038,26 @@
             font-weight: bold;
             margin-right: 0.5em;
             min-width: 1.5em;
+        }
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+        }
+        .mantra-verse > sup.footnote-ref {
+            align-self: flex-start;
+            margin-top: 0.2em;
+            top: 0;
+        }
+        sup.footnote-ref a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        sup.footnote-ref a:hover {
+            text-decoration: underline;
         }
 
         /* Footer */
@@ -1729,7 +1757,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ ജൈമിനീയ സാമ സംഹിത ॥</h1>
-                <div class="sub-heading">പതിപ്പ്: 3.0 | നിർമ്മിതം: 19-09-2026 18:51:48</div>
+                <div class="sub-heading">പതിപ്പ്: 3.0 | നിർമ്മിതം: 25-09-2026 06:52:21</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
@@ -1758,7 +1786,7 @@
                         </div>
                         <div class="subsection" id="supersection_1-section_1-subsection_5">
                             <div class="subsection-header"><span class="header-title"><span class="danda">॥</span> വൈശ്വമനസഞ്ചാദിത്യസാമവ <span class="danda">॥</span></span></div>
-<div class="mantra-verse"><span class="mantra-word"><span class="akshara-base">അ</span><span class="akshara-base">ഗ്നി</span><ruby class="vedic-ruby"><rb class="akshara-base">ന്ദൂ<span class="swara-mod mod-e" title="MOD-E: Bold Tone Column (┃)">&#xE002;</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">താം</rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><span class="akshara-base">വൃ</span><span class="akshara-base">ണീ</span><span class="akshara-base">മ</span><span class="akshara-base">ഹാ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഇ</rb><rt class="swara-above">𑌷𑍂</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഹൊ<span class="swara-mod mod-comma" title="MOD-COMMA">,</span></span><span class="akshara-base">താ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></span><ruby class="vedic-ruby"><rb class="akshara-base">രാം<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base"><span class="syl-mod-g-wrap">വീ<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\)">&#xE003;</span></span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ശ്വാ</span><ruby class="vedic-ruby"><rb class="akshara-base">വെ<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ദ</span><ruby class="vedic-ruby"><rb class="akshara-base">സാം</rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><span class="akshara-base">അ</span><span class="akshara-base">സ്യ</span><ruby class="vedic-ruby"><rb class="akshara-base">യാ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ജ്ഞാ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഓ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഔ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌕𑌾</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഹൊ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">വാ</rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="danda">।</span> <span class="mantra-word"><span class="akshara-base">സ്യാ</span><ruby class="vedic-ruby"><rb class="akshara-base">സൂ<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ക്ര<span class="swara-mod mod-comma" title="MOD-COMMA">,</span></span><span class="akshara-base">തു</span><span class="akshara-base">മി</span><ruby class="vedic-ruby"><rb class="akshara-base">ഴാ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌟𑍀</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഭാ</rb><rt class="swara-above">𑌖𑌣</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഓ</rb><rt class="swara-above">𑌪</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഇ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഴാ</rb><rt class="swara-above"></rt></ruby></span> <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">5</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span></div>
+<div class="mantra-verse"><span class="mantra-word"><span class="akshara-base">അ</span><span class="akshara-base">ഗ്നി</span><ruby class="vedic-ruby"><rb class="akshara-base">ന്ദൂ<span class="swara-mod mod-e" title="MOD-E: Bold Tone Column (┃)">&#xE002;</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">താം</rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><span class="akshara-base">വൃ</span><span class="akshara-base">ണീ</span><span class="akshara-base">മ</span><span class="akshara-base">ഹാ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഇ</rb><rt class="swara-above">𑌷𑍂</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഹൊ<span class="swara-mod mod-comma" title="MOD-COMMA">,</span></span><span class="akshara-base">താ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></span><ruby class="vedic-ruby"><rb class="akshara-base">രാം<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base"><span class="syl-mod-g-wrap">വീ<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\)">&#xE003;</span></span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ശ്വ</span><ruby class="vedic-ruby"><rb class="akshara-base">വെ<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ദ</span><ruby class="vedic-ruby"><rb class="akshara-base">സാം</rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><span class="akshara-base">അ</span><span class="akshara-base">സ്യ</span><ruby class="vedic-ruby"><rb class="akshara-base">യാ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></rb><rt class="swara-above">𑌟𑌿</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ജ്ഞാ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഓ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഔ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌕𑌾</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഹൊ<span class="swara-mod mod-c" title="MOD-C: Upper Shoulder Dot">&#xE001;</span></rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">വാ</rb><rt class="swara-above">𑌤</rt></ruby></span> <span class="danda">।</span> <span class="mantra-word"><span class="akshara-base">സ്യാ</span><ruby class="vedic-ruby"><rb class="akshara-base">സൂ<span class="swara-mod mod-under" title="MOD-UNDERBAR">_</span></rb><rt class="swara-above">𑌚𑌾</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ക്ര<span class="swara-mod mod-comma" title="MOD-COMMA">,</span></span><span class="akshara-base">തു</span><span class="akshara-base">മി</span><ruby class="vedic-ruby"><rb class="akshara-base">ഴാ<span class="swara-mod mod-dot" title="MOD-DOT">.</span></rb><rt class="swara-above">𑌟𑍀</rt></ruby></span> <span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഭാ</rb><rt class="swara-above">𑌖𑌣</rt></ruby></span> <span class="danda">।</span><span class="mantra-word"><ruby class="vedic-ruby"><rb class="akshara-base">ഓ</rb><rt class="swara-above">𑌪</rt></ruby></span> <span class="mantra-word"><span class="akshara-base">ഇ</span><ruby class="vedic-ruby"><rb class="akshara-base">ഴാ</rb><rt class="swara-above"></rt></ruby></span> <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">5</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span></div>
                         </div>
                         <div class="subsection" id="supersection_1-section_1-subsection_6">
                             <div class="subsection-header"><span class="header-title"><span class="danda">॥</span> ശ്രൗതർഷാണിത്രീണി <span class="danda">॥</span></span></div>
