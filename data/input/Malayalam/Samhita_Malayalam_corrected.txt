@@ -16,7 +16,7 @@ Version 3.0 2026-08-16 21:16:13
 അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബർഹീഷി(1)(१)॥ 1 ॥
 # End of Rik Text -- subsection_1 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_1 ## DO NOT EDIT
-॥ഗൗതമസ്യപർകഃ॥
+॥ഗൗതമസ്യപൎക്കഃ॥
 # End of SubSection Title -- subsection_1 ## DO NOT EDIT
 # Start of Samam Metadata -- subsection_1 ## DO NOT EDIT
 ॥ ഗോതമോ ഗായത്ര്യഗ്നിഃ ॥
@@ -53,7 +53,7 @@ s3 - Random foonote
 അഗ്നാ(1) ആ(2) യാ ഹീ വീ(2)താ(2)യേ । ഗൃ(2)ണാ(2)നോ ഹവ്യദാ(1)തയേ । നീഹോ(2)താ(1) സത്സീ ബർഹീഷി(1)(s1)॥ 1 ॥
 # End of Rik Text -- subsection_3 ## DO NOT EDIT
 # Start of SubSection Title -- subsection_3 ## DO NOT EDIT
-॥ഗൗതമസ്യചൈവപർകഃ॥
+॥ഗൗതമസ്യചൈവപൎക്കഃ॥
 # End of SubSection Title -- subsection_3 ## DO NOT EDIT
 # Start of Samam Metadata -- subsection_3 ## DO NOT EDIT
 ॥ ഗോതമോ ഗായത്ര്യഗ്നിഃ ॥

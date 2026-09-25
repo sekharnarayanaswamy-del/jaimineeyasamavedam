@@ -789,9 +789,9 @@
         }
         .swara-mod.mod-c {
             position: absolute;
-            top: -0.40em;
+            top: -0.10em;
             left: 100%;
-            transform: translateX(-0.20em);
+            transform: translateX(0.20em);
             font-size: 0.90em;
             font-weight: 800;
             -webkit-text-stroke: 0.03em currentColor;
@@ -847,7 +847,7 @@
         .swara-mod.mod-g,
         .syl-mod-g-wrap .swara-mod.mod-g {
             position: absolute;
-            bottom: -0.1em;
+            bottom: 0.02em;
             left: 50%;
             transform: translateX(-50%) translateX(0.35em);
             font-size: 0.85em;
