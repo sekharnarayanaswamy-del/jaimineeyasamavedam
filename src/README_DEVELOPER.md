@@ -111,6 +111,7 @@ graph TD
 ```
 
 #### Detailed Components
+- **Decoupled Architecture (No YAML Dependency)**: `render_pdf.py` is a standalone rendering engine that does not parse or depend on any `.yaml` files. All settings are passed via CLI flags or fall back to predictable defaults (`templates/pdf/`, `templates/html/`, `templates/text/`).
 - **`CreatePdf()`**: Orchestrates LaTeX template rendering and invokes the LaTeX compiler (XeLaTeX). Supports standard swara-below stacking or Kodunthirapully (`-kpully`) swara-above stacking.
 - **`CreateTextFile()`**: Generates `.txt` files with Vedic text and metadata.
 - **`CreateHtmlFile()`**: Generates standalone `.html` files (distinct from the full website generation), supporting standard swara-below and `-kpully` swara-above layouts.
@@ -345,16 +346,75 @@ graph TD
 
 ## Pipeline Configuration (`pipeline_config.yaml`)
 
-The pipeline is centralized around `src/pipeline_config.yaml`. This file defines global paths, default CLI options, and type-specific (Samhita vs. Aaranam) source mappings.
+The pipeline is centralized around `src/pipeline_config.yaml`. This file defines global paths, named render profiles, corpus editions, default CLI options, and type-specific (Samhita vs. Aaranam) source mappings.
 
-### Script Linkages
-All scripts load this configuration via `utils.load_pipeline_config()`. The mappings are as follows:
+### 1. Centralized Build Profiles
+Instead of ad-hoc flags, `src/run_pipeline.py` consumes configured profiles from `pipeline_config.yaml`:
+* **`fast_preview`** (`active_profile: "fast_preview"`): High-speed curation mode (~5s) generating HTML and plain text in Kodunthirapully mode (`kpully: true`), skipping slow PDF LaTeX compilation.
+* **`standard`**: Standard publication set (PDF + HTML) for Samhita and Aaranam.
+* **`chanting`**: Practitioner chanting editions without RDC metadata.
+* **`full_release`**: Comprehensive release suite covering all corpora and layout modes.
+
+### 2. Script Linkages
+Scripts requiring centralized project parameters load this configuration via `utils.load_pipeline_config()`. The mappings are:
 
 | Script | YAML Key | Primary Usage |
 | :--- | :--- | :--- |
+| `run_pipeline.py` | `active_profile`, `render_profiles` | Resolves target corpora, render modes, format filters, and kpully flags. |
 | `generate_json.py` | `generate_json` | Input text paths, metadata source locations, and procedure index paths. |
 | `generate_rik_table.py` | `generate_rik_table` | Default input/output paths for CSV and reconciliation Excel files. |
 | `generate_website.py` | `generate_website` | Output directories, audio source locations, and primary website fonts. |
-| `render_pdf.py` | `render` | LaTeX/HTML template paths, PDF color modes, and advanced rendering flags. |
 | `curate_jsv.py` | `curate_jsv` | Source JSON files and filter list locations. |
 | `renumber_sooktam.py` | `renumber_sooktam` | Default renumbering start indices and increment behaviors. |
+
+*(Note: `render_pdf.py` does NOT use YAML; it is invoked directly via CLI flags from `run_pipeline.py` or terminal.)*
+
+---
+
+## 3-Tier Versioning & Numbering Scheme
+
+The project enforces three strictly decoupled versioning tiers:
+
+1. **Tier 1: Engine Version** (`engine_version: "4.0.0"` in `src/pipeline_config.yaml`)  
+   Tracks underlying architecture, AST schemas, parser logic, and rendering engines.
+2. **Tier 2: Corpus Editions** (`editions:` block in `src/pipeline_config.yaml` and synced in `src/VERSION`)  
+   Tracks independent liturgical text maturity per corpus:
+   - `samhita`: `"3.28"`
+   - `aaranam`: `"1.14"`
+   - `collections`: `"2.05"`
+3. **Tier 3: Active Run / Manifest Version** (`run_manifest.json` in each corpus folder)  
+   Tracks live execution artifacts with UTC timestamps, git commit hashes, and domain metrics (Pathas, Khandas, Samas).
+
+> **Text vs. Presentation Principle**: Template/formatting changes (`templates/*_main*template`, CSS, modifier geometry) are captured automatically by **Tier 1 (Git commit / dirty tag)** and **Tier 3 (render checksums)**. They do **NOT** bump the **Tier 2 Corpus Edition**, which is reserved strictly for liturgical text alterations. For the full specification, see [`VERSIONING_AND_WORKFLOW.md`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/VERSIONING_AND_WORKFLOW.md).
+
+---
+
+## Source Text Subfolder Locations & Stage-Numbered Layout
+
+Canonical source texts are maintained in dedicated subfolders:
+* **Golden Baselines**:
+  - Samhita (Devanagari): `data/baselines/golden/Devanagari/samhita/input/Samhita_Devanagari_Unicode.txt`
+  - Samhita (Malayalam): `data/baselines/golden/Malayalam/samhita/input/Samam_Malayalam_Unicode.txt`
+  - Aaranam: `data/baselines/golden/Devanagari/aaranam/input/Aaranam_latest.txt`
+  - Collections: `data/baselines/golden/Devanagari/collection/input/`
+* **Stage-Numbered Corpus Workspace** (`data/corpora/<corpus>/`):
+  - `01_input/` -> Source texts & metadata
+  - `02_ast/` -> JSON ASTs
+  - `03_reconciliation/` -> Cross-tables & CSVs
+  - `04_curated/` -> Filtered collections
+  - `05_renders/` -> Output renders in strict `pdf/`, `html/`, `txt/` subdirectories (zero loose files at root)
+  - `06_reports/` -> Structural & continuity reports
+
+---
+
+## Validation & Golden Promotion (`src/tools/validate_run.py`)
+
+Validation of active runs against golden anchors is fully automated:
+* **Track A (Engine Invariance)**: Verifies domain metrics (6 Pathas, 59 Khandas) and AST schema integrity.
+* **Track B (Semantic Curation Diff)**: Compares active AST verses against golden baseline anchors, highlighting word-level differences.
+* **Promotion**:
+  ```powershell
+  python src/tools/validate_run.py <corpus> --promote
+  ```
+  Safely promotes verified active run assets and renders to `data/baselines/golden/`.
+

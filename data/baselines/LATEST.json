@@ -2,7 +2,7 @@
   "tag": "baseline-sep2026-v3.28-expanded",
   "description": "Expanded baseline tracking Devanagari, Malayalam, and Collections datasets",
   "version": "3.28",
-  "timestamp": "15-09-2026 15:33:03",
+  "timestamp": "25-09-2026 22:07:59",
   "git": {
     "branch": "refactor",
     "commit": "5de12980",
@@ -25,7 +25,7 @@
       "modified": "26-04-2026 16:13:56"
     },
     "data/input/Malayalam/Samhita_Malayalam_corrected.txt": {
-      "sha256": "355120551cc69775a3a8d29ae31840263137e2dbececb7acdb3b4e4c085b4b7f",
+      "sha256": "6b59b8f14c8004fe6317ee22009f51d9aacb42bd2c58440502eb3cd4a81fcdac",
       "size_bytes": 1461186,
       "modified": "02-09-2026 09:39:20"
     },
@@ -58,6 +58,11 @@
       "sha256": "b75d61b0a1dc87453fca87cf795015c43d39d0462e03d350f104451f84124eda",
       "size_bytes": 143120,
       "modified": "28-04-2026 22:45:51"
+    },
+    "data/corpora/samhita/01_input/Samhita_corrected.txt": {
+      "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
+      "size_bytes": 836261,
+      "modified": "25-09-2026 22:07:59"
     }
   },
   "outputs": {
@@ -105,6 +110,16 @@
       "sha256": "061198309bbc769db96621e68e0de940e7703a7d03bf777c970b428aa7d29815",
       "size_bytes": 6580,
       "modified": "14-09-2026 15:49:14"
+    },
+    "data/corpora/samhita/02_ast/Samhita_corrected_out.json": {
+      "sha256": "6af55122dda54211279f01decdb87bcd036127e87caaead02d45bfe635ef42ac",
+      "size_bytes": 1454230,
+      "modified": "25-09-2026 22:07:59"
+    },
+    "data/corpora/samhita/04_canonical/Vargeekaran.json": {
+      "sha256": "a4225dcce221490c74fdc99b5d5a77867eb5be4322145bf56dedb1fe8723829f",
+      "size_bytes": 2003721,
+      "modified": "25-09-2026 22:07:59"
     }
   }
 }

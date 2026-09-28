@@ -18,24 +18,25 @@ python src/tools/run_regression_suite.py
 ============================================================
   JAIMINEEYA SAMAVEDA - REGRESSION VERIFICATION SUITE
 ============================================================
-  Checking: 1. Domain Invariants (6 Pathas, 59 Khandas, 1226 Samas) [PASS]
-  Checking: 2. Typed AST Lossless Roundtrip.............. [PASS]
-  Checking: 3. Swara Engine & Visarga-Accent Rules....... [PASS]
-  Checking: 4. Structural Tag Balance & Integrity........ [PASS]
-  Checking: 5. 3-Tier Version & Build Metadata........... [PASS]
-  Checking: 6. Active Baseline Input Checksums........... [PASS]
-  Checking: 7. Modular Rendering Engines................. [PASS]
+  Checking: 1. Live Ingestion from Raw Unicode Texts..... [PASS]
+  Checking: 2. Domain Invariants (6 Pathas, 59 Khandas, 1226 Samas) [PASS]
+  Checking: 3. Typed AST Lossless Roundtrip.............. [PASS]
+  Checking: 4. Swara Engine & Visarga-Accent Rules....... [PASS]
+  Checking: 5. Structural Tag Balance & Integrity........ [PASS]
+  Checking: 6. 3-Tier Version & Build Metadata........... [PASS]
+  Checking: 7. Active Baseline Input Checksums........... [PASS]
+  Checking: 8. Modular Rendering Engines................. [PASS]
 
 ============================================================
   VERIFICATION SUMMARY
 ============================================================
-  ALL 7/7 INVARIANT CHECKS PASSED!
+  ALL 8/8 INVARIANT CHECKS PASSED!
   No regressions detected. Repository is liturigically sound.
 ============================================================
 ```
 
 > [!TIP]
-> If all 7 checks show `[PASS]`, the fundamental liturgical invariants of the codebase are fully intact.
+> If all 8 checks show `[PASS]`, the fundamental liturgical invariants of the codebase are fully intact.
 
 ---
 
@@ -84,23 +85,30 @@ python src/tools/renumber_sooktam.py data/input/Samhita_corrected.txt --type sam
 
 ---
 
-### Stage 3: JSON AST Invariance & Golden Diff
-Regenerate the canonical JSON AST from the source text and verify structural equivalence:
+### Stage 3: JSON AST Invariance & Dual-Track Validation (`validate_run.py`)
+Validate the active corpus run against the golden baseline anchor:
 
 ```bash
-python src/generate_json.py data/input/Samhita_corrected.txt --type samhita
+# Validate individual corpora or all:
+python src/tools/validate_run.py samhita
+python src/tools/validate_run.py aaranam
+python src/tools/validate_run.py all
 ```
 
-Compare the generated JSON against the active baseline:
-```bash
-python src/tools/baseline.py status
-```
-
-- [ ] `data/output/Samhita_corrected_out.json` shows `[MATCH]`.
+- [ ] **Track A (Engine Invariance)**: 6 Pathas, 59 Khandas verified intact.
+- [ ] **Track B (Semantic Curation Diff)**: Byte/verse parity or expected intentional curation changes reported.
 - [ ] Round-trip validation via Typed AST:
   ```bash
   python -c "from src.core.models import VedicDocument; import json; doc = VedicDocument.from_dict(json.load(open('data/output/Samhita_corrected_out.json', encoding='utf-8'))); assert len(doc.supersections) == 6; print('VedicDocument AST Valid!')"
   ```
+
+#### Promoting Active Run to Golden Baseline
+When curation changes are approved, promote the active run to become the new golden anchor:
+```bash
+python src/tools/validate_run.py samhita --promote
+```
+This updates `data/baselines/golden/`, writes a new `samhita_manifest.json`, and records the git commit hash.
+See [VERSIONING_AND_WORKFLOW.md](VERSIONING_AND_WORKFLOW.md) for full details on the 3-tier versioning model and baseline architecture.
 
 ---
 

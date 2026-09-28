@@ -766,9 +766,9 @@
         }
         .swara-mod.mod-c {
             position: absolute;
-            top: -0.10em;
+            top: -0.40em;
             left: 100%;
-            transform: translateX(0.20em);
+            transform: translateX(-0.10em);
             font-size: 0.90em;
             font-weight: 800;
             -webkit-text-stroke: 0.03em currentColor;
@@ -1702,7 +1702,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ जैमिनीय साम संहिता ॥</h1>
-                <div class="sub-heading">संस्करणम्: 3.0 | निर्मितम्: 25-09-2026 21:58:51</div>
+                <div class="sub-heading">संस्करणम्: 3.28 | निर्मितम्: 28-09-2026 10:45:27</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
@@ -2370,12 +2370,19 @@
             }
             const doc = iframe.contentWindow.document;
             const mainStyle = document.querySelector('style') ? document.querySelector('style').innerHTML : '';
+            const fontLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"]'))
+                .map(link => link.outerHTML).join('\n');
+            const htmlStyle = document.documentElement.getAttribute('style') || '';
+            const bodyClass = document.body.className || '';
+            const bodyStyle = document.body.getAttribute('style') || '';
+
             doc.open();
             doc.write(`<!DOCTYPE html>
-            <html lang="sa">
+            <html lang="sa" style="${htmlStyle}">
             <head>
                 <meta charset="UTF-8">
                 <title>${title || document.title}</title>
+                ${fontLinks}
                 <style>
                     ${mainStyle}
                     @page {
@@ -2449,7 +2456,7 @@
                     }
                 </style>
             </head>
-            <body>
+            <body class="${bodyClass}" style="${bodyStyle}">
                 <div class="print-container">
                     ${contentHtml}
                 </div>
@@ -2460,7 +2467,7 @@
             setTimeout(() => {
                 iframe.contentWindow.focus();
                 iframe.contentWindow.print();
-            }, 100);
+            }, 120);
         }
 
         function getSectionPrintableHtml(target) {

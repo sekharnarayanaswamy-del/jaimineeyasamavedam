@@ -4,20 +4,99 @@ A production-grade Vedic text processing, transliteration, and typesetting syste
 
 ---
 
-## 🚀 One-Shot Master Pipeline (Devanagari & Malayalam)
+## 🚀 One-Shot Master Pipeline & Named Render Profiles
 
-To build the **entire pipeline for both Devanagari and Malayalam in one shot** (generating **HTML, PDF, and TXT**):
+To run the pipeline using the configured **active default profile** (`fast_preview`):
 
 ```powershell
 python src/run_pipeline.py
 ```
 
-### Useful Options:
-- `--modes combined separate nometa`: Render all three layout variants in one shot.
-- `--html-only`: Fast generation of HTML & TXT (skips LaTeX compilation).
-- `--pdf-only`: Compile only PDFs via XeLaTeX/LuaLaTeX.
-- `--script devanagari` or `--script malayalam`: Target a single script.
-- `--no-kpully`: Skip Kodunthirapully variant generation.
+### Named Render Profiles (`src/pipeline_config.yaml`):
+Instead of passing complex CLI combinations every time, standard render subsets are managed as named profiles:
+
+| Profile | Target Corpora | Modes | Formats | KPully | Description |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| **`fast_preview`** *(Default)* | Samhita | `combined` | HTML, TXT | **True** | Fast curation iteration (~5s) in Kodunthirapully mode, skips slow LaTeX PDF compilation. |
+| **`standard`** | Samhita, Aaranam | `combined` | PDF, HTML | False | Standard publication set for primary liturgical study. |
+| **`chanting`** | Samhita | `nometa` | PDF, HTML | **True** | Practitioner chanting editions without RDC headers. |
+| **`full_release`** | Samhita, Aaranam, Collections | `combined`, `separate`, `nometa` | PDF, HTML, TXT | **True** | Exhaustive release suite generating all variants and formats. |
+
+### Profile CLI Usage:
+```powershell
+# List all configured profiles and show active default:
+python src/run_pipeline.py --list-profiles
+
+# Run a specific profile:
+python src/run_pipeline.py --profile fast_preview
+python src/run_pipeline.py -p standard
+python src/run_pipeline.py -p chanting
+python src/run_pipeline.py -p full_release
+
+# Ad-hoc overrides:
+python src/run_pipeline.py --html-only
+python src/run_pipeline.py --corpora samhita aaranam
+python src/run_pipeline.py --modes combined separate
+```
+
+---
+
+## 📂 Source Text Subfolder Locations & Staging Layout
+
+Source texts reside in dedicated per-corpus subfolders under both the **Golden Baselines** anchor repository and the **Stage-Numbered Corpora** workspace:
+
+### 1. Golden Baselines Anchor Directory (`data/baselines/golden/`)
+* **Samhita (Devanagari)**: `data/baselines/golden/Devanagari/samhita/input/Samhita_Devanagari_Unicode.txt`
+* **Samhita (Malayalam)**: `data/baselines/golden/Malayalam/samhita/input/Samam_Malayalam_Unicode.txt`
+* **Aaranam (Devanagari)**: `data/baselines/golden/Devanagari/aaranam/input/Aaranam_latest.txt`
+* **Collections (Devanagari)**: `data/baselines/golden/Devanagari/collection/input/`
+
+### 2. Stage-Numbered Corpus Workspace (`data/corpora/<corpus>/`)
+Each corpus directory is strictly partitioned into six sequential processing stages:
+* `01_input/`: Canonical master source texts and metadata tables.
+* `02_ast/`: Parsed JSON Abstract Syntax Trees (`*_out.json`).
+* `03_reconciliation/`: Reconciliation tables, cross-references, and CSV exports.
+* `04_curated/`: Curated subsets and custom filtered selections.
+* `05_renders/`: Clean render outputs partitioned exclusively into format subdirectories (`pdf/`, `html/`, `txt/`). **No loose files reside at the root of `05_renders/`**.
+* `06_reports/`: Structural integrity summaries and continuity audits.
+* `run_manifest.json`: Active run metadata, structural metrics, and timestamp tracking.
+
+---
+
+## 🏷️ 3-Tier Versioning & Numbering Scheme
+
+The project maintains three strictly decoupled versioning tiers:
+
+1. **Tier 1: Engine Version** (e.g. `engine_version: "4.0.0"` in `src/pipeline_config.yaml`)  
+   Reflects the architectural generation engine (parsers, compilers, renderers).
+2. **Tier 2: Corpus Editions** (e.g. `editions: { samhita: "3.28", aaranam: "1.14", collections: "2.05" }` in `src/pipeline_config.yaml` and `src/VERSION`)  
+   Tracks editorial and liturgical content maturity for each specific corpus independently.
+3. **Tier 3: Active Run / Manifest Version** (`run_manifest.json` in each corpus folder)  
+   Tracks live execution artifacts with precise UTC timestamps, git commit hashes, and domain metrics (Pathas, Khandas, Samas).
+
+---
+
+## 🛡️ Validation & Golden Promotion Workflow
+
+To guarantee that text edits or code changes never introduce regressions:
+
+```powershell
+# 1. Run dual-track validation (Track A domain invariance + Track B semantic diff):
+python src/tools/validate_run.py samhita
+python src/tools/validate_run.py aaranam
+python src/tools/validate_run.py all
+
+# 2. When intentional curation changes are verified, promote the active run to golden baseline:
+python src/tools/validate_run.py samhita --promote
+
+# 3. Run full automated regression suite:
+python src/tools/run_regression_suite.py
+```
+
+> [!NOTE]
+> `render_pdf.py` has zero dependency on `.yaml` configuration files. All global settings, build profiles, and corpus paths are centralized in `src/pipeline_config.yaml`.
+> For an exhaustive architectural walkthrough of the 3-tier numbering hierarchy, golden promotion mechanics, and curation workflows, see [VERSIONING_AND_WORKFLOW.md](VERSIONING_AND_WORKFLOW.md).
+
 
 ---
 

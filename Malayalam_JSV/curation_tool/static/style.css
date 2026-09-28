@@ -57,6 +57,63 @@ body.font-rachana {
   --font-malayalam: 'RIT Rachana', 'Rachana', 'Noto Serif Malayalam', serif;
 }
 
+/* Rachana Typography Calibration: matches visual scale and weight of Noto Sans Malayalam */
+body.font-rachana .rendered-vedic-preview rb.akshara-base,
+body.font-rachana .rendered-vedic-preview .akshara-base {
+  font-size: 1.15em;
+  font-weight: 500;
+  -webkit-text-stroke: 0.018em currentColor;
+}
+
+body.font-rachana .rendered-vedic-preview rt.swara-above {
+  font-size: 0.38em;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+body.font-rachana #mainVedicEditor {
+  font-size: 24px;
+  font-weight: 500;
+  -webkit-text-stroke: 0.015em currentColor;
+}
+
+body.font-rachana .rendered-vedic-preview .swara-mod.mod-c {
+  font-size: 0.70rem !important;
+  font-weight: 600 !important;
+  top: -0.05em !important;
+  right: -0.15em !important;
+}
+
+body.font-rachana .rendered-vedic-preview .swara-mod.mod-h {
+  font-size: 0.70rem !important;
+  top: -0.18em !important;
+}
+
+body.font-rachana .rendered-vedic-preview .swara-mod.mod-e {
+  font-size: 0.90rem !important;
+  font-weight: 900 !important;
+  -webkit-text-stroke: 0.05em currentColor !important;
+  text-shadow: 0.02em 0 currentColor !important;
+  position: relative !important;
+  top: -0.25rem !important;
+  vertical-align: 0.05em !important;
+}
+
+body.font-rachana .rendered-vedic-preview .swara-mod.mod-comma {
+  font-size: 1.0em !important;
+  position: relative !important;
+  top: -0.2em !important;
+  left: 0.05em !important;
+  transform: translateY(-0.2em) translateX(0.05em) !important;
+}
+
+body.font-rachana .rendered-vedic-preview .swara-mod.mod-dot {
+  font-size: 1.0em !important;
+  position: relative !important;
+  top: -0.15em !important;
+  left: 0.0em !important;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

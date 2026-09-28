@@ -1,0 +1,28 @@
+{
+  "corpus": "samhita",
+  "edition": "3.28",
+  "promoted_at": "25-09-2026 22:07:59",
+  "engine_version": "v4.0.0+40103cb9-dirty",
+  "metrics": {
+    "pathas": 6,
+    "khandas": 59,
+    "samas": 722
+  },
+  "files": {
+    "input": {
+      "path": "data\\corpora\\samhita\\01_input\\Samhita_corrected.txt",
+      "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
+      "size_bytes": 836261
+    },
+    "ast": {
+      "path": "data\\corpora\\samhita\\02_ast\\Samhita_corrected_out.json",
+      "sha256": "6af55122dda54211279f01decdb87bcd036127e87caaead02d45bfe635ef42ac",
+      "size_bytes": 1454230
+    },
+    "canonical": {
+      "path": "data\\corpora\\samhita\\04_canonical\\Vargeekaran.json",
+      "sha256": "a4225dcce221490c74fdc99b5d5a77867eb5be4322145bf56dedb1fe8723829f",
+      "size_bytes": 2003721
+    }
+  }
+}

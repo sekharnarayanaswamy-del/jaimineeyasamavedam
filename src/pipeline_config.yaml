@@ -6,9 +6,52 @@
 # --- GLOBAL SETTINGS ---
 project:
   name: "Jaimineeya Samavedam"
-  version: "3.12"
+  engine_version: "4.0.0"
   output_root: "data/output"
   input_root: "data/input"
+
+# --- TIER 2: CORPUS EDITIONS ---
+editions:
+  samhita: "3.28"
+  aaranam: "1.14"
+  collections: "2.05"
+
+# ==============================================================================
+# ACTIVE BUILD PROFILE (Used by default when running without CLI flags)
+# ==============================================================================
+active_profile: "fast_preview"
+
+# ==============================================================================
+# RENDER PROFILES (Target Subsets)
+# ==============================================================================
+render_profiles:
+  fast_preview:
+    description: "Fast curation iteration in Kodunthirapully mode (HTML & TXT only, skips slow PDF LaTeX)"
+    corpora: ["samhita"]
+    modes: ["combined"]
+    formats: ["html", "txt"]
+    kpully: true
+
+  standard:
+    description: "Standard publication set (PDF + HTML for active texts)"
+    corpora: ["samhita", "aaranam"]
+    modes: ["combined"]
+    formats: ["pdf", "html"]
+    kpully: false
+
+  chanting:
+    description: "Practitioner chanting editions (NoMeta, swaras above/below)"
+    corpora: ["samhita"]
+    modes: ["nometa"]
+    formats: ["pdf", "html"]
+    kpully: true
+
+  full_release:
+    description: "Complete formal release suite (All corpora, all modes, PDF/HTML/TXT)"
+    corpora: ["samhita", "aaranam", "collections"]
+    modes: ["combined", "separate", "nometa"]
+    formats: ["pdf", "html", "txt"]
+    kpully: true
 
 # --- RENUMBERING (src/tools/renumber_sooktam.py) ---
 # CLI Options:
@@ -165,70 +208,6 @@ generate_website:
     source: "data/output/Collection_latest_out.json"
     output_dir: "docs/collection"
     title: "जैमिनीय साम सङ्ग्रहः"
-
-# --- PDF & HTML RENDERING (src/render_pdf.py) ---
-# CLI Options:
-#   input_file              Input JSON file (auto-selected based on --type if not specified)
-#   --output, -o            Override the default output basename or specify a full output path
-#   --output-mode           Output mode: combined, separate, nometa (default: combined)
-#   --pdf-font              Font for PDF output (default: AdishilaVedic)
-#   --html-font             Font for HTML output
-#   --type                  Type of Samaveda text: samhita, aaranam, collection (default: samhita)
-#   --pdf-color-mode        Color mode for PDF: bw, color (default: bw)
-#   --toc-level             TOC headers: section, subsection, both (default: section)
-#   --title                 Custom Sanskrit title for the document
-#   -kpully, --kpully       Render Devanagari with swara markings above mantra text (Kodunthirapully paddhati)
-#
-# Output Modes:
-#   combined   - Single output with both Rik and Samam content (default)
-#   separate   - Two separate outputs: Rik-only and Samam-only (with metadata)
-#   nometa     - Two separate outputs: Rik-only and Samam-only (without metadata)
-#
-# Examples:
-#   python render_pdf.py input.json
-#   python render_pdf.py input.json --output-mode separate
-#   python render_pdf.py input.json --output-mode nometa
-#   python render_pdf.py input.json -kpully
-#
-render:
-  defaults:
-    output_mode: "combined"
-    pdf_font: "AdishilaVedic"
-    html_font: "'AdishilaVedic', 'AdishilaSanVedic'"
-    pdf_color_mode: "bw"
-    toc_level: "section"
-    kpully: false
-  
-  types:
-    samhita:
-      input_file: "data/output/Vargeekaran.json"
-      doc_title: "जैमिनीय साम संहिता"
-      summary_title: "संहिता सङ्ख्या"
-      file_prefix: "Samhita"
-    aaranam:
-      input_file: "data/output/Aaranam_vargeekaran.json"
-      doc_title: "जैमिनीय साम आरण्य गानम्"
-      summary_title: "आरण्यम् सङ्ख्या"
-      file_prefix: "Aaranam"
-    collection:
-      input_file: "data/output/Collection_latest_out.json"
-      doc_title: "जैमिनीय साम सङ्ग्रहः"
-      summary_title: "जैमिनीय साम सङ्ग्रहः सङ्ख्या"
-      file_prefix: "Collection"
-
-  paths:
-    templates:
-      pdf: "templates/pdf"
-      html: "templates/html"
-      text: "templates/text"
-    output_root: "data/output"
-    logs: "data/output/logs"
-
-  advanced:
-    generate_summary_table: true
-    enable_footnote_consolidation: true
-    replace_colons_with_visarga: true
-    sanitize_invisible_chars: true
 
 # --- PROCEDURE LINKING (Prayoga Descriptions) ---
 procedures:

@@ -92,7 +92,7 @@ def extract_metadata_from_text(content):
     """Parses the metadata block from a text string."""
     # Default metadata
     meta = {
-        "version": "3.0",
+        "version": get_project_version(),
         "generated_at": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
     

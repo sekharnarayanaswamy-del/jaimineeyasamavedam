@@ -3,6 +3,8 @@ import platform
 from pathlib import Path
 import re
 
+ROOT_DIR = Path(__file__).resolve().parents[1]
+
 import sys
 import argparse
 #from doc_utils import escape_for_latex
@@ -12,7 +14,6 @@ import tempfile
 import os
 import json
 import urllib.parse
-import yaml
 from requests.models import PreparedRequest
 import grapheme
 
@@ -23,7 +24,6 @@ from utils import (
     replacecolon, normalize_and_trim,
     parse_mantra_for_latex, 
     sanitize_data_structure,
-    load_pipeline_config,
     get_generated_metadata
 )
 # --- End new import ---
@@ -585,7 +585,16 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
     
     # Use overrides if provided
     name = normalize_output_basename(name_override or name, DocfamilyName)
-    outputdir = output_dir_override or f"{outputdir}/pdf/{DocfamilyName}"
+    if output_dir_override:
+        norm_override = str(output_dir_override).replace('\\', '/').rstrip('/')
+        if norm_override.endswith('/pdf'):
+            outputdir = norm_override
+        elif norm_override.endswith('05_renders') or (Path(norm_override) / 'pdf').exists():
+            outputdir = f"{norm_override}/pdf"
+        else:
+            outputdir = norm_override
+    else:
+        outputdir = f"{outputdir}/pdf/{DocfamilyName}"
     
     TexFileName=f"{name}.tex"
     PdfFileName=f"{name}.pdf"
@@ -701,7 +710,16 @@ def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="com
     
     # Use overrides if provided
     name = normalize_output_basename(name_override or name, DocfamilyName)
-    outputdir = output_dir_override or f"{outputdir}/txt/{DocfamilyName}"
+    if output_dir_override:
+        norm_override = str(output_dir_override).replace('\\', '/').rstrip('/')
+        if norm_override.endswith('/txt'):
+            outputdir = norm_override
+        elif norm_override.endswith('05_renders') or (Path(norm_override) / 'txt').exists():
+            outputdir = f"{norm_override}/txt"
+        else:
+            outputdir = norm_override
+    else:
+        outputdir = f"{outputdir}/txt/{DocfamilyName}"
 
     TexFileName=f"{name}_Unicode.tex"
     PdfFileName=f"{name}_Unicode.pdf"
@@ -4196,7 +4214,16 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
                 break
     else:
         name = normalize_output_basename(name, DocfamilyName)
-    outputdir = output_dir_override or f"{outputdir}/html/{DocfamilyName}"
+    if output_dir_override:
+        norm_override = str(output_dir_override).replace('\\', '/').rstrip('/')
+        if norm_override.endswith('/html'):
+            outputdir = norm_override
+        elif norm_override.endswith('05_renders') or (Path(norm_override) / 'html').exists():
+            outputdir = f"{norm_override}/html"
+        else:
+            outputdir = norm_override
+    else:
+        outputdir = f"{outputdir}/html/{DocfamilyName}"
     
     HtmlFileName = f"{name}.html"
     template = templateFileName
@@ -4279,17 +4306,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     
     print(f"HTML file created: {output_path}")
     
-    # Auto-sync to data/output/html/<script>/ if written to an external directory
-    try:
-        script_dir = "Malayalam" if script == 'malayalam' else "Devanagari"
-        sync_dir = Path("data/output/html") / script_dir
-        sync_dir.mkdir(parents=True, exist_ok=True)
-        dest_path = sync_dir / HtmlFileName
-        if output_path.resolve() != dest_path.resolve():
-            import shutil
-            shutil.copy2(output_path, dest_path)
-    except Exception:
-        pass
+
 
     return exit_code
 
@@ -4300,13 +4317,7 @@ def main():
         import io
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     
-    # 0. Load Configuration from centralized pipeline_config.yaml
-    pipeline_cfg = load_pipeline_config()
-    config = pipeline_cfg.get('render', {})
-    
-    cfg_defaults = config.get('defaults', {})
-    cfg_types = config.get('types', {})
-    cfg_paths = config.get('paths', {})
+
 
     # Parse command line arguments
     parser = argparse.ArgumentParser(
@@ -4380,19 +4391,21 @@ Examples:
                         help='Generate only Samam output (skips Rik output in separate/nometa modes)')
     parser.add_argument('--rik-only', dest='rik_only', action='store_true', default=False,
                         help='Generate only Rik output (skips Samam output in separate/nometa modes)')
+    parser.add_argument('--no-pdf', dest='no_pdf', action='store_true', default=False,
+                        help='Skip PDF compilation (generates HTML and text outputs)')
+    parser.add_argument('--output-dir', dest='output_dir', default=None,
+                        help='Base output directory for generated renders (e.g. data/corpora/samhita/05_renders)')
     
     args = parser.parse_args()
     mode_type = args.type
-    type_settings = cfg_types.get(mode_type, {})
 
-    # Priority Merging: CLI > Config Type > Config Default > Hardcoded fallback
-    output_mode = args.output_mode or type_settings.get('output_mode') or cfg_defaults.get('output_mode', 'combined')
-    pdf_font = args.pdf_font or type_settings.get('pdf_font') or cfg_defaults.get('pdf_font', 'AdishilaVedic')
-    html_font = args.html_font or type_settings.get('html_font') or cfg_defaults.get('html_font', "'AdishilaVedic', 'AdishilaSanVedic'")
-    pdf_color_mode = args.pdf_color_mode or type_settings.get('pdf_color_mode') or 'color'
-    toc_level = args.toc_level or type_settings.get('toc_level') or cfg_defaults.get('toc_level', 'section')
-    
-    kpully_mode = args.kpully or type_settings.get('kpully') or cfg_defaults.get('kpully', False)
+    # Priority Merging: CLI > Hardcoded defaults
+    output_mode = args.output_mode or 'combined'
+    pdf_font = args.pdf_font or 'AdishilaVedic'
+    html_font = args.html_font or "'AdishilaVedic', 'AdishilaSanVedic'"
+    pdf_color_mode = args.pdf_color_mode or 'color'
+    toc_level = args.toc_level or 'section'
+    kpully_mode = args.kpully
     
     global CURRENT_PDF_FONT
     CURRENT_PDF_FONT = pdf_font
@@ -4404,14 +4417,19 @@ Examples:
     CURRENT_KPULLY_MODE = kpully_mode
     
     # Target format dispatch flags
-    gen_pdf = not (args.html_only or args.txt_only)
+    gen_pdf = not (args.html_only or args.txt_only or args.no_pdf)
     gen_txt = not (args.html_only or args.pdf_only)
     gen_html = not (args.pdf_only or args.txt_only)
     gen_rik = not args.samam_only
     gen_samam = not args.rik_only
     
-    # Handle output path overrides
-    out_dir = None
+    # Handle output path overrides:
+    # Priority: explicit --output-dir > stage-numbered corpus renders > legacy data/output
+    corpus_map = {'samhita': 'samhita', 'aaranam': 'aaranam', 'collection': 'collections'}
+    default_corpus = corpus_map.get(mode_type, 'samhita')
+    candidate_corpus_renders = ROOT_DIR / "data" / "corpora" / default_corpus / "05_renders"
+
+    out_dir = args.output_dir or (str(candidate_corpus_renders) if candidate_corpus_renders.exists() else None)
     out_name = None
     html_out_dir = None
     html_out_name = None
@@ -4421,15 +4439,12 @@ Examples:
             out_dir = str(out_path)
             out_name = None
         else:
-            parent_str = str(out_path.parent).replace('\\', '/').rstrip('/')
-            if parent_str in ('.', 'data/output', 'data/output/Malayalam', 'data/output/Devanagari') or parent_str.endswith('/data/output') or parent_str.endswith('/data/output/Malayalam') or parent_str.endswith('/data/output/Devanagari'):
-                out_dir = None
-            else:
+            if out_path.parent != Path('.'):
                 out_dir = str(out_path.parent)
             out_name = out_path.name
     
     # Auto-select default input file
-    input_file = args.input_file or type_settings.get('input_file')
+    input_file = args.input_file
     if not input_file:
          # Fallback to historical hardcoded defaults
          if mode_type == 'aaranam':
@@ -4437,9 +4452,9 @@ Examples:
          elif mode_type == 'collection':
              input_file = 'data/output/Collection_latest_out.json'
          else:
-             input_file = 'data/output/Agneyam-Pavamanam_latest_out.json'
+             input_file = 'data/output/Samhita_corrected_out.json'
     
-    file_prefix = type_settings.get('file_prefix') or (
+    file_prefix = (
         "Aaranam" if mode_type == 'aaranam' else 
         "Collection" if mode_type == 'collection' else "Samhita"
     )
@@ -4447,10 +4462,9 @@ Examples:
         file_prefix = f"{file_prefix}_kpully"
 
     # Path configuration
-    tpl_paths = cfg_paths.get('templates', {})
-    template_dir = tpl_paths.get('pdf', "templates/pdf")
-    text_template_dir = tpl_paths.get('text', "templates/text")
-    html_template_dir = tpl_paths.get('html', "templates/html")
+    template_dir = "templates/pdf"
+    text_template_dir = "templates/text"
+    html_template_dir = "templates/html"
     
     templateFile_Grantha = f"{template_dir}/Grantha_main.template"
     templateFile_Devanagari = f"{template_dir}/Devanagari_main.template"
@@ -4463,8 +4477,8 @@ Examples:
     else:
         html_templateFile_Devanagari = f"{html_template_dir}/Devanagari_main_html.template"
 
-    outputdir = cfg_paths.get('output_root', "data/output")
-    logdir = cfg_paths.get('logs', "data/output/logs")
+    outputdir = "data/output"
+    logdir = "data/output/logs"
     
     # LaTeX/Text Jinja environment (uses LaTeX-style delimiters)
     latex_jinja_env = jinja2.Environment(
@@ -4706,11 +4720,6 @@ Examples:
         if meta_title and any('\u0900' <= ch <= '\u097F' for ch in meta_title):
             doc_title_sa = meta_title
     if not doc_title_sa:
-        doc_title_sa = type_settings.get('doc_title')
-        
-    summary_title_sa = type_settings.get('summary_title')
-    
-    if not doc_title_sa:
         if mode_type == 'aaranam':
             doc_title_sa = "जैमिनीय साम आरण्य गानम्"
             summary_title_sa = "आरण्यम् सङ्ख्या"
@@ -4720,7 +4729,7 @@ Examples:
         else:
             doc_title_sa = "जैमिनीय साम संहिता"
             summary_title_sa = "संहिता सङ्ख्या"
-    elif not summary_title_sa:
+    else:
         if mode_type == 'aaranam':
             summary_title_sa = "आरण्यम् सङ्ख्या"
         elif mode_type == 'collection':

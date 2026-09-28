@@ -478,7 +478,7 @@
             min-width: 0;
             --font-size: 1.3rem;
             --mantra-size: calc(var(--font-size) * 1.25);
-            --swara-size: var(--font-size);
+            --swara-size: calc(var(--font-size) * 0.78);
             font-size: var(--font-size);
         }
 
@@ -723,6 +723,79 @@
             display: inline;
         }
 
+        /* Rachana Typography Calibration: matches visual scale and weight of Noto Sans Malayalam */
+        body.font-rachana .akshara-base,
+        body.font-rachana rb.akshara-base {
+            font-size: calc(var(--mantra-size) * 1.25);
+            font-weight: 100;
+            -webkit-text-stroke: 0.0em currentColor;
+        }
+
+        body.font-rachana .danda,
+        body.font-rachana .verse-num-marker,
+        body.font-rachana .verse-num,
+        body.font-rachana .mantra-punct {
+            font-size: calc(var(--mantra-size) * 1.15);
+            font-weight: 500;
+        }
+
+        body.font-rachana .rik-text,
+        body.font-rachana .samam-text {
+            font-size: calc(var(--mantra-size) * 1.15);
+        }
+
+        body.font-rachana rt.swara-above {
+            font-size: calc(var(--swara-size) * 0.85);
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        body.font-rachana .swara-mod {
+            font-size: 0.90em;
+        }
+ /* Specific modifier tuning for Rachana: scales down oversized markers */
+        body.font-rachana .swara-mod.mod-c {
+            font-size: 0.75em !important;
+            -webkit-text-stroke: 0 !important;
+            font-weight: 600 !important;
+            top: -0.3em !important;
+            right: 0.2em
+        }
+
+        body.font-rachana .swara-mod.mod-h {
+            font-size: 0.60em !important;
+            -webkit-text-stroke: 0 !important;
+            font-weight: 600 !important;
+            top: -0.18em !important;
+        }
+
+        body.font-rachana .swara-mod.mod-e {
+            font-size: 0.60em !important;
+            font-weight: 900 !important;
+            -webkit-text-stroke: 0.05em currentColor !important;
+            text-shadow: 0.02em 0 currentColor !important;
+            position: relative !important;
+            top: -0.30em !important;  /* Pushed up */
+            vertical-align: 0.05em !important;
+            margin-left: 2px !important;
+        }
+
+        body.font-rachana .swara-mod.mod-comma {
+            font-size: 1.0em !important;
+            position: relative !important;
+            top: -0.2em !important;
+            left: 0.05em !important;
+            display: inline-block !important;
+            transform: translateY(-0.2em) translateX(0.05em) !important;
+        }
+
+        body.font-rachana .swara-mod.mod-dot {
+            font-size: 1.0em !important;
+            position: relative !important;
+            top: -0.15em !important;  /* Negative value moves UP */
+            left: 0.0em !important; /* Negative value moves LEFT */
+        }
+       
         /* Swara Modifiers */
         .swara-mod {
             font-family: var(--font-swara), var(--font-doc);
@@ -856,9 +929,14 @@
         }
 
         .swara-mod.mod-e {
-            font-size: 0.50em;
-            margin-left: 1px;
-            vertical-align: -0.15em;
+            font-family: var(--font-swara) !important;
+            font-size: 0.65em;
+            font-weight: 900 !important;
+            -webkit-text-stroke: 0.05em currentColor !important;
+            text-shadow: 0.02em 0 currentColor;
+            display: inline-block;
+            vertical-align: 0.05em;
+            margin-left: 2px;
         }
 
         .swara-mod.mod-f {
@@ -1762,7 +1840,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ ജൈമിനീയ സാമ സംഹിത ॥</h1>
-                <div class="sub-heading">പതിപ്പ്: 3.0 | നിർമ്മിതം: 25-09-2026 21:58:50</div>
+                <div class="sub-heading">പതിപ്പ്: 3.28 | നിർമ്മിതം: 28-09-2026 10:45:23</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
@@ -2205,6 +2283,9 @@
             currentFontIndex = ((idx % fontList.length) + fontList.length) % fontList.length;
             const chosen = fontList[currentFontIndex];
             document.documentElement.style.setProperty('--font-doc', chosen.font);
+            document.body.classList.remove('font-rachana', 'font-noto-serif', 'font-noto-sans', 'font-gayathri', 'font-manjari');
+            const fontClass = 'font-' + chosen.label.toLowerCase().replace(/\s+/g, '-');
+            document.body.classList.add(fontClass);
             const btn = document.getElementById('font-toggle-btn');
             if (btn) btn.innerText = 'Font: ' + chosen.label;
             localStorage.setItem('jsv-ml-reader-font-idx', currentFontIndex);
@@ -2423,12 +2504,19 @@
             }
             const doc = iframe.contentWindow.document;
             const mainStyle = document.querySelector('style') ? document.querySelector('style').innerHTML : '';
+            const fontLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"]'))
+                .map(link => link.outerHTML).join('\n');
+            const htmlStyle = document.documentElement.getAttribute('style') || '';
+            const bodyClass = document.body.className || '';
+            const bodyStyle = document.body.getAttribute('style') || '';
+
             doc.open();
             doc.write(`<!DOCTYPE html>
-            <html lang="ml">
+            <html lang="ml" style="${htmlStyle}">
             <head>
                 <meta charset="UTF-8">
                 <title>${title || document.title}</title>
+                ${fontLinks}
                 <style>
                     ${mainStyle}
                     @page {
@@ -2504,15 +2592,17 @@
                         vertical-align: bottom !important;
                     }
                     rt.swara-above {
-                        font-size: 0.85em !important;
                         color: #c62828 !important;
+                    }
+                    body.font-rachana rt.swara-above {
+                        font-size: calc(var(--swara-size) * 0.72) !important;
                     }
                     @media print {
                         body { margin: 0 !important; padding: 0 !important; }
                     }
                 </style>
             </head>
-            <body>
+            <body class="${bodyClass}" style="${bodyStyle}">
                 <div class="print-container">
                     ${contentHtml}
                 </div>
@@ -2523,7 +2613,7 @@
             setTimeout(() => {
                 iframe.contentWindow.focus();
                 iframe.contentWindow.print();
-            }, 100);
+            }, 120);
         }
 
         function getSectionPrintableHtml(target) {
@@ -2841,9 +2931,7 @@
                 }
             }
             const savedFont = localStorage.getItem('jsv-ml-reader-font-idx');
-            if (savedFont !== null) {
-                setFont(parseInt(savedFont, 10) || 0);
-            }
+            setFont(savedFont !== null ? (parseInt(savedFont, 10) || 0) : 0);
             const savedSize = localStorage.getItem('jsv-ml-reader-font-size');
             if (savedSize !== null) {
                 currentSize = parseFloat(savedSize) || 1.3;
