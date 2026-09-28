@@ -303,7 +303,45 @@ render_profiles:
 
 ---
 
-## 7. Quick Reference: End-to-End Curation Cheatsheet
+## 7. Rationale for Cryptographic SHA-256 Checksums
+
+The project utilizes **SHA-256 cryptographic checksums** across all input texts, generated ASTs, and compiled renders for four essential liturgical and architectural reasons:
+
+### A. Protection Against Silent Liturgical Corruption
+In Vedic chant tradition, even a minuscule, invisible change—such as an accidental space, a shifted zero-width joiner (ZWJ), an altered visarga, or a missing swara modifier—fundamentally alters the liturgical validity of the chant.
+* A SHA-256 checksum is a **unique 256-bit (64-character hexadecimal) cryptographic signature**.
+* If even a **single accent, vowel sign, or letter** in a 5,000-line Vedic text is modified or damaged by an editor, filesystem corruption, or git merge conflict, the entire SHA-256 hash changes completely.
+* It provides mathematical certainty of bit-level immutability across disk saves, cloud syncs, and operating system transfers.
+
+### B. Immutable Anchor Seal for Golden Baselines
+The Golden Baseline in [`data/baselines/golden/`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/baselines/golden/) is the project's peer-reviewed liturgical anchor.
+* Each golden corpus has a certified manifest (such as [`samhita_manifest.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/baselines/golden/samhita_manifest.json)) that seals the exact SHA-256 checksum of the approved master source text and golden AST.
+* Whenever [`run_regression_suite.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/tools/run_regression_suite.py) runs (Check #7: *Active Baseline Input Checksums*), it re-hashes the live inputs and compares them against the golden baseline hashes, immediately halting the pipeline if accidental drift or tampering is detected.
+
+### C. Mathematical Decoupling: Sacred Text vs. Presentation
+By maintaining separate SHA-256 checksums across three distinct stages:
+1. **Source Text** (`01_input/*.txt`)
+2. **Parsed AST** (`02_ast/*.json`)
+3. **Compiled Renders** (`05_renders/{html,pdf}/*`)
+
+We can mathematically isolate the exact nature of any change:
+* **Presentation-Only Changes** (CSS, swara modifier positions, font size):
+  * Input Text SHA-256: $\checkmark$ **Identical**
+  * AST JSON SHA-256: $\checkmark$ **Identical**
+  * Render HTML SHA-256: **Changed**
+  * *Mathematical Proof*: We can prove to scholars and traditionalists that **not a single syllable or swara of the sacred text changed**, only the visual styling.
+* **Liturgical Text Corrections** (typo or swara fix in the mantra):
+  * Input Text SHA-256 & AST SHA-256: **Changed**
+  * *Alert*: The system flags this as a genuine liturgical modification requiring peer-review validation.
+
+### D. Public Verification & Institutional Trust
+When digital editions, PDFs, or web readers are distributed to scholars, researchers, and Veda Pathashalas:
+* Anyone can independently run standard hashing tools (`Get-FileHash <file>` on Windows, `sha256sum <file>` on Linux/macOS) on their local files.
+* Matching the output against [`run_manifest.json`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/corpora/samhita/run_manifest.json) or the golden baseline manifest provides independent verification that their text is authentic, unmodified, and certified against the canonical publication.
+
+---
+
+## 8. Quick Reference: End-to-End Curation Cheatsheet
 
 ```powershell
 # 1. Edit source text in working directory or 01_input/

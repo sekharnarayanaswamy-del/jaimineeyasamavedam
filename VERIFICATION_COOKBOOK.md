@@ -37,6 +37,7 @@ python src/tools/run_regression_suite.py
 
 > [!TIP]
 > If all 8 checks show `[PASS]`, the fundamental liturgical invariants of the codebase are fully intact.
+> **Check 7 (SHA-256 Checksums)** guarantees zero silent corruption: even a single modified accent or space will trip the checksum. For the complete rationale on how cryptographic hashes mathematically isolate sacred text changes from CSS/template changes, see [VERSIONING_AND_WORKFLOW.md](VERSIONING_AND_WORKFLOW.md#7-rationale-for-cryptographic-sha-256-checksums).
 
 ---
 
