@@ -678,6 +678,48 @@ def convert_corrections_to_json(file_path="corrections_003.txt"):
 
     return json_output
 
+def get_canonical_rik_id(subsection):
+    """
+    Extract the canonical Rik ID from a subsection dictionary.
+    Prefers:
+    1. rik_classifications (local Rik_ID or Global_Rik_Num)
+    2. verse marker ॥ N ॥ embedded in rik_text
+    3. falls back to subsection.get('rik_id')
+    """
+    if not isinstance(subsection, dict):
+        return None
+        
+    classifications = subsection.get('rik_classifications')
+    if classifications and isinstance(classifications, list) and len(classifications) > 0:
+        c = classifications[0]
+        rik_id = c.get('Rik_ID')
+        if rik_id is not None and str(rik_id).lower() != 'null':
+            try:
+                return int(rik_id)
+            except ValueError:
+                return rik_id
+        g_id = c.get('Global_Rik_Num')
+        if g_id is not None and str(g_id).lower() != 'null':
+            try:
+                return int(g_id)
+            except ValueError:
+                return g_id
+                
+    rik_text = subsection.get('rik_text', '')
+    if rik_text:
+        m = re.search(r'॥\s*([०-९\d]+)\s*॥', rik_text)
+        if m:
+            num_str = m.group(1)
+            mapping = {'०':'0', '१':'1', '२':'2', '३':'3', '४':'4', '५':'5', '६':'6', '७':'7', '८':'8', '९':'9'}
+            ascii_num = ''.join(mapping.get(c, c) for c in num_str)
+            try:
+                return int(ascii_num)
+            except ValueError:
+                pass
+                
+    return subsection.get('rik_id')
+
+
 if __name__ == "__main__":
     # Get the filename from command line argument
     if len(sys.argv) > 1:

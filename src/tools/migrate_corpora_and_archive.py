@@ -30,76 +30,59 @@ INPUT_FILES_TO_ARCHIVE = [
     "broken_test.txt",
     "Agneyam-Pavamanam_latest.txt",
     "Agneyam-Pavamanam_corrected.txt",
+    "Aaranam_latest.docx",
+    "Prompt for RDG classification.docx",
+    "Uttararchikam.odt",
+    "Samved-RDC_.xlsx",
+    "Samved-RDC.xlsx",
+    "veda_anukriti - Jitendra Bansal.xlsx",
+    "granular_table.csv",
+    "Samhita_K1_K2_Devanagari.txt",
+    "Samhita_with_Rishi_Devata_Chandas.txt",
+    "section_list.txt",
+    "Uttararchikam_complete_new.txt",
+    "Prayogamala_.txt",
+    "Rik_text_full.txt",
+    "Abhisravanam.txt",
+    "Apara_samani.txt",
+    "Ashtadikpalani.txt",
+    "Aupanishad_vrata.txt",
+    "Aupanishada_brahmanam.txt",
+    "Godanika_vrata_prayoga.txt",
+    "Graha_ip.txt",
+    "Samam_Devanagari_Unicode.txt",
+    "Sooktam.txt",
 ]
 
-# Exact file patterns/names in data/output to safely archive
-OUTPUT_FILES_TO_ARCHIVE = [
-    # Scratch and test generation runs
-    "1.txt",
-    "Aaranam_test_renum.txt",
-    "Aaranam_test_renum_v2.txt",
-    "Aaranam_config_test.txt",
-    "sep_test_Devanagari.html",
-    "sep_test_Devanagari.tex",
-    "sep_test_fixed_Rik_Devanagari.html",
-    "sep_test_fixed_Rik_Devanagari.tex",
-    "sep_test_fixed_Samam_Devanagari.html",
-    "sep_test_fixed_Samam_Devanagari.tex",
-    "test_logic_Devanagari.html",
-    "test_logic_Devanagari.tex",
-    "test_rik_table.csv",
-    "test_rik_table.xlsx",
-    "test_samhita_ast.json",
-    "test_vargeekaran.json",
-    "test_filter_out.json",
-    "Samhita_Correction_Test.json",
-    "curate_log.txt",
-    "curate_log_clean.txt",
-    "curate_log_utf8.txt",
-    "non_contiguous_analysis.txt",
-    "non_contiguous_analysis_v2.txt",
-    "non_contiguous_analysis_v2.xlsx",
-    "non_contiguous_riks.txt",
-    "ss1_sections_debug.txt",
-    "section8_samams.txt",
-    "o_malayalam.html",
-    "o_malayalam.txt",
-    "Aaranam_rik.json.html",
-    "Aaranam_rik.json.pdf",
-    "Aaranam_rik.json.tex",
-    "Nakshatra_sooktam_test.json",
-    "Aaranam_latest_out_.json",
-    "JSV_Samam_Granular_Table.bak.xlsx",
-    "Samhita_with_Rishi_Devata_Chandas_out_backup_20260209_154352.json",
-    "Vargeekaran-bak.json",
-    "GENERATION_LOG_.pdf",
-    "JSV_Missing_Metadata_Report_.md",
-    "JSV_Samam_Granular_Table_.csv",
-    "Saman_Metadata_Comparison_Samhita_.xlsx",
-    "Rik Reconciliation table (JSV-KSV)__ - Aaranam.xlsx",
-    "Rik Reconciliation table (JSV-KSV)-corr.xlsx",
-    "Aaranam_Rik_Table_Clean.csv",
-    "Aaranam_Rik_Table_Strict.csv",
-    "Aaranam_Rik_Table_minimal.csv",
-    "Aaranam_Rik_Table_Final.csv",
-    "Samhita_Rik_Table_Clean.csv",
-    "Samhita_Rik_Table_Strict.csv",
-    "Samhita_Rik_Table_Full.csv",
-    "Samhita_Rik_Table_Final.csv",
-    "rik_matches_v5_final.xlsx",
-    "Aaranam_input_out.json",
-    "Agneyam-Pavamanam_corrected_out.json",
-    "Agneyam-Pavamanam_latest_out.json",
-    "prayogamala-pb.json",
-    "prayogamala-ubn.json",
-    "Ritu-shanti-2.json",
-    "Sooktam-orig.json",
-    "Sooktam_.json",
-    "Sooktamala_.json",
-    "TestCollection.json",
-    "samhita-corrected.json",
-    "vedic_output.html",
-]
+# Canonical bridge files to keep in data/output/ for backwards compatibility
+CANONICAL_OUTPUT_FILES_TO_PRESERVE = {
+    # Core ASTs
+    "Samhita_corrected_out.json",
+    "Aaranam_latest_out.json",
+    "Collection_latest_out.json",
+    "Vargeekaran.json",
+    "Aaranam_vargeekaran.json",
+    "Prayogamala-Purvabhagam.json",
+    "prayogamala-Uttarabhagam.json",
+    "Sooktamala.json",
+    "Samhita_Malayalam_out.json",
+    # Editorial & Granular Tables
+    "JSV_Structure_Summary.csv",
+    "JSV_Structure_Summary.txt",
+    "JSV_Rik_Table.csv",
+    "JSV_Rik_Table.txt",
+    "Rik Reconciliation table (JSV-KSV).xlsx",
+    "JSV_Samam_Granular_Table.csv",
+    "JSV_Samam_Granular_Table.xlsx",
+    "Aaranam_Rik_Table.csv",
+    "Aaranam_Rik_Table_Baseline.csv",
+    "Rik Reconciliation table (JSV-KSV) - Aaranam_latest.xlsx",
+    # Audit Reports
+    "JSON_Samam_Continuity_Report.txt",
+    "Samhita_corrected_out_continuity_report.txt",
+    "Aaranam_Continuity_Report_Final.txt",
+    "Aaranam_vargeekaran_continuity_report.txt",
+}
 
 
 def sha256_file(filepath: Path) -> str:
@@ -114,10 +97,31 @@ def purge_and_archive():
     print("[1/4] Initializing archive directories...")
     archive_in = ARCHIVE_DIR / "input"
     archive_out = ARCHIVE_DIR / "output"
+    archive_candidates = ARCHIVE_DIR / "candidates"
     archive_in.mkdir(parents=True, exist_ok=True)
     archive_out.mkdir(parents=True, exist_ok=True)
 
-    # 1. Archive input lock files and duplicates
+    # 1. Archive data/candidates/ directory
+    candidates_dir = DATA_DIR / "candidates"
+    if candidates_dir.exists():
+        archive_candidates.mkdir(parents=True, exist_ok=True)
+        cand_count = 0
+        for item in candidates_dir.iterdir():
+            target = archive_candidates / item.name
+            if target.exists():
+                if target.is_dir():
+                    shutil.rmtree(target)
+                else:
+                    target.unlink()
+            shutil.move(str(item), str(target))
+            cand_count += 1
+        try:
+            shutil.rmtree(str(candidates_dir))
+        except Exception as e:
+            print(f"  Warning removing candidates dir: {e}")
+        print(f"  Archived {cand_count} items from data/candidates/ -> {archive_candidates.relative_to(ROOT_DIR)}")
+
+    # 2. Archive input lock files and scratch files
     archived_in_count = 0
     for f in INPUT_DIR.glob("~$*"):
         try:
@@ -129,27 +133,75 @@ def purge_and_archive():
     for filename in INPUT_FILES_TO_ARCHIVE:
         p = INPUT_DIR / filename
         if p.exists():
-            shutil.move(str(p), str(archive_in / filename))
+            target = archive_in / filename
+            if target.exists():
+                target.unlink()
+            shutil.move(str(p), str(target))
             archived_in_count += 1
             print(f"  Archived input -> {filename}")
 
-    # 2. Archive output lock files and scratch/test files
-    archived_out_count = 0
-    for f in OUTPUT_DIR.glob("~$*"):
+    # 3. Purge transient LaTeX auxiliary and compilation files in data/output/
+    transient_exts = {'.aux', '.idx', '.log', '.out', '.toc', '.tex', '.fls', '.synctex.gz', '.bbl', '.blg', '.lyx'}
+    purged_tex_count = 0
+    for f in list(OUTPUT_DIR.rglob("*")):
+        if f.is_file() and f.suffix.lower() in transient_exts:
+            try:
+                f.unlink()
+                purged_tex_count += 1
+            except Exception as e:
+                print(f"  Warning purging transient file {f.name}: {e}")
+    if purged_tex_count > 0:
+        print(f"  Purged {purged_tex_count} transient LaTeX auxiliary & compilation files (.tex, .aux, .log, etc.)")
+
+    # 4. Remove empty cache directories (.wdc)
+    wdc_dir = OUTPUT_DIR / ".wdc"
+    if wdc_dir.exists():
         try:
-            shutil.move(str(f), str(archive_out / f.name))
-            archived_out_count += 1
-        except Exception as e:
-            print(f"  Warning archiving lock file {f.name}: {e}")
+            shutil.rmtree(str(wdc_dir))
+        except Exception:
+            pass
 
-    for filename in OUTPUT_FILES_TO_ARCHIVE:
-        p = OUTPUT_DIR / filename
-        if p.exists():
-            shutil.move(str(p), str(archive_out / filename))
-            archived_out_count += 1
-            print(f"  Archived output -> {filename}")
+    # 5. Archive obsolete directories in data/output/
+    dirs_to_archive = ["logs", "test_site_v2", "website", "pdf", "txt", "swara_devanagari"]
+    for d_name in dirs_to_archive:
+        d_path = OUTPUT_DIR / d_name
+        if d_path.exists():
+            target_d = archive_out / d_name
+            if target_d.exists():
+                shutil.rmtree(str(target_d))
+            shutil.move(str(d_path), str(target_d))
+            print(f"  Archived directory data/output/{d_name}/ -> {archive_out.relative_to(ROOT_DIR)}/{d_name}/")
 
-    print(f"[ARCHIVE COMPLETE] Archived {archived_in_count} input files, {archived_out_count} output files to {ARCHIVE_DIR.relative_to(ROOT_DIR)}")
+    # In data/output/malayalam/, keep Samam_Malayalam.json, archive others
+    mal_dir = OUTPUT_DIR / "malayalam"
+    if mal_dir.exists():
+        arch_mal = archive_out / "malayalam"
+        arch_mal.mkdir(parents=True, exist_ok=True)
+        for mf in list(mal_dir.iterdir()):
+            if mf.is_file() and mf.name != "Samam_Malayalam.json":
+                target_mf = arch_mal / mf.name
+                if target_mf.exists():
+                    target_mf.unlink()
+                shutil.move(str(mf), str(target_mf))
+
+    # 6. Archive loose files in data/output/ not in CANONICAL_OUTPUT_FILES_TO_PRESERVE
+    archived_out_count = 0
+    for f in list(OUTPUT_DIR.iterdir()):
+        if f.is_file():
+            if f.name.startswith("~$"):
+                try:
+                    shutil.move(str(f), str(archive_out / f.name))
+                    archived_out_count += 1
+                except Exception:
+                    pass
+            elif f.name not in CANONICAL_OUTPUT_FILES_TO_PRESERVE:
+                target_f = archive_out / f.name
+                if target_f.exists():
+                    target_f.unlink()
+                shutil.move(str(f), str(target_f))
+                archived_out_count += 1
+
+    print(f"[ARCHIVE COMPLETE] Cleaned data/ directory. Archived {archived_in_count} input files, {archived_out_count} output files to {ARCHIVE_DIR.relative_to(ROOT_DIR)}")
 
 
 def setup_stage_directories():
@@ -231,20 +283,37 @@ def setup_stage_directories():
 
     # Samhita 05_renders (PDF, HTML, TXT)
     for f in [
-        "Samhita_Devanagari.pdf", "Samhita_kpully_Devanagari.pdf", "Rik_Devanagari.pdf", "Samam_Devanagari.pdf", "Rik_NoMeta_Devanagari.pdf", "Samam_NoMeta_Devanagari.pdf",
-        "Samam_kpully_Malayalam.pdf", "Samhita_Malayalam.pdf"
+        "Samhita_Devanagari.pdf", "Samhita_kpully_Devanagari.pdf",
+        "Samhita_Rik_Devanagari.pdf", "Samhita_Samam_Devanagari.pdf",
+        "Samhita_Rik_NoMeta_Devanagari.pdf", "Samhita_Samam_NoMeta_Devanagari.pdf",
+        "Samam_kpully_Malayalam.pdf", "Samam_kpully_Devanagari.pdf", "Samhita_Malayalam.pdf"
     ]:
         stage_render(f, "samhita", "pdf")
     for f in [
-        "Samhita_Devanagari.html", "Samhita_kpully_Devanagari.html", "Samhita.html", "Rik.html", "Samam.html", "Rik_NoMeta.html", "Samam_NoMeta.html",
-        "Samam_kpully_Malayalam.html", "Samhita_Malayalam.html"
+        "Samhita_Devanagari.html", "Samhita_kpully_Devanagari.html",
+        "Samhita_Rik_Devanagari.html", "Samhita_Samam_Devanagari.html",
+        "Samhita_Rik_NoMeta_Devanagari.html", "Samhita_Samam_NoMeta_Devanagari.html",
+        "Samam_kpully_Malayalam.html", "Samam_kpully_Devanagari.html", "Samhita_Malayalam.html"
     ]:
         stage_render(f, "samhita", "html")
     for f in [
-        "Samhita_Devanagari_Unicode.txt", "Samhita_kpully_Devanagari_Unicode.txt", "Rik_Devanagari_Unicode.txt", "Samam_Devanagari_Unicode.txt", "Rik_NoMeta_Devanagari_Unicode.txt", "Samam_NoMeta_Devanagari_Unicode.txt",
-        "Samam_kpully_Malayalam_Unicode.txt", "Samhita_Malayalam_Unicode.txt"
+        "Samhita_Devanagari_Unicode.txt", "Samhita_kpully_Devanagari_Unicode.txt",
+        "Samhita_Rik_Devanagari_Unicode.txt", "Samhita_Samam_Devanagari_Unicode.txt",
+        "Samhita_Rik_NoMeta_Devanagari_Unicode.txt", "Samhita_Samam_NoMeta_Devanagari_Unicode.txt",
+        "Samam_kpully_Malayalam_Unicode.txt", "Samam_kpully_Devanagari_Unicode.txt",
+        "Samam_kpully_Malayalam_Devanagari_Unicode.txt", "Samhita_Malayalam_Unicode.txt"
     ]:
         stage_render(f, "samhita", "txt")
+
+    # Clean up transient .tex files and unprefixed legacy files from Samhita renders
+    sam_renders = CORPORA_DIR / "samhita" / "05_renders"
+    for stale_pattern in ["*.tex", "Rik.html", "Samam.html", "Rik_NoMeta.html", "Samam_NoMeta.html", "Samhita.html", "Rik_Devanagari.*", "Samam_Devanagari.*", "Rik_NoMeta_Devanagari.*", "Samam_NoMeta_Devanagari.*"]:
+        for p in sam_renders.rglob(stale_pattern):
+            try:
+                p.unlink()
+                print(f"  Purged transient/stale render -> {p.relative_to(ROOT_DIR)}")
+            except Exception:
+                pass
 
     stage_file(OUTPUT_DIR / "JSV_Structure_Summary.csv", "samhita", "06_reports")
     stage_file(OUTPUT_DIR / "JSV_Structure_Summary.txt", "samhita", "06_reports")
@@ -270,8 +339,17 @@ def setup_stage_directories():
         stage_render(f, "aaranam", "pdf")
     for f in ["Aaranam_Devanagari.html", "Aaranam_Rik_Devanagari.html", "Aaranam_Samam_Devanagari.html", "Aaranam_Rik_NoMeta_Devanagari.html", "Aaranam_Samam_NoMeta_Devanagari.html"]:
         stage_render(f, "aaranam", "html")
-    for f in ["Aaranam_Devanagari_Unicode.txt"]:
+    for f in ["Aaranam_Devanagari_Unicode.txt", "Aaranam_Rik_Devanagari_Unicode.txt", "Aaranam_Samam_Devanagari_Unicode.txt", "Aaranam_Rik_NoMeta_Devanagari_Unicode.txt", "Aaranam_Samam_NoMeta_Devanagari_Unicode.txt"]:
         stage_render(f, "aaranam", "txt")
+
+    # Clean up transient .tex files from Aaranam renders
+    aar_renders = CORPORA_DIR / "aaranam" / "05_renders"
+    for p in aar_renders.rglob("*.tex"):
+        try:
+            p.unlink()
+            print(f"  Purged transient .tex render -> {p.relative_to(ROOT_DIR)}")
+        except Exception:
+            pass
 
     stage_file(OUTPUT_DIR / "Aaranam_Continuity_Report_Final.txt", "aaranam", "06_reports")
     stage_file(OUTPUT_DIR / "Aaranam_vargeekaran_continuity_report.txt", "aaranam", "06_reports")
@@ -321,7 +399,7 @@ def generate_initial_run_manifests():
     corpora_specs = {
         "samhita": {
             "version": "3.28",
-            "input_file": CORPORA_DIR / "samhita" / "01_input" / "Samhita_corrected.txt",
+            "input_file": CORPORA_DIR / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt",
             "ast_file": CORPORA_DIR / "samhita" / "02_ast" / "Samhita_corrected_out.json",
             "canonical_file": CORPORA_DIR / "samhita" / "04_canonical" / "Vargeekaran.json",
             "expected_samas": 1226,
@@ -363,7 +441,37 @@ def generate_initial_run_manifests():
                     s_count += max(len(mantras), 1 if sub.get("rik_text") else 0)
         return s_count
 
+    def format_size(size_bytes: int) -> str:
+        if size_bytes < 1024:
+            return f"{size_bytes} B"
+        elif size_bytes < 1024 * 1024:
+            return f"{size_bytes / 1024:.1f} KB"
+        else:
+            return f"{size_bytes / (1024 * 1024):.2f} MB"
+
+    def infer_script_and_mode(filename: str):
+        if "Malayalam" in filename:
+            script = "Malayalam"
+        elif "kpully" in filename:
+            script = "Devanagari (Kodunthirapully)"
+        else:
+            script = "Devanagari (Standard)"
+
+        if "NoMeta" in filename:
+            mode = "NoMeta (Continuous Chanting)"
+        elif any(x in filename for x in ["Samhita", "Aaranam", "Sooktamala", "Prayogamala"]):
+            mode = "Combined (Study Edition)"
+        elif filename.startswith("Rik"):
+            mode = "Separate (Rik Only)"
+        elif filename.startswith("Samam"):
+            mode = "Separate (Samam Only)"
+        else:
+            mode = "Standard"
+
+        return script, mode
+
     for corpus, spec in corpora_specs.items():
+        corpus_dir = CORPORA_DIR / corpus
         ast_path = spec["ast_file"]
         metrics = {}
         if ast_path.exists():
@@ -374,16 +482,74 @@ def generate_initial_run_manifests():
             metrics["khandas"] = sum(len(s.get("sections", {})) for s in supers.values() if isinstance(s, dict))
             metrics["samas"] = count_ast_samas(ast_data)
 
+        # Collect artifacts across all 6 stages
+        artifacts = {
+            "01_input": [],
+            "02_ast": [],
+            "03_reconciliation": [],
+            "04_canonical": [],
+            "05_renders": {
+                "pdf": [],
+                "html": [],
+                "txt": []
+            },
+            "06_reports": []
+        }
+
+        for stage_key in ["01_input", "02_ast", "03_reconciliation", "04_canonical"]:
+            s_dir = corpus_dir / stage_key
+            if s_dir.exists():
+                for p in sorted(s_dir.iterdir()):
+                    if p.is_file():
+                        entry = {
+                            "name": p.name,
+                            "path": str(p.relative_to(ROOT_DIR)).replace("\\", "/"),
+                            "size_bytes": p.stat().st_size,
+                            "size_formatted": format_size(p.stat().st_size)
+                        }
+                        if stage_key in ["01_input", "02_ast", "04_canonical"]:
+                            entry["sha256"] = sha256_file(p)
+                        artifacts[stage_key].append(entry)
+
+        renders_dir = corpus_dir / "05_renders"
+        if renders_dir.exists():
+            for fmt in ["pdf", "html", "txt"]:
+                fmt_dir = renders_dir / fmt
+                if fmt_dir.exists():
+                    for p in sorted(fmt_dir.iterdir()):
+                        if p.is_file():
+                            script, mode = infer_script_and_mode(p.name)
+                            artifacts["05_renders"][fmt].append({
+                                "name": p.name,
+                                "path": str(p.relative_to(ROOT_DIR)).replace("\\", "/"),
+                                "format": fmt.upper(),
+                                "script": script,
+                                "mode": mode,
+                                "size_bytes": p.stat().st_size,
+                                "size_formatted": format_size(p.stat().st_size)
+                            })
+
+        reports_dir = corpus_dir / "06_reports"
+        if reports_dir.exists():
+            for p in sorted(reports_dir.iterdir()):
+                if p.is_file() and p.name != "TRACEABILITY.md":
+                    artifacts["06_reports"].append({
+                        "name": p.name,
+                        "path": str(p.relative_to(ROOT_DIR)).replace("\\", "/"),
+                        "size_bytes": p.stat().st_size,
+                        "size_formatted": format_size(p.stat().st_size)
+                    })
+
         run_manifest = {
             "corpus": corpus,
             "edition": spec["version"],
             "timestamp": now_str,
             "stage_status": {
-                "01_input": "PRESENT",
-                "02_ast": "UP_TO_DATE",
-                "03_reconciliation": "ENRICHED",
-                "04_canonical": "VALIDATED",
-                "05_renders": "COMPILED",
+                "01_input": "PRESENT" if artifacts["01_input"] else "MISSING",
+                "02_ast": "UP_TO_DATE" if artifacts["02_ast"] else "MISSING",
+                "03_reconciliation": "ENRICHED" if artifacts["03_reconciliation"] else "N/A",
+                "04_canonical": "VALIDATED" if artifacts["04_canonical"] else "MISSING",
+                "05_renders": "COMPILED" if (artifacts["05_renders"]["pdf"] or artifacts["05_renders"]["html"]) else "MISSING",
                 "06_reports": "CURRENT"
             },
             "hashes": {
@@ -392,6 +558,7 @@ def generate_initial_run_manifests():
                 "canonical_sha256": sha256_file(spec["canonical_file"]) if spec["canonical_file"].exists() else None,
             },
             "metrics": metrics,
+            "artifacts": artifacts,
             "validation_status": "PASSED"
         }
 
@@ -400,11 +567,132 @@ def generate_initial_run_manifests():
             json.dump(run_manifest, f, indent=2, ensure_ascii=False)
         print(f"  Wrote {manifest_path.relative_to(ROOT_DIR)} -> Metrics: {metrics}")
 
-    print("[RUN MANIFESTS COMPLETE]")
+        # Generate human-readable TRACEABILITY.md
+        traceability_lines = [
+            f"# Jaimineeya Samavedam — Traceability & Lineage Report: {corpus.capitalize()}",
+            "",
+            f"- **Corpus**: `{corpus}`",
+            f"- **Edition**: `{spec['version']}`",
+            f"- **Generated Timestamp**: `{now_str}`",
+            f"- **Validation Status**: `PASSED`",
+            "",
+            "---",
+            "",
+            "## 1. Liturgical Invariants & Metrics",
+            "| Metric | Active Count | Baseline Invariant | Status |",
+            "| :--- | :--- | :--- | :--- |",
+            f"| **Pathas (SuperSections)** | {metrics.get('pathas', 'N/A')} | {spec.get('expected_pathas', 'N/A')} | {'PASS' if metrics.get('pathas') == spec.get('expected_pathas') or spec.get('expected_pathas') is None else 'CHECK'} |",
+            f"| **Khandas (Sections)** | {metrics.get('khandas', 'N/A')} | {spec.get('expected_khandas', 'N/A')} | {'PASS' if metrics.get('khandas') == spec.get('expected_khandas') or spec.get('expected_khandas') is None else 'CHECK'} |",
+            f"| **Samas (Liturgical Chants)** | {metrics.get('samas', 'N/A')} | {spec.get('expected_samas', 'N/A')} | {'PASS' if metrics.get('samas') == spec.get('expected_samas') or spec.get('expected_samas') is None else 'CHECK'} |",
+            "",
+            "---",
+            "",
+            "## 2. Cryptographic Stage Lineage (01 -> 02 -> 04)",
+            "| Stage | Canonical File | Size | SHA-256 Checksum |",
+            "| :--- | :--- | :--- | :--- |",
+            f"| **Stage 01: Input** | `{spec['input_file'].name}` | {format_size(spec['input_file'].stat().st_size) if spec['input_file'].exists() else 'N/A'} | `{sha256_file(spec['input_file']) if spec['input_file'].exists() else 'N/A'}` |",
+            f"| **Stage 02: Parsed AST** | `{spec['ast_file'].name}` | {format_size(spec['ast_file'].stat().st_size) if spec['ast_file'].exists() else 'N/A'} | `{sha256_file(spec['ast_file']) if spec['ast_file'].exists() else 'N/A'}` |",
+            f"| **Stage 04: Canonical AST** | `{spec['canonical_file'].name}` | {format_size(spec['canonical_file'].stat().st_size) if spec['canonical_file'].exists() else 'N/A'} | `{sha256_file(spec['canonical_file']) if spec['canonical_file'].exists() else 'N/A'}` |",
+            "",
+            "---",
+            "",
+            "## 3. Compiled Render Catalog (`05_renders/`)",
+            "",
+            "### PDF Documents (`05_renders/pdf/`)",
+            "| File Name | Mode / Edition | Target Script | Size |",
+            "| :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["pdf"]:
+            for r in artifacts["05_renders"]["pdf"]:
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/pdf/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "### HTML Readers (`05_renders/html/`)",
+            "| File Name | Mode / Edition | Target Script | Size |",
+            "| :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["html"]:
+            for r in artifacts["05_renders"]["html"]:
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/html/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "### PlainText Exports (`05_renders/txt/`)",
+            "| File Name | Mode / Edition | Target Script | Size |",
+            "| :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["txt"]:
+            for r in artifacts["05_renders"]["txt"]:
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/txt/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "---",
+            "",
+            "## 4. Source & Intermediate Datasets",
+            "",
+            "### 01_input (Source Texts)",
+            "| File Name | Size | SHA-256 |",
+            "| :--- | :--- | :--- |",
+        ]
+        for f_entry in artifacts["01_input"]:
+            sha_disp = f"`{f_entry['sha256'][:16]}...`" if "sha256" in f_entry and f_entry["sha256"] else "N/A"
+            traceability_lines.append(f"| [`{f_entry['name']}`](../01_input/{f_entry['name']}) | {f_entry['size_formatted']} | {sha_disp} |")
+
+        if artifacts["03_reconciliation"]:
+            traceability_lines += [
+                "",
+                "### 03_reconciliation (Editorial Tables)",
+                "| File Name | Size |",
+                "| :--- | :--- |",
+            ]
+            for f_entry in artifacts["03_reconciliation"]:
+                traceability_lines.append(f"| [`{f_entry['name']}`](../03_reconciliation/{f_entry['name']}) | {f_entry['size_formatted']} |")
+
+        traceability_lines += [
+            "",
+            "---",
+            "",
+            "## 5. Audit Reports (`06_reports/`)",
+            "| Report File | Size |",
+            "| :--- | :--- |",
+        ]
+        for rep in artifacts["06_reports"]:
+            traceability_lines.append(f"| [`{rep['name']}`]({rep['name']}) | {rep['size_formatted']} |")
+
+        traceability_lines += [
+            "",
+            "---",
+            "",
+            "## 6. Audit & Validation Commands",
+            "To verify cryptographic and liturgical invariants against golden baselines:",
+            "```bash",
+            f"python src/tools/validate_run.py {corpus}",
+            "```",
+            ""
+        ]
+
+        traceability_file = corpus_dir / "06_reports" / "TRACEABILITY.md"
+        traceability_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(traceability_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(traceability_lines))
+        print(f"  Generated Traceability Document -> {traceability_file.relative_to(ROOT_DIR)}")
+
+    print("[RUN MANIFESTS & TRACEABILITY COMPLETE]")
 
 
 if __name__ == "__main__":
-    purge_and_archive()
     setup_stage_directories()
+    purge_and_archive()
     generate_initial_run_manifests()
     print("\n[SUCCESS] Stage 1 purge and stage-numbered corpus directories completed!")

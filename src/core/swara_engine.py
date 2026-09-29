@@ -197,3 +197,13 @@ def tokenize_mantra_line(text: str) -> List[dict]:
         i += 1
     return tokens
 
+
+# --- Syllable Tokenizer ---
+DEVA_SYLLABLE_RE = re.compile(
+    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ़┃L╷^⁀∧✓↗])*'
+)
+
+
+def split_deva_syllables(text: str) -> List[str]:
+    """Splits a Devanagari word into distinct phonetic syllables with attached modifiers."""
+    return [m.group(0) for m in DEVA_SYLLABLE_RE.finditer(text)] if text else []

@@ -1,7 +1,7 @@
 {
   "corpus": "aaranam",
   "edition": "1.14",
-  "timestamp": "29-09-2026 07:51:09",
+  "timestamp": "29-09-2026 18:42:40",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,13 +12,206 @@
   },
   "hashes": {
     "input_sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4",
-    "ast_sha256": "c2dfd574a26fac91eadaba16dbe99566f618295b71fbff7c97ab69684c01aaf9",
-    "canonical_sha256": "823ef5f1578d108ebb4c13a5f52fc5731481360aecc76a1f3ed2b5dcb22500d4"
+    "ast_sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7",
+    "canonical_sha256": "c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa"
   },
   "metrics": {
     "pathas": 6,
     "khandas": 25,
     "samas": 154
   },
-  "validation_status": "PASSED"
+  "artifacts": {
+    "01_input": [
+      {
+        "name": "Aaranam_latest.txt",
+        "path": "data/corpora/aaranam/01_input/Aaranam_latest.txt",
+        "size_bytes": 513097,
+        "size_formatted": "501.1 KB",
+        "sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4"
+      },
+      {
+        "name": "Aaranam_rik.txt",
+        "path": "data/corpora/aaranam/01_input/Aaranam_rik.txt",
+        "size_bytes": 20737,
+        "size_formatted": "20.3 KB",
+        "sha256": "61ffd4ce9e19e7d5f573ef20df956d5363c0040b7299e4a7048b96fd0897a273"
+      },
+      {
+        "name": "Aaranam_rik_samam_table.txt",
+        "path": "data/corpora/aaranam/01_input/Aaranam_rik_samam_table.txt",
+        "size_bytes": 27859,
+        "size_formatted": "27.2 KB",
+        "sha256": "aae94e1875c5e34845cc466ae021a5b03c6282740fbb142b58b186ef939be36a"
+      }
+    ],
+    "02_ast": [
+      {
+        "name": "Aaranam_ast.json",
+        "path": "data/corpora/aaranam/02_ast/Aaranam_ast.json",
+        "size_bytes": 620452,
+        "size_formatted": "605.9 KB",
+        "sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7"
+      },
+      {
+        "name": "Aaranam_latest_out.json",
+        "path": "data/corpora/aaranam/02_ast/Aaranam_latest_out.json",
+        "size_bytes": 620452,
+        "size_formatted": "605.9 KB",
+        "sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7"
+      }
+    ],
+    "03_reconciliation": [
+      {
+        "name": "Aaranam_Rik_Table.csv",
+        "path": "data/corpora/aaranam/03_reconciliation/Aaranam_Rik_Table.csv",
+        "size_bytes": 98523,
+        "size_formatted": "96.2 KB"
+      },
+      {
+        "name": "Aaranam_Rik_Table_Baseline.csv",
+        "path": "data/corpora/aaranam/03_reconciliation/Aaranam_Rik_Table_Baseline.csv",
+        "size_bytes": 98532,
+        "size_formatted": "96.2 KB"
+      },
+      {
+        "name": "Rik Reconciliation table (JSV-KSV) - Aaranam_latest.xlsx",
+        "path": "data/corpora/aaranam/03_reconciliation/Rik Reconciliation table (JSV-KSV) - Aaranam_latest.xlsx",
+        "size_bytes": 72721,
+        "size_formatted": "71.0 KB"
+      }
+    ],
+    "04_canonical": [
+      {
+        "name": "Aaranam_vargeekaran.json",
+        "path": "data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json",
+        "size_bytes": 763791,
+        "size_formatted": "745.9 KB",
+        "sha256": "c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa"
+      }
+    ],
+    "05_renders": {
+      "pdf": [
+        {
+          "name": "Aaranam_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 537714,
+          "size_formatted": "525.1 KB"
+        },
+        {
+          "name": "Aaranam_Rik_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Rik_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 133439,
+          "size_formatted": "130.3 KB"
+        },
+        {
+          "name": "Aaranam_Rik_NoMeta_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Rik_NoMeta_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 121221,
+          "size_formatted": "118.4 KB"
+        },
+        {
+          "name": "Aaranam_Samam_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Samam_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 498449,
+          "size_formatted": "486.8 KB"
+        },
+        {
+          "name": "Aaranam_Samam_NoMeta_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Samam_NoMeta_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 498453,
+          "size_formatted": "486.8 KB"
+        }
+      ],
+      "html": [
+        {
+          "name": "Aaranam_Devanagari.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 8068511,
+          "size_formatted": "7.69 MB"
+        },
+        {
+          "name": "Aaranam_Rik_Devanagari.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 893546,
+          "size_formatted": "872.6 KB"
+        },
+        {
+          "name": "Aaranam_Rik_NoMeta_Devanagari.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam_Rik_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 864170,
+          "size_formatted": "843.9 KB"
+        },
+        {
+          "name": "Aaranam_Samam_Devanagari.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam_Samam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 5595110,
+          "size_formatted": "5.34 MB"
+        },
+        {
+          "name": "Aaranam_Samam_NoMeta_Devanagari.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam_Samam_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 5595110,
+          "size_formatted": "5.34 MB"
+        }
+      ],
+      "txt": [
+        {
+          "name": "Aaranam_Devanagari_Unicode.txt",
+          "path": "data/corpora/aaranam/05_renders/txt/Aaranam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 516230,
+          "size_formatted": "504.1 KB"
+        }
+      ]
+    },
+    "06_reports": [
+      {
+        "name": "Aaranam_Continuity_Report_Final.txt",
+        "path": "data/corpora/aaranam/06_reports/Aaranam_Continuity_Report_Final.txt",
+        "size_bytes": 1061,
+        "size_formatted": "1.0 KB"
+      },
+      {
+        "name": "Aaranam_vargeekaran_continuity_report.txt",
+        "path": "data/corpora/aaranam/06_reports/Aaranam_vargeekaran_continuity_report.txt",
+        "size_bytes": 1024,
+        "size_formatted": "1.0 KB"
+      }
+    ]
+  },
+  "validation_status": "PASSED",
+  "last_validated": "29-09-2026 18:42:47",
+  "validation_summary": "100% parity with Golden Baseline Anchor."
 }

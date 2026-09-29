@@ -48,8 +48,16 @@ def run_check(name, fn):
 # --- 1. Live Ingestion from Raw Unicode Texts ---
 def check_live_ingestion():
     """Execute generate_json.py from raw Unicode texts to guarantee live pipeline viability."""
-    samhita_in = REPO_ROOT / "data" / "input" / "Samhita_corrected.txt"
-    aaranam_in = REPO_ROOT / "data" / "input" / "Aaranam_latest.txt"
+    samhita_in = (
+        REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt").exists()
+        else REPO_ROOT / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
+    )
+    aaranam_in = (
+        REPO_ROOT / "data" / "corpora" / "aaranam" / "01_input" / "Aaranam_latest.txt"
+        if (REPO_ROOT / "data" / "corpora" / "aaranam" / "01_input" / "Aaranam_latest.txt").exists()
+        else REPO_ROOT / "data" / "input" / "Aaranam_latest.txt"
+    )
     
     if not samhita_in.exists():
         return False, f"Missing {samhita_in}"
@@ -134,7 +142,11 @@ def check_live_ingestion():
 
 # --- 2. Domain Metric Invariants ---
 def check_domain_metrics():
-    summary_path = REPO_ROOT / "data" / "output" / "JSV_Structure_Summary.csv"
+    summary_path = (
+        REPO_ROOT / "data" / "corpora" / "samhita" / "06_reports" / "JSV_Structure_Summary.csv"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "06_reports" / "JSV_Structure_Summary.csv").exists()
+        else REPO_ROOT / "data" / "output" / "JSV_Structure_Summary.csv"
+    )
     if not summary_path.exists():
         return False, "Summary CSV not found"
     
@@ -168,7 +180,11 @@ def check_domain_metrics():
 # --- 2. Typed AST Models & Roundtrip ---
 def check_ast_models():
     from core.models import VedicDocument
-    samhita_json = REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json"
+    samhita_json = (
+        REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json").exists()
+        else REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json"
+    )
     if not samhita_json.exists():
         return False, "Samhita_corrected_out.json not found"
         
@@ -218,7 +234,11 @@ def check_swara_engine():
 # --- 4. Structural Tag Balance Check ---
 def check_structural_tags():
     from ingest.renumber import validate_structural_tags
-    samhita_txt = REPO_ROOT / "data" / "input" / "Samhita_corrected.txt"
+    samhita_txt = (
+        REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_corrected.txt"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_corrected.txt").exists()
+        else REPO_ROOT / "data" / "input" / "Samhita_corrected.txt"
+    )
     if not samhita_txt.exists():
         return False, "Samhita_corrected.txt not found"
         
@@ -248,7 +268,12 @@ def check_version_engine():
     if edition != "3.28":
         return False, f"Samhita edition expected '3.28', got '{edition}'"
         
-    meta = get_build_metadata("samhita", REPO_ROOT / "data" / "input" / "Samhita_corrected.txt")
+    samhita_in = (
+        REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt").exists()
+        else REPO_ROOT / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
+    )
+    meta = get_build_metadata("samhita", samhita_in)
     if not meta.get("input_sha256"):
         return False, "SHA-256 fingerprint missing from build metadata"
     if meta.get("version") != "3.28":
@@ -286,7 +311,7 @@ def check_baseline_integrity():
         
     return True, f"All master inputs match baseline '{manifest.get('tag')}'"
 
-# --- 7. Modular Renderers Availability ---
+# --- 8. Modular Renderers Availability ---
 def check_renderers():
     try:
         from renderers import BaseRenderer, LaTeXRenderer, HTMLRenderer, TextRenderer
@@ -294,6 +319,41 @@ def check_renderers():
         return True, "LaTeX, HTML, and PlainText renderers loaded"
     except Exception as e:
         return False, f"Renderer import failed: {e}"
+
+# --- 9. Render Corpus Isolation & Transient Hygiene ---
+def check_render_corpus_isolation():
+    """Verify that renders are strictly isolated by corpus and transient .tex files are purged."""
+    corpora_dir = REPO_ROOT / "data" / "corpora"
+    if not corpora_dir.exists():
+        return True, "data/corpora/ not yet initialized"
+
+    # 1. No .tex files should exist in data/corpora/
+    tex_files = list(corpora_dir.rglob("*.tex"))
+    if tex_files:
+        sample = [str(f.relative_to(REPO_ROOT)) for f in tex_files[:3]]
+        return False, f"Transient .tex files found in stage-numbered corpora: {', '.join(sample)}"
+
+    # 2. Samhita renders must not contain Aaranam content
+    sam_renders = corpora_dir / "samhita" / "05_renders"
+    if sam_renders.exists():
+        for f in sam_renders.rglob("*.txt"):
+            content = f.read_text(encoding="utf-8")
+            if "supersection_7" in content or "आरण्य गानम्" in content:
+                return False, f"Cross-corpus pollution: Aaranam content found in Samhita render {f.name}"
+        for f in sam_renders.rglob("*.html"):
+            content = f.read_text(encoding="utf-8")
+            if "supersection_7" in content or "आरण्य गानम्" in content:
+                return False, f"Cross-corpus pollution: Aaranam content found in Samhita render {f.name}"
+
+    # 3. Aaranam renders must not contain Samhita supersection_1 title
+    aar_renders = corpora_dir / "aaranam" / "05_renders"
+    if aar_renders.exists():
+        for f in aar_renders.rglob("*.txt"):
+            content = f.read_text(encoding="utf-8")
+            if "आग्नेयपाठः" in content:
+                return False, f"Cross-corpus pollution: Samhita content found in Aaranam render {f.name}"
+
+    return True, "All renders corpus-isolated, 0 transient .tex files"
 
 def main():
     print_header("JAIMINEEYA SAMAVEDA - REGRESSION VERIFICATION SUITE")
@@ -309,6 +369,7 @@ def main():
         ("6. 3-Tier Version & Build Metadata", check_version_engine),
         ("7. Active Baseline Input Checksums", check_baseline_integrity),
         ("8. Modular Rendering Engines", check_renderers),
+        ("9. Render Corpus Isolation & Transient Hygiene", check_render_corpus_isolation),
     ]
     
     results = []

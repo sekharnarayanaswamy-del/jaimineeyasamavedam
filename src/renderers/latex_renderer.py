@@ -30,8 +30,8 @@ class LaTeXRenderer(BaseRenderer):
         Renders a VedicDocument to LaTeX and compiles to PDF.
         Delegates to CreatePdf to preserve 100% typographic and accent integrity.
         """
-        # Lazy import to avoid circular dependency
-        from render_pdf import CreatePdf, latex_jinja_env
+        from src.renderers.filters import latex_jinja_env
+        from render_pdf import CreatePdf
 
         if isinstance(document, VedicDocument):
             data = document.to_dict().get("supersections", {})

@@ -28,8 +28,8 @@ class TextRenderer(BaseRenderer):
         Renders a VedicDocument to a Unicode plain-text file.
         Delegates to CreateTextFile to preserve exact spacing and accents.
         """
-        # Lazy import to avoid circular dependency
-        from render_pdf import CreateTextFile, latex_jinja_env
+        from src.renderers.filters import latex_jinja_env
+        from render_pdf import CreateTextFile
 
         if isinstance(document, VedicDocument):
             data = document.to_dict().get("supersections", {})

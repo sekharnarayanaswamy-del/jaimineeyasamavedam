@@ -28,8 +28,8 @@ class HTMLRenderer(BaseRenderer):
         Renders a VedicDocument to a standalone HTML file.
         Delegates to CreateHtmlFile to preserve font embeddings and swara CSS.
         """
-        # Lazy import to avoid circular dependency
-        from render_pdf import CreateHtmlFile, html_jinja_env
+        from src.renderers.filters import html_jinja_env
+        from render_pdf import CreateHtmlFile
 
         if isinstance(document, VedicDocument):
             data = document.to_dict().get("supersections", {})

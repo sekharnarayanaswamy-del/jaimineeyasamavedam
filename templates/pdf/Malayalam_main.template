@@ -261,22 +261,25 @@
             \nopagebreak % Keep section title with first mantra
             \BLOCK{ endif }
 
-            \BLOCK{ set ns = namespace(prev_rik_id=none) }
+            \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
                 %- set subsection_title = subsection.get('header', {}).get('header', 'Untitled Header')
                 \BLOCK{ if output_mode == 'rik' }
-                \VAR{subsection | format_malayalam_rik_only(none, none, subsection_title, ns.prev_rik_id, toc_level)}
+                \VAR{subsection | format_malayalam_rik_only(none, none, subsection_title, ns.prev_rik_id, toc_level, ns.prev_rik_text)}
                 \BLOCK{ elif output_mode == 'samam' }
                 \VAR{subsection | format_malayalam_samam_only(none, none, subsection_title, toc_level)}
                 \BLOCK{ elif output_mode == 'rik_nometa' }
-                \VAR{subsection | format_malayalam_rik_nometa(none, none, subsection_title, ns.prev_rik_id, toc_level)}
+                \VAR{subsection | format_malayalam_rik_nometa(none, none, subsection_title, ns.prev_rik_id, toc_level, ns.prev_rik_text)}
                 \BLOCK{ elif output_mode == 'samam_nometa' }
                 \VAR{subsection | format_malayalam_samam_nometa(none, none, subsection_title, toc_level)}
                 \BLOCK{ else }
                 \VAR{subsection | format_malayalam_combined(none, none, subsection_title, ns.prev_rik_id, toc_level)}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
+                \BLOCK{ if subsection.rik_text }
+                \BLOCK{ set ns.prev_rik_text = subsection.rik_text }
+                \BLOCK{ endif }
             \BLOCK{ endfor }
         \BLOCK{ endif }
     \BLOCK{ endfor }

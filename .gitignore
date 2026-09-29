@@ -52,6 +52,8 @@ vedavms/.cache/
 vedavms/build/
 scratch/
 deprecated/
+data/archive/
+data/candidates/
 
 # Allow templates, mockups, docs, and baselines
 !data/baselines/**

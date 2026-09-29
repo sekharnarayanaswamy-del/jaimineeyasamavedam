@@ -52,8 +52,8 @@ CORPUS_CONFIG = {
     "samhita": {
         "title": "Jaimineeya Samhita (संहिता)",
         "edition_key": "samhita",
-        "input_rel": "data/corpora/samhita/01_input/Samhita_corrected.txt",
-        "fallback_input": "data/input/Samhita_corrected.txt",
+        "input_rel": "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt",
+        "fallback_input": "data/input/Samhita_Devanagari_Unicode.txt",
         "ast_rel": "data/corpora/samhita/02_ast/Samhita_corrected_out.json",
         "fallback_ast": "data/output/Samhita_corrected_out.json",
         "canonical_rel": "data/corpora/samhita/04_canonical/Vargeekaran.json",

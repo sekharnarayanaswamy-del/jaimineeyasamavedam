@@ -11,10 +11,17 @@ from collections import OrderedDict
 from samam_utils import count_samams_with_fallback
 from utils import get_generated_metadata
 
-default_input = r'data\output\Samhita_corrected_out.json' if os.path.exists(r'data\output\Samhita_corrected_out.json') else r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json'
+default_input = (
+    r'data\corpora\samhita\02_ast\Samhita_corrected_out.json'
+    if os.path.exists(r'data\corpora\samhita\02_ast\Samhita_corrected_out.json')
+    else (r'data\output\Samhita_corrected_out.json' if os.path.exists(r'data\output\Samhita_corrected_out.json') else r'data\output\Samhita_with_Rishi_Devata_Chandas_out.json')
+)
 INPUT_FILE = sys.argv[1] if len(sys.argv) > 1 else default_input
 OUTPUT_CSV = r'data\output\JSV_Structure_Summary.csv'
 OUTPUT_TXT = r'data\output\JSV_Structure_Summary.txt'
+CORPUS_REPORTS_DIR = r'data\corpora\samhita\06_reports'
+CORPUS_CSV = os.path.join(CORPUS_REPORTS_DIR, 'JSV_Structure_Summary.csv')
+CORPUS_TXT = os.path.join(CORPUS_REPORTS_DIR, 'JSV_Structure_Summary.txt')
 
 # Get metadata
 metadata = get_generated_metadata()
@@ -103,6 +110,12 @@ with open(OUTPUT_CSV, 'w', encoding='utf-8-sig', newline='') as csv_file, \
     txt_file.write(f"Total Pathas: {patha_num}\n")
     txt_file.write(f"Total Khandas: {total_khandas}\n")
     txt_file.write("=" * 80 + "\n")
+
+import shutil
+if os.path.exists(CORPUS_REPORTS_DIR):
+    shutil.copy2(OUTPUT_CSV, CORPUS_CSV)
+    shutil.copy2(OUTPUT_TXT, CORPUS_TXT)
+    print(f"Synced to corpus: {CORPUS_CSV} and {CORPUS_TXT}")
 
 print(f"CSV saved to: {OUTPUT_CSV}")
 print(f"TXT saved to: {OUTPUT_TXT}")

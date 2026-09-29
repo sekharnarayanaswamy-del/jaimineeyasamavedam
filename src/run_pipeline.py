@@ -41,10 +41,18 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
 # Default source assets
-DEFAULT_DEVA_INPUT = ROOT_DIR / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
+DEFAULT_DEVA_INPUT = (
+    ROOT_DIR / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt"
+    if (ROOT_DIR / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt").exists()
+    else ROOT_DIR / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
+)
 DEFAULT_DEVA_JSON = ROOT_DIR / "data" / "output" / "Samhita_corrected_out.json"
 
-DEFAULT_AARANAM_INPUT = ROOT_DIR / "data" / "input" / "Aaranam_latest.txt"
+DEFAULT_AARANAM_INPUT = (
+    ROOT_DIR / "data" / "corpora" / "aaranam" / "01_input" / "Aaranam_latest.txt"
+    if (ROOT_DIR / "data" / "corpora" / "aaranam" / "01_input" / "Aaranam_latest.txt").exists()
+    else ROOT_DIR / "data" / "input" / "Aaranam_latest.txt"
+)
 DEFAULT_AARANAM_JSON = ROOT_DIR / "data" / "output" / "Aaranam_latest_out.json"
 
 DEFAULT_COLLECTION_JSON = ROOT_DIR / "data" / "output" / "Collection_latest_out.json"
@@ -102,15 +110,15 @@ def sync_standalone_readers():
                 src_file = fallback
 
         if src_file.exists():
-            # Copy directly to docs/standalone-html/<fname>
-            dest_root = docs_standalone / fname
-            shutil.copy2(src_file, dest_root)
-
-            # Copy to docs/standalone-html/<script_subfolder>/<fname>
-            dest_sub = docs_standalone / script_subfolder / fname
-            shutil.copy2(src_file, dest_sub)
-            print(f"  [SYNC] {fname} -> docs/standalone-html/ & docs/standalone-html/{script_subfolder}/")
-            copied_any = True
+            try:
+                dest_root = docs_standalone / fname
+                dest_root.write_bytes(src_file.read_bytes())
+                dest_sub = docs_standalone / script_subfolder / fname
+                dest_sub.write_bytes(src_file.read_bytes())
+                print(f"  [SYNC] {fname} -> docs/standalone-html/ & docs/standalone-html/{script_subfolder}/")
+                copied_any = True
+            except Exception as e:
+                print(f"  [WARN] Could not sync reader {fname}: {e}")
 
     # Refresh catalog index if publisher exists
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
@@ -321,10 +329,11 @@ def main():
                 cmd = [
                     sys.executable,
                     "-X", "utf8",
-                    str(ROOT_DIR / "src" / "render_pdf.py"),
+                    str(ROOT_DIR / "src" / "render.py"),
                     str(deva_json_path),
                     "--script", "devanagari",
                     "--output-mode", mode,
+                    "-o", "Samhita",
                 ] + extra_flags + kpully_cli_flags
                 desc = mode_descriptions.get(mode, mode)
                 run_cmd(cmd, description=f"Samhita Step 2: Rendering Devanagari {desc} ({format_label})")
@@ -352,7 +361,7 @@ def main():
                 mal_kpully_cmd = [
                     sys.executable,
                     "-X", "utf8",
-                    str(ROOT_DIR / "src" / "render_pdf.py"),
+                    str(ROOT_DIR / "src" / "render.py"),
                     str(mal_json_path),
                     "--script", "malayalam",
                     "-kpully",
@@ -382,13 +391,13 @@ def main():
                     deva_kpully_from_mal_cmd = [
                         sys.executable,
                         "-X", "utf8",
-                        str(ROOT_DIR / "src" / "render_pdf.py"),
+                        str(ROOT_DIR / "src" / "render.py"),
                         str(kpully_json_path),
                         "--script", "devanagari",
                         "-kpully",
                         "--output-mode", "separate",
                         "--samam-only",
-                        "-o", "Samhita_kpully_Devanagari",
+                        "-o", "Samam_kpully_Devanagari",
                     ] + extra_flags
                     run_cmd(deva_kpully_from_mal_cmd, description=f"Samhita Step 5: Rendering Devanagari KPully ({format_label})")
 
@@ -411,43 +420,92 @@ def main():
                     "-X", "utf8",
                     str(ROOT_DIR / "src" / "generate_json.py"),
                     str(aaranam_input),
+                    "--type", "aaranam",
                     "--output",
                     str(aaranam_json),
                 ],
                 description="Aaranam Step 1: Generating JSON AST from source text",
             )
+            # Sync to stage-numbered corpus AST
+            aar_ast_dir = ROOT_DIR / "data" / "corpora" / "aaranam" / "02_ast"
+            aar_ast_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(str(aaranam_json), str(aar_ast_dir / "Aaranam_latest_out.json"))
+            shutil.copy2(str(aaranam_json), str(aar_ast_dir / "Aaranam_ast.json"))
 
-            # Step 2B: Render Aaranam in requested modes
+            # Step 2B: Generate Aaranam Rik Table & Vargeekaran Canonical AST
+            run_cmd(
+                [
+                    sys.executable,
+                    "-X", "utf8",
+                    str(ROOT_DIR / "src" / "generate_rik_table.py"),
+                    "--type", "aaranam",
+                ],
+                description="Aaranam Step 2: Generating Canonical Vargeekaran AST",
+            )
+            aar_v_json = ROOT_DIR / "data" / "output" / "Aaranam_vargeekaran.json"
+            if aar_v_json.exists():
+                aar_can_dir = ROOT_DIR / "data" / "corpora" / "aaranam" / "04_canonical"
+                aar_can_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(aar_v_json), str(aar_can_dir / "Aaranam_vargeekaran.json"))
+
+            # Step 2C: Render Aaranam in requested modes
             for mode in modes:
                 cmd = [
                     sys.executable,
                     "-X", "utf8",
-                    str(ROOT_DIR / "src" / "render_pdf.py"),
+                    str(ROOT_DIR / "src" / "render.py"),
                     str(aaranam_json),
                     "--type", "aaranam",
                     "--output-mode", mode,
+                    "-o", "Aaranam",
                 ] + extra_flags + kpully_cli_flags
-                run_cmd(cmd, description=f"Aaranam Step 2: Rendering Aaranam ({mode}) ({format_label})")
+                run_cmd(cmd, description=f"Aaranam Step 3: Rendering Aaranam ({mode}) ({format_label})")
 
     # ----------------------------------------------------
     # 3. COLLECTIONS PIPELINE
     # ----------------------------------------------------
     if "collections" in corpora:
         print("\n>>> CORPUS: COLLECTIONS (साम सूक्त माला)")
-        collection_json = DEFAULT_COLLECTION_JSON
-        if not collection_json.exists():
-            print(f"[WARN] Collection JSON not found: {collection_json}. Skipping Collections.")
-        else:
-            for mode in modes:
-                cmd = [
-                    sys.executable,
-                    "-X", "utf8",
-                    str(ROOT_DIR / "src" / "render_pdf.py"),
-                    str(collection_json),
-                    "--type", "collection",
-                    "--output-mode", mode,
-                ] + extra_flags + kpully_cli_flags
-                run_cmd(cmd, description=f"Collections: Rendering Collection ({mode}) ({format_label})")
+        collections_dir = ROOT_DIR / "data" / "corpora" / "collections" / "04_canonical"
+        collection_books = [
+            ("Sooktamala", collections_dir / "Sooktamala.json"),
+            ("Prayogamala-Purvabhagam", collections_dir / "Prayogamala-Purvabhagam.json"),
+            ("prayogamala-Uttarabhagam", collections_dir / "prayogamala-Uttarabhagam.json"),
+        ]
+        rendered_any = False
+        for book_name, book_json in collection_books:
+            if not book_json.exists():
+                fallback = ROOT_DIR / "data" / "output" / f"{book_name}.json"
+                if fallback.exists():
+                    book_json = fallback
+            if book_json.exists():
+                rendered_any = True
+                for mode in modes:
+                    cmd = [
+                        sys.executable,
+                        "-X", "utf8",
+                        str(ROOT_DIR / "src" / "render.py"),
+                        str(book_json),
+                        "--type", "collection",
+                        "--output-mode", mode,
+                        "-o", book_name,
+                    ] + extra_flags + kpully_cli_flags
+                    run_cmd(cmd, description=f"Collections: Rendering {book_name} ({mode}) ({format_label})")
+
+        if not rendered_any:
+            collection_json = DEFAULT_COLLECTION_JSON
+            if collection_json.exists():
+                for mode in modes:
+                    cmd = [
+                        sys.executable,
+                        "-X", "utf8",
+                        str(ROOT_DIR / "src" / "render.py"),
+                        str(collection_json),
+                        "--type", "collection",
+                        "--output-mode", mode,
+                        "-o", "Collection",
+                    ] + extra_flags + kpully_cli_flags
+                    run_cmd(cmd, description=f"Collections: Rendering Collection ({mode}) ({format_label})")
 
     # ----------------------------------------------------
     # 4. POST-RUN CORPUS STAGE MIGRATION & MANIFEST SYNC

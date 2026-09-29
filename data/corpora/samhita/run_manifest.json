@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
   "edition": "3.28",
-  "timestamp": "29-09-2026 07:51:09",
+  "timestamp": "29-09-2026 18:42:40",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -11,14 +11,421 @@
     "06_reports": "CURRENT"
   },
   "hashes": {
-    "input_sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
-    "ast_sha256": "a766ba965074691d56e1b7b59a08631f794f57b0045fa98466b08faecca19697",
-    "canonical_sha256": "a4225dcce221490c74fdc99b5d5a77867eb5be4322145bf56dedb1fe8723829f"
+    "input_sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18",
+    "ast_sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0",
+    "canonical_sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006"
   },
   "metrics": {
     "pathas": 6,
     "khandas": 59,
     "samas": 722
+  },
+  "artifacts": {
+    "01_input": [
+      {
+        "name": "rishi_devata_chandas_for_rik.txt",
+        "path": "data/corpora/samhita/01_input/rishi_devata_chandas_for_rik.txt",
+        "size_bytes": 68431,
+        "size_formatted": "66.8 KB",
+        "sha256": "eba83833c46e84172c89b9d072a766a41dc28d77cd342c30232aefbb4bb933c4"
+      },
+      {
+        "name": "sama_rishi_chandas_out.txt",
+        "path": "data/corpora/samhita/01_input/sama_rishi_chandas_out.txt",
+        "size_bytes": 143120,
+        "size_formatted": "139.8 KB",
+        "sha256": "b75d61b0a1dc87453fca87cf795015c43d39d0462e03d350f104451f84124eda"
+      },
+      {
+        "name": "Samam_Malayalam_Unicode.txt",
+        "path": "data/corpora/samhita/01_input/Samam_Malayalam_Unicode.txt",
+        "size_bytes": 35793,
+        "size_formatted": "35.0 KB",
+        "sha256": "f4c79dda06c41315438899d7e158ebf1d813b8115bf7bab8a645e21a292ee9c1"
+      },
+      {
+        "name": "Samhita_corrected.txt",
+        "path": "data/corpora/samhita/01_input/Samhita_corrected.txt",
+        "size_bytes": 836261,
+        "size_formatted": "816.7 KB",
+        "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327"
+      },
+      {
+        "name": "Samhita_corrected_samam.txt",
+        "path": "data/corpora/samhita/01_input/Samhita_corrected_samam.txt",
+        "size_bytes": 836261,
+        "size_formatted": "816.7 KB",
+        "sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327"
+      },
+      {
+        "name": "Samhita_Devanagari_Unicode.txt",
+        "path": "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt",
+        "size_bytes": 1264325,
+        "size_formatted": "1.21 MB",
+        "sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18"
+      },
+      {
+        "name": "vedic_text.txt",
+        "path": "data/corpora/samhita/01_input/vedic_text.txt",
+        "size_bytes": 460105,
+        "size_formatted": "449.3 KB",
+        "sha256": "bef2360ac6db097710e05c2accaaa8001c7d9eda96d03114160152b9fd517002"
+      }
+    ],
+    "02_ast": [
+      {
+        "name": "Samam_kpully_Devanagari.json",
+        "path": "data/corpora/samhita/02_ast/Samam_kpully_Devanagari.json",
+        "size_bytes": 53331,
+        "size_formatted": "52.1 KB",
+        "sha256": "fe92f59cf17dafc46b9163d6cc258e2056ae6a0a7e90d0c058a4e2fe7a68c448"
+      },
+      {
+        "name": "Samam_Malayalam.json",
+        "path": "data/corpora/samhita/02_ast/Samam_Malayalam.json",
+        "size_bytes": 67582,
+        "size_formatted": "66.0 KB",
+        "sha256": "a786e4a133b639a4baa6cfaf3701ce456aa8a0836406a501388a9154e017cdae"
+      },
+      {
+        "name": "Samhita_ast.json",
+        "path": "data/corpora/samhita/02_ast/Samhita_ast.json",
+        "size_bytes": 1821541,
+        "size_formatted": "1.74 MB",
+        "sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0"
+      },
+      {
+        "name": "Samhita_corrected_out.json",
+        "path": "data/corpora/samhita/02_ast/Samhita_corrected_out.json",
+        "size_bytes": 1821541,
+        "size_formatted": "1.74 MB",
+        "sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0"
+      }
+    ],
+    "03_reconciliation": [
+      {
+        "name": "JSV_Rik_Table - for analysis.xlsx",
+        "path": "data/corpora/samhita/03_reconciliation/JSV_Rik_Table - for analysis.xlsx",
+        "size_bytes": 238150,
+        "size_formatted": "232.6 KB"
+      },
+      {
+        "name": "JSV_Rik_Table.csv",
+        "path": "data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv",
+        "size_bytes": 278784,
+        "size_formatted": "272.2 KB"
+      },
+      {
+        "name": "JSV_Rik_Table.txt",
+        "path": "data/corpora/samhita/03_reconciliation/JSV_Rik_Table.txt",
+        "size_bytes": 208324,
+        "size_formatted": "203.4 KB"
+      },
+      {
+        "name": "JSV_Samam_Granular_Table.csv",
+        "path": "data/corpora/samhita/03_reconciliation/JSV_Samam_Granular_Table.csv",
+        "size_bytes": 849881,
+        "size_formatted": "830.0 KB"
+      },
+      {
+        "name": "JSV_Samam_Granular_Table.xlsx",
+        "path": "data/corpora/samhita/03_reconciliation/JSV_Samam_Granular_Table.xlsx",
+        "size_bytes": 133819,
+        "size_formatted": "130.7 KB"
+      },
+      {
+        "name": "Rik Reconciliation table (JSV-KSV).xlsx",
+        "path": "data/corpora/samhita/03_reconciliation/Rik Reconciliation table (JSV-KSV).xlsx",
+        "size_bytes": 3019400,
+        "size_formatted": "2.88 MB"
+      }
+    ],
+    "04_canonical": [
+      {
+        "name": "Vargeekaran.json",
+        "path": "data/corpora/samhita/04_canonical/Vargeekaran.json",
+        "size_bytes": 2328580,
+        "size_formatted": "2.22 MB",
+        "sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006"
+      }
+    ],
+    "05_renders": {
+      "pdf": [
+        {
+          "name": "Samam_kpully_Malayalam.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samam_kpully_Malayalam.pdf",
+          "format": "PDF",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 87626,
+          "size_formatted": "85.6 KB"
+        },
+        {
+          "name": "Samhita_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1179636,
+          "size_formatted": "1.12 MB"
+        },
+        {
+          "name": "Samhita_kpully_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_kpully_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 112911,
+          "size_formatted": "110.3 KB"
+        },
+        {
+          "name": "Samhita_Malayalam.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Malayalam.pdf",
+          "format": "PDF",
+          "script": "Malayalam",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1218769,
+          "size_formatted": "1.16 MB"
+        },
+        {
+          "name": "Samhita_Rik_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Rik_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 299226,
+          "size_formatted": "292.2 KB"
+        },
+        {
+          "name": "Samhita_Rik_NoMeta_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Rik_NoMeta_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 253019,
+          "size_formatted": "247.1 KB"
+        },
+        {
+          "name": "Samhita_Samam_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Samam_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 898733,
+          "size_formatted": "877.7 KB"
+        },
+        {
+          "name": "Samhita_Samam_NoMeta_Devanagari.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samhita_Samam_NoMeta_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 865604,
+          "size_formatted": "845.3 KB"
+        }
+      ],
+      "html": [
+        {
+          "name": "Samam_kpully_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samam_kpully_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 3054836,
+          "size_formatted": "2.91 MB"
+        },
+        {
+          "name": "Samam_kpully_Malayalam.html",
+          "path": "data/corpora/samhita/05_renders/html/Samam_kpully_Malayalam.html",
+          "format": "HTML",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 1291642,
+          "size_formatted": "1.23 MB"
+        },
+        {
+          "name": "Samhita_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 12385145,
+          "size_formatted": "11.81 MB"
+        },
+        {
+          "name": "Samhita_kpully_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_kpully_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 12414699,
+          "size_formatted": "11.84 MB"
+        },
+        {
+          "name": "Samhita_Malayalam.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Malayalam.html",
+          "format": "HTML",
+          "script": "Malayalam",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1288980,
+          "size_formatted": "1.23 MB"
+        },
+        {
+          "name": "Samhita_Rik_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 3958760,
+          "size_formatted": "3.78 MB"
+        },
+        {
+          "name": "Samhita_Rik_NoMeta_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Rik_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 3824515,
+          "size_formatted": "3.65 MB"
+        },
+        {
+          "name": "Samhita_Samam_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Samam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 11461586,
+          "size_formatted": "10.93 MB"
+        },
+        {
+          "name": "Samhita_Samam_NoMeta_Devanagari.html",
+          "path": "data/corpora/samhita/05_renders/html/Samhita_Samam_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 11324034,
+          "size_formatted": "10.80 MB"
+        }
+      ],
+      "txt": [
+        {
+          "name": "Samam_kpully_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 34388,
+          "size_formatted": "33.6 KB"
+        },
+        {
+          "name": "Samam_kpully_Malayalam_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Malayalam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 34256,
+          "size_formatted": "33.5 KB"
+        },
+        {
+          "name": "Samam_kpully_Malayalam_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Malayalam_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 35711,
+          "size_formatted": "34.9 KB"
+        },
+        {
+          "name": "Samhita_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1367851,
+          "size_formatted": "1.30 MB"
+        },
+        {
+          "name": "Samhita_kpully_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_kpully_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1367851,
+          "size_formatted": "1.30 MB"
+        },
+        {
+          "name": "Samhita_Malayalam_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Malayalam_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1477066,
+          "size_formatted": "1.41 MB"
+        },
+        {
+          "name": "Samhita_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 313656,
+          "size_formatted": "306.3 KB"
+        },
+        {
+          "name": "Samhita_Rik_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Rik_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 295531,
+          "size_formatted": "288.6 KB"
+        },
+        {
+          "name": "Samhita_Samam_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Samam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 986874,
+          "size_formatted": "963.7 KB"
+        },
+        {
+          "name": "Samhita_Samam_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Samam_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 836262,
+          "size_formatted": "816.7 KB"
+        }
+      ]
+    },
+    "06_reports": [
+      {
+        "name": "JSON_Samam_Continuity_Report.txt",
+        "path": "data/corpora/samhita/06_reports/JSON_Samam_Continuity_Report.txt",
+        "size_bytes": 823,
+        "size_formatted": "823 B"
+      },
+      {
+        "name": "JSV_Structure_Summary.csv",
+        "path": "data/corpora/samhita/06_reports/JSV_Structure_Summary.csv",
+        "size_bytes": 3859,
+        "size_formatted": "3.8 KB"
+      },
+      {
+        "name": "JSV_Structure_Summary.txt",
+        "path": "data/corpora/samhita/06_reports/JSV_Structure_Summary.txt",
+        "size_bytes": 6580,
+        "size_formatted": "6.4 KB"
+      },
+      {
+        "name": "Samhita_corrected_out_continuity_report.txt",
+        "path": "data/corpora/samhita/06_reports/Samhita_corrected_out_continuity_report.txt",
+        "size_bytes": 987,
+        "size_formatted": "987 B"
+      }
+    ]
   },
   "validation_status": "PASSED"
 }
