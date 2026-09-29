@@ -308,8 +308,10 @@ graph TD
 
 ---
 
-### 9. `src/tools/renumber_sooktam.py`
-**Purpose**: The primary structural renumbering tool for JSV text files. It performs a multi-pass sweep of the raw Vedic text to ensure all SuperSections, Sections, SubSections, Samams, and Riks are sequentially numbered according to the pipeline configuration.
+### 9. `src/ingest/renumber.py` (Unified Ingestion & Renumbering Tool)
+**Purpose**: The canonical structural and verse renumbering tool for JSV text files. It consolidates all functionality from legacy scripts (`renumber_sooktam.py` and `renumber_sections.py`) into a single native module and rich CLI. It performs a multi-pass sweep of the raw Vedic text to ensure all SuperSections, Sections, SubSections, Samams, and Riks are sequentially numbered according to configuration presets or custom CLI overrides.
+
+*(Note: `src/tools/renumber_sooktam.py` and `src/tools/renumber_sections.py` are preserved as backward-compatibility wrappers delegating to this unified engine.)*
 
 #### Function-Level Interactions
 ```mermaid
@@ -328,19 +330,24 @@ graph TD
     end
 
     renumber_text_file --> inject_metadata_to_text
-    renumber_text_file --> increment_project_version
-    increment_project_version --> set_project_version
+    renumber_text_file --> core_version[core.version.get_build_metadata]
 ```
 
 #### Detailed Components
-- **`validate_structural_tags()`**: Performs a pre-flight integrity check to ensure all `# Start` and `# End` tags (SuperSection, Section, etc.) are correctly paired and nested. **Renumbering is aborted if structural errors are found.**
-- **`renumber_text_file()`**: The core renumbering engine:
-  - **Pass 1**: Renumbers higher-level structural IDs (SuperSection, Section, SubSection).
-  - **Pass 2**: Ensures that Rik Metadata and Mantra blocks are aligned to their parent SubSection ID.
-  - **Pass 3**: Sweeps the text to renumber verse markers (between `॥` or `┃`) using Devanagari numerals.
-- **`inject_metadata_to_text()`**: Updates the `# [JSV METADATA]` header with the new version and timestamp.
-- **`increment_project_version()`**: Bumps the patch version in `src/VERSION`.
-- **`int_to_devanagari()`**: Utility to convert Arabic numerals to Devanagari digits.
+- **`validate_structural_tags()`**: Performs pre-flight integrity check ensuring all `# Start of` and `# End of` tags (`SuperSection Title`, `Section Title`, `SubSection Title`, `Rik Metadata`, `Rik Text`, `Mantra Sets`, `Footnote`) are paired and balanced. Returns `(is_valid, errors)`. **Renumbering is aborted if errors are detected.**
+- **`renumber_text_file()`**: The unified multi-pass renumbering orchestrator:
+  - **Pass 1**: Renumbers higher-level structural IDs (`supersection_N`, `section_N`, `subsection_N`), honoring `--preserve-super`, `--preserve-all`, and `--reset-per-super`.
+  - **Pass 2**: Multi-directional block alignment synchronizing Rik Metadata, Rik Text, and Mantra Sets to their associated subsection ID.
+  - **Pass 3**: Sweeps the text to renumber verse markers (between `॥` or `┃`) using Devanagari numerals, with section reset control (`--contiguous-samams`).
+- **`inject_metadata_to_text()`**: Updates the `# [JSV METADATA]` header with version and generation timestamp.
+- **Unified CLI Options**:
+  - Target: `input_file`, `-o, --output`
+  - Presets: `-t, --type` (`samhita`, `aaranam`, `collection`)
+  - Starting indices: `--start-super`, `--start-sec`, `--start-sub`
+  - Resets & Continuity: `--reset-per-super`, `--no-reset-per-super`, `--contiguous-samams`
+  - Preserves: `--preserve-super`, `--preserve-all`
+  - Versioning: `--jsv-version`, `--increment`, `--no-increment`, `--no-renumber` (inject-only)
+  - Execution: `--dry-run`, `--backup`, `--no-backup`
 
 ---
 

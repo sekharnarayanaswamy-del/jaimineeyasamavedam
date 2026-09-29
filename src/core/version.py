@@ -136,16 +136,24 @@ def get_corpus_edition(corpus_name: str = "samhita") -> str:
 def set_corpus_edition(corpus_name: str, edition_str: str) -> bool:
     """Updates the corpus edition in pipeline_config.yaml (and src/VERSION for samhita)."""
     normalized = corpus_name.lower().strip()
-    cfg = _load_config()
-    if "editions" not in cfg:
-        cfg["editions"] = {}
-    cfg["editions"][normalized] = edition_str
-    
     try:
-        with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
-            yaml.dump(cfg, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
-            
-        if normalized == "samhita":
+        if CONFIG_FILE.exists():
+            content = CONFIG_FILE.read_text(encoding='utf-8')
+            # Look for the key under editions: e.g. "  samhita: "3.28""
+            pattern = re.compile(rf'(^\s*{re.escape(normalized)}\s*:\s*)["\']?[^"\'\r\n]+["\']?', re.MULTILINE)
+            if pattern.search(content):
+                new_content = pattern.sub(rf'\g<1>"{edition_str}"', content)
+                CONFIG_FILE.write_text(new_content, encoding='utf-8')
+            else:
+                # Fallback if key not found: load and dump
+                cfg = _load_config()
+                if "editions" not in cfg:
+                    cfg["editions"] = {}
+                cfg["editions"][normalized] = edition_str
+                with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
+                    yaml.dump(cfg, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+        if normalized == "samhita" and VERSION_FILE.exists():
             VERSION_FILE.write_text(edition_str, encoding='utf-8')
         return True
     except Exception as e:

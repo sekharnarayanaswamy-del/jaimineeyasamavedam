@@ -1,0 +1,24 @@
+{
+  "corpus": "collections",
+  "edition": "2.05",
+  "timestamp": "28-09-2026 21:37:46",
+  "stage_status": {
+    "01_input": "PRESENT",
+    "02_ast": "UP_TO_DATE",
+    "03_reconciliation": "ENRICHED",
+    "04_canonical": "VALIDATED",
+    "05_renders": "COMPILED",
+    "06_reports": "CURRENT"
+  },
+  "hashes": {
+    "input_sha256": "0cc58a89a0f4c0e3750e0baa3732773385a908966bd38b3b17127b07d3a9cc5c",
+    "ast_sha256": "8cf57ee976cb2844442667f421f1a0447c9e0204e54fd40c9796615ab26d9b84",
+    "canonical_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9"
+  },
+  "metrics": {
+    "pathas": 1,
+    "khandas": 1,
+    "samas": 37
+  },
+  "validation_status": "PASSED"
+}

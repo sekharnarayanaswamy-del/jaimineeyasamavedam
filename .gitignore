@@ -165,3 +165,8 @@ test_strip_output.txt
 test_strip.py
 # Allow GitHub Pages website folder
 !docs/
+
+# Allow entire data/corpora directory and all its subfolders
+!data/corpora/
+!data/corpora/**
+
