@@ -1,7 +1,12 @@
 """
 Publish Standalone HTML Readers to docs/standalone-html/
-Allows browsing and reading full self-contained HTML Vedic readers via GitHub Pages
-without disturbing the existing microsite at docs/index.html.
+-------------------------------------------------------
+Publishes strictly the 2 canonical Kodunthirapully (kpully) HTML editions:
+  1. Samhita_kpully_Devanagari.html (Devanagari script)
+  2. Samam_kpully_Malayalam.html (Malayalam script)
+
+Purges any obsolete or legacy HTML files from docs/standalone-html/ and updates
+the catalog portal index.html.
 """
 
 import os
@@ -11,350 +16,98 @@ import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+CORPORA_DIR = REPO_ROOT / "data" / "corpora"
 SOURCE_DIR = REPO_ROOT / "data" / "output" / "html"
 TARGET_DIR = REPO_ROOT / "docs" / "standalone-html"
 
-# Specific friendly titles, descriptions, and categories
-METADATA = {
-    # Devanagari Primary Readers
+# Canonical readers to publish
+CANONICAL_READERS = {
     "Samhita_kpully_Devanagari.html": {
-        "title": "Samhita (Devanagari) — Fine-Tuned Edition",
+        "title": "Samhita (Devanagari) — Kodunthirapully Edition",
         "category": "Samhita",
-        "description": "Fine-tuned canonical Jaimineeya Samhita reader with modern swara alignments, optimized margins, and high-fidelity typography.",
+        "script": "Devanagari",
+        "description": "Fine-tuned canonical Jaimineeya Samhita reader in Devanagari script with modern swara alignments, optimized margins, and Kodunthirapully Vedic typography.",
         "featured": True,
-    },
-    "Samhita_Devanagari.html": {
-        "title": "Samhita (Devanagari) — Complete Edition",
-        "category": "Samhita",
-        "description": "Full Devanagari Samhita text with complete swara notation and layout.",
-        "featured": True,
-    },
-    "Samhita_Final_Enriched_Set_Devanagari.html": {
-        "title": "Samhita (Devanagari) — Final Enriched Set",
-        "category": "Samhita",
-        "description": "Enriched Samhita edition with supplemental cross-references and attributes.",
-        "featured": False,
-    },
-    "Samhita_with_Rishi_Devata_Chandas.html": {
-        "title": "Samhita — Rishi, Devata & Chandas Edition",
-        "category": "Samhita",
-        "description": "Devanagari Samhita edition annotated with Rishi, Devata, and Chandas for each verse.",
-        "featured": True,
-    },
-    "Samhita_K1_K2_Devanagari.html": {
-        "title": "Samhita — Kanda 1 & 2 (Devanagari)",
-        "category": "Samhita",
-        "description": "Portion containing Kandas 1 and 2 of Jaimineeya Samhita.",
-        "featured": False,
-    },
-    "Samhita_K1_K2_Devanagari_Kpully_Samam_NoMeta.html": {
-        "title": "Samhita K1-K2 (Kpully Samam, No Metadata)",
-        "category": "Samhita",
-        "description": "Kanda 1 & 2 Samam chants without structural metadata.",
-        "featured": False,
-    },
-    "Samhita_K1_K2_Devanagari_Samam_NoMeta.html": {
-        "title": "Samhita K1-K2 (Devanagari Samam, No Metadata)",
-        "category": "Samhita",
-        "description": "Kanda 1 & 2 Samam chanting text only.",
-        "featured": False,
-    },
-    "Samhita.html": {
-        "title": "Samhita (Base Edition)",
-        "category": "Samhita",
-        "description": "Compact Samhita text rendering.",
-        "featured": False,
-    },
-    "Aaranam_Devanagari.html": {
-        "title": "Aaranam (Devanagari) — Complete Edition",
-        "category": "Aaranam",
-        "description": "Complete Jaimineeya Aaranam (Aranyaka-gana) reader in Devanagari script.",
-        "featured": True,
-    },
-    "Aaranam_Complete_Set_Devanagari.html": {
-        "title": "Aaranam — Complete Set (Devanagari)",
-        "category": "Aaranam",
-        "description": "Integrated complete Aaranam collection.",
-        "featured": False,
-    },
-    "Aaranam_Samam.html": {
-        "title": "Aaranam — Samam Chants (Devanagari)",
-        "category": "Aaranam",
-        "description": "Aaranam Samam chanting texts with musical notation.",
-        "featured": False,
-    },
-    "Aaranam_Rik.html": {
-        "title": "Aaranam — Rik Verses (Devanagari)",
-        "category": "Aaranam",
-        "description": "Aaranam source Rik verses with accents.",
-        "featured": False,
-    },
-    "Aaranam_Samam_NoMeta.html": {
-        "title": "Aaranam — Samam Only (No Metadata)",
-        "category": "Aaranam",
-        "description": "Pure Aaranam Samam chanting text without headings/metadata.",
-        "featured": False,
-    },
-    "Aaranam_Rik_NoMeta.html": {
-        "title": "Aaranam — Rik Only (No Metadata)",
-        "category": "Aaranam",
-        "description": "Pure Aaranam Rik text without headings/metadata.",
-        "featured": False,
-    },
-    "Aranyam_samam.html": {
-        "title": "Aranyam Samam (Devanagari)",
-        "category": "Aaranam",
-        "description": "Aranyaka Samam chanting edition.",
-        "featured": False,
-    },
-    "Aranam_Devanagari.html": {
-        "title": "Aaranam (Alternative Rendering)",
-        "category": "Aaranam",
-        "description": "Variant rendering of Aaranam Devanagari.",
-        "featured": False,
-    },
-    "Collection_Devanagari.html": {
-        "title": "Curated Collection (Devanagari)",
-        "category": "Collection",
-        "description": "Custom curated selection of Jaimineeya chants and hymns in Devanagari.",
-        "featured": True,
-    },
-    "Prayogamala-Purvabhagam_Devanagari.html": {
-        "title": "Prayogamala — Purvabhagam (Devanagari)",
-        "category": "Prayoga",
-        "description": "Purvabhagam liturgical procedures and chant sequences.",
-        "featured": True,
-    },
-    "prayogamala-Uttarabhagam_Devanagari.html": {
-        "title": "Prayogamala — Uttarabhagam (Devanagari)",
-        "category": "Prayoga",
-        "description": "Uttarabhagam liturgical procedures and chant sequences.",
-        "featured": True,
-    },
-    "Prayogamala - Purvabhagam.html": {
-        "title": "Prayogamala — Purvabhagam (Standard)",
-        "category": "Prayoga",
-        "description": "Standard edition of Purvabhagam prayoga text.",
-        "featured": False,
-    },
-    "Prayogamala - Uttarabhagam.html": {
-        "title": "Prayogamala — Uttarabhagam (Standard)",
-        "category": "Prayoga",
-        "description": "Standard edition of Uttarabhagam prayoga text.",
-        "featured": False,
-    },
-    "Prayogamala-UB.html": {
-        "title": "Prayogamala UB (Compact)",
-        "category": "Prayoga",
-        "description": "Compact edition of Uttarabhagam prayoga.",
-        "featured": False,
-    },
-    "Prayogamala - PB.html": {
-        "title": "Prayogamala PB (Compact)",
-        "category": "Prayoga",
-        "description": "Compact edition of Purvabhagam prayoga.",
-        "featured": False,
-    },
-    "Sooktamala_Devanagari.html": {
-        "title": "Sooktamala (Devanagari) — Complete",
-        "category": "Sooktamala",
-        "description": "Comprehensive anthology of Vedic Sooktams from Jaimineeya tradition.",
-        "featured": True,
-    },
-    "Sooktamala.html": {
-        "title": "Sooktamala (Standard Reader)",
-        "category": "Sooktamala",
-        "description": "Anthology of Vedic Sooktams in standard rendering.",
-        "featured": False,
-    },
-    "nakshatra-sooktam.html": {
-        "title": "Nakshatra Sooktam (Devanagari)",
-        "category": "Special",
-        "description": "Nakshatra Sooktam chant with swaras.",
-        "featured": False,
-    },
-    "taittiriya_upanishad_sanskrit.html": {
-        "title": "Taittiriya Upanishad (Sanskrit)",
-        "category": "Special",
-        "description": "Taittiriya Upanishad reader with Vedic accents.",
-        "featured": False,
-    },
-    "Ritu_shanti_japam.html": {
-        "title": "Ritu Shanti Japam (Devanagari)",
-        "category": "Special",
-        "description": "Ritu Shanti Japam prayer and chanting sequence.",
-        "featured": False,
-    },
-    "Ritu Shanti Japam.html": {
-        "title": "Ritu Shanti Japam (Standard)",
-        "category": "Special",
-        "description": "Standard edition of Ritu Shanti Japam.",
-        "featured": False,
-    },
-    "Ritu Shanti Japam - Samam only.html": {
-        "title": "Ritu Shanti Japam — Samam Only",
-        "category": "Special",
-        "description": "Samam chants for Ritu Shanti Japam.",
-        "featured": False,
-    },
-    "Samam_Devanagari.html": {
-        "title": "Samam (Devanagari) — Complete Chants",
-        "category": "Samam / Rik",
-        "description": "Complete collection of Jaimineeya Samam chanting verses in Devanagari.",
-        "featured": True,
-    },
-    "Rik_Devanagari.html": {
-        "title": "Rik (Devanagari) — Source Verses",
-        "category": "Samam / Rik",
-        "description": "Source Rik verses with accents in Devanagari.",
-        "featured": False,
-    },
-    "Samam_Devanagari_Unicode.html": {
-        "title": "Samam (Devanagari Unicode Standard)",
-        "category": "Samam / Rik",
-        "description": "Devanagari Samam text formatted with standard Unicode codepoints.",
-        "featured": False,
-    },
-    "Rik_Devanagari_Unicode.html": {
-        "title": "Rik (Devanagari Unicode Standard)",
-        "category": "Samam / Rik",
-        "description": "Devanagari Rik text formatted with standard Unicode codepoints.",
-        "featured": False,
-    },
-    "Samam_NoMeta_Devanagari.html": {
-        "title": "Samam (Devanagari, No Metadata)",
-        "category": "Samam / Rik",
-        "description": "Pure chanting text of Devanagari Samam.",
-        "featured": False,
-    },
-    "Rik_NoMeta_Devanagari.html": {
-        "title": "Rik (Devanagari, No Metadata)",
-        "category": "Samam / Rik",
-        "description": "Pure source verses of Devanagari Rik.",
-        "featured": False,
-    },
-    "Devanagari_Devanagari_Unicode.html": {
-        "title": "Devanagari Unicode Text Set",
-        "category": "Samam / Rik",
-        "description": "Comprehensive Unicode compilation in Devanagari.",
-        "featured": False,
-    },
-
-    # Malayalam Readers
-    "Samam_Malayalam_Samam.html": {
-        "title": "Samam (Malayalam) — Fine-Tuned Edition",
-        "category": "Samam / Rik",
-        "description": "Fine-tuned canonical Malayalam Jaimineeya Samam reader featuring JaimineeyaSwara typography and optimized layout.",
-        "featured": True,
-    },
-    "Samam_kpully_Malayalam_Samam.html": {
-        "title": "Samam (Malayalam, Kpully Baseline)",
-        "category": "Samam / Rik",
-        "description": "Kpully baseline edition of Malayalam Samam chants.",
-        "featured": True,
+        "subfolder": "Devanagari",
     },
     "Samam_kpully_Malayalam.html": {
-        "title": "Samam (Malayalam, KPully Edition)",
-        "category": "Samam / Rik",
-        "description": "KPully baseline edition of Malayalam Samam chants featuring KPully swara modifier glyphs.",
+        "title": "Samam (Malayalam) — Kodunthirapully Edition",
+        "category": "Samam Chants",
+        "script": "Malayalam",
+        "description": "Canonical Malayalam Jaimineeya Samam chanting edition featuring custom JaimineeyaSwara typography and elevated Kodunthirapully swara modifiers.",
         "featured": True,
-    },
-    "Samam_Malayalam_legacy_Samam.html": {
-        "title": "Samam (Malayalam, Legacy Reader)",
-        "category": "Samam / Rik",
-        "description": "Legacy reader baseline for comparison and archival verification.",
-        "featured": False,
-    },
-    "Samhita_Malayalam.html": {
-        "title": "Samhita (Malayalam) — Complete Edition",
-        "category": "Samhita",
-        "description": "Full Jaimineeya Samhita reader rendered in Malayalam script with swaras.",
-        "featured": True,
-    },
-    "Samhita_Malayalam_v2_Malayalam.html": {
-        "title": "Samhita (Malayalam v2)",
-        "category": "Samhita",
-        "description": "Alternate v2 compilation of Malayalam Samhita.",
-        "featured": False,
-    },
-    "Samam_Malayalam.html": {
-        "title": "Samam (Malayalam Script)",
-        "category": "Samam / Rik",
-        "description": "Complete Samam chanting text in Malayalam script.",
-        "featured": False,
-    },
-    "Rik_Malayalam.html": {
-        "title": "Rik (Malayalam Script)",
-        "category": "Samam / Rik",
-        "description": "Complete Rik verses rendered in Malayalam script.",
-        "featured": False,
-    },
-    "Samam_Malayalam_Rik.html": {
-        "title": "Samam & Rik (Malayalam)",
-        "category": "Samam / Rik",
-        "description": "Paired Samam and Rik verses in Malayalam script.",
-        "featured": False,
-    },
-    "Samam_Malayalam_Samam_NoMeta.html": {
-        "title": "Samam (Malayalam, No Metadata)",
-        "category": "Samam / Rik",
-        "description": "Pure Malayalam Samam chanting text without headings.",
-        "featured": False,
-    },
-    "Samam_Malayalam_Rik_NoMeta.html": {
-        "title": "Rik (Malayalam, No Metadata)",
-        "category": "Samam / Rik",
-        "description": "Pure Malayalam Rik text without headings.",
-        "featured": False,
-    },
-    "Samam_NoMeta_Malayalam.html": {
-        "title": "Samam NoMeta (Malayalam)",
-        "category": "Samam / Rik",
-        "description": "Comprehensive Malayalam chanting text with minimal markup.",
-        "featured": False,
-    },
-    "Samam_NoMeta_Malayalam_v2_Samam_NoMeta_Malayalam.html": {
-        "title": "Samam NoMeta v2 (Malayalam)",
-        "category": "Samam / Rik",
-        "description": "Version 2 release of Malayalam Samam chants without metadata.",
-        "featured": False,
-    },
-    "Samam_NoMeta_Malayalam_v2_Rik_NoMeta_Malayalam.html": {
-        "title": "Rik NoMeta v2 (Malayalam)",
-        "category": "Samam / Rik",
-        "description": "Version 2 release of Malayalam Rik verses without metadata.",
-        "featured": False,
-    },
+        "subfolder": "Malayalam",
+    }
 }
 
-def hash_file(path):
+
+def hash_file(path: Path) -> str:
+    """Computes SHA-256 hash of a file."""
     h = hashlib.sha256()
     with open(path, "rb") as f:
         while chunk := f.read(65536):
             h.update(chunk)
     return h.hexdigest()
 
-def infer_category(filename, script):
-    fn = filename.lower()
-    if "samhita" in fn:
-        return "Samhita"
-    if "aaranam" in fn or "aranam" in fn or "aranyam" in fn:
-        return "Aaranam"
-    if "prayoga" in fn:
-        return "Prayoga"
-    if "sooktamala" in fn:
-        return "Sooktamala"
-    if "nakshatra" in fn or "taittiriya" in fn or "ritu" in fn:
-        return "Special"
-    return "Samam / Rik"
 
-def format_size(bytes_val):
+def format_size(bytes_val: int) -> str:
+    """Formats byte count to human-readable string."""
     if bytes_val >= 1024 * 1024:
         return f"{bytes_val / (1024 * 1024):.1f} MB"
     return f"{bytes_val / 1024:.0f} KB"
 
+
+def cleanup_obsolete_files(target_dir: Path):
+    """Deletes all obsolete HTML files in docs/standalone-html except the 2 kpully files and index.html."""
+    allowed_root = {"Samam_kpully_Malayalam.html", "Samhita_kpully_Devanagari.html", "index.html"}
+    allowed_sub = {
+        "Devanagari": {"Samhita_kpully_Devanagari.html"},
+        "Malayalam": {"Samam_kpully_Malayalam.html"}
+    }
+
+    deleted_count = 0
+
+    # Clean root directory files
+    if target_dir.exists():
+        for item in list(target_dir.iterdir()):
+            if item.is_file():
+                if item.suffix.lower() == ".html" and item.name not in allowed_root:
+                    try:
+                        item.unlink()
+                        deleted_count += 1
+                        print(f"  [DELETED] {item.name}")
+                    except Exception as e:
+                        print(f"  [WARN] Could not delete {item.name}: {e}")
+
+    # Clean subdirectories
+    for sub in ["Devanagari", "Malayalam"]:
+        sub_dir = target_dir / sub
+        if sub_dir.exists() and sub_dir.is_dir():
+            for item in list(sub_dir.iterdir()):
+                if item.is_file() and item.name not in allowed_sub.get(sub, set()):
+                    try:
+                        item.unlink()
+                        deleted_count += 1
+                        print(f"  [DELETED] {sub}/{item.name}")
+                    except Exception as e:
+                        print(f"  [WARN] Could not delete {sub}/{item.name}: {e}")
+
+    # Remove any other unexpected directories
+    if target_dir.exists():
+        for item in list(target_dir.iterdir()):
+            if item.is_dir() and item.name not in ["Devanagari", "Malayalam"]:
+                try:
+                    shutil.rmtree(item)
+                    print(f"  [DELETED DIR] {item.name}")
+                except Exception as e:
+                    print(f"  [WARN] Could not remove directory {item.name}: {e}")
+
+    if deleted_count > 0:
+        print(f"[CLEANUP] Successfully purged {deleted_count} obsolete HTML files from {target_dir.relative_to(REPO_ROOT)}.")
+
+
 def build_catalog_page(items):
-    categories = ["All", "Featured", "Devanagari", "Malayalam", "Samhita", "Aaranam", "Prayoga", "Sooktamala", "Samam / Rik", "Special"]
+    categories = ["All", "Featured", "Devanagari", "Malayalam"]
     total_files = len(items)
     dev_count = sum(1 for x in items if x["script"] == "Devanagari")
     mal_count = sum(1 for x in items if x["script"] == "Malayalam")
@@ -482,10 +235,10 @@ def build_catalog_page(items):
         }}
 
         .container {{
-            max-width: 1300px;
+            max-width: 1100px;
             width: 100%;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem;
             flex: 1;
         }}
 
@@ -559,15 +312,15 @@ def build_catalog_page(items):
 
         .grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
         }}
 
         .card {{
             background: var(--bg-card);
             border: 1px solid var(--border-card);
             border-radius: var(--radius-md);
-            padding: 1.5rem;
+            padding: 1.8rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -584,7 +337,7 @@ def build_catalog_page(items):
 
         .card.featured {{
             border-color: rgba(229, 169, 60, 0.45);
-            background: linear-gradient(145deg, rgba(229, 169, 60, 0.06) 0%, var(--bg-card) 60%);
+            background: linear-gradient(145deg, rgba(229, 169, 60, 0.08) 0%, var(--bg-card) 65%);
         }}
 
         .card-header {{
@@ -640,23 +393,24 @@ def build_catalog_page(items):
         }}
 
         .card-title {{
-            font-size: 1.18rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             line-height: 1.4;
         }}
 
         .card-desc {{
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.4rem;
             flex-grow: 1;
+            line-height: 1.5;
         }}
 
         .card-filename {{
             font-family: monospace;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: #64748b;
             margin-bottom: 1rem;
             word-break: break-all;
@@ -672,9 +426,9 @@ def build_catalog_page(items):
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 9px 16px;
+            padding: 10px 18px;
             border-radius: var(--radius-sm);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -733,9 +487,9 @@ def build_catalog_page(items):
 </head>
 <body>
     <header class="hero">
-        <div class="badge-pill">Independent Web Readers</div>
+        <div class="badge-pill">Kodunthirapully Editions</div>
         <h1>जैमिनीय सामवेदः</h1>
-        <p class="subtitle">Self-Contained Standalone HTML Readers with High-Fidelity Vedic Accents (Devanagari &amp; Malayalam scripts)</p>
+        <p class="subtitle">Canonical Self-Contained Standalone HTML Readers with Kodunthirapully Vedic Swara Accents (Devanagari &amp; Malayalam scripts)</p>
         <div class="hero-stats">
             <div class="stat-item"><span class="stat-value">{total_files}</span> Editions Available</div>
             <div class="stat-item"><span class="stat-value">{dev_count}</span> Devanagari</div>
@@ -748,7 +502,7 @@ def build_catalog_page(items):
         <div class="controls">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search by title, text, category, or file name (e.g. 'kpully', 'samhita', 'purvabhagam', 'malayalam')...">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by title, script, or filename...">
             </div>
             <div class="filter-pills" id="filterPills">
                 {pills_html}
@@ -764,7 +518,7 @@ def build_catalog_page(items):
 
     <footer>
         <p>जैमिनीय सामवेद प्रकाशनम् | Standalone Editions archive served directly via GitHub Pages.</p>
-        <p style="margin-top: 4px;">Each reader is 100% self-contained with embedded swara glyph fonts and typography styles.</p>
+        <p style="margin-top: 4px;">Each reader is 100% self-contained with embedded swara fonts and responsive layout.</p>
     </footer>
 
     <script>
@@ -785,9 +539,6 @@ def build_catalog_page(items):
                 if (currentFilter === 'Featured' && !item.featured) return false;
                 if (currentFilter === 'Devanagari' && item.script !== 'Devanagari') return false;
                 if (currentFilter === 'Malayalam' && item.script !== 'Malayalam') return false;
-                if (!['All', 'Featured', 'Devanagari', 'Malayalam'].includes(currentFilter)) {{
-                    if (item.category !== currentFilter) return false;
-                }}
 
                 if (query) {{
                     const matchText = (item.title + ' ' + item.filename + ' ' + item.category + ' ' + item.script + ' ' + item.description).toLowerCase();
@@ -858,8 +609,8 @@ def build_catalog_page(items):
 </html>"""
     return html
 
+
 def main():
-    print(f"Syncing standalone HTML files from: {SOURCE_DIR}")
     print(f"Target directory: {TARGET_DIR}")
 
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
@@ -868,61 +619,66 @@ def main():
     target_dev.mkdir(exist_ok=True)
     target_mal.mkdir(exist_ok=True)
 
-    items = []
-    seen_hashes = {}
+    # 1. Clean up all obsolete non-kpully HTML files
+    cleanup_obsolete_files(TARGET_DIR)
 
-    for script_folder, target_folder in [("Devanagari", target_dev), ("Malayalam", target_mal)]:
-        src_folder = SOURCE_DIR / script_folder
-        if not src_folder.exists():
+    # 2. Sync only the 2 canonical KPully readers
+    sam_renders = CORPORA_DIR / "samhita" / "05_renders" / "html"
+    items = []
+
+    for filename, meta in CANONICAL_READERS.items():
+        subfolder = meta["subfolder"]
+        target_sub = target_mal if subfolder == "Malayalam" else target_dev
+
+        # Resolve source from 05_renders or data/output/html
+        src_path = sam_renders / filename if sam_renders.exists() else None
+        if not src_path or not src_path.exists():
+            cand = SOURCE_DIR / subfolder / filename
+            if not cand.exists():
+                cand = SOURCE_DIR / filename
+            if cand.exists():
+                src_path = cand
+
+        if not src_path or not src_path.exists():
+            # Check if already present in target directory
+            if (target_sub / filename).exists():
+                src_path = target_sub / filename
+            elif (TARGET_DIR / filename).exists():
+                src_path = TARGET_DIR / filename
+
+        if not src_path or not src_path.exists():
+            print(f"[WARN] Source reader not found: {filename}")
             continue
 
-        for file_path in sorted(src_folder.iterdir()):
-            filename = file_path.name
-            if not filename.endswith(".html"):
-                continue
-            if filename.startswith("test_") or filename.startswith("~$") or "Copy" in filename:
-                continue
-            if filename in ["Samhita_kpully_Devanagari_Devanagari.html", "Samam_Malayalam_Samam_Malayalam.html", "Samam_Malayalam_Malayalam.html"]:
-                continue
+        # Copy to root and subfolder
+        dest_root = TARGET_DIR / filename
+        dest_sub = target_sub / filename
+        shutil.copy2(src_path, dest_root)
+        shutil.copy2(src_path, dest_sub)
 
-            file_hash = hash_file(file_path)
-            if file_hash in seen_hashes:
-                prev_name = seen_hashes[file_hash]
-                print(f"Skipping duplicate: {filename} (identical to {prev_name})")
-                continue
-            seen_hashes[file_hash] = filename
+        file_bytes = dest_root.stat().st_size
+        print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/")
 
-            dest_file = target_folder / filename
-            shutil.copy2(file_path, dest_file)
-            file_bytes = dest_file.stat().st_size
+        items.append({
+            "filename": filename,
+            "script": meta["script"],
+            "category": meta["category"],
+            "title": meta["title"],
+            "description": meta["description"],
+            "featured": meta["featured"],
+            "bytes": file_bytes,
+            "size_fmt": format_size(file_bytes),
+            "rel_url": f"{subfolder}/{filename}",
+        })
 
-            meta = METADATA.get(filename, {})
-            title = meta.get("title", filename.replace(".html", "").replace("_", " "))
-            category = meta.get("category", infer_category(filename, script_folder))
-            description = meta.get("description", f"Standalone Vedic chant reader in {script_folder} script.")
-            featured = meta.get("featured", False)
+    items.sort(key=lambda x: (x["script"], x["title"]))
 
-            items.append({
-                "filename": filename,
-                "script": script_folder,
-                "category": category,
-                "title": title,
-                "description": description,
-                "featured": featured,
-                "bytes": file_bytes,
-                "size_fmt": format_size(file_bytes),
-                "rel_url": f"{script_folder}/{filename}",
-            })
-
-    items.sort(key=lambda x: (not x["featured"], x["script"], x["title"]))
-
-    print(f"Copied {len(items)} standalone HTML readers.")
-
+    # 3. Write catalog index.html
     index_html = build_catalog_page(items)
     index_path = TARGET_DIR / "index.html"
     index_path.write_text(index_html, encoding="utf-8")
-    print(f"Created catalog index at: {index_path}")
+    print(f"[INDEX] Generated clean catalog at: {index_path.relative_to(REPO_ROOT)}")
+
 
 if __name__ == "__main__":
     main()
-

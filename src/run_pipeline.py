@@ -32,6 +32,7 @@ Usage:
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -73,6 +74,51 @@ def run_cmd(cmd_list, description=""):
     if res.returncode != 0:
         print(f"[ERROR] Step failed with exit code {res.returncode}: {description}", file=sys.stderr)
         sys.exit(res.returncode)
+
+
+def sync_standalone_readers():
+    """Copies canonical standalone HTML readers to docs/standalone-html/ for GitHub Pages."""
+    docs_standalone = ROOT_DIR / "docs" / "standalone-html"
+    docs_standalone.mkdir(parents=True, exist_ok=True)
+    (docs_standalone / "Malayalam").mkdir(exist_ok=True)
+    (docs_standalone / "Devanagari").mkdir(exist_ok=True)
+
+    sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
+
+    targets = [
+        ("Samam_kpully_Malayalam.html", "Malayalam"),
+        ("Samhita_kpully_Devanagari.html", "Devanagari"),
+    ]
+
+    copied_any = False
+    print("\n[PIPELINE] Syncing standalone HTML readers to docs/standalone-html...")
+    for fname, script_subfolder in targets:
+        src_file = sam_renders_html / fname
+        if not src_file.exists():
+            fallback = ROOT_DIR / "data" / "output" / "html" / script_subfolder / fname
+            if not fallback.exists():
+                fallback = ROOT_DIR / "data" / "output" / "html" / fname
+            if fallback.exists():
+                src_file = fallback
+
+        if src_file.exists():
+            # Copy directly to docs/standalone-html/<fname>
+            dest_root = docs_standalone / fname
+            shutil.copy2(src_file, dest_root)
+
+            # Copy to docs/standalone-html/<script_subfolder>/<fname>
+            dest_sub = docs_standalone / script_subfolder / fname
+            shutil.copy2(src_file, dest_sub)
+            print(f"  [SYNC] {fname} -> docs/standalone-html/ & docs/standalone-html/{script_subfolder}/")
+            copied_any = True
+
+    # Refresh catalog index if publisher exists
+    publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
+    if publish_script.exists():
+        try:
+            run_cmd([sys.executable, str(publish_script)], description="Refreshing docs/standalone-html catalog index")
+        except Exception as e:
+            print(f"[WARN] Could not refresh catalog index: {e}")
 
 
 def print_profiles(cfg):
@@ -416,6 +462,11 @@ def main():
             ],
             description="Syncing outputs to stage-numbered corpus directories (05_renders/{pdf,html,txt})",
         )
+
+    # ----------------------------------------------------
+    # 5. SYNC STANDALONE HTML READERS (docs/standalone-html)
+    # ----------------------------------------------------
+    sync_standalone_readers()
 
     elapsed = time.time() - start_time
 

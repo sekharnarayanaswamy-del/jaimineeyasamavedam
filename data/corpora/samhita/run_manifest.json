@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
   "edition": "3.28",
-  "timestamp": "28-09-2026 21:37:46",
+  "timestamp": "29-09-2026 07:51:09",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,7 +12,7 @@
   },
   "hashes": {
     "input_sha256": "737facc955fd87d7081e3ded7c31b161feb1714c2aa4d871ccf4b33643d87327",
-    "ast_sha256": "23e70789386e164b4f83c4db04dc78e825cf9580e720c29907ab754b2c85ee00",
+    "ast_sha256": "a766ba965074691d56e1b7b59a08631f794f57b0045fa98466b08faecca19697",
     "canonical_sha256": "a4225dcce221490c74fdc99b5d5a77867eb5be4322145bf56dedb1fe8723829f"
   },
   "metrics": {

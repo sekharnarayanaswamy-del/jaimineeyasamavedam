@@ -117,10 +117,10 @@
         }
 
         .container {
-            max-width: 1300px;
+            max-width: 1100px;
             width: 100%;
             margin: 0 auto;
-            padding: 2rem 1.5rem;
+            padding: 2.5rem 1.5rem;
             flex: 1;
         }
 
@@ -194,15 +194,15 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
         }
 
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
             border-radius: var(--radius-md);
-            padding: 1.5rem;
+            padding: 1.8rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -219,7 +219,7 @@
 
         .card.featured {
             border-color: rgba(229, 169, 60, 0.45);
-            background: linear-gradient(145deg, rgba(229, 169, 60, 0.06) 0%, var(--bg-card) 60%);
+            background: linear-gradient(145deg, rgba(229, 169, 60, 0.08) 0%, var(--bg-card) 65%);
         }
 
         .card-header {
@@ -275,23 +275,24 @@
         }
 
         .card-title {
-            font-size: 1.18rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             line-height: 1.4;
         }
 
         .card-desc {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.4rem;
             flex-grow: 1;
+            line-height: 1.5;
         }
 
         .card-filename {
             font-family: monospace;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: #64748b;
             margin-bottom: 1rem;
             word-break: break-all;
@@ -307,9 +308,9 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 9px 16px;
+            padding: 10px 18px;
             border-radius: var(--radius-sm);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -368,14 +369,14 @@
 </head>
 <body>
     <header class="hero">
-        <div class="badge-pill">Independent Web Readers</div>
+        <div class="badge-pill">Kodunthirapully Editions</div>
         <h1>जैमिनीय सामवेदः</h1>
-        <p class="subtitle">Self-Contained Standalone HTML Readers with High-Fidelity Vedic Accents (Devanagari &amp; Malayalam scripts)</p>
+        <p class="subtitle">Canonical Self-Contained Standalone HTML Readers with Kodunthirapully Vedic Swara Accents (Devanagari &amp; Malayalam scripts)</p>
         <div class="hero-stats">
-            <div class="stat-item"><span class="stat-value">0</span> Editions Available</div>
-            <div class="stat-item"><span class="stat-value">0</span> Devanagari</div>
-            <div class="stat-item"><span class="stat-value">0</span> Malayalam</div>
-            <div class="stat-item"><span class="stat-value">0.0 MB</span> Total Chants</div>
+            <div class="stat-item"><span class="stat-value">2</span> Editions Available</div>
+            <div class="stat-item"><span class="stat-value">1</span> Devanagari</div>
+            <div class="stat-item"><span class="stat-value">1</span> Malayalam</div>
+            <div class="stat-item"><span class="stat-value">4.1 MB</span> Total Chants</div>
         </div>
     </header>
 
@@ -383,10 +384,10 @@
         <div class="controls">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" class="search-input" placeholder="Search by title, text, category, or file name (e.g. 'kpully', 'samhita', 'purvabhagam', 'malayalam')...">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by title, script, or filename...">
             </div>
             <div class="filter-pills" id="filterPills">
-                <button class="filter-btn active" data-filter="All">All</button> <button class="filter-btn " data-filter="Featured">Featured</button> <button class="filter-btn " data-filter="Devanagari">Devanagari</button> <button class="filter-btn " data-filter="Malayalam">Malayalam</button> <button class="filter-btn " data-filter="Samhita">Samhita</button> <button class="filter-btn " data-filter="Aaranam">Aaranam</button> <button class="filter-btn " data-filter="Prayoga">Prayoga</button> <button class="filter-btn " data-filter="Sooktamala">Sooktamala</button> <button class="filter-btn " data-filter="Samam / Rik">Samam / Rik</button> <button class="filter-btn " data-filter="Special">Special</button>
+                <button class="filter-btn active" data-filter="All">All</button> <button class="filter-btn " data-filter="Featured">Featured</button> <button class="filter-btn " data-filter="Devanagari">Devanagari</button> <button class="filter-btn " data-filter="Malayalam">Malayalam</button>
             </div>
         </div>
 
@@ -399,11 +400,11 @@
 
     <footer>
         <p>जैमिनीय सामवेद प्रकाशनम् | Standalone Editions archive served directly via GitHub Pages.</p>
-        <p style="margin-top: 4px;">Each reader is 100% self-contained with embedded swara glyph fonts and typography styles.</p>
+        <p style="margin-top: 4px;">Each reader is 100% self-contained with embedded swara fonts and responsive layout.</p>
     </footer>
 
     <script>
-        const readers = [];
+        const readers = [{"filename": "Samhita_kpully_Devanagari.html", "script": "Devanagari", "category": "Samhita", "title": "Samhita (Devanagari) \u2014 Kodunthirapully Edition", "description": "Fine-tuned canonical Jaimineeya Samhita reader in Devanagari script with modern swara alignments, optimized margins, and Kodunthirapully Vedic typography.", "featured": true, "bytes": 3054836, "size_fmt": "2.9 MB", "rel_url": "Devanagari/Samhita_kpully_Devanagari.html"}, {"filename": "Samam_kpully_Malayalam.html", "script": "Malayalam", "category": "Samam Chants", "title": "Samam (Malayalam) \u2014 Kodunthirapully Edition", "description": "Canonical Malayalam Jaimineeya Samam chanting edition featuring custom JaimineeyaSwara typography and elevated Kodunthirapully swara modifiers.", "featured": true, "bytes": 1291642, "size_fmt": "1.2 MB", "rel_url": "Malayalam/Samam_kpully_Malayalam.html"}];
         let currentFilter = 'All';
         let currentSearch = '';
 
@@ -420,9 +421,6 @@
                 if (currentFilter === 'Featured' && !item.featured) return false;
                 if (currentFilter === 'Devanagari' && item.script !== 'Devanagari') return false;
                 if (currentFilter === 'Malayalam' && item.script !== 'Malayalam') return false;
-                if (!['All', 'Featured', 'Devanagari', 'Malayalam'].includes(currentFilter)) {
-                    if (item.category !== currentFilter) return false;
-                }
 
                 if (query) {
                     const matchText = (item.title + ' ' + item.filename + ' ' + item.category + ' ' + item.script + ' ' + item.description).toLowerCase();

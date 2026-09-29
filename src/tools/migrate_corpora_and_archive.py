@@ -297,7 +297,20 @@ def setup_stage_directories():
     for f in ["Sooktamala_Devanagari_Unicode.txt", "Prayogamala-Purvabhagam_Devanagari_Unicode.txt", "prayogamala-Uttarabhagam_Devanagari_Unicode.txt"]:
         stage_render(f, "collections", "txt")
 
-    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections}")
+    # Sync canonical HTML readers to docs/standalone-html/
+    docs_standalone = ROOT_DIR / "docs" / "standalone-html"
+    docs_standalone.mkdir(parents=True, exist_ok=True)
+    (docs_standalone / "Malayalam").mkdir(exist_ok=True)
+    (docs_standalone / "Devanagari").mkdir(exist_ok=True)
+
+    sam_html_dir = CORPORA_DIR / "samhita" / "05_renders" / "html"
+    for fname, sub in [("Samam_kpully_Malayalam.html", "Malayalam"), ("Samhita_kpully_Devanagari.html", "Devanagari")]:
+        f_src = sam_html_dir / fname
+        if f_src.exists():
+            shutil.copy2(f_src, docs_standalone / fname)
+            shutil.copy2(f_src, docs_standalone / sub / fname)
+
+    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections} and synced to docs/standalone-html/")
 
 
 def generate_initial_run_manifests():

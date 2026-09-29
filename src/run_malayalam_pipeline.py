@@ -216,13 +216,33 @@ def main():
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2c: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
-    # 3. Copy standalone HTML to docs/standalone-html/Malayalam
-    standalone_mal_dir = ROOT_DIR / "docs" / "standalone-html" / "Malayalam"
+    # 3. Copy standalone HTML to docs/standalone-html/
+    standalone_dir = ROOT_DIR / "docs" / "standalone-html"
+    standalone_mal_dir = standalone_dir / "Malayalam"
+    standalone_dev_dir = standalone_dir / "Devanagari"
+    standalone_dir.mkdir(parents=True, exist_ok=True)
     standalone_mal_dir.mkdir(parents=True, exist_ok=True)
-    mal_kpully_src = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html"
-    if mal_kpully_src.exists():
-        shutil.copy2(mal_kpully_src, standalone_mal_dir / mal_kpully_src.name)
-        print(f"[INFO] Copied {mal_kpully_src.name} -> {standalone_mal_dir.relative_to(ROOT_DIR)}")
+    standalone_dev_dir.mkdir(parents=True, exist_ok=True)
+
+    sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
+
+    # Sync Malayalam KPully
+    mal_src = sam_renders_html / "Samam_kpully_Malayalam.html"
+    if not mal_src.exists():
+        mal_src = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html"
+    if mal_src.exists():
+        shutil.copy2(mal_src, standalone_dir / mal_src.name)
+        shutil.copy2(mal_src, standalone_mal_dir / mal_src.name)
+        print(f"[INFO] Copied {mal_src.name} -> {standalone_dir.relative_to(ROOT_DIR)} & {standalone_mal_dir.relative_to(ROOT_DIR)}")
+
+    # Sync Devanagari KPully
+    deva_src = sam_renders_html / "Samhita_kpully_Devanagari.html"
+    if not deva_src.exists():
+        deva_src = ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samhita_kpully_Devanagari.html"
+    if deva_src.exists():
+        shutil.copy2(deva_src, standalone_dir / deva_src.name)
+        shutil.copy2(deva_src, standalone_dev_dir / deva_src.name)
+        print(f"[INFO] Copied {deva_src.name} -> {standalone_dir.relative_to(ROOT_DIR)} & {standalone_dev_dir.relative_to(ROOT_DIR)}")
 
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
     if publish_script.exists():
