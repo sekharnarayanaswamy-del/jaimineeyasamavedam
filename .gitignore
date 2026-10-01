@@ -172,3 +172,26 @@ test_strip.py
 !data/corpora/
 !data/corpora/**
 
+# Legacy root scripts and documents
+Structure.md
+apply-corrections.py
+apply-corrections_text.py
+char_map.py
+check_transliteration.py
+compareImages.py
+comprehensive_transliteration_analysis.py
+converttoimage.py
+converttojson.py
+converttojson_output.txt
+extract_corrected_mantra_sets.py
+extract_pdf_text.py
+extract_supersection5.py
+extract_textFromImage.py
+extract_uniquegrapheme.py
+fixswaraposition.py
+font-color.py
+get_text_corrections.py
+getissues.py
+grantha_vocab.py
+groupByWords.py
+
