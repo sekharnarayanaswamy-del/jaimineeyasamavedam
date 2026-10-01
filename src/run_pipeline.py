@@ -101,13 +101,21 @@ def sync_standalone_readers():
     copied_any = False
     print("\n[PIPELINE] Syncing standalone HTML readers to docs/standalone-html...")
     for fname, script_subfolder in targets:
-        src_file = sam_renders_html / fname
-        if not src_file.exists():
-            fallback = ROOT_DIR / "data" / "output" / "html" / script_subfolder / fname
-            if not fallback.exists():
-                fallback = ROOT_DIR / "data" / "output" / "html" / fname
-            if fallback.exists():
-                src_file = fallback
+        stem = Path(fname).stem
+        alt_fname = f"{stem}_Samam.html" if not stem.endswith("_Samam") else fname
+        cands = [
+            sam_renders_html / alt_fname,
+            sam_renders_html / fname,
+            ROOT_DIR / "data" / "output" / "html" / script_subfolder / alt_fname,
+            ROOT_DIR / "data" / "output" / "html" / script_subfolder / fname,
+            ROOT_DIR / "data" / "output" / "html" / alt_fname,
+            ROOT_DIR / "data" / "output" / "html" / fname,
+        ]
+        src_file = None
+        for c in cands:
+            if c.exists():
+                src_file = c
+                break
 
         if src_file.exists():
             try:
@@ -115,6 +123,13 @@ def sync_standalone_readers():
                 dest_root.write_bytes(src_file.read_bytes())
                 dest_sub = docs_standalone / script_subfolder / fname
                 dest_sub.write_bytes(src_file.read_bytes())
+
+                if fname == "Samam_kpully_Devanagari.html":
+                    alias_root = docs_standalone / "Samhita_kpully_Devanagari.html"
+                    alias_sub = docs_standalone / script_subfolder / "Samhita_kpully_Devanagari.html"
+                    alias_root.write_bytes(src_file.read_bytes())
+                    alias_sub.write_bytes(src_file.read_bytes())
+
                 print(f"  [SYNC] {fname} -> docs/standalone-html/ & docs/standalone-html/{script_subfolder}/")
                 copied_any = True
             except Exception as e:

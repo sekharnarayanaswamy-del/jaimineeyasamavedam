@@ -29,6 +29,7 @@ CANONICAL_READERS = {
         "description": "Canonical Devanagari Jaimineeya Samam chanting edition in swaras-above Kodunthirapully layout.",
         "featured": True,
         "subfolder": "Devanagari",
+        "aliases": ["Samhita_kpully_Devanagari.html"],
     },
     "Samam_kpully_Malayalam.html": {
         "title": "Samam (Malayalam) — Kodunthirapully Edition",
@@ -59,9 +60,9 @@ def format_size(bytes_val: int) -> str:
 
 def cleanup_obsolete_files(target_dir: Path):
     """Deletes all obsolete HTML files in docs/standalone-html except the 2 kpully files and index.html."""
-    allowed_root = {"Samam_kpully_Malayalam.html", "Samam_kpully_Devanagari.html", "index.html"}
+    allowed_root = {"Samam_kpully_Malayalam.html", "Samam_kpully_Devanagari.html", "Samhita_kpully_Devanagari.html", "index.html"}
     allowed_sub = {
-        "Devanagari": {"Samam_kpully_Devanagari.html"},
+        "Devanagari": {"Samam_kpully_Devanagari.html", "Samhita_kpully_Devanagari.html"},
         "Malayalam": {"Samam_kpully_Malayalam.html"}
     }
 
@@ -631,13 +632,21 @@ def main():
         target_sub = target_mal if subfolder == "Malayalam" else target_dev
 
         # Resolve source from 05_renders or data/output/html
-        src_path = sam_renders / filename if sam_renders.exists() else None
-        if not src_path or not src_path.exists():
-            cand = SOURCE_DIR / subfolder / filename
-            if not cand.exists():
-                cand = SOURCE_DIR / filename
-            if cand.exists():
+        stem = Path(filename).stem
+        alt_filename = f"{stem}_Samam.html" if not stem.endswith("_Samam") else filename
+        candidates = [
+            sam_renders / alt_filename if sam_renders.exists() else None,
+            sam_renders / filename if sam_renders.exists() else None,
+            SOURCE_DIR / subfolder / alt_filename,
+            SOURCE_DIR / subfolder / filename,
+            SOURCE_DIR / alt_filename,
+            SOURCE_DIR / filename,
+        ]
+        src_path = None
+        for cand in candidates:
+            if cand and cand.exists():
                 src_path = cand
+                break
 
         if not src_path or not src_path.exists():
             # Check if already present in target directory
@@ -655,6 +664,12 @@ def main():
         dest_sub = target_sub / filename
         shutil.copy2(src_path, dest_root)
         shutil.copy2(src_path, dest_sub)
+
+        # Also populate aliases (e.g. legacy URLs like Samhita_kpully_Devanagari.html)
+        aliases = meta.get("aliases", [])
+        for alias in aliases:
+            shutil.copy2(src_path, TARGET_DIR / alias)
+            shutil.copy2(src_path, target_sub / alias)
 
         file_bytes = dest_root.stat().st_size
         print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/")
