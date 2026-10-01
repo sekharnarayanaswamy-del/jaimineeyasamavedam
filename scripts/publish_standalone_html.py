@@ -642,11 +642,11 @@ def main():
             SOURCE_DIR / alt_filename,
             SOURCE_DIR / filename,
         ]
+        existing_cands = [c for c in candidates if c and c.exists()]
         src_path = None
-        for cand in candidates:
-            if cand and cand.exists():
-                src_path = cand
-                break
+        if existing_cands:
+            existing_cands.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+            src_path = existing_cands[0]
 
         if not src_path or not src_path.exists():
             # Check if already present in target directory

@@ -111,11 +111,11 @@ def sync_standalone_readers():
             ROOT_DIR / "data" / "output" / "html" / alt_fname,
             ROOT_DIR / "data" / "output" / "html" / fname,
         ]
+        existing_cands = [c for c in cands if c and c.exists()]
         src_file = None
-        for c in cands:
-            if c.exists():
-                src_file = c
-                break
+        if existing_cands:
+            existing_cands.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+            src_file = existing_cands[0]
 
         if src_file.exists():
             try:
