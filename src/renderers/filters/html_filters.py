@@ -1445,6 +1445,18 @@ def clean_toc_title(raw_title):
     return display_sub_title.strip()
 
 
+def toc_header(text):
+    """
+    Extracts the clean header for Table of Contents:
+    Removes leading 'अथ' and trailing 'प्रारम्भः' / 'प्रारम्भ'.
+    """
+    if not text:
+        return ""
+    t = str(text)
+    t = re.sub(r'^\s*अथ\s+', '', t)
+    t = re.sub(r'\s*प्रारम्भः?\s*$', '', t)
+    return t.strip()
+
 
 def register_html_filters(env):
     """Registers all HTML reader rendering filters onto the provided Jinja2 environment."""
@@ -1459,4 +1471,5 @@ def register_html_filters(env):
     env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
     env.filters["render_section_footnotes"] = render_section_footnotes
     env.filters["clean_toc_title"] = clean_toc_title
+    env.filters["toc_header"] = toc_header
     return env

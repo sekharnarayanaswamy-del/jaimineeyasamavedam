@@ -1,7 +1,7 @@
 {
   "corpus": "collections",
   "edition": "2.05",
-  "timestamp": "29-09-2026 18:42:40",
+  "timestamp": "01-10-2026 23:07:48",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,13 +12,13 @@
   },
   "hashes": {
     "input_sha256": "0cc58a89a0f4c0e3750e0baa3732773385a908966bd38b3b17127b07d3a9cc5c",
-    "ast_sha256": "8cf57ee976cb2844442667f421f1a0447c9e0204e54fd40c9796615ab26d9b84",
+    "ast_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9",
     "canonical_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9"
   },
   "metrics": {
     "pathas": 1,
-    "khandas": 1,
-    "samas": 37
+    "khandas": 25,
+    "samas": 143
   },
   "artifacts": {
     "01_input": [
@@ -67,11 +67,25 @@
     ],
     "02_ast": [
       {
-        "name": "Collection_latest_out.json",
-        "path": "data/corpora/collections/02_ast/Collection_latest_out.json",
-        "size_bytes": 104784,
-        "size_formatted": "102.3 KB",
-        "sha256": "8cf57ee976cb2844442667f421f1a0447c9e0204e54fd40c9796615ab26d9b84"
+        "name": "Prayogamala-Purvabhagam.json",
+        "path": "data/corpora/collections/02_ast/Prayogamala-Purvabhagam.json",
+        "size_bytes": 367197,
+        "size_formatted": "358.6 KB",
+        "sha256": "20cea15e737c906eff55ab44014126d51dca2345897b20971d91b0bfe8fae85e"
+      },
+      {
+        "name": "prayogamala-Uttarabhagam.json",
+        "path": "data/corpora/collections/02_ast/prayogamala-Uttarabhagam.json",
+        "size_bytes": 109865,
+        "size_formatted": "107.3 KB",
+        "sha256": "a53a89ed46731e782392a8ff907ba46c5a4a14ba35fb1b5dd328696d2f59230d"
+      },
+      {
+        "name": "Sooktamala.json",
+        "path": "data/corpora/collections/02_ast/Sooktamala.json",
+        "size_bytes": 327979,
+        "size_formatted": "320.3 KB",
+        "sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9"
       }
     ],
     "03_reconciliation": [],
@@ -106,8 +120,8 @@
           "format": "PDF",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 299042,
-          "size_formatted": "292.0 KB"
+          "size_bytes": 299492,
+          "size_formatted": "292.5 KB"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari.pdf",
@@ -115,8 +129,8 @@
           "format": "PDF",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 142910,
-          "size_formatted": "139.6 KB"
+          "size_bytes": 143318,
+          "size_formatted": "140.0 KB"
         },
         {
           "name": "Sooktamala_Devanagari.pdf",
@@ -124,8 +138,8 @@
           "format": "PDF",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 271153,
-          "size_formatted": "264.8 KB"
+          "size_bytes": 271693,
+          "size_formatted": "265.3 KB"
         }
       ],
       "html": [
@@ -135,7 +149,7 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 5282260,
+          "size_bytes": 5281762,
           "size_formatted": "5.04 MB"
         },
         {
@@ -144,7 +158,7 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 3568350,
+          "size_bytes": 3567852,
           "size_formatted": "3.40 MB"
         },
         {
@@ -153,7 +167,7 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 4761266,
+          "size_bytes": 4760768,
           "size_formatted": "4.54 MB"
         }
       ],
@@ -164,7 +178,7 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 238037,
+          "size_bytes": 238034,
           "size_formatted": "232.5 KB"
         },
         {
@@ -173,7 +187,7 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 74140,
+          "size_bytes": 74137,
           "size_formatted": "72.4 KB"
         },
         {
@@ -182,7 +196,7 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 211212,
+          "size_bytes": 211209,
           "size_formatted": "206.3 KB"
         }
       ]

@@ -22,11 +22,11 @@ TARGET_DIR = REPO_ROOT / "docs" / "standalone-html"
 
 # Canonical readers to publish
 CANONICAL_READERS = {
-    "Samhita_kpully_Devanagari.html": {
-        "title": "Samhita (Devanagari) — Kodunthirapully Edition",
-        "category": "Samhita",
+    "Samam_kpully_Devanagari.html": {
+        "title": "Samam (Devanagari) — Kodunthirapully Edition",
+        "category": "Samam Chants",
         "script": "Devanagari",
-        "description": "Fine-tuned canonical Jaimineeya Samhita reader in Devanagari script with modern swara alignments, optimized margins, and Kodunthirapully Vedic typography.",
+        "description": "Canonical Devanagari Jaimineeya Samam chanting edition in swaras-above Kodunthirapully layout.",
         "featured": True,
         "subfolder": "Devanagari",
     },
@@ -59,9 +59,9 @@ def format_size(bytes_val: int) -> str:
 
 def cleanup_obsolete_files(target_dir: Path):
     """Deletes all obsolete HTML files in docs/standalone-html except the 2 kpully files and index.html."""
-    allowed_root = {"Samam_kpully_Malayalam.html", "Samhita_kpully_Devanagari.html", "index.html"}
+    allowed_root = {"Samam_kpully_Malayalam.html", "Samam_kpully_Devanagari.html", "index.html"}
     allowed_sub = {
-        "Devanagari": {"Samhita_kpully_Devanagari.html"},
+        "Devanagari": {"Samam_kpully_Devanagari.html"},
         "Malayalam": {"Samam_kpully_Malayalam.html"}
     }
 

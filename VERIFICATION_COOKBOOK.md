@@ -26,17 +26,18 @@ python src/tools/run_regression_suite.py
   Checking: 6. 3-Tier Version & Build Metadata........... [PASS]
   Checking: 7. Active Baseline Input Checksums........... [PASS]
   Checking: 8. Modular Rendering Engines................. [PASS]
+  Checking: 9. Render Corpus Isolation & Transient Hygiene [PASS]
 
 ============================================================
   VERIFICATION SUMMARY
 ============================================================
-  ALL 8/8 INVARIANT CHECKS PASSED!
+  ALL 9/9 INVARIANT CHECKS PASSED!
   No regressions detected. Repository is liturigically sound.
 ============================================================
 ```
 
 > [!TIP]
-> If all 8 checks show `[PASS]`, the fundamental liturgical invariants of the codebase are fully intact.
+> If all 9 checks show `[PASS]`, the fundamental liturgical invariants of the codebase are fully intact.
 > **Check 7 (SHA-256 Checksums)** guarantees zero silent corruption: even a single modified accent or space will trip the checksum. For the complete rationale on how cryptographic hashes mathematically isolate sacred text changes from CSS/template changes, see [VERSIONING_AND_WORKFLOW.md](VERSIONING_AND_WORKFLOW.md#7-rationale-for-cryptographic-sha-256-checksums).
 
 ---

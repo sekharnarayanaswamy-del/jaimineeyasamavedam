@@ -58,11 +58,15 @@ def normalize_to_dd_mm_yyyy(date_str):
         return ""
     return re.sub(r'\b(\d{4})-(\d{2})-(\d{2})\b', r'\3-\2-\1', str(date_str))
 
-def get_generated_metadata(increment=False):
+def get_generated_metadata(corpus_name="samhita", increment=False):
     """Returns a dictionary with version and generation timestamp.
-    If increment=True, rolls over the version number in src/VERSION.
+    If increment=True, rolls over the version number in src/VERSION or pipeline_config.yaml.
     """
-    version = increment_project_version() if increment else get_project_version()
+    if isinstance(corpus_name, bool):
+        increment = corpus_name
+        corpus_name = "samhita"
+    from core.version import get_corpus_edition, increment_corpus_edition
+    version = increment_corpus_edition(corpus_name) if increment else get_corpus_edition(corpus_name)
     return {
         "version": version,
         "generated_at": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
@@ -482,6 +486,8 @@ def sanitize_data_structure(supersections):
         # Clean Supersection Title
         if 'supersection_title' in ss_val:
             ss_val['supersection_title'] = normalize_header(ss_val['supersection_title'])
+        if 'supersection_title_toc' in ss_val:
+            ss_val['supersection_title_toc'] = normalize_header(ss_val['supersection_title_toc'])
 
         # Clean Section Titles
         if 'sections' in ss_val:
@@ -489,6 +495,8 @@ def sanitize_data_structure(supersections):
                 if s_key == 'count': continue
                 if 'section_title' in s_data:
                     s_data['section_title'] = normalize_header(s_data['section_title'])
+                if 'section_title_toc' in s_data:
+                    s_data['section_title_toc'] = normalize_header(s_data['section_title_toc'])
                     
                 # Clean Subsection headers
                 if 'subsections' in s_data:

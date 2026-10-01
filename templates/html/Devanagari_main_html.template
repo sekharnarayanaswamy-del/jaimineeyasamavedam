@@ -1566,7 +1566,7 @@
                 <li class="toc-chapter collapsed" id="toc-ss-\VAR{key}">
                     <div class="toc-ch-header" onclick="toggleTocChapter('toc-ss-\VAR{key}')">
                         \BLOCK{ if supersection.supersection_title }
-                        <div class="toc-ch-title"><a href="#\VAR{key}">\VAR{supersection.supersection_title}</a></div>
+                        <div class="toc-ch-title"><a href="#\VAR{key}">\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}</a></div>
                         \BLOCK{ else }
                         <div class="toc-ch-title"><a href="#\VAR{key}">\VAR{key}</a></div>
                         \BLOCK{ endif }
@@ -1579,7 +1579,7 @@
                             \BLOCK{ if section.section_title }
                             <div class="toc-sec-header" onclick="toggleTocSection('toc-sec-\VAR{key}-\VAR{section_key}')">
                                 <a href="#\VAR{key}-\VAR{section_key}" class="toc-sec-title">
-                                    <span>\VAR{section.section_title | replace(':', 'ः')}</span>
+                                    <span>\VAR{(section.section_title_toc or (section.section_title | toc_header)) | replace(':', 'ः')}</span>
                                     <span class="toc-count">(\VAR{section.Count})</span>
                                 </a>
                                 <span class="toc-sec-toggle">▾</span>

@@ -305,8 +305,8 @@
     \phantomsection              
     \BLOCK{ if supersection.supersection_title }
     \chapter*{\centering \VAR{supersection.supersection_title}}
-    \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title}}
-    \markboth{\VAR{supersection.supersection_title}}{\VAR{supersection.supersection_title}}
+    \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
+    \markboth{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
     \BLOCK{ endif }
     
     % GLUE FIX: Prevent page break between Chapter and First Section
@@ -329,9 +329,9 @@
             \BLOCK{ if section.section_title }
             \section*{\centering \VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})}
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
-            \addcontentsline{toc}{section}{\VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})} 
+            \addcontentsline{toc}{section}{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')} \quad (\VAR{section.Count})} 
             \BLOCK{ endif }
-            \markright{\VAR{section.section_title.replace(':', 'ः')}}
+            \markright{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
             \BLOCK{ endif }
             

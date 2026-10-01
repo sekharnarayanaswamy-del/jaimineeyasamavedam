@@ -181,12 +181,16 @@ def check_domain_metrics():
 def check_ast_models():
     from core.models import VedicDocument
     samhita_json = (
-        REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json"
-        if (REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json").exists()
-        else REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json"
+        REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_ast.json"
+        if (REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_ast.json").exists()
+        else (
+            REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json"
+            if (REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_corrected_out.json").exists()
+            else REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json"
+        )
     )
     if not samhita_json.exists():
-        return False, "Samhita_corrected_out.json not found"
+        return False, "Samhita AST JSON not found"
         
     with open(samhita_json, "r", encoding="utf-8") as f:
         raw_data = json.load(f)

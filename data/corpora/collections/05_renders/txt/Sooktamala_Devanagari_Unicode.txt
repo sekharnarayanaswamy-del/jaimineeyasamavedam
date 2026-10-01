@@ -1,6 +1,6 @@
-जैमिनीय साम सूक्त माला
+जैमिनीय साम सङ्ग्रहः
 
-Version 3.0 29-09-2026 18:40:39
+Version 2.05 30-09-2026 10:02:59
 
 # Start of SuperSection Title -- supersection_20 ## DO NOT EDIT
 ॥ जैमिनीय साम सूक्तमाला ॥

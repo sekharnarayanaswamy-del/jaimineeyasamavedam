@@ -2,7 +2,7 @@
 
 - **Corpus**: `collections`
 - **Edition**: `2.05`
-- **Generated Timestamp**: `29-09-2026 18:42:40`
+- **Generated Timestamp**: `01-10-2026 23:07:48`
 - **Validation Status**: `PASSED`
 
 ---
@@ -11,8 +11,8 @@
 | Metric | Active Count | Baseline Invariant | Status |
 | :--- | :--- | :--- | :--- |
 | **Pathas (SuperSections)** | 1 | None | PASS |
-| **Khandas (Sections)** | 1 | None | PASS |
-| **Samas (Liturgical Chants)** | 37 | None | PASS |
+| **Khandas (Sections)** | 25 | None | PASS |
+| **Samas (Liturgical Chants)** | 143 | None | PASS |
 
 ---
 
@@ -20,7 +20,7 @@
 | Stage | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- |
 | **Stage 01: Input** | `Ashirvachana_samani.txt` | 704 B | `0cc58a89a0f4c0e3750e0baa3732773385a908966bd38b3b17127b07d3a9cc5c` |
-| **Stage 02: Parsed AST** | `Collection_latest_out.json` | 102.3 KB | `8cf57ee976cb2844442667f421f1a0447c9e0204e54fd40c9796615ab26d9b84` |
+| **Stage 02: Parsed AST** | `Sooktamala.json` | 320.3 KB | `cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9` |
 | **Stage 04: Canonical AST** | `Sooktamala.json` | 320.3 KB | `cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9` |
 
 ---
@@ -30,9 +30,9 @@
 ### PDF Documents (`05_renders/pdf/`)
 | File Name | Mode / Edition | Target Script | Size |
 | :--- | :--- | :--- | :--- |
-| [`Prayogamala-Purvabhagam_Devanagari.pdf`](../05_renders/pdf/Prayogamala-Purvabhagam_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 292.0 KB |
-| [`prayogamala-Uttarabhagam_Devanagari.pdf`](../05_renders/pdf/prayogamala-Uttarabhagam_Devanagari.pdf) | Standard | Devanagari (Standard) | 139.6 KB |
-| [`Sooktamala_Devanagari.pdf`](../05_renders/pdf/Sooktamala_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 264.8 KB |
+| [`Prayogamala-Purvabhagam_Devanagari.pdf`](../05_renders/pdf/Prayogamala-Purvabhagam_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 292.5 KB |
+| [`prayogamala-Uttarabhagam_Devanagari.pdf`](../05_renders/pdf/prayogamala-Uttarabhagam_Devanagari.pdf) | Standard | Devanagari (Standard) | 140.0 KB |
+| [`Sooktamala_Devanagari.pdf`](../05_renders/pdf/Sooktamala_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 265.3 KB |
 
 ### HTML Readers (`05_renders/html/`)
 | File Name | Mode / Edition | Target Script | Size |

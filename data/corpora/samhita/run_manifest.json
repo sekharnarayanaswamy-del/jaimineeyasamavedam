@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
   "edition": "3.28",
-  "timestamp": "29-09-2026 18:42:40",
+  "timestamp": "01-10-2026 23:07:48",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,7 +12,7 @@
   },
   "hashes": {
     "input_sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18",
-    "ast_sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0",
+    "ast_sha256": "ebec047822a9ce7340d5c532e229806847cd162ecfdc4071a7ac4cff5eacf424",
     "canonical_sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006"
   },
   "metrics": {
@@ -78,28 +78,21 @@
         "path": "data/corpora/samhita/02_ast/Samam_kpully_Devanagari.json",
         "size_bytes": 53331,
         "size_formatted": "52.1 KB",
-        "sha256": "fe92f59cf17dafc46b9163d6cc258e2056ae6a0a7e90d0c058a4e2fe7a68c448"
+        "sha256": "19bbb4eda5523106d10d01fd91ca155c136befd0d22de7adebd273db02b46e11"
       },
       {
         "name": "Samam_Malayalam.json",
         "path": "data/corpora/samhita/02_ast/Samam_Malayalam.json",
         "size_bytes": 67582,
         "size_formatted": "66.0 KB",
-        "sha256": "a786e4a133b639a4baa6cfaf3701ce456aa8a0836406a501388a9154e017cdae"
+        "sha256": "f56a9a018a44243cbb0951e9b5496f162d38b6ceeeeee931f32173ed170a506b"
       },
       {
         "name": "Samhita_ast.json",
         "path": "data/corpora/samhita/02_ast/Samhita_ast.json",
         "size_bytes": 1821541,
         "size_formatted": "1.74 MB",
-        "sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0"
-      },
-      {
-        "name": "Samhita_corrected_out.json",
-        "path": "data/corpora/samhita/02_ast/Samhita_corrected_out.json",
-        "size_bytes": 1821541,
-        "size_formatted": "1.74 MB",
-        "sha256": "7c498e929c57cd1afe8a93ef62ebb70cb45cdd7beeaa130386c98b601accd7b0"
+        "sha256": "ebec047822a9ce7340d5c532e229806847cd162ecfdc4071a7ac4cff5eacf424"
       }
     ],
     "03_reconciliation": [
@@ -112,8 +105,8 @@
       {
         "name": "JSV_Rik_Table.csv",
         "path": "data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv",
-        "size_bytes": 278784,
-        "size_formatted": "272.2 KB"
+        "size_bytes": 278785,
+        "size_formatted": "272.3 KB"
       },
       {
         "name": "JSV_Rik_Table.txt",
@@ -166,7 +159,7 @@
           "format": "PDF",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 1179636,
+          "size_bytes": 1179521,
           "size_formatted": "1.12 MB"
         },
         {
@@ -235,6 +228,15 @@
           "size_formatted": "2.91 MB"
         },
         {
+          "name": "Samam_kpully_Devanagari_Samam.html",
+          "path": "data/corpora/samhita/05_renders/html/Samam_kpully_Devanagari_Samam.html",
+          "format": "HTML",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 3055043,
+          "size_formatted": "2.91 MB"
+        },
+        {
           "name": "Samam_kpully_Malayalam.html",
           "path": "data/corpora/samhita/05_renders/html/Samam_kpully_Malayalam.html",
           "format": "HTML",
@@ -244,13 +246,22 @@
           "size_formatted": "1.23 MB"
         },
         {
+          "name": "Samam_kpully_Malayalam_Samam.html",
+          "path": "data/corpora/samhita/05_renders/html/Samam_kpully_Malayalam_Samam.html",
+          "format": "HTML",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 1291849,
+          "size_formatted": "1.23 MB"
+        },
+        {
           "name": "Samhita_Devanagari.html",
           "path": "data/corpora/samhita/05_renders/html/Samhita_Devanagari.html",
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 12385145,
-          "size_formatted": "11.81 MB"
+          "size_bytes": 12414906,
+          "size_formatted": "11.84 MB"
         },
         {
           "name": "Samhita_kpully_Devanagari.html",
@@ -309,13 +320,22 @@
       ],
       "txt": [
         {
+          "name": "Samam_kpully_Devanagari_Samam_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Devanagari_Samam_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 34457,
+          "size_formatted": "33.6 KB"
+        },
+        {
           "name": "Samam_kpully_Devanagari_Unicode.txt",
           "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Devanagari_Unicode.txt",
           "format": "TXT",
           "script": "Devanagari (Kodunthirapully)",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 34388,
-          "size_formatted": "33.6 KB"
+          "size_bytes": 34469,
+          "size_formatted": "33.7 KB"
         },
         {
           "name": "Samam_kpully_Malayalam_Devanagari_Unicode.txt",
@@ -325,6 +345,24 @@
           "mode": "Separate (Samam Only)",
           "size_bytes": 34256,
           "size_formatted": "33.5 KB"
+        },
+        {
+          "name": "Samam_kpully_Malayalam_Samam_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Malayalam_Samam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 34325,
+          "size_formatted": "33.5 KB"
+        },
+        {
+          "name": "Samam_kpully_Malayalam_Samam_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samam_kpully_Malayalam_Samam_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Separate (Samam Only)",
+          "size_bytes": 35780,
+          "size_formatted": "34.9 KB"
         },
         {
           "name": "Samam_kpully_Malayalam_Unicode.txt",
@@ -341,7 +379,7 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 1367851,
+          "size_bytes": 1367920,
           "size_formatted": "1.30 MB"
         },
         {

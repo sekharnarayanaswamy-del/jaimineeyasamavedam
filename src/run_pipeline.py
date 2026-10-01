@@ -95,7 +95,7 @@ def sync_standalone_readers():
 
     targets = [
         ("Samam_kpully_Malayalam.html", "Malayalam"),
-        ("Samhita_kpully_Devanagari.html", "Devanagari"),
+        ("Samam_kpully_Devanagari.html", "Devanagari"),
     ]
 
     copied_any = False
@@ -168,9 +168,9 @@ def main():
     parser.add_argument(
         "--corpora",
         nargs="+",
-        choices=["samhita", "aaranam", "collections", "all"],
+        choices=["samhita", "aaranam", "collections", "purvarchikam", "uttararchikam", "all"],
         default=None,
-        help="Override corpora to process (choices: samhita, aaranam, collections, all)",
+        help="Override corpora to process (choices: samhita, aaranam, collections, purvarchikam, uttararchikam, all)",
     )
     parser.add_argument(
         "--script",
@@ -222,6 +222,11 @@ def main():
         action="store_true",
         help="Skip post-run stage synchronization to data/corpora/",
     )
+    parser.add_argument(
+        "--build-websites",
+        action="store_true",
+        help="Build all static micro-websites in docs/ using src/tools/generate_all_websites.py",
+    )
 
     args = parser.parse_args()
 
@@ -237,7 +242,7 @@ def main():
 
     # Corpora resolution
     if args.corpora:
-        corpora = ["samhita", "aaranam", "collections"] if "all" in args.corpora else args.corpora
+        corpora = ["samhita", "aaranam", "collections", "purvarchikam", "uttararchikam"] if "all" in args.corpora else args.corpora
     else:
         corpora = profile.get("corpora", ["samhita"])
 
@@ -465,17 +470,21 @@ def main():
     # 3. COLLECTIONS PIPELINE
     # ----------------------------------------------------
     if "collections" in corpora:
-        print("\n>>> CORPUS: COLLECTIONS (साम सूक्त माला)")
-        collections_dir = ROOT_DIR / "data" / "corpora" / "collections" / "04_canonical"
+        print("\n>>> CORPUS: COLLECTIONS (साम सङ्ग्रह)")
+        collections_ast_dir = ROOT_DIR / "data" / "corpora" / "collections" / "02_ast"
+        collections_canon_dir = ROOT_DIR / "data" / "corpora" / "collections" / "04_canonical"
         collection_books = [
-            ("Sooktamala", collections_dir / "Sooktamala.json"),
-            ("Prayogamala-Purvabhagam", collections_dir / "Prayogamala-Purvabhagam.json"),
-            ("prayogamala-Uttarabhagam", collections_dir / "prayogamala-Uttarabhagam.json"),
+            ("Sooktamala", "Sooktamala.json"),
+            ("Prayogamala-Purvabhagam", "Prayogamala-Purvabhagam.json"),
+            ("prayogamala-Uttarabhagam", "prayogamala-Uttarabhagam.json"),
         ]
         rendered_any = False
-        for book_name, book_json in collection_books:
+        for book_name, book_file in collection_books:
+            book_json = collections_ast_dir / book_file
             if not book_json.exists():
-                fallback = ROOT_DIR / "data" / "output" / f"{book_name}.json"
+                book_json = collections_canon_dir / book_file
+            if not book_json.exists():
+                fallback = ROOT_DIR / "data" / "output" / book_file
                 if fallback.exists():
                     book_json = fallback
             if book_json.exists():
@@ -508,7 +517,73 @@ def main():
                     run_cmd(cmd, description=f"Collections: Rendering Collection ({mode}) ({format_label})")
 
     # ----------------------------------------------------
-    # 4. POST-RUN CORPUS STAGE MIGRATION & MANIFEST SYNC
+    # 4. PURVARCHIKAM PIPELINE (पूर्वार्चिकम् - ऋक्)
+    # ----------------------------------------------------
+    if "purvarchikam" in corpora:
+        print("\n>>> CORPUS: PURVARCHIKAM (पूर्वार्चिकम् - ऋक्)")
+        purva_input = ROOT_DIR / "data" / "input" / "vedic_text.txt"
+        purva_json = ROOT_DIR / "data" / "output" / "Purvarchikam_out.json"
+
+        run_cmd(
+            [
+                sys.executable,
+                "-X", "utf8",
+                str(ROOT_DIR / "src" / "generate_json.py"),
+                str(purva_input),
+                "--type", "purvarchikam",
+                "--output", str(purva_json),
+            ],
+            description="Purvarchikam: Generating JSON AST from vedic_text.txt",
+        )
+
+        for mode in modes:
+            cmd = [
+                sys.executable,
+                "-X", "utf8",
+                str(ROOT_DIR / "src" / "render.py"),
+                str(purva_json),
+                "--type", "purvarchikam",
+                "--output-mode", mode,
+                "--rik-only",
+                "-o", "Purvarchikam",
+            ] + extra_flags + kpully_cli_flags
+            run_cmd(cmd, description=f"Purvarchikam: Rendering ({mode}) ({format_label})")
+
+    # ----------------------------------------------------
+    # 5. UTTARARCHIKAM PIPELINE (उत्तरार्चिकम् - ऋक्)
+    # ----------------------------------------------------
+    if "uttararchikam" in corpora:
+        print("\n>>> CORPUS: UTTARARCHIKAM (उत्तरार्चिकम् - ऋक्)")
+        uttara_input = ROOT_DIR / "data" / "input" / "vedic_text.txt"
+        uttara_json = ROOT_DIR / "data" / "output" / "Uttararchikam_out.json"
+
+        run_cmd(
+            [
+                sys.executable,
+                "-X", "utf8",
+                str(ROOT_DIR / "src" / "generate_json.py"),
+                str(uttara_input),
+                "--type", "uttararchikam",
+                "--output", str(uttara_json),
+            ],
+            description="Uttararchikam: Generating JSON AST from vedic_text.txt",
+        )
+
+        for mode in modes:
+            cmd = [
+                sys.executable,
+                "-X", "utf8",
+                str(ROOT_DIR / "src" / "render.py"),
+                str(uttara_json),
+                "--type", "uttararchikam",
+                "--output-mode", mode,
+                "--rik-only",
+                "-o", "Uttararchikam",
+            ] + extra_flags + kpully_cli_flags
+            run_cmd(cmd, description=f"Uttararchikam: Rendering ({mode}) ({format_label})")
+
+    # ----------------------------------------------------
+    # 6. POST-RUN CORPUS STAGE MIGRATION & MANIFEST SYNC
     # ----------------------------------------------------
     if not args.skip_migrate:
         run_cmd(
@@ -525,6 +600,14 @@ def main():
     # 5. SYNC STANDALONE HTML READERS (docs/standalone-html)
     # ----------------------------------------------------
     sync_standalone_readers()
+
+    # ----------------------------------------------------
+    # 6. STATIC MICRO-WEBSITES (docs/)
+    # ----------------------------------------------------
+    if getattr(args, "build_websites", False):
+        gen_websites_script = ROOT_DIR / "src" / "tools" / "generate_all_websites.py"
+        if gen_websites_script.exists():
+            run_cmd([sys.executable, str(gen_websites_script)], description="Building all static micro-websites in docs/")
 
     elapsed = time.time() - start_time
 

@@ -8,7 +8,7 @@ description: Instructions for maintain and generating the Jaimineeya static site
 This skill covers the mechanics of translating the Source of Truth JSON into the static GitHub Pages layout (`src/generate_website.py`) for Samhita and Aaranam.
 
 ## 1. Site Architecture
-*   **Dual Sub-site Model**: The static archive maintains two primary independent sub-sites: **Samhita** (`docs/samhita/`) and **Aaranam** (`docs/aranam/`).
+*   **Dual Sub-site Model**: The static archive maintains two primary independent sub-sites: **Samhita** (`docs/samhita/`) and **Aaranam** (`docs/aaranam/`).
 *   **Gateway Landing Page**: A manually maintained premium landing page at `docs/index.html` provides the primary entry point to both collections.
 *   **Common Assets**: CSS and JS are shared locally within each sub-site to ensure full portability and offline functionality.
 *   **Prayoga Procedures**: Dedicated procedural markdown files are supported which are dynamically built into the site structure as independent readable web pages. Please refer to `.agent/skills/manage_prayoga_procedures/SKILL.md` for specifics on linking and rendering.
@@ -31,8 +31,8 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
 
 ## 4. Generation Commands
 *   **Samhita**: `python src/generate_website.py --samhita -o docs/samhita`
-*   **Aaranam**: `python src/generate_website.py --aaranam -o docs/aranam`
-*   **Custom Collection**: `python src/curate_jsv.py --sources data/output/Vargeekaran.json --filter logic.txt --output docs/custom/`
+*   **Aaranam**: `python src/generate_website.py --aaranam -o docs/aaranam`
+*   **Custom Collection**: `python src/curate_jsv.py --sources data/corpora/samhita/04_canonical/Vargeekaran.json --filter logic.txt --output data/corpora/collections/02_ast/custom.json`
 
 ## 5. Prayoga Procedure Links
 *   **JSON Generation**: First generate JSON with procedures:
@@ -51,5 +51,8 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
 
 ## 6. Swara Modifier & Font File Synchronization
 > [!IMPORTANT]
-> **The positioning of the swara modifiers in the JSV Curation tool should be reflected to the font file as well.**
-> Whenever visual accents or swara modifiers are adjusted in CSS preview (`style.css`), the respective glyph vector contours in `scripts/build_swara_font.py` must be updated and rebuilt (`python scripts/build_swara_font.py`) to keep the standalone TrueType/OpenType font binaries in exact geometric parity.
+> **The positioning of the swara modifiers in the JSV Curation tool AND the generated KPully HTML files must be reflected in the font file as well.**
+> Whenever visual accents, swara stacking heights, or modifiers are adjusted in:
+> - The curation CSS preview (`Malayalam_JSV/curation_tool/static/style.css`), OR
+> - The production HTML templates/CSS for generated Kodunthirapully (KPully) readers (`templates/html/Devanagari_main_html.template` and `templates/html/Malayalam_main_html.template`),
+> the respective glyph vector contours in `scripts/build_swara_font.py` must be updated and rebuilt (`python scripts/build_swara_font.py`) to keep the standalone TrueType/OpenType font binaries (`fonts/JaimineeyaSwara.ttf`) in exact geometric parity.

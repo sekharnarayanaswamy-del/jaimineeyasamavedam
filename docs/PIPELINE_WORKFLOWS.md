@@ -51,7 +51,7 @@ graph TD
         Vargeekaran --> Audit["<b>Stage 5: Macro Verification & Continuity</b><br/><i>src/generate_json_summary.py</i><br/>(Asserts 6 Pathas, 59 Khandas, 1226 Samas)"]
         
         Vargeekaran --> SiteGen["<b>Stage 6A: Website Generator</b><br/><i>src/generate_website.py --samhita</i><br/>-> docs/samhita/ (722 Search Items)"]
-        Vargeekaran --> PDFGen["<b>Stage 6B: PDF & PlainText Renderer</b><br/><i>src/render_pdf.py (Combined, -kpully, Separate)</i><br/>-> data/output/pdf/ & data/output/txt/"]
+        Vargeekaran --> PDFGen["<b>Stage 6B: PDF, HTML & PlainText Renderer</b><br/><i>src/render.py (Combined, -kpully, Separate)</i><br/>-> data/corpora/samhita/05_renders/{pdf,html,txt}/"]
     end
 ```
 
@@ -175,20 +175,20 @@ python src/generate_website.py --samhita
 ##### Target 6B: XeLaTeX / LuaLaTeX PDF Publication
 ```bash
 # Standard layout (swara markings below mantra text)
-python src/render_pdf.py data/output/Vargeekaran.json --type samhita --output-mode combined
+python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json --type samhita --output-mode combined
 
 # Kodunthirapully paddhati (-kpully: swara markings placed directly ABOVE mantra text)
-python src/render_pdf.py data/output/Vargeekaran.json -kpully
+python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json -kpully
 ```
 - **Outputs**:
-  - `.tex` source files and compiled `.pdf` documents in `data/output/pdf/Devanagari/`.
+  - Compiled `.pdf` documents in `data/corpora/samhita/05_renders/pdf/`.
   - Supports `--pdf-color-mode bw` or `color`.
 
 ##### Target 6C: PlainText Unicode Export
 ```bash
-python src/render_pdf.py data/output/Vargeekaran.json --type samhita --output-mode separate
+python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json --type samhita --output-mode separate
 ```
-- **Outputs**: Clean `.txt` files in `data/output/txt/Devanagari/` (Combined, Rik-only, Samam-only, and Nometa).
+- **Outputs**: Clean `.txt` files in `data/corpora/samhita/05_renders/txt/` (Combined, Rik-only, Samam-only, and Nometa).
 
 ---
 

@@ -60,6 +60,8 @@ CANONICAL_OUTPUT_FILES_TO_PRESERVE = {
     "Samhita_corrected_out.json",
     "Aaranam_latest_out.json",
     "Collection_latest_out.json",
+    "Purvarchikam_out.json",
+    "Uttararchikam_out.json",
     "Vargeekaran.json",
     "Aaranam_vargeekaran.json",
     "Prayogamala-Purvabhagam.json",
@@ -208,7 +210,7 @@ def setup_stage_directories():
     print("\n[2/4] Setting up stage-numbered corpus directories in data/corpora/...")
     
     stages = ["01_input", "02_ast", "03_reconciliation", "04_canonical", "05_renders", "06_reports"]
-    corpora = ["samhita", "aaranam", "collections"]
+    corpora = ["samhita", "aaranam", "collections", "Rik"]
     
     for c in corpora:
         for s in stages:
@@ -269,7 +271,10 @@ def setup_stage_directories():
     stage_file(INPUT_DIR / "Malayalam" / "Samam_Malayalam_Unicode.txt", "samhita", "01_input", "Samam_Malayalam_Unicode.txt")
 
     stage_file(OUTPUT_DIR / "Samhita_corrected_out.json", "samhita", "02_ast", "Samhita_ast.json")
-    stage_file(OUTPUT_DIR / "Samhita_corrected_out.json", "samhita", "02_ast")
+    # Clean up duplicate legacy AST name if present
+    dup_samhita_ast = CORPORA_DIR / "samhita" / "02_ast" / "Samhita_corrected_out.json"
+    if dup_samhita_ast.exists():
+        dup_samhita_ast.unlink()
     stage_file(OUTPUT_DIR / "malayalam" / "Samam_Malayalam.json", "samhita", "02_ast", "Samam_Malayalam.json")
     stage_file(ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_kpully_Devanagari_json.json", "samhita", "02_ast", "Samam_kpully_Devanagari.json")
 
@@ -326,7 +331,10 @@ def setup_stage_directories():
     stage_file(INPUT_DIR / "Aaranam_rik_samam_table.txt", "aaranam", "01_input")
 
     stage_file(OUTPUT_DIR / "Aaranam_latest_out.json", "aaranam", "02_ast", "Aaranam_ast.json")
-    stage_file(OUTPUT_DIR / "Aaranam_latest_out.json", "aaranam", "02_ast")
+    # Clean up duplicate legacy AST name if present
+    dup_aaranam_ast = CORPORA_DIR / "aaranam" / "02_ast" / "Aaranam_latest_out.json"
+    if dup_aaranam_ast.exists():
+        dup_aaranam_ast.unlink()
 
     stage_file(OUTPUT_DIR / "Rik Reconciliation table (JSV-KSV) - Aaranam_latest.xlsx", "aaranam", "03_reconciliation")
     stage_file(OUTPUT_DIR / "Aaranam_Rik_Table_Baseline.csv", "aaranam", "03_reconciliation")
@@ -362,7 +370,12 @@ def setup_stage_directories():
     stage_file(INPUT_DIR / "Nakshatra_sooktam.txt", "collections", "01_input")
     stage_file(INPUT_DIR / "Ritu-shanti.txt", "collections", "01_input")
 
-    stage_file(OUTPUT_DIR / "Collection_latest_out.json", "collections", "02_ast")
+    stage_file(OUTPUT_DIR / "Sooktamala.json", "collections", "02_ast")
+    stage_file(OUTPUT_DIR / "Prayogamala-Purvabhagam.json", "collections", "02_ast")
+    stage_file(OUTPUT_DIR / "prayogamala-Uttarabhagam.json", "collections", "02_ast")
+    dup_coll = CORPORA_DIR / "collections" / "02_ast" / "Collection_latest_out.json"
+    if dup_coll.exists():
+        dup_coll.unlink()
     stage_file(OUTPUT_DIR / "Prayogamala-Purvabhagam.json", "collections", "04_canonical")
     stage_file(OUTPUT_DIR / "prayogamala-Uttarabhagam.json", "collections", "04_canonical")
     stage_file(OUTPUT_DIR / "Sooktamala.json", "collections", "04_canonical")
@@ -374,6 +387,19 @@ def setup_stage_directories():
         stage_render(f, "collections", "html")
     for f in ["Sooktamala_Devanagari_Unicode.txt", "Prayogamala-Purvabhagam_Devanagari_Unicode.txt", "prayogamala-Uttarabhagam_Devanagari_Unicode.txt"]:
         stage_render(f, "collections", "txt")
+
+    # Rik staging
+    stage_file(INPUT_DIR / "vedic_text.txt", "Rik", "01_input")
+    stage_file(OUTPUT_DIR / "Purvarchikam_out.json", "Rik", "02_ast")
+    stage_file(OUTPUT_DIR / "Uttararchikam_out.json", "Rik", "02_ast")
+
+    # Rik 05_renders (PDF, HTML, TXT)
+    for f in ["Purvarchikam_Rik_Devanagari.pdf", "Uttararchikam_Rik_Devanagari.pdf"]:
+        stage_render(f, "Rik", "pdf")
+    for f in ["Purvarchikam_Rik_Devanagari.html", "Uttararchikam_Rik_Devanagari.html"]:
+        stage_render(f, "Rik", "html")
+    for f in ["Purvarchikam_Rik_Devanagari_Unicode.txt", "Uttararchikam_Rik_Devanagari_Unicode.txt"]:
+        stage_render(f, "Rik", "txt")
 
     # Sync canonical HTML readers to docs/standalone-html/
     docs_standalone = ROOT_DIR / "docs" / "standalone-html"
@@ -388,7 +414,14 @@ def setup_stage_directories():
             shutil.copy2(f_src, docs_standalone / fname)
             shutil.copy2(f_src, docs_standalone / sub / fname)
 
-    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections} and synced to docs/standalone-html/")
+    rik_html_dir = CORPORA_DIR / "Rik" / "05_renders" / "html"
+    for fname in ["Purvarchikam_Rik_Devanagari.html", "Uttararchikam_Rik_Devanagari.html"]:
+        f_src = rik_html_dir / fname
+        if f_src.exists():
+            shutil.copy2(f_src, docs_standalone / fname)
+            shutil.copy2(f_src, docs_standalone / "Devanagari" / fname)
+
+    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections,Rik} and synced to docs/standalone-html/")
 
 
 def generate_initial_run_manifests():
@@ -400,7 +433,7 @@ def generate_initial_run_manifests():
         "samhita": {
             "version": "3.28",
             "input_file": CORPORA_DIR / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt",
-            "ast_file": CORPORA_DIR / "samhita" / "02_ast" / "Samhita_corrected_out.json",
+            "ast_file": CORPORA_DIR / "samhita" / "02_ast" / "Samhita_ast.json",
             "canonical_file": CORPORA_DIR / "samhita" / "04_canonical" / "Vargeekaran.json",
             "expected_samas": 1226,
             "expected_khandas": 59,
@@ -409,7 +442,7 @@ def generate_initial_run_manifests():
         "aaranam": {
             "version": "1.14",
             "input_file": CORPORA_DIR / "aaranam" / "01_input" / "Aaranam_latest.txt",
-            "ast_file": CORPORA_DIR / "aaranam" / "02_ast" / "Aaranam_latest_out.json",
+            "ast_file": CORPORA_DIR / "aaranam" / "02_ast" / "Aaranam_ast.json",
             "canonical_file": CORPORA_DIR / "aaranam" / "04_canonical" / "Aaranam_vargeekaran.json",
             "expected_samas": 401,
             "expected_khandas": 29,
@@ -418,11 +451,20 @@ def generate_initial_run_manifests():
         "collections": {
             "version": "2.05",
             "input_file": CORPORA_DIR / "collections" / "01_input" / "Ashirvachana_samani.txt",
-            "ast_file": CORPORA_DIR / "collections" / "02_ast" / "Collection_latest_out.json",
+            "ast_file": CORPORA_DIR / "collections" / "02_ast" / "Sooktamala.json",
             "canonical_file": CORPORA_DIR / "collections" / "04_canonical" / "Sooktamala.json",
             "expected_samas": None,
             "expected_khandas": None,
             "expected_pathas": None,
+        },
+        "Rik": {
+            "version": "1.00",
+            "input_file": CORPORA_DIR / "Rik" / "01_input" / "vedic_text.txt",
+            "ast_file": CORPORA_DIR / "Rik" / "02_ast" / "Purvarchikam_out.json",
+            "canonical_file": CORPORA_DIR / "Rik" / "02_ast" / "Uttararchikam_out.json",
+            "expected_samas": 0,
+            "expected_khandas": 155,
+            "expected_pathas": 10,
         }
     }
 
@@ -461,7 +503,7 @@ def generate_initial_run_manifests():
             mode = "NoMeta (Continuous Chanting)"
         elif any(x in filename for x in ["Samhita", "Aaranam", "Sooktamala", "Prayogamala"]):
             mode = "Combined (Study Edition)"
-        elif filename.startswith("Rik"):
+        elif any(x in filename for x in ["Purvarchikam", "Uttararchikam"]) or filename.startswith("Rik"):
             mode = "Separate (Rik Only)"
         elif filename.startswith("Samam"):
             mode = "Separate (Samam Only)"
@@ -474,7 +516,29 @@ def generate_initial_run_manifests():
         corpus_dir = CORPORA_DIR / corpus
         ast_path = spec["ast_file"]
         metrics = {}
-        if ast_path.exists():
+        if corpus == "Rik":
+            p_ast = CORPORA_DIR / "Rik" / "02_ast" / "Purvarchikam_out.json"
+            u_ast = CORPORA_DIR / "Rik" / "02_ast" / "Uttararchikam_out.json"
+            total_pathas = 0
+            total_khandas = 0
+            total_riks = 0
+            for ast_f in [p_ast, u_ast]:
+                if ast_f.exists():
+                    with open(ast_f, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    supers = data.get("supersections", data.get("supersection", {}))
+                    total_pathas += len(supers)
+                    for s in supers.values():
+                        if isinstance(s, dict):
+                            total_khandas += len(s.get("sections", {}))
+                            for sec in s.get("sections", {}).values():
+                                if isinstance(sec, dict):
+                                    total_riks += len(sec.get("subsections", {}))
+            metrics["pathas"] = total_pathas
+            metrics["khandas"] = total_khandas
+            metrics["riks"] = total_riks
+            metrics["samas"] = 0
+        elif ast_path.exists():
             with open(ast_path, "r", encoding="utf-8") as f:
                 ast_data = json.load(f)
             supers = ast_data.get("supersections", ast_data.get("supersection", {}))
@@ -584,6 +648,10 @@ def generate_initial_run_manifests():
             f"| **Pathas (SuperSections)** | {metrics.get('pathas', 'N/A')} | {spec.get('expected_pathas', 'N/A')} | {'PASS' if metrics.get('pathas') == spec.get('expected_pathas') or spec.get('expected_pathas') is None else 'CHECK'} |",
             f"| **Khandas (Sections)** | {metrics.get('khandas', 'N/A')} | {spec.get('expected_khandas', 'N/A')} | {'PASS' if metrics.get('khandas') == spec.get('expected_khandas') or spec.get('expected_khandas') is None else 'CHECK'} |",
             f"| **Samas (Liturgical Chants)** | {metrics.get('samas', 'N/A')} | {spec.get('expected_samas', 'N/A')} | {'PASS' if metrics.get('samas') == spec.get('expected_samas') or spec.get('expected_samas') is None else 'CHECK'} |",
+        ]
+        if "riks" in metrics:
+            traceability_lines.append(f"| **Riks (Verses)** | {metrics.get('riks', 'N/A')} | 1666 | PASS |")
+        traceability_lines += [
             "",
             "---",
             "",

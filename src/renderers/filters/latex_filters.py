@@ -45,6 +45,12 @@ except ImportError:
 
 # --- General Swara & Text Helpers ---
 CURRENT_PDF_FONT = "AdishilaVedic"
+LATEX_DOC_MARKERS_MAP = {}
+
+def reset_latex_doc_markers() -> None:
+    """Reset the document-level footnote marker map between renders."""
+    global LATEX_DOC_MARKERS_MAP
+    LATEX_DOC_MARKERS_MAP.clear()
 
 def set_current_pdf_font(font: str) -> None:
     global CURRENT_PDF_FONT
@@ -208,6 +214,9 @@ def process_footnotes_latex(text, footnotes_dict, seen_markers=None, subsection_
         
     if footnotes_dict is None:
         footnotes_dict = {}
+
+    if doc_markers_map is None:
+        doc_markers_map = LATEX_DOC_MARKERS_MAP
     
     def replacer(match):
         marker = match.group(1) # s1
@@ -230,6 +239,8 @@ def process_footnotes_latex(text, footnotes_dict, seen_markers=None, subsection_
                 return f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{footnote_text}}}"
         elif doc_markers_map is not None and marker in doc_markers_map:
             label = doc_markers_map[marker]
+            if seen_markers is not None:
+                seen_markers.add(marker)
             return f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}"
         return full_marker
 
@@ -713,6 +724,13 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                     else:
                         paragraph_buffer.append(f"\\rule{{0pt}}{{2.5ex}}\\footnote{{{fn_text}\\label{{{label}}}}}")
                         seen_markers.add(marker)
+                        if LATEX_DOC_MARKERS_MAP is not None:
+                            LATEX_DOC_MARKERS_MAP[marker] = label
+                elif LATEX_DOC_MARKERS_MAP and marker in LATEX_DOC_MARKERS_MAP:
+                    label = LATEX_DOC_MARKERS_MAP[marker]
+                    if seen_markers is not None:
+                        seen_markers.add(marker)
+                    paragraph_buffer.append(f"\\rule{{0pt}}{{2.5ex}}\\textsuperscript{{\\raisebox{{1.2ex}}{{\\normalfont\\ref{{{label}}}}}}}")
             elif t == 'word':
                 sw = tok.get('swara', '')
                 sw_parts, tok_mods = _parse_swara_and_modifiers(sw)
@@ -2111,6 +2129,18 @@ def clean_toc_title(raw_title):
     return display_sub_title.strip()
 
 
+def toc_header(text):
+    """
+    Extracts the clean header for Table of Contents:
+    Removes leading 'अथ' and trailing 'प्रारम्भः' / 'प्रारम्भ'.
+    """
+    if not text:
+        return ""
+    t = str(text)
+    t = re.sub(r'^\s*अथ\s+', '', t)
+    t = re.sub(r'\s*प्रारम्भः?\s*$', '', t)
+    return t.strip()
+
 
 def register_latex_filters(env):
     """Registers all LaTeX rendering filters onto the provided Jinja2 environment."""
@@ -2131,4 +2161,5 @@ def register_latex_filters(env):
     env.filters["split_rik_lines_latex"] = split_rik_lines_latex
     env.filters["replacecolon"] = replacecolon
     env.filters["clean_toc_title"] = clean_toc_title
+    env.filters["toc_header"] = toc_header
     return env

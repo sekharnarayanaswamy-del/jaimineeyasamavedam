@@ -18,18 +18,18 @@ Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/One
 | **Vedic PUA Glyph Font** | `\newfontfamily\swarafont[Scale=0.88...]` | Lines 68, 75 | `Scale=0.88` (~`10.5pt`) | Specialized chant glyphs (`JaimineeyaSwara.ttf`). |
 
 ### B. Vertical Line & Paragraph Rhythm
-Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/templates/pdf/Devanagari_main.template) and [`src/render_pdf.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render_pdf.py):
+Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/templates/pdf/Devanagari_main.template) and [`src/render.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render.py):
 
 | Target | Parameter / Macro | Location | Current Value | Tuning Effect |
 | :--- | :--- | :--- | :--- | :--- |
 | **Inter-line Baseline Stretch** | `\setstretch{2.50}` | `Devanagari_main.template:L95` | `2.50` | Controls distance between lines in a verse. In KPully, swaras are raised above the text; `2.50` ensures that the red swaras of line $N+1$ have clear clearance below line $N$. |
-| **Inter-verse Spacing** | `\par\vspace{0.35em}` | `src/render_pdf.py:L901` | `0.35em` | Vertical blank space between two verses. |
-| **Header-to-Mantra Gap** | `\vspace{0.15em}` | `src/render_pdf.py:L1261` | `0.15em` | Keeps the Samam header closely tied to its chant text. |
-| **Rik-to-Samam Gap** | `\vspace{0.3em}` | `src/render_pdf.py:L1229` | `0.3em` | Separation between Rik verse and following Samam set. |
+| **Inter-verse Spacing** | `\par\vspace{0.35em}` | `src/render.py` | `0.35em` | Vertical blank space between two verses. |
+| **Header-to-Mantra Gap** | `\vspace{0.15em}` | `src/render.py` | `0.15em` | Keeps the Samam header closely tied to its chant text. |
+| **Rik-to-Samam Gap** | `\vspace{0.3em}` | `src/render.py` | `0.3em` | Separation between Rik verse and following Samam set. |
 | **Page Margins** | `\usepackage[margin=2.0cm...]{geometry}` | `Devanagari_main.template:L101` | `2.0cm` | Left, right, bottom margins (top is `2.5cm`). |
 
 ### C. Horizontal Syllable & Danda Spacing
-Defined in `_render_devanagari_mantra_body()` in [`src/render_pdf.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render_pdf.py):
+Defined in `_render_devanagari_mantra_body()` in [`src/render.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render.py):
 
 | Target | Code / Macro | Location | Value | Purpose |
 | :--- | :--- | :--- | :--- | :--- |
@@ -84,7 +84,7 @@ Defined in [`templates/html/Devanagari_main_html.template`](file:///c:/Users/sek
 - `\setstretch{2.15}` (Malayalam baseline stretch)
 - `Scale=1.15` for `Aksharamukha-Malayalam` / `JaimineeyaMalayalam.ttf`
 - `\swarastack`: `\raisebox{2.35ex}[0pt][0pt]{#2}`
-- Intra-word syllable rule (`src/render_pdf.py:L1945`): `\hskip 0pt plus 1.5pt\allowbreak `
+- Intra-word syllable rule (`src/render.py`): `\hskip 0pt plus 1.5pt\allowbreak `
 
 ### B. HTML (`templates/html/Malayalam_main_html.template`)
 - `.swara-mod.mod-a1` (arc over danda): `transform: translateX(-20%);` (synchronized with Malayalam script danda geometry).
@@ -100,7 +100,25 @@ Defined in [`templates/html/Devanagari_main_html.template`](file:///c:/Users/sek
 | **Red Swara Font Size (PDF)** | `templates/pdf/Devanagari_main.template` | Lines 67, 74 | `\smallredfont[Scale=...]` |
 | **Devanagari Mantra Font Size (HTML)** | `templates/html/Devanagari_main_html.template` | Line 300 | `.mantra-text { font-size: ... }` |
 | **Red Swara Font Size (HTML)** | `templates/html/Devanagari_main_html.template` | Line 345 | `rt.swara-above { font-size: ... }` |
-| **Space between word and danda (PDF)** | `src/render_pdf.py` | Line 928 | `\hspace{0.04em}।` |
-| **Space after danda before next sentence (PDF)** | `src/render_pdf.py` | Line 928 | `\allowbreak\hspace{0.20em}{}` |
-| **Space between verses (PDF)** | `src/render_pdf.py` | Line 901 | `\par\vspace{...}` |
+| **Space between word and danda (PDF)** | `src/render.py` | Mantra Body | `\hspace{0.04em}।` |
+| **Space after danda before next sentence (PDF)** | `src/render.py` | Mantra Body | `\allowbreak\hspace{0.20em}{}` |
+| **Space between verses (PDF)** | `src/render.py` | Verse Delimiter | `\par\vspace{...}` |
 | **Arc position over danda (HTML)** | `templates/html/Devanagari_main_html.template` | Line 398 | `.swara-mod.mod-a1 { transform: translateX(...) }` |
+
+---
+
+## 5. Swara Modifier & Font Synchronization Protocol
+
+> [!IMPORTANT]
+> **Mandatory Geometric Parity Across Templates & Fonts**:
+> When modifying swara modifier styling (e.g. overhead slur arcs, danda arcs, carets, horizontal offsets, stacking heights) in:
+> 1. The **Curation Tool preview** (`Malayalam_JSV/curation_tool/static/style.css`), **OR**
+> 2. The **production Kodunthirapully (KPully) HTML templates** (`templates/html/Devanagari_main_html.template` and `templates/html/Malayalam_main_html.template` for generated files like `Samhita_kpully_Devanagari.html` and `Samam_kpully_Malayalam.html`),
+> 
+> **You MUST synchronize the font glyph geometry as well**:
+> - Adjust the matching vector contour coordinates in [`scripts/build_swara_font.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/scripts/build_swara_font.py).
+> - Rebuild the standalone OpenType/TrueType font binaries:
+>   ```powershell
+>   python scripts/build_swara_font.py
+>   ```
+> - This updates `fonts/JaimineeyaSwara.ttf` and guarantees that printed PDFs, web readers, and live curation previews stay in identical geometric alignment.

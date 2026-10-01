@@ -119,6 +119,8 @@ def get_engine_version() -> str:
 def get_corpus_edition(corpus_name: str = "samhita") -> str:
     """Tier 2: Returns the edition string for a specific corpus."""
     normalized = corpus_name.lower().strip()
+    aliases = {"collection": "collections", "purva": "purvarchikam", "uttara": "uttararchikam"}
+    normalized = aliases.get(normalized, normalized)
     cfg = _load_config()
     editions = cfg.get("editions", {})
     if normalized in editions:
@@ -136,6 +138,8 @@ def get_corpus_edition(corpus_name: str = "samhita") -> str:
 def set_corpus_edition(corpus_name: str, edition_str: str) -> bool:
     """Updates the corpus edition in pipeline_config.yaml (and src/VERSION for samhita)."""
     normalized = corpus_name.lower().strip()
+    aliases = {"collection": "collections", "purva": "purvarchikam", "uttara": "uttararchikam"}
+    normalized = aliases.get(normalized, normalized)
     try:
         if CONFIG_FILE.exists():
             content = CONFIG_FILE.read_text(encoding='utf-8')

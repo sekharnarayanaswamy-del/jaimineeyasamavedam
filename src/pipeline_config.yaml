@@ -6,7 +6,7 @@
 # --- GLOBAL SETTINGS ---
 project:
   name: "Jaimineeya Samavedam"
-  engine_version: "4.0.0"
+  engine_version: "4.1.0"
   output_root: "data/output"
   input_root: "data/input"
 
@@ -15,6 +15,10 @@ editions:
   samhita: "3.28"
   aaranam: "1.14"
   collections: "2.05"
+  kpully: "1.00"
+  purvarchikam: "1.00"
+  uttararchikam: "1.00"
+  rik: "1.00"
 
 # ==============================================================================
 # ACTIVE BUILD PROFILE (Used by default when running without CLI flags)
@@ -120,6 +124,12 @@ generate_json:
     input: "data/input/Aaranam_latest.txt"
     output: "data/output/Aaranam_latest_out.json"
     mode: "correction"
+  purvarchikam:
+    input: "data/input/vedic_text.txt"
+    output: "data/output/Purvarchikam_out.json"
+  uttararchikam:
+    input: "data/input/vedic_text.txt"
+    output: "data/output/Uttararchikam_out.json"
 
 # --- RIK TABLE GENERATION (src/generate_rik_table.py) ---
 # CLI Options:
@@ -167,12 +177,6 @@ curate_jsv:
   output: "data/output/Ashirvachana_samani_out.json"
   title: "जैमिनीय साम सङ्ग्रहः"
 
-# --- COLLECTION BUILDING (src/tools/build_collection.py) ---
-build_collection:
-  source: "data/output/Vargeekaran.json"
-  output: "data/output/Collection_latest_out.json"
-  title: "जैमिनीय साम सङ्ग्रहः"
-
 # --- WEBSITE GENERATION (src/generate_website.py) ---
 # CLI Options:
 #   --source-file, -s    Path to the source text file
@@ -199,15 +203,48 @@ generate_website:
   
   # Type-specific sources
   samhita:
-    source: "data/output/Vargeekaran.json"
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
     output_dir: "docs/samhita"
+    title: "जैमिनीयसामवेद संहिता"
   aaranam:
-    source: "data/output/Aaranam_vargeekaran.json"
+    source: "data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json"
     output_dir: "docs/aaranam"
+    title: "जैमिनीयसामवेद आरण्यकम्"
   collection:
-    source: "data/output/Collection_latest_out.json"
+    source: "data/corpora/collections/02_ast/Sooktamala.json"
     output_dir: "docs/collection"
-    title: "जैमिनीय साम सङ्ग्रहः"
+    title: "जैमिनीयसामवेद सङ्ग्रहः"
+  kpully_devanagari:
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    output_dir: "docs/kpully-devanagari"
+    kpully: true
+    output_mode: "samam_nometa"
+    title: "जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः)"
+  malayalam:
+    source: "data/corpora/samhita/02_ast/Samam_Malayalam.json"
+    output_dir: "docs/malayalam"
+    font: "Noto Serif Malayalam"
+    title: "ജൈമിനീയ സാമവേദ സംഹിത"
+  samhita_samam:
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    output_dir: "docs/samhita-samam"
+    output_mode: "samam"
+    title: "जैमिनीयसामवेद संहिता (साम सविशेषम्)"
+  samhita_rik:
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    output_dir: "docs/samhita-rik"
+    output_mode: "rik"
+    title: "जैमिनीय सामवेद संहिता (ऋक् सविशेषम्)"
+  samhita_samam_nometa:
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    output_dir: "docs/samhita-samam-nometa"
+    output_mode: "samam_nometa"
+    title: "जैमिनीय सामवेद संहिता (साम गान पाठः)"
+  samhita_rik_nometa:
+    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    output_dir: "docs/samhita-rik-nometa"
+    output_mode: "rik_nometa"
+    title: "जैमिनीय सामवेद संहिता (ऋक् पाठः)"
 
 # --- PROCEDURE LINKING (Prayoga Descriptions) ---
 procedures:

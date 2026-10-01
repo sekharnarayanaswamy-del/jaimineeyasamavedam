@@ -74,6 +74,7 @@ def normalize_output_basename(name, doc_family):
 
 # --- Core Document Generators ---
 def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False):
+    reset_latex_doc_markers()
     data=escape_for_latex(data)
     
     outputdir="data/output"
@@ -574,8 +575,8 @@ Examples:
                         help='Font for PDF output')
     parser.add_argument('--html-font', dest='html_font', default=None,
                         help="Font for HTML output")
-    parser.add_argument('--type', choices=['samhita', 'aaranam', 'collection'], default='samhita',
-                        help='Type of Samaveda text: samhita, aaranam, or collection')
+    parser.add_argument('--type', choices=['samhita', 'aaranam', 'collection', 'purvarchikam', 'uttararchikam'], default='samhita',
+                        help='Type of Samaveda text: samhita, aaranam, collection, purvarchikam, or uttararchikam')
     
     parser.add_argument('--script', dest='script',
                         choices=['devanagari', 'malayalam'], default='devanagari',
@@ -625,6 +626,8 @@ Examples:
                         help='Skip PDF compilation (generates HTML and text outputs)')
     parser.add_argument('--output-dir', dest='output_dir', default=None,
                         help='Base output directory for generated renders (e.g. data/corpora/samhita/05_renders)')
+    parser.add_argument('--jsv-version', dest='jsv_version', default=None,
+                        help='Override JSV corpus edition version')
     
     args = parser.parse_args()
     mode_type = args.type
@@ -653,10 +656,18 @@ Examples:
     gen_html = not (args.pdf_only or args.txt_only)
     gen_rik = not args.samam_only
     gen_samam = not args.rik_only
+    if mode_type in ['purvarchikam', 'uttararchikam']:
+        gen_samam = False
     
     # Handle output path overrides:
     # Priority: explicit --output-dir > stage-numbered corpus renders > legacy data/output
-    corpus_map = {'samhita': 'samhita', 'aaranam': 'aaranam', 'collection': 'collections'}
+    corpus_map = {
+        'samhita': 'samhita',
+        'aaranam': 'aaranam',
+        'collection': 'collections',
+        'purvarchikam': 'Rik',
+        'uttararchikam': 'Rik'
+    }
     default_corpus = corpus_map.get(mode_type, 'samhita')
     candidate_corpus_renders = ROOT_DIR / "data" / "corpora" / default_corpus / "05_renders"
 
@@ -682,12 +693,18 @@ Examples:
              input_file = 'data/output/Aaranam_latest_out.json'
          elif mode_type == 'collection':
              input_file = 'data/output/Collection_latest_out.json'
+         elif mode_type == 'purvarchikam':
+             input_file = 'data/output/Purvarchikam_out.json'
+         elif mode_type == 'uttararchikam':
+             input_file = 'data/output/Uttararchikam_out.json'
          else:
              input_file = 'data/output/Samhita_corrected_out.json'
     
     file_prefix = (
         "Aaranam" if mode_type == 'aaranam' else 
-        "Collection" if mode_type == 'collection' else "Samhita"
+        "Collection" if mode_type == 'collection' else
+        "Purvarchikam" if mode_type == 'purvarchikam' else
+        "Uttararchikam" if mode_type == 'uttararchikam' else "Samhita"
     )
     if kpully_mode and not args.output and not out_name:
         file_prefix = f"{file_prefix}_kpully"
@@ -750,6 +767,7 @@ Examples:
     latex_jinja_env.filters["split_rik_lines"] = split_rik_lines_text
     latex_jinja_env.filters["replacecolon"] = replacecolon
     latex_jinja_env.filters["clean_toc_title"] = clean_toc_title
+    latex_jinja_env.filters["toc_header"] = toc_header
     latex_jinja_env.filters["get_canonical_rik_id"] = get_canonical_rik_id
     
     # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
@@ -779,15 +797,24 @@ Examples:
     html_jinja_env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
     html_jinja_env.filters["render_section_footnotes"] = render_section_footnotes
     html_jinja_env.filters["clean_toc_title"] = clean_toc_title
+    html_jinja_env.filters["toc_header"] = toc_header
 
     # Load input data (JSON only)
     ts_string_Devanagari = Path(input_file).read_text(encoding="utf-8")
     data_Devanagari = json.loads(ts_string_Devanagari)
     meta = data_Devanagari.get('meta', {})
-    jsv_version = meta.get('version')
-    generated_at = get_generated_metadata()['generated_at']
+    
+    # Determine Tier 2 Corpus Edition
+    # Priority: CLI override > KPully variant (if kpully mode/file) > Corpus type ('collections', 'aaranam', 'samhita') > AST meta.version
+    is_kpully_target = bool(kpully_mode or "kpully" in str(input_file).lower() or (out_name and "kpully" in str(out_name).lower()))
+    edition_corpus = "kpully" if is_kpully_target else mode_type
+    from core.version import get_corpus_edition
+    corpus_edition = get_corpus_edition(edition_corpus)
+    
+    jsv_version = args.jsv_version or corpus_edition or meta.get('version')
+    generated_at = get_generated_metadata(edition_corpus)['generated_at']
     if jsv_version:
-        print(f"[INFO] Using cascading Version {jsv_version} (Final Generation: {generated_at})")
+        print(f"[INFO] Using cascading Version {jsv_version} ({edition_corpus}) (Final Generation: {generated_at})")
     
     # --- MALAYALAM SCRIPT MODE (Phase 1 Samam-only pilot) ---
     script = args.script
@@ -822,13 +849,15 @@ Examples:
     
     for ss_key, ss_data in supersections.items():
         if ss_key == 'count': continue
-        patha_name = ss_data.get('supersection_title', ss_key).replace('॥', '').strip()
+        raw_patha = ss_data.get('supersection_title_toc') or ss_data.get('supersection_title', ss_key)
+        patha_name = toc_header(raw_patha).replace('॥', '').strip()
         patha_riks = 0
         patha_samams = 0
         khanda_rows = []
         for sec_key, sec_data in ss_data.get('sections', {}).items():
             if sec_key == 'count': continue
-            khanda_name = sec_data.get('section_title', sec_key).replace('॥', '').replace(':', 'ः').strip()
+            raw_khanda = sec_data.get('section_title_toc') or sec_data.get('section_title', sec_key)
+            khanda_name = toc_header(raw_khanda).replace('॥', '').replace(':', 'ः').strip()
             
             seen_riks = set()
             samam_count = 0
@@ -945,7 +974,7 @@ Examples:
     total_samams_dev = str(total_samams) if script == 'malayalam' else to_devanagari_numeral(total_samams)
     
     # Define Sanskrit title based on type (for PDF/html generation)
-    # Priority: CLI > JSON Meta title (if Sanskrit/Devanagari) > Config Type default > Hardcoded default
+    # Priority: CLI > JSON Meta title (if Sanskrit/Devanagari) > pipeline_config.yaml > Hardcoded default
     doc_title_sa = args.title
     if not doc_title_sa:
         meta_title = data_Devanagari.get('meta', {}).get('title', '')
@@ -953,20 +982,41 @@ Examples:
         if meta_title and any('\u0900' <= ch <= '\u097F' for ch in meta_title):
             doc_title_sa = meta_title
     if not doc_title_sa:
+        try:
+            from utils import load_pipeline_config
+            cfg = load_pipeline_config()
+            web_cfg = cfg.get('generate_website', {})
+            # Match effective key
+            eff_key = 'kpully_devanagari' if is_kpully_target else mode_type
+            doc_title_sa = web_cfg.get(eff_key, {}).get('title') or web_cfg.get(mode_type, {}).get('title')
+        except Exception:
+            pass
+
+    if not doc_title_sa:
         if mode_type == 'aaranam':
-            doc_title_sa = "जैमिनीय साम आरण्य गानम्"
+            doc_title_sa = "जैमिनीयसामवेद आरण्यकम्"
             summary_title_sa = "आरण्यम् सङ्ख्या"
         elif mode_type == 'collection':
-            doc_title_sa = "जैमिनीय साम सूक्त माला"
-            summary_title_sa = "सूक्तम् सङ्ख्या"
+            doc_title_sa = "जैमिनीयसामवेद सङ्ग्रहः"
+            summary_title_sa = "सङ्ग्रह सङ्ख्या"
+        elif mode_type == 'purvarchikam':
+            doc_title_sa = "जैमिनीय पूर्वार्चिक ऋक् संहिता"
+            summary_title_sa = "पूर्वार्चिकम् सङ्ख्या"
+        elif mode_type == 'uttararchikam':
+            doc_title_sa = "उत्तरार्चिकम्"
+            summary_title_sa = "उत्तरार्चिकम् सङ्ख्या"
         else:
-            doc_title_sa = "जैमिनीय साम संहिता"
+            doc_title_sa = "जैमिनीयसामवेद संहिता"
             summary_title_sa = "संहिता सङ्ख्या"
     else:
         if mode_type == 'aaranam':
             summary_title_sa = "आरण्यम् सङ्ख्या"
         elif mode_type == 'collection':
-            summary_title_sa = "सूक्तम् सङ्ख्या"
+            summary_title_sa = "सङ्ग्रह सङ्ख्या"
+        elif mode_type == 'purvarchikam':
+            summary_title_sa = "पूर्वार्चिकम् सङ्ख्या"
+        elif mode_type == 'uttararchikam':
+            summary_title_sa = "उत्तरार्चिकम् सङ्ख्या"
         else:
             summary_title_sa = "संहिता सङ्ख्या"
     

@@ -2,7 +2,7 @@
 
 - **Corpus**: `aaranam`
 - **Edition**: `1.14`
-- **Generated Timestamp**: `29-09-2026 18:42:40`
+- **Generated Timestamp**: `01-10-2026 23:07:48`
 - **Validation Status**: `PASSED`
 
 ---
@@ -20,7 +20,7 @@
 | Stage | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- |
 | **Stage 01: Input** | `Aaranam_latest.txt` | 501.1 KB | `16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4` |
-| **Stage 02: Parsed AST** | `Aaranam_latest_out.json` | 605.9 KB | `1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7` |
+| **Stage 02: Parsed AST** | `Aaranam_ast.json` | 605.9 KB | `8b976fcc6e36f42f65b670280c8257e2742c0fa49ad2b02b9cc3bd9f52f59547` |
 | **Stage 04: Canonical AST** | `Aaranam_vargeekaran.json` | 745.9 KB | `c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa` |
 
 ---

@@ -106,14 +106,13 @@ def patch_file(js_path):
 def run_patcher():
     """Main entry point to patch all sites."""
     print("\n[POST-PROCESS] Applying visual and search patches...")
-    for site in ['samhita', 'aaranam']:
-        js_path = DOCS_DIR / site / 'js' / 'main.js'
-        if not js_path.exists():
-            print(f"  SKIP: {js_path}")
+    candidates = sorted(list(DOCS_DIR.glob('*/js/main.js')) + list(DOCS_DIR.glob('collection/*/js/main.js')))
+    for js_path in candidates:
+        if 'standalone-html' in str(js_path):
             continue
-        
+        rel_site = js_path.relative_to(DOCS_DIR).parent.parent
         result = patch_file(js_path)
-        print(f"[{site}]")
+        print(f"[{rel_site}]")
         for p in result:
             print(p)
     print("\nDone. Refresh browser (Ctrl+Shift+R) to test.")

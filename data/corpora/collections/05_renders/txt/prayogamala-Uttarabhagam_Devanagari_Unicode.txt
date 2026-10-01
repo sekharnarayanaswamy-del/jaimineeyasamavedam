@@ -1,6 +1,6 @@
-जैमिनीय साम सूक्त माला
+जैमिनीय साम सङ्ग्रहः
 
-Version 3.0 29-09-2026 18:40:40
+Version 2.05 30-09-2026 10:03:37
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
 श्राद्ध सामानि

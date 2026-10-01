@@ -69,7 +69,7 @@ The project maintains three strictly decoupled versioning tiers:
 
 1. **Tier 1: Engine Version** (e.g. `engine_version: "4.0.0"` in `src/pipeline_config.yaml`)  
    Reflects the architectural generation engine (parsers, compilers, renderers).
-2. **Tier 2: Corpus Editions** (e.g. `editions: { samhita: "3.28", aaranam: "1.14", collections: "2.05" }` in `src/pipeline_config.yaml` and `src/VERSION`)  
+2. **Tier 2: Corpus Editions** (e.g. `editions: { samhita: "3.28", aaranam: "1.14", collections: "2.05", kpully: "1.00" }` in `src/pipeline_config.yaml` and `src/VERSION`)  
    Tracks editorial and liturgical content maturity for each specific corpus independently.
 3. **Tier 3: Active Run / Manifest Version** (`run_manifest.json` in each corpus folder)  
    Tracks live execution artifacts with precise UTC timestamps, git commit hashes, and domain metrics (Pathas, Khandas, Samas).
@@ -94,7 +94,7 @@ python src/tools/run_regression_suite.py
 ```
 
 > [!NOTE]
-> `render_pdf.py` has zero dependency on `.yaml` configuration files. All global settings, build profiles, and corpus paths are centralized in `src/pipeline_config.yaml`.
+> `render.py` has zero dependency on `.yaml` configuration files and dynamically binds to the active corpus edition. All global settings, build profiles, and corpus paths are centralized in `src/pipeline_config.yaml`.
 > For an exhaustive architectural walkthrough of the 3-tier numbering hierarchy, golden promotion mechanics, and curation workflows, see [VERSIONING_AND_WORKFLOW.md](VERSIONING_AND_WORKFLOW.md).
 
 
@@ -109,43 +109,30 @@ The Malayalam workflow supports interactive editing of Unicode text files, JSON 
 #### Step A: Generate JSON from Text / Corrections
 Whenever you edit or correct [`data/input/Malayalam/Samam_Malayalam_Unicode.txt`](data/input/Malayalam/Samam_Malayalam_Unicode.txt), convert it into the AST JSON:
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json
+python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/corpora/samhita/02_ast/Samam_Malayalam.json
 ```
 
 #### Step B: Render PDF, HTML, and TXT
-Run `src/render_pdf.py` with `--script malayalam` in one of the three output modes:
+Run `src/render.py` with `--script malayalam` in one of the three output modes:
 
 1. **Combined Mode (Default — Rik + Samam + Rishi/Devata/Chandas):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam
    ```
    *Generates:*
-   - `data/output/pdf/Malayalam/Samam_Malayalam.pdf`
-   - `data/output/html/Malayalam/Samam_Malayalam.html`
-   - `data/output/txt/Malayalam/Samam_Malayalam_Unicode.txt`
+   - `data/corpora/samhita/05_renders/pdf/Samam_Malayalam.pdf`
+   - `data/corpora/samhita/05_renders/html/Samam_Malayalam.html`
+   - `data/corpora/samhita/05_renders/txt/Samam_Malayalam_Unicode.txt`
 
 2. **Separate Mode (Separate Rik and Samam files with Metadata):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam --output-mode separate
    ```
-   *Generates:*
-   - `data/output/pdf/Malayalam/Rik_Malayalam.pdf` & `Samam_Malayalam.pdf`
-   - `data/output/html/Malayalam/Rik_Malayalam.html` & `Samam_Malayalam.html`
-   - `data/output/txt/Malayalam/Rik_Malayalam_Unicode.txt` & `Samam_Malayalam_Unicode.txt`
 
 3. **No-Metadata Mode (Mantra Texts Only, no RDC headers):**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam --output-mode nometa
    ```
-   *Generates:*
-   - `data/output/pdf/Malayalam/Rik_NoMeta_Malayalam.pdf` & `Samam_NoMeta_Malayalam.pdf`
-   - `data/output/html/Malayalam/Rik_NoMeta_Malayalam.html` & `Samam_NoMeta_Malayalam.html`
-   - `data/output/txt/Malayalam/Rik_NoMeta_Malayalam_Unicode.txt` & `Samam_NoMeta_Malayalam_Unicode.txt`
-
-#### All-in-One Malayalam Generation Command
-```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json; $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
-```
 
 ---
 
@@ -153,26 +140,26 @@ python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode
 
 #### Step A: Generate JSON from Devanagari Source
 ```powershell
-python -X utf8 src/generate_json.py data/input/Samhita_Devanagari_Unicode.txt --output data/output/Samhita_corrected_out.json
+python -X utf8 src/generate_json.py data/input/Samhita_Devanagari_Unicode.txt --output data/corpora/samhita/02_ast/Samhita_ast.json
 ```
 
 #### Step B: Render Devanagari Outputs
 1. **Combined Mode:**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samhita_ast.json
    ```
 2. **Separate Mode:**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json --output-mode separate
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --output-mode separate
    ```
 3. **NoMeta Mode:**
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json --output-mode nometa
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --output-mode nometa
    ```
 4. **Kodunthirapully Variant (`-kpully`):**
-   Render Devanagari Samam with red swara markings positioned **above** the mantra text (default without `-kpully` places swaras below the mantra syllables):
+   Render Devanagari Samam with red swara markings positioned **above** the mantra text (edition `1.00`):
    ```powershell
-   $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/Samhita_corrected_out.json -kpully --output-mode nometa
+   python -X utf8 src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully --output-mode nometa -o Samhita_kpully_Devanagari
    ```
 
 ---

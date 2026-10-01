@@ -13,14 +13,17 @@ This skill defines the operational protocol for using the split-screen **JSV Vis
 
 > [!IMPORTANT]
 > **Font Synchronization Requirement**:
-> The positioning of the swara modifiers in the JSV Curation tool should be reflected to the font file as well.
-> Whenever a modifier's vertical or horizontal offset is adjusted in `Malayalam_JSV/curation_tool/static/style.css` (e.g. `MOD-J`, `MOD-B1`, `MOD-H`, `MOD-D1`, `MOD-D2`), the exact equivalent contour coordinates must be updated in `scripts/build_swara_font.py` and all font binaries regenerated.
+> The positioning of the swara modifiers in both the **JSV Curation Tool** AND the **production Kodunthirapully (KPully) HTML templates** must be reflected in the font file binaries.
+> Whenever a modifier's vertical or horizontal offset is adjusted in:
+> 1. `Malayalam_JSV/curation_tool/static/style.css` (Curation tool preview), OR
+> 2. `templates/html/Devanagari_main_html.template` & `templates/html/Malayalam_main_html.template` (Production HTML templates for generated KPully editions such as `Samhita_kpully_Devanagari.html` and `Samam_kpully_Malayalam.html`),
+> the exact equivalent contour coordinates must be synchronized in `scripts/build_swara_font.py` and all font binaries regenerated via `python scripts/build_swara_font.py`.
 
 ---
 
 ## 2. Font Rebuilding Procedure
 
-When modifier geometry is refined in CSS:
+When modifier geometry is refined in CSS or HTML templates:
 1. **Update Python Glyph Draw Function**:
    - Edit the respective contour drawing function in `scripts/build_swara_font.py` (e.g. `draw_overhead_bar_j()`, `draw_bridging_slash_b1()`, `draw_double_shoulder_dash_i()`).
 2. **Rebuild Font Binaries**:

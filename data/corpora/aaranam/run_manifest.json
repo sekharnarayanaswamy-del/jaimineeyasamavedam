@@ -1,7 +1,7 @@
 {
   "corpus": "aaranam",
   "edition": "1.14",
-  "timestamp": "29-09-2026 18:42:40",
+  "timestamp": "01-10-2026 23:07:48",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,7 +12,7 @@
   },
   "hashes": {
     "input_sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4",
-    "ast_sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7",
+    "ast_sha256": "8b976fcc6e36f42f65b670280c8257e2742c0fa49ad2b02b9cc3bd9f52f59547",
     "canonical_sha256": "c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa"
   },
   "metrics": {
@@ -50,14 +50,7 @@
         "path": "data/corpora/aaranam/02_ast/Aaranam_ast.json",
         "size_bytes": 620452,
         "size_formatted": "605.9 KB",
-        "sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7"
-      },
-      {
-        "name": "Aaranam_latest_out.json",
-        "path": "data/corpora/aaranam/02_ast/Aaranam_latest_out.json",
-        "size_bytes": 620452,
-        "size_formatted": "605.9 KB",
-        "sha256": "1c8d8a99b3d945b30a5f0d0a32aeab334aa7a398c1acaab98aba9d30373efab7"
+        "sha256": "8b976fcc6e36f42f65b670280c8257e2742c0fa49ad2b02b9cc3bd9f52f59547"
       }
     ],
     "03_reconciliation": [
@@ -211,7 +204,5 @@
       }
     ]
   },
-  "validation_status": "PASSED",
-  "last_validated": "29-09-2026 18:42:47",
-  "validation_summary": "100% parity with Golden Baseline Anchor."
+  "validation_status": "PASSED"
 }

@@ -5,7 +5,7 @@ description: Instructions for safely rendering complex Vedic accents and footnot
 
 # Render Vedic Text & PDF Skill
 
-This skill dictates the logic for translating parsed JSON into production-ready LaTeX (for PDFs) and HTML via `src/render_pdf.py`.
+This skill dictates the logic for translating parsed JSON into production-ready LaTeX (for PDFs) and HTML via `src/render.py`.
 
 ## 1. Visarga-Accent Preprocessing (CRITICAL)
 In Vedic Devanagari typesetting, when an accent (e.g., Anudatta, Swarita) follows a Visarga (`ः`), it must be visually shifted to sit atop/below the preceding vowel.
@@ -22,7 +22,7 @@ Manual alignment in `rik_metadata` and `saman_metadata` must be preserved in HTM
 In `collection` mode, section headers must display aggregate counts of all content types.
 *   **Mixed Sections**: Display as `(ऋ-N, सा-M)` where N is Rik count and M is Samam count.
 *   **Rik/Samam Only**: Display as regular numerals `(N)`.
-*   **Implementation**: Aggregation is performed in `src/render_pdf.py` and passed to the template via `section.Count`.
+*   **Implementation**: Aggregation is performed in `src/render.py` and passed to the template via `section.Count`.
 *   **Styling**: Use the `.section-samam-count` class for these header numerals to ensure proper alignment and styling.
 
 ## 4. LaTeX Footnote Resolution
@@ -48,20 +48,20 @@ When generating "Rik Samhita" (Continuous Text):
 
 ### Step A: Generate JSON from Malayalam Text
 ```powershell
-python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/output/malayalam/Samam_Malayalam.json
+python -X utf8 src/generate_json.py data/input/Malayalam/Samam_Malayalam_Unicode.txt --output data/corpora/samhita/02_ast/Samam_Malayalam.json
 ```
 
 ### Step B: Compile PDF / HTML / TXT Outputs
 *   **Combined Mode (Default):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam
+    python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam
     ```
 *   **Separate Mode (Rik & Samam with metadata):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode separate
+    python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam --output-mode separate
     ```
 *   **NoMeta Mode (Mantra texts only):**
     ```powershell
-    $env:PYTHONPATH="src"; python -X utf8 src/render_pdf.py data/output/malayalam/Samam_Malayalam.json --script malayalam --output-mode nometa
+    python -X utf8 src/render.py data/corpora/samhita/02_ast/Samam_Malayalam.json --script malayalam --output-mode nometa
     ```
 

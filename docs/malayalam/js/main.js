@@ -237,21 +237,49 @@ document.addEventListener('DOMContentLoaded', function() {
     else if (path.includes('/classification/') || path.includes('/vargeekaran/')) depth = 1;
     const depthPrefix = '../'.repeat(depth);
     
-const highlightText = (text, query, devanagariQuery) => {
+    const highlightText = (text, query, devanagariQuery) => {
         if (!text) return text;
         if (!query && !devanagariQuery) return text;
-
-        let searchQ = query;
-        if (devanagariQuery && devanagariQuery.length > 0) {
-            searchQ = devanagariQuery;
-        }
-
-        if (text.toLowerCase().indexOf(searchQ.toLowerCase()) !== -1) {
-            const re = new RegExp(searchQ.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-            return text.replace(re, '<mark>$&</mark>');
-        }
-
-        return text;
+    
+        // Filler regex: skip virama, accents, dandas, whitespace, swara labels, HTML tags
+        const FILLER = /[\u094D\u0951-\u0957\u0964\u0965\u1CD0-\u1CFF\s]|\([^)]*\)|<[^>]+>/;
+        const fillerPat = "(?:" + FILLER.source + ")*";
+    
+        // Vowel-matra equivalence for cross-script highlighting
+        const vowelMap = new Map([
+            ["\u0905", "(?:\u0905|\u093E)?"],
+            ["\u0906", "(?:\u0906|\u093E)"],
+            ["\u0907", "(?:\u0907|\u093F)"],
+            ["\u0908", "(?:\u0908|\u0940)"],
+            ["\u0909", "(?:\u0909|\u0941)"],
+            ["\u090A", "(?:\u090A|\u0942)"],
+            ["\u090B", "(?:\u090B|\u0943)"],
+            ["\u090F", "(?:\u090F|\u0947)"],
+            ["\u0910", "(?:\u0910|\u0948)"],
+            ["\u0913", "(?:\u0913|\u094B)"],
+            ["\u0914", "(?:\u0914|\u094C)"],
+        ]);
+    
+        const createPermissiveRegex = (q) => {
+            if (!q) return null;
+            const baseQ = q.replace(/\([^)]*\)/g, "").replace(/[\u0951-\u0957\u1CD0-\u1CFF\u0964\u0965\s]/g, "").trim();
+            if (!baseQ) return null;
+            const pattern = baseQ.split("").map(char => {
+                const vm = vowelMap.get(char);
+                if (vm) return vm + fillerPat;
+                const escaped = char.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                return escaped + fillerPat;
+            }).join("");
+            return new RegExp(pattern, "gi");
+        };
+    
+        const isDevanagariField = /[\u0900-\u097F]/.test(text);
+        const effectiveQuery = (isDevanagariField && devanagariQuery) ? devanagariQuery : query;
+    
+        const regex = createPermissiveRegex(effectiveQuery);
+        if (!regex) return text;
+    
+        return text.replace(regex, (match) => "<mark>" + match + "</mark>");
     };
 
     const latinToDevanagari = (text) => {

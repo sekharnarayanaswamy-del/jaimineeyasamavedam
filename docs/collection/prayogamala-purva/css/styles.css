@@ -1,3 +1,11 @@
+
+@font-face {
+    font-family: 'JaimineeyaSwara';
+    src: url('../fonts/JaimineeyaSwara.ttf') format('truetype'),
+         url('fonts/JaimineeyaSwara.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 /* Jaimineeya Samavedam Website Styles */
 /* User Defined Palette */
 
@@ -12,7 +20,7 @@
 
 /* Theme Semantic Mapping */
 --primary-maroon: var(--color-accent); /* Headings/Links = Saffron */
---primary-gold: #C08535;    /* Earthy Gold */
+--primary-gold: #8B5A2B;    /* High-contrast Dark Earthy Gold */
 --accent-orange: #D2691E;   /* Chocolate */
 
 /* Backgrounds */
@@ -31,6 +39,16 @@
 
 --border-color: #D8CCB8;
 --border-light: #E8DCC0;
+
+/* Swara & Mantra System Variables */
+--font-doc: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Tiro Devanagari Sanskrit', serif;
+--font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', serif;
+--font-size: 1.3rem;
+--mantra-size: calc(var(--font-size) * 1.25);
+--swara-size: var(--font-size);
+--primary-color: #000000;
+--swara-red: #c62828;
+--modifier-color: #0284c7;
 
 /* Typography */
 --font-heading: 'AdishilaVedic', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
@@ -1101,6 +1119,14 @@ background: var(--bg-sidebar);
     -ms-user-select: text;
 }
 
+.search-result-text mark {
+    background-color: #ffeb3b; 
+    color: #000;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
 .search-result-field {
     margin-bottom: 8px;
     padding: 6px 10px;
@@ -1259,7 +1285,7 @@ background: var(--bg-sidebar);
     width: 0.3em;
 }
 
-/* Vedic Accent Mark Styles - Zero-width positioning (finetuned) */
+/* Vedic Accent Mark Styles - Zero-width positioning */
 .accent-swarita {
     display: inline-block;
     width: 0;
@@ -1312,6 +1338,38 @@ background: var(--bg-sidebar);
 
 .accent-visarga {
     left: -0.42em !important;
+}
+
+.footnote-separator, .closing-separator {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: var(--spacing-xl) 0;
+    width: 200px;
+}
+
+.closing-mantras-section {
+    margin-top: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: #f8fafc; /* Muted Slate-50 background */
+    border-radius: 12px;
+    border: 1px solid #e2e8f0; /* Muted border */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.closing-mantras-content {
+    font-family: var(--font-sanskrit);
+    font-size: 1.25rem;
+    color: #475569; /* Muted Slate-600 */
+    line-height: 2;
+}
+
+.closing-mantra-line {
+    margin-bottom: 0.5rem;
+}
+
+.footer {
+
 }
 
 .danda {
@@ -2014,4 +2072,257 @@ sup.footnote-ref a:hover {
 .index-char-group {
     break-inside: avoid-column;
     margin-bottom: 2rem;
+}
+
+/* Swara Modifiers - Standalone HTML Viewer Alignment */
+.swara-mod {
+    font-family: var(--font-swara), var(--font-doc);
+    color: var(--modifier-color, #0284c7);
+    font-weight: 800;
+    -webkit-text-stroke: 0.025em currentColor;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.swara-mod.mod-a {
+    position: absolute;
+    top: -0.32em;
+    left: 100%;
+    transform: translateX(-40%);
+    font-size: 0.60em;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.danda-word-a1,
+.mantra-word:has(.danda-with-arc),
+.danda.danda-with-arc:not(.danda-word-a1 *) {
+    margin-left: 0;
+    margin-right: 0;
+}
+.danda-with-arc,
+.danda.danda-with-arc {
+    position: relative;
+    display: inline-flex !important;
+    align-items: flex-end !important;
+    vertical-align: bottom !important;
+}
+.danda-with-arc .swara-mod.mod-a1,
+.danda.danda-with-arc .swara-mod.mod-a1,
+.swara-mod.mod-a1 {
+    position: absolute;
+    top: -0.22em;
+    left: 62%;
+    transform: translateX(-50%);
+    font-size: 1.0em;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.swara-mod.mod-a2 {
+    position: absolute;
+    top: -0.32em;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.60em;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-b {
+    position: absolute;
+    top: -0.28em;
+    left: 100%;
+    transform: translateX(-45%);
+    font-size: 0.50em;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-b .caret-glyph {
+    display: block;
+    color: var(--modifier-color, #0284c7);
+    font-size: 0.95rem;
+    line-height: 1;
+}
+.swara-mod.mod-b .swara-on-caret {
+    position: absolute;
+    top: -1.70em;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--swara-red, #c62828) !important;
+    font-size: 0.70rem;
+    font-weight: bold;
+    font-family: var(--font-swara);
+    line-height: 1;
+    white-space: nowrap;
+}
+.swara-mod.mod-b1 {
+    position: absolute;
+    top: -0.35em;
+    left: 100%;
+    transform: translateX(-20%);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+.swara-mod.mod-c {
+    position: absolute;
+    top: -0.20em;
+    left: 100%;
+    transform: translateX(-0.20em);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.03em currentColor;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-d {
+    position: absolute;
+    top: -0.32em;
+    left: 100%;
+    transform: translateX(-45%);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-d1 {
+    position: absolute;
+    top: -0.26em;
+    left: 100%;
+    transform: translateX(-35%);
+    font-size: 1.10em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-d2 {
+    font-size: 0.48em;
+    margin-left: 1px;
+    vertical-align: 0.35em;
+}
+.swara-mod.mod-e {
+    font-family: var(--font-swara) !important;
+    font-size: 0.65em;
+    font-weight: 900 !important;
+    -webkit-text-stroke: 0.05em currentColor !important;
+    text-shadow: 0.02em 0 currentColor;
+    display: inline-block;
+    vertical-align: 0.05em;
+    margin-left: 2px;
+}
+.swara-mod.mod-f {
+    font-size: 0.95em;
+    font-weight: 900 !important;
+    -webkit-text-stroke: 0.055em currentColor;
+    text-shadow: 0.02em 0 currentColor, -0.02em 0 currentColor;
+    margin-left: 2px;
+    vertical-align: 0.12em;
+    display: inline-block;
+}
+.syl-mod-g-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+}
+.swara-mod.mod-g,
+.syl-mod-g-wrap .swara-mod.mod-g {
+    position: absolute;
+    bottom: 0.1em;
+    left: 50%;
+    transform: translateX(-50%) translateX(0.75em);
+    font-size: 0.85em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+}
+.swara-mod.mod-h {
+    position: absolute;
+    top: -0.28em;
+    left: 100%;
+    transform: translateX(-0.35em);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+}
+.swara-mod.mod-i {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.25em;
+    right: -0.25em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-j {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.28em;
+    right: -0.20em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-k {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.25em;
+    right: -0.50em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-under,
+.swara-mod.mod-underbar {
+    font-family: var(--font-doc);
+    font-size: 1.1em;
+    color: var(--modifier-color, #0284c7);
+    display: inline;
+    margin-left: -0.04em;
+    margin-right: 0.02em;
+    font-weight: 900;
+    -webkit-text-stroke: 0.04em currentColor;
+    position: relative;
+    bottom: 0.12em;
+    line-height: 1;
+}
+.swara-mod.mod-dot,
+.swara-mod.mod-comma {
+    font-family: 'Noto Serif Malayalam', 'Noto Serif Devanagari', var(--font-doc);
+    color: var(--modifier-color, #0284c7);
+    display: inline-block;
+    margin: 0;
+    font-size: 1.25em;
+    font-weight: 500;
+    vertical-align: baseline;
+}
+.mantra-connected-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+.mantra-connected-group .danda {
+    margin: 0;
+}
+.danda.danda-adjacent {
+    margin-left: -0.28em !important;
+    margin-right: 2px !important;
+}
+.mantra-punct {
+    font-family: 'Noto Serif Malayalam', 'Noto Serif Devanagari', serif !important;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    color: var(--modifier-color, #0284c7);
+    margin-right: 0.05em;
 }

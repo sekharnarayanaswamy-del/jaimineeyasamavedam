@@ -27,12 +27,13 @@ When tasked to create a custom selection (e.g., "Ritu Shanti Japam"):
 After curation or manual editing, use `src/tools/renumber_sooktam.py` to ensure sequential IDs and verse counts:
 *   **Sequential Trackers**: The tool maintains independent counters for **Samams** (in `Mantra Sets`) and **Riks** (in `Rik Text`).
 *   **Grouping Logic**: It groups `Metadata`, `Text`, and `Title` blocks for the same verse into a single `subsection_N` ID based on their proximity.
-*   **Cross-File Sync**: Always run the renumbering tool on both `Sooktamala.txt` and `Collection_Devanagari_Unicode.txt` to keep them synchronized before generating the final JSON.
-*   **SuperSection Preservation**: Use `--preserve-super` if the file belongs to a specific indexed collection (e.g., `supersection_20`).
+*   **Standard Title**: All collection outputs default to the unified title **`॥ जैमिनीय साम सङ्ग्रहः ॥`** (with edition `2.05`).
+*   **Corpus Storage**: Active collection ASTs reside in `data/corpora/collections/02_ast/<collection_name>.json` with renders generated in `data/corpora/collections/05_renders/{pdf,html,txt}/`.
 
 ### Pipeline for complex cases (Example): 
-1. ``` python src\curate_jsv.py --sources data\output\Vargeekaran.json data\output\Aaranam_latest_out.json --filter data\input\Nakshatra_sooktam.txt --output data\output\Nakshatra_sooktam.json --mode rik_nometa --filter-type rik```
-2. ``` python src\render_pdf.py data\output\Nakshatra_sooktam.json --type collection```
-3. ``` python src\tools\renumber_sooktam.py data\output\txt\Devanagari\Collection_Devanagari_Unicode.txt```
-4. ``` python src\generate_json.py data\output\txt\Devanagari\Collection_Devanagari_Unicode.txt --output data\output\Nakshatra_sooktam.json```
-5. ``` python src\render_pdf.py data\output\Nakshatra_sooktam.json --type collection```
+1. ```powershell
+   python src/curate_jsv.py --sources data/corpora/samhita/04_canonical/Vargeekaran.json data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json --filter data/input/Nakshatra_sooktam.txt --output data/corpora/collections/02_ast/Nakshatra_sooktam.json --mode rik_nometa --filter-type rik
+   ```
+2. ```powershell
+   python src/render.py data/corpora/collections/02_ast/Nakshatra_sooktam.json --type collection -o Nakshatra_sooktam --output-dir data/corpora/collections/05_renders
+   ```

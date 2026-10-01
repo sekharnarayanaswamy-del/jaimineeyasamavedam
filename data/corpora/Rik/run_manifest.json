@@ -1,0 +1,117 @@
+{
+  "corpus": "Rik",
+  "edition": "1.00",
+  "timestamp": "01-10-2026 23:07:48",
+  "stage_status": {
+    "01_input": "PRESENT",
+    "02_ast": "UP_TO_DATE",
+    "03_reconciliation": "N/A",
+    "04_canonical": "MISSING",
+    "05_renders": "COMPILED",
+    "06_reports": "CURRENT"
+  },
+  "hashes": {
+    "input_sha256": "bef2360ac6db097710e05c2accaaa8001c7d9eda96d03114160152b9fd517002",
+    "ast_sha256": "31752dd462db7d44832a7c4cb13ee37bfadc93698558942aa00e915dadf713c8",
+    "canonical_sha256": "cd682a3de068d9e5d8544922ba40785c9e8e8012654990cf9809c82da1055329"
+  },
+  "metrics": {
+    "pathas": 10,
+    "khandas": 155,
+    "riks": 1666,
+    "samas": 0
+  },
+  "artifacts": {
+    "01_input": [
+      {
+        "name": "vedic_text.txt",
+        "path": "data/corpora/Rik/01_input/vedic_text.txt",
+        "size_bytes": 460105,
+        "size_formatted": "449.3 KB",
+        "sha256": "bef2360ac6db097710e05c2accaaa8001c7d9eda96d03114160152b9fd517002"
+      }
+    ],
+    "02_ast": [
+      {
+        "name": "Purvarchikam_out.json",
+        "path": "data/corpora/Rik/02_ast/Purvarchikam_out.json",
+        "size_bytes": 520162,
+        "size_formatted": "508.0 KB",
+        "sha256": "31752dd462db7d44832a7c4cb13ee37bfadc93698558942aa00e915dadf713c8"
+      },
+      {
+        "name": "Uttararchikam_out.json",
+        "path": "data/corpora/Rik/02_ast/Uttararchikam_out.json",
+        "size_bytes": 782772,
+        "size_formatted": "764.4 KB",
+        "sha256": "cd682a3de068d9e5d8544922ba40785c9e8e8012654990cf9809c82da1055329"
+      }
+    ],
+    "03_reconciliation": [],
+    "04_canonical": [],
+    "05_renders": {
+      "pdf": [
+        {
+          "name": "Purvarchikam_Rik_Devanagari.pdf",
+          "path": "data/corpora/Rik/05_renders/pdf/Purvarchikam_Rik_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 274403,
+          "size_formatted": "268.0 KB"
+        },
+        {
+          "name": "Uttararchikam_Rik_Devanagari.pdf",
+          "path": "data/corpora/Rik/05_renders/pdf/Uttararchikam_Rik_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 353493,
+          "size_formatted": "345.2 KB"
+        }
+      ],
+      "html": [
+        {
+          "name": "Purvarchikam_Rik_Devanagari.html",
+          "path": "data/corpora/Rik/05_renders/html/Purvarchikam_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 3544465,
+          "size_formatted": "3.38 MB"
+        },
+        {
+          "name": "Uttararchikam_Rik_Devanagari.html",
+          "path": "data/corpora/Rik/05_renders/html/Uttararchikam_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 3859368,
+          "size_formatted": "3.68 MB"
+        }
+      ],
+      "txt": [
+        {
+          "name": "Purvarchikam_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/Rik/05_renders/txt/Purvarchikam_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 214781,
+          "size_formatted": "209.7 KB"
+        },
+        {
+          "name": "Uttararchikam_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/Rik/05_renders/txt/Uttararchikam_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Separate (Rik Only)",
+          "size_bytes": 295863,
+          "size_formatted": "288.9 KB"
+        }
+      ]
+    },
+    "06_reports": []
+  },
+  "validation_status": "PASSED"
+}

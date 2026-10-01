@@ -1,7 +1,8 @@
 
 @font-face {
     font-family: 'JaimineeyaSwara';
-    src: url('../fonts/JaimineeyaSwara.ttf') format('truetype');
+    src: url('../fonts/JaimineeyaSwara.ttf') format('truetype'),
+         url('fonts/JaimineeyaSwara.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -38,6 +39,16 @@
 
 --border-color: #D8CCB8;
 --border-light: #E8DCC0;
+
+/* Swara & Mantra System Variables */
+--font-doc: 'Noto Serif Malayalam', 'Noto Sans Malayalam', 'Gayathri', serif, sans-serif;
+--font-swara: 'JaimineeyaSwara', 'Noto Serif Grantha', serif;
+--font-size: 1.3rem;
+--mantra-size: calc(var(--font-size) * 1.25);
+--swara-size: calc(var(--font-size) * 0.78);
+--primary-color: #000000;
+--swara-red: #c62828;
+--modifier-color: #0284c7;
 
 /* Typography */
 --font-heading: 'Noto Serif Malayalam', 'AdishilaSanVedic', 'Noto Serif Devanagari', 'Noto Sans Devanagari', serif;
@@ -2063,91 +2074,74 @@ sup.footnote-ref a:hover {
     margin-bottom: 2rem;
 }
 
-/* Malayalam Swara & Modifier Typography */
-.mantra-word {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    vertical-align: bottom;
-    position: relative;
-}
-.swara-text {
-    font-family: 'JaimineeyaSwara', serif !important;
-    color: #c62828 !important;
-    font-weight: bold;
-    font-size: 1.10rem !important;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 4px;
-    min-height: 1.1em;
-    user-select: none;
-}
-.mantra-text {
-    font-family: 'Noto Serif Malayalam', serif !important;
-    font-size: 1.45rem;
-    line-height: 1.2;
-    color: #000000;
-    position: relative;
-}
+/* Swara Modifiers - Standalone HTML Viewer Alignment */
 .swara-mod {
-    color: #0284c7;
-    font-family: 'JaimineeyaSwara', serif !important;
-    font-weight: bold;
+    font-family: var(--font-swara), var(--font-doc);
+    color: var(--modifier-color, #0284c7);
+    font-weight: 800;
+    -webkit-text-stroke: 0.025em currentColor;
     line-height: 1;
+    display: inline-block;
+    vertical-align: baseline;
 }
+
 .swara-mod.mod-a {
     position: absolute;
-    top: -0.28em;
+    top: -0.32em;
     left: 100%;
     transform: translateX(-40%);
-    font-size: 1.05rem;
+    font-size: 0.60em;
     pointer-events: none;
+    z-index: 2;
+}
+
+.danda-word-a1,
+.mantra-word:has(.danda-with-arc),
+.danda.danda-with-arc:not(.danda-word-a1 *) {
+    margin-left: 0;
+    margin-right: 0;
 }
 .danda-with-arc,
 .danda.danda-with-arc {
     position: relative;
-    display: inline-block;
-    margin-left: 0;
-    margin-right: 0;
+    display: inline-flex !important;
+    align-items: flex-end !important;
+    vertical-align: bottom !important;
 }
 .danda-with-arc .swara-mod.mod-a1,
 .danda.danda-with-arc .swara-mod.mod-a1,
 .swara-mod.mod-a1 {
     position: absolute;
     top: -0.22em;
-    left: 64.4%;
+    left: 62%;
     transform: translateX(-50%);
-    font-size: 1.0rem;
+    font-size: 1.0em;
     pointer-events: none;
     z-index: 2;
 }
-.danda.danda-adjacent:not(.danda-with-arc) {
-    margin-left: 0 !important;
-    margin-right: 0.25em;
-}
+
 .swara-mod.mod-a2 {
     position: absolute;
-    top: -0.45em;
+    top: -0.32em;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 1.15rem;
+    font-size: 0.60em;
     pointer-events: none;
+    z-index: 2;
 }
 .swara-mod.mod-b {
     position: absolute;
-    top: -0.22em;
+    top: -0.28em;
     left: 100%;
-    transform: translateX(-50%);
+    transform: translateX(-45%);
+    font-size: 0.50em;
     pointer-events: none;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
+    z-index: 2;
 }
 .swara-mod.mod-b .caret-glyph {
     display: block;
-    color: #0284c7;
-    font-size: 1.05rem;
+    color: var(--modifier-color, #0284c7);
+    font-size: 0.95rem;
     line-height: 1;
 }
 .swara-mod.mod-b .swara-on-caret {
@@ -2155,38 +2149,77 @@ sup.footnote-ref a:hover {
     top: -1.70em;
     left: 50%;
     transform: translateX(-50%);
-    color: #c62828 !important;
-    font-size: 0.95rem;
+    color: var(--swara-red, #c62828) !important;
+    font-size: 0.70rem;
     font-weight: bold;
-    font-family: 'JaimineeyaSwara', serif !important;
+    font-family: var(--font-swara);
     line-height: 1;
     white-space: nowrap;
 }
+.swara-mod.mod-b1 {
+    position: absolute;
+    top: -0.35em;
+    left: 100%;
+    transform: translateX(-20%);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
 .swara-mod.mod-c {
     position: absolute;
-    top: -0.15em;
-    right: -0.35em;
-    font-size: 0.95rem;
+    top: -0.20em;
+    left: 100%;
+    transform: translateX(-0.20em);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.03em currentColor;
+    pointer-events: none;
+    z-index: 2;
 }
 .swara-mod.mod-d {
     position: absolute;
-    top: -0.30em;
+    top: -0.32em;
     left: 100%;
-    transform: translateX(-40%);
-    font-size: 1.05rem;
+    transform: translateX(-45%);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
     pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-d1 {
+    position: absolute;
+    top: -0.26em;
+    left: 100%;
+    transform: translateX(-35%);
+    font-size: 1.10em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+    z-index: 2;
+}
+.swara-mod.mod-d2 {
+    font-size: 0.48em;
+    margin-left: 1px;
+    vertical-align: 0.35em;
 }
 .swara-mod.mod-e {
-    position: relative;
-    margin-left: 0.15em;
-    font-size: 1.15rem;
-    vertical-align: -0.05em;
+    font-family: var(--font-swara) !important;
+    font-size: 0.65em;
+    font-weight: 900 !important;
+    -webkit-text-stroke: 0.05em currentColor !important;
+    text-shadow: 0.02em 0 currentColor;
+    display: inline-block;
+    vertical-align: 0.05em;
+    margin-left: 2px;
 }
 .swara-mod.mod-f {
-    position: relative;
-    margin-left: 0.15em;
-    font-size: 1.15rem;
-    vertical-align: -0.05em;
+    font-size: 0.95em;
+    font-weight: 900 !important;
+    -webkit-text-stroke: 0.055em currentColor;
+    text-shadow: 0.02em 0 currentColor, -0.02em 0 currentColor;
+    margin-left: 2px;
+    vertical-align: 0.12em;
+    display: inline-block;
 }
 .syl-mod-g-wrap {
     position: relative;
@@ -2196,24 +2229,285 @@ sup.footnote-ref a:hover {
 .swara-mod.mod-g,
 .syl-mod-g-wrap .swara-mod.mod-g {
     position: absolute;
-    bottom: -0.32em;
+    bottom: 0.1em;
     left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.05rem;
-    color: #0284c7;
+    transform: translateX(-50%) translateX(0.75em);
+    font-size: 0.85em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
     pointer-events: none;
 }
 .swara-mod.mod-h {
     position: absolute;
     top: -0.28em;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.05rem;
+    left: 100%;
+    transform: translateX(-0.35em);
+    font-size: 0.90em;
+    font-weight: 800;
+    -webkit-text-stroke: 0.04em currentColor;
+    pointer-events: none;
+}
+.swara-mod.mod-i {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.25em;
+    right: -0.25em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-j {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.28em;
+    right: -0.20em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-k {
+    font-family: var(--font-swara);
+    font-size: 1.45rem;
+    font-weight: bold;
+    color: var(--modifier-color, #0284c7);
+    position: absolute;
+    top: -0.25em;
+    right: -0.50em;
+    line-height: 1;
+    pointer-events: none;
+}
+.swara-mod.mod-under,
+.swara-mod.mod-underbar {
+    font-family: var(--font-doc);
+    font-size: 1.1em;
+    color: var(--modifier-color, #0284c7);
+    display: inline;
+    margin-left: -0.04em;
+    margin-right: 0.02em;
+    font-weight: 900;
+    -webkit-text-stroke: 0.04em currentColor;
+    position: relative;
+    bottom: 0.12em;
+    line-height: 1;
+}
+.swara-mod.mod-dot,
+.swara-mod.mod-comma {
+    font-family: 'Noto Serif Malayalam', 'Noto Serif Devanagari', var(--font-doc);
+    color: var(--modifier-color, #0284c7);
+    display: inline-block;
+    margin: 0;
+    font-size: 1.25em;
+    font-weight: 500;
+    vertical-align: baseline;
+}
+.mantra-connected-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+.mantra-connected-group .danda {
+    margin: 0;
+}
+.danda.danda-adjacent {
+    margin-left: -0.28em !important;
+    margin-right: 2px !important;
 }
 .mantra-punct {
-    font-family: 'Noto Serif Malayalam', serif !important;
+    font-family: 'Noto Serif Malayalam', 'Noto Serif Devanagari', serif !important;
     font-size: 1.45rem;
     line-height: 1.2;
-    color: #0284c7;
+    color: var(--modifier-color, #0284c7);
     margin-right: 0.05em;
+}
+
+/* Malayalam Swara & Modifier Typography - Standalone Viewer Parity */
+.mantra-verse {
+    margin: 6px 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: flex-end !important;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+    width: 100%;
+}
+.mantra-connected-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: flex-end !important;
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+}
+.mantra-word {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    vertical-align: bottom !important;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.swara-text {
+    font-family: var(--font-swara, 'JaimineeyaSwara'), serif !important;
+    color: var(--swara-red, #c62828) !important;
+    font-weight: bold;
+    font-size: var(--swara-size, 1.05rem) !important;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 4px;
+    min-height: 1.1em;
+    user-select: none;
+}
+.mantra-text {
+    font-family: var(--font-doc, 'Noto Serif Malayalam'), serif !important;
+    font-size: var(--mantra-size, 1.45rem);
+    line-height: 1.25;
+    color: #000000;
+    position: relative;
+}
+/* Ruby Stacking for Malayalam Vedic Swaras */
+ruby.vedic-ruby {
+    ruby-position: over;
+    ruby-align: center;
+    display: inline-flex !important;
+    flex-direction: column-reverse !important;
+    align-items: center !important;
+    vertical-align: bottom !important;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+rt.swara-above {
+    font-family: var(--font-swara, 'JaimineeyaSwara') !important;
+    font-size: var(--swara-size, 1.05rem) !important;
+    color: var(--swara-red, #c62828) !important;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 4px;
+    user-select: text;
+    white-space: nowrap;
+}
+rb.akshara-base,
+.akshara-base {
+    font-family: var(--font-doc, 'Noto Serif Malayalam');
+    font-size: var(--mantra-size, 1.45rem);
+    color: var(--primary-color, #000);
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    line-height: 1.25;
+    text-align: center;
+    position: relative;
+}
+.word-space {
+    display: inline-block;
+    width: 0.35em;
+}
+.danda {
+    font-family: var(--font-doc);
+    font-size: var(--mantra-size, 1.45rem);
+    line-height: 1.25;
+    margin: 0 0.08em;
+    vertical-align: bottom !important;
+    display: inline-flex !important;
+    align-items: flex-end !important;
+    position: relative;
+}
+.verse-num-marker {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.45em;
+    white-space: nowrap;
+    font-family: var(--font-doc);
+    font-size: var(--mantra-size, 1.45rem);
+    line-height: 1.25;
+    vertical-align: baseline;
+}
+.verse-num-marker .danda {
+    margin: 0;
+    vertical-align: baseline !important;
+    display: inline !important;
+}
+.verse-num {
+    font-family: var(--font-doc);
+    font-size: var(--mantra-size, 1.45rem);
+    font-weight: bold;
+    color: var(--primary-color, #000);
+    padding: 0 0.12em;
+    line-height: 1.25;
+    vertical-align: baseline;
+    display: inline;
+}
+
+/* Rachana Typography Calibration: matches visual scale and weight of Noto Sans Malayalam */
+body.font-rachana .akshara-base,
+body.font-rachana rb.akshara-base {
+    font-size: calc(var(--mantra-size) * 1.25);
+    font-weight: 100;
+    -webkit-text-stroke: 0.0em currentColor;
+}
+body.font-rachana .danda,
+body.font-rachana .verse-num-marker,
+body.font-rachana .verse-num,
+body.font-rachana .mantra-punct {
+    font-size: calc(var(--mantra-size) * 1.15);
+    font-weight: 500;
+}
+body.font-rachana .rik-text,
+body.font-rachana .samam-text {
+    font-size: calc(var(--mantra-size) * 1.15);
+}
+body.font-rachana rt.swara-above {
+    font-size: calc(var(--swara-size) * 0.85);
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+body.font-rachana .swara-mod {
+    font-size: 0.90em;
+}
+body.font-rachana .swara-mod.mod-c {
+    font-size: 0.75em !important;
+    -webkit-text-stroke: 0 !important;
+    font-weight: 600 !important;
+    top: -0.3em !important;
+    right: 0.2em;
+}
+body.font-rachana .swara-mod.mod-h {
+    font-size: 0.75em !important;
+    -webkit-text-stroke: 0 !important;
+    font-weight: 700 !important;
+    top: -0.18em !important;
+}
+body.font-rachana .swara-mod.mod-e {
+    font-size: 0.60em !important;
+    font-weight: 900 !important;
+    -webkit-text-stroke: 0.05em currentColor !important;
+    text-shadow: 0.02em 0 currentColor !important;
+    position: relative !important;
+    top: -0.30em !important;
+    vertical-align: 0.05em !important;
+    margin-left: 2px !important;
+}
+body.font-rachana .swara-mod.mod-comma {
+    font-size: 1.0em !important;
+    position: relative !important;
+    display: inline-block !important;
+    transform: translateY(-0.2em) translateX(0.05em) !important;
+}
+body.font-rachana .swara-mod.mod-dot {
+    font-size: 1.0em !important;
+    position: relative !important;
+    top: -0.15em !important;
+    left: 0.0em !important;
 }

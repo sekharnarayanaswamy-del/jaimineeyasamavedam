@@ -374,7 +374,7 @@ Scripts requiring centralized project parameters load this configuration via `ut
 | `curate_jsv.py` | `curate_jsv` | Source JSON files and filter list locations. |
 | `renumber_sooktam.py` | `renumber_sooktam` | Default renumbering start indices and increment behaviors. |
 
-*(Note: `render_pdf.py` does NOT use YAML; it is invoked directly via CLI flags from `run_pipeline.py` or terminal.)*
+*(Note: `render.py` does NOT use YAML; it is invoked directly via CLI flags from `run_pipeline.py` or terminal.)*
 
 ---
 
@@ -382,13 +382,17 @@ Scripts requiring centralized project parameters load this configuration via `ut
 
 The project enforces three strictly decoupled versioning tiers:
 
-1. **Tier 1: Engine Version** (`engine_version: "4.0.0"` in `src/pipeline_config.yaml`)  
+1. **Tier 1: Engine Version** (`engine_version: "4.1.0"` in `src/pipeline_config.yaml`)  
    Tracks underlying architecture, AST schemas, parser logic, and rendering engines.
 2. **Tier 2: Corpus Editions** (`editions:` block in `src/pipeline_config.yaml` and synced in `src/VERSION`)  
    Tracks independent liturgical text maturity per corpus:
    - `samhita`: `"3.28"`
    - `aaranam`: `"1.14"`
-   - `collections`: `"2.05"`
+   - `collections`: `"2.05"` (*Sooktamala*, *Prayogamala - Purvabhagam*, *Prayogamala - Uttarabhagam* under generic title `"जैमिनीय साम सङ्ग्रहः"`)
+   - `kpully`: `"1.00"` (Kodunthirapully swaras-above chanting variant)
+   - `purvarchikam`: `"1.00"`
+   - `uttararchikam`: `"1.00"`
+   - `rik`: `"1.00"`
 3. **Tier 3: Active Run / Manifest Version** (`run_manifest.json` in each corpus folder)  
    Tracks live execution artifacts with UTC timestamps, git commit hashes, and domain metrics (Pathas, Khandas, Samas).
 

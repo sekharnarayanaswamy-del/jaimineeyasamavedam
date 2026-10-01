@@ -26,23 +26,27 @@ graph TD
         T2A["Samhita Edition: 3.28"]
         T2B["Aaranam Edition: 1.14"]
         T2C["Collections Edition: 2.05"]
+        T2D["KPully Edition: 1.00"]
     end
 
     subgraph Tier 3: Operational Traceability
         T3A["Samhita Run Manifest<br/>(UTC Timestamp + Git Hash + Invariant Metrics)"]
         T3B["Aaranam Run Manifest<br/>(UTC Timestamp + Git Hash + Invariant Metrics)"]
+        T3C["Collections Run Manifest<br/>(UTC Timestamp + Git Hash + Invariant Metrics)"]
     end
 
     T1 -.->|Executes| T2A
     T1 -.->|Executes| T2B
     T1 -.->|Executes| T2C
+    T1 -.->|Executes| T2D
     T2A -->|Generates| T3A
     T2B -->|Generates| T3B
+    T2C -->|Generates| T3C
 ```
 
-### Tier 1: Engine Version (`engine_version: "4.0.0"`)
+### Tier 1: Engine Version (`engine_version: "4.1.0"`)
 * **Location**: Defined in [`src/pipeline_config.yaml`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/pipeline_config.yaml) under `project.engine_version`.
-* **Scope**: Represents the software pipeline codebase: parsers (`generate_json.py`), rendering engines (`render_pdf.py`, `html_renderer`, `latex_renderer`), validation tools (`validate_run.py`), and Jinja typography filters.
+* **Scope**: Represents the software pipeline codebase: parsers (`generate_json.py`), rendering engines (`render.py`, `html_renderer`, `latex_renderer`), validation tools (`validate_run.py`), and Jinja typography filters.
 * **Update Frequency**: Infrequent. Updated when architectural features, AST schema changes, or new export formats are implemented.
 
 ### Tier 2: Corpus Editions (`editions:` block in `pipeline_config.yaml`)
@@ -52,8 +56,15 @@ graph TD
     samhita: "3.28"
     aaranam: "1.14"
     collections: "2.05"
+    kpully: "1.00"
+    purvarchikam: "1.00"
+    uttararchikam: "1.00"
+    rik: "1.00"
   ```
 * **Scope**: Represents the editorial and textual maturity of each sacred text corpus independently.
+* **Collections & KPully**:
+  - `collections` (`"2.05"`): Tracks curated liturgical collections (*Sooktamala*, *Prayogamala - Purvabhagam*, *Prayogamala - Uttarabhagam*) unified under the generic title **`"जैमिनीय साम सङ्ग्रहः"`**.
+  - `kpully` (`"1.00"`): Dedicated versioning for the Kodunthirapully chanting tradition (swaras above syllables).
 * **Why Decoupled**: Textual curation in Aaranam (e.g., correcting an accent in Aranyaka Samams) should bump Aaranam from `1.14` to `1.15` without artificially bumping Samhita (which remains stable at `3.28`).
 
 ### Tier 3: Active Run / Manifest Version (`run_manifest.json`)

@@ -1527,6 +1527,273 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     return data
 
 
+def parse_purvarchikam_from_text(input_file="data/input/vedic_text.txt", title="जैमिनीय पूर्वार्चिक ऋक् संहिता"):
+    """
+    Parses Purvarchikam Rik text from vedic_text.txt into standard JSON AST.
+    Bounds in source:
+      Begins with: # Title #\n॥ जैमिनीय पूर्वाचिक ऋक् संहिता ॥\n# End of Title #
+      Ends with:   ॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥
+    """
+    if not os.path.exists(input_file):
+        print(f"[ERROR] Input file '{input_file}' not found.")
+        return None
+
+    with open(input_file, 'r', encoding='utf-8') as f:
+        full_text = f.read()
+
+    full_text = sanitize_invisible_chars(full_text)
+
+    purva_pattern = re.compile(
+        r'(#\s*Title\s*#\s*\n\s*॥\s*जैमिनीय\s*पूर्वाचिक\s*ऋक्\s*संहिता\s*॥\s*\n\s*#\s*End of Title\s*#.*?॥\s*इति\s*जैमिनीय\s*पूर्वाचिक\s*ऋक्\s*संहिता\s*॥)',
+        re.DOTALL
+    )
+    m = purva_pattern.search(full_text)
+    if not m:
+        start_idx = full_text.find("॥ जैमिनीय पूर्वाचिक ऋक् संहिता ॥")
+        end_idx = full_text.find("॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥")
+        if start_idx != -1 and end_idx != -1:
+            purva_text = full_text[start_idx:end_idx + len("॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥")]
+        else:
+            print(f"[ERROR] Could not locate Purvarchikam bounds in '{input_file}'.")
+            return None
+    else:
+        purva_text = m.group(1)
+
+    # Normalize colons to visargas
+    purva_text = purva_text.replace(':', 'ः')
+    # Ensure separate lines for glued khanda headers
+    purva_text = purva_text.replace('॥ ॥ अथ', '॥\n॥ अथ')
+    purva_text = purva_text.replace('॥  ॥ अथ', '॥\n॥ अथ')
+
+    meta = get_generated_metadata()
+    json_output = {
+        "meta": {
+            "version": meta.get("version", JSV_VERSION),
+            "generated_at": meta.get("generated_at", GENERATED_AT),
+            "title": title
+        },
+        "supersection": {}
+    }
+
+    # Split into supersections: # Supersection title # ... # End of Supersection title.*?#
+    ss_blocks = re.split(r'#\s*Supersection title\s*#\s*\n(.*?)\n\s*#\s*End of Supersection title.*?#', purva_text, flags=re.DOTALL)
+
+    def int_to_dev(n):
+        mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
+        return "".join(mapping[c] for c in str(n))
+
+    for ss_idx in range(1, len(ss_blocks), 2):
+        ss_title_raw = ss_blocks[ss_idx].strip()
+        ss_content = ss_blocks[ss_idx + 1]
+        ss_num = ss_idx // 2 + 1
+        ss_id = f"supersection_{ss_num}"
+        ss_title = re.sub(r'^[॥\s]+|[॥\s]+$', '', ss_title_raw).strip()
+        # Clean 'प्रारम्भः' or 'प्रारम्भ' from actual text title
+        ss_title = re.sub(r'\s*प्रारम्भः?\s*', '', ss_title).strip()
+        # Derive TOC title by stripping leading 'अथ'
+        ss_title_toc = re.sub(r'^\s*अथ\s+', '', ss_title).strip()
+
+        json_output["supersection"][ss_id] = {
+            "supersection_title": ss_title,
+            "supersection_title_toc": ss_title_toc,
+            "sections": {}
+        }
+        current_sections = json_output["supersection"][ss_id]["sections"]
+
+        # Find all khandas in this supersection
+        sec_matches = list(re.finditer(r'॥\s*(अथ\s+[^॥]+?(?:खण्डः|पर्वा))\s*॥', ss_content))
+
+        if not sec_matches:
+            # Single section in this supersection (e.g., Shakvara Parva)
+            sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', ss_content)
+            rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
+            subsections = {}
+            for r_idx, rm in enumerate(rik_matches, 1):
+                raw_text = rm.group(1).strip()
+                if '(' not in raw_text and '।' not in raw_text:
+                    continue
+                r_num_str = rm.group(3).strip()
+                r_text = f"{raw_text} ॥ {r_num_str} ॥"
+                r_text = re.sub(r'^\s*\d+:\s*', '', r_text)
+                sub_id = f"subsection_{r_idx}"
+                subsections[sub_id] = {
+                    "header": {"header": "", "header_number": r_idx},
+                    "rik_id": r_idx,
+                    "rik_text": r_text,
+                    "rik_metadata": "",
+                    "corrected-mantra_sets": [],
+                    "footnotes": {}
+                }
+
+            current_sections["section_1"] = {
+                "section_title": ss_title,
+                "section_title_toc": ss_title_toc,
+                "Count": int_to_dev(len(subsections)),
+                "subsections": subsections
+            }
+        else:
+            for sec_idx, sm in enumerate(sec_matches, 1):
+                sec_id = f"section_{sec_idx}"
+                sec_title = sm.group(1).strip()
+                sec_title = re.sub(r'\s*प्रारम्भः?\s*', '', sec_title).strip()
+                sec_title_toc = re.sub(r'^\s*अथ\s+', '', sec_title).strip()
+                start = sm.end()
+                end = sec_matches[sec_idx].start() if sec_idx < len(sec_matches) else len(ss_content)
+                sec_chunk = ss_content[start:end]
+                sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', sec_chunk)
+
+                rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
+                subsections = {}
+                for r_idx, rm in enumerate(rik_matches, 1):
+                    raw_text = rm.group(1).strip()
+                    if '(' not in raw_text and '।' not in raw_text:
+                        continue
+                    r_num_str = rm.group(3).strip()
+                    r_text = f"{raw_text} ॥ {r_num_str} ॥"
+                    r_text = re.sub(r'^\s*\d+:\s*', '', r_text)
+                    sub_id = f"subsection_{r_idx}"
+                    subsections[sub_id] = {
+                        "header": {"header": "", "header_number": r_idx},
+                        "rik_id": r_idx,
+                        "rik_text": r_text,
+                        "rik_metadata": "",
+                        "corrected-mantra_sets": [],
+                        "footnotes": {}
+                    }
+
+                current_sections[sec_id] = {
+                    "section_title": sec_title,
+                    "section_title_toc": sec_title_toc,
+                    "Count": int_to_dev(len(subsections)),
+                    "subsections": subsections
+                }
+
+    # Extract closing mantras if present
+    json_output["closing_mantras"] = extract_closing_mantras(purva_text)
+    total_secs = sum(len(ss["sections"]) for ss in json_output["supersection"].values())
+    total_riks = sum(len(s["subsections"]) for ss in json_output["supersection"].values() for s in ss["sections"].values())
+    print(f"[INFO] Purvarchikam AST built: {len(json_output['supersection'])} supersections, {total_secs} sections, {total_riks} riks.")
+    return json_output
+
+
+def parse_uttararchikam_from_text(input_file="data/input/vedic_text.txt", title="उत्तरार्चिकम्"):
+    """
+    Parses Uttararchikam Rik text from vedic_text.txt into standard JSON AST.
+    Bounds in source:
+      Begins with: # Title #\n॥ उत्तरार्चिकम् ॥\n# End of Title #
+      Ends with:   ॥ ऊहरहस्यादि ऋक् संपूर्णं ॥\n॥ हरिः ओम् ॥
+    """
+    if not os.path.exists(input_file):
+        print(f"[ERROR] Input file '{input_file}' not found.")
+        return None
+
+    with open(input_file, 'r', encoding='utf-8') as f:
+        full_text = f.read()
+
+    full_text = sanitize_invisible_chars(full_text)
+
+    uttara_pattern = re.compile(
+        r'(#\s*Title\s*#\s*\n\s*॥\s*उत्तरार्चिकम्\s*॥\s*\n\s*#\s*End of Title\s*#.*?॥\s*ऊहरहस्यादि\s*ऋक्\s*संपूर्णं\s*॥\s*\n\s*॥\s*हरिः\s*ओम्\s*॥)',
+        re.DOTALL
+    )
+    m = uttara_pattern.search(full_text)
+    if not m:
+        start_idx = full_text.find("॥ उत्तरार्चिकम् ॥")
+        end_idx = full_text.find("॥ हरिः ओम् ॥", start_idx)
+        if start_idx != -1 and end_idx != -1:
+            uttara_text = full_text[start_idx:end_idx + len("॥ हरिः ओम् ॥")]
+        else:
+            print(f"[ERROR] Could not locate Uttararchikam bounds in '{input_file}'.")
+            return None
+    else:
+        uttara_text = m.group(1)
+
+    uttara_text = uttara_text.replace(':', 'ः')
+
+    meta = get_generated_metadata()
+    json_output = {
+        "meta": {
+            "version": meta.get("version", JSV_VERSION),
+            "generated_at": meta.get("generated_at", GENERATED_AT),
+            "title": title
+        },
+        "supersection": {
+            "supersection_1": {
+                "supersection_title": "उत्तरार्चिकम्",
+                "supersection_title_toc": "उत्तरार्चिकम्",
+                "sections": {}
+            },
+            "supersection_2": {
+                "supersection_title": "ऊहरहस्यादि ऋक्",
+                "supersection_title_toc": "ऊहरहस्यादि ऋक्",
+                "sections": {}
+            }
+        }
+    }
+
+    def int_to_dev(n):
+        mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
+        return "".join(mapping[c] for c in str(n))
+
+    khanda_matches = list(re.finditer(r'(अथ\s+[^॥\n]+खण्डः\s*॥\s*([०-९\d]+)\s*॥)', uttara_text))
+
+    seen_59 = False
+    curr_ss_id = "supersection_1"
+    sec_counter = 1
+
+    for idx, km in enumerate(khanda_matches):
+        sec_title = km.group(1).strip()
+        sec_title = re.sub(r'\s*प्रारम्भः?\s*', '', sec_title).strip()
+        sec_title_toc = re.sub(r'^\s*अथ\s+', '', sec_title).strip()
+        num = km.group(2).strip()
+
+        if num == '१' and seen_59:
+            curr_ss_id = "supersection_2"
+            sec_counter = 1
+        elif num == '५९':
+            seen_59 = True
+
+        start_pos = km.end()
+        end_pos = khanda_matches[idx + 1].start() if idx + 1 < len(khanda_matches) else len(uttara_text)
+        chunk = uttara_text[start_pos:end_pos]
+        chunk = re.sub(r'॥\s*ऊहरहस्यादि.*', '', chunk, flags=re.DOTALL)
+
+        rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', chunk))
+
+        sec_id = f"section_{sec_counter}"
+        sec_counter += 1
+
+        subsections = {}
+        for r_idx, rm in enumerate(rik_matches, 1):
+            raw_text = rm.group(1).strip()
+            r_num_str = rm.group(3).strip()
+            r_text = f"{raw_text} ॥ {r_num_str} ॥"
+            r_text = re.sub(r'^\s*\d+:\s*', '', r_text)
+            sub_id = f"subsection_{r_idx}"
+            subsections[sub_id] = {
+                "header": {"header": "", "header_number": r_idx},
+                "rik_id": r_idx,
+                "rik_text": r_text,
+                "rik_metadata": "",
+                "corrected-mantra_sets": [],
+                "footnotes": {}
+            }
+
+        json_output["supersection"][curr_ss_id]["sections"][sec_id] = {
+            "section_title": sec_title,
+            "section_title_toc": sec_title_toc,
+            "Count": int_to_dev(len(subsections)),
+            "subsections": subsections
+        }
+
+    # Extract closing mantras
+    json_output["closing_mantras"] = extract_closing_mantras(uttara_text)
+    total_secs = sum(len(ss["sections"]) for ss in json_output["supersection"].values())
+    total_riks = sum(len(s["subsections"]) for ss in json_output["supersection"].values() for s in ss["sections"].values())
+    print(f"[INFO] Uttararchikam AST built: {len(json_output['supersection'])} supersections, {total_secs} sections, {total_riks} riks.")
+    return json_output
+
+
 if __name__ == "__main__":
     import argparse
     import sys
@@ -1549,6 +1816,8 @@ Input Modes:
 Examples:
   python generate_json.py --type samhita --input-mode initial
   python generate_json.py input.txt --input-mode correction
+  python generate_json.py --type purvarchikam
+  python generate_json.py --type uttararchikam
         """
     )
     parser.add_argument('input_file', type=str, nargs='?', default=None,
@@ -1562,8 +1831,8 @@ Examples:
     parser.add_argument('--initial-json', type=str, default=None,
                         help='Trusted Initial JSON output to map Rik IDs correctly (correction mode only)')
     
-    parser.add_argument('--type', choices=['samhita', 'aaranam'], default='samhita',
-                        help='Type of Samaveda text: samhita or aaranam')
+    parser.add_argument('--type', choices=['samhita', 'aaranam', 'purvarchikam', 'uttararchikam'], default='samhita',
+                        help='Type of Samaveda text: samhita, aaranam, purvarchikam, or uttararchikam')
     parser.add_argument('--procedures', type=str, default=None,
                         help='Path to procedure index YAML file (e.g., data/input/prayoga/prayoga_index.yaml). If not specified, no procedures will be linked.')
     
@@ -1573,7 +1842,13 @@ Examples:
     type_cfg = config.get(mode_type, {})
 
     # Priority: CLI > Config > Default
-    input_file = args.input_file or type_cfg.get('input')
+    default_input_map = {
+        'samhita': 'data/input/Samhita_Devanagari_Unicode.txt',
+        'aaranam': 'data/input/Aaranam_latest.txt',
+        'purvarchikam': 'data/input/vedic_text.txt',
+        'uttararchikam': 'data/input/vedic_text.txt',
+    }
+    input_file = args.input_file or type_cfg.get('input') or default_input_map.get(mode_type)
     if not input_file:
         print(f"Error: No input file provided for type '{mode_type}'. Please specify via CLI or config.")
         parser.print_help()
@@ -1583,10 +1858,26 @@ Examples:
     
     if mode_type == 'aaranam':
         title = "Jaimineeya Samam Aaranam"
+    elif mode_type == 'purvarchikam':
+        title = "जैमिनीय पूर्वार्चिक ऋक् संहिता"
+    elif mode_type == 'uttararchikam':
+        title = "उत्तरार्चिकम्"
     else:
         title = "Jaimineeya Sama Samhita Patha"
 
-    if input_mode == 'initial':
+    if mode_type == 'purvarchikam':
+        output_file_path = args.output or type_cfg.get('output', "data/output/Purvarchikam_out.json")
+        Path(output_file_path).parent.mkdir(parents=True, exist_ok=True)
+        print(f"Processing Purvarchikam from {input_file}...")
+        output_data = parse_purvarchikam_from_text(input_file, title=title)
+
+    elif mode_type == 'uttararchikam':
+        output_file_path = args.output or type_cfg.get('output', "data/output/Uttararchikam_out.json")
+        Path(output_file_path).parent.mkdir(parents=True, exist_ok=True)
+        print(f"Processing Uttararchikam from {input_file}...")
+        output_data = parse_uttararchikam_from_text(input_file, title=title)
+
+    elif input_mode == 'initial':
         # Initial mode: use multiple source files
         rik_meta = sources_cfg.get('rik_meta', "data/input/rishi_devata_chandas_for_rik.txt")
         saman_meta = sources_cfg.get('saman_meta', "data/input/sama_rishi_chandas_out.txt")
