@@ -117,11 +117,48 @@ def build_catalog_page(items):
 
     pills_html = " ".join(f'<button class="filter-btn {("active" if cat=="All" else "")}" data-filter="{cat}">{cat}</button>' for cat in categories)
 
+    initial_cards_html = []
+    for item in items:
+        script_badge_class = "badge-devanagari" if item["script"] == "Devanagari" else "badge-malayalam"
+        featured_badge = '<span class="badge badge-featured">★ Featured</span>' if item["featured"] else ''
+        card = f'''
+            <div class="card{(' featured' if item['featured'] else '')}">
+                <div>
+                    <div class="card-header">
+                        <div class="badges">
+                            <span class="badge {script_badge_class}">{item['script']}</span>
+                            <span class="badge badge-category">{item['category']}</span>
+                            {featured_badge}
+                        </div>
+                        <div class="file-size">{item['size_fmt']}</div>
+                    </div>
+                    <h2 class="card-title">{item['title']}</h2>
+                    <p class="card-desc">{item['description']}</p>
+                </div>
+                <div>
+                    <div class="card-filename">{item['filename']}</div>
+                    <div class="card-actions">
+                        <a href="{item['rel_url']}" target="_blank" rel="noopener" class="btn btn-primary">
+                            📖 Open Reader
+                        </a>
+                        <a href="{item['rel_url']}" download class="btn btn-secondary" title="Download HTML">
+                            ⬇
+                        </a>
+                    </div>
+                </div>
+            </div>'''
+        initial_cards_html.append(card)
+
+    initial_cards_str = "\n".join(initial_cards_html)
+
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>जैमिनीय सामवेदः | Standalone HTML Readers</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -510,7 +547,9 @@ def build_catalog_page(items):
             </div>
         </div>
 
-        <div class="grid" id="readerGrid"></div>
+        <div class="grid" id="readerGrid">
+{initial_cards_str}
+        </div>
         <div class="no-results" id="noResults" style="display: none;">
             <h3>No editions matched your search</h3>
             <p>Try adjusting your search terms or filter selection.</p>
