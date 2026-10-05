@@ -96,7 +96,7 @@ def cleanup_obsolete_files(target_dir: Path):
     # Remove any other unexpected directories
     if target_dir.exists():
         for item in list(target_dir.iterdir()):
-            if item.is_dir() and item.name not in ["Devanagari", "Malayalam"]:
+            if item.is_dir() and item.name not in ["Devanagari", "Malayalam", "renders"]:
                 try:
                     shutil.rmtree(item)
                     print(f"  [DELETED DIR] {item.name}")
