@@ -2,7 +2,7 @@
 
 - **Corpus**: `samhita`
 - **Edition**: `3.28`
-- **Generated Timestamp**: `01-10-2026 23:07:48`
+- **Generated Timestamp**: `07-10-2026 08:06:53`
 - **Validation Status**: `PASSED`
 
 ---
@@ -20,7 +20,7 @@
 | Stage | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- |
 | **Stage 01: Input** | `Samhita_Devanagari_Unicode.txt` | 1.21 MB | `ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18` |
-| **Stage 02: Parsed AST** | `Samhita_ast.json` | 1.74 MB | `ebec047822a9ce7340d5c532e229806847cd162ecfdc4071a7ac4cff5eacf424` |
+| **Stage 02: Parsed AST** | `Samhita_ast.json` | 1.74 MB | `6d7e5889ae95ae527fc50a0adfe2fec488512848ab77fce0bf995a3952825028` |
 | **Stage 04: Canonical AST** | `Vargeekaran.json` | 2.22 MB | `0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006` |
 
 ---
@@ -43,7 +43,7 @@
 | File Name | Mode / Edition | Target Script | Size |
 | :--- | :--- | :--- | :--- |
 | [`Samam_kpully_Devanagari.html`](../05_renders/html/Samam_kpully_Devanagari.html) | Separate (Samam Only) | Devanagari (Kodunthirapully) | 2.91 MB |
-| [`Samam_kpully_Devanagari_Samam.html`](../05_renders/html/Samam_kpully_Devanagari_Samam.html) | Separate (Samam Only) | Devanagari (Kodunthirapully) | 2.91 MB |
+| [`Samam_kpully_Devanagari_Samam.html`](../05_renders/html/Samam_kpully_Devanagari_Samam.html) | Separate (Samam Only) | Devanagari (Kodunthirapully) | 2.90 MB |
 | [`Samam_kpully_Malayalam.html`](../05_renders/html/Samam_kpully_Malayalam.html) | Separate (Samam Only) | Malayalam | 1.23 MB |
 | [`Samam_kpully_Malayalam_Samam.html`](../05_renders/html/Samam_kpully_Malayalam_Samam.html) | Separate (Samam Only) | Malayalam | 1.23 MB |
 | [`Samhita_Devanagari.html`](../05_renders/html/Samhita_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 11.84 MB |

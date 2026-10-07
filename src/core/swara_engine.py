@@ -158,8 +158,8 @@ def tokenize_mantra_line(text: str) -> List[dict]:
             # If immediately followed by underscore after swara, attach _ as suffix to word
             # and continue consuming any further parenthesized swara/modifier groups
             while i + matched_len < n:
-                if text[i + matched_len] == "_":
-                    word_str += "_"
+                if text[i + matched_len] in "_.,·़ॱ\\┃L╷":
+                    word_str += text[i + matched_len]
                     matched_len += 1
                 m_more = re.match(r"^((?:\([^)]+\))+)", text[i + matched_len:])
                 if m_more:

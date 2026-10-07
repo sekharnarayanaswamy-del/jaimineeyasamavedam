@@ -584,14 +584,18 @@ def render_deva_html_from_line(
             span_mod_html = None
             span_mod_type = None
             if not with_modifiers:
-                core_word = word.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
+                core_word = word.strip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
                 punct_html = ''
                 mods_html = ''
                 sw_parts, _ = _parse_swara_and_modifiers(swara)
             else:
+                leading_punct = ""
+                while word and word[0] in '_,.\\·ॱ़┃L╷^⁀∧✓↗':
+                    leading_punct += word[0]
+                    word = word[1:]
                 core_word = word.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
                 trailing_punct = word[len(core_word):]
-                punct_html = ''.join([render_mod_html(p) for p in trailing_punct])
+                punct_html = ''.join([render_mod_html(p) for p in (leading_punct + trailing_punct)])
                 sw_parts, mods = _parse_swara_and_modifiers(swara)
                 
                 # Look ahead to check if followed by danda

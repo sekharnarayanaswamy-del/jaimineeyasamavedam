@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
   "edition": "3.28",
-  "timestamp": "01-10-2026 23:07:48",
+  "timestamp": "07-10-2026 08:06:53",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,7 +12,7 @@
   },
   "hashes": {
     "input_sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18",
-    "ast_sha256": "ebec047822a9ce7340d5c532e229806847cd162ecfdc4071a7ac4cff5eacf424",
+    "ast_sha256": "6d7e5889ae95ae527fc50a0adfe2fec488512848ab77fce0bf995a3952825028",
     "canonical_sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006"
   },
   "metrics": {
@@ -78,21 +78,21 @@
         "path": "data/corpora/samhita/02_ast/Samam_kpully_Devanagari.json",
         "size_bytes": 53331,
         "size_formatted": "52.1 KB",
-        "sha256": "19bbb4eda5523106d10d01fd91ca155c136befd0d22de7adebd273db02b46e11"
+        "sha256": "e4f7377263089e81a51fd7d7fa811e1cfca87062536d41a1c2f822e4550a1a71"
       },
       {
         "name": "Samam_Malayalam.json",
         "path": "data/corpora/samhita/02_ast/Samam_Malayalam.json",
         "size_bytes": 67582,
         "size_formatted": "66.0 KB",
-        "sha256": "f56a9a018a44243cbb0951e9b5496f162d38b6ceeeeee931f32173ed170a506b"
+        "sha256": "557726795143e43696bc8835bd688ac1b87c13ccc56062219ca3417d630dbbfc"
       },
       {
         "name": "Samhita_ast.json",
         "path": "data/corpora/samhita/02_ast/Samhita_ast.json",
         "size_bytes": 1821541,
         "size_formatted": "1.74 MB",
-        "sha256": "ebec047822a9ce7340d5c532e229806847cd162ecfdc4071a7ac4cff5eacf424"
+        "sha256": "6d7e5889ae95ae527fc50a0adfe2fec488512848ab77fce0bf995a3952825028"
       }
     ],
     "03_reconciliation": [
@@ -233,8 +233,8 @@
           "format": "HTML",
           "script": "Devanagari (Kodunthirapully)",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 3055043,
-          "size_formatted": "2.91 MB"
+          "size_bytes": 3036899,
+          "size_formatted": "2.90 MB"
         },
         {
           "name": "Samam_kpully_Malayalam.html",
