@@ -430,8 +430,10 @@ def render_mod_html(mod_str: str) -> str:
         return f'<span class="swara-mod {cls}" title="{title}">{glyph}</span>'
     return f'<span class="swara-mod">{mod_str}</span>'
 
+ALL_SWARA_PUNCT_CHARS = '_,.\\·ॱ़┃L╷^⁀∧✓↗⫽¯/⨯\uE001\uE002\uE003\uE004\uE005\uE006\uE008\uE00D\uE00E\uE00F\uE02A\uE02B\uE02C\uE02D\uE02E'
+
 DEVA_SYLLABLE_RE = re.compile(
-    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[_,.\\·ॱ़┃L╷^⁀∧✓↗])*'
+    r'(?:[\u0904-\u0914\u0960\u0961]|(?:[\u0915-\u0939\u0958-\u095F]\u094D)*[\u0915-\u0939\u0958-\u095F](?:[\u093E-\u094D\u094E\u094F\u0955-\u0957\u0962\u0963])?)(?:[\u0901-\u0903])?(?:[' + re.escape(ALL_SWARA_PUNCT_CHARS) + r'])*'
 )
 
 def split_deva_syllables(text: str):
@@ -440,8 +442,8 @@ def split_deva_syllables(text: str):
 
 def format_deva_syl_html(syl: str, with_modifiers: bool = True) -> str:
     if not with_modifiers:
-        return syl.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
-    m = re.match(r'^(.*?)([_,.\\·ॱ़┃L╷^⁀∧✓↗]*)$', syl)
+        return syl.rstrip(ALL_SWARA_PUNCT_CHARS)
+    m = re.match(r'^(.*?)([' + re.escape(ALL_SWARA_PUNCT_CHARS) + r']*)$', syl)
     base = m.group(1) if m else syl
     extras = m.group(2) if m else ''
     extras_list = []
@@ -584,16 +586,16 @@ def render_deva_html_from_line(
             span_mod_html = None
             span_mod_type = None
             if not with_modifiers:
-                core_word = word.strip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
+                core_word = word.strip(ALL_SWARA_PUNCT_CHARS)
                 punct_html = ''
                 mods_html = ''
                 sw_parts, _ = _parse_swara_and_modifiers(swara)
             else:
                 leading_punct = ""
-                while word and word[0] in '_,.\\·ॱ़┃L╷^⁀∧✓↗':
+                while word and word[0] in ALL_SWARA_PUNCT_CHARS:
                     leading_punct += word[0]
                     word = word[1:]
-                core_word = word.rstrip('_,.\\·ॱ़┃L╷^⁀∧✓↗')
+                core_word = word.rstrip(ALL_SWARA_PUNCT_CHARS)
                 trailing_punct = word[len(core_word):]
                 punct_html = ''.join([render_mod_html(p) for p in (leading_punct + trailing_punct)])
                 sw_parts, mods = _parse_swara_and_modifiers(swara)

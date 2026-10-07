@@ -110,6 +110,8 @@ def replace_accents_unicode(text: str) -> str:
 WORD_RE = re.compile(r"([^\s()।॥]+)((?:\([^)]+\))+)?([ः:]?)")
 
 
+SWARA_MODIFIER_CHARS = "_.,·़ॱ\\┃L╷^⁀∧✓↗⫽¯/⨯\uE001\uE002\uE003\uE004\uE005\uE006\uE008\uE00D\uE00E\uE00F\uE02A\uE02B\uE02C\uE02D\uE02E"
+
 def tokenize_mantra_line(text: str) -> List[dict]:
     """Split a mantra line into ordered tokens.
 
@@ -155,10 +157,10 @@ def tokenize_mantra_line(text: str) -> List[dict]:
             swara_group = m.group(2) or ""
             matched_len = m.end()
             word_str = m.group(1)
-            # If immediately followed by underscore after swara, attach _ as suffix to word
+            # If immediately followed by swara modifier after swara, attach as suffix to word
             # and continue consuming any further parenthesized swara/modifier groups
             while i + matched_len < n:
-                if text[i + matched_len] in "_.,·़ॱ\\┃L╷":
+                if text[i + matched_len] in SWARA_MODIFIER_CHARS:
                     word_str += text[i + matched_len]
                     matched_len += 1
                 m_more = re.match(r"^((?:\([^)]+\))+)", text[i + matched_len:])
