@@ -2,7 +2,7 @@
 
 - **Corpus**: `samhita`
 - **Edition**: `3.28`
-- **Generated Timestamp**: `07-10-2026 08:15:24`
+- **Generated Timestamp**: `08-10-2026 20:25:45`
 - **Validation Status**: `PASSED`
 
 ---
@@ -20,7 +20,7 @@
 | Stage | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- |
 | **Stage 01: Input** | `Samhita_Devanagari_Unicode.txt` | 1.21 MB | `ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18` |
-| **Stage 02: Parsed AST** | `Samhita_ast.json` | 1.74 MB | `03e474dca453435441e2386cae1c1f003bb593d73df836ffc25160459566e739` |
+| **Stage 02: Parsed AST** | `Samhita_ast.json` | 1.74 MB | `1ba2d9147b3737f5343abde799325c20cf1e78a6a984311db91a6c94efd2f754` |
 | **Stage 04: Canonical AST** | `Vargeekaran.json` | 2.22 MB | `0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006` |
 
 ---

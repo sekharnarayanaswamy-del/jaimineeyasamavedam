@@ -687,6 +687,7 @@
             margin-bottom: 4px;
             user-select: text;
             white-space: nowrap;
+            height: 1.3em;
         }
 
         rb.akshara-base,
@@ -700,6 +701,7 @@
             line-height: 1.25;
             text-align: center;
             position: relative;
+            height: 1.3em;
         }
 
         \BLOCK{ if kpully }
