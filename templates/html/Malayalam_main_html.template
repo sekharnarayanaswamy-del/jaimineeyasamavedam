@@ -701,7 +701,7 @@
             line-height: 1.25;
             text-align: center;
             position: relative;
-            height: 1.3em;
+            height: 1.4em;
         }
 
         \BLOCK{ if kpully }

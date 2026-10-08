@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
   "edition": "3.28",
-  "timestamp": "08-10-2026 20:25:45",
+  "timestamp": "08-10-2026 21:08:15",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,7 +12,7 @@
   },
   "hashes": {
     "input_sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18",
-    "ast_sha256": "1ba2d9147b3737f5343abde799325c20cf1e78a6a984311db91a6c94efd2f754",
+    "ast_sha256": "8cec14768c479731b86e64aa278e2e07d96b98b9d426e090e6597335cec982c5",
     "canonical_sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006"
   },
   "metrics": {
@@ -78,21 +78,21 @@
         "path": "data/corpora/samhita/02_ast/Samam_kpully_Devanagari.json",
         "size_bytes": 53331,
         "size_formatted": "52.1 KB",
-        "sha256": "d3d7c1e3a960e2c60bfb655a3e039ffb8ef1a9665046763510e8f98821780f7e"
+        "sha256": "b939ba965e6ac77a72e4d20793d3a050151150974371a6cfea1e51f03a3ba397"
       },
       {
         "name": "Samam_Malayalam.json",
         "path": "data/corpora/samhita/02_ast/Samam_Malayalam.json",
         "size_bytes": 67582,
         "size_formatted": "66.0 KB",
-        "sha256": "f9f04311fed0cff5d75ff9fd981dc69598b2d997decd090b50cb3de4090a8c5c"
+        "sha256": "9560c6304533389ddad6d95daf2b529812ce5d72d346316d6f6857defe4366ef"
       },
       {
         "name": "Samhita_ast.json",
         "path": "data/corpora/samhita/02_ast/Samhita_ast.json",
         "size_bytes": 1821541,
         "size_formatted": "1.74 MB",
-        "sha256": "1ba2d9147b3737f5343abde799325c20cf1e78a6a984311db91a6c94efd2f754"
+        "sha256": "8cec14768c479731b86e64aa278e2e07d96b98b9d426e090e6597335cec982c5"
       }
     ],
     "03_reconciliation": [
