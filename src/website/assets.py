@@ -3048,7 +3048,7 @@ body.font-rachana .swara-mod.mod-dot {
 }
 .mantra-word {
     flex-direction: column-reverse !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     vertical-align: bottom !important;
 }
 .mantra-connected-group {

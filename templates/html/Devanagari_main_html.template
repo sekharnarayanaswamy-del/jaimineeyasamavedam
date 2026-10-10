@@ -684,7 +684,7 @@
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;
-            height: 1.4em;
+            height: 1.3em;
         }
 
         .swara-text {
