@@ -4,6 +4,7 @@ import json
 import re
 import os
 import yaml
+import datetime
 from utils import get_generated_metadata, step_preprocess_visarga_accent, load_pipeline_config, extract_metadata_from_text, extract_closing_mantras
 
 def load_procedure_index(path="data/input/prayoga/prayoga_index.yaml"):
@@ -1855,6 +1856,11 @@ Examples:
         sys.exit(1)
 
     input_mode = args.input_mode or type_cfg.get('mode') or 'correction'
+
+    from core.version import check_and_auto_increment_edition, get_corpus_edition
+    check_and_auto_increment_edition(mode_type, input_file)
+    JSV_VERSION = get_corpus_edition(mode_type)
+    GENERATED_AT = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     
     if mode_type == 'aaranam':
         title = "Jaimineeya Samam Aaranam"

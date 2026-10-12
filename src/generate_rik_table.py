@@ -133,11 +133,13 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     v_json = v_json or mode_cfg.get('v_json') or table_cfg.get('v_json') or DEFAULT_VARGEEKARAN_JSON
 
     # Get metadata
-    metadata = get_generated_metadata()
-    JSV_VERSION = metadata['version']
+    from core.version import get_corpus_edition
+    target_corpus = "aaranam" if mode == 'aaranam' else "samhita"
+    metadata = get_generated_metadata(target_corpus)
+    JSV_VERSION = get_corpus_edition(target_corpus)
     GENERATED_AT = metadata['generated_at']
 
-    print(f"Generating Rik Table (v{JSV_VERSION})...")
+    print(f"Generating Rik Table (v{JSV_VERSION} - {target_corpus})...")
     print(f"Input JSON : {input_file}")
     print(f"Output CSV : {output_csv}")
     if not no_enrich:
@@ -154,13 +156,7 @@ def main(mode='samhita', input_file=None, output_csv=None, recon_excel=None, v_j
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
-    # Use cascading metadata if present in JSON, otherwise fallback
-    json_meta = data.get('meta', {})
-    if json_meta.get('version'):
-        JSV_VERSION = json_meta['version']
-        print(f"[INFO] Using cascading Version {JSV_VERSION}")
-    
-    # Always use fresh timestamp for the export
+    # Use active corpus edition for metadata
     GENERATED_at = GENERATED_AT
 
     # Load Excel Reconciliation Data

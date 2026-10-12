@@ -363,6 +363,7 @@ def setup_stage_directories():
     stage_file(OUTPUT_DIR / "Aaranam_vargeekaran_continuity_report.txt", "aaranam", "06_reports")
 
     # --- COLLECTIONS ---
+    stage_file(INPUT_DIR / "Sooktam.txt", "collections", "01_input")
     stage_file(INPUT_DIR / "Ashirvachana_samani.txt", "collections", "01_input")
     stage_file(INPUT_DIR / "PM-PB_filter.txt", "collections", "01_input")
     stage_file(INPUT_DIR / "PM-UB_filter.txt", "collections", "01_input")
@@ -428,11 +429,13 @@ def generate_initial_run_manifests():
     print("\n[3/4] Generating initial active run manifests in data/corpora/<corpus>/run_manifest.json...")
     
     from core.swara_engine import count_samams
+    from core.version import get_corpus_edition
 
     corpora_specs = {
         "samhita": {
-            "version": "3.28",
+            "version": get_corpus_edition("samhita"),
             "input_file": CORPORA_DIR / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt",
+            "active_inputs": ["Samhita_Devanagari_Unicode.txt", "Samam_Malayalam_Unicode.txt"],
             "ast_file": CORPORA_DIR / "samhita" / "02_ast" / "Samhita_ast.json",
             "canonical_file": CORPORA_DIR / "samhita" / "04_canonical" / "Vargeekaran.json",
             "expected_samas": 1226,
@@ -440,17 +443,19 @@ def generate_initial_run_manifests():
             "expected_pathas": 6,
         },
         "aaranam": {
-            "version": "1.14",
+            "version": get_corpus_edition("aaranam"),
             "input_file": CORPORA_DIR / "aaranam" / "01_input" / "Aaranam_latest.txt",
+            "active_inputs": ["Aaranam_latest.txt"],
             "ast_file": CORPORA_DIR / "aaranam" / "02_ast" / "Aaranam_ast.json",
             "canonical_file": CORPORA_DIR / "aaranam" / "04_canonical" / "Aaranam_vargeekaran.json",
-            "expected_samas": 401,
-            "expected_khandas": 29,
-            "expected_pathas": 1,
+            "expected_samas": 295,
+            "expected_khandas": 25,
+            "expected_pathas": 6,
         },
         "collections": {
-            "version": "2.05",
-            "input_file": CORPORA_DIR / "collections" / "01_input" / "Ashirvachana_samani.txt",
+            "version": get_corpus_edition("collections"),
+            "input_file": CORPORA_DIR / "collections" / "01_input" / "Sooktam.txt",
+            "active_inputs": ["Sooktam.txt", "PM-PB_filter.txt", "PM-UB_filter.txt"],
             "ast_file": CORPORA_DIR / "collections" / "02_ast" / "Sooktamala.json",
             "canonical_file": CORPORA_DIR / "collections" / "04_canonical" / "Sooktamala.json",
             "expected_samas": None,
@@ -458,8 +463,9 @@ def generate_initial_run_manifests():
             "expected_pathas": None,
         },
         "Rik": {
-            "version": "1.00",
+            "version": get_corpus_edition("rik"),
             "input_file": CORPORA_DIR / "Rik" / "01_input" / "vedic_text.txt",
+            "active_inputs": ["vedic_text.txt"],
             "ast_file": CORPORA_DIR / "Rik" / "02_ast" / "Purvarchikam_out.json",
             "canonical_file": CORPORA_DIR / "Rik" / "02_ast" / "Uttararchikam_out.json",
             "expected_samas": 0,
@@ -479,8 +485,8 @@ def generate_initial_run_manifests():
                 if not isinstance(sec, dict): continue
                 for sub in sec.get("subsections", {}).values():
                     if not isinstance(sub, dict): continue
-                    mantras = sub.get("corrected-mantra_sets", [])
-                    s_count += max(len(mantras), 1 if sub.get("rik_text") else 0)
+                    for ms in sub.get("corrected-mantra_sets", []):
+                        s_count += count_samams(ms.get("corrected-mantra", ""))
         return s_count
 
     def format_size(size_bytes: int) -> str:
@@ -511,6 +517,210 @@ def generate_initial_run_manifests():
             mode = "Standard"
 
         return script, mode
+
+    def infer_source_lineage(corpus_name: str, filename: str) -> dict:
+        fn_lower = filename.lower()
+        if corpus_name == "samhita":
+            if "malayalam" in fn_lower and "kpully" in fn_lower:
+                return {
+                    "primary_input": "Samam_Malayalam_Unicode.txt",
+                    "intermediate_ast": "Samam_Malayalam.json",
+                    "pipeline_tool": "generate_json.py -> render.py (-kpully)",
+                    "category": "Kodunthirapully Chanting (Malayalam)"
+                }
+            elif "kpully" in fn_lower:
+                return {
+                    "primary_input": "Samam_Malayalam_Unicode.txt",
+                    "intermediate_ast": "Samam_Malayalam.json -> Samam_kpully_Devanagari.json",
+                    "pipeline_tool": "generate_json.py -> ml_transliterate.py -> render.py (-kpully)",
+                    "category": "Kodunthirapully Chanting (Devanagari)"
+                }
+            else:
+                return {
+                    "primary_input": "Samhita_Devanagari_Unicode.txt",
+                    "intermediate_ast": "Samhita_ast.json (Canonical: Vargeekaran.json)",
+                    "pipeline_tool": "generate_json.py -> render.py",
+                    "category": "Standard Samhita Text"
+                }
+        elif corpus_name == "aaranam":
+            return {
+                "primary_input": "Aaranam_latest.txt",
+                "intermediate_ast": "Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)",
+                "pipeline_tool": "generate_json.py --type aaranam -> render.py --type aaranam",
+                "category": "Aranyaka Liturgical Chants"
+            }
+        elif corpus_name == "Rik":
+            if "purvarchikam" in fn_lower:
+                return {
+                    "primary_input": "vedic_text.txt",
+                    "intermediate_ast": "Purvarchikam_out.json",
+                    "pipeline_tool": "generate_json.py --type purvarchikam -> render.py --rik-only",
+                    "category": "पूर्वार्चिकम् ऋक् संहिता"
+                }
+            else:
+                return {
+                    "primary_input": "vedic_text.txt",
+                    "intermediate_ast": "Uttararchikam_out.json",
+                    "pipeline_tool": "generate_json.py --type uttararchikam -> render.py --rik-only",
+                    "category": "उत्तरार्चिकम् ऋक् संहिता"
+                }
+        elif corpus_name == "collections":
+            if "sooktamala" in fn_lower:
+                return {
+                    "primary_input": "Sooktam.txt",
+                    "intermediate_ast": "Sooktamala.json",
+                    "pipeline_tool": "build_curated_collection -> render.py",
+                    "category": "Curated Sooktam Collection (सूक्तमाला)"
+                }
+            elif "purva" in fn_lower:
+                return {
+                    "primary_input": "PM-PB_filter.txt",
+                    "intermediate_ast": "Prayogamala-Purvabhagam.json",
+                    "pipeline_tool": "build_curated_collection -> render.py",
+                    "category": "Ritual Prayoga: Purvabhagam (साम प्रयोगमाला पूर्वभागः)"
+                }
+            else:
+                return {
+                    "primary_input": "PM-UB_filter.txt",
+                    "intermediate_ast": "prayogamala-Uttarabhagam.json",
+                    "pipeline_tool": "build_curated_collection -> render.py",
+                    "category": "Ritual Prayoga: Uttarabhagam (साम प्रयोगमाला उत्तरभागः)"
+                }
+        return {
+            "primary_input": "N/A",
+            "intermediate_ast": "N/A",
+            "pipeline_tool": "render.py",
+            "category": "General"
+        }
+
+    def generate_mermaid_chart(corpus_name: str) -> str:
+        if corpus_name == "samhita":
+            return '''```mermaid
+flowchart TD
+    classDef input fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef ast fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef canon fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+    classDef render fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
+
+    subgraph S1["Stage 01: Master Source Inputs"]
+        IN_DEVA["Samhita_Devanagari_Unicode.txt<br/>Standard Devanagari Source"]:::input
+        IN_MAL["Samam_Malayalam_Unicode.txt<br/>Kodunthirapully Malayalam Source"]:::input
+    end
+
+    subgraph S2["Stage 02 and 04: Intermediate ASTs"]
+        AST_DEVA["Samhita_ast.json<br/>Parsed Devanagari AST"]:::ast
+        AST_MAL["Samam_Malayalam.json<br/>Parsed Malayalam AST"]:::ast
+        AST_KPULLY["Samam_kpully_Devanagari.json<br/>Transliterated KPully AST"]:::ast
+        CANON["Vargeekaran.json<br/>Canonical Enriched AST"]:::canon
+    end
+
+    subgraph S3["Stage 05: Compiled Renders"]
+        R_COMB["Samhita_Devanagari (.html, .pdf, .txt)<br/>Combined Study Edition (Rik and Samam)"]:::render
+        R_SEP["Samhita_Rik and Samhita_Samam (.html, .pdf, .txt)<br/>Separate Editions with Metadata"]:::render
+        R_NOMETA["Samhita_Rik_NoMeta and Samam_NoMeta (.html, .pdf, .txt)<br/>Continuous Chanting Editions"]:::render
+        R_MAL["Samam_kpully_Malayalam (.html, .pdf, .txt)<br/>Kodunthirapully Malayalam Chanting"]:::render
+        R_KPULLY["Samam_kpully_Devanagari (.html, .pdf, .txt)<br/>Kodunthirapully Devanagari Chanting"]:::render
+    end
+
+    IN_DEVA -->|generate_json.py| AST_DEVA
+    AST_DEVA -->|generate_rik_table.py| CANON
+    AST_DEVA -->|render.py combined| R_COMB
+    AST_DEVA -->|render.py separate| R_SEP
+    AST_DEVA -->|render.py nometa| R_NOMETA
+
+    IN_MAL -->|generate_json.py| AST_MAL
+    AST_MAL -->|render.py -kpully| R_MAL
+    AST_MAL -->|ml_transliterate.py| AST_KPULLY
+    AST_KPULLY -->|render.py -kpully| R_KPULLY
+```'''
+        elif corpus_name == "aaranam":
+            return '''```mermaid
+flowchart TD
+    classDef input fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef ast fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef canon fill:#e8f5e9,stroke:#388e3c,stroke-width:2px,color:#1b5e20;
+    classDef render fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
+
+    subgraph S1["Stage 01: Master Source Input"]
+        IN_AAR["Aaranam_latest.txt<br/>Master Aranyaka Chant Text"]:::input
+    end
+
+    subgraph S2["Stage 02 and 04: Intermediate ASTs"]
+        AST_AAR["Aaranam_ast.json<br/>Parsed Aranyaka AST"]:::ast
+        CANON_AAR["Aaranam_vargeekaran.json<br/>Canonical Vargeekaran AST"]:::canon
+    end
+
+    subgraph S3["Stage 05: Compiled Renders"]
+        R_COMB["Aaranam_Devanagari (.html, .pdf, .txt)<br/>Combined Study Edition (Rik and Samam)"]:::render
+        R_SEP["Aaranam_Rik and Aaranam_Samam (.html, .pdf, .txt)<br/>Separate Editions with Metadata"]:::render
+        R_NOMETA["Aaranam_Rik_NoMeta and Samam_NoMeta (.html, .pdf, .txt)<br/>Continuous Chanting Editions"]:::render
+    end
+
+    IN_AAR -->|generate_json.py --type aaranam| AST_AAR
+    AST_AAR -->|generate_rik_table.py --type aaranam| CANON_AAR
+    AST_AAR -->|render.py combined| R_COMB
+    AST_AAR -->|render.py separate| R_SEP
+    AST_AAR -->|render.py nometa| R_NOMETA
+```'''
+        elif corpus_name == "Rik":
+            return '''```mermaid
+flowchart TD
+    classDef input fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef ast fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef render fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
+
+    subgraph S1["Stage 01: Master Source Input"]
+        IN_RIK["vedic_text.txt<br/>Combined Rik Text (Purva and Uttara)"]:::input
+    end
+
+    subgraph S2["Stage 02: Parsed SuperSection ASTs"]
+        AST_P["Purvarchikam_out.json<br/>पूर्वार्चिकम् AST (6 Pathas, 64 Khandas)"]:::ast
+        AST_U["Uttararchikam_out.json<br/>उत्तरार्चिकम् AST (4 Pathas, 91 Khandas)"]:::ast
+    end
+
+    subgraph S3["Stage 05: Compiled Renders"]
+        R_P["Purvarchikam_Devanagari (.html, .pdf, .txt)<br/>पूर्वार्चिकम् ऋक् संहिता (Rik Only)"]:::render
+        R_U["Uttararchikam_Devanagari (.html, .pdf, .txt)<br/>उत्तरार्चिकम् ऋक् संहिता (Rik Only)"]:::render
+    end
+
+    IN_RIK -->|generate_json.py --type purvarchikam| AST_P
+    IN_RIK -->|generate_json.py --type uttararchikam| AST_U
+    AST_P -->|render.py --rik-only| R_P
+    AST_U -->|render.py --rik-only| R_U
+```'''
+        elif corpus_name == "collections":
+            return '''```mermaid
+flowchart TD
+    classDef input fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#01579b;
+    classDef ast fill:#fff3e0,stroke:#f57c00,stroke-width:2px,color:#e65100;
+    classDef render fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c;
+
+    subgraph S1["Stage 01: Active Source Inputs"]
+        IN_SOOKTA["Sooktam.txt<br/>Master Sooktamala Chant Text"]:::input
+        IN_PURVA["PM-PB_filter.txt<br/>Prayoga Purva Filter Text"]:::input
+        IN_UTTARA["PM-UB_filter.txt<br/>Prayoga Uttara Filter Text"]:::input
+    end
+
+    subgraph S2["Stage 02 and 04: Curated ASTs"]
+        AST_S["Sooktamala.json<br/>Curated Sooktamala AST"]:::ast
+        AST_P["Prayogamala-Purvabhagam.json<br/>Purvabhagam Ritual AST"]:::ast
+        AST_U["prayogamala-Uttarabhagam.json<br/>Uttarabhagam Ritual AST"]:::ast
+    end
+
+    subgraph S3["Stage 05: Compiled Renders"]
+        R_S["Sooktamala_Devanagari (.html, .pdf, .txt)<br/>सूक्तमाला (Devanagari)"]:::render
+        R_P["Prayogamala-Purvabhagam_Devanagari (.html, .pdf, .txt)<br/>साम प्रयोगमाला पूर्वभागः"]:::render
+        R_U["prayogamala-Uttarabhagam_Devanagari (.html, .pdf, .txt)<br/>साम प्रयोगमाला उत्तरभागः"]:::render
+    end
+
+    IN_SOOKTA -->|build_curated_collection| AST_S
+    IN_PURVA -->|build_curated_collection| AST_P
+    IN_UTTARA -->|build_curated_collection| AST_U
+    AST_S -->|render.py --type collection| R_S
+    AST_P -->|render.py --type collection| R_P
+    AST_U -->|render.py --type collection| R_U
+```'''
+        return ""
 
     for corpus, spec in corpora_specs.items():
         corpus_dir = CORPORA_DIR / corpus
@@ -565,6 +775,9 @@ def generate_initial_run_manifests():
             if s_dir.exists():
                 for p in sorted(s_dir.iterdir()):
                     if p.is_file():
+                        if stage_key == "01_input" and "active_inputs" in spec:
+                            if p.name not in spec["active_inputs"]:
+                                continue
                         entry = {
                             "name": p.name,
                             "path": str(p.relative_to(ROOT_DIR)).replace("\\", "/"),
@@ -583,6 +796,7 @@ def generate_initial_run_manifests():
                     for p in sorted(fmt_dir.iterdir()):
                         if p.is_file():
                             script, mode = infer_script_and_mode(p.name)
+                            mtime_str = datetime.fromtimestamp(p.stat().st_mtime).strftime("%d-%m-%Y %H:%M:%S")
                             artifacts["05_renders"][fmt].append({
                                 "name": p.name,
                                 "path": str(p.relative_to(ROOT_DIR)).replace("\\", "/"),
@@ -590,7 +804,9 @@ def generate_initial_run_manifests():
                                 "script": script,
                                 "mode": mode,
                                 "size_bytes": p.stat().st_size,
-                                "size_formatted": format_size(p.stat().st_size)
+                                "size_formatted": format_size(p.stat().st_size),
+                                "sha256": sha256_file(p),
+                                "compiled_timestamp": mtime_str
                             })
 
         reports_dir = corpus_dir / "06_reports"
@@ -651,87 +867,153 @@ def generate_initial_run_manifests():
         ]
         if "riks" in metrics:
             traceability_lines.append(f"| **Riks (Verses)** | {metrics.get('riks', 'N/A')} | 1666 | PASS |")
+        mermaid_chart = generate_mermaid_chart(corpus)
+        if mermaid_chart:
+            traceability_lines += [
+                "",
+                "---",
+                "",
+                "## 2. End-to-End Pipeline Lineage Flowchart",
+                "The following diagram illustrates how active master inputs flow through intermediate parsed/canonical ASTs to produce each final render in `05_renders/`:",
+                "",
+                mermaid_chart,
+            ]
+
+        # Section 3: Direct Output-to-Source Lineage Mapping
         traceability_lines += [
             "",
             "---",
             "",
-            "## 2. Cryptographic Stage Lineage (01 -> 02 -> 04)",
-            "| Stage | Canonical File | Size | SHA-256 Checksum |",
-            "| :--- | :--- | :--- | :--- |",
-            f"| **Stage 01: Input** | `{spec['input_file'].name}` | {format_size(spec['input_file'].stat().st_size) if spec['input_file'].exists() else 'N/A'} | `{sha256_file(spec['input_file']) if spec['input_file'].exists() else 'N/A'}` |",
-            f"| **Stage 02: Parsed AST** | `{spec['ast_file'].name}` | {format_size(spec['ast_file'].stat().st_size) if spec['ast_file'].exists() else 'N/A'} | `{sha256_file(spec['ast_file']) if spec['ast_file'].exists() else 'N/A'}` |",
-            f"| **Stage 04: Canonical AST** | `{spec['canonical_file'].name}` | {format_size(spec['canonical_file'].stat().st_size) if spec['canonical_file'].exists() else 'N/A'} | `{sha256_file(spec['canonical_file']) if spec['canonical_file'].exists() else 'N/A'}` |",
+            "## 3. Direct Output-to-Source Lineage Mapping",
+            "This table directly maps each compiled file in `05_renders/` back to the active master source text in `01_input/` and intermediate AST in `02_ast/` that produced it.",
             "",
-            "---",
-            "",
-            "## 3. Compiled Render Catalog (`05_renders/`)",
-            "",
-            "### PDF Documents (`05_renders/pdf/`)",
-            "| File Name | Mode / Edition | Target Script | Size |",
-            "| :--- | :--- | :--- | :--- |",
+            "| Output Render Artifact | Format | Compiled Timestamp | Purpose / Description | Master Input File (`01_input/`) | Intermediate AST (`02_ast/`) | Pipeline Generation Path |",
+            "| :--- | :--- | :--- | :--- | :--- | :--- | :--- |",
         ]
 
-        if artifacts["05_renders"]["pdf"]:
-            for r in artifacts["05_renders"]["pdf"]:
-                traceability_lines.append(f"| [`{r['name']}`](../05_renders/pdf/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
+        # Gather all renders sorted by format and name
+        renders_flat = []
+        for fmt in ["pdf", "html", "txt"]:
+            for r in artifacts["05_renders"][fmt]:
+                renders_flat.append(r)
+
+        if renders_flat:
+            for r in renders_flat:
+                lineage = infer_source_lineage(corpus, r["name"])
+                input_link = f"[`{lineage['primary_input']}`](../01_input/{lineage['primary_input']})" if lineage["primary_input"] != "N/A" else "—"
+                render_link = f"[`{r['name']}`](../05_renders/{r['format'].lower()}/{r['name']})"
+                ts_str = f"`{r.get('compiled_timestamp', 'N/A')}`"
+                traceability_lines.append(
+                    f"| {render_link} | `{r['format']}` | {ts_str} | {lineage['category']} | {input_link} | `{lineage['intermediate_ast']}` | `{lineage['pipeline_tool']}` |"
+                )
         else:
-            traceability_lines.append("| *(None)* | — | — | — |")
+            traceability_lines.append("| *(None)* | — | — | — | — | — | — |")
 
-        traceability_lines += [
-            "",
-            "### HTML Readers (`05_renders/html/`)",
-            "| File Name | Mode / Edition | Target Script | Size |",
-            "| :--- | :--- | :--- | :--- |",
-        ]
-
-        if artifacts["05_renders"]["html"]:
-            for r in artifacts["05_renders"]["html"]:
-                traceability_lines.append(f"| [`{r['name']}`](../05_renders/html/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
-        else:
-            traceability_lines.append("| *(None)* | — | — | — |")
-
-        traceability_lines += [
-            "",
-            "### PlainText Exports (`05_renders/txt/`)",
-            "| File Name | Mode / Edition | Target Script | Size |",
-            "| :--- | :--- | :--- | :--- |",
-        ]
-
-        if artifacts["05_renders"]["txt"]:
-            for r in artifacts["05_renders"]["txt"]:
-                traceability_lines.append(f"| [`{r['name']}`](../05_renders/txt/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} |")
-        else:
-            traceability_lines.append("| *(None)* | — | — | — |")
-
+        # Section 4: Active Master Inputs (01_input/)
         traceability_lines += [
             "",
             "---",
             "",
-            "## 4. Source & Intermediate Datasets",
+            "## 4. Active Master Inputs (`01_input/`)",
+            "Only the active master source files utilized for pipeline generation are listed below:",
             "",
-            "### 01_input (Source Texts)",
-            "| File Name | Size | SHA-256 |",
+            "| Active Input File | Size | SHA-256 Checksum |",
             "| :--- | :--- | :--- |",
         ]
         for f_entry in artifacts["01_input"]:
-            sha_disp = f"`{f_entry['sha256'][:16]}...`" if "sha256" in f_entry and f_entry["sha256"] else "N/A"
-            traceability_lines.append(f"| [`{f_entry['name']}`](../01_input/{f_entry['name']}) | {f_entry['size_formatted']} | {sha_disp} |")
+            sha_val = f"`{f_entry['sha256']}`" if "sha256" in f_entry and f_entry["sha256"] else "N/A"
+            traceability_lines.append(f"| [`{f_entry['name']}`](../01_input/{f_entry['name']}) | {f_entry['size_formatted']} | {sha_val} |")
+
+        # Section 5: Intermediate ASTs & Canonical Datasets (02_ast/ & 04_canonical/)
+        traceability_lines += [
+            "",
+            "---",
+            "",
+            "## 5. Intermediate ASTs & Canonical Datasets",
+            "",
+            "### Parsed ASTs (`02_ast/`)",
+            "| AST File | Size | SHA-256 Checksum |",
+            "| :--- | :--- | :--- |",
+        ]
+        for f_entry in artifacts["02_ast"]:
+            sha_val = f"`{f_entry['sha256']}`" if "sha256" in f_entry and f_entry["sha256"] else "N/A"
+            traceability_lines.append(f"| [`{f_entry['name']}`](../02_ast/{f_entry['name']}) | {f_entry['size_formatted']} | {sha_val} |")
+
+        if artifacts["04_canonical"]:
+            traceability_lines += [
+                "",
+                "### Canonical Datasets (`04_canonical/`)",
+                "| Canonical File | Size | SHA-256 Checksum |",
+                "| :--- | :--- | :--- |",
+            ]
+            for f_entry in artifacts["04_canonical"]:
+                sha_val = f"`{f_entry['sha256']}`" if "sha256" in f_entry and f_entry["sha256"] else "N/A"
+                traceability_lines.append(f"| [`{f_entry['name']}`](../04_canonical/{f_entry['name']}) | {f_entry['size_formatted']} | {sha_val} |")
 
         if artifacts["03_reconciliation"]:
             traceability_lines += [
                 "",
-                "### 03_reconciliation (Editorial Tables)",
+                "### Reconciliation Tables (`03_reconciliation/`)",
                 "| File Name | Size |",
                 "| :--- | :--- |",
             ]
             for f_entry in artifacts["03_reconciliation"]:
                 traceability_lines.append(f"| [`{f_entry['name']}`](../03_reconciliation/{f_entry['name']}) | {f_entry['size_formatted']} |")
 
+        # Section 6: Compiled Render Catalog (05_renders/)
         traceability_lines += [
             "",
             "---",
             "",
-            "## 5. Audit Reports (`06_reports/`)",
+            "## 6. Compiled Render Catalog (`05_renders/`)",
+            "",
+            "### PDF Documents (`05_renders/pdf/`)",
+            "| File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |",
+            "| :--- | :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["pdf"]:
+            for r in artifacts["05_renders"]["pdf"]:
+                sha_txt = f"`{r.get('sha256', 'N/A')}`"
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/pdf/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} | {sha_txt} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "### HTML Readers (`05_renders/html/`)",
+            "| File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |",
+            "| :--- | :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["html"]:
+            for r in artifacts["05_renders"]["html"]:
+                sha_txt = f"`{r.get('sha256', 'N/A')}`"
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/html/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} | {sha_txt} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "### PlainText Exports (`05_renders/txt/`)",
+            "| File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |",
+            "| :--- | :--- | :--- | :--- | :--- |",
+        ]
+
+        if artifacts["05_renders"]["txt"]:
+            for r in artifacts["05_renders"]["txt"]:
+                sha_txt = f"`{r.get('sha256', 'N/A')}`"
+                traceability_lines.append(f"| [`{r['name']}`](../05_renders/txt/{r['name']}) | {r['mode']} | {r['script']} | {r['size_formatted']} | {sha_txt} |")
+        else:
+            traceability_lines.append("| *(None)* | — | — | — | — |")
+
+        traceability_lines += [
+            "",
+            "---",
+            "",
+            "## 7. Audit Reports & Integrity Check",
+            "",
+            "### Audit Reports (`06_reports/`)",
             "| Report File | Size |",
             "| :--- | :--- |",
         ]
@@ -740,9 +1022,7 @@ def generate_initial_run_manifests():
 
         traceability_lines += [
             "",
-            "---",
-            "",
-            "## 6. Audit & Validation Commands",
+            "### Verification Command",
             "To verify cryptographic and liturgical invariants against golden baselines:",
             "```bash",
             f"python src/tools/validate_run.py {corpus}",

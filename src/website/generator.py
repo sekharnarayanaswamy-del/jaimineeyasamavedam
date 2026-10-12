@@ -78,12 +78,34 @@ class WebsiteGenerator:
         
         self.labels = self._get_labels()
         
-        sys_meta = get_generated_metadata()
-        raw_generated_at = metadata.get("generated_at", sys_meta["generated_at"]) if metadata else sys_meta["generated_at"]
+        corpus_mode_map = {
+            'samhita': 'samhita',
+            'aaranam': 'aaranam',
+            'collection': 'collections',
+            'collections': 'collections',
+            'malayalam': 'kpully',
+            'kpully': 'kpully',
+            'purvarchikam': 'purvarchikam',
+            'uttararchikam': 'uttararchikam',
+            'rik': 'rik'
+        }
+        if 'kpully' in str(self.output_dir).lower() or 'malayalam' in str(self.output_dir).lower() or self.mode in ('kpully', 'malayalam'):
+            target_corpus = 'kpully'
+        else:
+            target_corpus = corpus_mode_map.get(self.mode, 'samhita')
+        try:
+            from core.version import get_corpus_edition
+            active_version = get_corpus_edition(target_corpus)
+        except Exception:
+            active_version = None
+
+        sys_meta = get_generated_metadata(target_corpus)
+        version_val = active_version or (metadata.get("version") if metadata else None) or sys_meta.get("version", "3.0")
+        raw_generated_at = sys_meta.get("generated_at") or (metadata.get("generated_at") if metadata else "")
         clean_generated_at = normalize_to_dd_mm_yyyy(raw_generated_at)
         
         self.metadata = {
-            "version": metadata.get("version", sys_meta["version"]) if metadata else sys_meta["version"],
+            "version": version_val,
             "generated_at": clean_generated_at,
             "last_updated": datetime.now().strftime("%d-%m-%Y")
         }

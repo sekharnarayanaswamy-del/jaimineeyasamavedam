@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>॥ जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः) ॥ - Jaimineeya Samavedam</title>
+    <title>॥ जैमिनीयसामवेद संहिता ॥ - Jaimineeya Samavedam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -709,6 +709,29 @@
             line-height: 1.25;
             vertical-align: baseline;
             display: inline;
+        }
+
+        /* Inline footnote superscript references */
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+            align-self: flex-start;
+        }
+
+        .mantra-text > sup.footnote-ref,
+        .mantra-word sup.footnote-ref {
+            align-self: flex-start;
+            top: -0.4em;
+        }
+
+        sup.footnote-ref a {
+            color: var(--primary-color, #8b0000);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0 1px;
         }
 
         /* Swara Modifiers */
@@ -1507,7 +1530,7 @@
             <div class="header-main-bar">
                 <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" title="Go to top of page">
                     <span class="om-symbol">ॐ</span>
-                    <span class="logo-title">॥ जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः) ॥</span>
+                    <span class="logo-title">॥ जैमिनीयसामवेद संहिता ॥</span>
                 </a>
                 <div class="header-quick-actions">
                     <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel (सूची)" id="sidebar-toggle-btn" data-label="सूची">☰ सूची</button>
@@ -4419,8 +4442,8 @@
         <main class="main-content">
             <!-- Title Header Card -->
             <div class="main-title">
-                <h1>॥ जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः) ॥</h1>
-                <div class="sub-heading">संस्करणम्: 1.00 | निर्मितम्: 10-10-2026 21:56:43</div>
+                <h1>॥ जैमिनीयसामवेद संहिता ॥</h1>
+                <div class="sub-heading">संस्करणम्: 3.29 | निर्मितम्: 11-10-2026 15:26:11</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->

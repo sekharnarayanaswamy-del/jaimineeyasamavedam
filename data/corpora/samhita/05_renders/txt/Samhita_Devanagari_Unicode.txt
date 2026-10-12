@@ -1,6 +1,6 @@
-जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः)
+जैमिनीयसामवेद संहिता
 
-Version 1.00 10-10-2026 21:56:43
+Version 3.29 11-10-2026 15:26:11
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
 आग्नेयपाठः

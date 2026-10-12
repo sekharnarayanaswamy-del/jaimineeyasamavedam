@@ -1,7 +1,7 @@
 {
   "corpus": "collections",
   "edition": "2.05",
-  "timestamp": "10-10-2026 21:56:48",
+  "timestamp": "12-10-2026 15:55:28",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -11,38 +11,17 @@
     "06_reports": "CURRENT"
   },
   "hashes": {
-    "input_sha256": "0cc58a89a0f4c0e3750e0baa3732773385a908966bd38b3b17127b07d3a9cc5c",
+    "input_sha256": "28b2c97dd85d20ffb09a38467ad2ae8935433775fb8ce06553bd96dfab327d49",
     "ast_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9",
     "canonical_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9"
   },
   "metrics": {
     "pathas": 1,
     "khandas": 25,
-    "samas": 143
+    "samas": 178
   },
   "artifacts": {
     "01_input": [
-      {
-        "name": "Ashirvachana_samani.txt",
-        "path": "data/corpora/collections/01_input/Ashirvachana_samani.txt",
-        "size_bytes": 704,
-        "size_formatted": "704 B",
-        "sha256": "0cc58a89a0f4c0e3750e0baa3732773385a908966bd38b3b17127b07d3a9cc5c"
-      },
-      {
-        "name": "Filter_file_superset.txt",
-        "path": "data/corpora/collections/01_input/Filter_file_superset.txt",
-        "size_bytes": 4026,
-        "size_formatted": "3.9 KB",
-        "sha256": "aa5097c4722b9afd90a02f1f9447e0227789fc476255fb78effc06db15ff77b7"
-      },
-      {
-        "name": "Nakshatra_sooktam.txt",
-        "path": "data/corpora/collections/01_input/Nakshatra_sooktam.txt",
-        "size_bytes": 1576,
-        "size_formatted": "1.5 KB",
-        "sha256": "7ab1598508d0dbb19fa5ad255e9bbcbe78759df35a8d6a79747025b5122790ee"
-      },
       {
         "name": "PM-PB_filter.txt",
         "path": "data/corpora/collections/01_input/PM-PB_filter.txt",
@@ -58,11 +37,11 @@
         "sha256": "d347f51a8019b501f2a2b91224af7ababd0c69d6d02bc60ee02d88b6036fea15"
       },
       {
-        "name": "Ritu-shanti.txt",
-        "path": "data/corpora/collections/01_input/Ritu-shanti.txt",
-        "size_bytes": 1580,
-        "size_formatted": "1.5 KB",
-        "sha256": "2643fda236a70eb70c29fbd9a4f74d73f35240bce91d4851afe65259c252a5df"
+        "name": "Sooktam.txt",
+        "path": "data/corpora/collections/01_input/Sooktam.txt",
+        "size_bytes": 203951,
+        "size_formatted": "199.2 KB",
+        "sha256": "28b2c97dd85d20ffb09a38467ad2ae8935433775fb8ce06553bd96dfab327d49"
       }
     ],
     "02_ast": [
@@ -121,7 +100,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 299492,
-          "size_formatted": "292.5 KB"
+          "size_formatted": "292.5 KB",
+          "sha256": "eedb761a6c10c12829bf0ec0246674efdadcca4739b2ff26bf71af73969678c2",
+          "compiled_timestamp": "02-10-2026 01:13:01"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari.pdf",
@@ -130,7 +111,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Standard",
           "size_bytes": 143318,
-          "size_formatted": "140.0 KB"
+          "size_formatted": "140.0 KB",
+          "sha256": "2d37196a29b6605320c7e342303ccebf9c793559756f887a5d0744e9584babda",
+          "compiled_timestamp": "02-10-2026 01:13:01"
         },
         {
           "name": "Sooktamala_Devanagari.pdf",
@@ -139,7 +122,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 271693,
-          "size_formatted": "265.3 KB"
+          "size_formatted": "265.3 KB",
+          "sha256": "fa2df25313c25535d57b0ad2f99f9b73a9c98f6f5e449667f9399787a5c36383",
+          "compiled_timestamp": "02-10-2026 01:13:01"
         }
       ],
       "html": [
@@ -149,8 +134,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 5281762,
-          "size_formatted": "5.04 MB"
+          "size_bytes": 5283152,
+          "size_formatted": "5.04 MB",
+          "sha256": "03da3f71ac21cbe446900be1880680744adaf1be57788f403edc4da87fa4cc42",
+          "compiled_timestamp": "11-10-2026 15:26:20"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari.html",
@@ -158,8 +145,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 3567852,
-          "size_formatted": "3.40 MB"
+          "size_bytes": 3569242,
+          "size_formatted": "3.40 MB",
+          "sha256": "d6a9fec71131733b2cb33e13264cfd1b6d4e58ceacca7221c814bee8cd50306a",
+          "compiled_timestamp": "11-10-2026 15:26:21"
         },
         {
           "name": "Sooktamala_Devanagari.html",
@@ -167,8 +156,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 4760768,
-          "size_formatted": "4.54 MB"
+          "size_bytes": 4762051,
+          "size_formatted": "4.54 MB",
+          "sha256": "d849e3c08164dfcbffb40b2be892ad5654d7333d52220a818b8c461413700017",
+          "compiled_timestamp": "11-10-2026 15:26:19"
         }
       ],
       "txt": [
@@ -178,8 +169,10 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 238034,
-          "size_formatted": "232.5 KB"
+          "size_bytes": 238042,
+          "size_formatted": "232.5 KB",
+          "sha256": "50c7dbb9943c59ad234ba0e9eb12f7155af5646f27795ab2a75ddca69a485abe",
+          "compiled_timestamp": "11-10-2026 15:26:20"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari_Unicode.txt",
@@ -187,8 +180,10 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 74137,
-          "size_formatted": "72.4 KB"
+          "size_bytes": 74145,
+          "size_formatted": "72.4 KB",
+          "sha256": "a122c6db2d4914025b22a0411b4fb494a770be6a42bd0f73de75a5e5b1c2f663",
+          "compiled_timestamp": "11-10-2026 15:26:21"
         },
         {
           "name": "Sooktamala_Devanagari_Unicode.txt",
@@ -196,8 +191,10 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 211209,
-          "size_formatted": "206.3 KB"
+          "size_bytes": 211217,
+          "size_formatted": "206.3 KB",
+          "sha256": "0d9fda5e4b12c1fd3b455ad0b2b895677c137f87b73076edee35e185ea29bff2",
+          "compiled_timestamp": "11-10-2026 15:26:19"
         }
       ]
     },

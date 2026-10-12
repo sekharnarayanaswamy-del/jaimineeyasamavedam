@@ -734,6 +734,29 @@
             display: inline;
         }
 
+        /* Inline footnote superscript references */
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+            align-self: flex-start;
+        }
+
+        .mantra-text > sup.footnote-ref,
+        .mantra-word sup.footnote-ref {
+            align-self: flex-start;
+            top: -0.4em;
+        }
+
+        sup.footnote-ref a {
+            color: var(--primary-color, #8b0000);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0 1px;
+        }
+
         /* Swara Modifiers */
         .swara-mod {
             font-family: var(--font-swara), var(--font-doc);

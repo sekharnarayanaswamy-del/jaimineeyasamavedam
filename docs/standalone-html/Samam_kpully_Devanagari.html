@@ -711,6 +711,29 @@
             display: inline;
         }
 
+        /* Inline footnote superscript references */
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+            align-self: flex-start;
+        }
+
+        .mantra-text > sup.footnote-ref,
+        .mantra-word sup.footnote-ref {
+            align-self: flex-start;
+            top: -0.4em;
+        }
+
+        sup.footnote-ref a {
+            color: var(--primary-color, #8b0000);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0 1px;
+        }
+
         /* Swara Modifiers */
         .swara-mod {
             font-family: var(--font-swara), var(--font-doc);
@@ -1709,7 +1732,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः) ॥</h1>
-                <div class="sub-heading">संस्करणम्: 1.00 | निर्मितम्: 10-10-2026 21:56:47</div>
+                <div class="sub-heading">संस्करणम्: 1.00 | निर्मितम्: 11-10-2026 15:26:16</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->

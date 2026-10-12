@@ -57,6 +57,12 @@ DEFAULT_AARANAM_JSON = ROOT_DIR / "data" / "output" / "Aaranam_latest_out.json"
 
 DEFAULT_COLLECTION_JSON = ROOT_DIR / "data" / "output" / "Collection_latest_out.json"
 
+DEFAULT_RIK_INPUT = (
+    ROOT_DIR / "data" / "corpora" / "Rik" / "01_input" / "vedic_text.txt"
+    if (ROOT_DIR / "data" / "corpora" / "Rik" / "01_input" / "vedic_text.txt").exists()
+    else ROOT_DIR / "data" / "input" / "vedic_text.txt"
+)
+
 DEFAULT_MAL_INPUT = ROOT_DIR / "data" / "input" / "Malayalam" / "Samam_Malayalam_Unicode.txt"
 DEFAULT_MAL_JSON = ROOT_DIR / "data" / "output" / "malayalam" / "Samam_Malayalam.json"
 DEFAULT_KPULLY_JSON = ROOT_DIR / "Malayalam_JSV" / "malayalam" / "Samam_kpully_Devanagari_json.json"
@@ -339,6 +345,21 @@ def main():
                 description="Samhita Step 1: Generating JSON AST from source text",
             )
 
+            # Step 1A.1: Generate Canonical Vargeekaran AST & Rik Table
+            run_cmd(
+                [
+                    sys.executable,
+                    "-X", "utf8",
+                    str(ROOT_DIR / "src" / "generate_rik_table.py"),
+                ],
+                description="Samhita Step 1A.1: Generating Canonical Vargeekaran AST & Rik Table",
+            )
+            sam_v_json = ROOT_DIR / "data" / "output" / "Vargeekaran.json"
+            if sam_v_json.exists():
+                sam_can_dir = ROOT_DIR / "data" / "corpora" / "samhita" / "04_canonical"
+                sam_can_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(str(sam_v_json), str(sam_can_dir / "Vargeekaran.json"))
+
             # Step 1B: Render Devanagari in requested modes
             mode_descriptions = {
                 "combined": "Combined (Rik + Samam + Metadata)",
@@ -536,7 +557,7 @@ def main():
     # ----------------------------------------------------
     if "purvarchikam" in corpora:
         print("\n>>> CORPUS: PURVARCHIKAM (पूर्वार्चिकम् - ऋक्)")
-        purva_input = ROOT_DIR / "data" / "input" / "vedic_text.txt"
+        purva_input = DEFAULT_RIK_INPUT
         purva_json = ROOT_DIR / "data" / "output" / "Purvarchikam_out.json"
 
         run_cmd(
@@ -569,7 +590,7 @@ def main():
     # ----------------------------------------------------
     if "uttararchikam" in corpora:
         print("\n>>> CORPUS: UTTARARCHIKAM (उत्तरार्चिकम् - ऋक्)")
-        uttara_input = ROOT_DIR / "data" / "input" / "vedic_text.txt"
+        uttara_input = DEFAULT_RIK_INPUT
         uttara_json = ROOT_DIR / "data" / "output" / "Uttararchikam_out.json"
 
         run_cmd(

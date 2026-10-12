@@ -805,9 +805,22 @@ Examples:
     meta = data_Devanagari.get('meta', {})
     
     # Determine Tier 2 Corpus Edition
-    # Priority: CLI override > KPully variant (if kpully mode/file) > Corpus type ('collections', 'aaranam', 'samhita') > AST meta.version
-    is_kpully_target = bool(kpully_mode or "kpully" in str(input_file).lower() or (out_name and "kpully" in str(out_name).lower()))
-    edition_corpus = "kpully" if is_kpully_target else mode_type
+    # Priority: CLI override > KPully specific target > Corpus type ('collections', 'aaranam', 'samhita', 'purvarchikam', 'uttararchikam') > AST meta.version
+    corpus_map = {
+        'samhita': 'samhita',
+        'aaranam': 'aaranam',
+        'collection': 'collections',
+        'purvarchikam': 'purvarchikam',
+        'uttararchikam': 'uttararchikam',
+        'kpully': 'kpully'
+    }
+    default_corpus = corpus_map.get(mode_type, 'samhita')
+    is_kpully_target = bool(
+        (out_name and "kpully" in str(out_name).lower()) or
+        ("kpully" in str(input_file).lower()) or
+        (mode_type == 'kpully')
+    )
+    edition_corpus = "kpully" if is_kpully_target else default_corpus
     from core.version import get_corpus_edition
     corpus_edition = get_corpus_edition(edition_corpus)
     

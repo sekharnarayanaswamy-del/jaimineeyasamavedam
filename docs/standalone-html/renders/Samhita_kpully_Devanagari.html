@@ -646,7 +646,7 @@
         }
         .mantra-word {
             flex-direction: column-reverse;
-            justify-content: flex-start;
+            justify-content: flex-end;
         }
         .mantra-connected-group {
             align-items: flex-end;
@@ -661,7 +661,7 @@
             display: inline-flex;
             align-items: flex-end;
             justify-content: center;
-            height: 1.4em;
+            height: 1.3em;
         }
 
         .swara-text {
@@ -995,6 +995,12 @@
             line-height: 0;
             position: relative;
             top: -0.4em;
+            align-self: flex-start;
+        }
+        .mantra-text > sup.footnote-ref,
+        .mantra-word sup.footnote-ref {
+            align-self: flex-start;
+            top: -0.3em;
         }
         .mantra-verse > sup.footnote-ref {
             align-self: flex-start;
@@ -1002,8 +1008,8 @@
             top: 0;
         }
         .mantra-verse > sup.footnote-ref {
-            align-self: flex-end;
-            margin-bottom: 0.2em;
+            align-self: flex-start;
+            margin-top: 0.2em;
         }
         sup.footnote-ref a {
             color: var(--accent-blue);
@@ -1709,7 +1715,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ जैमिनीयसामवेद संहिता (कोडुन्तिरपुळ्ळि पाठः) ॥</h1>
-                <div class="sub-heading">संस्करणम्: 1.00 | निर्मितम्: 10-10-2026 09:50:52</div>
+                <div class="sub-heading">संस्करणम्: 1.00 | निर्मितम्: 10-10-2026 22:29:06</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->

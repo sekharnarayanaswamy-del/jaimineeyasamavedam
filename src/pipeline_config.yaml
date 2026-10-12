@@ -12,13 +12,13 @@ project:
 
 # --- TIER 2: CORPUS EDITIONS ---
 editions:
-  samhita: "3.28"
-  aaranam: "1.14"
+  samhita: "3.29"
+  aaranam: "1.16"
   collections: "2.05"
   kpully: "1.00"
-  purvarchikam: "1.00"
-  uttararchikam: "1.00"
-  rik: "1.00"
+  purvarchikam: "1.02"
+  uttararchikam: "1.02"
+  rik: "1.02"
 
 # ==============================================================================
 # ACTIVE BUILD PROFILE (Used by default when running without CLI flags)

@@ -1429,6 +1429,12 @@ sup.footnote-ref {
     line-height: 0;
     position: relative;
     top: -0.5em;
+    align-self: flex-start !important;
+}
+.mantra-text > sup.footnote-ref,
+.mantra-word sup.footnote-ref {
+    align-self: flex-start !important;
+    top: -0.3em !important;
 }
 
 sup.footnote-ref a {

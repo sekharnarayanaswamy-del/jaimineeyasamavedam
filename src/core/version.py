@@ -11,9 +11,10 @@ import sys
 import re
 import subprocess
 import hashlib
+import json
 import datetime
 from pathlib import Path
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, Tuple
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -119,7 +120,12 @@ def get_engine_version() -> str:
 def get_corpus_edition(corpus_name: str = "samhita") -> str:
     """Tier 2: Returns the edition string for a specific corpus."""
     normalized = corpus_name.lower().strip()
-    aliases = {"collection": "collections", "purva": "purvarchikam", "uttara": "uttararchikam"}
+    aliases = {
+        "collection": "collections",
+        "purva": "purvarchikam",
+        "uttara": "uttararchikam",
+        "malayalam": "kpully"
+    }
     normalized = aliases.get(normalized, normalized)
     cfg = _load_config()
     editions = cfg.get("editions", {})
@@ -138,18 +144,30 @@ def get_corpus_edition(corpus_name: str = "samhita") -> str:
 def set_corpus_edition(corpus_name: str, edition_str: str) -> bool:
     """Updates the corpus edition in pipeline_config.yaml (and src/VERSION for samhita)."""
     normalized = corpus_name.lower().strip()
-    aliases = {"collection": "collections", "purva": "purvarchikam", "uttara": "uttararchikam"}
+    aliases = {
+        "collection": "collections",
+        "purva": "purvarchikam",
+        "uttara": "uttararchikam",
+        "malayalam": "kpully"
+    }
     normalized = aliases.get(normalized, normalized)
     try:
         if CONFIG_FILE.exists():
             content = CONFIG_FILE.read_text(encoding='utf-8')
-            # Look for the key under editions: e.g. "  samhita: "3.28""
-            pattern = re.compile(rf'(^\s*{re.escape(normalized)}\s*:\s*)["\']?[^"\'\r\n]+["\']?', re.MULTILINE)
-            if pattern.search(content):
-                new_content = pattern.sub(rf'\g<1>"{edition_str}"', content)
-                CONFIG_FILE.write_text(new_content, encoding='utf-8')
+            # Restrict replacement strictly to the editions block
+            ed_match = re.search(r'(^editions\s*:\s*\r?\n(?:[ ]+.*\r?\n)*)', content, re.MULTILINE)
+            if ed_match:
+                ed_block = ed_match.group(1)
+                pattern = re.compile(rf'(^[ ]+{re.escape(normalized)}\s*:\s*)["\']?[^"\'\r\n]+["\']?', re.MULTILINE)
+                if pattern.search(ed_block):
+                    new_ed_block = pattern.sub(rf'\g<1>"{edition_str}"', ed_block, count=1)
+                    content = content[:ed_match.start(1)] + new_ed_block + content[ed_match.end(1):]
+                    CONFIG_FILE.write_text(content, encoding='utf-8')
+                else:
+                    new_ed_block = ed_block.rstrip() + f'\n  {normalized}: "{edition_str}"\n'
+                    content = content[:ed_match.start(1)] + new_ed_block + content[ed_match.end(1):]
+                    CONFIG_FILE.write_text(content, encoding='utf-8')
             else:
-                # Fallback if key not found: load and dump
                 cfg = _load_config()
                 if "editions" not in cfg:
                     cfg["editions"] = {}
@@ -225,7 +243,9 @@ def increment_corpus_edition(corpus_name: str = "samhita") -> str:
     try:
         parts = current.split('.')
         if len(parts) >= 2:
-            parts[-1] = str(int(parts[-1]) + 1)
+            width = len(parts[-1])
+            new_val = int(parts[-1]) + 1
+            parts[-1] = f"{new_val:0{width}d}"
             new_edition = ".".join(parts)
         else:
             new_edition = current + ".1"
@@ -254,9 +274,85 @@ def format_build_stamp(meta: Dict[str, Any]) -> str:
         
     return " · ".join(parts)
 
+def check_and_auto_increment_edition(corpus_name: str = "samhita", input_file: Optional[Union[str, Path]] = None) -> Tuple[str, bool]:
+    """
+    Checks if the SHA-256 fingerprint of the input file has changed since the last manifest run.
+    If changed (input updated in correction workflow), automatically increments the patch edition version.
+    Returns (current_or_new_edition, was_incremented).
+    """
+    edition = get_corpus_edition(corpus_name)
+    if not input_file:
+        return edition, False
+
+    input_path = Path(input_file)
+    if not input_path.is_absolute():
+        input_path = REPO_ROOT / input_path
+    if not input_path.exists():
+        return edition, False
+
+    current_hash = get_file_hash(input_path)
+    if not current_hash:
+        return edition, False
+
+    normalized = corpus_name.lower().strip()
+    folder_map = {
+        "collection": "collections",
+        "purva": "Rik",
+        "purvarchikam": "Rik",
+        "uttara": "Rik",
+        "uttararchikam": "Rik",
+        "rik": "Rik",
+    }
+    corpus_folder = folder_map.get(normalized, normalized)
+
+    manifest_path = REPO_ROOT / "data" / "corpora" / corpus_folder / "run_manifest.json"
+    stored_hash = None
+    if manifest_path.exists():
+        try:
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                manifest_data = json.load(f)
+            # Try to match the exact input file name in artifacts["01_input"]
+            for art in manifest_data.get("artifacts", {}).get("01_input", []):
+                if art.get("name") == input_path.name:
+                    stored_hash = art.get("sha256")
+                    break
+            # Fall back to root input_sha256 if not found by name
+            if not stored_hash:
+                stored_hash = manifest_data.get("hashes", {}).get("input_sha256")
+        except Exception:
+            pass
+
+    if stored_hash and current_hash != stored_hash:
+        new_edition = increment_corpus_edition(corpus_name)
+        if corpus_folder == "Rik":
+            set_corpus_edition("rik", new_edition)
+            set_corpus_edition("purvarchikam", new_edition)
+            set_corpus_edition("uttararchikam", new_edition)
+        # Update manifest in place so subsequent calls in the same pipeline run do not double-increment
+        try:
+            if manifest_path.exists():
+                with open(manifest_path, "r", encoding="utf-8") as f:
+                    m_data = json.load(f)
+                if "hashes" not in m_data:
+                    m_data["hashes"] = {}
+                m_data["hashes"]["input_sha256"] = current_hash
+                for art in m_data.get("artifacts", {}).get("01_input", []):
+                    if art.get("name") == input_path.name:
+                        art["sha256"] = current_hash
+                with open(manifest_path, "w", encoding="utf-8") as f:
+                    json.dump(m_data, f, indent=2, ensure_ascii=False)
+        except Exception:
+            pass
+        print(f"[AUTO-VERSION] Input file '{input_path.name}' changed for '{corpus_name}'. Incremented edition: {edition} -> {new_edition}")
+        return new_edition, True
+
+    return edition, False
+
+
 # Backward-compatibility helpers for legacy callers
 def get_project_version() -> str:
     return get_corpus_edition("samhita")
 
 def increment_project_version() -> str:
     return increment_corpus_edition("samhita")
+

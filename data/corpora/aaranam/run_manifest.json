@@ -1,7 +1,7 @@
 {
   "corpus": "aaranam",
-  "edition": "1.14",
-  "timestamp": "10-10-2026 21:56:48",
+  "edition": "1.16",
+  "timestamp": "12-10-2026 15:55:28",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -11,46 +11,32 @@
     "06_reports": "CURRENT"
   },
   "hashes": {
-    "input_sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4",
-    "ast_sha256": "8b976fcc6e36f42f65b670280c8257e2742c0fa49ad2b02b9cc3bd9f52f59547",
-    "canonical_sha256": "c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa"
+    "input_sha256": "149cb2aa7070e421cd490c464fe94bb3c40acd2cb3df54761d7df6be7886681c",
+    "ast_sha256": "aa5a8c1b06ce423e964ec81e5c50eeb6103952e76aa7168d6fb798b903cae7fd",
+    "canonical_sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047"
   },
   "metrics": {
     "pathas": 6,
     "khandas": 25,
-    "samas": 154
+    "samas": 295
   },
   "artifacts": {
     "01_input": [
       {
         "name": "Aaranam_latest.txt",
         "path": "data/corpora/aaranam/01_input/Aaranam_latest.txt",
-        "size_bytes": 513097,
-        "size_formatted": "501.1 KB",
-        "sha256": "16f16c3da6dd740daaae479b903bb094303a0dd4c872f8963e9c6c9e837bafe4"
-      },
-      {
-        "name": "Aaranam_rik.txt",
-        "path": "data/corpora/aaranam/01_input/Aaranam_rik.txt",
-        "size_bytes": 20737,
-        "size_formatted": "20.3 KB",
-        "sha256": "61ffd4ce9e19e7d5f573ef20df956d5363c0040b7299e4a7048b96fd0897a273"
-      },
-      {
-        "name": "Aaranam_rik_samam_table.txt",
-        "path": "data/corpora/aaranam/01_input/Aaranam_rik_samam_table.txt",
-        "size_bytes": 27859,
-        "size_formatted": "27.2 KB",
-        "sha256": "aae94e1875c5e34845cc466ae021a5b03c6282740fbb142b58b186ef939be36a"
+        "size_bytes": 513024,
+        "size_formatted": "501.0 KB",
+        "sha256": "149cb2aa7070e421cd490c464fe94bb3c40acd2cb3df54761d7df6be7886681c"
       }
     ],
     "02_ast": [
       {
         "name": "Aaranam_ast.json",
         "path": "data/corpora/aaranam/02_ast/Aaranam_ast.json",
-        "size_bytes": 620452,
-        "size_formatted": "605.9 KB",
-        "sha256": "8b976fcc6e36f42f65b670280c8257e2742c0fa49ad2b02b9cc3bd9f52f59547"
+        "size_bytes": 620376,
+        "size_formatted": "605.8 KB",
+        "sha256": "aa5a8c1b06ce423e964ec81e5c50eeb6103952e76aa7168d6fb798b903cae7fd"
       }
     ],
     "03_reconciliation": [
@@ -63,7 +49,7 @@
       {
         "name": "Aaranam_Rik_Table_Baseline.csv",
         "path": "data/corpora/aaranam/03_reconciliation/Aaranam_Rik_Table_Baseline.csv",
-        "size_bytes": 98532,
+        "size_bytes": 98459,
         "size_formatted": "96.2 KB"
       },
       {
@@ -77,9 +63,9 @@
       {
         "name": "Aaranam_vargeekaran.json",
         "path": "data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json",
-        "size_bytes": 763791,
-        "size_formatted": "745.9 KB",
-        "sha256": "c131686229eb530164610b33565b23103da4de770fc04f1086a306254c6ffbaa"
+        "size_bytes": 763715,
+        "size_formatted": "745.8 KB",
+        "sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047"
       }
     ],
     "05_renders": {
@@ -91,7 +77,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 537714,
-          "size_formatted": "525.1 KB"
+          "size_formatted": "525.1 KB",
+          "sha256": "7838d3f405325244ccf127eb951e7fe292ca1fd9b644e0c0677b61c9d4a641e8",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Rik_Devanagari.pdf",
@@ -100,7 +88,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 133439,
-          "size_formatted": "130.3 KB"
+          "size_formatted": "130.3 KB",
+          "sha256": "6dea6f2a96117fc3d1778fa4ea6d11bf2c0938b1408e4bdc51d9645fa0939ea2",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Rik_NoMeta_Devanagari.pdf",
@@ -109,7 +99,9 @@
           "script": "Devanagari (Standard)",
           "mode": "NoMeta (Continuous Chanting)",
           "size_bytes": 121221,
-          "size_formatted": "118.4 KB"
+          "size_formatted": "118.4 KB",
+          "sha256": "e80a3a2f20d08d8a255519510b4c16286001b5f088d892273ab6707cdfae026a",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Samam_Devanagari.pdf",
@@ -118,7 +110,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 498449,
-          "size_formatted": "486.8 KB"
+          "size_formatted": "486.8 KB",
+          "sha256": "9e8e8702e38682a0a9c421b476f19a4bef40b73208269c493a41966cc7a6eb33",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Samam_NoMeta_Devanagari.pdf",
@@ -127,7 +121,9 @@
           "script": "Devanagari (Standard)",
           "mode": "NoMeta (Continuous Chanting)",
           "size_bytes": 498453,
-          "size_formatted": "486.8 KB"
+          "size_formatted": "486.8 KB",
+          "sha256": "de5b8d95cdee8086d889cedf8ddb17604dad98bc04652a6ab857f433448f4ab9",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         }
       ],
       "html": [
@@ -137,8 +133,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 8068511,
-          "size_formatted": "7.69 MB"
+          "size_bytes": 8068743,
+          "size_formatted": "7.69 MB",
+          "sha256": "cf911660ec49c378049864aeea719813a1224d8999f4b3626e763dc902a05f38",
+          "compiled_timestamp": "11-10-2026 15:26:19"
         },
         {
           "name": "Aaranam_Rik_Devanagari.html",
@@ -147,7 +145,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 893546,
-          "size_formatted": "872.6 KB"
+          "size_formatted": "872.6 KB",
+          "sha256": "cedb11877d42187b3c37ed9e80f1e710b9ccdb851469035fb01c6e9dee8190c9",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Rik_NoMeta_Devanagari.html",
@@ -156,7 +156,9 @@
           "script": "Devanagari (Standard)",
           "mode": "NoMeta (Continuous Chanting)",
           "size_bytes": 864170,
-          "size_formatted": "843.9 KB"
+          "size_formatted": "843.9 KB",
+          "sha256": "8325d4f6429a1804ef8c47ad4a8421094e5030eaf96aeb297b20c8ba842a405b",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Samam_Devanagari.html",
@@ -165,7 +167,9 @@
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
           "size_bytes": 5595110,
-          "size_formatted": "5.34 MB"
+          "size_formatted": "5.34 MB",
+          "sha256": "ca3e632ee8ed0e38e826630ff8e83474c9d1ae8bba3c0e0e4ed2616c9e523289",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         },
         {
           "name": "Aaranam_Samam_NoMeta_Devanagari.html",
@@ -174,7 +178,9 @@
           "script": "Devanagari (Standard)",
           "mode": "NoMeta (Continuous Chanting)",
           "size_bytes": 5595110,
-          "size_formatted": "5.34 MB"
+          "size_formatted": "5.34 MB",
+          "sha256": "64b1987ac6668b0e4ae875ef4e8830f1099968ed1fe8c7de4cb47ac3504d7240",
+          "compiled_timestamp": "01-10-2026 23:59:00"
         }
       ],
       "txt": [
@@ -184,8 +190,10 @@
           "format": "TXT",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 516230,
-          "size_formatted": "504.1 KB"
+          "size_bytes": 516155,
+          "size_formatted": "504.1 KB",
+          "sha256": "7b978eaca0808f19924bf6977914776736ebd466069effbf1733c12112ddaab2",
+          "compiled_timestamp": "11-10-2026 15:26:18"
         }
       ]
     },

@@ -1929,6 +1929,12 @@ sup.footnote-ref {
     line-height: 0;
     position: relative;
     top: -0.5em;
+    align-self: flex-start !important;
+}
+.mantra-text > sup.footnote-ref,
+.mantra-word sup.footnote-ref {
+    align-self: flex-start !important;
+    top: -0.3em !important;
 }
 
 sup.footnote-ref a {
@@ -3059,8 +3065,8 @@ body.font-rachana .swara-mod.mod-dot {
     margin-bottom: 2px !important;
 }
 .mantra-verse > sup.footnote-ref {
-    align-self: flex-end !important;
-    margin-bottom: 0.2em !important;
+    align-self: flex-start !important;
+    margin-top: 0.2em !important;
 }
 """
 
