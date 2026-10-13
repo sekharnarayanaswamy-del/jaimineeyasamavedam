@@ -92,10 +92,15 @@ def build_scaled_swara_font_b64(
         cx = (g.xMin + g.xMax) / 2.0
         base_y = g.yMin
 
+        # Align lower caret / svarita marks (U+1CD0, U+1CDA) up to the level of other swara markers (yMin ≈ 1690)
+        # to avoid collision with mantra syllables, and apply horizontal centering (x_shift) to swara digits/letters (U+A8E0..U+A8F1)
+        y_shift = max(0, 1690 - base_y) if cp in [0x1CD0, 0x1CDA] else 0
+        x_shift = swara_x_shift if cp in range(0xA8E0, 0xA8F2) else 0
+
         new_coords = []
         for x, y in g.coordinates:
-            nx = int(round(cx + (x - cx) * scale)) - swara_x_shift
-            ny = int(round(base_y + (y - base_y) * scale))
+            nx = int(round(cx + (x - cx) * scale)) - x_shift
+            ny = int(round(base_y + (y - base_y) * scale)) + y_shift
             new_coords.append((nx, ny))
 
         g.coordinates[:] = new_coords
