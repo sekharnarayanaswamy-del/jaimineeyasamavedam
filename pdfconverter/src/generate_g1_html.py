@@ -45,12 +45,19 @@ PRENKHA_RE = re.compile(
 )
 
 
-def build_scaled_swara_font_b64(font_path: Path, bold_font_path: Path = None, scale: float = 1.55) -> str:
+def build_scaled_swara_font_b64(
+    font_path: Path,
+    bold_font_path: Path = None,
+    scale: float = 1.55,
+    swara_x_shift: int = 280,
+) -> str:
     """
     Loads `AdishilaVedic.ttf` (or `AdishilaVedicBold.ttf`) in memory, replaces the superscript
     Vedic swara numeral/mark glyphs (U+A8E0..U+A8F1, U+1CD0, U+1CDA) with their bolder outlines
-    scaled up by `scale` (default 1.55x = 55% larger) around (xCenter, yMin), adjusts GPOS pair
-    spacing for double swaras (e.g. '꣡꣯'), and returns the base64-encoded TTF string.
+    scaled up by `scale` (default 1.55x = 55% larger) around (xCenter, yMin), shifts their horizontal
+    coordinates to the left by `swara_x_shift` (default 280 font units) so they center cleanly on top
+    of the base mantra syllables instead of sitting off to the right, adjusts GPOS pair spacing for
+    double swaras (e.g. '꣡꣯'), and returns the base64-encoded TTF string.
     Does not modify any font files on disk.
     """
     if not font_path.exists():
@@ -87,12 +94,15 @@ def build_scaled_swara_font_b64(font_path: Path, bold_font_path: Path = None, sc
 
         new_coords = []
         for x, y in g.coordinates:
-            nx = int(round(cx + (x - cx) * scale))
+            nx = int(round(cx + (x - cx) * scale)) - swara_x_shift
             ny = int(round(base_y + (y - base_y) * scale))
             new_coords.append((nx, ny))
 
         g.coordinates[:] = new_coords
         g.recalcBounds(glyf)
+        if "hmtx" in tt and gname in tt["hmtx"].metrics:
+            adv, _ = tt["hmtx"].metrics[gname]
+            tt["hmtx"].metrics[gname] = (adv, g.xMin)
 
     # Scale horizontal pair spacing between consecutive combining swara marks (e.g. '꣡꣯') in GPOS
     if "GPOS" in tt:
@@ -330,6 +340,7 @@ def generate_html_via_render_py(
     html_path: Path,
     template_rel_path: str = DEFAULT_TEMPLATE,
     swara_scale: float = 1.55,
+    swara_x_shift: int = 280,
 ):
     """
     Converts the Parva -> Prapataka -> Kandah -> Samam hierarchy into `src/render.py`'s
@@ -475,8 +486,8 @@ def generate_html_via_render_py(
     orig_render = html_template.render
     reg_font_path = FONTS_DIR / "AdishilaVedic.ttf"
     bold_font_path = FONTS_DIR / "AdishilaVedicBold.ttf"
-    scaled_reg_b64 = build_scaled_swara_font_b64(reg_font_path, bold_font_path, scale=swara_scale)
-    scaled_bold_b64 = build_scaled_swara_font_b64(bold_font_path, bold_font_path, scale=swara_scale)
+    scaled_reg_b64 = build_scaled_swara_font_b64(reg_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift)
+    scaled_bold_b64 = build_scaled_swara_font_b64(bold_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift)
 
     def _custom_render(**kwargs):
         if scaled_reg_b64:
@@ -542,6 +553,12 @@ def main():
         default=1.55,
         help="Scale factor for superscript Vedic swara numerals/marks in embedded font (default: 1.55)",
     )
+    parser.add_argument(
+        "--swara-shift",
+        type=int,
+        default=280,
+        help="Horizontal shift in font units to center swaras over base syllables (default: 280)",
+    )
     args = parser.parse_args()
 
     generate_html_via_render_py(
@@ -549,6 +566,7 @@ def main():
         Path(args.output),
         args.template,
         swara_scale=args.swara_scale,
+        swara_x_shift=args.swara_shift,
     )
 
 
