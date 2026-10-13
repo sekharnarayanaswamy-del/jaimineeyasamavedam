@@ -403,18 +403,21 @@ def generate_html_via_render_py(
                     trailing_colophons = []
                     if g_idx == k_rik_count:
                         if k_colophon:
+                            k_col_html = "<br>".join(html.escape(p.strip()) for p in k_colophon.split(" | ") if p.strip())
                             trailing_colophons.append(
                                 f'<div style="text-align:center; margin: 1.1rem 0 0.3rem; padding: 0.55rem 1rem; '
                                 f'background: #F3FAFF; border: 1px solid #90CAF9; border-radius: 8px; '
                                 f'color: var(--maroon); font-weight: 600; font-size: 1.15rem;">'
-                                f'{html.escape(k_colophon)}</div>'
+                                f'{k_col_html}</div>'
                             )
-                        if k_idx == len(kandahs) - 1 and pr.get("colophon"):
+                        pr_colophon = pr.get("colophon", "")
+                        if k_idx == len(kandahs) - 1 and pr_colophon and pr_colophon != k_colophon:
+                            pr_col_html = "<br>".join(html.escape(p.strip()) for p in pr_colophon.split(" | ") if p.strip())
                             trailing_colophons.append(
                                 f'<div style="text-align:center; margin: 0.8rem 0 0.3rem; padding: 0.65rem 1.2rem; '
                                 f'background: #FFF3E0; border: 1.5px solid var(--gold); border-radius: 8px; '
                                 f'color: var(--maroon); font-weight: 700; font-size: 1.2rem;">'
-                                f'{html.escape(pr.get("colophon"))}</div>'
+                                f'{pr_col_html}</div>'
                             )
 
                     subsections_dict[sub_key] = {

@@ -263,8 +263,6 @@ def build_g1_json(pages_data, source_pdf_str="pdfconverter/data/input/g1_extr.pd
                 continue
 
             if page_num == 1 and line.startswith("इति प्रकृतिसप्तगानान्तर्भूतं"):
-                if current_kandah:
-                    current_kandah["colophon"] = line
                 if current_prapataka:
                     current_prapataka["colophon"] = line
                 current_samam = None

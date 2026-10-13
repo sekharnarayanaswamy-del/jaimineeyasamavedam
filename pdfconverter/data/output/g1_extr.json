@@ -35,7 +35,7 @@
               "kandah_id": "0",
               "kandah_title": "॥ गायत्रम् ॥",
               "kandah_title_toc": "गायत्रम्",
-              "colophon": "इति प्रकृतिसप्तगानान्तर्भूतं गायत्राख्यं प्रथमं गानं सम्पूर्णम् ॥",
+              "colophon": "",
               "samam_count": 2,
               "samams": [
                 {
@@ -111,7 +111,7 @@
           "colophon": "॥ इति ग्रामे गेय-गाने प्रथमस्यार्द्धः प्रपाठकः ॥",
           "kandahs": [
             {
-              "kandah_id": "1",
+              "kandah_id": "0_cont",
               "kandah_title": "॥ अथ प्रथम खण्डः ॥",
               "kandah_title_toc": "प्रथम खण्डः",
               "colophon": "॥ एकोनविंशतिः । प्रथमः खण्डः ॥ १ ॥",
@@ -710,7 +710,7 @@
               ]
             },
             {
-              "kandah_id": "2",
+              "kandah_id": "1",
               "kandah_title": "॥ अथ द्वितीयः खण्डः ॥",
               "kandah_title_toc": "द्वितीयः खण्डः",
               "colophon": "॥ पञ्चदशः ॥ द्वितीतः खण्डः ॥ २ ॥",
@@ -1193,7 +1193,7 @@
           "colophon": "॥ इति ग्रामे गेय-गाने प्रथमः प्रपाठकः ॥ १ ॥",
           "kandahs": [
             {
-              "kandah_id": "3",
+              "kandah_id": "2",
               "kandah_title": "॥ अथ तृतीय खण्डः ॥",
               "kandah_title_toc": "तृतीय खण्डः",
               "colophon": "॥ एकविंशतिः । तृतीयः खण्डः ॥ ३ ॥",
@@ -1854,7 +1854,7 @@
               ]
             },
             {
-              "kandah_id": "4",
+              "kandah_id": "3",
               "kandah_title": "॥ अथ तुरीय खण्डः ॥",
               "kandah_title_toc": "तुरीय खण्डः",
               "colophon": "",
@@ -2347,7 +2347,7 @@
           "colophon": "॥ इति ग्रामे गेय-गाने द्वितीयस्यार्द्धः प्रपाठकः ॥ २ ॥",
           "kandahs": [
             {
-              "kandah_id": "4_cont",
+              "kandah_id": "3_cont",
               "kandah_title": "॥ तुरीय खण्डः (उत्तरभागः) ॥",
               "kandah_title_toc": "तुरीय खण्डः (उत्तरभागः)",
               "colophon": "॥ द्वाविंश्तिः चतुर्थः खण्डः ॥ ४ ॥ दशति ॥",
@@ -2576,7 +2576,7 @@
               ]
             },
             {
-              "kandah_id": "5",
+              "kandah_id": "4",
               "kandah_title": "॥ अथ पञ्चम खण्डः ॥",
               "kandah_title_toc": "पञ्चम खण्डः",
               "colophon": "॥ पञ्चमी दशतिः ॥ ५ ॥",
@@ -3092,7 +3092,7 @@
               ]
             },
             {
-              "kandah_id": "6",
+              "kandah_id": "5",
               "kandah_title": "॥ अथ षष्ठ खण्डः ॥",
               "kandah_title_toc": "षष्ठ खण्डः",
               "colophon": "॥ षष्ठी दशतिः ॥ ६ ॥",
@@ -3416,7 +3416,7 @@
               ]
             },
             {
-              "kandah_id": "7",
+              "kandah_id": "6",
               "kandah_title": "॥ अथ सप्तम खण्डः ॥",
               "kandah_title_toc": "सप्तम खण्डः",
               "colophon": "",
@@ -3659,7 +3659,7 @@
           "colophon": "॥ इति ग्रामे गेय-गाने द्वितीयः प्रपाठकः ॥",
           "kandahs": [
             {
-              "kandah_id": "7_cont",
+              "kandah_id": "6_cont",
               "kandah_title": "॥ सप्तम खण्डः (उत्तरभागः) ॥",
               "kandah_title_toc": "सप्तम खण्डः (उत्तरभागः)",
               "colophon": "॥ षोडश सप्तमः।॥ सप्तमः खण्डः ॥ ७ ॥ दशतिः ॥",
@@ -3960,7 +3960,7 @@
               ]
             },
             {
-              "kandah_id": "8",
+              "kandah_id": "7",
               "kandah_title": "॥ अथ सप्तम खण्डः॥",
               "kandah_title_toc": "सप्तम खण्डः",
               "colophon": "॥ अष्टमः खण्डः ॥ ८ ॥ दशतिः ॥",
@@ -4254,7 +4254,7 @@
               ]
             },
             {
-              "kandah_id": "9",
+              "kandah_id": "8",
               "kandah_title": "॥ अथ अष्टम खण्डः॥",
               "kandah_title_toc": "अष्टम खण्डः",
               "colophon": "॥ त्रयोदशः नवमः । नवमः खण्डः ॥ ९ ॥ दशतिः ॥",
@@ -4683,7 +4683,7 @@
           "colophon": "",
           "kandahs": [
             {
-              "kandah_id": "10",
+              "kandah_id": "9",
               "kandah_title": "॥ अथ दशम खण्डः ॥",
               "kandah_title_toc": "दशम खण्डः",
               "colophon": "",
