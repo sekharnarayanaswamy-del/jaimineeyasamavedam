@@ -1656,7 +1656,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ \VAR{doc_title_sa} ॥</h1>
-                <div class="sub-heading">संस्करणम्: \VAR{version} | निर्मितम्: \VAR{generated_at}</div>
+                <div class="sub-heading">संस्करणम्: \VAR{version} ,  निर्मितम्: \VAR{generated_at.split(' ')[0] if generated_at else ''}</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
