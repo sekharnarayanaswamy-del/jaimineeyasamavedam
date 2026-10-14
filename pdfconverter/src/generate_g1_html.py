@@ -50,13 +50,15 @@ def build_scaled_swara_font_b64(
     bold_font_path: Path = None,
     scale: float = 1.55,
     swara_x_shift: int = 280,
+    caret_x_shift: int = 300,
 ) -> str:
     """
     Loads `AdishilaVedic.ttf` (or `AdishilaVedicBold.ttf`) in memory, replaces the superscript
     Vedic swara numeral/mark glyphs (U+A8E0..U+A8F1, U+1CD0, U+1CDA) with their bolder outlines
     scaled up by `scale` (default 1.55x = 55% larger) around (xCenter, yMin), shifts their horizontal
-    coordinates to the left by `swara_x_shift` (default 280 font units) so they center cleanly on top
-    of the base mantra syllables instead of sitting off to the right, adjusts GPOS pair spacing for
+    coordinates to the left by `swara_x_shift` (default 280 font units for swara digits) and `caret_x_shift`
+    (default 300 font units for caret U+1CD0) so they center cleanly on top of the base mantra syllables and
+    over the avagraha + next syllable instead of sitting off to the right, adjusts GPOS pair spacing for
     double swaras (e.g. '꣡꣯'), and returns the base64-encoded TTF string.
     Does not modify any font files on disk.
     """
@@ -94,8 +96,9 @@ def build_scaled_swara_font_b64(
 
         # Align lower caret / svarita marks (U+1CD0, U+1CDA) up to the level of other swara markers (yMin ≈ 1690)
         # to avoid collision with mantra syllables, and apply horizontal centering (x_shift) to swara digits/letters (U+A8E0..U+A8F1)
+        # and caret / svarita marks (U+1CD0, U+1CDA) so they do not sit off to the right
         y_shift = max(0, 1690 - base_y) if cp in [0x1CD0, 0x1CDA] else 0
-        x_shift = swara_x_shift if cp in range(0xA8E0, 0xA8F2) else 0
+        x_shift = caret_x_shift if cp in [0x1CD0, 0x1CDA] else (swara_x_shift if cp in range(0xA8E0, 0xA8F2) else 0)
 
         new_coords = []
         for x, y in g.coordinates:
@@ -356,6 +359,7 @@ def generate_html_via_render_py(
     template_rel_path: str = DEFAULT_TEMPLATE,
     swara_scale: float = 1.55,
     swara_x_shift: int = 280,
+    caret_x_shift: int = 300,
 ):
     """
     Converts the Parva -> Prapataka -> Kandah -> Samam hierarchy into `src/render.py`'s
@@ -501,8 +505,12 @@ def generate_html_via_render_py(
     orig_render = html_template.render
     reg_font_path = FONTS_DIR / "AdishilaVedic.ttf"
     bold_font_path = FONTS_DIR / "AdishilaVedicBold.ttf"
-    scaled_reg_b64 = build_scaled_swara_font_b64(reg_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift)
-    scaled_bold_b64 = build_scaled_swara_font_b64(bold_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift)
+    scaled_reg_b64 = build_scaled_swara_font_b64(
+        reg_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift, caret_x_shift=caret_x_shift
+    )
+    scaled_bold_b64 = build_scaled_swara_font_b64(
+        bold_font_path, bold_font_path, scale=swara_scale, swara_x_shift=swara_x_shift, caret_x_shift=caret_x_shift
+    )
 
     def _custom_render(**kwargs):
         if scaled_reg_b64:
@@ -574,6 +582,12 @@ def main():
         default=280,
         help="Horizontal shift in font units to center swaras over base syllables (default: 280)",
     )
+    parser.add_argument(
+        "--caret-shift",
+        type=int,
+        default=300,
+        help="Horizontal shift in font units to the left to place caret marks over avagraha + next syllable (default: 300)",
+    )
     args = parser.parse_args()
 
     generate_html_via_render_py(
@@ -582,6 +596,7 @@ def main():
         args.template,
         swara_scale=args.swara_scale,
         swara_x_shift=args.swara_shift,
+        caret_x_shift=args.caret_shift,
     )
 
 
