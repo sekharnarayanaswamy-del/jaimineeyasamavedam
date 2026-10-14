@@ -195,6 +195,9 @@ def decode_siddhanta_text(raw_text: str) -> str:
     # 9. Normalize any double Prenkha mark across avagraha+numeral ('ऽ᳒२᳒' -> 'ऽ२᳒')
     text = text.replace('ऽ\u1cd2२\u1cd2', 'ऽ२\u1cd2')
 
+    # 10. Normalize Caret (U+1CD0) order: Caret over avagraha before following chant syllables/swaras ('᳐ऽ' -> 'ऽ᳐')
+    text = re.sub(r'\u1cd0[ \t]*ऽ', 'ऽ\u1cd0', text)
+
     return text
 
 

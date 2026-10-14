@@ -163,11 +163,21 @@ def render_prenkha_html(escaped_text: str) -> str:
 def format_mantra_line_html(line: str) -> str:
     """
     Formats a Unicode Devanagari Samam line for HTML display:
+    - Normalizes Caret (U+1CD0 '᳐') order: ensures caret is placed over the avagraha ('ऽ᳐')
+      before following syllables and swara markers.
+    - Delivers Caret (U+1CD0) inline on the same horizontal level when following a swara numeral,
+      preventing vertical stacking.
     - Escapes HTML special characters.
     - Renders Vedic Tone Prenkha (U+1CD2 '᳒') with a continuous horizontal line over the
       preceding avagraha ('ऽ') and the syllable/numeral carrying U+1CD2.
     - Formats dandas ('।', '॥') using `src/renderers/filters/html_filters.py`.
     """
+    # 1. Normalize caret over avagraha
+    line = re.sub(r'\u1cd0[ \t]*ऽ', 'ऽ\u1cd0', line)
+
+    # 2. When caret follows a swara numeral, insert thin space so browser shaper keeps it inline
+    line = re.sub(r'([\ua8e0-\ua8f1])\u1cd0', lambda m: m.group(1) + '\u2009\u1cd0', line)
+
     escaped = html.escape(line)
     escaped = render_prenkha_html(escaped)
     escaped = format_dandas_html(escaped, preserve_spaces=True)
