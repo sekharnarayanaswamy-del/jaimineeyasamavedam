@@ -170,7 +170,7 @@ def render_prenkha_html(escaped_text: str) -> str:
             'title="Vedic Tone Prenkha (U+1CD2)">'
             f'{base_seq}'
             '<span class="prenkha-bar" '
-            'style="position:absolute; left:0.02em; right:0.02em; top:0.50em; '
+            'style="position:absolute; left:0.02em; right:0.02em; top:var(--prenkha-top, 0.50em); '
             'height:2px; background:currentColor; pointer-events:none;"></span>'
             '</span>'
         )

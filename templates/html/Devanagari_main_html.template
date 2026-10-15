@@ -84,6 +84,23 @@
             --swarita-bottom: 0.15em;
             --anudatta-bottom: 0.1em;
             --swara-size: var(--font-size);
+            --prenkha-top: 0.50em;
+        }
+
+        .prenkha-overline {
+            position: relative;
+            display: inline;
+            white-space: nowrap;
+        }
+
+        .prenkha-bar {
+            position: absolute;
+            left: 0.02em;
+            right: 0.02em;
+            top: var(--prenkha-top, 0.50em);
+            height: 2px;
+            background: currentColor;
+            pointer-events: none;
         }
 
         html {
@@ -1851,10 +1868,10 @@
 
     <script>
         const fontList = [
-            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" }
+            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "0.50em" },
+            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" },
+            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" },
+            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" }
         ];
         let currentFontIndex = 0;
         function setFont(idx) {
@@ -1866,6 +1883,9 @@
             }
             if (chosen.anudattaBottom) {
                 document.documentElement.style.setProperty('--anudatta-bottom', chosen.anudattaBottom);
+            }
+            if (chosen.prenkhaTop) {
+                document.documentElement.style.setProperty('--prenkha-top', chosen.prenkhaTop);
             }
             const btn = document.getElementById('font-toggle-btn');
             if (btn) btn.innerText = 'Font: ' + chosen.label;
