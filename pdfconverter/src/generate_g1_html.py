@@ -50,9 +50,9 @@ def build_scaled_swara_font_b64(
     bold_font_path: Path = None,
     scale: float = 1.40,
     caret_scale: float = 1.00,
-    swara_x_shift: int = 140,
+    swara_x_shift: int = 100,
     caret_x_shift: int = 180,
-    pair_gap: int = 220,
+    deergha_gap: int = 380,
 ) -> str:
     """
     Loads `AdishilaVedic.ttf` (or `AdishilaVedicBold.ttf`) in memory, replaces the superscript
@@ -60,11 +60,12 @@ def build_scaled_swara_font_b64(
     - Scales swara numerals by `scale` (default 1.40x) for clear legibility.
     - Scales caret accent symbol (U+1CD0) to a more compact `caret_scale` (default 1.00x)
       so it avoids colliding with previous or succeeding swara markers.
-    - Positions swara markers left-justified over the base mantra syllable (`swara_x_shift` = 140)
+    - Positions swara markers left-justified over the base mantra syllable (`swara_x_shift` = 100)
       to avoid overhang into preceding syllables.
     - Centers caret over the avagraha (`caret_x_shift` = 180) in line with the swara markers.
-    - In GPOS, spaces deergha marks (like '१र') with `pair_gap` (default 220 units) to prevent
-      collision between the numeral, the deergha 'र', and the next swara.
+    - In GPOS, spaces deergha marks (like '१र', '२र') with `deergha_gap` (default 380 font units
+      via Value1.XPlacement = -380) to guarantee clean daylight separation between the digit
+      and the deergha 'र', completely eliminating collisions across all deergha swaras.
     Does not modify any font files on disk.
     """
     if not font_path.exists():
@@ -120,11 +121,11 @@ def build_scaled_swara_font_b64(
             adv, _ = tt["hmtx"].metrics[gname]
             tt["hmtx"].metrics[gname] = (adv, g.xMin)
 
-    # Configure horizontal pair spacing between consecutive combining swara marks (e.g. '꣡꣯' = '१र') in GPOS
-    # Rule 1 & 2: Glyph 1 stays left-justified over the syllable without being pushed backwards into previous syllable.
-    # Glyph 2 (deergha 'र') is spaced to the right with clean margin to avoid collision with Glyph 1 or succeeding swara.
+    # Configure horizontal pair spacing between consecutive combining swara marks (e.g. '꣡꣯' = '१र', '२र') in GPOS.
+    # OpenType PairPos in AdishilaVedic uses ValueFormat1=1, ValueFormat2=0 (only Value1.XPlacement affects relative position).
+    # Value1.XPlacement = -deergha_gap shifts the digit to the left of deergha 'र' by deergha_gap font units,
+    # ensuring clean daylight spacing and zero collision between the digit and deergha 'र'.
     if "GPOS" in tt:
-        from fontTools.ttLib.tables.otBase import ValueRecord
         for lookup in tt["GPOS"].table.LookupList.Lookup:
             if lookup.LookupType == 2:  # PairPos
                 for st in lookup.SubTable:
@@ -136,10 +137,7 @@ def build_scaled_swara_font_b64(
                             for pvr in getattr(pair_set, "PairValueRecord", []):
                                 if getattr(pvr, "SecondGlyph", "") == "uniA8EF":  # deergha 'र'
                                     if getattr(pvr, "Value1", None):
-                                        pvr.Value1.XPlacement = -60  # small nudge, keeping it left-justified over syllable
-                                    if not getattr(pvr, "Value2", None):
-                                        pvr.Value2 = ValueRecord()
-                                    pvr.Value2.XPlacement = pair_gap  # clean daylight space for deergha 'र'
+                                        pvr.Value1.XPlacement = -deergha_gap
                                 elif getattr(pvr, "Value1", None) and getattr(pvr.Value1, "XPlacement", None):
                                     pvr.Value1.XPlacement = int(round(pvr.Value1.XPlacement * scale))
 
@@ -376,9 +374,9 @@ def generate_html_via_render_py(
     template_rel_path: str = DEFAULT_TEMPLATE,
     swara_scale: float = 1.40,
     caret_scale: float = 1.00,
-    swara_x_shift: int = 140,
+    swara_x_shift: int = 100,
     caret_x_shift: int = 180,
-    pair_gap: int = 220,
+    deergha_gap: int = 380,
 ):
     """
     Converts the Parva -> Prapataka -> Kandah -> Samam hierarchy into `src/render.py`'s
@@ -531,7 +529,7 @@ def generate_html_via_render_py(
         caret_scale=caret_scale,
         swara_x_shift=swara_x_shift,
         caret_x_shift=caret_x_shift,
-        pair_gap=pair_gap,
+        deergha_gap=deergha_gap,
     )
     scaled_bold_b64 = build_scaled_swara_font_b64(
         bold_font_path,
@@ -540,7 +538,7 @@ def generate_html_via_render_py(
         caret_scale=caret_scale,
         swara_x_shift=swara_x_shift,
         caret_x_shift=caret_x_shift,
-        pair_gap=pair_gap,
+        deergha_gap=deergha_gap,
     )
 
     def _custom_render(**kwargs):
@@ -616,8 +614,8 @@ def main():
     parser.add_argument(
         "--swara-shift",
         type=int,
-        default=140,
-        help="Horizontal shift in font units to left-justify swaras over base syllables (default: 140)",
+        default=100,
+        help="Horizontal shift in font units to left-justify swaras over base syllables (default: 100)",
     )
     parser.add_argument(
         "--caret-shift",
@@ -626,10 +624,10 @@ def main():
         help="Horizontal shift in font units to center caret marks over avagraha + next syllable (default: 180)",
     )
     parser.add_argument(
-        "--pair-gap",
+        "--deergha-gap",
         type=int,
-        default=220,
-        help="Horizontal spacing in font units between deergha swara pairs like '१र' in GPOS (default: 220)",
+        default=380,
+        help="Horizontal separation in font units between deergha swara pairs like '१र', '२र' in GPOS (default: 380)",
     )
     args = parser.parse_args()
 
@@ -641,7 +639,7 @@ def main():
         caret_scale=args.caret_scale,
         swara_x_shift=args.swara_shift,
         caret_x_shift=args.caret_shift,
-        pair_gap=args.pair_gap,
+        deergha_gap=args.deergha_gap,
     )
 
 
