@@ -539,9 +539,11 @@
         }
 
         .main-title .sub-heading {
-            font-size: 1.15rem;
-            color: var(--saffron);
-            font-weight: 600;
+            font-size: 0.85rem;
+            color: #7D6B60;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            letter-spacing: 0.3px;
         }
 
         .chapter-container {
@@ -1333,7 +1335,7 @@
             }
 
             .main-title .sub-heading {
-                font-size: 0.95rem;
+                font-size: 0.78rem;
             }
 
             .chapter-container {
@@ -1673,7 +1675,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ \VAR{doc_title_sa} ॥</h1>
-                <div class="sub-heading">संस्करणम्: \VAR{version} ,  निर्मितम्: \VAR{generated_at.split(' ')[0] if generated_at else ''}</div>
+                <div class="sub-heading">संस्करणम्: \VAR{version} ,  निर्मितम्: \VAR{generated_at if generated_at else ''}</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->

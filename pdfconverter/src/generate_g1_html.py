@@ -575,7 +575,7 @@ def generate_html_via_render_py(
         output_dir_override=str(html_path.parent),
         name_override=html_path.stem,
         jsv_version="1.0",
-        generated_at=datetime.datetime.now().strftime("%d-%m-%Y"),
+        generated_at=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
         script="devanagari",
         with_modifiers=True,
         kpully=False,
