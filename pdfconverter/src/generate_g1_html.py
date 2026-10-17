@@ -44,6 +44,19 @@ PRENKHA_RE = re.compile(
     r"(ऽ?\u1CD2?[०-९\u0900-\u093C\u093E-\u0963\uA8E0-\uA8FF\u1CD0-\u1CD1\u1CD3-\u1CFF]+)\u1CD2"
 )
 
+# Complete Devanagari syllable with a vowel (independent vowel or consonant cluster + vowel; not a bare halanta coda)
+DEV_FULL_SYLLABLE = (
+    r"(?:[\u0904-\u0914][\u0901-\u0903]?|"
+    r"(?:[\u0915-\u0939]\u093C?\u094D)*[\u0915-\u0939]\u093C?[\u093E-\u094C\u0962\u0963]?[\u0901-\u0903]?(?!\u094D))"
+)
+
+# Pattern 1 (Generic): Swara numeral + Caret (U+1CD0) + Syllable with NO swara numeral -> Move caret over that syllable
+PAT1_CARET_RE = re.compile(
+    r"([\uA8E0-\uA8F1])\u1CD0[ \t]*("
+    + DEV_FULL_SYLLABLE
+    + r")(?![\u093E-\u094C\u0962\u0963\u0901-\u0903\u094D\uA8E0-\uA8F1])"
+)
+
 
 def build_scaled_swara_font_b64(
     font_path: Path,
@@ -51,7 +64,8 @@ def build_scaled_swara_font_b64(
     scale: float = 1.40,
     caret_scale: float = 1.00,
     swara_x_shift: int = 100,
-    caret_x_shift: int = 180,
+    caret_x_shift: int = 140,
+    caret_y_min: int = 1840,
     deergha_gap: int = 380,
 ) -> str:
     """
@@ -62,7 +76,9 @@ def build_scaled_swara_font_b64(
       so it avoids colliding with previous or succeeding swara markers.
     - Positions swara markers left-justified over the base mantra syllable (`swara_x_shift` = 100)
       to avoid overhang into preceding syllables.
-    - Centers caret over the avagraha (`caret_x_shift` = 180) in line with the swara markers.
+    - Centers caret over syllable (`caret_x_shift` = 140) in line with the swara markers.
+    - Raises caret to `caret_y_min` (default 1840 font units) to guarantee clean daylight clearance
+      over tall syllables like 'भि', 'हो' without vertical collisions.
     - In GPOS, spaces deergha marks (like '१र', '२र') with `deergha_gap` (default 380 font units
       via Value1.XPlacement = -380) to guarantee clean daylight separation between the digit
       and the deergha 'र', completely eliminating collisions across all deergha swaras.
@@ -103,8 +119,8 @@ def build_scaled_swara_font_b64(
         # Individual scale: caret is smaller to avoid collisions
         current_scale = caret_scale if cp in [0x1CD0, 0x1CDA] else scale
 
-        # Align lower caret / svarita marks (U+1CD0, U+1CDA) up to the level of other swara markers (yMin ≈ 1690)
-        y_shift = max(0, 1690 - base_y) if cp in [0x1CD0, 0x1CDA] else 0
+        # Align lower caret / svarita marks (U+1CD0, U+1CDA) up to clear tall matras like 'भि' (yMin ≈ caret_y_min)
+        y_shift = max(0, caret_y_min - base_y) if cp in [0x1CD0, 0x1CDA] else 0
 
         # Left-justified horizontal placement over consonant syllable
         x_shift = caret_x_shift if cp in [0x1CD0, 0x1CDA] else (swara_x_shift if cp in range(0xA8E0, 0xA8F2) else 0)
@@ -190,10 +206,14 @@ def format_mantra_line_html(line: str) -> str:
       preceding avagraha ('ऽ') and the syllable/numeral carrying U+1CD2.
     - Formats dandas ('।', '॥') using `src/renderers/filters/html_filters.py`.
     """
-    # 1. Normalize caret over avagraha
+    # 1. Normalize caret over avagraha ('᳐ऽ' -> 'ऽ᳐')
     line = re.sub(r'\u1cd0[ \t]*ऽ', 'ऽ\u1cd0', line)
 
-    # 2. When caret follows a swara numeral, insert thin space so browser shaper keeps it inline
+    # 2. Pattern 1 (Generic): Move caret to next syllable without space when preceding swara carries caret and next syllable has NO swara numeral (e.g. 'रौ꣢᳐वा' -> 'रौ꣢वा᳐')
+    line = PAT1_CARET_RE.sub(r'\g<1>\g<2>' + '\u1cd0', line)
+
+    # 3. Pattern 2 (Generic): When caret follows a swara numeral (and next syllable has a swara),
+    #    insert thin space so browser shaper keeps it inline on the same horizontal level above the first syllable (e.g. 'चा꣢ ᳐रु꣣')
     line = re.sub(r'([\ua8e0-\ua8f1])\u1cd0', lambda m: m.group(1) + '\u2009\u1cd0', line)
 
     escaped = html.escape(line)
@@ -375,7 +395,8 @@ def generate_html_via_render_py(
     swara_scale: float = 1.40,
     caret_scale: float = 1.00,
     swara_x_shift: int = 100,
-    caret_x_shift: int = 180,
+    caret_x_shift: int = 140,
+    caret_y_min: int = 1840,
     deergha_gap: int = 380,
 ):
     """
@@ -529,6 +550,7 @@ def generate_html_via_render_py(
         caret_scale=caret_scale,
         swara_x_shift=swara_x_shift,
         caret_x_shift=caret_x_shift,
+        caret_y_min=caret_y_min,
         deergha_gap=deergha_gap,
     )
     scaled_bold_b64 = build_scaled_swara_font_b64(
@@ -538,6 +560,7 @@ def generate_html_via_render_py(
         caret_scale=caret_scale,
         swara_x_shift=swara_x_shift,
         caret_x_shift=caret_x_shift,
+        caret_y_min=caret_y_min,
         deergha_gap=deergha_gap,
     )
 
@@ -620,8 +643,14 @@ def main():
     parser.add_argument(
         "--caret-shift",
         type=int,
-        default=180,
-        help="Horizontal shift in font units to center caret marks over avagraha + next syllable (default: 180)",
+        default=140,
+        help="Horizontal shift in font units to center caret marks over avagraha + syllables (default: 140)",
+    )
+    parser.add_argument(
+        "--caret-y-min",
+        type=int,
+        default=1840,
+        help="Vertical baseline in font units for caret to clear tall syllables like 'भि' (default: 1840)",
     )
     parser.add_argument(
         "--deergha-gap",
@@ -639,6 +668,7 @@ def main():
         caret_scale=args.caret_scale,
         swara_x_shift=args.swara_shift,
         caret_x_shift=args.caret_shift,
+        caret_y_min=args.caret_y_min,
         deergha_gap=args.deergha_gap,
     )
 

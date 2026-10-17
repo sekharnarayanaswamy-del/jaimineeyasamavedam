@@ -139,6 +139,19 @@ PUA_MAP = {
     '\ue352': 'स्',
 }
 
+# Complete Devanagari syllable with a vowel (independent vowel or consonant cluster + vowel; not a bare halanta coda)
+DEV_FULL_SYLLABLE = (
+    r"(?:[\u0904-\u0914][\u0901-\u0903]?|"
+    r"(?:[\u0915-\u0939]\u093C?\u094D)*[\u0915-\u0939]\u093C?[\u093E-\u094C\u0962\u0963]?[\u0901-\u0903]?(?!\u094D))"
+)
+
+# Pattern 1 (Generic): Swara numeral + Caret (U+1CD0) + Syllable with NO swara numeral -> Move caret over that syllable
+PAT1_CARET_RE = re.compile(
+    r"([\uA8E0-\uA8F1])\u1CD0[ \t]*("
+    + DEV_FULL_SYLLABLE
+    + r")(?![\u093E-\u094C\u0962\u0963\u0901-\u0903\u094D\uA8E0-\uA8F1])"
+)
+
 
 def decode_siddhanta_text(raw_text: str) -> str:
     """Convert raw Siddhanta PDF extracted text to canonical logical-order Unicode Devanagari."""
@@ -197,6 +210,9 @@ def decode_siddhanta_text(raw_text: str) -> str:
 
     # 10. Normalize Caret (U+1CD0) order: Caret over avagraha before following chant syllables/swaras ('᳐ऽ' -> 'ऽ᳐')
     text = re.sub(r'\u1cd0[ \t]*ऽ', 'ऽ\u1cd0', text)
+
+    # 11. Pattern 1 (Generic): Move caret to next syllable without space when preceding swara carries caret and next syllable has NO swara numeral (e.g. 'रौ꣢᳐वा' -> 'रौ꣢वा᳐')
+    text = PAT1_CARET_RE.sub(r'\g<1>\g<2>' + '\u1cd0', text)
 
     return text
 
