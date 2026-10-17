@@ -57,6 +57,19 @@ PAT1_CARET_RE = re.compile(
     + r")(?![\u093E-\u094C\u0962\u0963\u0901-\u0903\u094D\uA8E0-\uA8F1])"
 )
 
+# General syllable unit for swara-bearing base
+DEV_AKSHARA = (
+    r"(?:(?:[\u0915-\u0939]\u093C?\u094D)*[\u0915-\u0939]\u093C?"
+    r"(?:[\u093E-\u094C\u0962\u0963]|(?!\u094D[\u0915-\u0939])\u094D)?[\u0901-\u0903]?|"
+    r"[\u0904-\u0914][\u0901-\u0903]?|ऽ)"
+)
+
+# Generic separation for adjacent syllables where both carry wide compound swaras (>=2 combining marks)
+TIGHT_COMPOUND_SWARA_RE = re.compile(
+    r"(" + DEV_AKSHARA + r"[\uA8E0-\uA8FF\u1CD0-\u1CFF]{2,})"
+    r"(?=" + DEV_AKSHARA + r"[\uA8E0-\uA8FF\u1CD0-\u1CFF]{2,})"
+)
+
 
 def build_scaled_swara_font_b64(
     font_path: Path,
@@ -215,6 +228,12 @@ def format_mantra_line_html(line: str) -> str:
     # 3. Pattern 2 (Generic): When caret follows a swara numeral (and next syllable has a swara),
     #    insert thin space so browser shaper keeps it inline on the same horizontal level above the first syllable (e.g. 'चा꣢ ᳐रु꣣')
     line = re.sub(r'([\ua8e0-\ua8f1])\u1cd0', lambda m: m.group(1) + '\u2009\u1cd0', line)
+
+    # 4. Separate adjacent syllables where both carry wide compound swaras with thin space ('नो꣡꣯' + 'दे꣰꣯' -> 'नो꣡꣯ दे꣰꣯')
+    line = TIGHT_COMPOUND_SWARA_RE.sub(r'\g<1>' + '\u2009', line)
+
+    # 5. Prevent mark-to-mark vertical stacking collision between anusvara/candrabindu and swara marks (e.g. 'र्णां꣡꣯' -> 'र्णां ꣡꣯')
+    line = re.sub(r'([\u0901\u0902])([\uA8E0-\uA8FF])', r'\g<1>' + '\u2009' + r'\g<2>', line)
 
     escaped = html.escape(line)
     escaped = render_prenkha_html(escaped)
