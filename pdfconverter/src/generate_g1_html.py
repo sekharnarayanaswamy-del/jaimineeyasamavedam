@@ -76,7 +76,7 @@ def build_scaled_swara_font_b64(
     bold_font_path: Path = None,
     scale: float = 1.40,
     caret_scale: float = 1.00,
-    swara_x_shift: int = 100,
+    swara_x_shift: int = 180,
     caret_x_shift: int = 140,
     caret_y_min: int = 1840,
     deergha_gap: int = 380,
@@ -413,7 +413,7 @@ def generate_html_via_render_py(
     template_rel_path: str = DEFAULT_TEMPLATE,
     swara_scale: float = 1.40,
     caret_scale: float = 1.00,
-    swara_x_shift: int = 100,
+    swara_x_shift: int = 180,
     caret_x_shift: int = 140,
     caret_y_min: int = 1840,
     deergha_gap: int = 380,
@@ -656,8 +656,8 @@ def main():
     parser.add_argument(
         "--swara-shift",
         type=int,
-        default=100,
-        help="Horizontal shift in font units to left-justify swaras over base syllables (default: 100)",
+        default=180,
+        help="Horizontal shift in font units to left-justify swaras over base syllables (default: 180)",
     )
     parser.add_argument(
         "--caret-shift",
