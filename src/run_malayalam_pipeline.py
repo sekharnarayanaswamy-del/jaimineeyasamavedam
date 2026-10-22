@@ -220,7 +220,7 @@ def main():
             "separate",
             "--samam-only",
             "-o",
-            "Samhita_kpully_Devanagari",
+            "Samam_kpully_Devanagari",
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2c: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
@@ -235,22 +235,39 @@ def main():
     sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
 
     # Sync Malayalam KPully
-    mal_src = sam_renders_html / "Samam_kpully_Malayalam.html"
-    if not mal_src.exists():
-        mal_src = ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html"
-    if mal_src.exists():
-        shutil.copy2(mal_src, standalone_dir / mal_src.name)
-        shutil.copy2(mal_src, standalone_mal_dir / mal_src.name)
-        print(f"[INFO] Copied {mal_src.name} -> {standalone_dir.relative_to(ROOT_DIR)} & {standalone_mal_dir.relative_to(ROOT_DIR)}")
+    mal_candidates = [
+        sam_renders_html / "Samam_kpully_Malayalam_Samam.html",
+        sam_renders_html / "Samam_kpully_Malayalam.html",
+        ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam_Samam.html",
+        ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html",
+    ]
+    existing_mal = [c for c in mal_candidates if c.exists()]
+    if existing_mal:
+        existing_mal.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        mal_src = existing_mal[0]
+        shutil.copy2(mal_src, standalone_dir / "Samam_kpully_Malayalam.html")
+        shutil.copy2(mal_src, standalone_mal_dir / "Samam_kpully_Malayalam.html")
+        print(f"[INFO] Copied {mal_src.name} -> {standalone_dir.relative_to(ROOT_DIR)}/Samam_kpully_Malayalam.html & Malayalam/")
 
     # Sync Devanagari KPully
-    deva_src = sam_renders_html / "Samhita_kpully_Devanagari.html"
-    if not deva_src.exists():
-        deva_src = ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samhita_kpully_Devanagari.html"
-    if deva_src.exists():
-        shutil.copy2(deva_src, standalone_dir / deva_src.name)
-        shutil.copy2(deva_src, standalone_dev_dir / deva_src.name)
-        print(f"[INFO] Copied {deva_src.name} -> {standalone_dir.relative_to(ROOT_DIR)} & {standalone_dev_dir.relative_to(ROOT_DIR)}")
+    deva_candidates = [
+        sam_renders_html / "Samam_kpully_Devanagari_Samam.html",
+        sam_renders_html / "Samam_kpully_Devanagari.html",
+        sam_renders_html / "Samhita_kpully_Devanagari_Samam.html",
+        sam_renders_html / "Samhita_kpully_Devanagari.html",
+        ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari_Samam.html",
+        ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari.html",
+    ]
+    existing_deva = [c for c in deva_candidates if c.exists()]
+    if existing_deva:
+        existing_deva.sort(key=lambda p: p.stat().st_mtime, reverse=True)
+        deva_src = existing_deva[0]
+        shutil.copy2(deva_src, standalone_dir / "Samam_kpully_Devanagari.html")
+        shutil.copy2(deva_src, standalone_dev_dir / "Samam_kpully_Devanagari.html")
+        # Keep alias for backwards compatibility
+        shutil.copy2(deva_src, standalone_dir / "Samhita_kpully_Devanagari.html")
+        shutil.copy2(deva_src, standalone_dev_dir / "Samhita_kpully_Devanagari.html")
+        print(f"[INFO] Copied {deva_src.name} -> {standalone_dir.relative_to(ROOT_DIR)}/Samam_kpully_Devanagari.html & alias Samhita_kpully_Devanagari.html")
 
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
     if publish_script.exists():

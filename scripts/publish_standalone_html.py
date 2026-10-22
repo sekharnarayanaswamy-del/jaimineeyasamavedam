@@ -31,6 +31,14 @@ CANONICAL_READERS = {
         "subfolder": "Devanagari",
         "aliases": ["Samhita_kpully_Devanagari.html"],
     },
+    "Kauthuma_Gramageyaganam_Devanagari.html": {
+        "title": "प्रकृतिगानम् (ग्रामगेयगानम्) — कौथुमशाखा",
+        "category": "Kauthuma Samaveda",
+        "script": "Devanagari",
+        "description": "Complete Kauthuma Samaveda Prakritiganam (Gramageyaganam) across 3 Parvas, 17 Prapatakas, 81 Kandahs, and 1,197 Samams with Vedic Tone Prenkha and Checksums.",
+        "featured": True,
+        "subfolder": "Devanagari",
+    },
     "Samam_kpully_Malayalam.html": {
         "title": "Samam (Malayalam) — Kodunthirapully Edition",
         "category": "Samam Chants",
@@ -59,11 +67,25 @@ def format_size(bytes_val: int) -> str:
 
 
 def cleanup_obsolete_files(target_dir: Path):
-    """Deletes all obsolete HTML files in docs/standalone-html except the 2 kpully files and index.html."""
-    allowed_root = {"Samam_kpully_Malayalam.html", "Samam_kpully_Devanagari.html", "Samhita_kpully_Devanagari.html", "index.html"}
+    """Deletes all obsolete HTML files in docs/standalone-html except canonical readers and index.html."""
+    allowed_root = {
+        "Samam_kpully_Malayalam.html",
+        "Samam_kpully_Devanagari.html",
+        "Samhita_kpully_Devanagari.html",
+        "Kauthuma_Gramageyaganam_Devanagari.html",
+        "Purvarchikam_Rik_Devanagari.html",
+        "Uttararchikam_Rik_Devanagari.html",
+        "index.html",
+    }
     allowed_sub = {
-        "Devanagari": {"Samam_kpully_Devanagari.html", "Samhita_kpully_Devanagari.html"},
-        "Malayalam": {"Samam_kpully_Malayalam.html"}
+        "Devanagari": {
+            "Samam_kpully_Devanagari.html",
+            "Samhita_kpully_Devanagari.html",
+            "Kauthuma_Gramageyaganam_Devanagari.html",
+            "Purvarchikam_Rik_Devanagari.html",
+            "Uttararchikam_Rik_Devanagari.html",
+        },
+        "Malayalam": {"Samam_kpully_Malayalam.html"},
     }
 
     deleted_count = 0
@@ -681,6 +703,17 @@ def main():
             SOURCE_DIR / alt_filename,
             SOURCE_DIR / filename,
         ]
+        for alias in meta.get("aliases", []):
+            alias_stem = Path(alias).stem
+            alias_alt = f"{alias_stem}_Samam.html" if not alias_stem.endswith("_Samam") else alias
+            if sam_renders.exists():
+                candidates.extend([sam_renders / alias_alt, sam_renders / alias])
+            candidates.extend([
+                SOURCE_DIR / subfolder / alias_alt,
+                SOURCE_DIR / subfolder / alias,
+                SOURCE_DIR / alias_alt,
+                SOURCE_DIR / alias,
+            ])
         existing_cands = [c for c in candidates if c and c.exists()]
         src_path = None
         if existing_cands:
@@ -701,14 +734,20 @@ def main():
         # Copy to root and subfolder
         dest_root = TARGET_DIR / filename
         dest_sub = target_sub / filename
-        shutil.copy2(src_path, dest_root)
-        shutil.copy2(src_path, dest_sub)
+        if src_path.resolve() != dest_root.resolve():
+            shutil.copy2(src_path, dest_root)
+        if src_path.resolve() != dest_sub.resolve():
+            shutil.copy2(src_path, dest_sub)
 
         # Also populate aliases (e.g. legacy URLs like Samhita_kpully_Devanagari.html)
         aliases = meta.get("aliases", [])
         for alias in aliases:
-            shutil.copy2(src_path, TARGET_DIR / alias)
-            shutil.copy2(src_path, target_sub / alias)
+            a_root = TARGET_DIR / alias
+            a_sub = target_sub / alias
+            if src_path.resolve() != a_root.resolve():
+                shutil.copy2(src_path, a_root)
+            if src_path.resolve() != a_sub.resolve():
+                shutil.copy2(src_path, a_sub)
 
         file_bytes = dest_root.stat().st_size
         print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/")
