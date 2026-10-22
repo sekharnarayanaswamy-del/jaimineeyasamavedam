@@ -91,52 +91,42 @@ def run_cmd(cmd_list, description=""):
 
 
 def sync_standalone_readers():
-    """Copies canonical standalone HTML readers to docs/standalone-html/ for GitHub Pages."""
-    docs_standalone = ROOT_DIR / "docs" / "standalone-html"
-    docs_standalone.mkdir(parents=True, exist_ok=True)
-    (docs_standalone / "Malayalam").mkdir(exist_ok=True)
-    (docs_standalone / "Devanagari").mkdir(exist_ok=True)
+    """Copies canonical standalone HTML readers to docs/standalone-html/renders/ for GitHub Pages."""
+    renders_dir = ROOT_DIR / "docs" / "standalone-html" / "renders"
+    renders_dir.mkdir(parents=True, exist_ok=True)
 
     sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
 
     targets = [
-        ("Samam_kpully_Malayalam.html", "Malayalam"),
-        ("Samam_kpully_Devanagari.html", "Devanagari"),
+        ("Samam_kpully_Malayalam.html", [
+            sam_renders_html / "Samam_kpully_Malayalam_Samam.html",
+            sam_renders_html / "Samam_kpully_Malayalam.html",
+            ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam_Samam.html",
+            ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html",
+        ], ["Samam_kpully_Malayalam_Samam.html"]),
+        ("Samam_kpully_Devanagari.html", [
+            sam_renders_html / "Samam_kpully_Devanagari_Samam.html",
+            sam_renders_html / "Samam_kpully_Devanagari.html",
+            sam_renders_html / "Samhita_kpully_Devanagari_Samam.html",
+            sam_renders_html / "Samhita_kpully_Devanagari.html",
+            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari_Samam.html",
+            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari.html",
+        ], ["Samhita_kpully_Devanagari.html", "Samam_kpully_Devanagari_Samam.html"]),
     ]
 
     copied_any = False
-    print("\n[PIPELINE] Syncing standalone HTML readers to docs/standalone-html...")
-    for fname, script_subfolder in targets:
-        stem = Path(fname).stem
-        alt_fname = f"{stem}_Samam.html" if not stem.endswith("_Samam") else fname
-        cands = [
-            sam_renders_html / alt_fname,
-            sam_renders_html / fname,
-            ROOT_DIR / "data" / "output" / "html" / script_subfolder / alt_fname,
-            ROOT_DIR / "data" / "output" / "html" / script_subfolder / fname,
-            ROOT_DIR / "data" / "output" / "html" / alt_fname,
-            ROOT_DIR / "data" / "output" / "html" / fname,
-        ]
+    print("\n[PIPELINE] Syncing standalone HTML readers to docs/standalone-html/renders/...")
+    for fname, cands, aliases in targets:
         existing_cands = [c for c in cands if c and c.exists()]
-        src_file = None
         if existing_cands:
             existing_cands.sort(key=lambda p: p.stat().st_mtime, reverse=True)
             src_file = existing_cands[0]
-
-        if src_file.exists():
             try:
-                dest_root = docs_standalone / fname
-                dest_root.write_bytes(src_file.read_bytes())
-                dest_sub = docs_standalone / script_subfolder / fname
-                dest_sub.write_bytes(src_file.read_bytes())
-
-                if fname == "Samam_kpully_Devanagari.html":
-                    alias_root = docs_standalone / "Samhita_kpully_Devanagari.html"
-                    alias_sub = docs_standalone / script_subfolder / "Samhita_kpully_Devanagari.html"
-                    alias_root.write_bytes(src_file.read_bytes())
-                    alias_sub.write_bytes(src_file.read_bytes())
-
-                print(f"  [SYNC] {fname} -> docs/standalone-html/ & docs/standalone-html/{script_subfolder}/")
+                dest = renders_dir / fname
+                dest.write_bytes(src_file.read_bytes())
+                for alias in aliases:
+                    (renders_dir / alias).write_bytes(src_file.read_bytes())
+                print(f"  [SYNC] {fname} -> docs/standalone-html/renders/")
                 copied_any = True
             except Exception as e:
                 print(f"  [WARN] Could not sync reader {fname}: {e}")

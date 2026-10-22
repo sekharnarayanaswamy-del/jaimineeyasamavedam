@@ -714,35 +714,36 @@ def build_catalog_page(items):
 
 
 def main():
-    print(f"Target directory: {TARGET_DIR}")
+    renders_dir = TARGET_DIR / "renders"
+    renders_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Target directory for standalone readers: {renders_dir}")
 
-    TARGET_DIR.mkdir(parents=True, exist_ok=True)
-    target_dev = TARGET_DIR / "Devanagari"
-    target_mal = TARGET_DIR / "Malayalam"
-    target_dev.mkdir(exist_ok=True)
-    target_mal.mkdir(exist_ok=True)
-
-    # 1. Clean up all obsolete non-kpully HTML files
+    # 1. Clean up redundant duplicate files and directories
     cleanup_obsolete_files(TARGET_DIR)
 
-    # 2. Sync only the 2 canonical KPully readers
+    # 2. Sync all canonical readers directly into docs/standalone-html/renders/
     sam_renders = CORPORA_DIR / "samhita" / "05_renders" / "html"
+    col_renders = CORPORA_DIR / "collections" / "05_renders" / "html"
+    pdfconv_dir = REPO_ROOT / "pdfconverter" / "data" / "output"
     items = []
 
     for filename, meta in CANONICAL_READERS.items():
-        subfolder = meta["subfolder"]
-        target_sub = target_mal if subfolder == "Malayalam" else target_dev
-
-        # Resolve source from 05_renders or data/output/html
         stem = Path(filename).stem
         alt_filename = f"{stem}_Samam.html" if not stem.endswith("_Samam") else filename
         candidates = [
             sam_renders / alt_filename if sam_renders.exists() else None,
             sam_renders / filename if sam_renders.exists() else None,
-            SOURCE_DIR / subfolder / alt_filename,
-            SOURCE_DIR / subfolder / filename,
+            col_renders / alt_filename if col_renders.exists() else None,
+            col_renders / filename if col_renders.exists() else None,
+            pdfconv_dir / filename if pdfconv_dir.exists() else None,
+            SOURCE_DIR / "Devanagari" / alt_filename,
+            SOURCE_DIR / "Devanagari" / filename,
+            SOURCE_DIR / "Malayalam" / alt_filename,
+            SOURCE_DIR / "Malayalam" / filename,
             SOURCE_DIR / alt_filename,
             SOURCE_DIR / filename,
+            renders_dir / filename,
+            renders_dir / alt_filename,
         ]
         for alias in meta.get("aliases", []):
             alias_stem = Path(alias).stem
@@ -750,11 +751,16 @@ def main():
             if sam_renders.exists():
                 candidates.extend([sam_renders / alias_alt, sam_renders / alias])
             candidates.extend([
-                SOURCE_DIR / subfolder / alias_alt,
-                SOURCE_DIR / subfolder / alias,
+                SOURCE_DIR / "Devanagari" / alias_alt,
+                SOURCE_DIR / "Devanagari" / alias,
+                SOURCE_DIR / "Malayalam" / alias_alt,
+                SOURCE_DIR / "Malayalam" / alias,
                 SOURCE_DIR / alias_alt,
                 SOURCE_DIR / alias,
+                renders_dir / alias_alt,
+                renders_dir / alias,
             ])
+
         existing_cands = [c for c in candidates if c and c.exists()]
         src_path = None
         if existing_cands:
@@ -762,36 +768,21 @@ def main():
             src_path = existing_cands[0]
 
         if not src_path or not src_path.exists():
-            # Check if already present in target directory
-            if (target_sub / filename).exists():
-                src_path = target_sub / filename
-            elif (TARGET_DIR / filename).exists():
-                src_path = TARGET_DIR / filename
-
-        if not src_path or not src_path.exists():
             print(f"[WARN] Source reader not found: {filename}")
             continue
 
-        # Copy to root and subfolder
-        dest_root = TARGET_DIR / filename
-        dest_sub = target_sub / filename
-        if src_path.resolve() != dest_root.resolve():
-            shutil.copy2(src_path, dest_root)
-        if src_path.resolve() != dest_sub.resolve():
-            shutil.copy2(src_path, dest_sub)
+        dest_render = renders_dir / filename
+        if src_path.resolve() != dest_render.resolve():
+            shutil.copy2(src_path, dest_render)
 
-        # Also populate aliases (e.g. legacy URLs like Samhita_kpully_Devanagari.html)
-        aliases = meta.get("aliases", [])
-        for alias in aliases:
-            a_root = TARGET_DIR / alias
-            a_sub = target_sub / alias
-            if src_path.resolve() != a_root.resolve():
-                shutil.copy2(src_path, a_root)
-            if src_path.resolve() != a_sub.resolve():
-                shutil.copy2(src_path, a_sub)
+        # Also populate aliases in renders/ (e.g., Samhita_kpully_Devanagari.html, Samam_kpully_Devanagari_Samam.html)
+        for alias in meta.get("aliases", []):
+            dest_alias = renders_dir / alias
+            if src_path.resolve() != dest_alias.resolve():
+                shutil.copy2(src_path, dest_alias)
 
-        file_bytes = dest_root.stat().st_size
-        print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/")
+        file_bytes = dest_render.stat().st_size
+        print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/renders/")
 
         items.append({
             "filename": filename,
@@ -802,12 +793,12 @@ def main():
             "featured": meta["featured"],
             "bytes": file_bytes,
             "size_fmt": format_size(file_bytes),
-            "rel_url": f"{subfolder}/{filename}",
+            "rel_url": f"renders/{filename}",
         })
 
-    items.sort(key=lambda x: (x["script"], x["title"]))
+    items.sort(key=lambda x: (not x["featured"], x["category"], x["title"]))
 
-    # 3. Write catalog index.html
+    # 3. Write catalog index.html in docs/standalone-html/
     index_html = build_catalog_page(items)
     index_path = TARGET_DIR / "index.html"
     index_path.write_text(index_html, encoding="utf-8")

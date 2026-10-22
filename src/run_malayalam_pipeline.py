@@ -224,13 +224,9 @@ def main():
         ] + extra_flags
         run_cmd(kpully_cmd, description="Step 2c: Rendering Devanagari Kpully (HTML + PDF, Samam-only)")
 
-    # 3. Copy standalone HTML to docs/standalone-html/
-    standalone_dir = ROOT_DIR / "docs" / "standalone-html"
-    standalone_mal_dir = standalone_dir / "Malayalam"
-    standalone_dev_dir = standalone_dir / "Devanagari"
-    standalone_dir.mkdir(parents=True, exist_ok=True)
-    standalone_mal_dir.mkdir(parents=True, exist_ok=True)
-    standalone_dev_dir.mkdir(parents=True, exist_ok=True)
+    # 3. Copy standalone HTML to docs/standalone-html/renders/
+    renders_dir = ROOT_DIR / "docs" / "standalone-html" / "renders"
+    renders_dir.mkdir(parents=True, exist_ok=True)
 
     sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
 
@@ -245,9 +241,9 @@ def main():
     if existing_mal:
         existing_mal.sort(key=lambda p: p.stat().st_mtime, reverse=True)
         mal_src = existing_mal[0]
-        shutil.copy2(mal_src, standalone_dir / "Samam_kpully_Malayalam.html")
-        shutil.copy2(mal_src, standalone_mal_dir / "Samam_kpully_Malayalam.html")
-        print(f"[INFO] Copied {mal_src.name} -> {standalone_dir.relative_to(ROOT_DIR)}/Samam_kpully_Malayalam.html & Malayalam/")
+        shutil.copy2(mal_src, renders_dir / "Samam_kpully_Malayalam.html")
+        shutil.copy2(mal_src, renders_dir / "Samam_kpully_Malayalam_Samam.html")
+        print(f"[INFO] Copied {mal_src.name} -> docs/standalone-html/renders/Samam_kpully_Malayalam.html")
 
     # Sync Devanagari KPully
     deva_candidates = [
@@ -262,12 +258,10 @@ def main():
     if existing_deva:
         existing_deva.sort(key=lambda p: p.stat().st_mtime, reverse=True)
         deva_src = existing_deva[0]
-        shutil.copy2(deva_src, standalone_dir / "Samam_kpully_Devanagari.html")
-        shutil.copy2(deva_src, standalone_dev_dir / "Samam_kpully_Devanagari.html")
-        # Keep alias for backwards compatibility
-        shutil.copy2(deva_src, standalone_dir / "Samhita_kpully_Devanagari.html")
-        shutil.copy2(deva_src, standalone_dev_dir / "Samhita_kpully_Devanagari.html")
-        print(f"[INFO] Copied {deva_src.name} -> {standalone_dir.relative_to(ROOT_DIR)}/Samam_kpully_Devanagari.html & alias Samhita_kpully_Devanagari.html")
+        shutil.copy2(deva_src, renders_dir / "Samam_kpully_Devanagari.html")
+        shutil.copy2(deva_src, renders_dir / "Samam_kpully_Devanagari_Samam.html")
+        shutil.copy2(deva_src, renders_dir / "Samhita_kpully_Devanagari.html")
+        print(f"[INFO] Copied {deva_src.name} -> docs/standalone-html/renders/Samam_kpully_Devanagari.html (and aliases)")
 
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
     if publish_script.exists():
