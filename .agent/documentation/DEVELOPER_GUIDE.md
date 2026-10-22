@@ -387,6 +387,12 @@ The pipeline enforces the following canonical transliteration rules across all c
 | **6** | **Matra Duplication Collapse** | `ा+` | `ാ` | `ാ+` $\rightarrow$ `ാ` | Collapses accidental double/triple long AA vowel signs. |
 | **7** | **Verse End Non-Breaking Wrap** | `॥ N ॥` / `\|\| N \|\|` | `\nolinebreak\mbox{॥N॥}` | Regex `(\|\|\|॥)\s*[\d०-९]+\s*(\|\|\|॥)` | Samam/Rik verse markers never wrap onto an orphan line alone, and end-of-samam triggers a clean paragraph/line break (`\par\vspace{0.9em}`). |
 
+#### Malayalam $\rightarrow$ Devanagari Transliteration & The `--preserve-hrsva` Option
+When generating the companion Devanagari KPully edition from curated Malayalam texts (`Samam_Malayalam_Unicode.txt`):
+- **Default (Native Sanskrit Deergha Orthography)**: Devanagari retains standard classical Sanskrit diphthong/long vowels (`ए`/`े`, `ओ`/`ो`) and restores standard feminine Sanskrit title endings (`संहिता`, `माला`). Dravidian short vowels (`ॆ`, `ॊ`, `ऎ`, `ऒ`) are automatically mapped back to their classical deergha equivalents.
+- **Optional (`--preserve-hrsva` / `preserve_hrsva=True`)**: When passed via CLI to `src/run_malayalam_pipeline.py`, `src/render.py`, or `src/run_pipeline.py`, the transliteration engine preserves Dravidian short vowels (`ॆ`, `ॊ`, `ऎ`, `ऒ`) in Devanagari output.
+- **Malayalam Integrity**: Malayalam source files and rendering targets remain completely unaffected, preserving authentic short vowels (`െ`, `ൊ`) as curated.
+
 #### Phase 2: Manual Swara Modifier Enrichment
 The editor opens `data/input/Malayalam/*.txt` in any text editor and adds the Malayalam Swara Modifiers directly next to syllables/swaras using typing shortcuts:
 

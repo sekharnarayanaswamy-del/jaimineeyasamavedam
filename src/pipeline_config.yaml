@@ -12,7 +12,7 @@ project:
 
 # --- TIER 2: CORPUS EDITIONS ---
 editions:
-  samhita: "3.29"
+  samhita: "3.30"
   aaranam: "1.16"
   collections: "2.05"
   kpully: "1.00"

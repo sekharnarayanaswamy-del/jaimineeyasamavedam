@@ -1,6 +1,6 @@
 ജൈമിനീയസാമവേദ സംഹിത (കോഡുന്തിരപുഴ്ഴി പാഠഃ)
 
-Version 1.00 11-10-2026 15:26:13
+Version 1.00 22-10-2026 13:46:55
 
 # Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
 ആഗ്നെയപാഠഃ
@@ -38,7 +38,7 @@ Version 1.00 11-10-2026 15:26:13
 #End of Mantra Sets -- subsection_4 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_5 ## DO NOT EDIT
-॥വൈശ്വമനസഞ്ചാദിത്യസാമവ॥
+॥വൈശ്വമനസഞ്ചാദിത്യസാമവാ॥
 # End of SubSection Title -- subsection_5 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_5 ## DO NOT EDIT
 അഗ്നിന്ദൂ(𑌟𑌿)(┃) താം(𑌤) ।വൃണീമഹാഇ(𑌷𑍂) ഹൊ,താ(·)രാം_(𑌟𑌿) വീ(𑌤)(\) ശ്വവെ_(𑌚𑌾) ദസാം(𑌚𑌾) ।അസ്യയാ(𑌟𑌿)(·) ജ്ഞാ.(𑌤) ഓഔ.(𑌕𑌾) ഹൊ(𑌤)(·) വാ(𑌤) । സ്യാസൂ_(𑌚𑌾) ക്ര,തുമിഴാ.(𑌟𑍀) ഭാ(𑌖𑌣) ।ഓ(𑌪) ഇഴാ(𑌪𑍍𑌲𑌾)॥ 5 ॥
