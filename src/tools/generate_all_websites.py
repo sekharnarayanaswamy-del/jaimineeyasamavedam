@@ -113,7 +113,7 @@ TARGET_DEFINITIONS = [
                     "-kpully",
                     "--output-mode", "samam_nometa",
                     "-o", "docs/kpully-devanagari",
-                    "--title", "जैमिनीय साम संहिता (कोडुनतिरपुळ्ळि पाठः)"
+                    "--title", "जैमिनीय साम संहिता (कोडुन्तिरपुळ्ळि पाठः)"
                 ],
                 "output": ROOT_DIR / "docs" / "kpully-devanagari"
             },
