@@ -114,6 +114,10 @@ def post_process_malayalam(text: str) -> str:
     text = text.replace("ജ്ഞീ", "ജ്ഞി")
     # Convert all numerals to English ASCII digits
     text = text.translate(_DIGITS_TO_ENGLISH)
+    # Proper noun: Kodunthirapully in Malayalam
+    text = re.sub(r"കോഡു(?:ന്തി|നതി)ര(?:പുഴ്ഴി|പ്പുള്ളി|പുള്ളി)?\s*പാഠഃ", "കൊടുന്തിരപ്പുള്ളി പാഠഃ", text)
+    text = re.sub(r"കോഡു(?:ന്തി|നതി)ര(?:പുഴ്ഴി|പ്പുള്ളി|പുള്ളി)?", "കൊടുന്തിരപ്പുള്ളി", text)
+    text = re.sub(r"കൊടുന്തിര(?:പുഴ്ഴി|പുള്ളി)", "കൊടുന്തിരപ്പുള്ളി", text)
     return text
 
 
