@@ -111,6 +111,13 @@ CANONICAL_READERS = {
         "description": "Complete Malayalam script edition of Jaimineeya Sama Samhita with traditional Malayalam swara markers.",
         "featured": False,
     },
+    "Aaranam_Devanagari.html": {
+        "title": "जैमिनीय साम आरण्यकम् (सकल पाठः)",
+        "category": "Aranyakam",
+        "script": "Devanagari",
+        "description": "Complete Jaimineeya Aranya Ganam (Aranyakam) containing both Rik and Samam with full annotations.",
+        "featured": False,
+    },
 }
 
 
@@ -171,7 +178,7 @@ def cleanup_obsolete_files(target_dir: Path):
 
 
 def build_catalog_page(items):
-    categories = ["All", "Featured", "Samam Chants", "Collections", "Samhita", "Kauthuma Samaveda", "Devanagari", "Malayalam"]
+    categories = ["All", "Featured", "Samam Chants", "Collections", "Samhita", "Aranyakam", "Kauthuma Samaveda", "Devanagari", "Malayalam"]
     total_files = len(items)
     dev_count = sum(1 for x in items if x["script"] == "Devanagari")
     mal_count = sum(1 for x in items if x["script"] == "Malayalam")
@@ -724,6 +731,7 @@ def main():
     # 2. Sync all canonical readers directly into docs/standalone-html/renders/
     sam_renders = CORPORA_DIR / "samhita" / "05_renders" / "html"
     col_renders = CORPORA_DIR / "collections" / "05_renders" / "html"
+    aar_renders = CORPORA_DIR / "aaranam" / "05_renders" / "html"
     pdfconv_dir = REPO_ROOT / "pdfconverter" / "data" / "output"
     items = []
 
@@ -741,6 +749,8 @@ def main():
                 candidates.append(sam_renders / alt_name)
             if col_renders.exists():
                 candidates.append(col_renders / alt_name)
+            if aar_renders.exists():
+                candidates.append(aar_renders / alt_name)
             if pdfconv_dir.exists():
                 candidates.append(pdfconv_dir / alt_name)
             candidates.extend([
@@ -761,6 +771,10 @@ def main():
             for alias_alt in alias_alts:
                 if sam_renders.exists():
                     candidates.append(sam_renders / alias_alt)
+                if col_renders.exists():
+                    candidates.append(col_renders / alias_alt)
+                if aar_renders.exists():
+                    candidates.append(aar_renders / alias_alt)
                 candidates.extend([
                     SOURCE_DIR / "Devanagari" / alias_alt,
                     SOURCE_DIR / "Malayalam" / alias_alt,
