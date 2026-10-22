@@ -822,6 +822,10 @@ Examples:
         ("kpully" in str(input_file).lower()) or
         (mode_type == 'kpully')
     )
+    if is_kpully_target:
+        kpully_mode = True
+        CURRENT_KPULLY_MODE = True
+
     edition_corpus = "kpully" if is_kpully_target else default_corpus
     from core.version import get_corpus_edition
     corpus_edition = get_corpus_edition(edition_corpus)

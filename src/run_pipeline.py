@@ -273,8 +273,6 @@ def main():
     if args.preserve_hrsva:
         extra_flags.append("--preserve-hrsva")
 
-    kpully_cli_flags = ["-kpully"] if kpully_active else []
-
     # ----------------------------------------------------
     # 1. SAMHITA PIPELINE
     # ----------------------------------------------------
@@ -333,7 +331,7 @@ def main():
                     "--script", "devanagari",
                     "--output-mode", mode,
                     "-o", "Samhita",
-                ] + extra_flags + kpully_cli_flags
+                ] + extra_flags
                 desc = mode_descriptions.get(mode, mode)
                 run_cmd(cmd, description=f"Samhita Step 2: Rendering Devanagari {desc} ({format_label})")
 
@@ -364,7 +362,7 @@ def main():
                     str(mal_json_path),
                     "--script", "malayalam",
                     "-kpully",
-                    "--output-mode", "separate",
+                    "--output-mode", "nometa",
                     "--samam-only",
                     "-o", "Samam_kpully_Malayalam",
                 ] + extra_flags
@@ -394,7 +392,7 @@ def main():
                         str(kpully_json_path),
                         "--script", "devanagari",
                         "-kpully",
-                        "--output-mode", "separate",
+                        "--output-mode", "nometa",
                         "--samam-only",
                         "-o", "Samam_kpully_Devanagari",
                     ] + extra_flags
@@ -457,7 +455,7 @@ def main():
                     "--type", "aaranam",
                     "--output-mode", mode,
                     "-o", "Aaranam",
-                ] + extra_flags + kpully_cli_flags
+                ] + extra_flags
                 run_cmd(cmd, description=f"Aaranam Step 3: Rendering Aaranam ({mode}) ({format_label})")
 
     # ----------------------------------------------------
@@ -492,7 +490,7 @@ def main():
                         "--type", "collection",
                         "--output-mode", mode,
                         "-o", book_name,
-                    ] + extra_flags + kpully_cli_flags
+                    ] + extra_flags
                     run_cmd(cmd, description=f"Collections: Rendering {book_name} ({mode}) ({format_label})")
 
         if not rendered_any:
@@ -507,7 +505,7 @@ def main():
                         "--type", "collection",
                         "--output-mode", mode,
                         "-o", "Collection",
-                    ] + extra_flags + kpully_cli_flags
+                    ] + extra_flags
                     run_cmd(cmd, description=f"Collections: Rendering Collection ({mode}) ({format_label})")
 
     # ----------------------------------------------------
@@ -540,7 +538,7 @@ def main():
                 "--output-mode", mode,
                 "--rik-only",
                 "-o", "Purvarchikam",
-            ] + extra_flags + kpully_cli_flags
+            ] + extra_flags
             run_cmd(cmd, description=f"Purvarchikam: Rendering ({mode}) ({format_label})")
 
     # ----------------------------------------------------
@@ -573,7 +571,7 @@ def main():
                 "--output-mode", mode,
                 "--rik-only",
                 "-o", "Uttararchikam",
-            ] + extra_flags + kpully_cli_flags
+            ] + extra_flags
             run_cmd(cmd, description=f"Uttararchikam: Rendering ({mode}) ({format_label})")
 
     # ----------------------------------------------------

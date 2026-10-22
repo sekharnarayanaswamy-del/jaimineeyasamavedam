@@ -31,7 +31,7 @@ CANONICAL_READERS = {
         "script": "Devanagari",
         "description": "Canonical Devanagari Jaimineeya Samam chanting edition in swaras-above Kodunthirapully layout.",
         "featured": True,
-        "aliases": ["Samhita_kpully_Devanagari.html", "Samam_kpully_Devanagari_Samam.html"],
+        "aliases": ["Samhita_kpully_Devanagari.html", "Samam_kpully_Devanagari_Samam.html", "Samam_kpully_Devanagari_Samam_NoMeta.html"],
     },
     "Samam_kpully_Malayalam.html": {
         "title": "Samam (Malayalam) — Kodunthirapully Edition",
@@ -39,7 +39,7 @@ CANONICAL_READERS = {
         "script": "Malayalam",
         "description": "Canonical Malayalam Jaimineeya Samam chanting edition featuring custom JaimineeyaSwara typography and elevated Kodunthirapully swara modifiers.",
         "featured": True,
-        "aliases": ["Samam_kpully_Malayalam_Samam.html"],
+        "aliases": ["Samam_kpully_Malayalam_Samam.html", "Samam_kpully_Malayalam_Samam_NoMeta.html"],
     },
     "Kauthuma_Gramageyaganam_Devanagari.html": {
         "title": "प्रकृतिगानम् (ग्रामगेयगानम्) — कौथुमशाखा",
@@ -729,37 +729,44 @@ def main():
 
     for filename, meta in CANONICAL_READERS.items():
         stem = Path(filename).stem
-        alt_filename = f"{stem}_Samam.html" if not stem.endswith("_Samam") else filename
-        candidates = [
-            sam_renders / alt_filename if sam_renders.exists() else None,
-            sam_renders / filename if sam_renders.exists() else None,
-            col_renders / alt_filename if col_renders.exists() else None,
-            col_renders / filename if col_renders.exists() else None,
-            pdfconv_dir / filename if pdfconv_dir.exists() else None,
-            SOURCE_DIR / "Devanagari" / alt_filename,
-            SOURCE_DIR / "Devanagari" / filename,
-            SOURCE_DIR / "Malayalam" / alt_filename,
-            SOURCE_DIR / "Malayalam" / filename,
-            SOURCE_DIR / alt_filename,
-            SOURCE_DIR / filename,
-            renders_dir / filename,
-            renders_dir / alt_filename,
+        alt_names = [
+            f"{stem}_Samam_NoMeta.html",
+            f"{stem}_NoMeta.html",
+            f"{stem}_Samam.html",
+            filename,
         ]
+        candidates = []
+        for alt_name in alt_names:
+            if sam_renders.exists():
+                candidates.append(sam_renders / alt_name)
+            if col_renders.exists():
+                candidates.append(col_renders / alt_name)
+            if pdfconv_dir.exists():
+                candidates.append(pdfconv_dir / alt_name)
+            candidates.extend([
+                SOURCE_DIR / "Devanagari" / alt_name,
+                SOURCE_DIR / "Malayalam" / alt_name,
+                SOURCE_DIR / alt_name,
+                renders_dir / alt_name,
+            ])
+
         for alias in meta.get("aliases", []):
             alias_stem = Path(alias).stem
-            alias_alt = f"{alias_stem}_Samam.html" if not alias_stem.endswith("_Samam") else alias
-            if sam_renders.exists():
-                candidates.extend([sam_renders / alias_alt, sam_renders / alias])
-            candidates.extend([
-                SOURCE_DIR / "Devanagari" / alias_alt,
-                SOURCE_DIR / "Devanagari" / alias,
-                SOURCE_DIR / "Malayalam" / alias_alt,
-                SOURCE_DIR / "Malayalam" / alias,
-                SOURCE_DIR / alias_alt,
-                SOURCE_DIR / alias,
-                renders_dir / alias_alt,
-                renders_dir / alias,
-            ])
+            alias_alts = [
+                f"{alias_stem}_Samam_NoMeta.html",
+                f"{alias_stem}_NoMeta.html",
+                f"{alias_stem}_Samam.html",
+                alias,
+            ]
+            for alias_alt in alias_alts:
+                if sam_renders.exists():
+                    candidates.append(sam_renders / alias_alt)
+                candidates.extend([
+                    SOURCE_DIR / "Devanagari" / alias_alt,
+                    SOURCE_DIR / "Malayalam" / alias_alt,
+                    SOURCE_DIR / alias_alt,
+                    renders_dir / alias_alt,
+                ])
 
         existing_cands = [c for c in candidates if c and c.exists()]
         src_path = None
@@ -771,15 +778,24 @@ def main():
             print(f"[WARN] Source reader not found: {filename}")
             continue
 
+        def safe_copy(src: Path, dst: Path):
+            if src.resolve() == dst.resolve():
+                return
+            try:
+                shutil.copy2(src, dst)
+            except OSError:
+                try:
+                    dst.write_bytes(src.read_bytes())
+                except Exception as e:
+                    print(f"  [WARN] Fallback copy failed for {dst.name}: {e}")
+
         dest_render = renders_dir / filename
-        if src_path.resolve() != dest_render.resolve():
-            shutil.copy2(src_path, dest_render)
+        safe_copy(src_path, dest_render)
 
         # Also populate aliases in renders/ (e.g., Samhita_kpully_Devanagari.html, Samam_kpully_Devanagari_Samam.html)
         for alias in meta.get("aliases", []):
             dest_alias = renders_dir / alias
-            if src_path.resolve() != dest_alias.resolve():
-                shutil.copy2(src_path, dest_alias)
+            safe_copy(src_path, dest_alias)
 
         file_bytes = dest_render.stat().st_size
         print(f"[SYNC] Published {filename} ({format_size(file_bytes)}) -> docs/standalone-html/renders/")
