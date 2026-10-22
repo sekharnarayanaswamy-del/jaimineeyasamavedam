@@ -265,8 +265,38 @@ _MOD_CODE_TO_UNICODE = {
 }
 
 
-def malayalam_to_devanagari_mantra_line(line: str) -> str:
-    """Convert a Malayalam Samam mantra line (with Grantha swara markers and modifiers) to Devanagari."""
+def normalize_deva_vowels_native(text: str) -> str:
+    """Normalize Devanagari text to standard Sanskrit native orthography.
+
+    Converts Dravidian short e/o vowels (ऎ, ऒ, ॆ, ॊ) back to standard Sanskrit
+    deergha vowels (ए, ओ, े, ो), and restores standard Sanskrit feminine noun/title
+    endings (e.g. संहित -> संहिता, माल -> माला).
+    """
+    if not text:
+        return text
+    # Short e / o matras -> standard Sanskrit deergha matras
+    text = text.replace('\u0946', '\u0947')  # ॆ -> े
+    text = text.replace('\u094A', '\u094B')  # ॊ -> ो
+    # Short E / O independent letters -> standard Sanskrit deergha letters
+    text = text.replace('\u090E', '\u090F')  # ऎ -> ए
+    text = text.replace('\u0912', '\u0913')  # ऒ -> ओ
+
+    # Restore standard feminine Sanskrit titles/nouns ending in -ā that were shortened in Malayalam titles:
+    # e.g., 'जैमिनीय साम संहित' -> 'जैमिनीय साम संहिता', 'सूक्तमाल' -> 'सूक्तमाला'
+    text = re.sub(r'([सश]ंहित)(?=[\s।॥\?!\.,;\)\"\']|$)', r'\1ा', text)
+    text = re.sub(r'(\b[^\s।॥]+माल)(?=[\s।॥\?!\.,;\)\"\']|$)', r'\1ा', text)
+    text = re.sub(r'(?<=\s)(माल)(?=[\s।॥\?!\.,;\)\"\']|$)', r'\1ा', text)
+    return text
+
+
+def malayalam_to_devanagari_mantra_line(line: str, preserve_hrsva: bool = False) -> str:
+    """Convert a Malayalam Samam mantra line (with Grantha swara markers and modifiers) to Devanagari.
+
+    Args:
+        line: Malayalam mantra line containing Grantha/modifier markings.
+        preserve_hrsva: If True, keep Dravidian short e/o vowels (ॆ, ॊ).
+                        If False (default), normalize to standard Sanskrit deergha vowels (े, ो).
+    """
     if not line:
         return ""
     line = re.sub(r'(\S)\s+\(', r'\1(', line)
@@ -313,6 +343,8 @@ def malayalam_to_devanagari_mantra_line(line: str) -> str:
                     deva_word = transliterate.process("Malayalam", "Devanagari", tok)
                     # Convert Malayalam ഴ (zha) / Vedic ळ if any
                     deva_word = deva_word.replace('ळ्', 'ळ्').replace('ऴ्', 'ळ्').replace('ऴ', 'ळ')
+                    if not preserve_hrsva:
+                        deva_word = normalize_deva_vowels_native(deva_word)
                     out.append(deva_word)
                 except Exception:
                     out.append(tok)
@@ -326,11 +358,19 @@ def malayalam_to_devanagari_mantra_line(line: str) -> str:
     # Retain exactly 1 whitespace around danda when Mod-A1 occurs
     result = re.sub(r'\s*(\((?:A1|a1|A_1|a_1|\uE00D)\))\s*।\s*', r'\1 । ', result)
     result = re.sub(r'\s*।\s*(\((?:A1|a1|A_1|a_1|\uE00D)\))\s*', r' ।\1 ', result)
+    if not preserve_hrsva:
+        result = normalize_deva_vowels_native(result)
     return result
 
 
-def malayalam_to_devanagari(text: str) -> str:
-    """General purpose transliteration from Malayalam text to Devanagari."""
+def malayalam_to_devanagari(text: str, preserve_hrsva: bool = False) -> str:
+    """General purpose transliteration from Malayalam text to Devanagari.
+
+    Args:
+        text: Malayalam text to transliterate.
+        preserve_hrsva: If True, preserve Dravidian short e/o vowels (ॆ, ॊ, ऎ, ऒ).
+                        If False (default), normalize to standard Sanskrit deergha vowels.
+    """
     if not text:
         return ""
     if transliterate is None:
@@ -341,13 +381,21 @@ def malayalam_to_devanagari(text: str) -> str:
         res = transliterate.process("Malayalam", "Devanagari", t)
         # Convert Malayalam ഴ / ऴ -> ळ
         res = res.replace('ऴ्', 'ळ्').replace('ऴ', 'ळ')
+        if not preserve_hrsva:
+            res = normalize_deva_vowels_native(res)
         return res
     except Exception:
         return text
 
 
-def convert_malayalam_data_to_devanagari(data: dict) -> dict:
-    """Clone a supersections tree and convert all Malayalam fields/mantras into Devanagari."""
+def convert_malayalam_data_to_devanagari(data: dict, preserve_hrsva: bool = False) -> dict:
+    """Clone a supersections tree and convert all Malayalam fields/mantras into Devanagari.
+
+    Args:
+        data: AST dictionary with Malayalam content.
+        preserve_hrsva: If True, keep Dravidian short e/o vowels in Devanagari.
+                        If False (default), normalize to standard Sanskrit deergha orthography.
+    """
     import copy
     deva_data = copy.deepcopy(data)
     
@@ -362,13 +410,13 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
         if not isinstance(super_v, dict):
             continue
         if 'supersection_title' in super_v and MALAYALAM_CHAR_RE.search(super_v['supersection_title']):
-            super_v['supersection_title'] = malayalam_to_devanagari(super_v['supersection_title'])
+            super_v['supersection_title'] = malayalam_to_devanagari(super_v['supersection_title'], preserve_hrsva=preserve_hrsva)
             
         for sec_k, sec_v in super_v.get('sections', {}).items():
             if not isinstance(sec_v, dict):
                 continue
             if 'section_title' in sec_v and MALAYALAM_CHAR_RE.search(sec_v['section_title']):
-                sec_v['section_title'] = malayalam_to_devanagari(sec_v['section_title'])
+                sec_v['section_title'] = malayalam_to_devanagari(sec_v['section_title'], preserve_hrsva=preserve_hrsva)
                 
             for sub_k, sub_v in sec_v.get('subsections', {}).items():
                 if not isinstance(sub_v, dict):
@@ -377,21 +425,21 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
                 if 'header' in sub_v and isinstance(sub_v['header'], dict):
                     h_text = sub_v['header'].get('header', '')
                     if MALAYALAM_CHAR_RE.search(h_text):
-                        sub_v['header']['header'] = malayalam_to_devanagari(h_text)
+                        sub_v['header']['header'] = malayalam_to_devanagari(h_text, preserve_hrsva=preserve_hrsva)
                 elif 'header' in sub_v and isinstance(sub_v['header'], str):
                     if MALAYALAM_CHAR_RE.search(sub_v['header']):
-                        sub_v['header'] = malayalam_to_devanagari(sub_v['header'])
+                        sub_v['header'] = malayalam_to_devanagari(sub_v['header'], preserve_hrsva=preserve_hrsva)
                         
                 # 2. Metadata
                 for meta_key in ('saman_metadata', 'rik_metadata', 'rik_text'):
                     if meta_key in sub_v and sub_v[meta_key] and MALAYALAM_CHAR_RE.search(sub_v[meta_key]):
-                        sub_v[meta_key] = malayalam_to_devanagari(sub_v[meta_key])
+                        sub_v[meta_key] = malayalam_to_devanagari(sub_v[meta_key], preserve_hrsva=preserve_hrsva)
                         
                 # 3. Footnotes
                 if 'footnotes' in sub_v and isinstance(sub_v['footnotes'], dict):
                     new_fn = {}
                     for fn_k, fn_v in sub_v['footnotes'].items():
-                        new_fn[fn_k] = malayalam_to_devanagari(fn_v) if MALAYALAM_CHAR_RE.search(fn_v) else fn_v
+                        new_fn[fn_k] = malayalam_to_devanagari(fn_v, preserve_hrsva=preserve_hrsva) if MALAYALAM_CHAR_RE.search(fn_v) else fn_v
                     sub_v['footnotes'] = new_fn
                     
                 # 4. Mantras (convert malayalam-mantra-sets to Devanagari with all swara modifiers)
@@ -420,7 +468,7 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
                             
                 new_corrected = []
                 for line in source_lines:
-                    deva_line = malayalam_to_devanagari_mantra_line(line)
+                    deva_line = malayalam_to_devanagari_mantra_line(line, preserve_hrsva=preserve_hrsva)
                     if deva_line:
                         new_corrected.append({'corrected-mantra': deva_line})
                 if new_corrected:
@@ -431,6 +479,6 @@ def convert_malayalam_data_to_devanagari(data: dict) -> dict:
     if isinstance(deva_data, dict) and 'closing_mantras' in deva_data and isinstance(deva_data['closing_mantras'], list):
         for cm in deva_data['closing_mantras']:
             if isinstance(cm, dict) and 'mantra' in cm and MALAYALAM_CHAR_RE.search(cm['mantra']):
-                cm['mantra'] = malayalam_to_devanagari_mantra_line(cm['mantra'])
+                cm['mantra'] = malayalam_to_devanagari_mantra_line(cm['mantra'], preserve_hrsva=preserve_hrsva)
                         
     return deva_data

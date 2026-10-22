@@ -591,6 +591,8 @@ Examples:
     # CLI OPTION for Kodunthirapully variant (swaras above mantra text)
     parser.add_argument('-kpully', '--kpully', dest='kpully', action='store_true', default=False,
                         help='Render Devanagari with swara markings stacked above the mantra text (Kodunthirapully paddhati)')
+    parser.add_argument('--preserve-hrsva', dest='preserve_hrsva', action='store_true', default=False,
+                        help='Preserve Dravidian short (hrsva) e/o vowels in transliterated Devanagari output (default: False, native Sanskrit deergha e/o)')
     
 
     
@@ -1126,7 +1128,7 @@ Examples:
         if gen_txt:
             CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
             if script == 'malayalam':
-                deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                deva_supersections = convert_malayalam_data_to_devanagari(supersections, preserve_hrsva=args.preserve_hrsva)
                 CreateTextFile(deva_text_template_file, f"{file_prefix}", 'Devanagari', deva_supersections, output_mode='combined', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
         if gen_html:
             CreateHtmlFile(html_template_file, f"{file_prefix}", doc_family, supersections, html_font=html_font, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=html_out_dir or out_dir, name_override=html_out_name or out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
@@ -1148,7 +1150,7 @@ Examples:
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
-                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections, preserve_hrsva=args.preserve_hrsva)
                     CreateTextFile(deva_text_template_file, final_out_name, 'Devanagari', deva_supersections, output_mode='rik', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, final_out_name, doc_family, supersections, html_font=html_font, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=html_out_dir or out_dir, name_override=html_out_name or final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
@@ -1163,7 +1165,7 @@ Examples:
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
-                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections, preserve_hrsva=args.preserve_hrsva)
                     CreateTextFile(deva_text_template_file, final_out_name, 'Devanagari', deva_supersections, output_mode='samam', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, final_out_name, doc_family, supersections, html_font=html_font, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=html_out_dir or out_dir, name_override=html_out_name or final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
@@ -1186,7 +1188,7 @@ Examples:
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
-                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections, preserve_hrsva=args.preserve_hrsva)
                     CreateTextFile(deva_text_template_file, final_out_name, 'Devanagari', deva_supersections, output_mode='rik_nometa', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, final_out_name, doc_family, supersections, html_font=html_font, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=html_out_dir or out_dir, name_override=html_out_name or final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)
@@ -1201,7 +1203,7 @@ Examples:
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
-                    deva_supersections = convert_malayalam_data_to_devanagari(supersections)
+                    deva_supersections = convert_malayalam_data_to_devanagari(supersections, preserve_hrsva=args.preserve_hrsva)
                     CreateTextFile(deva_text_template_file, final_out_name, 'Devanagari', deva_supersections, output_mode='samam_nometa', doc_title_sa=deva_doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
             if gen_html:
                 CreateHtmlFile(html_template_file, final_out_name, doc_family, supersections, html_font=html_font, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=html_out_dir or out_dir, name_override=html_out_name or final_out_name, jsv_version=jsv_version, generated_at=generated_at, script=script, with_modifiers=args.swara_modifiers, kpully=kpully_mode)

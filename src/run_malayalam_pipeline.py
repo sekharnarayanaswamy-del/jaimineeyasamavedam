@@ -98,6 +98,12 @@ def main():
         help="Skip Devanagari Kpully HTML+PDF generation",
     )
     parser.add_argument(
+        "--preserve-hrsva",
+        action="store_true",
+        default=False,
+        help="Preserve Dravidian short (hrsva) e/o vowels in transliterated Devanagari output (default: False, native Sanskrit deergha e/o)",
+    )
+    parser.add_argument(
         "--legacy-html",
         action="store_true",
         help="Use legacy single-page HTML layout instead of modern VedaVMS reader layout",
@@ -146,7 +152,7 @@ def main():
             import json
             with open(json_path, "r", encoding="utf-8") as f_in:
                 mal_data = json.load(f_in)
-            deva_data = convert_malayalam_data_to_devanagari(mal_data)
+            deva_data = convert_malayalam_data_to_devanagari(mal_data, preserve_hrsva=args.preserve_hrsva)
             kpully_json_path.parent.mkdir(parents=True, exist_ok=True)
             with open(kpully_json_path, "w", encoding="utf-8") as f_out:
                 json.dump(deva_data, f_out, ensure_ascii=False, indent=2)
@@ -164,6 +170,8 @@ def main():
         extra_flags.append("--pdf-only")
     if args.legacy_html:
         extra_flags.append("--legacy-html")
+    if args.preserve_hrsva:
+        extra_flags.append("--preserve-hrsva")
 
     for mode in args.modes:
         render_cmd = [
