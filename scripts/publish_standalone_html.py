@@ -12,6 +12,8 @@ docs/standalone-html/ and updates the catalog portal index.html.
 """
 
 import os
+import sys
+import re
 import shutil
 import hashlib
 import json
@@ -833,6 +835,30 @@ def main():
     index_path = TARGET_DIR / "index.html"
     index_path.write_text(index_html, encoding="utf-8")
     print(f"[INDEX] Generated clean catalog at: {index_path.relative_to(REPO_ROOT)}")
+
+    # 4. Sync gateway homepage footer timestamp
+    update_gateway_footer()
+
+
+def update_gateway_footer():
+    index_path = REPO_ROOT / "docs" / "index.html"
+    if not index_path.exists():
+        return
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "src"))
+        from core.version import get_corpus_edition
+        ver = get_corpus_edition("samhita") or "3.30"
+    except Exception:
+        ver = "3.30"
+    from datetime import datetime
+    now_str = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    content = index_path.read_text(encoding="utf-8")
+    pattern = r'<div class="footer-meta">[\s\S]*?</div>'
+    replacement = f'<div class="footer-meta">\n                संस्करणम्: {ver} ,  निर्मितम्: {now_str}\n            </div>'
+    if re.search(pattern, content):
+        content = re.sub(pattern, replacement, content)
+        index_path.write_text(content, encoding="utf-8")
+        print(f"[GATEWAY] Updated docs/index.html timestamp: संस्करणम्: {ver} ,  निर्मितम्: {now_str}")
 
 
 if __name__ == "__main__":

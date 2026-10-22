@@ -456,7 +456,7 @@
         <div class="title-page">
             <h1>॥ \VAR{doc_title_sa} ॥</h1>
             <p style="font-size: 1.1rem; color: var(--accent-blue); margin-top: 10px;">
-                പതിപ്പ്: \VAR{jsv_version} | നിർമ്മിതം: \VAR{generated_at}
+                പതിപ്പ്: \VAR{version or jsv_version} ,  നിർമ്മിതം: \VAR{generated_at if generated_at else ''}
             </p>
         </div>
 

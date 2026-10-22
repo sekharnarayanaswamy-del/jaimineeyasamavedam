@@ -1772,7 +1772,7 @@
             <!-- Title Header Card -->
             <div class="main-title">
                 <h1>॥ \VAR{doc_title_sa} ॥</h1>
-                <div class="sub-heading">പതിപ്പ്: \VAR{version} ,  നിർമ്മിതം: \VAR{generated_at.split(' ')[0] if generated_at else ''}</div>
+                <div class="sub-heading">പതിപ്പ്: \VAR{version} ,  നിർമ്മിതം: \VAR{generated_at if generated_at else ''}</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
