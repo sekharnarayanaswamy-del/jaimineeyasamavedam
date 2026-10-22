@@ -1,7 +1,7 @@
 {
   "corpus": "collections",
   "edition": "2.05",
-  "timestamp": "12-10-2026 15:55:28",
+  "timestamp": "22-10-2026 15:24:10",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -134,10 +134,54 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 5283152,
+          "size_bytes": 5283903,
           "size_formatted": "5.04 MB",
-          "sha256": "03da3f71ac21cbe446900be1880680744adaf1be57788f403edc4da87fa4cc42",
-          "compiled_timestamp": "11-10-2026 15:26:20"
+          "sha256": "e43c9bd5dd135343f139310bc2bfa45f3ff8526e33618174f49aeef936c95e80",
+          "compiled_timestamp": "22-10-2026 15:24:03"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Rik_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Prayogamala-Purvabhagam_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 2760164,
+          "size_formatted": "2.63 MB",
+          "sha256": "e71367c256b755d618fefe258cbe9dc001f185d7e52ac94c1bd0416c045089d2",
+          "compiled_timestamp": "22-10-2026 15:24:04"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 2759825,
+          "size_formatted": "2.63 MB",
+          "sha256": "4f843d9747374b20fbbf3c9b2ae70a621eb0aabb551a80be6f4eac37349657fa",
+          "compiled_timestamp": "22-10-2026 15:24:05"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Samam_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Prayogamala-Purvabhagam_Samam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 5268101,
+          "size_formatted": "5.02 MB",
+          "sha256": "30e2005b486ed000ea20922f85b5c64766f08242ec792c5a08e5718ee2ff35d5",
+          "compiled_timestamp": "22-10-2026 15:24:04"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Samam_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Prayogamala-Purvabhagam_Samam_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 5261591,
+          "size_formatted": "5.02 MB",
+          "sha256": "16d5cbb2d4f834e32e067567fe03a78161a62b1da06038a9c12c8c681695e346",
+          "compiled_timestamp": "22-10-2026 15:24:06"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari.html",
@@ -145,10 +189,54 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Standard",
-          "size_bytes": 3569242,
+          "size_bytes": 3569993,
           "size_formatted": "3.40 MB",
-          "sha256": "d6a9fec71131733b2cb33e13264cfd1b6d4e58ceacca7221c814bee8cd50306a",
-          "compiled_timestamp": "11-10-2026 15:26:21"
+          "sha256": "df658f19f687efca6f5a5d0e5050684f37dde11b447bd7406083d0c5fdaaa9de",
+          "compiled_timestamp": "22-10-2026 15:24:07"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Rik_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/prayogamala-Uttarabhagam_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 2697212,
+          "size_formatted": "2.57 MB",
+          "sha256": "c7bee77d624d2f32b3de90c22b4805fe2a7d9a5da3d886b3913584fa53a5c946",
+          "compiled_timestamp": "22-10-2026 15:24:08"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Rik_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/prayogamala-Uttarabhagam_Rik_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 2697212,
+          "size_formatted": "2.57 MB",
+          "sha256": "0033c5da86823f50e0ea3e5a66885d976befb670bc6b3473377ac6339be43fee",
+          "compiled_timestamp": "22-10-2026 15:24:09"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Samam_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/prayogamala-Uttarabhagam_Samam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 3569993,
+          "size_formatted": "3.40 MB",
+          "sha256": "84e5f833726831352ee3342216aec5bc770b2b19ac80913ed824434fae97ba90",
+          "compiled_timestamp": "22-10-2026 15:24:08"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Samam_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/prayogamala-Uttarabhagam_Samam_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 3569993,
+          "size_formatted": "3.40 MB",
+          "sha256": "0dc5636af1ce90dfeadafdbc3e6e721d601a79f20017ee375a65735cbabb12fc",
+          "compiled_timestamp": "22-10-2026 15:24:10"
         },
         {
           "name": "Sooktamala_Devanagari.html",
@@ -156,10 +244,54 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 4762051,
+          "size_bytes": 4762802,
           "size_formatted": "4.54 MB",
-          "sha256": "d849e3c08164dfcbffb40b2be892ad5654d7333d52220a818b8c461413700017",
-          "compiled_timestamp": "11-10-2026 15:26:19"
+          "sha256": "4442fab8f8d77dd93947f224d2718df7df47c0dc0fdd363cb64e260567244974",
+          "compiled_timestamp": "22-10-2026 15:23:58"
+        },
+        {
+          "name": "Sooktamala_Rik_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Sooktamala_Rik_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 2800097,
+          "size_formatted": "2.67 MB",
+          "sha256": "333c67c28e5d91a87d1aad46bd3f5be54e5d69519f83d926b73ae1f565e7c919",
+          "compiled_timestamp": "22-10-2026 15:24:00"
+        },
+        {
+          "name": "Sooktamala_Rik_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Sooktamala_Rik_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 2794297,
+          "size_formatted": "2.66 MB",
+          "sha256": "108e9f465bafae42efe6fb2ecc33c28bf991243c88e38219d65f073a9aae2f29",
+          "compiled_timestamp": "22-10-2026 15:24:01"
+        },
+        {
+          "name": "Sooktamala_Samam_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Sooktamala_Samam_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 4722169,
+          "size_formatted": "4.50 MB",
+          "sha256": "f4a20c01091d2fe204e16dc98d98507515c5c40d180e9b703aa66c8778a01284",
+          "compiled_timestamp": "22-10-2026 15:24:00"
+        },
+        {
+          "name": "Sooktamala_Samam_NoMeta_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Sooktamala_Samam_NoMeta_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 4722169,
+          "size_formatted": "4.50 MB",
+          "sha256": "378a8c2c5155edbfb5cc0219ee6be54493c727b45c92a4ee4aca678564095e69",
+          "compiled_timestamp": "22-10-2026 15:24:01"
         }
       ],
       "txt": [
@@ -171,8 +303,52 @@
           "mode": "Combined (Study Edition)",
           "size_bytes": 238042,
           "size_formatted": "232.5 KB",
-          "sha256": "50c7dbb9943c59ad234ba0e9eb12f7155af5646f27795ab2a75ddca69a485abe",
-          "compiled_timestamp": "11-10-2026 15:26:20"
+          "sha256": "ad5f75f9ba63e53afd09b037c451536cfe1db0c8454c9b4fe3ab095f8fdf7676",
+          "compiled_timestamp": "22-10-2026 15:24:02"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Prayogamala-Purvabhagam_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 9976,
+          "size_formatted": "9.7 KB",
+          "sha256": "c51e4f7958b9c5101efb562bf12cfa6a40b0d8718214dd11d29978eaab97efef",
+          "compiled_timestamp": "22-10-2026 15:24:04"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 10020,
+          "size_formatted": "9.8 KB",
+          "sha256": "647c0174c32cabccbf22aeddb6ba508cdaeafda119916e7907ee04283a43415a",
+          "compiled_timestamp": "22-10-2026 15:24:05"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Samam_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Prayogamala-Purvabhagam_Samam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 234101,
+          "size_formatted": "228.6 KB",
+          "sha256": "31b63590d3b356d2d6d55eb9925e58c317708e0ec1dd63a1c36f98bf3325678e",
+          "compiled_timestamp": "22-10-2026 15:24:04"
+        },
+        {
+          "name": "Prayogamala-Purvabhagam_Samam_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Prayogamala-Purvabhagam_Samam_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 227010,
+          "size_formatted": "221.7 KB",
+          "sha256": "99f5c4a21b47e3852a46f62a61103ae2983d6cf006dda98367157680f4ee7747",
+          "compiled_timestamp": "22-10-2026 15:24:06"
         },
         {
           "name": "prayogamala-Uttarabhagam_Devanagari_Unicode.txt",
@@ -182,8 +358,52 @@
           "mode": "Standard",
           "size_bytes": 74145,
           "size_formatted": "72.4 KB",
-          "sha256": "a122c6db2d4914025b22a0411b4fb494a770be6a42bd0f73de75a5e5b1c2f663",
-          "compiled_timestamp": "11-10-2026 15:26:21"
+          "sha256": "89e52a234e800725a1f052a9d71b7f3deed22edc6a3c349ab28d9dea0d552cbd",
+          "compiled_timestamp": "22-10-2026 15:24:07"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/prayogamala-Uttarabhagam_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 1364,
+          "size_formatted": "1.3 KB",
+          "sha256": "f40a47b9545f1bd68c9ecb92863e3d03c62bce92ca41654d7a058750a4fe4fab",
+          "compiled_timestamp": "22-10-2026 15:24:08"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Rik_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/prayogamala-Uttarabhagam_Rik_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 1364,
+          "size_formatted": "1.3 KB",
+          "sha256": "271662fb37730f4d45ed00e1854d3686e478be4ad658b7a576460d55b5f63967",
+          "compiled_timestamp": "22-10-2026 15:24:09"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Samam_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/prayogamala-Uttarabhagam_Samam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 73923,
+          "size_formatted": "72.2 KB",
+          "sha256": "c3324defa193dd0b4843b493f29ff5127e25e275a1316ec6966d5eac14bc33b1",
+          "compiled_timestamp": "22-10-2026 15:24:08"
+        },
+        {
+          "name": "prayogamala-Uttarabhagam_Samam_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/prayogamala-Uttarabhagam_Samam_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 73923,
+          "size_formatted": "72.2 KB",
+          "sha256": "e0b8b4b131ac5fb5e27381e07b1ad3e987480c87a6d26cc03968e34d81f1ac9f",
+          "compiled_timestamp": "22-10-2026 15:24:09"
         },
         {
           "name": "Sooktamala_Devanagari_Unicode.txt",
@@ -193,8 +413,52 @@
           "mode": "Combined (Study Edition)",
           "size_bytes": 211217,
           "size_formatted": "206.3 KB",
-          "sha256": "0d9fda5e4b12c1fd3b455ad0b2b895677c137f87b73076edee35e185ea29bff2",
-          "compiled_timestamp": "11-10-2026 15:26:19"
+          "sha256": "7de094a868fc126cc3966d1663514964afe1933493e341d0c4af3ec6d5a3fa44",
+          "compiled_timestamp": "22-10-2026 15:23:58"
+        },
+        {
+          "name": "Sooktamala_Rik_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Sooktamala_Rik_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 19369,
+          "size_formatted": "18.9 KB",
+          "sha256": "1a8242ddba9e48a5459cd8e0ba9434a70448f3ee46896047f13879af2fa4f114",
+          "compiled_timestamp": "22-10-2026 15:24:00"
+        },
+        {
+          "name": "Sooktamala_Rik_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Sooktamala_Rik_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 18406,
+          "size_formatted": "18.0 KB",
+          "sha256": "c1d10998e54f1e1fa0001db52530ee6a6186a4a6976b9f3e7043f3f516163bcb",
+          "compiled_timestamp": "22-10-2026 15:24:01"
+        },
+        {
+          "name": "Sooktamala_Samam_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Sooktamala_Samam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 187915,
+          "size_formatted": "183.5 KB",
+          "sha256": "836efc24263dafc60887d962d61b5fb89cc0f8f43bf313f413608d98991b861e",
+          "compiled_timestamp": "22-10-2026 15:24:00"
+        },
+        {
+          "name": "Sooktamala_Samam_NoMeta_Devanagari_Unicode.txt",
+          "path": "data/corpora/collections/05_renders/txt/Sooktamala_Samam_NoMeta_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Devanagari (Standard)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 187915,
+          "size_formatted": "183.5 KB",
+          "sha256": "4efb655d84bafaf0efb5c8612f772b05c5719a42d7b7f52de09b6cf037f67763",
+          "compiled_timestamp": "22-10-2026 15:24:01"
         }
       ]
     },

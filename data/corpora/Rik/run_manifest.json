@@ -1,7 +1,7 @@
 {
   "corpus": "Rik",
   "edition": "1.02",
-  "timestamp": "12-10-2026 15:55:28",
+  "timestamp": "22-10-2026 15:24:10",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -81,10 +81,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Separate (Rik Only)",
-          "size_bytes": 3544235,
+          "size_bytes": 3544227,
           "size_formatted": "3.38 MB",
-          "sha256": "cc536c12cde0d7690f48f43a781da2f259e26a62b1ec9627a25fbe7e691b3c71",
-          "compiled_timestamp": "11-10-2026 15:26:22"
+          "sha256": "9bf7ae3253b20f87a3bd3244cd1f02c37d8de533dcb84be2de229c41cb976947",
+          "compiled_timestamp": "13-10-2026 12:27:04"
         },
         {
           "name": "Purvarchikam_Rik_Devanagari.html",
@@ -92,10 +92,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Separate (Rik Only)",
-          "size_bytes": 3544465,
+          "size_bytes": 3544457,
           "size_formatted": "3.38 MB",
-          "sha256": "452566ecb027f9bfe6d3ff2d3fa3834eef44a4a2637af437c21f29af8e1ec7a7",
-          "compiled_timestamp": "02-10-2026 01:13:01"
+          "sha256": "44c0e251ee0a55cc0fc2e19dcb6e2e2bb04a810755beb999f0a60b257caafb3a",
+          "compiled_timestamp": "13-10-2026 12:27:04"
         },
         {
           "name": "Uttararchikam_Devanagari.html",
@@ -103,10 +103,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Separate (Rik Only)",
-          "size_bytes": 3866876,
+          "size_bytes": 3866868,
           "size_formatted": "3.69 MB",
-          "sha256": "d7da7a83aa214f7eb26c30e1848fded1873d5f2d9aae49009c18dd84e3d704c3",
-          "compiled_timestamp": "11-10-2026 15:26:23"
+          "sha256": "82d64825a7b4c03e5cff00298d14b241551474dd3494f226e596756ddf1b52f0",
+          "compiled_timestamp": "13-10-2026 12:27:04"
         },
         {
           "name": "Uttararchikam_Rik_Devanagari.html",
@@ -114,10 +114,10 @@
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Separate (Rik Only)",
-          "size_bytes": 3859368,
+          "size_bytes": 3859360,
           "size_formatted": "3.68 MB",
-          "sha256": "8c84acce14bfaa085297f364e4d5f80ff4fe95638f2f3633e8e12aa310fd6796",
-          "compiled_timestamp": "02-10-2026 01:13:01"
+          "sha256": "e6dc9cf019993c71150d04728ea1209919e0b3eb56de0d08c9d7e22de063dc0d",
+          "compiled_timestamp": "13-10-2026 12:27:04"
         }
       ],
       "txt": [

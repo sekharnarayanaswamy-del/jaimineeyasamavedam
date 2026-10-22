@@ -228,44 +228,10 @@ def main():
     renders_dir = ROOT_DIR / "docs" / "standalone-html" / "renders"
     renders_dir.mkdir(parents=True, exist_ok=True)
 
-    sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
-
-    # Sync Malayalam KPully
-    mal_candidates = [
-        sam_renders_html / "Samam_kpully_Malayalam_Samam.html",
-        sam_renders_html / "Samam_kpully_Malayalam.html",
-        ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam_Samam.html",
-        ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html",
-    ]
-    existing_mal = [c for c in mal_candidates if c.exists()]
-    if existing_mal:
-        existing_mal.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-        mal_src = existing_mal[0]
-        shutil.copy2(mal_src, renders_dir / "Samam_kpully_Malayalam.html")
-        shutil.copy2(mal_src, renders_dir / "Samam_kpully_Malayalam_Samam.html")
-        print(f"[INFO] Copied {mal_src.name} -> docs/standalone-html/renders/Samam_kpully_Malayalam.html")
-
-    # Sync Devanagari KPully
-    deva_candidates = [
-        sam_renders_html / "Samam_kpully_Devanagari_Samam.html",
-        sam_renders_html / "Samam_kpully_Devanagari.html",
-        sam_renders_html / "Samhita_kpully_Devanagari_Samam.html",
-        sam_renders_html / "Samhita_kpully_Devanagari.html",
-        ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari_Samam.html",
-        ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari.html",
-    ]
-    existing_deva = [c for c in deva_candidates if c.exists()]
-    if existing_deva:
-        existing_deva.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-        deva_src = existing_deva[0]
-        shutil.copy2(deva_src, renders_dir / "Samam_kpully_Devanagari.html")
-        shutil.copy2(deva_src, renders_dir / "Samam_kpully_Devanagari_Samam.html")
-        shutil.copy2(deva_src, renders_dir / "Samhita_kpully_Devanagari.html")
-        print(f"[INFO] Copied {deva_src.name} -> docs/standalone-html/renders/Samam_kpully_Devanagari.html (and aliases)")
-
+    # Step 3: Publish standalone HTML readers to docs/standalone-html/renders/
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
     if publish_script.exists():
-        run_cmd([sys.executable, str(publish_script)], description="Syncing standalone HTML catalog")
+        run_cmd([sys.executable, str(publish_script)], description="Publishing standalone HTML readers to docs/standalone-html/renders/")
 
     if args.publish:
         print("\n[PIPELINE] Step 4: Publishing HTML and PDF files to docs/...")

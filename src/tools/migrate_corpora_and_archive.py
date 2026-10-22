@@ -402,27 +402,7 @@ def setup_stage_directories():
     for f in ["Purvarchikam_Rik_Devanagari_Unicode.txt", "Uttararchikam_Rik_Devanagari_Unicode.txt"]:
         stage_render(f, "Rik", "txt")
 
-    # Sync canonical HTML readers to docs/standalone-html/
-    docs_standalone = ROOT_DIR / "docs" / "standalone-html"
-    docs_standalone.mkdir(parents=True, exist_ok=True)
-    (docs_standalone / "Malayalam").mkdir(exist_ok=True)
-    (docs_standalone / "Devanagari").mkdir(exist_ok=True)
-
-    sam_html_dir = CORPORA_DIR / "samhita" / "05_renders" / "html"
-    for fname, sub in [("Samam_kpully_Malayalam.html", "Malayalam"), ("Samhita_kpully_Devanagari.html", "Devanagari")]:
-        f_src = sam_html_dir / fname
-        if f_src.exists():
-            shutil.copy2(f_src, docs_standalone / fname)
-            shutil.copy2(f_src, docs_standalone / sub / fname)
-
-    rik_html_dir = CORPORA_DIR / "Rik" / "05_renders" / "html"
-    for fname in ["Purvarchikam_Rik_Devanagari.html", "Uttararchikam_Rik_Devanagari.html"]:
-        f_src = rik_html_dir / fname
-        if f_src.exists():
-            shutil.copy2(f_src, docs_standalone / fname)
-            shutil.copy2(f_src, docs_standalone / "Devanagari" / fname)
-
-    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections,Rik} and synced to docs/standalone-html/")
+    print("[STAGE SETUP COMPLETE] Staged canonical assets and renders in data/corpora/{samhita,aaranam,collections,Rik}")
 
 
 def generate_initial_run_manifests():

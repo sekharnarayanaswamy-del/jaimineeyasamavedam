@@ -91,53 +91,13 @@ def run_cmd(cmd_list, description=""):
 
 
 def sync_standalone_readers():
-    """Copies canonical standalone HTML readers to docs/standalone-html/renders/ for GitHub Pages."""
-    renders_dir = ROOT_DIR / "docs" / "standalone-html" / "renders"
-    renders_dir.mkdir(parents=True, exist_ok=True)
-
-    sam_renders_html = ROOT_DIR / "data" / "corpora" / "samhita" / "05_renders" / "html"
-
-    targets = [
-        ("Samam_kpully_Malayalam.html", [
-            sam_renders_html / "Samam_kpully_Malayalam_Samam.html",
-            sam_renders_html / "Samam_kpully_Malayalam.html",
-            ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam_Samam.html",
-            ROOT_DIR / "data" / "output" / "html" / "Malayalam" / "Samam_kpully_Malayalam.html",
-        ], ["Samam_kpully_Malayalam_Samam.html"]),
-        ("Samam_kpully_Devanagari.html", [
-            sam_renders_html / "Samam_kpully_Devanagari_Samam.html",
-            sam_renders_html / "Samam_kpully_Devanagari.html",
-            sam_renders_html / "Samhita_kpully_Devanagari_Samam.html",
-            sam_renders_html / "Samhita_kpully_Devanagari.html",
-            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari_Samam.html",
-            ROOT_DIR / "data" / "output" / "html" / "Devanagari" / "Samam_kpully_Devanagari.html",
-        ], ["Samhita_kpully_Devanagari.html", "Samam_kpully_Devanagari_Samam.html"]),
-    ]
-
-    copied_any = False
-    print("\n[PIPELINE] Syncing standalone HTML readers to docs/standalone-html/renders/...")
-    for fname, cands, aliases in targets:
-        existing_cands = [c for c in cands if c and c.exists()]
-        if existing_cands:
-            existing_cands.sort(key=lambda p: p.stat().st_mtime, reverse=True)
-            src_file = existing_cands[0]
-            try:
-                dest = renders_dir / fname
-                dest.write_bytes(src_file.read_bytes())
-                for alias in aliases:
-                    (renders_dir / alias).write_bytes(src_file.read_bytes())
-                print(f"  [SYNC] {fname} -> docs/standalone-html/renders/")
-                copied_any = True
-            except Exception as e:
-                print(f"  [WARN] Could not sync reader {fname}: {e}")
-
-    # Refresh catalog index if publisher exists
+    """Publishes canonical standalone HTML readers to docs/standalone-html/renders/ and updates catalog index."""
     publish_script = ROOT_DIR / "scripts" / "publish_standalone_html.py"
     if publish_script.exists():
         try:
-            run_cmd([sys.executable, str(publish_script)], description="Refreshing docs/standalone-html catalog index")
+            run_cmd([sys.executable, str(publish_script)], description="Publishing standalone HTML readers to docs/standalone-html/renders/")
         except Exception as e:
-            print(f"[WARN] Could not refresh catalog index: {e}")
+            print(f"[WARN] Could not publish standalone HTML readers: {e}")
 
 
 def print_profiles(cfg):

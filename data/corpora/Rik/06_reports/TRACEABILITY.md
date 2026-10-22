@@ -2,7 +2,7 @@
 
 - **Corpus**: `Rik`
 - **Edition**: `1.02`
-- **Generated Timestamp**: `12-10-2026 15:55:28`
+- **Generated Timestamp**: `22-10-2026 15:24:10`
 - **Validation Status**: `PASSED`
 
 ---
@@ -55,10 +55,10 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | [`Purvarchikam_Rik_Devanagari.pdf`](../05_renders/pdf/Purvarchikam_Rik_Devanagari.pdf) | `PDF` | `02-10-2026 01:13:01` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
 | [`Uttararchikam_Rik_Devanagari.pdf`](../05_renders/pdf/Uttararchikam_Rik_Devanagari.pdf) | `PDF` | `02-10-2026 01:13:01` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
-| [`Purvarchikam_Devanagari.html`](../05_renders/html/Purvarchikam_Devanagari.html) | `HTML` | `11-10-2026 15:26:22` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
-| [`Purvarchikam_Rik_Devanagari.html`](../05_renders/html/Purvarchikam_Rik_Devanagari.html) | `HTML` | `02-10-2026 01:13:01` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
-| [`Uttararchikam_Devanagari.html`](../05_renders/html/Uttararchikam_Devanagari.html) | `HTML` | `11-10-2026 15:26:23` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
-| [`Uttararchikam_Rik_Devanagari.html`](../05_renders/html/Uttararchikam_Rik_Devanagari.html) | `HTML` | `02-10-2026 01:13:01` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
+| [`Purvarchikam_Devanagari.html`](../05_renders/html/Purvarchikam_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
+| [`Purvarchikam_Rik_Devanagari.html`](../05_renders/html/Purvarchikam_Rik_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
+| [`Uttararchikam_Devanagari.html`](../05_renders/html/Uttararchikam_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
+| [`Uttararchikam_Rik_Devanagari.html`](../05_renders/html/Uttararchikam_Rik_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
 | [`Purvarchikam_Devanagari_Unicode.txt`](../05_renders/txt/Purvarchikam_Devanagari_Unicode.txt) | `TXT` | `11-10-2026 15:26:22` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
 | [`Purvarchikam_Rik_Devanagari_Unicode.txt`](../05_renders/txt/Purvarchikam_Rik_Devanagari_Unicode.txt) | `TXT` | `02-10-2026 01:13:01` | पूर्वार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Purvarchikam_out.json` | `generate_json.py --type purvarchikam -> render.py --rik-only` |
 | [`Uttararchikam_Devanagari_Unicode.txt`](../05_renders/txt/Uttararchikam_Devanagari_Unicode.txt) | `TXT` | `11-10-2026 15:26:23` | उत्तरार्चिकम् ऋक् संहिता | [`vedic_text.txt`](../01_input/vedic_text.txt) | `Uttararchikam_out.json` | `generate_json.py --type uttararchikam -> render.py --rik-only` |
@@ -96,10 +96,10 @@ Only the active master source files utilized for pipeline generation are listed 
 ### HTML Readers (`05_renders/html/`)
 | File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- | :--- |
-| [`Purvarchikam_Devanagari.html`](../05_renders/html/Purvarchikam_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.38 MB | `cc536c12cde0d7690f48f43a781da2f259e26a62b1ec9627a25fbe7e691b3c71` |
-| [`Purvarchikam_Rik_Devanagari.html`](../05_renders/html/Purvarchikam_Rik_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.38 MB | `452566ecb027f9bfe6d3ff2d3fa3834eef44a4a2637af437c21f29af8e1ec7a7` |
-| [`Uttararchikam_Devanagari.html`](../05_renders/html/Uttararchikam_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.69 MB | `d7da7a83aa214f7eb26c30e1848fded1873d5f2d9aae49009c18dd84e3d704c3` |
-| [`Uttararchikam_Rik_Devanagari.html`](../05_renders/html/Uttararchikam_Rik_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.68 MB | `8c84acce14bfaa085297f364e4d5f80ff4fe95638f2f3633e8e12aa310fd6796` |
+| [`Purvarchikam_Devanagari.html`](../05_renders/html/Purvarchikam_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.38 MB | `9bf7ae3253b20f87a3bd3244cd1f02c37d8de533dcb84be2de229c41cb976947` |
+| [`Purvarchikam_Rik_Devanagari.html`](../05_renders/html/Purvarchikam_Rik_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.38 MB | `44c0e251ee0a55cc0fc2e19dcb6e2e2bb04a810755beb999f0a60b257caafb3a` |
+| [`Uttararchikam_Devanagari.html`](../05_renders/html/Uttararchikam_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.69 MB | `82d64825a7b4c03e5cff00298d14b241551474dd3494f226e596756ddf1b52f0` |
+| [`Uttararchikam_Rik_Devanagari.html`](../05_renders/html/Uttararchikam_Rik_Devanagari.html) | Separate (Rik Only) | Devanagari (Standard) | 3.68 MB | `e6dc9cf019993c71150d04728ea1209919e0b3eb56de0d08c9d7e22de063dc0d` |
 
 ### PlainText Exports (`05_renders/txt/`)
 | File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>॥ जैमिनीय साम संहिता ॥ - Jaimineeya Samavedam</title>
+    <title>॥ जैमिनीयसामवेद संहिता ॥ - Jaimineeya Samavedam</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -63,6 +63,23 @@
             --swarita-bottom: 0.15em;
             --anudatta-bottom: 0.1em;
             --swara-size: var(--font-size);
+            --prenkha-top: 0.50em;
+        }
+
+        .prenkha-overline {
+            position: relative;
+            display: inline;
+            white-space: nowrap;
+        }
+
+        .prenkha-bar {
+            position: absolute;
+            left: 0.02em;
+            right: 0.02em;
+            top: var(--prenkha-top, 0.50em);
+            height: 2px;
+            background: currentColor;
+            pointer-events: none;
         }
 
         html {
@@ -501,9 +518,11 @@
         }
 
         .main-title .sub-heading {
-            font-size: 1.15rem;
-            color: var(--saffron);
-            font-weight: 600;
+            font-size: 0.85rem;
+            color: #7D6B60;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            letter-spacing: 0.3px;
         }
 
         .chapter-container {
@@ -640,6 +659,17 @@
             padding: 0;
         }
 
+        /* KPULLY (Kodunthirapully Paddhati): Swara text rendered ABOVE mantra text */
+        .mantra-verse {
+            align-items: flex-end;
+        }
+        .mantra-word {
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+        }
+        .mantra-connected-group {
+            align-items: flex-end;
+        }
 
         .mantra-text {
             font-family: var(--font-doc);
@@ -647,6 +677,10 @@
             line-height: 1.25;
             white-space: nowrap;
             position: relative;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
+            height: 1.3em;
         }
 
         .swara-text {
@@ -655,7 +689,10 @@
             font-size: var(--swara-size);
             line-height: 1.25;
             text-align: center;
-            min-height: 1.2em;
+            height: 1.3em;
+            display: inline-flex;
+            align-items: flex-end;
+            justify-content: center;
             white-space: nowrap;
         }
 
@@ -691,6 +728,29 @@
             line-height: 1.25;
             vertical-align: baseline;
             display: inline;
+        }
+
+        /* Inline footnote superscript references */
+        sup.footnote-ref {
+            font-size: 0.65em;
+            vertical-align: super;
+            line-height: 0;
+            position: relative;
+            top: -0.4em;
+            align-self: flex-start;
+        }
+
+        .mantra-text > sup.footnote-ref,
+        .mantra-word sup.footnote-ref {
+            align-self: flex-start;
+            top: -0.4em;
+        }
+
+        sup.footnote-ref a {
+            color: var(--primary-color, #8b0000);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0 1px;
         }
 
         /* Swara Modifiers */
@@ -983,6 +1043,10 @@
             margin-top: 0.2em;
             top: 0;
         }
+        .mantra-verse > sup.footnote-ref {
+            align-self: flex-end;
+            margin-bottom: 0.2em;
+        }
         sup.footnote-ref a {
             color: var(--accent-blue);
             text-decoration: none;
@@ -1246,7 +1310,7 @@
             }
 
             .main-title .sub-heading {
-                font-size: 0.95rem;
+                font-size: 0.78rem;
             }
 
             .chapter-container {
@@ -1485,7 +1549,7 @@
             <div class="header-main-bar">
                 <a href="#" class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" title="Go to top of page">
                     <span class="om-symbol">ॐ</span>
-                    <span class="logo-title">॥ जैमिनीय साम संहिता ॥</span>
+                    <span class="logo-title">॥ जैमिनीयसामवेद संहिता ॥</span>
                 </a>
                 <div class="header-quick-actions">
                     <button class="toggle-sidebar-btn" onclick="toggleSidebar()" title="Toggle Contents Panel (सूची)" id="sidebar-toggle-btn" data-label="सूची">☰ सूची</button>
@@ -4397,8 +4461,8 @@
         <main class="main-content">
             <!-- Title Header Card -->
             <div class="main-title">
-                <h1>॥ जैमिनीय साम संहिता ॥</h1>
-                <div class="sub-heading">संस्करणम्: 3.28 ,  निर्मितम्: 29-09-2026</div>
+                <h1>॥ जैमिनीयसामवेद संहिता ॥</h1>
+                <div class="sub-heading">संस्करणम्: 3.30 ,  निर्मितम्: 22-10-2026 15:23:46</div>
             </div>
 
             <!-- Chapters / Sections / Mantras -->
@@ -10832,10 +10896,10 @@
 
     <script>
         const fontList = [
-            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" },
-            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em" }
+            { label: "AdiShila Vedic", font: "'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "0.50em" },
+            { label: "Noto Serif", font: "'Noto Serif Devanagari', 'AdishilaVedic', 'Adishila San', 'Tiro Devanagari Sanskrit', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" },
+            { label: "Tiro Sanskrit", font: "'Tiro Devanagari Sanskrit', 'AdishilaVedic', 'Adishila San', 'Noto Serif Devanagari', serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" },
+            { label: "Noto Sans", font: "'Noto Sans Devanagari', 'AdishilaVedic', 'Adishila San', sans-serif", swaritaBottom: "0.15em", anudattaBottom: "0.1em", prenkhaTop: "-0.05em" }
         ];
         let currentFontIndex = 0;
         function setFont(idx) {
@@ -10847,6 +10911,9 @@
             }
             if (chosen.anudattaBottom) {
                 document.documentElement.style.setProperty('--anudatta-bottom', chosen.anudattaBottom);
+            }
+            if (chosen.prenkhaTop) {
+                document.documentElement.style.setProperty('--prenkha-top', chosen.prenkhaTop);
             }
             const btn = document.getElementById('font-toggle-btn');
             if (btn) btn.innerText = 'Font: ' + chosen.label;
