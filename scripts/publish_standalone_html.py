@@ -1,12 +1,14 @@
 """
-Publish Standalone HTML Readers to docs/standalone-html/
--------------------------------------------------------
-Publishes strictly the 2 canonical Kodunthirapully (kpully) HTML editions:
-  1. Samhita_kpully_Devanagari.html (Devanagari script)
-  2. Samam_kpully_Malayalam.html (Malayalam script)
+Publish Standalone HTML Readers to docs/standalone-html/renders/
+---------------------------------------------------------------
+Publishes all canonical standalone HTML readers directly to docs/standalone-html/renders/:
+  - Kodunthirapully Chanting Editions (Devanagari & Malayalam)
+  - Curated Collections (Sooktamala, Prayogamala Purva & Uttara)
+  - Dedicated Samhita Study Editions (Samam, Rik, NoMeta, Combined)
+  - Kauthuma Samaveda Gramageyaganam
 
-Purges any obsolete or legacy HTML files from docs/standalone-html/ and updates
-the catalog portal index.html.
+Purges duplicate/obsolete subfolders (Devanagari/, Malayalam/) and root HTML files from
+docs/standalone-html/ and updates the catalog portal index.html.
 """
 
 import os
@@ -19,8 +21,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 CORPORA_DIR = REPO_ROOT / "data" / "corpora"
 SOURCE_DIR = REPO_ROOT / "data" / "output" / "html"
 TARGET_DIR = REPO_ROOT / "docs" / "standalone-html"
+RENDERS_DIR = TARGET_DIR / "renders"
 
-# Canonical readers to publish
+# Canonical readers to publish into docs/standalone-html/renders/
 CANONICAL_READERS = {
     "Samam_kpully_Devanagari.html": {
         "title": "Samam (Devanagari) — Kodunthirapully Edition",
@@ -28,16 +31,7 @@ CANONICAL_READERS = {
         "script": "Devanagari",
         "description": "Canonical Devanagari Jaimineeya Samam chanting edition in swaras-above Kodunthirapully layout.",
         "featured": True,
-        "subfolder": "Devanagari",
-        "aliases": ["Samhita_kpully_Devanagari.html"],
-    },
-    "Kauthuma_Gramageyaganam_Devanagari.html": {
-        "title": "प्रकृतिगानम् (ग्रामगेयगानम्) — कौथुमशाखा",
-        "category": "Kauthuma Samaveda",
-        "script": "Devanagari",
-        "description": "Complete Kauthuma Samaveda Prakritiganam (Gramageyaganam) across 3 Parvas, 17 Prapatakas, 81 Kandahs, and 1,197 Samams with Vedic Tone Prenkha and Checksums.",
-        "featured": True,
-        "subfolder": "Devanagari",
+        "aliases": ["Samhita_kpully_Devanagari.html", "Samam_kpully_Devanagari_Samam.html"],
     },
     "Samam_kpully_Malayalam.html": {
         "title": "Samam (Malayalam) — Kodunthirapully Edition",
@@ -45,8 +39,78 @@ CANONICAL_READERS = {
         "script": "Malayalam",
         "description": "Canonical Malayalam Jaimineeya Samam chanting edition featuring custom JaimineeyaSwara typography and elevated Kodunthirapully swara modifiers.",
         "featured": True,
-        "subfolder": "Malayalam",
-    }
+        "aliases": ["Samam_kpully_Malayalam_Samam.html"],
+    },
+    "Kauthuma_Gramageyaganam_Devanagari.html": {
+        "title": "प्रकृतिगानम् (ग्रामगेयगानम्) — कौथुमशाखा",
+        "category": "Kauthuma Samaveda",
+        "script": "Devanagari",
+        "description": "Complete Kauthuma Samaveda Prakritiganam (Gramageyaganam) across 3 Parvas, 17 Prapatakas, 81 Kandahs, and 1,197 Samams with Vedic Tone Prenkha and Checksums.",
+        "featured": True,
+    },
+    "Sooktamala_Devanagari.html": {
+        "title": "साम सूक्तमाला — सङ्ग्रहः",
+        "category": "Collections",
+        "script": "Devanagari",
+        "description": "Curated collection of sacred Samaveda Sooktams with integrated swara chanting notations.",
+        "featured": True,
+    },
+    "Prayogamala-Purvabhagam_Devanagari.html": {
+        "title": "साम प्रयोगमाला (पूर्वभागः)",
+        "category": "Collections",
+        "script": "Devanagari",
+        "description": "Practical application chants (Purva Bhagam) including Aupasanam, Atmaropanam, and Udakashanti with procedure references.",
+        "featured": True,
+    },
+    "prayogamala-Uttarabhagam_Devanagari.html": {
+        "title": "साम प्रयोगमाला (उत्तरभागः)",
+        "category": "Collections",
+        "script": "Devanagari",
+        "description": "Practical application chants (Uttara Bhagam) with step-by-step ritual procedure guidelines.",
+        "featured": True,
+    },
+    "Samhita_Samam_Devanagari.html": {
+        "title": "साम संहिता (साम सविशेषम्)",
+        "category": "Samhita",
+        "script": "Devanagari",
+        "description": "Jaimineeya Sama Samhita chanting text with full Rishi, Devata, and Chandas metadata.",
+        "featured": False,
+    },
+    "Samhita_Rik_Devanagari.html": {
+        "title": "साम संहिता (ऋक् सविशेषम्)",
+        "category": "Samhita",
+        "script": "Devanagari",
+        "description": "Rik verses of the Jaimineeya tradition with comprehensive Rishi, Devata, and Chandas metadata.",
+        "featured": False,
+    },
+    "Samhita_Samam_NoMeta_Devanagari.html": {
+        "title": "साम गान पाठः (साम केवलम्)",
+        "category": "Samhita",
+        "script": "Devanagari",
+        "description": "Uninterrupted Samam chanting text for continuous recitation without verse metadata.",
+        "featured": False,
+    },
+    "Samhita_Rik_NoMeta_Devanagari.html": {
+        "title": "ऋक् पाठः (ऋक् केवलम्)",
+        "category": "Samhita",
+        "script": "Devanagari",
+        "description": "Streamlined Rik chanting text for continuous recitation without metadata.",
+        "featured": False,
+    },
+    "Samhita_Devanagari.html": {
+        "title": "जैमिनीय साम संहिता (सकल पाठः)",
+        "category": "Samhita",
+        "script": "Devanagari",
+        "description": "Combined comprehensive Jaimineeya Sama Samhita containing both Rik and Samam with full annotations.",
+        "featured": False,
+    },
+    "Samhita_Malayalam.html": {
+        "title": "ജൈമിനീയ സാമവേദ സംഹിത (മലയാളം)",
+        "category": "Samhita",
+        "script": "Malayalam",
+        "description": "Complete Malayalam script edition of Jaimineeya Sama Samhita with traditional Malayalam swara markers.",
+        "featured": False,
+    },
 }
 
 
@@ -67,58 +131,35 @@ def format_size(bytes_val: int) -> str:
 
 
 def cleanup_obsolete_files(target_dir: Path):
-    """Deletes all obsolete HTML files in docs/standalone-html except canonical readers and index.html."""
-    allowed_root = {
-        "Samam_kpully_Malayalam.html",
-        "Samam_kpully_Devanagari.html",
-        "Samhita_kpully_Devanagari.html",
-        "Kauthuma_Gramageyaganam_Devanagari.html",
-        "Purvarchikam_Rik_Devanagari.html",
-        "Uttararchikam_Rik_Devanagari.html",
-        "index.html",
-    }
-    allowed_sub = {
-        "Devanagari": {
-            "Samam_kpully_Devanagari.html",
-            "Samhita_kpully_Devanagari.html",
-            "Kauthuma_Gramageyaganam_Devanagari.html",
-            "Purvarchikam_Rik_Devanagari.html",
-            "Uttararchikam_Rik_Devanagari.html",
-        },
-        "Malayalam": {"Samam_kpully_Malayalam.html"},
-    }
-
+    """Deletes redundant subfolders and root html files so docs/standalone-html/ only has index.html and renders/."""
     deleted_count = 0
 
-    # Clean root directory files
-    if target_dir.exists():
-        for item in list(target_dir.iterdir()):
-            if item.is_file():
-                if item.suffix.lower() == ".html" and item.name not in allowed_root:
-                    try:
-                        item.unlink()
-                        deleted_count += 1
-                        print(f"  [DELETED] {item.name}")
-                    except Exception as e:
-                        print(f"  [WARN] Could not delete {item.name}: {e}")
-
-    # Clean subdirectories
+    # 1. Clean up redundant subdirectories (Devanagari, Malayalam)
     for sub in ["Devanagari", "Malayalam"]:
         sub_dir = target_dir / sub
         if sub_dir.exists() and sub_dir.is_dir():
-            for item in list(sub_dir.iterdir()):
-                if item.is_file() and item.name not in allowed_sub.get(sub, set()):
-                    try:
-                        item.unlink()
-                        deleted_count += 1
-                        print(f"  [DELETED] {sub}/{item.name}")
-                    except Exception as e:
-                        print(f"  [WARN] Could not delete {sub}/{item.name}: {e}")
+            try:
+                shutil.rmtree(sub_dir)
+                deleted_count += 1
+                print(f"  [REMOVED DIR] {sub}/ (redundant set of files)")
+            except Exception as e:
+                print(f"  [WARN] Could not remove {sub}/: {e}")
 
-    # Remove any other unexpected directories
+    # 2. Clean root directory files: keep only index.html
     if target_dir.exists():
         for item in list(target_dir.iterdir()):
-            if item.is_dir() and item.name not in ["Devanagari", "Malayalam", "renders"]:
+            if item.is_file() and item.suffix.lower() == ".html" and item.name != "index.html":
+                try:
+                    item.unlink()
+                    deleted_count += 1
+                    print(f"  [DELETED ROOT DUPLICATE] {item.name}")
+                except Exception as e:
+                    print(f"  [WARN] Could not delete {item.name}: {e}")
+
+    # 3. Remove any other unexpected directories (only renders/ should exist)
+    if target_dir.exists():
+        for item in list(target_dir.iterdir()):
+            if item.is_dir() and item.name != "renders":
                 try:
                     shutil.rmtree(item)
                     print(f"  [DELETED DIR] {item.name}")
@@ -126,11 +167,11 @@ def cleanup_obsolete_files(target_dir: Path):
                     print(f"  [WARN] Could not remove directory {item.name}: {e}")
 
     if deleted_count > 0:
-        print(f"[CLEANUP] Successfully purged {deleted_count} obsolete HTML files from {target_dir.relative_to(REPO_ROOT)}.")
+        print(f"[CLEANUP] Successfully purged {deleted_count} duplicate files/folders from {target_dir.relative_to(REPO_ROOT)}.")
 
 
 def build_catalog_page(items):
-    categories = ["All", "Featured", "Devanagari", "Malayalam"]
+    categories = ["All", "Featured", "Samam Chants", "Collections", "Samhita", "Kauthuma Samaveda", "Devanagari", "Malayalam"]
     total_files = len(items)
     dev_count = sum(1 for x in items if x["script"] == "Devanagari")
     mal_count = sum(1 for x in items if x["script"] == "Malayalam")
