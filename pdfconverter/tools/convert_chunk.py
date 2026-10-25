@@ -48,6 +48,13 @@ HEADING_KEYS = [pat for pat, _ in PRASNA_PATTERNS] + [pat for pat, _ in KANDAM_P
 RULE_RE = re.compile(r"^[\s\u2013\u2014\-_=~*·•]+$")
 NUMBER_RE = re.compile(r"^[\s0-9०-९.,;:()\[\]{}\-–—]+$")
 
+# The opening salutation block of every Prasna.  The printed page centres the
+# whole block; only `ॐ नमः परमात्मने` and the Prasna line are matched by the
+# heading rules, so `श्रीगुरुभ्यो नमः` and `हरिः ओ (४) म्` used to fall through
+# to justified and sit hard against the left margin.  These are the raw Grantha
+# bytes of those two lines.
+INVOCATION_PREFIXES = (">[(u(6l(61J(83", "bl], T ")
+
 
 # ---------------------------------------------------------------------------
 # text helpers
@@ -104,6 +111,8 @@ def classify(text: str, in_table: bool = False) -> str:
         return "rule"
     if any(key in text for key in HEADING_KEYS) or "hlk3D°1G" in text:
         return "heading"
+    if not in_table and stripped.startswith(INVOCATION_PREFIXES):
+        return "invocation"
     if NUMBER_RE.match(stripped) and len(stripped) <= 6:
         return "number"
     has_grantha = any(_is_grantha(ch) for ch in text)
@@ -317,7 +326,8 @@ def process_paragraph(paragraph, stats: dict, in_table: bool = False):
 
     heading = kind == "heading"
     rewrite(paragraph, segments, BODY_PT, TAMIL_PT, bold=heading)
-    set_para_layout(paragraph, "center" if heading else "both", "360", "120")
+    set_para_layout(paragraph, "center" if heading or kind == "invocation" else "both",
+                    "360", "120")
 
 
 def iter_table_paragraphs(table):

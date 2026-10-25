@@ -361,6 +361,7 @@ end (K1P1) as the pilot, then fan out.
 | 6 Review loop | in progress | `diff_report.py` (Grantha / generated / SETHU), `grade_chunk.py`, `render_pages.py` |
 | 7 Table repair | done | root-caused the broken table cells to reference-derived `COMPOUNDS`; `COMPOUNDS` emptied, `;`→anusvara, lone `*`→म्, blank glyphs→space, `®`→्ब, deep-band subscripts added; `table_report.py` reviews every cell. Bad cells 24 → 5 (all APPENDIX). See §8. |
 | 8 Invocation slip | done | `DECODER_VERSION 2026-10-25.v6-om`: the print's `ஓந்நம:` (`TCk,`) is a slip for ॐ, so `ओन्नमः` → `ॐ नमः` (decision 15). Scores unchanged. |
+| 9 Centre the invocation block | done | `श्रीगुरुभ्यो नमः` and `हरिः ओ (४) म्` were classified as mantras and therefore justified, so they sat at the left margin while `ॐ नमः` and the Prasna line above them were centred. New `invocation` paragraph kind, matched on the raw Grantha bytes `>[(u(6l(61J(83` and `bl], T `, centres all four lines in every Prasna (APPENDIX has no invocation block). |
 
 Chunk grades (SETHU oracle, K1 only):
 
