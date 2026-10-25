@@ -189,7 +189,8 @@ def build(chunk: str, deva_path: str | None = None) -> tuple[str, dict]:
         gen_words = normalize(" ".join(parts)).split()
         raw = " ".join(grantha.get(key, [])).strip()
 
-        body = [f'<div class="anu"><h2>K{kandam} P{prasna} A{anuvaka}</h2>']
+        body = [f'<div class="anu" id="K{kandam}-P{prasna}-A{anuvaka}">'
+                f'<h2>K{kandam} P{prasna} A{anuvaka}</h2>']
         body.append('<div class="label">Grantha original (as printed)</div>'
                     f'<div class="grantha">{esc(raw)}</div>'
                     '<details class="raw"><summary>raw source bytes</summary>'
