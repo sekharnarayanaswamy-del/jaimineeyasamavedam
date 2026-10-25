@@ -51,9 +51,10 @@ NUMBER_RE = re.compile(r"^[\s0-9०-९.,;:()\[\]{}\-–—]+$")
 # The opening salutation block of every Prasna.  The printed page centres the
 # whole block; only `ॐ नमः परमात्मने` and the Prasna line are matched by the
 # heading rules, so `श्रीगुरुभ्यो नमः` and `हरिः ओ (४) म्` used to fall through
-# to justified and sit hard against the left margin.  These are the raw Grantha
-# bytes of those two lines.
-INVOCATION_PREFIXES = (">[(u(6l(61J(83", "bl], T ")
+# to justified and sit hard against the left margin.  `तैत्तिरीयसंहितायाम्`
+# (first Prasna of each Kanda only) belongs to the same block.  These are the
+# raw Grantha bytes of those three lines.
+INVOCATION_PREFIXES = (">[(u(6l(61J(83", "bl], T ", "11DD\u00a6]l[Kv;b]D3K3")
 
 
 # ---------------------------------------------------------------------------

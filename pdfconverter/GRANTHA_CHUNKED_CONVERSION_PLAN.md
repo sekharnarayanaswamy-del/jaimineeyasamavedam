@@ -361,7 +361,8 @@ end (K1P1) as the pilot, then fan out.
 | 6 Review loop | in progress | `diff_report.py` (Grantha / generated / SETHU), `grade_chunk.py`, `render_pages.py` |
 | 7 Table repair | done | root-caused the broken table cells to reference-derived `COMPOUNDS`; `COMPOUNDS` emptied, `;`→anusvara, lone `*`→म्, blank glyphs→space, `®`→्ब, deep-band subscripts added; `table_report.py` reviews every cell. Bad cells 24 → 5 (all APPENDIX). See §8. |
 | 8 Invocation slip | done | `DECODER_VERSION 2026-10-25.v6-om`: the print's `ஓந்நம:` (`TCk,`) is a slip for ॐ, so `ओन्नमः` → `ॐ नमः` (decision 15). Scores unchanged. |
-| 9 Centre the invocation block | done | `श्रीगुरुभ्यो नमः` and `हरिः ओ (४) म्` were classified as mantras and therefore justified, so they sat at the left margin while `ॐ नमः` and the Prasna line above them were centred. New `invocation` paragraph kind, matched on the raw Grantha bytes `>[(u(6l(61J(83` and `bl], T `, centres all four lines in every Prasna (APPENDIX has no invocation block). |
+| 9 Centre the invocation block | done | `श्रीगुरुभ्यो नमः`, `हरिः ओ (४) म्` and (in K1P1/K2P1 only) `तैत्तिरीयसंहितायाम्` were classified as mantras and therefore justified, so they sat at the left margin while `ॐ नमः` and the Prasna line above them were centred. New `invocation` paragraph kind, matched on the raw Grantha bytes `>[(u(6l(61J(83`, `bl], T ` and `11DD¦]l[Kv;b]D3K3`, centres the whole block without bolding (APPENDIX has no invocation block). |
+| 10 Body-text pass | backlog | See §9: the segmentation gap plus the cluster mis-readings in running text. Not started. |
 
 Chunk grades (SETHU oracle, K1 only):
 
@@ -465,6 +466,55 @@ of K1P5–K1P8 words; the Grantha original is the reference for those.
 Current result: **237 tables, 4 729 cells, 5 cells with foreign characters**
 (K1P1–K2P3 all zero; APPENDIX 5). Before the pass it was 24 cells across six
 chunks.
+
+## 9. Body-text pass (backlog, not started)
+
+Two classes of defect are known and deliberately left for a dedicated pass.
+
+### 9.1 Segmentation gap — paragraphs that land in no anuvaka
+
+`grade_chunk.segment()` groups the generated `.docx` into anuvakas. A few
+paragraphs never fall into one. They are in the `.docx` and print correctly,
+but they are invisible to `check_scores.py` and to
+`reports/<chunk>.diff.html`, so nothing flags them:
+
+| chunk | passage | evidence |
+| :--- | :--- | :--- |
+| K1P2 | `अग्ने नय सुपथा राये अस्मान् विश्वानि देव वयुनानि विद्वान्` | the paragraph's raw bytes `q1u0u…` are absent from `K1P2.diff.html` |
+| K1P3 | the `शमोषधीभ्यश्शंपृथिव्व्यै …` preamble paragraph | only its opening words appear in `K1P3.diff.html`; `अनयामि` is missing |
+
+This is why the mis-readings in 9.2 survived the table pass: three of them sit
+in paragraphs the grader never reads. Fix the segmentation first, otherwise the
+body-text fixes cannot be measured or reviewed.
+
+### 9.2 Cluster mis-readings in the running text
+
+Rendered from the Grantha bytes with PIL, these disagree with the printed page
+and/or SETHU. "Expected" below is what the mantra should read; each one still
+has to be settled against the print before the map is touched.
+
+| chunk | generated | expected |
+| :--- | :--- | :--- |
+| K1P1 | `दे॒वो व॑स्स वि॒ता` | `दे॒वो व॑स्सवि॒ता` — spurious space after the `स्स` ligature |
+| K1P2 | `अग्एग्गÏ नय॑` | `अग्ने नय` |
+| K1P2 | `अ॒स्सप्पमान्` | `अस्मान्` |
+| K1P2 | `विश्शवा॑नि` | `विश्वानि` |
+| K1P2 | `वि॒द्द्वान्` | `विद्वान्` |
+| K1P3 | `म॒हꣳरकेक्षा॑` | `म॒हꣳरक्षो॑` |
+| K1P3 | `यो᳚ऽस्स्प्मान्` | `यो᳚ऽस्मान्` |
+| K1P3 | `द्वि॒ष्ष्प्म` | `द्वि॒ष्म` |
+
+The K1P2 cluster is the diagnostic one: four failures in a single 14-word
+sentence, each of the form "the subscript half of a cluster is re-read as a full
+consonant" (`ग्ने`→`ग्एग्गÏ`, `स्मा`→`स्सप्पा`, `श्वा`→`श्शवा`,
+`द्वा`→`द्द्वा`). That is the signature of a **second encoding** in those
+paragraphs — the source PDF evidently mixed two Grantha faces — not of four
+unrelated one-off errors. The pass should therefore start by rendering the
+paragraph and checking whether its bytes belong to a different code table,
+rather than patching the existing subscript map.
+
+Also outstanding from §8: `Ï` (7), `Á` (3), `Ó`, `Å`, `Õ` are still unmapped
+and visible in the APPENDIX prātiśākhya tables.
 
 ---
 
