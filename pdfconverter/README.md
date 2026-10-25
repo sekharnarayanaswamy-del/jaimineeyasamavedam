@@ -7,11 +7,20 @@ The pipeline decodes legacy font-encoded PDF streams (e.g. `Sanskrit98`), produc
 ---
 
 ## Table of Contents
+- [Grantha to Sanskrit 2020 Conversion Pipeline](#grantha-to-sanskrit-2020-conversion-pipeline)
 - [Architecture & Components](#architecture--components)
 - [Workflow & Pipeline](#workflow--pipeline)
 - [CLI Usage & Command Examples](#cli-usage--command-examples)
 - [Input / Output Specification](#input--output-specification)
 - [Key Technical Features & Resolved Edge Cases](#key-technical-features--resolved-edge-cases)
+
+---
+
+## Grantha to Sanskrit 2020 Conversion Pipeline
+
+For the complete sub-project documentation, input authoring guidelines, and converter architecture for converting Krishna Yajur Veda Taittiriya Samhita from legacy Grantha to standard Sanskrit 2020:
+
+* **[Grantha to Sanskrit 2020 Conversion: Architecture, Internals, and Authoring Guidelines](GRANTHA_TO_SANSKRIT2020_CONVERSION.md)**: Full guide detailing PDF-to-Word sanitization rules, OpenType dotted circle elimination, table intelligence algorithms, and Word 2013 stability configurations.
 
 ---
 

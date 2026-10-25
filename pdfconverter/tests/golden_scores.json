@@ -1,0 +1,12 @@
+{
+  "decoder_version": "2026-10-25.v5-subscripts",
+  "scores": {
+    "word_recall": 0.7562,
+    "base_cer": 0.0381,
+    "aligned_cer": 0.0319,
+    "aligned_exact": 0.8817,
+    "full_cer": 0.0393,
+    "accent_agreement": 0.959
+  },
+  "note": "print-faithful anusvara (;), empty COMPOUNDS, lone *->म्, blank glyphs->space, R->्ब, ¯->्भ, deep-band subscripts (्ङ ्प ्क ्र ्ध ्ग ्ष), ख्ष->क्ष"
+}
