@@ -195,3 +195,6 @@ getissues.py
 grantha_vocab.py
 groupByWords.py
 
+
+# Third-party Grantha face: lives in the private pdfconverter repo
+fonts/GANAPATHY - GRANTHA FONT.ttf

@@ -2,6 +2,15 @@
 
 A production-grade Vedic text processing, transliteration, and typesetting system for the **Jaimineeya Samaveda (JSV) Samhita** in both **Devanagari** and **Malayalam (with authentic Grantha swara notations & Vedic modifiers)**.
 
+> [!NOTE]
+> The legacy-font conversion tools that used to live in `pdfconverter/` are now
+> a separate private repository,
+> **[Converter-tools](https://github.com/sekharnarayanaswamy-del/Converter-tools)**.
+> It covers three decoding subprojects: Sanskrit98 PDF → Malayalam
+> (Mahanyasam, Sringeri Paddhati), Siddhanta PDF → HTML (Kauthuma Sāmaveda
+> Saṃhitā), and Ganapathy Grantha Word → Sanskrit 2020 Word (Taittiriya
+> Saṃhitā with Sapta Lakshana).
+
 ---
 
 ## 🚀 One-Shot Master Pipeline & Named Render Profiles
