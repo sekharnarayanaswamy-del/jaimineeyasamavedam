@@ -29,7 +29,7 @@ from __future__ import annotations
 
 import re
 
-DECODER_VERSION = "2026-10-25.v5-subscripts"
+DECODER_VERSION = "2026-10-25.v6-om"
 
 # ---------------------------------------------------------------------------
 # 1. Mapping tables
@@ -288,6 +288,13 @@ def canonicalize(text: str) -> str:
     # a swara with no base character is meaningless
     text = re.sub(r"(^|[^\u0905-\u0939\u093E-\u094C\u0901-\u0903])" + A + r"+",
                   lambda m: m.group(1), text)
+
+    # The invocation line is typeset `ஓந்நம:` in the Grantha original, i.e.
+    # `T C k ,` = ओ + न्न + म + ः, which is a slip for ॐ.  It is the only
+    # occurrence of that sequence in the book (all 11 Prasna chunks), so correct
+    # it here instead of teaching the transducer a spelling that exists nowhere
+    # else.
+    text = text.replace("ओन्नमः", "ॐ नमः")
 
     # The editors print a bracketed visarga as `(:)`.  Keep the printed colon:
     # a bare `ः` directly after `(` has no base and is drawn with a dotted

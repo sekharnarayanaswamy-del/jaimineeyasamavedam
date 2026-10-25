@@ -1,5 +1,5 @@
 {
-  "decoder_version": "2026-10-25.v5-subscripts",
+  "decoder_version": "2026-10-25.v6-om",
   "scores": {
     "word_recall": 0.7562,
     "base_cer": 0.0381,
@@ -8,5 +8,5 @@
     "full_cer": 0.0393,
     "accent_agreement": 0.959
   },
-  "note": "print-faithful anusvara (;), empty COMPOUNDS, lone *->म्, blank glyphs->space, R->्ब, ¯->्भ, deep-band subscripts (्ङ ्प ्क ्र ्ध ्ग ्ष), ख्ष->क्ष"
+  "note": "print-faithful anusvara (;), empty COMPOUNDS, lone *->म्, blank glyphs->space, R->्ब, ¯->्भ, deep-band subscripts (्ङ ्प ्क ्र ्ध ्ग ्ष), ख्ष->क्ष, invocation ஓந்நம: corrected to ॐ नमः"
 }

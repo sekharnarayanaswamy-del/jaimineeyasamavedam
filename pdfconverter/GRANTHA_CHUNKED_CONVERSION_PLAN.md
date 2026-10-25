@@ -334,6 +334,15 @@ end (K1P1) as the pilot, then fan out.
     `unknown_chars`, and red-outlined in `reports/tables.html`, so the user can
     fix it from the Grantha original. A silent wrong mapping is worse than
     visible junk.
+15. **One printed slip is corrected, deliberately** (2026-10-25) — the Grantha
+    original typesets the invocation as `ஓந்நம:` (`TCk,` = ओ + न्न + म + ः),
+    which is a mistake for ॐ; the user confirmed this. `canonicalize` therefore
+    rewrites the exact string `ओन्नमः` → `ॐ नमः`. This is the *only* editorial
+    correction in the decoder: it is a whole-token literal, it is documented
+    here, and it cannot touch any other reading because that spelling occurs
+    nowhere else in the book (verified: 11 occurrences, all the invocation line
+    of K1P1–K2P3; APPENDIX has none). Everything else still follows decision 13
+    — the print wins, and unexplained glyphs stay visible per decision 14.
 
 ## 7. Phase 1 progress log
 
@@ -351,6 +360,7 @@ end (K1P1) as the pilot, then fan out.
 | 5b Accent order / `(:)` | done | accents moved after `ः/ं/ँ`, bracketed visarga printed `(:)`, ornament runs split; new `accent_before_mark` + `orphan_mark` gates |
 | 6 Review loop | in progress | `diff_report.py` (Grantha / generated / SETHU), `grade_chunk.py`, `render_pages.py` |
 | 7 Table repair | done | root-caused the broken table cells to reference-derived `COMPOUNDS`; `COMPOUNDS` emptied, `;`→anusvara, lone `*`→म्, blank glyphs→space, `®`→्ब, deep-band subscripts added; `table_report.py` reviews every cell. Bad cells 24 → 5 (all APPENDIX). See §8. |
+| 8 Invocation slip | done | `DECODER_VERSION 2026-10-25.v6-om`: the print's `ஓந்நம:` (`TCk,`) is a slip for ॐ, so `ओन्नमः` → `ॐ नमः` (decision 15). Scores unchanged. |
 
 Chunk grades (SETHU oracle, K1 only):
 
