@@ -1,7 +1,7 @@
 {
   "corpus": "samhita",
-  "edition": "3.30",
-  "timestamp": "22-10-2026 15:45:24",
+  "edition": "3.31",
+  "timestamp": "30-10-2026 22:45:06",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -18,16 +18,16 @@
   "metrics": {
     "pathas": 6,
     "khandas": 59,
-    "samas": 1226
+    "samas": 722
   },
   "artifacts": {
     "01_input": [
       {
         "name": "Samam_Malayalam_Unicode.txt",
         "path": "data/corpora/samhita/01_input/Samam_Malayalam_Unicode.txt",
-        "size_bytes": 35796,
+        "size_bytes": 35793,
         "size_formatted": "35.0 KB",
-        "sha256": "03d5655d0dc803b94c31197d03c1ae90e5888476e754d3a3a468e3ceb3cb05e5"
+        "sha256": "63618745a3d4aaef5c313f948b2e45ae4a05972ee043c8960761e28c30be0c5b"
       },
       {
         "name": "Samhita_Devanagari_Unicode.txt",
@@ -41,9 +41,9 @@
       {
         "name": "Samam_kpully_Devanagari.json",
         "path": "data/corpora/samhita/02_ast/Samam_kpully_Devanagari.json",
-        "size_bytes": 53334,
+        "size_bytes": 53331,
         "size_formatted": "52.1 KB",
-        "sha256": "4da3a12d2199af32bb75a0713f034675e7dc604904144a53ab85bdb7f245e55d"
+        "sha256": "d975ab98215f5f7b172d52166a2c0ecea3cbb4d77ae4d89ecf1aa83d0c5893c4"
       },
       {
         "name": "Samam_Malayalam.json",
@@ -132,6 +132,17 @@
           "compiled_timestamp": "22-10-2026 14:33:50"
         },
         {
+          "name": "Samam_kpully_Devanagari_Samam_NoMeta.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samam_kpully_Devanagari_Samam_NoMeta.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Kodunthirapully)",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 113952,
+          "size_formatted": "111.3 KB",
+          "sha256": "50bdba91c34c5db3948ea19b16962cf832fd3ddcba92049f908869bfc6f302ff",
+          "compiled_timestamp": "30-10-2026 22:44:46"
+        },
+        {
           "name": "Samam_kpully_Malayalam.pdf",
           "path": "data/corpora/samhita/05_renders/pdf/Samam_kpully_Malayalam.pdf",
           "format": "PDF",
@@ -154,15 +165,26 @@
           "compiled_timestamp": "22-10-2026 13:47:08"
         },
         {
+          "name": "Samam_kpully_Malayalam_Samam_NoMeta.pdf",
+          "path": "data/corpora/samhita/05_renders/pdf/Samam_kpully_Malayalam_Samam_NoMeta.pdf",
+          "format": "PDF",
+          "script": "Malayalam",
+          "mode": "NoMeta (Continuous Chanting)",
+          "size_bytes": 88550,
+          "size_formatted": "86.5 KB",
+          "sha256": "1b9388353e27051498154b270e5f851501702222d9cde185606b968b1e6e5e3d",
+          "compiled_timestamp": "30-10-2026 22:44:36"
+        },
+        {
           "name": "Samam_Malayalam_Samam.pdf",
           "path": "data/corpora/samhita/05_renders/pdf/Samam_Malayalam_Samam.pdf",
           "format": "PDF",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 87593,
+          "size_bytes": 87586,
           "size_formatted": "85.5 KB",
-          "sha256": "f17aed3b21d30c9880c361e606b871f7e2f5b7988004bdb3f0393e8a13e09835",
-          "compiled_timestamp": "22-10-2026 13:46:51"
+          "sha256": "8d189c27a3dba2255def75510c4d63e8284bc7b442b93a69e6ef287443cf028b",
+          "compiled_timestamp": "30-10-2026 22:44:26"
         },
         {
           "name": "Samhita_Devanagari.pdf",
@@ -282,10 +304,10 @@
           "format": "HTML",
           "script": "Devanagari (Kodunthirapully)",
           "mode": "NoMeta (Continuous Chanting)",
-          "size_bytes": 3038538,
+          "size_bytes": 3038535,
           "size_formatted": "2.90 MB",
-          "sha256": "5286aa6e3bffa248fdc0bec7ff249f9cd8af50f8c5d80dabd5b19254a252109f",
-          "compiled_timestamp": "22-10-2026 15:45:12"
+          "sha256": "4ba17836304c856c82647a3ed51d5547ce919b907a3c6c89e84a143973124256",
+          "compiled_timestamp": "30-10-2026 22:44:46"
         },
         {
           "name": "Samam_kpully_Malayalam.html",
@@ -304,10 +326,10 @@
           "format": "HTML",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 1292100,
+          "size_bytes": 1292118,
           "size_formatted": "1.23 MB",
-          "sha256": "b5d3d68147c2342245044fa11d83a9b905d6efaa49961b841d26067fba3ba8c5",
-          "compiled_timestamp": "22-10-2026 15:39:57"
+          "sha256": "a45206dfa8b66925ba13ec36578a1da35297a096c508610dbdb34048b04b3a0c",
+          "compiled_timestamp": "22-10-2026 16:25:48"
         },
         {
           "name": "Samam_kpully_Malayalam_Samam_NoMeta.html",
@@ -315,10 +337,10 @@
           "format": "HTML",
           "script": "Malayalam",
           "mode": "NoMeta (Continuous Chanting)",
-          "size_bytes": 1292100,
+          "size_bytes": 1292124,
           "size_formatted": "1.23 MB",
-          "sha256": "b5d3d68147c2342245044fa11d83a9b905d6efaa49961b841d26067fba3ba8c5",
-          "compiled_timestamp": "22-10-2026 15:45:09"
+          "sha256": "4d017c579f4e6f8adc0dbaddd307631f0477263251d13cd1c3218ac01872d8b1",
+          "compiled_timestamp": "30-10-2026 22:44:39"
         },
         {
           "name": "Samam_Malayalam_Samam.html",
@@ -326,10 +348,10 @@
           "format": "HTML",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 1291712,
+          "size_bytes": 1291718,
           "size_formatted": "1.23 MB",
-          "sha256": "5a3c934b9482dc686886f264922995e0de3e0d9e1f62af176e6b0a476333c809",
-          "compiled_timestamp": "22-10-2026 13:46:54"
+          "sha256": "a19cf7be2f05a2010a1b3395a5ba77c1ba5dca672263fec04923247cda12caf3",
+          "compiled_timestamp": "30-10-2026 22:44:28"
         },
         {
           "name": "Samhita_Devanagari.html",
@@ -370,10 +392,10 @@
           "format": "HTML",
           "script": "Malayalam",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 1288972,
+          "size_bytes": 1291721,
           "size_formatted": "1.23 MB",
-          "sha256": "7763dfa0f6f72fa14c97ad6c48cf652fd3b331ec3f832406dfd7ca8b4932cc24",
-          "compiled_timestamp": "13-10-2026 12:27:05"
+          "sha256": "3b9a95bb29a42bdd55a90b34830759e84332ec1c9de2d3feeb608ca0a63dd0c0",
+          "compiled_timestamp": "22-10-2026 16:43:30"
         },
         {
           "name": "Samhita_Rik_Devanagari.html",
@@ -427,10 +449,10 @@
           "format": "TXT",
           "script": "Devanagari (Kodunthirapully)",
           "mode": "NoMeta (Continuous Chanting)",
-          "size_bytes": 34460,
-          "size_formatted": "33.7 KB",
-          "sha256": "cb6b8e1fee575de0aa62e35d691785c7b27b05d12917aa04b78c23bb8aeb155a",
-          "compiled_timestamp": "22-10-2026 15:45:12"
+          "size_bytes": 34457,
+          "size_formatted": "33.6 KB",
+          "sha256": "d5781b455bc4c91fb2b08332b8521b55bb9e241af4d0ae5ad6f994bf4586d008",
+          "compiled_timestamp": "30-10-2026 22:44:46"
         },
         {
           "name": "Samam_kpully_Devanagari_Samam_Unicode.txt",
@@ -482,10 +504,10 @@
           "format": "TXT",
           "script": "Malayalam",
           "mode": "NoMeta (Continuous Chanting)",
-          "size_bytes": 34328,
+          "size_bytes": 34325,
           "size_formatted": "33.5 KB",
-          "sha256": "8753a3d589240d771c1c74c4c67cfc1fc84526c7394a6583f53c786a24e33823",
-          "compiled_timestamp": "22-10-2026 15:45:08"
+          "sha256": "54f4f01f17c5ad582696bb6eb5b27bc832860249aac3924b38d0ef28dd8054e1",
+          "compiled_timestamp": "30-10-2026 22:44:38"
         },
         {
           "name": "Samam_kpully_Malayalam_Samam_NoMeta_Unicode.txt",
@@ -493,10 +515,10 @@
           "format": "TXT",
           "script": "Malayalam",
           "mode": "NoMeta (Continuous Chanting)",
-          "size_bytes": 35783,
+          "size_bytes": 35786,
           "size_formatted": "34.9 KB",
-          "sha256": "dc612a061b57833ce07364287e58eae705ae79186a826a75359b4bb01b2fd735",
-          "compiled_timestamp": "22-10-2026 15:45:06"
+          "sha256": "2bab1b9c049a926d392ccb1137948928e9ae24cbfab5b3952a41aa30ebe2d1be",
+          "compiled_timestamp": "30-10-2026 22:44:36"
         },
         {
           "name": "Samam_kpully_Malayalam_Samam_Unicode.txt",
@@ -504,10 +526,10 @@
           "format": "TXT",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 35783,
-          "size_formatted": "34.9 KB",
-          "sha256": "45c3c04c90d9de0ac777d9ad8efca5021567f65ca4d83d4517b4856e2c787d12",
-          "compiled_timestamp": "22-10-2026 15:39:55"
+          "size_bytes": 35789,
+          "size_formatted": "35.0 KB",
+          "sha256": "67c928109b8c35165d98735321e6f1e5457b484793805ddfe49a800529203731",
+          "compiled_timestamp": "22-10-2026 16:25:48"
         },
         {
           "name": "Samam_kpully_Malayalam_Unicode.txt",
@@ -526,10 +548,10 @@
           "format": "TXT",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 34267,
+          "size_bytes": 34264,
           "size_formatted": "33.5 KB",
-          "sha256": "641923e9168b6b1aac3d37db796efd3bddecab8fd3b6674468e8e04074e67564",
-          "compiled_timestamp": "22-10-2026 13:46:53"
+          "sha256": "0ecd3249de73fe3e90866cceb82cb0f43abe0e3f3060b3cbfc6ca18a00ea84e9",
+          "compiled_timestamp": "30-10-2026 22:44:27"
         },
         {
           "name": "Samam_Malayalam_Samam_Unicode.txt",
@@ -537,10 +559,10 @@
           "format": "TXT",
           "script": "Malayalam",
           "mode": "Separate (Samam Only)",
-          "size_bytes": 35722,
+          "size_bytes": 35719,
           "size_formatted": "34.9 KB",
-          "sha256": "7b7c1d6089a5f120afdac118a44139f859ce1c3bc9e86f0e05569b1f0d390e6b",
-          "compiled_timestamp": "22-10-2026 13:46:51"
+          "sha256": "35da27750a6c51b4077ed6afcd05473d5097365e87026afb2542e965acec308c",
+          "compiled_timestamp": "30-10-2026 22:44:26"
         },
         {
           "name": "Samhita_Devanagari_Unicode.txt",
@@ -576,15 +598,26 @@
           "compiled_timestamp": "01-10-2026 23:59:01"
         },
         {
+          "name": "Samhita_Malayalam_Devanagari_Unicode.txt",
+          "path": "data/corpora/samhita/05_renders/txt/Samhita_Malayalam_Devanagari_Unicode.txt",
+          "format": "TXT",
+          "script": "Malayalam",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 34348,
+          "size_formatted": "33.5 KB",
+          "sha256": "72891fbdae38f2677499bcf690cee032431a16b0e9b5d3761a3e1781d55e99fe",
+          "compiled_timestamp": "22-10-2026 16:43:29"
+        },
+        {
           "name": "Samhita_Malayalam_Unicode.txt",
           "path": "data/corpora/samhita/05_renders/txt/Samhita_Malayalam_Unicode.txt",
           "format": "TXT",
           "script": "Malayalam",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 1477066,
-          "size_formatted": "1.41 MB",
-          "sha256": "71b0a1285b0cfb8cbe89ae32521663008eeed84cd1d239e5aafa56e124594fc1",
-          "compiled_timestamp": "01-10-2026 23:59:01"
+          "size_bytes": 35722,
+          "size_formatted": "34.9 KB",
+          "sha256": "5d589085f6974674f9f8340ac4f7451ca218cc140afef61d5611cfb783687fd6",
+          "compiled_timestamp": "22-10-2026 16:43:29"
         },
         {
           "name": "Samhita_Rik_Devanagari_Unicode.txt",
@@ -659,5 +692,7 @@
       }
     ]
   },
-  "validation_status": "PASSED"
+  "validation_status": "PASSED",
+  "last_validated": "30-10-2026 22:47:56",
+  "validation_summary": "100% parity with Golden Baseline Anchor."
 }
