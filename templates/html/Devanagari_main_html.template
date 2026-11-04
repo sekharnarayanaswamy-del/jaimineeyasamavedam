@@ -1690,7 +1690,7 @@
                     \BLOCK{ if section_key != 'count' }
                     <div class="section" id="\VAR{key}-\VAR{section_key}">
                         \BLOCK{ if section.section_title }
-                        <h3 class="section-title">\VAR{section.section_title | replace(':', 'ः')} <span class="section-samam-count">(\VAR{section.Count})</span></h3>
+                        <h3 class="section-title">\VAR{section.section_title | replace(':', 'ः')}</h3>
                         \BLOCK{ endif }
                         
                         <!-- Pre-rendered Subsections -->

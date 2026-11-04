@@ -1944,16 +1944,14 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     # 1. Page Break / Indexing Logic
 
-    if not show_rik_info:
-
+    if prev_rik_id is None:
+        # First Rik of the section: sit close to the Section title
+        formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
+    elif not show_rik_info:
         # Same Rik block: Arsheyams packed closely together
-
         formatted_output.append(r"\par\filbreak\vspace{0.35em}")
-
     else:
-
         # Between Rik+Samam blocks: clear liturgical pause
-
         formatted_output.append(r"\par\filbreak\vspace{0.95em}")
 
     formatted_output.append(r"\phantomsection")

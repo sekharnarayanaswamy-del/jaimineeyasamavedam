@@ -94,9 +94,9 @@
 \usepackage{longtable}
 \usepackage{titlesec}
 \titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\chapter}{0pt}{-50pt}{10pt}
+\titlespacing*{\chapter}{0pt}{-55pt}{2pt}
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\section}{0pt}{6pt}{8pt}
+\titlespacing*{\section}{0pt}{2pt}{3pt}
 \usepackage{setspace}
 \setstretch{1.90}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -323,9 +323,9 @@
             \phantomsection  
 
             \BLOCK{ if section.section_title }
-            \section*{\centering \VAR{section.section_title.replace(':', 'ः')} \quad (\VAR{section.Count})}
+            \section*{\centering \VAR{section.section_title.replace(':', 'ः')}}
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
-            \addcontentsline{toc}{section}{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')} \quad (\VAR{section.Count})} 
+            \addcontentsline{toc}{section}{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}} 
             \BLOCK{ endif }
             \markright{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
