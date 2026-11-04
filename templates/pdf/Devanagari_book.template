@@ -107,13 +107,11 @@
 \usepackage[
   paperwidth=180mm,
   paperheight=228mm,
-  textwidth=136mm,
-  textheight=188mm,
   twoside,
-  inner=25mm,       % Inside / Spine margin
-  outer=19mm,       % Outside margin
-  top=22mm,
-  bottom=22mm,
+  inner=18mm,       % Inside / Spine margin (8mm inside border)
+  outer=15mm,       % Outside margin (5mm inside border)
+  top=19mm,         % Top margin including header (9mm inside border)
+  bottom=19mm,      % Bottom margin including footer (7mm inside border)
   includehead,
   includefoot
 ]{geometry} 

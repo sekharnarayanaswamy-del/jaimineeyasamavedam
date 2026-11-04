@@ -615,7 +615,7 @@ def format_dandas(text):
 
     pattern = rf'({danda_pattern})\s*({digits})\s*({danda_pattern})'
 
-    text = re.sub(pattern, r'\\nolinebreak\\hskip 0.08em \\mbox{॥ \2 ॥}', text)
+    text = re.sub(pattern, r'\\nolinebreak\\hskip 0.08em \\mbox{॥\2॥}', text)
 
 
 
@@ -1975,11 +1975,10 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
     elif not show_rik_info:
         # Same Rik block: Arsheyams packed closely together
-        formatted_output.append(r"\par\filbreak\vspace{0.35em}")
+        formatted_output.append(r"\par\penalty -50\vspace{0.30em plus 0.10em minus 0.05em}")
     else:
-        # New Rik+Samam block: let the Rik group use the remaining space
-        # on this page; the Samam gets its own break decision below.
-        formatted_output.append(r"\par\vspace{0.95em}")
+        # New Rik+Samam block: preferred break point between blocks
+        formatted_output.append(r"\par\penalty -200\vspace{0.75em plus 0.20em minus 0.10em}")
 
     # The TOC/index anchor must point here, at the very start of the
     # subsection, *before* the Rik metadata + Rik text. The Rik group is
@@ -2083,12 +2082,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
             formatted_output.append(r"\vspace{0.15em}") # Pull the Samam header up to its Rik
 
-            # Keep the whole Samam (header + text) together: if it does not
-            # fit in the remaining space, move it to the next page while the
-            # Rik group stays on the current one.
-            formatted_output.append(r"\filbreak")
-
-            formatted_output.append(r"\nopagebreak")
+            # Strongly prefer keeping Rik and Samam together, but allow break if page cannot accommodate both
+            formatted_output.append(r"\par\penalty 400\vspace{0.05em}")
 
         else:
 
