@@ -1,7 +1,7 @@
 {
   "corpus": "Rik",
   "edition": "1.02",
-  "timestamp": "05-11-2026 00:20:49",
+  "timestamp": "05-11-2026 00:30:56",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -13,8 +13,10 @@
   "hashes": {
     "input_sha256": "16de8a4d4a2b1b4661af386909eaf085392d626a25847139a88ed7f581d19822",
     "ast_sha256": "7f58e8e7dc7f5722af983724ac5ad8bf35d70e531f824974e903821970928b84",
-    "canonical_sha256": "d6b65b72a900af0724fc8795086c5a9941bbaf8907d8f91776aa5cf7c93917b1"
+    "canonical_sha256": "d6b65b72a900af0724fc8795086c5a9941bbaf8907d8f91776aa5cf7c93917b1",
+    "kpully_input_sha256": null
   },
+  "kpully_edition": null,
   "metrics": {
     "pathas": 10,
     "khandas": 155,

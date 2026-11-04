@@ -1,7 +1,7 @@
 {
   "corpus": "aaranam",
   "edition": "1.16",
-  "timestamp": "05-11-2026 00:20:49",
+  "timestamp": "05-11-2026 00:30:56",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -13,8 +13,10 @@
   "hashes": {
     "input_sha256": "149cb2aa7070e421cd490c464fe94bb3c40acd2cb3df54761d7df6be7886681c",
     "ast_sha256": "3a33fe85c94c774f5774b02447ed4ed7b299e58179214d1cc794803544377738",
-    "canonical_sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047"
+    "canonical_sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047",
+    "kpully_input_sha256": null
   },
+  "kpully_edition": null,
   "metrics": {
     "pathas": 6,
     "khandas": 25,

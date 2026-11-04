@@ -322,19 +322,49 @@ def check_and_auto_increment_edition(corpus_name: str = "samhita", input_file: O
         except Exception:
             pass
 
+    stored_kpully_hash = None
+    if manifest_path.exists():
+        try:
+            with open(manifest_path, "r", encoding="utf-8") as f:
+                manifest_data = json.load(f)
+            stored_kpully_hash = manifest_data.get("hashes", {}).get("kpully_input_sha256")
+        except Exception:
+            pass
+
+    is_kpully_input = (input_path.name == "Samam_Malayalam_Unicode.txt" or corpus_name == "kpully")
+    was_incremented = False
+    new_edition = edition
+
+    # 1. Main corpus increment (e.g. samhita, rik, collections, or direct kpully)
     if stored_hash and current_hash != stored_hash:
         new_edition = increment_corpus_edition(corpus_name)
+        was_incremented = True
         if corpus_folder == "Rik":
             set_corpus_edition("rik", new_edition)
             set_corpus_edition("purvarchikam", new_edition)
             set_corpus_edition("uttararchikam", new_edition)
-        # Update manifest in place so subsequent calls in the same pipeline run do not double-increment
+        print(f"[AUTO-VERSION] Input file '{input_path.name}' changed for '{corpus_name}'. Incremented edition: {edition} -> {new_edition}")
+
+    # 2. KPully independent edition increment:
+    # When Kodunthirapully input text changes, automatically increment the kpully minor edition
+    if is_kpully_input:
+        target_kpully_stored = stored_kpully_hash
+        if target_kpully_stored is None or current_hash != target_kpully_stored:
+            old_kpully = get_corpus_edition("kpully")
+            new_kpully = increment_corpus_edition("kpully")
+            was_incremented = True
+            print(f"[AUTO-VERSION] Input file '{input_path.name}' changed for 'kpully'. Incremented edition: {old_kpully} -> {new_kpully}")
+
+    # Update manifest in place so subsequent calls in the same pipeline run do not double-increment
+    if was_incremented:
         try:
             if manifest_path.exists():
                 with open(manifest_path, "r", encoding="utf-8") as f:
                     m_data = json.load(f)
                 if "hashes" not in m_data:
                     m_data["hashes"] = {}
+                if is_kpully_input:
+                    m_data["hashes"]["kpully_input_sha256"] = current_hash
                 m_data["hashes"]["input_sha256"] = current_hash
                 for art in m_data.get("artifacts", {}).get("01_input", []):
                     if art.get("name") == input_path.name:
@@ -343,7 +373,6 @@ def check_and_auto_increment_edition(corpus_name: str = "samhita", input_file: O
                     json.dump(m_data, f, indent=2, ensure_ascii=False)
         except Exception:
             pass
-        print(f"[AUTO-VERSION] Input file '{input_path.name}' changed for '{corpus_name}'. Incremented edition: {edition} -> {new_edition}")
         return new_edition, True
 
     return edition, False

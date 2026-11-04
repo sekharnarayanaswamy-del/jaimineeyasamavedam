@@ -1,7 +1,7 @@
 {
   "corpus": "collections",
   "edition": "2.05",
-  "timestamp": "05-11-2026 00:20:49",
+  "timestamp": "05-11-2026 00:30:56",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -13,8 +13,10 @@
   "hashes": {
     "input_sha256": "28b2c97dd85d20ffb09a38467ad2ae8935433775fb8ce06553bd96dfab327d49",
     "ast_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9",
-    "canonical_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9"
+    "canonical_sha256": "cd371af08e09d20f58e1b329b0be58112422ac7eb1d78cd7e6bb8795dd9ee6e9",
+    "kpully_input_sha256": null
   },
+  "kpully_edition": null,
   "metrics": {
     "pathas": 1,
     "khandas": 25,

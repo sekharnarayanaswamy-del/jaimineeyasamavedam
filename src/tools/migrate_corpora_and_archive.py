@@ -816,7 +816,9 @@ flowchart TD
                 "input_sha256": sha256_file(spec["input_file"]) if spec["input_file"].exists() else None,
                 "ast_sha256": sha256_file(spec["ast_file"]) if spec["ast_file"].exists() else None,
                 "canonical_sha256": sha256_file(spec["canonical_file"]) if spec["canonical_file"].exists() else None,
+                "kpully_input_sha256": sha256_file(CORPORA_DIR / "samhita" / "01_input" / "Samam_Malayalam_Unicode.txt") if corpus == "samhita" and (CORPORA_DIR / "samhita" / "01_input" / "Samam_Malayalam_Unicode.txt").exists() else None,
             },
+            "kpully_edition": get_corpus_edition("kpully") if corpus == "samhita" else None,
             "metrics": metrics,
             "artifacts": artifacts,
             "validation_status": "PASSED"
