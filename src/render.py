@@ -1070,40 +1070,41 @@ Examples:
     
     # Procedures are loaded from JSON's procedure_ref field (injected by generate_json.py --procedures)
     # No backward compatibility with prayoga_index.yaml
-    prayoga_dir = Path("data/input/prayoga")
+    # Procedures / Prayoga Appendix are only included for collection (Prayogamala), never for Samhita
     procedures = {}
-    
-    for super_key, supersection in supersections.items():
-        for section_key, section in supersection.get('sections', {}).items():
-            if section_key == 'count': continue
-            for subsection_key, subsection in section.get('subsections', {}).items():
-                # Only include procedures that are explicitly referenced in the JSON
-                if subsection.get('procedure_ref'):
-                    procedure_ref = subsection['procedure_ref']
-                    file_path = procedure_ref.get('file', '')
-                    if file_path and file_path not in procedures:
-                        full_md_path = prayoga_dir / file_path
-                        if full_md_path.exists():
-                            with open(full_md_path, 'r', encoding='utf-8') as f:
-                                md_content = f.read()
-                            if md_content.startswith('---'):
-                                parts = md_content.split('---', 2)
-                                if len(parts) >= 3:
-                                    md_content = parts[2].strip()
-                            latex_content = md_content.replace('_', '\\_').replace('&', '\\&').replace('%', '\\%').replace('$', '\\$')
-                            latex_content = re.sub(r'(?m)^### (.*?)$', r'\\subsubsection*{\1}', latex_content)
-                            latex_content = re.sub(r'(?m)^## (.*?)$', r'\\subsection*{\1}', latex_content)
-                            latex_content = re.sub(r'(?m)^# (.*?)$', r'\\section*{\1}', latex_content)
-                            latex_content = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', latex_content)
-                            latex_content = re.sub(r'\*(.*?)\*', r'\\textit{\1}', latex_content)
-                            latex_content = re.sub(r'(?m)^- (.*?)$', r'$\\bullet$ \1\n\n', latex_content)
-                            
-                            procedures[file_path] = {
-                                'slug': Path(file_path).stem,
-                                'title': procedure_ref.get('title', 'विधिः'),
-                                'latex_content': latex_content
-                            }
-    
+    if mode_type == "collection":
+        prayoga_dir = Path("data/input/prayoga")
+        for super_key, supersection in supersections.items():
+            for section_key, section in supersection.get('sections', {}).items():
+                if section_key == 'count': continue
+                for subsection_key, subsection in section.get('subsections', {}).items():
+                    # Only include procedures that are explicitly referenced in the JSON
+                    if subsection.get('procedure_ref'):
+                        procedure_ref = subsection['procedure_ref']
+                        file_path = procedure_ref.get('file', '')
+                        if file_path and file_path not in procedures:
+                            full_md_path = prayoga_dir / file_path
+                            if full_md_path.exists():
+                                with open(full_md_path, 'r', encoding='utf-8') as f:
+                                    md_content = f.read()
+                                if md_content.startswith('---'):
+                                    parts = md_content.split('---', 2)
+                                    if len(parts) >= 3:
+                                        md_content = parts[2].strip()
+                                latex_content = md_content.replace('_', '\\_').replace('&', '\\&').replace('%', '\\%').replace('$', '\\$')
+                                latex_content = re.sub(r'(?m)^### (.*?)$', r'\\subsubsection*{\1}', latex_content)
+                                latex_content = re.sub(r'(?m)^## (.*?)$', r'\\subsection*{\1}', latex_content)
+                                latex_content = re.sub(r'(?m)^# (.*?)$', r'\\section*{\1}', latex_content)
+                                latex_content = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', latex_content)
+                                latex_content = re.sub(r'\*(.*?)\*', r'\\textit{\1}', latex_content)
+                                latex_content = re.sub(r'(?m)^- (.*?)$', r'$\\bullet$ \1\n\n', latex_content)
+                                
+                                procedures[file_path] = {
+                                    'slug': Path(file_path).stem,
+                                    'title': procedure_ref.get('title', 'विधिः'),
+                                    'latex_content': latex_content
+                                }
+        
     prayogas_list = list(procedures.values())
 
     doc_family = 'Malayalam' if script == 'malayalam' else 'Devanagari'

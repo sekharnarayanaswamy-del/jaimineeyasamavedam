@@ -94,9 +94,9 @@
 \usepackage{longtable}
 \usepackage{titlesec}
 \titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\chapter}{0pt}{-55pt}{2pt}
+\titlespacing*{\chapter}{0pt}{6pt}{8pt}
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\section}{0pt}{2pt}{3pt}
+\titlespacing*{\section}{0pt}{6pt}{6pt}
 \usepackage{setspace}
 \setstretch{1.90}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -112,8 +112,8 @@
   twoside,
   inner=25mm,       % Inside / Spine margin
   outer=19mm,       % Outside margin
-  top=18mm,
-  bottom=18mm,
+  top=22mm,
+  bottom=22mm,
   includehead,
   includefoot
 ]{geometry} 
@@ -377,8 +377,7 @@
         \BLOCK{ if section_key != 'count' }
         
             \BLOCK{ if not ns_sec.first_section }
-            \par\vspace{1.0em}
-            \needspace{4\baselineskip}
+            \clearpage
             \BLOCK{ endif }
             \BLOCK{ set ns_sec.first_section = false }
 
@@ -403,7 +402,7 @@
                     \BLOCK{ break }
                 \BLOCK{ endif }
             \BLOCK{ endfor }
-            \BLOCK{ if section_procedure }
+            \BLOCK{ if section_procedure and prayogas }
             \footnote{\VAR{section_procedure.get('title', 'विधिः')} - \hyperref[app:\VAR{section_procedure.get('file', '').rsplit('.', 1)[0]}]{परिशिष्टम् पश्यतु (See Appendix)}}
             \BLOCK{ endif }
 
