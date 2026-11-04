@@ -35,6 +35,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from core.version import get_engine_version, get_corpus_edition, get_file_hash
+from core.swara_engine import count_samams
 
 BASELINES_DIR = REPO_ROOT / "data" / "baselines"
 GOLDEN_DIR = BASELINES_DIR / "golden"
@@ -106,7 +107,7 @@ def extract_ast_metrics(data: dict) -> Dict[str, int]:
     """Computes Pathas, Khandas, and Samas counts from standard AST."""
     supers = data.get("supersections", data.get("supersection", {}))
     pathas = len(supers)
-    khandas = sum(len(s.get("sections", {})) for s in supers.values() if isinstance(s, dict))
+    khandas = sum(len([k for k in s.get("sections", {}).keys() if k.startswith("section_")]) for s in supers.values() if isinstance(s, dict))
     samas = 0
     for ss in supers.values():
         if not isinstance(ss, dict): continue
@@ -115,7 +116,10 @@ def extract_ast_metrics(data: dict) -> Dict[str, int]:
             for sub in sec.get("subsections", {}).values():
                 if not isinstance(sub, dict): continue
                 mantras = sub.get("corrected-mantra_sets", [])
-                samas += max(len(mantras), 1 if sub.get("rik_text") else 0)
+                for ms in mantras:
+                    txt = ms.get("corrected-mantra", "")
+                    cnt = count_samams(txt)
+                    samas += cnt if cnt > 0 else 1
     return {"pathas": pathas, "khandas": khandas, "samas": samas}
 
 

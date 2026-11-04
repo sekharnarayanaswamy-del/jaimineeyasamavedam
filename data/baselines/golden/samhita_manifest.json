@@ -1,28 +1,28 @@
 {
   "corpus": "samhita",
-  "edition": "3.28",
-  "promoted_at": "29-09-2026 17:13:20",
-  "engine_version": "v4.0.0+a784ca21-dirty",
+  "edition": "3.33",
+  "promoted_at": "04-11-2026 17:05:54",
+  "engine_version": "v4.1.0+8e1022f8-dirty",
   "metrics": {
     "pathas": 6,
     "khandas": 59,
-    "samas": 722
+    "samas": 1226
   },
   "files": {
     "input": {
       "path": "data\\corpora\\samhita\\01_input\\Samhita_Devanagari_Unicode.txt",
-      "sha256": "ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18",
-      "size_bytes": 1264325
+      "sha256": "cc966727b94941cb9ec8fd7b04fd1c9b4e4854629ba9f51f3233cc33b955f76c",
+      "size_bytes": 1368307
     },
     "ast": {
-      "path": "data\\corpora\\samhita\\02_ast\\Samhita_corrected_out.json",
-      "sha256": "215adacecd3deb0caa25e049ef4050107178dca640494d3700e6dcf062e0222f",
-      "size_bytes": 1821541
+      "path": "data\\corpora\\samhita\\02_ast\\Samhita_ast.json",
+      "sha256": "d664e2632c5f5bcadf8e530e80a4ed07d8061bed32dafff3d132bed2a429e5cc",
+      "size_bytes": 1704793
     },
     "canonical": {
       "path": "data\\corpora\\samhita\\04_canonical\\Vargeekaran.json",
-      "sha256": "0cb5efcd47a096d5ddbdf4f21e1a6eb8816a818c24b02817afc8df8582cda006",
-      "size_bytes": 2328580
+      "sha256": "2f9477b963e415d71f27e78bf5660858306522283b4d638577aea7cbe9e3186f",
+      "size_bytes": 2202922
     }
   }
 }

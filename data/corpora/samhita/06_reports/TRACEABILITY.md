@@ -1,8 +1,8 @@
 # Jaimineeya Samavedam — Traceability & Lineage Report: Samhita
 
 - **Corpus**: `samhita`
-- **Edition**: `3.32`
-- **Generated Timestamp**: `30-10-2026 23:00:39`
+- **Edition**: `3.33`
+- **Generated Timestamp**: `04-11-2026 15:07:58`
 - **Validation Status**: `PASSED`
 
 ---
@@ -72,7 +72,8 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 | [`Samam_kpully_Malayalam_Samam.pdf`](../05_renders/pdf/Samam_kpully_Malayalam_Samam.pdf) | `PDF` | `22-10-2026 13:47:08` | Kodunthirapully Chanting (Malayalam) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json` | `generate_json.py -> render.py (-kpully)` |
 | [`Samam_kpully_Malayalam_Samam_NoMeta.pdf`](../05_renders/pdf/Samam_kpully_Malayalam_Samam_NoMeta.pdf) | `PDF` | `30-10-2026 23:00:25` | Kodunthirapully Chanting (Malayalam) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json` | `generate_json.py -> render.py (-kpully)` |
 | [`Samam_Malayalam_Samam.pdf`](../05_renders/pdf/Samam_Malayalam_Samam.pdf) | `PDF` | `30-10-2026 23:00:14` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
-| [`Samhita_Devanagari.pdf`](../05_renders/pdf/Samhita_Devanagari.pdf) | `PDF` | `07-10-2026 08:08:15` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
+| [`Samhita_book_Devanagari.pdf`](../05_renders/pdf/Samhita_book_Devanagari.pdf) | `PDF` | `04-11-2026 14:47:58` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
+| [`Samhita_Devanagari.pdf`](../05_renders/pdf/Samhita_Devanagari.pdf) | `PDF` | `04-11-2026 14:45:23` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
 | [`Samhita_kpully_Devanagari.pdf`](../05_renders/pdf/Samhita_kpully_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:01` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_kpully_Devanagari_Samam.pdf`](../05_renders/pdf/Samhita_kpully_Devanagari_Samam.pdf) | `PDF` | `22-10-2026 13:47:23` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_Malayalam.pdf`](../05_renders/pdf/Samhita_Malayalam.pdf) | `PDF` | `01-10-2026 23:59:01` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
@@ -87,7 +88,7 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 | [`Samam_kpully_Malayalam_Samam.html`](../05_renders/html/Samam_kpully_Malayalam_Samam.html) | `HTML` | `22-10-2026 16:25:48` | Kodunthirapully Chanting (Malayalam) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json` | `generate_json.py -> render.py (-kpully)` |
 | [`Samam_kpully_Malayalam_Samam_NoMeta.html`](../05_renders/html/Samam_kpully_Malayalam_Samam_NoMeta.html) | `HTML` | `30-10-2026 23:00:26` | Kodunthirapully Chanting (Malayalam) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json` | `generate_json.py -> render.py (-kpully)` |
 | [`Samam_Malayalam_Samam.html`](../05_renders/html/Samam_Malayalam_Samam.html) | `HTML` | `30-10-2026 23:00:16` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
-| [`Samhita_Devanagari.html`](../05_renders/html/Samhita_Devanagari.html) | `HTML` | `22-10-2026 15:45:00` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
+| [`Samhita_Devanagari.html`](../05_renders/html/Samhita_Devanagari.html) | `HTML` | `04-11-2026 14:48:07` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
 | [`Samhita_kpully_Devanagari.html`](../05_renders/html/Samhita_kpully_Devanagari.html) | `HTML` | `13-10-2026 12:27:06` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_kpully_Devanagari_Samam.html`](../05_renders/html/Samhita_kpully_Devanagari_Samam.html) | `HTML` | `22-10-2026 13:47:23` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_Malayalam.html`](../05_renders/html/Samhita_Malayalam.html) | `HTML` | `22-10-2026 16:43:30` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
@@ -106,7 +107,8 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 | [`Samam_kpully_Malayalam_Unicode.txt`](../05_renders/txt/Samam_kpully_Malayalam_Unicode.txt) | `TXT` | `01-10-2026 23:59:01` | Kodunthirapully Chanting (Malayalam) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json` | `generate_json.py -> render.py (-kpully)` |
 | [`Samam_Malayalam_Samam_Devanagari_Unicode.txt`](../05_renders/txt/Samam_Malayalam_Samam_Devanagari_Unicode.txt) | `TXT` | `30-10-2026 23:00:15` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
 | [`Samam_Malayalam_Samam_Unicode.txt`](../05_renders/txt/Samam_Malayalam_Samam_Unicode.txt) | `TXT` | `30-10-2026 23:00:14` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
-| [`Samhita_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Devanagari_Unicode.txt) | `TXT` | `22-10-2026 15:44:59` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
+| [`Samhita_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Devanagari_Unicode.txt) | `TXT` | `04-11-2026 14:41:56` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
+| [`Samhita_Devanagari_Unicode_with FN.txt`](../05_renders/txt/Samhita_Devanagari_Unicode_with FN.txt) | `TXT` | `04-11-2026 13:27:43` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
 | [`Samhita_kpully_Devanagari_Samam_Unicode.txt`](../05_renders/txt/Samhita_kpully_Devanagari_Samam_Unicode.txt) | `TXT` | `22-10-2026 13:47:23` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_kpully_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_kpully_Devanagari_Unicode.txt) | `TXT` | `01-10-2026 23:59:01` | Kodunthirapully Chanting (Devanagari) | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | `Samam_Malayalam.json -> Samam_kpully_Devanagari.json` | `generate_json.py -> ml_transliterate.py -> render.py (-kpully)` |
 | [`Samhita_Malayalam_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Malayalam_Devanagari_Unicode.txt) | `TXT` | `22-10-2026 16:43:29` | Standard Samhita Text | [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | `Samhita_ast.json (Canonical: Vargeekaran.json)` | `generate_json.py -> render.py` |
@@ -124,7 +126,7 @@ Only the active master source files utilized for pipeline generation are listed 
 | Active Input File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- |
 | [`Samam_Malayalam_Unicode.txt`](../01_input/Samam_Malayalam_Unicode.txt) | 35.0 KB | `bcd87cf434ead125e4b783719da1f2047ee50402f7aef28fedc9219b32e01b4b` |
-| [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | 1.21 MB | `ab960427c7691ab8268cef6db0f5963beb49ccef475984027201810d407c8b18` |
+| [`Samhita_Devanagari_Unicode.txt`](../01_input/Samhita_Devanagari_Unicode.txt) | 1.30 MB | `cc966727b94941cb9ec8fd7b04fd1c9b4e4854629ba9f51f3233cc33b955f76c` |
 
 ---
 
@@ -135,19 +137,20 @@ Only the active master source files utilized for pipeline generation are listed 
 | :--- | :--- | :--- |
 | [`Samam_kpully_Devanagari.json`](../02_ast/Samam_kpully_Devanagari.json) | 52.1 KB | `e2439c02eca4f3dffec78f49b61c1ad341d53cd6a0aa9ae4b1fcc79f1b043054` |
 | [`Samam_Malayalam.json`](../02_ast/Samam_Malayalam.json) | 66.0 KB | `f258b084562a24d1ef1a25b801cd38fe1237effd48732aceb32afb474a545c69` |
-| [`Samhita_ast.json`](../02_ast/Samhita_ast.json) | 1.74 MB | `90527aef69873da950a0a012107ded230027d907ad3d0da675647171e171582f` |
+| [`Samhita_ast.json`](../02_ast/Samhita_ast.json) | 1.63 MB | `d664e2632c5f5bcadf8e530e80a4ed07d8061bed32dafff3d132bed2a429e5cc` |
 
 ### Canonical Datasets (`04_canonical/`)
 | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- |
-| [`Vargeekaran.json`](../04_canonical/Vargeekaran.json) | 2.22 MB | `c27586b7a80c13f3dfb496683ceba3a8e8c4899bdce262ee87adf92c37cd044e` |
+| [`Vargeekaran.json`](../04_canonical/Vargeekaran.json) | 2.10 MB | `2f9477b963e415d71f27e78bf5660858306522283b4d638577aea7cbe9e3186f` |
 
 ### Reconciliation Tables (`03_reconciliation/`)
 | File Name | Size |
 | :--- | :--- |
 | [`JSV_Rik_Table - for analysis.xlsx`](../03_reconciliation/JSV_Rik_Table - for analysis.xlsx) | 232.6 KB |
-| [`JSV_Rik_Table.csv`](../03_reconciliation/JSV_Rik_Table.csv) | 272.3 KB |
+| [`JSV_Rik_Table.csv`](../03_reconciliation/JSV_Rik_Table.csv) | 275.4 KB |
 | [`JSV_Rik_Table.txt`](../03_reconciliation/JSV_Rik_Table.txt) | 203.4 KB |
+| [`JSV_Rik_Table.xlsx`](../03_reconciliation/JSV_Rik_Table.xlsx) | 93.2 KB |
 | [`JSV_Samam_Granular_Table.csv`](../03_reconciliation/JSV_Samam_Granular_Table.csv) | 830.0 KB |
 | [`JSV_Samam_Granular_Table.xlsx`](../03_reconciliation/JSV_Samam_Granular_Table.xlsx) | 130.7 KB |
 | [`Rik Reconciliation table (JSV-KSV).xlsx`](../03_reconciliation/Rik Reconciliation table (JSV-KSV).xlsx) | 2.88 MB |
@@ -166,7 +169,8 @@ Only the active master source files utilized for pipeline generation are listed 
 | [`Samam_kpully_Malayalam_Samam.pdf`](../05_renders/pdf/Samam_kpully_Malayalam_Samam.pdf) | Separate (Samam Only) | Malayalam | 86.0 KB | `758ec28e3d86b788372eb8bd0cc36e97594aec7dac5ae9a350dac0e4eb1270f6` |
 | [`Samam_kpully_Malayalam_Samam_NoMeta.pdf`](../05_renders/pdf/Samam_kpully_Malayalam_Samam_NoMeta.pdf) | NoMeta (Continuous Chanting) | Malayalam | 86.5 KB | `f6fcd4665678d4928ff192d779b187cd35536f49f73107022269352caf27c690` |
 | [`Samam_Malayalam_Samam.pdf`](../05_renders/pdf/Samam_Malayalam_Samam.pdf) | Separate (Samam Only) | Malayalam | 85.5 KB | `13a24073062f6f3762fda20d96427566dbec9e53a4ace1504ac6c15482f34188` |
-| [`Samhita_Devanagari.pdf`](../05_renders/pdf/Samhita_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 1.12 MB | `6beb458c6ac052385daf1da6eb8b6dd39e1d2f90900318a52fd2e1dc6f605135` |
+| [`Samhita_book_Devanagari.pdf`](../05_renders/pdf/Samhita_book_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 1.28 MB | `2757b713bc1460cc97a65c12a8e620218d967d0db5ca06063ae79d3127fa05f2` |
+| [`Samhita_Devanagari.pdf`](../05_renders/pdf/Samhita_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 1.08 MB | `0d43b2241f957b6eac02b13a93cbb8f6339880ce8320eee06a6f28cb93ace9b9` |
 | [`Samhita_kpully_Devanagari.pdf`](../05_renders/pdf/Samhita_kpully_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 110.3 KB | `ff12a87022de8232ce094893184cf74183c695217e7ace27071f5c607e01faf7` |
 | [`Samhita_kpully_Devanagari_Samam.pdf`](../05_renders/pdf/Samhita_kpully_Devanagari_Samam.pdf) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 111.3 KB | `93e48f81fb936e5aded7cd95f8ce0051f51c7d9cd3851589a9860a03d646625c` |
 | [`Samhita_Malayalam.pdf`](../05_renders/pdf/Samhita_Malayalam.pdf) | Combined (Study Edition) | Malayalam | 1.16 MB | `2b0cdc46cdba0b8e88c35934264b6be7e60ab98641ffc7d148fcb8e23e7bc615` |
@@ -185,7 +189,7 @@ Only the active master source files utilized for pipeline generation are listed 
 | [`Samam_kpully_Malayalam_Samam.html`](../05_renders/html/Samam_kpully_Malayalam_Samam.html) | Separate (Samam Only) | Malayalam | 1.23 MB | `a45206dfa8b66925ba13ec36578a1da35297a096c508610dbdb34048b04b3a0c` |
 | [`Samam_kpully_Malayalam_Samam_NoMeta.html`](../05_renders/html/Samam_kpully_Malayalam_Samam_NoMeta.html) | NoMeta (Continuous Chanting) | Malayalam | 1.23 MB | `8b358e153220895eeb1308fec1a9899b08ffbc0ff6329e252e47ab092d376cfb` |
 | [`Samam_Malayalam_Samam.html`](../05_renders/html/Samam_Malayalam_Samam.html) | Separate (Samam Only) | Malayalam | 1.23 MB | `ade8e8188095c60b368a38acd3c09ca0f72cf25b556ab3d6bdd462a64480fa4d` |
-| [`Samhita_Devanagari.html`](../05_renders/html/Samhita_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 11.84 MB | `f61e20a204c1815ddd784c93fa4c68ea232b9b7b0383ad909a8ca11fc831c920` |
+| [`Samhita_Devanagari.html`](../05_renders/html/Samhita_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 11.65 MB | `9e29a36dd931006d33c95885c27f8c9b3176b08e31f5d85994354ae1b0194071` |
 | [`Samhita_kpully_Devanagari.html`](../05_renders/html/Samhita_kpully_Devanagari.html) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 11.84 MB | `599ef446d29485550fbfc5b5a30afb9c5e60cc8246558a0489e6eb16c4c95207` |
 | [`Samhita_kpully_Devanagari_Samam.html`](../05_renders/html/Samhita_kpully_Devanagari_Samam.html) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 2.90 MB | `8d040fee7b234e2841b0bb401d7f714f5c5a221e589ea50712cda0e77a4f0fa3` |
 | [`Samhita_Malayalam.html`](../05_renders/html/Samhita_Malayalam.html) | Combined (Study Edition) | Malayalam | 1.23 MB | `3b9a95bb29a42bdd55a90b34830759e84332ec1c9de2d3feeb608ca0a63dd0c0` |
@@ -208,7 +212,8 @@ Only the active master source files utilized for pipeline generation are listed 
 | [`Samam_kpully_Malayalam_Unicode.txt`](../05_renders/txt/Samam_kpully_Malayalam_Unicode.txt) | Separate (Samam Only) | Malayalam | 34.9 KB | `70449397215eb686683607030d814158887c5685eaeba483fc507e9b446fc106` |
 | [`Samam_Malayalam_Samam_Devanagari_Unicode.txt`](../05_renders/txt/Samam_Malayalam_Samam_Devanagari_Unicode.txt) | Separate (Samam Only) | Malayalam | 33.5 KB | `3c45b75b5c6c5bda5d93d91dff2a16cc6ee812a1c0cf1e4a80face333072e547` |
 | [`Samam_Malayalam_Samam_Unicode.txt`](../05_renders/txt/Samam_Malayalam_Samam_Unicode.txt) | Separate (Samam Only) | Malayalam | 34.9 KB | `d802905c32ae9ac495678ce2ff14d3fb7109e130c8a5741eb1509aaaa4e41379` |
-| [`Samhita_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Devanagari_Unicode.txt) | Combined (Study Edition) | Devanagari (Standard) | 1.30 MB | `e15fb7106b02d2a8b5bd51b09ca8be089d010aa97aa8b48b6b08b0fb51772b4c` |
+| [`Samhita_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Devanagari_Unicode.txt) | Combined (Study Edition) | Devanagari (Standard) | 1.30 MB | `cc966727b94941cb9ec8fd7b04fd1c9b4e4854629ba9f51f3233cc33b955f76c` |
+| [`Samhita_Devanagari_Unicode_with FN.txt`](../05_renders/txt/Samhita_Devanagari_Unicode_with FN.txt) | Combined (Study Edition) | Devanagari (Standard) | 1.30 MB | `627047c770cc7118396edfb095198617c0ed767b9b0bd304f9c12af228f8a05e` |
 | [`Samhita_kpully_Devanagari_Samam_Unicode.txt`](../05_renders/txt/Samhita_kpully_Devanagari_Samam_Unicode.txt) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 33.7 KB | `33ce4dafe6028fef5876ede707325746de4daffc35b4841bb9494ea09f88ef67` |
 | [`Samhita_kpully_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_kpully_Devanagari_Unicode.txt) | Combined (Study Edition) | Devanagari (Kodunthirapully) | 1.30 MB | `53cd3187795481264ec8511f48e4fad37ce7b8be34f5d485aaa5436cdcd892ad` |
 | [`Samhita_Malayalam_Devanagari_Unicode.txt`](../05_renders/txt/Samhita_Malayalam_Devanagari_Unicode.txt) | Combined (Study Edition) | Malayalam | 33.5 KB | `72891fbdae38f2677499bcf690cee032431a16b0e9b5d3761a3e1781d55e99fe` |
@@ -226,8 +231,8 @@ Only the active master source files utilized for pipeline generation are listed 
 | Report File | Size |
 | :--- | :--- |
 | [`JSON_Samam_Continuity_Report.txt`](JSON_Samam_Continuity_Report.txt) | 823 B |
-| [`JSV_Structure_Summary.csv`](JSV_Structure_Summary.csv) | 3.8 KB |
-| [`JSV_Structure_Summary.txt`](JSV_Structure_Summary.txt) | 6.4 KB |
+| [`JSV_Structure_Summary.csv`](JSV_Structure_Summary.csv) | 4.0 KB |
+| [`JSV_Structure_Summary.txt`](JSV_Structure_Summary.txt) | 6.8 KB |
 | [`Samhita_corrected_out_continuity_report.txt`](Samhita_corrected_out_continuity_report.txt) | 987 B |
 
 ### Verification Command

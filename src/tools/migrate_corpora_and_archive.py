@@ -720,7 +720,7 @@ flowchart TD
                     total_pathas += len(supers)
                     for s in supers.values():
                         if isinstance(s, dict):
-                            total_khandas += len(s.get("sections", {}))
+                            total_khandas += len([k for k in s.get("sections", {}).keys() if k.startswith("section_")])
                             for sec in s.get("sections", {}).values():
                                 if isinstance(sec, dict):
                                     total_riks += len(sec.get("subsections", {}))
@@ -733,7 +733,7 @@ flowchart TD
                 ast_data = json.load(f)
             supers = ast_data.get("supersections", ast_data.get("supersection", {}))
             metrics["pathas"] = len(supers)
-            metrics["khandas"] = sum(len(s.get("sections", {})) for s in supers.values() if isinstance(s, dict))
+            metrics["khandas"] = sum(len([k for k in s.get("sections", {}).keys() if k.startswith("section_")]) for s in supers.values() if isinstance(s, dict))
             metrics["samas"] = count_ast_samas(ast_data)
 
         # Collect artifacts across all 6 stages

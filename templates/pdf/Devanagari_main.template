@@ -94,9 +94,9 @@
 \usepackage{longtable}
 \usepackage{titlesec}
 \titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\chapter}{0pt}{-25pt}{12pt}
+\titlespacing*{\chapter}{0pt}{-50pt}{10pt}
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\section}{0pt}{8pt}{14pt}
+\titlespacing*{\section}{0pt}{6pt}{8pt}
 \usepackage{setspace}
 \setstretch{1.90}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -104,7 +104,7 @@
 \usepackage[stretch=20, shrink=20]{microtype}  % <--- THE MAGIC FIX for spacing
 
 % --- GEOMETRY ---
-\usepackage[a4paper, margin=1.8cm, top=2.0cm, bottom=1.8cm]{geometry} 
+\usepackage[a4paper, margin=1.5cm, top=1.4cm, bottom=1.5cm]{geometry} 
 
 % --- FOOTNOTE LINE SETUP ---
 \newcommand{\drawstarline}{%
@@ -140,7 +140,7 @@
   \settowidth{\swarabasew}{#1}%
   \settowidth{\swarasw}{#2}%
   \ifdim\swarasw>\swarabasew
-    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{1.55ex}[1.75ex][0pt]{#2}}\hspace{0.15em}}%
+    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{1.55ex}[1.75ex][0pt]{#2}}}%
   \else
     \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{1.55ex}[1.75ex][0pt]{#2}}}%
   \fi
@@ -153,7 +153,7 @@
   \settowidth{\swarabasew}{#1}%
   \settowidth{\swarasw}{#2}%
   \ifdim\swarasw>\swarabasew
-    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{-1.05ex}[0pt][0pt]{#2}}\hspace{0.15em}}%
+    \mbox{\hspace{0.5\swarasw-0.5\swarabasew}#1\hspace{-0.5\swarabasew-0.5\swarasw}\makebox[\swarasw][c]{\raisebox{-1.05ex}[0pt][0pt]{#2}}}%
   \else
     \mbox{#1\hspace{-\swarabasew}\makebox[\swarabasew][c]{\raisebox{-1.05ex}[0pt][0pt]{#2}}}%
   \fi
@@ -259,11 +259,7 @@
 % Used when two "danger" accents (Anudatta/Kampa) appear consecutively.
 \newcommand{\accentadj}{\kern0.15ex}
 
-% --- ADD THIS SECTION ---
-\usepackage{newunicodechar}
-\newunicodechar{।}{\hspace{0.6em}।} % Adds space before Single Danda
-\newunicodechar{॥}{\hspace{0.3em}॥\hspace{0.3em}}
-% ------------------------
+% newunicodechar overrides removed to ensure strict zero-space ||N|| and tight danda binding
 % --- CUSTOM FOOTNOTE STYLE: Devanagari Numerals & Higher Position ---
 \makeatletter
 \def\devanagarinumeral#1{\expandafter\dodevanagari\number#1\relax}
@@ -317,8 +313,8 @@
         \BLOCK{ if section_key != 'count' }
         
             \BLOCK{ if not ns_sec.first_section }
-            \par\vspace{1.8em}
-            \needspace{6\baselineskip}
+            \par\vspace{1.0em}
+            \needspace{4\baselineskip}
             \BLOCK{ endif }
             \BLOCK{ set ns_sec.first_section = false }
 
