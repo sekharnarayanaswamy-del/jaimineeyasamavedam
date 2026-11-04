@@ -721,7 +721,7 @@
     ]
   },
   "validation_status": "PASSED",
-  "last_validated": "04-11-2026 18:33:06",
+  "last_validated": "04-11-2026 20:48:31",
   "validation_summary": "100% parity with Golden Baseline Anchor.",
   "golden_promoted_at": "04-11-2026 17:05:54"
 }

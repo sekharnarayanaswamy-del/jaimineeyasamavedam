@@ -53,6 +53,31 @@ except ImportError:
     )
 
 
+import os
+
+# --- Samam layout options ------------------------------------------------
+# Defaults: justified Samam text with free wrapping (no fixed pada count).
+#   JSV_SAMAM_ALIGN      center | justify | left
+#   JSV_SAMAM_MAX_PADAS  5 | none (no fixed pada count; TeX wraps freely)
+_SAMAM_ALIGN = os.environ.get("JSV_SAMAM_ALIGN", "justify").strip().lower()
+_SAMAM_MAX_PADAS_RAW = os.environ.get("JSV_SAMAM_MAX_PADAS", "none").strip().lower()
+try:
+    _SAMAM_MAX_PADAS = (
+        None
+        if _SAMAM_MAX_PADAS_RAW in ("none", "0", "unlimited", "off")
+        else max(1, int(_SAMAM_MAX_PADAS_RAW))
+    )
+except ValueError:
+    _SAMAM_MAX_PADAS = 5
+
+if _SAMAM_ALIGN == "left":
+    _SAMAM_PARA_OPEN = r"\noindent\raggedright "
+elif _SAMAM_ALIGN == "justify":
+    _SAMAM_PARA_OPEN = r"\noindent\sloppy "
+else:
+    _SAMAM_PARA_OPEN = r"\noindent\centering "
+
+
 
 try:
 
@@ -590,7 +615,7 @@ def format_dandas(text):
 
     pattern = rf'({danda_pattern})\s*({digits})\s*({danda_pattern})'
 
-    text = re.sub(pattern, r'\\nolinebreak\\hskip 0.08em \\mbox{॥\2॥}', text)
+    text = re.sub(pattern, r'\\nolinebreak\\hskip 0.08em \\mbox{॥ \2 ॥}', text)
 
 
 
@@ -1222,7 +1247,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
         
 
-        # Limit padas to at most 4 per line and distribute evenly to prevent orphan fragments
+        # Limit padas to at most 5 per line and distribute evenly to prevent orphan fragments
 
         single_danda_count = 0
 
@@ -1242,13 +1267,14 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
         total_padas = single_danda_count + 1
 
-        num_lines = (total_padas + 3) // 4
-
-        base = total_padas // num_lines
-
-        rem = total_padas % num_lines
-
-        padas_per_line = [base + (1 if l_idx < rem else 0) for l_idx in range(num_lines)]
+        if _SAMAM_MAX_PADAS is None:
+            # Experiment: no fixed pada count; TeX wraps the Samam freely.
+            padas_per_line = [total_padas]
+        else:
+            num_lines = (total_padas + _SAMAM_MAX_PADAS - 1) // _SAMAM_MAX_PADAS
+            base = total_padas // num_lines
+            rem = total_padas % num_lines
+            padas_per_line = [base + (1 if l_idx < rem else 0) for l_idx in range(num_lines)]
 
         
 
@@ -1274,11 +1300,11 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
                     paragraph_buffer.pop()
 
-                paragraph_buffer.append(f"\\nolinebreak\\hskip 0.08em plus 0.02em\\mbox{{॥{v_num_deva}॥}}")
+                paragraph_buffer.append(f"\\nolinebreak\\hskip 0.08em plus 0.02em\\mbox{{॥ {v_num_deva} ॥}}")
 
                 full_paragraph = "".join(paragraph_buffer)
 
-                formatted_paragraphs.append(f"{{\\noindent\\centering {full_paragraph}\\par}}")
+                formatted_paragraphs.append(f"{{{_SAMAM_PARA_OPEN}{full_paragraph}\\par}}")
 
                 formatted_paragraphs.append(r"\vspace{0.12em}")
 
@@ -1400,7 +1426,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
                     current_pada_in_line += 1
 
-                    target_for_this_line = padas_per_line[current_line_idx] if current_line_idx < len(padas_per_line) else 4
+                    target_for_this_line = padas_per_line[current_line_idx] if current_line_idx < len(padas_per_line) else (_SAMAM_MAX_PADAS or total_padas)
 
                     if current_pada_in_line >= target_for_this_line and current_line_idx < len(padas_per_line) - 1:
 
@@ -1408,7 +1434,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
                         full_paragraph = "".join(paragraph_buffer)
 
-                        formatted_paragraphs.append(f"{{\\noindent\\centering {full_paragraph}\\par}}")
+                        formatted_paragraphs.append(f"{{{_SAMAM_PARA_OPEN}{full_paragraph}\\par}}")
 
                         formatted_paragraphs.append(r"\vspace{0.06em}")
 
@@ -1951,9 +1977,14 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # Same Rik block: Arsheyams packed closely together
         formatted_output.append(r"\par\filbreak\vspace{0.35em}")
     else:
-        # Between Rik+Samam blocks: clear liturgical pause
-        formatted_output.append(r"\par\filbreak\vspace{0.95em}")
+        # New Rik+Samam block: let the Rik group use the remaining space
+        # on this page; the Samam gets its own break decision below.
+        formatted_output.append(r"\par\vspace{0.95em}")
 
+    # The TOC/index anchor must point here, at the very start of the
+    # subsection, *before* the Rik metadata + Rik text. The Rik group is
+    # considered part of this subsection, so a TOC jump lands on the Rik
+    # block even when the Samam flows onto the following page.
     formatted_output.append(r"\phantomsection")
 
     if subsection_title:
@@ -1988,7 +2019,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
 
-        formatted_output.append(r"\vspace{0.10em}")
+        formatted_output.append(r"\nobreak\vspace{0.10em}") # Keep Rik metadata with its Rik line
 
 
 
@@ -2038,9 +2069,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-        # Output: Upright (not italics)
+        # Output: Upright (not italics). Keep all lines of a multi-Rik line together.
 
-        formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
 
         
 
@@ -2050,9 +2081,12 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         if has_samam_content:
 
-            formatted_output.append(r"\nopagebreak")                
-
             formatted_output.append(r"\vspace{0.15em}") # Pull the Samam header up to its Rik
+
+            # Keep the whole Samam (header + text) together: if it does not
+            # fit in the remaining space, move it to the next page while the
+            # Rik group stays on the current one.
+            formatted_output.append(r"\filbreak")
 
             formatted_output.append(r"\nopagebreak")
 
@@ -2116,7 +2150,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     formatted_output.append(r"\nopagebreak")                
 
-    formatted_output.append(r"\vspace{0.12em}") # Bring the Samam text closer to its Arsheyam
+    formatted_output.append(r"\vspace{-0.55em}") # Bring the Samam text closer to its Arsheyam
 
     formatted_output.append(r"\nopagebreak")
 

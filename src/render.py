@@ -73,7 +73,7 @@ def normalize_output_basename(name, doc_family):
     return name
 
 # --- Core Document Generators ---
-def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False):
+def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False):
     reset_latex_doc_markers()
     data=escape_for_latex(data)
     
@@ -203,7 +203,7 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
 
     return exit_code
 
-def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, toc_level='section', output_dir_override=None, name_override=None, jsv_version=None, generated_at=None):
+def CreateTextFile(templateFileName, name, DocfamilyName, data, output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, toc_level='both', output_dir_override=None, name_override=None, jsv_version=None, generated_at=None):
     outputdir="data/output"
     logdir="data/output/logs"
     exit_code=0
@@ -425,7 +425,7 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
     
     return sorted_index
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='section', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True, kpully=False):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True, kpully=False):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -607,7 +607,7 @@ Examples:
                         
     parser.add_argument('--toc-level', dest='toc_level',
                         choices=['section', 'subsection', 'both'], default=None,
-                        help='Determines which headers appear in the TOC.')
+                        help='Determines which headers appear in the TOC (default: both).')
     
     parser.add_argument('--title', dest='title', default=None,
                         help='Custom Sanskrit title for the document.')
@@ -643,7 +643,7 @@ Examples:
     pdf_font = args.pdf_font or 'AdishilaVedic'
     html_font = args.html_font or "'AdishilaVedic', 'AdishilaSanVedic'"
     pdf_color_mode = args.pdf_color_mode or 'color'
-    toc_level = args.toc_level or 'section'
+    toc_level = args.toc_level or 'both'
     kpully_mode = args.kpully
     
     global CURRENT_PDF_FONT

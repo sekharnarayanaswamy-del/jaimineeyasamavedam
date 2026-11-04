@@ -830,11 +830,11 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span>&nbsp;<span class="verse-num">{v_num}</span>&nbsp;<span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             is_mixed = bool(string_2.strip())
-            style = ' style="margin-bottom: 2.5rem;"' if is_mixed else ''
-            formatted_output.append(f'<div class="mantra-verse"{style}>{v_html}</div>')
+            extra_class = ' mixed-mode' if is_mixed else ''
+            formatted_output.append(f'<div class="mantra-verse{extra_class}">{v_html}</div>')
 
     HTML_FOOTNOTE_COUNTER = fn_counter_obj[0]
     # Accumulate footnotes for section-level rendering (don't render inline)
@@ -1024,7 +1024,7 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span>&nbsp;<span class="verse-num">{v_num}</span>&nbsp;<span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 
@@ -1107,7 +1107,7 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
             if v_marker:
                 v_num_match = re.search(r'[\d०-९]+', v_marker)
                 v_num = v_num_match.group(0) if v_num_match else ''
-                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
+                v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span>&nbsp;<span class="verse-num">{v_num}</span>&nbsp;<span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
             formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
 

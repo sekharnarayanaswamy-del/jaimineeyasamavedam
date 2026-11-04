@@ -281,6 +281,58 @@
 \makeatother
 % ------------------------
 
+% --- DECORATIVE DAISY PAGE BORDER ---
+% Seamless floral daisy chain along all four edges with zero corner whitespace gaps.
+\usepackage{tikz}
+\usepackage{eso-pic}
+\usepackage{bbding}
+\definecolor{vedicmaroon}{RGB}{128, 20, 30}
+\newcommand{\jsvdaisy}{{\color{vedicmaroon}\SixFlowerRemovedOpenPetal}}
+
+\newsavebox{\jsvpageborderbox}
+\AtBeginDocument{%
+  \sbox{\jsvpageborderbox}{%
+    \begin{tikzpicture}
+      \useasboundingbox (0,0) rectangle (\paperwidth, \paperheight);
+      
+      \coordinate (BL) at (10mm, 12mm);
+      \coordinate (BR) at (\dimexpr\paperwidth-10mm\relax, 12mm);
+      \coordinate (TL) at (10mm, \dimexpr\paperheight-10mm\relax);
+      \coordinate (TR) at (\dimexpr\paperwidth-10mm\relax, \dimexpr\paperheight-10mm\relax);
+
+      \pgfmathsetmacro{\targetpitch}{4.0}
+      \pgfmathsetmacro{\totalW}{\paperwidth/1mm - 20}
+      \pgfmathsetmacro{\totalH}{\paperheight/1mm - 22}
+      
+      \pgfmathtruncatemacro{\N}{round(\totalW / \targetpitch)}
+      \pgfmathtruncatemacro{\M}{round(\totalH / \targetpitch)}
+      
+      % Horizontal chains (bottom and top) from k=0 to N
+      \foreach \k in {0,...,\N} {
+        \path (BL) -- (BR) coordinate[pos=\k/\N] (B\k);
+        \node[anchor=center, inner sep=0, outer sep=0] at (B\k) {\jsvdaisy};
+        
+        \path (TL) -- (TR) coordinate[pos=\k/\N] (T\k);
+        \node[anchor=center, inner sep=0, outer sep=0] at (T\k) {\jsvdaisy};
+      }
+      
+      % Vertical chains (left and right) from j=1 to M-1
+      \pgfmathtruncatemacro{\MminusOne}{\M - 1}
+      \foreach \j in {1,...,\MminusOne} {
+        \path (BL) -- (TL) coordinate[pos=\j/\M] (L\j);
+        \node[anchor=center, inner sep=0, outer sep=0] at (L\j) {\jsvdaisy};
+        
+        \path (BR) -- (TR) coordinate[pos=\j/\M] (R\j);
+        \node[anchor=center, inner sep=0, outer sep=0] at (R\j) {\jsvdaisy};
+      }
+    \end{tikzpicture}%
+  }%
+}
+\AddToShipoutPictureBG{%
+  \AtPageLowerLeft{\usebox{\jsvpageborderbox}}%
+}
+% ------------------------------------
+
 \begin{document}
 
 \renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
