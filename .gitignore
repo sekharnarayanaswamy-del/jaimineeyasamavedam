@@ -198,3 +198,7 @@ groupByWords.py
 
 # Third-party Grantha face: lives in the private pdfconverter repo
 fonts/GANAPATHY - GRANTHA FONT.ttf
+
+# Microsoft Office lock files
+~$*
+.~lock.*

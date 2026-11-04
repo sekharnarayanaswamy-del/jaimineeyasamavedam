@@ -57,13 +57,12 @@ Version \VAR{version} \VAR{generated_at}
 #End of Mantra Sets -- \VAR{k} ## DO NOT EDIT
 
 \BLOCK{ else }
-\BLOCK{ set show_rik = (ns.prev_rik_id is none) or (subsection.rik_id != ns.prev_rik_id) or (rik_ids|length > 1 and max_rik_id != ns.prev_rik_id) }
-\BLOCK{ if show_rik and rik_metadata }
+\BLOCK{ if rik_metadata }
 # Start of Rik Metadata -- \VAR{k} ## DO NOT EDIT
 \VAR{ rik_metadata }
 # End of Rik Metadata -- \VAR{k} ## DO NOT EDIT
 \BLOCK{ endif }
-\BLOCK{ if show_rik and rik_text }
+\BLOCK{ if rik_text }
 # Start of Rik Text -- \VAR{k} ## DO NOT EDIT
 \VAR{ rik_text | replace_footnotes(footnotes) | split_rik_lines }
 # End of Rik Text -- \VAR{k} ## DO NOT EDIT

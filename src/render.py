@@ -597,6 +597,10 @@ Examples:
 
     
     # Color Mode Option (Defaults to color for rich Vedic rendering)
+    parser.add_argument('--pdf-template', dest='pdf_template', default=None,
+                        help='Custom PDF template path or name (e.g. templates/pdf/Devanagari_book.template)')
+    parser.add_argument('--book-print', '--book', dest='book_print', action='store_true', default=False,
+                        help='Use the book printing layout template (Devanagari_book.template: 180x228mm, twoside, inner 30mm)')
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
                         choices=['bw', 'color'], default='color',
                         help='Color mode for PDF output: color (default) or bw')
@@ -710,6 +714,8 @@ Examples:
     )
     if kpully_mode and not args.output and not out_name:
         file_prefix = f"{file_prefix}_kpully"
+    elif getattr(args, 'book_print', False) and not args.output and not out_name:
+        file_prefix = f"{file_prefix}_book"
 
     # Path configuration
     template_dir = "templates/pdf"
@@ -1113,7 +1119,15 @@ Examples:
         pdf_font = "NotoSerifMalayalam"
         html_font = "Noto Serif Malayalam"
     else:
-        template_file_src = templateFile_Devanagari
+        if getattr(args, 'book_print', False):
+            template_file_src = f"{template_dir}/Devanagari_book.template"
+        elif getattr(args, 'pdf_template', None):
+            custom_tpl = args.pdf_template
+            if not custom_tpl.endswith('.template'):
+                custom_tpl += '.template'
+            template_file_src = custom_tpl if ('/' in custom_tpl or '\\' in custom_tpl) else f"{template_dir}/{custom_tpl}"
+        else:
+            template_file_src = templateFile_Devanagari
         text_template_file_src = text_templateFile_Devanagari
         html_template_file_src = html_templateFile_Devanagari
 

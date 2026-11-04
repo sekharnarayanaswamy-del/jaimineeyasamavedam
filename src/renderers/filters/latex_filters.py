@@ -333,6 +333,8 @@ def escape_for_latex(data):
             "\xA0": "~", "[": r"{[}", "]": r"{]}",
         }
         return "".join([latex_special_chars.get(c, c) for c in data])
+    else:
+        return data
 
 # --- Devanagari LaTeX Filters & Renderers ---
 def _format_deva_word_latex(word: str, with_modifiers: bool = True) -> str:

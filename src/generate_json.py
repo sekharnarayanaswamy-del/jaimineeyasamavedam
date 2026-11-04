@@ -674,7 +674,8 @@ def convert_corrections_to_json(
     rik_meta_file="data/input/rishi_devata_chandas_for_rik.txt",
     saman_meta_file="data/input/sama_rishi_chandas_out.txt",
     rik_text_file="data/input/vedic_text.txt",
-    title="Jaimineeya Samaveda Samhita Data"
+    title="Jaimineeya Samaveda Samhita Data",
+    procedures_file=None
 ):
     print(f"--- Step 1: Loading External Datasets ---")
     
@@ -682,7 +683,7 @@ def convert_corrections_to_json(
     pipeline_cfg = load_pipeline_config()
     
     # CLI arg --procedures takes priority; if not specified, no procedures (default: no procedure)
-    proc_index_file = args.procedures if args.procedures else None
+    proc_index_file = procedures_file or (args.procedures if 'args' in globals() and getattr(args, 'procedures', None) else None)
     proc_index = {}
     if proc_index_file and os.path.exists(proc_index_file):
         proc_index = load_procedure_index(proc_index_file)
@@ -718,6 +719,49 @@ def convert_corrections_to_json(
     supersection_pattern = re.compile(r'# Start of SuperSection Title -- (supersection_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of SuperSection Title -- \1\s*## DO NOT EDIT\s*(.*?)(?=# Start of SuperSection Title -- supersection_\d+|$)', re.DOTALL)
     section_pattern = re.compile(r'# Start of Section Title -- (section_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of Section Title -- \1\s*## DO NOT EDIT\s*(.*?)(?=# Start of Section Title -- section_\d+|# Start of SuperSection Title -- supersection_\d+|$)', re.DOTALL)
     subsection_pattern = re.compile(r'# Start of SubSection Title -- (subsection_\d+)\s*## DO NOT EDIT\s*(.*?)\s*# End of SubSection Title -- \1\s*## DO NOT EDIT\s*#\s*Start of Mantra Sets -- \1\s*## DO NOT EDIT\s*(.*?)\s*#\s*End of Mantra Sets -- \1\s*## DO NOT EDIT', re.DOTALL)
+
+    # Extract footnotes
+    footnote_pattern = re.compile(
+        r'#\s*Start of Footnote -- (\S+)\s+## DO NOT EDIT\s*\n(.*?)\s*\n#\s*End of Footnote',
+        re.MULTILINE | re.DOTALL
+    )
+    footnotes_map = {}
+    for fn_match in footnote_pattern.finditer(file_content):
+        sub_id = fn_match.group(1)
+        footnote_text = fn_match.group(2).strip()
+        footnotes = {}
+        for line in footnote_text.split('\n'):
+            line = line.strip()
+            if not line: continue
+            m_fn = re.match(r'^(s\d+)\s*[-:]\s*(.*)$', line)
+            if m_fn:
+                footnotes[m_fn.group(1).strip()] = m_fn.group(2).strip()
+        if footnotes:
+            footnotes_map[sub_id] = footnotes
+
+    # If input file has no footnotes, fallback to canonical text file to preserve existing footnotes
+    if not footnotes_map:
+        for fallback_fn_file in ["data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt", "data/input/Samhita_Devanagari_Unicode.txt"]:
+            if os.path.exists(fallback_fn_file):
+                try:
+                    with open(fallback_fn_file, 'r', encoding='utf-8') as fn_f:
+                        fn_content = fn_f.read()
+                    for fn_match in footnote_pattern.finditer(fn_content):
+                        sub_id = fn_match.group(1)
+                        footnote_text = fn_match.group(2).strip()
+                        footnotes = {}
+                        for line in footnote_text.split('\n'):
+                            line = line.strip()
+                            if not line: continue
+                            m_fn = re.match(r'^(s\d+)\s*[-:]\s*(.*)$', line)
+                            if m_fn:
+                                footnotes[m_fn.group(1).strip()] = m_fn.group(2).strip()
+                        if footnotes:
+                            footnotes_map[sub_id] = footnotes
+                    if footnotes_map:
+                        break
+                except Exception:
+                    pass
 
     print(f"--- Step 2a: Extracting SuperSections ---")
     supersections_data = supersection_pattern.findall(file_content)
@@ -950,6 +994,7 @@ def convert_corrections_to_json(
                             "corrected-swara": ""
                         }],
                         "mantra_sets": [],
+                        "footnotes": footnotes_map.get(subsection_id, {}),
                         "procedure_ref": resolve_procedure(proc_index, supersection_id, section_id, subsection_id)
                     }
             
@@ -1057,7 +1102,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     
     # Load procedure index - CLI arg takes priority; if not specified, no procedures
     pipeline_cfg = load_pipeline_config()
-    proc_index_file = args.procedures if args.procedures else None
+    proc_index_file = getattr(args, 'procedures', None) if 'args' in globals() else None
     proc_index = {}
     if proc_index_file and os.path.exists(proc_index_file):
         proc_index = load_procedure_index(proc_index_file)
@@ -1896,7 +1941,7 @@ Examples:
              output_file_path = str(Path(output_dir) / (Path(input_file).stem + "_out.json"))
              
         print(f"Processing {input_file} in INITIAL mode ({mode_type})...")
-        output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text, title=title)
+        output_data = convert_corrections_to_json(input_file, rik_meta, saman_meta, rik_text, title=title, procedures_file=getattr(args, 'procedures', None))
         
     else:
         # Correction mode: parse Unicode text file
