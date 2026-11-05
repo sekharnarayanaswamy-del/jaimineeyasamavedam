@@ -1998,11 +1998,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_title}}}")
 
-        elif toc_level == 'both':
+        else:
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
-
-        formatted_output.append(f"\\index{{{index_title}}}")
 
 
 
@@ -2345,11 +2343,9 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_title}}}")
 
-        elif toc_level == 'both':
+        else:
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
-
-        formatted_output.append(f"\\index{{{index_title}}}")
 
 
 
@@ -2581,11 +2577,9 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_title}}}")
 
-        elif toc_level == 'both':
+        else:
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
-
-        formatted_output.append(f"\\index{{{index_title}}}")
 
 
 
@@ -4219,13 +4213,12 @@ def format_malayalam_samam_block(subsection, subsection_title, toc_level='sectio
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{mal_toc}}}")
 
-        elif toc_level == 'both':
+        else:
 
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{mal_toc}}}")
 
-        if index_title:
-
-            formatted_output.append(f"\\index{{{index_title}}}")
+        # if index_title:
+        #     formatted_output.append(f"\\index{{{index_title}}}")
 
 
 

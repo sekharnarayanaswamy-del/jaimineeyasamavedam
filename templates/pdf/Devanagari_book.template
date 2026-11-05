@@ -83,7 +83,7 @@
 \BLOCK{ endif }
 \BLOCK{ endif }
 
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{1} % Printed TOC: Level 0 (Chapter) and Level 1 (Section) only
 
 % --- PACKAGES ---
 \usepackage{ragged2e} 
@@ -91,6 +91,8 @@
 \usepackage{fancyhdr}    
 \usepackage[perpage,norule]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
 \usepackage{hyperref}    
+\usepackage{bookmark}
+\bookmarksetup{depth=2, numbered=false} % PDF Bookmarks Navigation: Includes individual Arsheyams (Subsections)
 \usepackage{imakeidx}    
 \usepackage{needspace}
 \usepackage{longtable}
@@ -227,7 +229,8 @@
 }
 
 % --- INDEX INITIALIZATION ---
-\makeindex[columns=2, title=Alphabetical Index, intoc]
+\indexsetup{level=\chapter*, toclevel=chapter, othercode={\small\singlespacing}}
+\makeindex[columns=2, title=वर्णानुक्रमणिका, intoc]
 
 % --- HYPERREF ---
 \hypersetup{
@@ -368,6 +371,7 @@
     \chapter*{\centering \VAR{supersection.supersection_title}}
     \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
     \markboth{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
+    \index{\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')}}
     \BLOCK{ endif }
     
     % GLUE FIX: Prevent page break between Chapter and First Section
@@ -391,6 +395,8 @@
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
             \addcontentsline{toc}{section}{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}} 
             \BLOCK{ endif }
+            \index{\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')}!\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
+            \index{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')} (\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')})}
             \markright{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
             \BLOCK{ endif }
