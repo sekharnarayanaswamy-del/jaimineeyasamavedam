@@ -19,6 +19,7 @@
 \definecolor{ModifierDarkBlue}{HTML}{006699}
 \definecolor{ModifierGreen}{HTML}{00994C}
 \definecolor{ModifierSkyBlue}{HTML}{0284C7}
+\definecolor{vedicmaroon}{RGB}{128, 20, 30}
 \BLOCK{ else }
 \definecolor{AccentBlue}{HTML}{000000}      
 \definecolor{AccentPurple}{HTML}{000000}    
@@ -28,6 +29,7 @@
 \definecolor{ModifierDarkBlue}{HTML}{000000}
 \definecolor{ModifierGreen}{HTML}{000000}
 \definecolor{ModifierSkyBlue}{HTML}{000000}
+\definecolor{vedicmaroon}{RGB}{0, 0, 0}
 \BLOCK{ endif }
 
 \BLOCK{ if font_family == 'NotoSansDevanagari' or font_family == 'Noto Sans Devanagari' or font_family == 'NotoSans' }
@@ -286,7 +288,6 @@
 \usepackage{tikz}
 \usepackage{eso-pic}
 \usepackage{bbding}
-\definecolor{vedicmaroon}{RGB}{128, 20, 30}
 \newcommand{\jsvdaisy}{{\color{vedicmaroon}\SixFlowerRemovedOpenPetal}}
 
 \newsavebox{\jsvpageborderbox}

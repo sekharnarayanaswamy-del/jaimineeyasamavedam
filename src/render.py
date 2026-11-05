@@ -716,6 +716,8 @@ Examples:
         file_prefix = f"{file_prefix}_kpully"
     elif getattr(args, 'book_print', False) and not args.output and not out_name:
         file_prefix = f"{file_prefix}_book"
+    if pdf_color_mode == 'bw' and not args.output and not out_name:
+        file_prefix = f"{file_prefix}_bw"
 
     # Path configuration
     template_dir = "templates/pdf"

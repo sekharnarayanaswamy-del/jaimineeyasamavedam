@@ -2070,7 +2070,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         # Output: Upright (not italics). Keep all lines of a multi-Rik line together.
 
-        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
 
         
 
@@ -2281,7 +2281,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
         s2 = format_dandas(s2)
 
-        formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
 
         formatted_output.append(r"\vspace{0.8em}")
 
@@ -2521,7 +2521,7 @@ def format_rik_nometa(subsection, supersection_title, section_title, subsection_
 
         s2 = format_dandas(s2)
 
-        formatted_output.append(f"{{\\centering \\textcolor{{blue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
 
         formatted_output.append(r"\vspace{0.8em}")
 
