@@ -228,8 +228,8 @@
 }
 
 % --- INDEX INITIALIZATION ---
-\indexsetup{level=\chapter*, toclevel=chapter, othercode={\small\singlespacing}}
-\makeindex[columns=2, title=वर्णानुक्रमणिका, intoc]
+\indexsetup{level=\chapter*, toclevel=chapter, othercode={\footnotesize\singlespacing}}
+\makeindex[columns=3, title=वर्णानुक्रमणिका, intoc]
 
 % --- HYPERREF ---
 \hypersetup{
@@ -370,7 +370,6 @@
     \chapter*{\centering \VAR{supersection.supersection_title}}
     \addcontentsline{toc}{chapter}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
     \markboth{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}{\VAR{supersection.supersection_title_toc or (supersection.supersection_title | toc_header)}}
-    \index{\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')}}
     \BLOCK{ endif }
     
     % GLUE FIX: Prevent page break between Chapter and First Section
@@ -394,8 +393,6 @@
             \BLOCK{ if toc_level == 'section' or toc_level == 'both' }
             \addcontentsline{toc}{section}{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}} 
             \BLOCK{ endif }
-            \index{\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')}!\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
-            \index{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')} (\VAR{(supersection.supersection_title_toc or (supersection.supersection_title | toc_header)).replace(':', 'ः')})}
             \markright{\VAR{(section.section_title_toc or (section.section_title | toc_header)).replace(':', 'ः')}}
             \nopagebreak % Keep section title with first mantra
             \BLOCK{ endif }
