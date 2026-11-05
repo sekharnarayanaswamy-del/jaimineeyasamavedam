@@ -225,13 +225,13 @@ def replace_accents(text):
 
         replacements = [
 
-            ('(1)', r'\raisebox{0.6ex}{\accentmark{13.5}{\char"0951}}'),
+            ('(1)', r'\raisebox{0.25ex}{\accentmark{12}{\char"0951}}'),
 
-            ('(2)', r'\raisebox{0.6ex}{\accentmark{17}{\char"1CD2}}'),
+            ('(2)', r'\raisebox{0.25ex}{\accentmark{15}{\char"1CD2}}'),
 
-            ('(3)', r'\raisebox{0.4ex}{\accentmark{13.5}{\char"1CF8}}'),
+            ('(3)', r'\raisebox{0.15ex}{\accentmark{12}{\char"1CF8}}'),
 
-            ('(4)', r'\raisebox{0.4ex}{\accentmark{13.5}{\char"1CF9}}'),
+            ('(4)', r'\raisebox{0.15ex}{\accentmark{12}{\char"1CF9}}'),
 
         ]
 
@@ -243,13 +243,13 @@ def replace_accents(text):
 
         replacements = [
 
-            ('(1)', r'\raisebox{0.7ex}{\makebox[0pt]{\accentmark{13.5}{\char"00A0\char"0951}}}'), # Swarita
+            ('(1)', r'\raisebox{0.7ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"0951}}}'), # Swarita
 
-            ('(2)', r'\raisebox{-0.1ex}{\makebox[0pt]{\accentmark{17}{\char"00A0\char"1CD2}}}'), # Anudatta
+            ('(2)', r'\raisebox{-0.1ex}{\makebox[0pt]{\accentmark{15}{\char"00A0\char"1CD2}}}'), # Anudatta
 
-            ('(3)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{13.5}{\char"00A0\char"1CF8}}}'), # Kampa
+            ('(3)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"1CF8}}}'), # Kampa
 
-            ('(4)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{13.5}{\char"00A0\char"1CF9}}}'), # Trikamba
+            ('(4)', r'\raisebox{0.5ex}{\makebox[0pt]{\accentmark{12}{\char"00A0\char"1CF9}}}'), # Trikamba
 
         ]
 
