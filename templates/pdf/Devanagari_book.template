@@ -32,52 +32,52 @@
 
 \BLOCK{ if font_family == 'NotoSansDevanagari' or font_family == 'Noto Sans Devanagari' or font_family == 'NotoSans' }
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
-\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
-\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSansDevanagari-Bold.ttf}
-\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSansDevanagari.ttf}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
-\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=NotoSansDevanagari-Bold.ttf]{NotoSansDevanagari.ttf}
+\newfontfamily\headerfont[Scale=1.64, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSansDevanagari-Bold.ttf}
+\newfontfamily\smallredfont[Scale=1.09, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSansDevanagari.ttf}
+\newfontfamily\swarafont[Scale=1.09, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.64, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
-\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
-\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX]{NotoSansDevanagari-Bold}
-\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSansDevanagari}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
-\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{NotoSansDevanagari}
+\newfontfamily\headerfont[Scale=1.64, Script=Devanagari, Ligatures=TeX]{NotoSansDevanagari-Bold}
+\newfontfamily\smallredfont[Scale=1.09, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSansDevanagari}
+\newfontfamily\swarafont[Scale=1.09, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.64, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ elif font_family == 'NotoSerifDevanagari' or font_family == 'Noto Serif Devanagari' or font_family == 'NotoSerif' }
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
-\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
-\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
-\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
-\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\headerfont[Scale=1.64, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\smallredfont[Scale=1.09, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{NotoSerifDevanagari-Regular.ttf}
+\newfontfamily\swarafont[Scale=1.09, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.64, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
-\newfontfamily\devafont[Scale=1.05, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
-\newfontfamily\headerfont[Scale=1.15, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0]{NotoSerifDevanagari-Regular}
-\newfontfamily\smallredfont[Scale=0.76, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSerifDevanagari-Regular}
-\newfontfamily\swarafont[Scale=0.76, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
-\newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX]{NotoSerifDevanagari-Regular}
+\newfontfamily\headerfont[Scale=1.64, Script=Devanagari, Ligatures=TeX, AutoFakeBold=2.0]{NotoSerifDevanagari-Regular}
+\newfontfamily\smallredfont[Scale=1.09, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{NotoSerifDevanagari-Regular}
+\newfontfamily\swarafont[Scale=1.09, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.64, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ else }
 % Default: AdishilaVedic
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
-\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
-\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
+\newfontfamily\smallredfont[Scale=1.06, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
+\newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.39, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
-\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
-\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
+\setmainfont[Scale=1.50, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
+\newfontfamily\smallredfont[Scale=1.06, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
+\newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.39, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ endif }
 
@@ -94,9 +94,9 @@
 \usepackage{longtable}
 \usepackage{titlesec}
 \titleformat{\chapter}[block]{\normalfont\huge\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\chapter}{0pt}{6pt}{8pt}
+\titlespacing*{\chapter}{0pt}{-26.0pt}{-1.5pt}
 \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{}{0pt}{\headerfont}
-\titlespacing*{\section}{0pt}{6pt}{6pt}
+\titlespacing*{\section}{0pt}{0.0pt}{4pt}
 \usepackage{setspace}
 \setstretch{1.90}
 % --- CRITICAL: MICROTYPE FOR SPACING ---
@@ -112,6 +112,8 @@
   outer=15mm,       % Outside margin (5mm inside border)
   top=19mm,         % Top margin including header (9mm inside border)
   bottom=19mm,      % Bottom margin including footer (7mm inside border)
+  headheight=22pt,
+  headsep=17.8pt,
   includehead,
   includefoot
 ]{geometry} 
