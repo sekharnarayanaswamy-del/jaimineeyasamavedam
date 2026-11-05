@@ -341,12 +341,39 @@
 \renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
 
 \begin{titlepage}
+    \thispagestyle{empty}
     \begin{center}
-        { \Huge \textbf{\VAR{doc_title_sa}} }
+        \null
+        \vskip 1.5em
+        
+        {\LARGE ॥ ॐ ॥\par}
+        
         \vfill
-        \large v\VAR{version} \\
-        Generated: \VAR{generated_at} \\
-        \date{\today}
+        
+        {\huge \textbf{तलवाकारशाखीय}\par}
+        
+        \vskip 0.8em
+        
+        {\fontsize{32}{40}\selectfont \textbf{\BLOCK{ if doc_title_sa }\VAR{doc_title_sa}\BLOCK{ else }जैमिनीयसामवेद संहिता\BLOCK{ endif }}\par}
+        
+        \vfill
+        
+        {\Large \textbf{सम्पादकाः}\par}
+        \vskip 0.5em
+        {\Large वेदमूर्तिः मकरभूषणम् अय्यङ्गार्\par}
+        \vskip 0.3em
+        {\Large ब्रह्मश्री शैलेष देशपाण्डे\par}
+        
+        \vfill
+        \vfill
+        
+        {\large \textbf{प्रकाशकः}\par}
+        \vskip 0.4em
+        {\large आर्ष विद्या वेदपाठशाला, पालक्काड्, केरळम्\par}
+        \vskip 0.3em
+        {\large २०२६\par}
+        
+        \vskip 1em
     \end{center}
 \end{titlepage}
 
