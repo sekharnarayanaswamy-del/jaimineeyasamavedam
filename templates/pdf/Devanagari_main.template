@@ -67,17 +67,17 @@
 \BLOCK{ else }
 % Default: AdishilaVedic
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
+\setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
 \newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
+\setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX]{AdishilaVedicBold}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
 \newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
 \newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
@@ -342,39 +342,44 @@
 
 \begin{titlepage}
     \thispagestyle{empty}
+    \begin{singlespace}
     \begin{center}
-        \null
-        \vskip 1.5em
-        
-        {\LARGE ॥ ॐ ॥\par}
-        
-        \vfill
-        
-        {\huge \textbf{तलवाकारशाखीय}\par}
-        
-        \vskip 0.8em
-        
-        {\fontsize{32}{40}\selectfont \textbf{\BLOCK{ if doc_title_sa }\VAR{doc_title_sa}\BLOCK{ else }जैमिनीयसामवेद संहिता\BLOCK{ endif }}\par}
+        % SS1: Exact text from Cover page.docx, single line spacing, Harfbuzz
+        \vspace*{-0.4cm}
+        {\fontsize{9.5pt}{12.5pt}\selectfont
+        ॥ श्री: ॥\\[0.20em]
+        ॥ श्रीमते जैमिन्याचार्याय नमः ॥\ ॥ श्री तलवकारगुरवे नमः ॥\\[0.20em]
+        ॥ श्री गुरुभ्यो नमः ॥\par}
         
         \vfill
         
-        {\Large \textbf{सम्पादकाः}\par}
-        \vskip 0.5em
-        {\Large वेदमूर्तिः मकरभूषणम् अय्यङ्गार्\par}
-        \vskip 0.3em
-        {\Large ब्रह्मश्री शैलेष देशपाण्डे\par}
-        
-        \vfill
-        \vfill
-        
-        {\large \textbf{प्रकाशकः}\par}
+        % SS2: Title & Subtitle from Cover page docx
+        {\fontsize{30pt}{38pt}\selectfont \textbf{जैमिनीयसामवेद-संहिता}\par}
         \vskip 0.4em
-        {\large आर्ष विद्या वेदपाठशाला, पालक्काड्, केरळम्\par}
-        \vskip 0.3em
-        {\large २०२६\par}
+        {\fontsize{17pt}{22pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
         
-        \vskip 1em
+        \vfill
+        \vfill
+        
+        % SS3: Editors (Dual) from Cover page docx
+        {\fontsize{18pt}{22pt}\selectfont
+        \textbf{सम्पादकौ}\\[0.35em]
+        {\fontsize{15pt}{19pt}\selectfont वेदमूर्तिः मकरभूषणम् अय्यङ्गार्}\\[0.20em]
+        {\fontsize{15pt}{19pt}\selectfont ब्रह्मश्रीः शैलेष देशपाण्डे}\par}
+        
+        \vfill
+        \vfill
+        
+        % SS4: Publisher & Date from Cover page docx
+        {\fontsize{14pt}{18pt}\selectfont
+        \textbf{प्रकाशकः}\\[0.30em]
+        {\fontsize{13pt}{17pt}\selectfont आर्ष विद्या वेदपाठशाला, कोडुन्तिरपुळ्ळि}\\[0.20em]
+        {\fontsize{13pt}{17pt}\selectfont पालक्काड्, केरळम्}\\[0.20em]
+        {\fontsize{13pt}{17pt}\selectfont २०२६}\par}
+        
+        \vspace*{-0.3cm}
     \end{center}
+    \end{singlespace}
 \end{titlepage}
 
 % --- TOC ---
@@ -436,9 +441,13 @@
             \footnote{\VAR{section_procedure.get('title', 'विधिः')} - \hyperref[app:\VAR{section_procedure.get('file', '').rsplit('.', 1)[0]}]{परिशिष्टम् पश्यतु (See Appendix)}}
             \BLOCK{ endif }
 
-            \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none) }
+            \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none, first_sub=true) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
+                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id }
+                \par\penalty -200\vspace{0.45em plus 0.10em minus 0.05em}\centerline{\textcolor{black!35}{\rule{3.5cm}{0.35pt}}}\vspace{0.35em plus 0.10em minus 0.05em}
+                \BLOCK{ endif }
+                \BLOCK{ set ns.first_sub = false }
                 
                 % Conditional rendering based on output_mode
                 \BLOCK{ if output_mode == 'rik' }
@@ -457,6 +466,20 @@
                 \BLOCK{ set ns.prev_rik_text = subsection.rik_text }
                 \BLOCK{ endif }
             \BLOCK{ endfor }
+
+            % --- End of Kandah Closing Floral Line & Counts ---
+            \BLOCK{ set show_rik = ('rik' in output_mode or 'combined' in output_mode) and has_riks }
+            \BLOCK{ set show_samam = ('samam' in output_mode or 'combined' in output_mode) and has_samams }
+            \par\nopagebreak\vspace{0.9em plus 0.3em minus 0.1em}
+            \centerline{\textcolor{black!35}{\rule{2.2cm}{0.35pt}}\;\raisebox{-0.22ex}{\textcolor{vedicmaroon}{\large\SixFlowerPetalDotted}}\;\textcolor{black!35}{\rule{2.2cm}{0.35pt}}}
+            \nopagebreak\vspace{0.45em}
+            \BLOCK{ if show_rik and show_samam and section.riks_count_dev and section.samams_count_dev }
+            \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ ऋक् सङ्ख्या : \VAR{section.riks_count_dev}, साम सङ्ख्या : \VAR{section.samams_count_dev} ॥}}}
+            \BLOCK{ elif show_rik and section.riks_count_dev }
+            \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ ऋक् सङ्ख्या : \VAR{section.riks_count_dev} ॥}}}
+            \BLOCK{ elif show_samam and section.samams_count_dev }
+            \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ साम सङ्ख्या : \VAR{section.samams_count_dev} ॥}}}
+            \BLOCK{ endif }
         \BLOCK{ endif }
     \BLOCK{ endfor }
 

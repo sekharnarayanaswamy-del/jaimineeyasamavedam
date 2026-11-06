@@ -629,6 +629,43 @@ def format_dandas(text):
 
 
 
+def format_metadata_dandas(text):
+
+    """
+
+    Format Rik and Samam metadata lines to consistently use Devanagari double dandas (॥).
+
+    Strips existing outer dandas/pipes/spaces, normalizes internal double dandas to ॥,
+
+    and encloses with '॥ ... ॥'.
+
+    """
+
+    if not text or not isinstance(text, str):
+
+        return ""
+
+    clean = re.sub(r'^[।॥|\s]+|[।॥|\s]+$', '', text).strip()
+
+    if not clean:
+
+        return ""
+
+    # Normalize internal double dandas
+
+    clean = re.sub(r'\|\||\|\s*\||।।|II', '॥', clean)
+
+    clean = clean.replace('|', '।')
+
+    clean = re.sub(r'\s*([।॥])\s*', r' \1 ', clean)
+
+    clean = re.sub(r'\s+', ' ', clean).strip()
+
+    return f"॥ {clean} ॥"
+
+
+
+
 def clean_stack_arg(text):
 
     r"""
@@ -1975,9 +2012,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
     elif not show_rik_info:
         # Same Rik block: Arsheyams packed closely together
-        formatted_output.append(r"\par\penalty -50\vspace{0.30em plus 0.10em minus 0.05em}")
+        formatted_output.append(r"\par\penalty -50\vspace{0.50em plus 0.15em minus 0.05em}")
     else:
-        # New Rik+Samam block: preferred break point between blocks
+        # New Rik+Samam block: preferred break point with clean vertical gap
         formatted_output.append(r"\par\penalty -200\vspace{0.75em plus 0.20em minus 0.10em}")
 
     # The TOC/index anchor must point here, at the very start of the
@@ -2006,23 +2043,23 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
 
 
-    # 2. String 1: Rik Metadata (Plain Centered) - Only if rik_id changed
+    # 2. String 1: Rik Metadata (Devanagari double dandas) - Only if rik_id changed
 
-    # COLOR: BLUE
+    # COLOR: PURPLE
 
     if string_1 and show_rik_info:
 
-        s1 = format_dandas(string_1)
+        clean_s1 = format_metadata_dandas(string_1)
 
-        s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}), seen_markers, subsection_key)
+        clean_s1 = process_footnotes_latex(clean_s1, subsection.get('footnotes', {}), seen_markers, subsection_key)
 
-        formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\footnotesize \\textcolor{{AccentPurple}}{{{clean_s1}}} \\par}}")
 
-        formatted_output.append(r"\nobreak\vspace{0.10em}") # Keep Rik metadata with its Rik line
+        formatted_output.append(r"\nobreak\vspace{0.12em}") # Keep Rik metadata with its Rik line
 
 
 
-    # 3. String 2: Rik Text (With Vedic Accents, Upright) - Only if rik_id changed
+    # 3. String 2: Rik Text (With Vedic Accents, Upright, Bold) - Only if rik_id changed
 
     # COLOR: BLUE
 
@@ -2068,22 +2105,19 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-        # Output: Upright (not italics). Keep all lines of a multi-Rik line together.
+        # Output: Upright Bold Mula verse at \normalsize (16pt). Keep all lines of a multi-Rik line together.
 
-        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textbf{{\\textcolor{{AccentBlue}}{{{s2}}}}} \\par}}")
 
         
 
-        # --- NEW: Layout grouping for Rik + Samam ---
+        # --- Layout grouping for Rik + Samam ---
 
         has_samam_content = bool(display_sub_title.strip() or string_3.strip() or subsection.get('mantra_sets'))
 
         if has_samam_content:
 
-            formatted_output.append(r"\vspace{0.15em}") # Pull the Samam header up to its Rik
-
-            # Strongly prefer keeping Rik and Samam together, but allow break if page cannot accommodate both
-            formatted_output.append(r"\par\penalty 400\vspace{0.05em}")
+            formatted_output.append(r"\vspace{0.45em}\par\penalty 400\vspace{0.10em}")
 
         else:
 
@@ -2091,19 +2125,19 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
 
 
-    # 4. Combined Header: || Subsection header || || samam_metadata ||
+    # 4. Combined Header: || Subsection header ||  || samam_metadata ||
 
-    header_part = display_sub_title.strip()
+    header_part = format_metadata_dandas(display_sub_title)
 
-    header_part = format_dandas(header_part)
+    if header_part:
 
-    header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}"  
+        header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}"  
 
     
 
-    # COLOR: Samam Metadata -> BROWN
+    # COLOR: Samam Metadata -> BROWN in Devanagari double dandas
 
-    meta_part = format_dandas(string_3).strip()
+    meta_part = format_metadata_dandas(string_3)
 
     meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
 
@@ -2117,7 +2151,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     if header_part and meta_part:
 
-        combined_header = f"{header_part} \\quad {meta_part}"
+        combined_header = f"{header_part} \\enspace {meta_part}"
 
     elif header_part:
 
@@ -2135,27 +2169,21 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-    # Procedure links are shown at section/supersection header level in template
-
-    # No sama-level procedure links (subsection scope shown at header)
-
-
-
     # Keep header with mantra text
 
-    formatted_output.append(r"\nopagebreak")                
-
-    formatted_output.append(r"\vspace{-0.55em}") # Bring the Samam text closer to its Arsheyam
-
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{-0.20em}\nopagebreak")
 
 
 
-    # --- MANTRA CONTENT RENDERING ---
+    # --- MANTRA CONTENT RENDERING (Option B2: Left-Indented Chant Block) ---
 
     body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
 
-    formatted_output.extend(body_paras)
+    if body_paras:
+
+        indented_body = "{\\begingroup\\leftskip=1.0em\\rightskip=0pt\\relax\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+
+        formatted_output.append(indented_body)
 
 
 
@@ -2251,13 +2279,13 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
     if string_1:
 
-        s1 = format_dandas(string_1)
+        s1 = format_metadata_dandas(string_1)
 
         # Apply footnotes
 
         s1 = process_footnotes_latex(s1, subsection.get('footnotes', {}), seen_markers, subsection_key)
 
-        formatted_output.append(f"{{\\centering \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\footnotesize \\textcolor{{AccentPurple}}{{{s1}}} \\par}}")
 
         formatted_output.append(r"\vspace{0.12em}")
 
@@ -2281,7 +2309,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
         s2 = format_dandas(s2)
 
-        formatted_output.append(f"{{\\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\textbf{{\\textcolor{{AccentBlue}}{{{s2}}}}} \\par}}")
 
         formatted_output.append(r"\vspace{0.8em}")
 
@@ -2355,13 +2383,13 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
     # Combined Header: Subsection header + samam_metadata
 
-    header_part = display_sub_title.strip()
+    header_part = format_metadata_dandas(display_sub_title)
 
     header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}" if header_part else ""
 
     
 
-    meta_part = format_dandas(string_3).strip()
+    meta_part = format_metadata_dandas(string_3)
 
     meta_part = process_footnotes_latex(meta_part, subsection.get('footnotes', {}), seen_markers, subsection_key)
 
@@ -2375,7 +2403,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
     if header_part and meta_part:
 
-        combined_header = f"{header_part} \\quad {meta_part}"
+        combined_header = f"{header_part} \\enspace {meta_part}"
 
     elif header_part:
 
@@ -2399,11 +2427,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
 
 
-    formatted_output.append(r"\nopagebreak")
-
-    formatted_output.append(r"\vspace{0.15em}")
-
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{-0.20em}\nopagebreak")
 
 
 
@@ -2411,7 +2435,11 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
     body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
 
-    formatted_output.extend(body_paras)
+    if body_paras:
+
+        indented_body = "{\\begingroup\\leftskip=1.0em\\rightskip=0pt\\relax\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+
+        formatted_output.append(indented_body)
 
 
 
@@ -4452,6 +4480,8 @@ def register_latex_filters(env):
     env.filters["clean_toc_title"] = clean_toc_title
 
     env.filters["toc_header"] = toc_header
+
+    env.filters["format_metadata_dandas"] = format_metadata_dandas
 
     return env
 

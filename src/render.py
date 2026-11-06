@@ -142,7 +142,7 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
             f.write(document)
         
         try:
-            cmd = ["xelatex", "-interaction=nonstopmode", tmpfilename]
+            cmd = ["lualatex", "--interaction=nonstopmode", tmpfilename]
             proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
             
             # Step 2: run makeindex if .idx file exists to generate index (.ind)
@@ -151,16 +151,16 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
                 cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
                 subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
                 
-            # Step 3: Pass 2 of xelatex to resolve TOC, index, and page cross-references
+            # Step 3: Pass 2 of lualatex to resolve TOC, index, and page cross-references
             proc = subprocess.run(cmd, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
             if proc.returncode != 0:
-                print(f"[WARNING] xelatex compilation returned non-zero code {proc.returncode}")
+                print(f"[WARNING] lualatex compilation returned non-zero code {proc.returncode}")
                 lines = proc.stdout.splitlines()
                 for i, line in enumerate(lines):
                     if line.startswith("!"):
                         print("\n".join(lines[i:i+4]))
         except Exception as e:
-            print(f"[WARNING] Failed to run xelatex: {e}")
+            print(f"[WARNING] Failed to run lualatex: {e}")
         
         src_pdf_file=Path(f"{tmpdirname}/{PdfFileName}")
         dst_pdf_file=Path(f"{outputdir}/{PdfFileName}")
@@ -966,6 +966,16 @@ Examples:
                     count_parts.append("०")
             
             sec_data['Count'] = ", ".join(count_parts) if khanda_name else ""
+            sec_data['riks_count'] = sec_riks
+            sec_data['samams_count'] = samam_count
+            sec_data['riks_count_dev'] = to_devanagari_numeral(sec_riks)
+            sec_data['samams_count_dev'] = to_devanagari_numeral(samam_count)
+            if script == 'malayalam':
+                sec_data['riks_count_str'] = str(sec_riks)
+                sec_data['samams_count_str'] = str(samam_count)
+            else:
+                sec_data['riks_count_str'] = to_devanagari_numeral(sec_riks)
+                sec_data['samams_count_str'] = to_devanagari_numeral(samam_count)
         
         # Add total count for the supersection using similar combined logic
         ss_count_parts = []
