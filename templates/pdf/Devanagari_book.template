@@ -132,10 +132,9 @@
 }
 
 % --- SPACING & BREAKING RULES ---
-% 1. Reduce the "Cost" of breaking a word.
-%    Default is 50. Lower means "Please break here instead of stretching spaces."
-\hyphenpenalty=10     
-\exhyphenpenalty=10
+% User Rule 1: No word breaking across lines
+\hyphenpenalty=10000     
+\exhyphenpenalty=10000
 
 % --- HYPHENATION & SPACING RULES (CRITICAL) ---
 \lefthyphenmin=3      % Never split first 2 letters (e.g., prevents "ha-")
@@ -446,7 +445,7 @@
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
                 \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id }
-                \par\penalty -200\vspace{0.45em plus 0.10em minus 0.05em}\centerline{\textcolor{black!35}{\rule{3.5cm}{0.35pt}}}\vspace{0.35em plus 0.10em minus 0.05em}
+                \par\penalty -200\vspace{0.25em plus 0.05em minus 0.05em}\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}\vspace{0.10em}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.first_sub = false }
                 

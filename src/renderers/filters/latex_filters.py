@@ -620,7 +620,6 @@ def format_dandas(text):
 
 
     # Rule A: Single Danda (।) -> Tight spacing
-
     text = re.sub(r'(?<![।|])\s*।(?![।|])\s*', r'\\kern 0.05em ।\\hskip 0.12em plus 0.04em minus 0.02em ', text)
 
 
@@ -1332,23 +1331,14 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
             if v_count > 0:
 
                 v_num_deva = str(v_num).translate(DEVA_DIGITS)
-
                 while paragraph_buffer and (r'\hskip' in paragraph_buffer[-1] or r'\hspace' in paragraph_buffer[-1] or paragraph_buffer[-1].isspace()):
-
                     paragraph_buffer.pop()
-
                 paragraph_buffer.append(f"\\nolinebreak\\hskip 0.08em plus 0.02em\\mbox{{॥ {v_num_deva} ॥}}")
-
                 full_paragraph = "".join(paragraph_buffer)
-
                 formatted_paragraphs.append(f"{{{_SAMAM_PARA_OPEN}{full_paragraph}\\par}}")
-
-                formatted_paragraphs.append(r"\vspace{0.12em}")
-
+                formatted_paragraphs.append(r"\vspace{0.06em}")
                 paragraph_buffer = []
-
                 idx += v_count
-
                 continue
 
             
@@ -1398,17 +1388,11 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                     continue
 
                 else:
-
                     prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
-
                     next_multi = (next_tok and _has_multiple_swaras(next_tok))
-
                     if prev_multi or next_multi:
-
                         paragraph_buffer.append(r"\hskip 0.12em plus 0.04em minus 0.02em ")
-
                     else:
-
                         paragraph_buffer.append(r"\hskip 0.08em plus 0.03em minus 0.02em ")
 
             elif t == 'danda':
@@ -1482,15 +1466,10 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                         current_pada_in_line = 0
 
                     else:
-
                         paragraph_buffer.append(r"\kern 0.05em ।\hskip 0.12em plus 0.04em minus 0.02em ")
-
                 elif ch == '॥':
-
                     paragraph_buffer.append(r"\kern 0.05em ॥\hskip 0.12em plus 0.04em minus 0.02em ")
-
                 else:
-
                     paragraph_buffer.append(f"\\kern 0.05em {ch}\\hskip 0.12em plus 0.04em minus 0.02em ")
 
             elif t == 'marker':
@@ -1888,19 +1867,13 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                 
 
                 chunk = _format_single_deva_word_latex(tok, with_modifiers=with_modifiers)
-
                 paragraph_buffer.append(chunk)
 
             idx += 1
 
-            
-
         if paragraph_buffer:
-
             full_paragraph = "".join(paragraph_buffer)
-
             formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}\\par}}")
-
             formatted_paragraphs.append(r"\vspace{0.10em}")
 
             
@@ -2011,11 +1984,12 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         # First Rik of the section: sit close to the Section title
         formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
     elif not show_rik_info:
-        # Same Rik block: Arsheyams packed closely together
-        formatted_output.append(r"\par\penalty -50\vspace{0.50em plus 0.15em minus 0.05em}")
+        # Same Rik block: Arsheyams packed closely together, allow break if needed
+        formatted_output.append(r"\par\penalty -50\vspace{0.25em plus 0.05em minus 0.05em}")
     else:
-        # New Rik+Samam block: preferred break point with clean vertical gap
-        formatted_output.append(r"\par\penalty -200\vspace{0.75em plus 0.20em minus 0.10em}")
+        # New Rik+Samam block: preferred break point between different Riks
+        # Compact: require 2 lines so Rik header and verse stay together, allowing Samams to flow
+        formatted_output.append(r"\needspace{2\baselineskip}\par\penalty -200\vspace{0.15em plus 0.05em minus 0.05em}")
 
     # The TOC/index anchor must point here, at the very start of the
     # subsection, *before* the Rik metadata + Rik text. The Rik group is
@@ -2116,12 +2090,10 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         has_samam_content = bool(display_sub_title.strip() or string_3.strip() or subsection.get('mantra_sets'))
 
         if has_samam_content:
-
-            formatted_output.append(r"\vspace{0.45em}\par\penalty 400\vspace{0.10em}")
-
+            # Allow break between Rik and its Samam across pages as permitted by user (mild penalty 50)
+            formatted_output.append(r"\vspace{0.15em}\par\penalty 50\vspace{0.05em}")
         else:
-
-            formatted_output.append(r"\vspace{0.8em}")
+            formatted_output.append(r"\vspace{0.30em}")
 
 
 
@@ -2169,9 +2141,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-    # Keep header with mantra text
-
-    formatted_output.append(r"\nopagebreak\vspace{-0.20em}\nopagebreak")
+    # Keep header with mantra text, but compact
+    formatted_output.append(r"\nopagebreak\vspace{-0.35em}\nopagebreak")
 
 
 
