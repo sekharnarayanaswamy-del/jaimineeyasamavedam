@@ -49,6 +49,20 @@ try:
     from src.renderers.filters.text_filters import _ENGLISH_DIGITS
 except ImportError:
     from renderers.filters.text_filters import _ENGLISH_DIGITS
+try:
+    from src.renderers.html_common import (
+        wrap_chant_padas,
+        insert_pada_flex_breaks,
+        render_inline_note_btn,
+        render_section_bm_btn,
+    )
+except ImportError:
+    from renderers.html_common import (
+        wrap_chant_padas,
+        insert_pada_flex_breaks,
+        render_inline_note_btn,
+        render_section_bm_btn,
+    )
 
 # --- HTML Footnote State & Renderers ---
 HTML_FOOTNOTE_COUNTER = 0
@@ -750,7 +764,12 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
         s2 = replace_accents_html(s2)
         s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
-        formatted_output.append(f'<div class="rik-text sanskrit-text">{s2}</div>')
+        # s2 = wrap_chant_padas(s2)
+        rik_line_id = f"{subsection_key}-rik" if subsection_key else ""
+        clean_rik = re.sub(r'<[^>]+>', '', s2).strip()[:40]
+        rik_note_btn = render_inline_note_btn(rik_line_id, clean_rik) if rik_line_id else ""
+        id_attr = f' id="{rik_line_id}"' if rik_line_id else ""
+        formatted_output.append(f'<div{id_attr} class="rik-text sanskrit-text verse-p">{s2}{rik_note_btn}</div>')
 
     # 3. Combined Header
     header_parts = []
@@ -834,7 +853,12 @@ def format_mantra_sets_html(subsection, supersection_title, section_title, subse
                 
             is_mixed = bool(string_2.strip())
             extra_class = ' mixed-mode' if is_mixed else ''
-            formatted_output.append(f'<div class="mantra-verse{extra_class}">{v_html}</div>')
+            v_pada = v_html
+            line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+            clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+            note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+            id_attr = f' id="{line_id}"' if line_id else ""
+            formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p{extra_class}">{v_pada}{note_btn}</div>')
 
     HTML_FOOTNOTE_COUNTER = fn_counter_obj[0]
     # Accumulate footnotes for section-level rendering (don't render inline)
@@ -932,7 +956,12 @@ def format_rik_nometa_html(subsection, supersection_title, section_title, subsec
         s2 = replace_accents_html(s2)
         s2 = split_rik_lines_html(s2)
         s2 = format_dandas_html(s2)
-        formatted_output.append(f'<div class="rik-text">{s2}</div>')
+        # s2 = wrap_chant_padas(s2)
+        rik_line_id = f"{subsection_key}-rik" if subsection_key else ""
+        clean_rik = re.sub(r'<[^>]+>', '', s2).strip()[:40]
+        rik_note_btn = render_inline_note_btn(rik_line_id, clean_rik) if rik_line_id else ""
+        id_attr = f' id="{rik_line_id}"' if rik_line_id else ""
+        formatted_output.append(f'<div{id_attr} class="rik-text verse-p">{s2}{rik_note_btn}</div>')
 
     if collected_footnotes and footnotes_accumulator is not None:
         footnotes_accumulator.extend(collected_footnotes)
@@ -1026,7 +1055,12 @@ def format_samam_only_html(subsection, supersection_title, section_title, subsec
                 v_num = v_num_match.group(0) if v_num_match else ''
                 v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span>&nbsp;<span class="verse-num">{v_num}</span>&nbsp;<span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
-            formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
+            v_pada = v_html
+            line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+            clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+            note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+            id_attr = f' id="{line_id}"' if line_id else ""
+            formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_pada}{note_btn}</div>')
 
     HTML_FOOTNOTE_COUNTER = fn_counter_obj[0]
     if collected_footnotes and footnotes_accumulator is not None:
@@ -1109,7 +1143,12 @@ def format_samam_nometa_html(subsection, supersection_title, section_title, subs
                 v_num = v_num_match.group(0) if v_num_match else ''
                 v_html += f' <span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span>&nbsp;<span class="verse-num">{v_num}</span>&nbsp;<span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
                 
-            formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
+            v_pada = v_html
+            line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+            clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+            note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+            id_attr = f' id="{line_id}"' if line_id else ""
+            formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_pada}{note_btn}</div>')
 
     HTML_FOOTNOTE_COUNTER = fn_counter_obj[0]
     if collected_footnotes and footnotes_accumulator is not None:
@@ -1427,9 +1466,20 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
                 num_m = re.search(r'[\d०-९]+', v_marker)
                 v_num = num_m.group(0).translate(_ENGLISH_DIGITS) if num_m else ''
                 v_marker_html = f'<span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
-                formatted_output.append(f'<div class="mantra-verse">{v_html} {v_marker_html}</div>')
+                full_v = f"{v_html} {v_marker_html}"
+                v_pada = full_v
+                line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+                clean_snip = re.sub(r'<[^>]+>', '', full_v).strip()[:40]
+                note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+                id_attr = f' id="{line_id}"' if line_id else ""
+                formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_pada}{note_btn}</div>')
             elif v_html:
-                formatted_output.append(f'<div class="mantra-verse">{v_html}</div>')
+                v_pada = v_html
+                line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+                clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+                note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+                id_attr = f' id="{line_id}"' if line_id else ""
+                formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_pada}{note_btn}</div>')
 
     footnote_counter = fn_counter_obj[0]
     if collected_footnotes and footnotes_accumulator is not None:
@@ -1478,4 +1528,7 @@ def register_html_filters(env):
     env.filters["render_section_footnotes"] = render_section_footnotes
     env.filters["clean_toc_title"] = clean_toc_title
     env.filters["toc_header"] = toc_header
+    env.filters["wrap_chant_padas"] = wrap_chant_padas
+    env.filters["render_inline_note_btn"] = render_inline_note_btn
+    env.filters["render_section_bm_btn"] = render_section_bm_btn
     return env

@@ -250,7 +250,7 @@
             padding: 15px 20px;
             margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            text-align: center;
+            text-align: left;
         }
         
         .subsection-header {
@@ -309,14 +309,14 @@
             display: inline-flex;
             flex-wrap: wrap;
             align-items: flex-start;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
             gap: 0;
             width: 100%;
         }
         
         .subsection {
-            text-align: center;
+            text-align: left;
         }
         
         .mantra-connected-group {

@@ -1777,7 +1777,8 @@ background: var(--bg-sidebar);
     display: inline-flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
     gap: 0;
 }
 
@@ -2868,8 +2869,8 @@ sup.footnote-ref a:hover {
     display: inline-flex;
     flex-wrap: wrap;
     align-items: flex-end !important;
-    justify-content: center;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
     gap: 0;
     width: 100%;
 }

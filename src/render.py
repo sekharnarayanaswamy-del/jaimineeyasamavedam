@@ -31,6 +31,16 @@ import jinja2
 from src.renderers.filters.latex_filters import *
 from src.renderers.filters.html_filters import *
 from src.renderers.filters.text_filters import *
+from src.renderers.html_common import (
+    wrap_chant_padas,
+    insert_pada_flex_breaks,
+    render_inline_note_btn,
+    render_section_bm_btn,
+    get_viewer_notes_css,
+    get_viewer_notes_js,
+    get_viewer_notes_html,
+    get_viewer_toolbar_controls_html,
+)
 from src.renderers.filters.environments import (
     latex_jinja_env, html_jinja_env,
     create_latex_jinja_env, create_html_jinja_env
@@ -528,7 +538,11 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         adishila_vedic_bold_b64=adishila_vedic_bold_b64,
         rachana_regular_b64=rachana_regular_b64,
         rachana_bold_b64=rachana_bold_b64,
-        kpully=kpully
+        kpully=kpully,
+        notes_css=get_viewer_notes_css(),
+        notes_js=get_viewer_notes_js(name.lower().replace('-', '_')),
+        notes_drawer_html=get_viewer_notes_html(),
+        notes_toolbar_controls=get_viewer_toolbar_controls_html()
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")

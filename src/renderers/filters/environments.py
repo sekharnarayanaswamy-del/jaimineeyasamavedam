@@ -68,6 +68,30 @@ def create_html_jinja_env(loader_path: Optional[Union[str, Path]] = None) -> jin
         extensions=["jinja2.ext.loopcontrols"],
     )
     register_html_filters(env)
+    try:
+        from src.renderers.html_common import (
+            get_viewer_notes_css,
+            get_viewer_notes_js,
+            get_viewer_notes_html,
+            get_viewer_toolbar_controls_html,
+            render_section_bm_btn,
+            render_inline_note_btn,
+        )
+    except ImportError:
+        from renderers.html_common import (
+            get_viewer_notes_css,
+            get_viewer_notes_js,
+            get_viewer_notes_html,
+            get_viewer_toolbar_controls_html,
+            render_section_bm_btn,
+            render_inline_note_btn,
+        )
+    env.globals["notes_css"] = get_viewer_notes_css()
+    env.globals["notes_js"] = get_viewer_notes_js("jsv")
+    env.globals["notes_drawer_html"] = get_viewer_notes_html()
+    env.globals["notes_toolbar_controls"] = get_viewer_toolbar_controls_html()
+    env.globals["render_section_bm_btn"] = render_section_bm_btn
+    env.globals["render_inline_note_btn"] = render_inline_note_btn
     return env
 
 

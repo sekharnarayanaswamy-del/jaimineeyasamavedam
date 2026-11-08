@@ -35,3 +35,7 @@ This document captures the strategic milestones and architectural evolution of t
 ## 🔭 Phase 5: Extended Corpora Expansion (Future)
 - [ ] **Full Archikam Integration**: Complete publication pipeline for Purvarchikam and Uttararchikam Rik corpora.
 - [ ] **Interactive Visual Curation**: Malayalam-Devanagari swara geometry tuning interface.
+- [ ] **Unified Standalone HTML Viewer & Cross-Project Notes Library**:
+  - Unify the Post-It stationery and Bookmarks Drawer engine across **Jaimineeya Samavedam**, **Gramageyaganam** (`Converter-tools`), and **VedaVMS**.
+  - Maximize standalone HTML viewer code reuse (CSS typography, font switcher, responsive TOC sidebar, Post-It overlay, print styles, and common helper functions).
+  - Eliminate regression drift by consolidating shared HTML renderer components into a common module.

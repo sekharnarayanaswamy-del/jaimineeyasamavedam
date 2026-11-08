@@ -119,6 +119,7 @@ CANONICAL_READERS = {
         "script": "Devanagari",
         "description": "Complete Jaimineeya Aranya Ganam (Aranyakam) containing both Rik and Samam with full annotations.",
         "featured": False,
+        "aliases": ["Aaranam.html"],
     },
 }
 
