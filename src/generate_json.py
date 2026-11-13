@@ -495,7 +495,7 @@ class RikTextParser:
                 clean_text = f"{raw_text} ॥ {rik_num_str} ॥"
                 
                 # Apply Visarga/Accent corrections
-                # clean_text = step_preprocess_visarga_accent(clean_text)
+                clean_text = step_preprocess_visarga_accent(clean_text)
                 
                 # Store by rik_id (overwrite if duplicate - take last occurrence)
                 section_map[rik_id_int] = clean_text
@@ -937,7 +937,7 @@ def convert_corrections_to_json(
 
                 # --- NEW: Apply Visarga Preprocessing globally ---
                 # Only process text fields, skip metadata fields to preserve parens as requested
-                # display_rik_text = step_preprocess_visarga_accent(display_rik_text)
+                display_rik_text = step_preprocess_visarga_accent(display_rik_text)
                 full_saman_text = step_preprocess_visarga_accent(full_saman_text)
                 # -----------------------------------------------
 
@@ -1341,7 +1341,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
         # Normalize pipes for Rik text as well (as per "visarga handling" pattern)
         rik_text = rik_text.replace('||', '॥').replace('|', '।')
         # Apply Visarga Accent Preprocessing
-        # rik_text = step_preprocess_visarga_accent(rik_text)
+        rik_text = step_preprocess_visarga_accent(rik_text)
         rik_text_map[sub_id] = rik_text
     
     # Extract subsection headers (Samam header + metadata)

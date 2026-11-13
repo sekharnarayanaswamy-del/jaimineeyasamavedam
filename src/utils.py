@@ -257,9 +257,16 @@ def step_preprocess_visarga_accent(text):
     # 3. Swap Visarga and Accent (handling potential space between them)
     # Pattern: Visarga + optional space + (Accent)
     # accents are like (1), (2), (3), (4) or (cha), (ki) etc in Samam
-    pattern = r'([ः])\s*(\([^)]+\))'
-    # Replace with: Accent Marker first, then Visarga
-    text = re.sub(pattern, r'\2\1', text)
+    pattern_v = r'([ः])\s*((?:\((?!s\d+\))[^\)]+\))+)'
+    text = re.sub(pattern_v, r'\2\1', text)
+
+    # 3b. Swap Anuswara / Halanta-M ("म्") and Accent (e.g. णाम्(2) -> णा(2)म्, हवाम्(प्ली) -> हवा(प्ली)म्)
+    pattern_m = r'म्\s*((?:\((?!s\d+\))[^\)]+\))+)'
+    text = re.sub(pattern_m, r'\1म्', text)
+
+    # Unicode combining accents if present
+    text = re.sub(r'([ः])([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\2\1', text)
+    text = re.sub(r'म्([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\1म्', text)
 
     # 4. Remove space between syllable/token and opening parenthesis
     # e.g. "ए (तच्)आयुषे (टिख्)।" -> "ए(तच्)आयुषे(टिख्)।"

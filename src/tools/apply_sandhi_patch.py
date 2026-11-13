@@ -52,8 +52,10 @@ def swara_aware_replace(text: str, sus: str, sug: str) -> tuple[str, bool]:
     swara_unit = r'(?:\([^\)]+\)|[\u1cd0-\u1cf9\u0951\u0952\s])*'
     pattern_parts = []
     for ch in sus.strip():
-        if ch in ' ।॥':
-            pattern_parts.append(r'[\s।॥]*')
+        if ch in '।॥':
+            pattern_parts.append(r'\s*[।॥]+')
+        elif ch == ' ':
+            pattern_parts.append(r'\s*')
         else:
             pattern_parts.append(re.escape(ch) + swara_unit)
     pattern = ''.join(pattern_parts)
@@ -73,13 +75,16 @@ def swara_aware_replace(text: str, sus: str, sug: str) -> tuple[str, bool]:
             old_chunk = sus[i1:i2]
             new_chunk = sug[j1:j2]
             if old_chunk in new_span:
+                # If replacing anusvara with makara, strip trailing whitespace to preserve swara attachment
+                if old_chunk == 'ं' and 'म्' in new_chunk:
+                    new_chunk = 'म्'
                 new_span = new_span.replace(old_chunk, new_chunk, 1)
                 success = True
             elif 'ं' in old_chunk and 'म्' in new_chunk:
                 # Anusvara before danda or vowel with intervening swara annotations
                 sub_span, n = re.subn(
                     r'([\u0902])(\s*(?:\([^\)]+\)|[\u1cd0-\u1cf9\u0951\u0952])*[\s।॥अआइईउऊऋएऐओऔ])',
-                    r'म् \2',
+                    r'म्\2',
                     new_span,
                     count=1
                 )

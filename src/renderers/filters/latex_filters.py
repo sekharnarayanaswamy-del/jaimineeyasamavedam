@@ -154,9 +154,11 @@ def fix_visarga_accent_order_local(text):
 
     """
 
-    Always swap so accent appears on character BEFORE visarga.
+    Always swap so accent appears on character BEFORE visarga or Anuswara ("म्").
 
     Input: Word:(1) -> Word(1):  (accent now on preceding character)
+    Input: णाम्(2) -> णा(2)म्   (accent now on preceding character)
+    Input: हवाम्(प्ली) -> हवा(प्ली)म् (accent now on preceding character)
 
     """
 
@@ -174,11 +176,25 @@ def fix_visarga_accent_order_local(text):
 
     # Always swap Visarga + Accent to Accent + Visarga
 
-    pattern = r'([ः])\s*(\([^)]+\))'
+    pattern_v = r'([ः])\s*((?:\((?!s\d+\))[^\)]+\))+)'
 
-    text = re.sub(pattern, r'\2\1', text)
+    text = re.sub(pattern_v, r'\2\1', text)
 
     
+
+    # Always swap Anuswara ("म्") + Accent to Accent + Anuswara
+
+    pattern_m = r'म्\s*((?:\((?!s\d+\))[^\)]+\))+)'
+
+    text = re.sub(pattern_m, r'\1म्', text)
+
+    
+
+    # Unicode combining accents
+
+    text = re.sub(r'([ः])([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\2\1', text)
+
+    text = re.sub(r'म्([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\1म्', text)
 
     return text
 
@@ -962,6 +978,11 @@ def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None, 
 
     visarga = tok.get('visarga', '')
 
+    trailing_m = ""
+    if word.endswith('म्') and swara:
+        word = word.removesuffix('म्')
+        trailing_m = 'म्'
+
     if visarga:
 
         word += visarga
@@ -1191,6 +1212,9 @@ def _format_single_deva_word_latex(tok, with_modifiers=True, exclude_mods=None, 
     
 
     word_chunks.append(chunk)
+
+    if trailing_m:
+        word_chunks.append(_format_deva_word_latex(trailing_m, with_modifiers=with_modifiers))
 
     return "".join(word_chunks)
 
@@ -2075,9 +2099,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         s2 = remove_mantra_spaces(string_2)
 
-        # Step A.1: Fix Visarga-Accent Order
+        # Step A.1: Fix Visarga-Accent & Anuswara-Accent Order Guardrail
 
-        # s2 = fix_visarga_accent_order_local(s2)
+        s2 = fix_visarga_accent_order_local(s2)
 
         # Step B: Handle Consecutive Accent Kerning
 
@@ -2312,7 +2336,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
         s2 = remove_mantra_spaces(string_2)
 
-        # s2 = fix_visarga_accent_order_local(s2)
+        s2 = fix_visarga_accent_order_local(s2)
 
         s2 = handle_consecutive_accents(s2)
 

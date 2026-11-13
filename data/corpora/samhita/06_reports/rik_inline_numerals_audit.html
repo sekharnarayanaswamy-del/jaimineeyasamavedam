@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+<meta charset="UTF-8">
+<title>Vedic Rik Text: Inline Numerals (३ &amp; १) and Legacy Glyphs (टट्य &amp; ठ) Audit</title>
+<style>
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    margin: 20px 40px;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+  h1, h2, h3 { color: #0f172a; }
+  .card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .stat-box {
+    background: #ffffff;
+    border-left: 4px solid #3b82f6;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .stat-box.orange { border-left-color: #f97316; }
+  .stat-box.red { border-left-color: #ef4444; }
+  .stat-box.green { border-left-color: #10b981; }
+  .stat-box.purple { border-left-color: #8b5cf6; }
+  .stat-number { font-size: 28px; font-weight: 700; }
+  .stat-label { color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 15px;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  th {
+    background-color: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+  }
+  tr:hover { background-color: #f8fafc; }
+  
+  mark.tatya {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #f87171;
+  }
+  mark.tha-candidate {
+    background-color: #ffedd5;
+    color: #c2410c;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #fb923c;
+  }
+  mark.tha-genuine {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-weight: 500;
+    padding: 2px 4px;
+  }
+  mark.exist-3 {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #60a5fa;
+  }
+  mark.exist-1 {
+    background-color: #d1fae5;
+    color: #047857;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #34d399;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: #e2e8f0;
+    color: #334155;
+  }
+  .badge-target {
+    background: #dbeafe;
+    color: #1e40af;
+    font-size: 13px;
+  }
+  .devanagari {
+    font-family: 'Siddhanta', 'Adishila', 'Shree Devanagari 714', 'Nirmala UI', sans-serif;
+    font-size: 17px;
+  }
+  .rule-box {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    color: #065f46;
+  }
+</style>
+</head>
+<body>
+
+<h1>Vedic Rik Text: Inline Numerals (३ &amp; १) and Legacy Glyphs (टट्य &amp; ठ) Audit Report</h1>
+<p>Audits legacy OCR/typesetting artefacts where inline numeral <strong>३</strong> (Pluta) was encoded as <code>टट्य</code>, and inline numeral <strong>१</strong> (Abhigīta/Kampa/Prolongation) was encoded as <code>ठ</code>.</p>
+
+<div class="rule-box">
+  <strong>Accent Rule Specifications Applied:</strong><br>
+  1. <strong>ठ(1) &rarr; १(2)</strong>: Translates to inline numeral <code>१</code> carrying the <strong>Anudātta symbol</strong> (horizontal underbar <code>॒</code>). Plain <code>ठ</code> &rarr; <code>१</code>.<br>
+  2. <strong>टट्य &rarr; ३</strong>: Retains and transfers any attached accents (e.g. <code>टट्य(2)</code> &rarr; <code>३(2)</code>).
+</div>
+
+<div class="stats-grid">
+  <div class="stat-box red">
+    <div class="stat-number">17</div>
+    <div class="stat-label">टट्य Glyphs (Target: ३)</div>
+  </div>
+  <div class="stat-box orange">
+    <div class="stat-number">32</div>
+    <div class="stat-label">ठ Glyphs (Target: १ + Anudātta)</div>
+  </div>
+  <div class="stat-box blue">
+    <div class="stat-number">2</div>
+    <div class="stat-label">Existing Inline ३</div>
+  </div>
+  <div class="stat-box green">
+    <div class="stat-number">4</div>
+    <div class="stat-label">Existing Inline १</div>
+  </div>
+  <div class="stat-box purple">
+    <div class="stat-number">74</div>
+    <div class="stat-label">Genuine Sanskrit ठ (ष्ठ etc.)</div>
+  </div>
+</div>
+
+<!-- SECTION 1: टट्य -> ३ -->
+<div class="card">
+  <h2>1. Occurrences of 'टट्य' in Rik Text (Mapped to inline '३' with retained accents)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Subsection</th>
+        <th style="width: 20%;">Supersection</th>
+        <th style="width: 15%;">Target</th>
+        <th style="width: 50%;">Context Snippet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>subsection_26</strong></td>
+        <td><span class="badge">आग्नेयपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">(1) । यंसद्वि(2)श्वंन्या <mark class="tatya">टट्य</mark> त्रीणम् । अ(2)ग्नि(2)र्न</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_27</strong></td>
+        <td><span class="badge">आग्नेयपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">(1) । यंसद्वि(2)श्वंन्या <mark class="tatya">टट्य</mark> त्रीणम् । अ(2)ग्नि(2)र्न</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_73</strong></td>
+        <td><span class="badge">आग्नेयपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">्षस्सद्यो मा(1)ही दूत्या <mark class="tatya">टट्य</mark> ञ्चा(2)र॑(1)न् ॥ २ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_74</strong></td>
+        <td><span class="badge">आग्नेयपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari"> सं(2)वे(2)शान(4)स्तन्वे <mark class="tatya">टट्य</mark> चारू(2)रेधि ।  प्रियो(1)</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_144</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">मा(2) ना(1) इन्द्राभ्या <mark class="tatya">टट्य</mark> दीश(1)ः । सू(4)रो अत्तुष</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_148</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">1)नुमोवृषन् । विद्धीत्वा <mark class="tatya">टट्य</mark> स्या(2) नो वसो ॥ ८ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_149</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">1)नुमोवृषन् । विद्धीत्वा <mark class="tatya">टट्य</mark> स्या(2) नो वसो ॥ ८ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_185</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">1)धानांपते । पीबा(2)त्वा <mark class="tatya">टट्य</mark> स्या(2)गी(1)र्वणः ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_284</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">श(2)ग्धू <mark class="tatya">टट्य</mark> षूशा(1)चीपते । इन्द्रावि</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_286</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target">टट्य(2) &rarr; <strong>३(2)</strong></span></td>
+        <td class="devanagari">1)मृतावसो । वरु(2)त्थ्ये <mark class="tatya">टट्य(2)</mark>वा(4)रूणेछन्द्यंवा(2)चा(1</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_329</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">आत्वा <mark class="tatya">टट्य</mark> द्या(4)सा(1)बर्दूघा(1)म्</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_332</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">्पूरूस्पृह(2)म् । वसव्ये <mark class="tatya">टट्य</mark> आ(2)धी(1) बर्हय ॥ ६ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_356</strong></td>
+        <td><span class="badge">असाविपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">्धी(1)चाक्षुः । मुमूग्धा <mark class="tatya">टट्य</mark> स्मान्नीधाये(1)वाबदध्नान</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_372</strong></td>
+        <td><span class="badge">असाविपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">म् । हा(2)री(1)णांरथ्यां <mark class="tatya">टट्य</mark> वि(2)व्रा(1)तानाम् । प्र</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1435</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">चन्द्रा(4)मा(1)प्सूआ(1) <mark class="tatya">टट्य</mark> न्तारा । सूपर्णोधा(1)वते</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1436</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">चन्द्रा(4)मा(1)प्सूआ(1) <mark class="tatya">टट्य</mark> न्तारा । सूपर्णोधा(1)वते</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1471</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target">टट्य &rarr; <strong>३</strong></span></td>
+        <td class="devanagari">)ताती ।  ये(2)नाहंसिन्या <mark class="tatya">टट्य</mark> त्रीणंता(2)मीमाहे ॥ ४ ॥</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 2: ठ -> १ -->
+<div class="card">
+  <h2>2. Occurrences of 'ठ' Candidate Artefacts in Rik Text (Mapped to '१' + Anudātta)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Subsection</th>
+        <th style="width: 20%;">Supersection</th>
+        <th style="width: 20%;">Target</th>
+        <th style="width: 45%;">Context Snippet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>subsection_72</strong></td>
+        <td><span class="badge">आग्नेयपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">। सपर्याता याजतम्पस्त्या <mark class="tha-candidate">ठ(1)</mark> नाम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_147</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१</strong></span></td>
+        <td class="devanagari">े । तत्रा ददी(1)ष्टा पौं <mark class="tha-candidate">ठ</mark> स्यम् ॥ ७ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_166</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१</strong></span></td>
+        <td class="devanagari">वत।नाम त्वष्टू(1)रा(4)पी <mark class="tha-candidate">ठ</mark> च्यम् । इत्था(2)चन्द्रा(</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_249</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">। स(2)त्रा(2)जिदुग्रापौं <mark class="tha-candidate">ठ(1)</mark> स्यम् ॥ ९ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_285</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ाभू(2)जआ(2)भा(1)रा।  स्व <mark class="tha-candidate">ठ(1)</mark> र्वंआसू(1)रेभ्यः । स्तोत</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_286</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target"><strong>सा(2)चात्थ्या१(2) [१+Anudātta]मृतावसो</strong></span></td>
+        <td class="devanagari">त्रा(2)यप्रार्यम्णे(1) । <mark class="tha-candidate">सा(2)चात्थ्याठ(1)मृतावसो</mark> । वरु(2)त्थ्ये टट्य(2)वा</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_296</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target"><strong>ठे(1)</strong></span></td>
+        <td class="devanagari">िर्नोवीता ।  वृ(2)षाह्यु <mark class="tha-candidate">ठे(1)</mark> ग्रश्रृण्वीषे(3)पा(1)राव</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_326</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">व(2)स्य <mark class="tha-candidate">ठ(1)</mark> इन्द्रासिमेपीतू(2)ः । ऊत</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_346</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">(1)सा । दीव(4)ःस(4)दो(1) <mark class="tha-candidate">ठ(1)</mark> भ्यस्पा(2)री ।  न(2)त्वा</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_385</strong></td>
+        <td><span class="badge">असाविपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari"> शुक्र(4)स्या(1)त्वाभ्या <mark class="tha-candidate">ठ(1)</mark> क्ष(4)रन् । धा(4)रा(1)ऋत</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_406</strong></td>
+        <td><span class="badge">असाविपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">2)ऊता । पू(2)रामिधृष्णुं <mark class="tha-candidate">ठ(1)</mark> वार्चत ॥ ५ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1420</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ऋष(1)णीधृ(4)तंम्माघावाना <mark class="tha-candidate">ठ(1)</mark> मुक्त्थ्यम् । इ(2)न्द्रं</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1422</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">शा(2)तं(4)यस्या(1)सूभूवा <mark class="tha-candidate">ठ(1)</mark> साक(2)मीरा(1)ते । अ(2)त्</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1426</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ा(2)धो(1)ःपिबन्तिगौर्याः <mark class="tha-candidate">ठ(1)</mark> । या(2)इ(2)न्द्रे(1)णासा</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1432</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">प्रे(2)ह्याभी <mark class="tha-candidate">ठ(1)</mark> हीधृष्णूहि(2) । नातेवाज्</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1457</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">तमुवां <mark class="tha-candidate">ठ(1)</mark>  भिप्रा(2)गा(1)यत । पू(1</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1458</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">तमुवां <mark class="tha-candidate">ठ(1)</mark>  भिप्रा(2)गा(1)यत । पू(1</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1495</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ीवो(2)भू(1)वोवारूत्थ्याः <mark class="tha-candidate">ठ(1)</mark> ॥ २ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1496</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ीवो(2)भू(1)वोवारूत्थ्याः <mark class="tha-candidate">ठ(1)</mark> ॥ २ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1497</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ीवो(2)भू(1)वोवारूत्थ्याः <mark class="tha-candidate">ठ(1)</mark> ॥ २ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1498</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ीवो(2)भू(1)वोवारूत्थ्याः <mark class="tha-candidate">ठ(1)</mark> ॥ २ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1503</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ोवारू(1)णोपिन्वा(2)ताईळा <mark class="tha-candidate">ठ(1)</mark> । पी(3)वा(1)रीमीषं(1)कृण</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_573</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ा(1) ।  पावी(4)त्रेचमूवो <mark class="tha-candidate">ठ(1)</mark> सूतः । का(4)र्ष्ण(1)न्वा</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_664</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">टना ।  साखा(1)योदीर्घाजि <mark class="tha-candidate">ठ(1)</mark> ह्व्यम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_665</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">टना ।  साखा(1)योदीर्घाजि <mark class="tha-candidate">ठ(1)</mark> ह्व्यम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_666</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">टना ।  साखा(1)योदीर्घाजि <mark class="tha-candidate">ठ(1)</mark> ह्व्यम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_667</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">टना ।  साखा(1)योदीर्घाजि <mark class="tha-candidate">ठ(1)</mark> ह्व्यम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_668</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">टना ।  साखा(1)योदीर्घाजि <mark class="tha-candidate">ठ(1)</mark> ह्व्यम् ॥ १ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_670</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari"> धा(2)नु(1)ष्टन्वन्तीपौं <mark class="tha-candidate">ठ(1)</mark> स्यम् । शु(2)क्रावीय्यन्</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_675</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ा(2)सा(1)ः । स्वाध्या(2) <mark class="tha-candidate">ठ(1)</mark> स्व(2)र्वीद(1)ः ॥ ६ ॥</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_697</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">अञ्ज(2)तेव्य <mark class="tha-candidate">ठ(1)</mark> ञ्जतेसा(2)म(1)ञ्जते । क्</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_697</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td><span class="badge badge-target"><strong>१(2) [१+Anudātta]</strong></span></td>
+        <td class="devanagari">ुंरिहन्ती(1)मध्वाभ्या(1) <mark class="tha-candidate">ठ(1)</mark> ञ्जते ।  सि(2)न्धोरुच्छ्</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 3: EXISTING INLINE ३ -->
+<div class="card">
+  <h2>3. Existing Occurrences of Inline '३' in Rik Text (Pluta)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Subsection</th>
+        <th style="width: 20%;">Supersection</th>
+        <th style="width: 65%;">Context Snippet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>subsection_201</strong></td>
+        <td><span class="badge">तद्वपाठः</span></td>
+        <td class="devanagari">ा(2)आ(1)पूर्व्या । व्यूं <mark class="exist-3">३(1)</mark> च्छतीप्रीया(2)दीवः । स्त</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_724</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td class="devanagari">त्वंह्यां <mark class="exist-3">३</mark>ट्य गदै(1)व्या । पावा(1)म</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- SECTION 4: EXISTING INLINE १ -->
+<div class="card">
+  <h2>4. Existing Occurrences of Inline '१' in Rik Text (Kampa / Prolongation)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Subsection</th>
+        <th style="width: 20%;">Supersection</th>
+        <th style="width: 65%;">Context Snippet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>subsection_295</strong></td>
+        <td><span class="badge">बृहतिपाठः</span></td>
+        <td class="devanagari">रा(4)वि(4)श्वा(1)नीपौं(2)<mark class="exist-1">१</mark>स्यम् </td>
+      </tr>
+      <tr>
+        <td><strong>subsection_1451</strong></td>
+        <td><span class="badge">ऐन्द्रपाठः</span></td>
+        <td class="devanagari">का(2)ईंव्या <mark class="exist-1">१</mark> क्ताः। ना(2)रस्सा(2)नी(1</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_618</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td class="devanagari">ा । 
+जनोना(2)पूरीचम्मुवो <mark class="exist-1">१</mark> र्वीशद्धा(2)रिः । सादावा</td>
+      </tr>
+      <tr>
+        <td><strong>subsection_661</strong></td>
+        <td><span class="badge">पवमानपाठः</span></td>
+        <td class="devanagari">्चा(1) । आचा(1)विशन्त्यू <mark class="exist-1">१</mark> शाती(2)रूश(2)न्त(1)म् </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

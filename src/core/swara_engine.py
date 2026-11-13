@@ -60,8 +60,9 @@ def normalize_dandas(text: str) -> str:
 
 def fix_visarga_accent_order(text: str) -> str:
     """
-    Swaps Visarga (ः) with immediately following accent marker (1)/(2)/(3) etc.
-    so the accent applies to the preceding vowel/character instead of the Visarga.
+    Swaps Visarga (ः) and Anuswara/Halanta-M (म्) with immediately following accent marker
+    (1)/(2)/(3) etc. or Samam swara marker (ति)/(ता)/(प्ली) etc.
+    so the accent applies to the preceding vowel/syllable instead of the Visarga or Anuswara.
     Normalizes ASCII colons to Visarga.
     """
     if not text:
@@ -71,10 +72,14 @@ def fix_visarga_accent_order(text: str) -> str:
     # Remove space before Visarga
     text = re.sub(r'\s+ः', VISARGA, text)
     # Swap Visarga and Accent markup (e.g., ः(1) -> (1)ः)
-    pattern = r'([ः])\s*(\([^)]+\))'
-    text = re.sub(pattern, r'\2\1', text)
+    pattern_v = r'([ः])\s*((?:\((?!s\d+\))[^\)]+\))+)'
+    text = re.sub(pattern_v, r'\2\1', text)
+    # Swap Anuswara / Halanta-M ("म्") and Accent markup (e.g., णाम्(2) -> णा(2)म्, हवाम्(प्ली) -> हवा(प्ली)म्)
+    pattern_m = r'म्\s*((?:\((?!s\d+\))[^\)]+\))+)'
+    text = re.sub(pattern_m, r'\1म्', text)
     # Also swap Unicode accents if already converted (e.g., ः॑ -> ॑ः)
     text = re.sub(r'([ः])([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\2\1', text)
+    text = re.sub(r'म्([\u0951\u0952\u1CD2\u1CF8\u1CF9])', r'\1म्', text)
     return text
 
 
@@ -125,6 +130,7 @@ def tokenize_mantra_line(text: str) -> List[dict]:
     text = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', text)
     text = re.sub(r'\u200d(?=\()', '', text)
     text = re.sub(r'(\S)\s+\(', r'\1(', text)
+    text = fix_visarga_accent_order(text)
     tokens: List[dict] = []
     i = 0
     n = len(text)
