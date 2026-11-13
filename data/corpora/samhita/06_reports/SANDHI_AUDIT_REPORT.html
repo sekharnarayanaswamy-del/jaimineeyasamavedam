@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="sa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>सामसंहिता संस्कृत-सन्धि-परीक्षण-वृत्तान्तः (Sandhi Audit & Selection Portal)</title>
+<style>
+  :root {
+    --maroon: #800000;
+    --dark-maroon: #4a0000;
+    --gold: #b8860b;
+    --gold-light: #fef3c7;
+    --navy: #1a365d;
+    --cream: #fdfbf7;
+    --border: #e2d9cc;
+    --high-red: #c53030;
+    --high-bg: #fff5f5;
+    --high-border: #feb2b2;
+    --med-amber: #b45309;
+    --med-bg: #fffbeb;
+    --med-border: #fde68a;
+    --green: #15803d;
+    --green-bg: #f0fdf4;
+    --green-border: #86efac;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --gray-bg: #f8fafc;
+    --gray-border: #e2e8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans Devanagari", "AdishilaVedic", sans-serif;
+    background: #f6f4ee;
+    color: #2d3748;
+    line-height: 1.5;
+    padding: 20px;
+  }
+  .container {
+    max-width: 1560px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--maroon) 0%, var(--dark-maroon) 100%);
+    color: #fff;
+    padding: 26px 36px;
+    border-bottom: 4px solid var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header-left h1 {
+    font-size: 26px;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+  .header-left p {
+    color: #fbd38d;
+    font-size: 14.5px;
+  }
+  .header-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 500;
+  }
+  
+  /* KPI Cards */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    padding: 18px 36px;
+    background: #faf8f5;
+    border-bottom: 1px solid var(--border);
+  }
+  .kpi-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .kpi-card.alert-info { border-left: 4px solid var(--navy); }
+  .kpi-card.alert-pending { border-left: 4px solid #ea580c; background: #fffaf0; }
+  .kpi-card.alert-selected { border-left: 4px solid var(--green); background: #f0fdf4; }
+  .kpi-card.alert-high { border-left: 4px solid var(--high-red); }
+  .kpi-card.alert-med { border-left: 4px solid var(--med-amber); }
+  
+  .kpi-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #718096;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .kpi-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c;
+  }
+  .kpi-card.alert-pending .kpi-value { color: #ea580c; }
+  .kpi-card.alert-selected .kpi-value { color: var(--green); }
+  .kpi-subtext {
+    font-size: 11px;
+    color: #a0aec0;
+  }
+  
+  /* VIEW MODE TABS BAR */
+  .view-mode-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 36px;
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .view-mode-tabs {
+    display: inline-flex;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 8px;
+    gap: 4px;
+  }
+  .view-mode-tab {
+    background: transparent;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+  }
+  .view-mode-tab:hover {
+    color: #0f172a;
+    background: rgba(255,255,255,0.6);
+  }
+  .view-mode-tab.active {
+    background: #ffffff;
+    color: var(--maroon);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  }
+  .view-mode-tab.active.tab-green {
+    color: var(--green);
+  }
+  .tab-badge {
+    background: #cbd5e1;
+    color: #334155;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 12px;
+  }
+  .view-mode-tab.active .tab-badge {
+    background: var(--maroon);
+    color: #ffffff;
+  }
+  .view-mode-tab.active.tab-green .tab-badge {
+    background: var(--green);
+    color: #ffffff;
+  }
+  
+  /* Auto-hide toggle switch */
+  .auto-hide-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    background: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e1;
+  }
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    transition: .2s;
+    border-radius: 20px;
+  }
+  .slider:before {
+    position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .2s;
+    border-radius: 50%;
+  }
+  input:checked + .slider { background-color: var(--green); }
+  input:checked + .slider:before { transform: translateX(16px); }
+
+  /* STICKY ACTION TOOLBAR */
+  .selection-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #ffffff;
+    border-bottom: 2px solid var(--maroon);
+    padding: 10px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .quick-select-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 5px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .quick-select-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+  }
+  .quick-select-btn.active {
+    background: var(--maroon);
+    color: #fff;
+    border-color: var(--maroon);
+  }
+  
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    padding: 6px 13px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+  }
+  .btn-primary-green { background: #16a34a; color: #fff; }
+  .btn-primary-green:hover { background: #15803d; }
+  .btn-primary-maroon { background: var(--maroon); color: #fff; }
+  .btn-primary-maroon:hover { background: var(--dark-maroon); }
+  .btn-secondary { background: #f8fafc; border: 1px solid #cbd5e1; color: #334155; }
+  .btn-secondary:hover { background: #f1f5f9; }
+  
+  /* Filter & Search Bar */
+  .filter-bar {
+    padding: 12px 36px;
+    background: #faf8f5;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 280px;
+    max-width: 440px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 7px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-box input:focus {
+    border-color: var(--maroon);
+    box-shadow: 0 0 0 3px rgba(128,0,0,0.1);
+  }
+  .filter-pills {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-pill {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-pill:hover { background: #f1f5f9; }
+  .filter-pill.active {
+    background: var(--maroon);
+    color: #fff;
+    border-color: var(--maroon);
+  }
+  
+  /* Table View */
+  .table-wrapper {
+    overflow-x: auto;
+    max-height: 700px;
+    position: relative;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background: #f1f5f9;
+    color: #1e293b;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-bottom: 2px solid #cbd5e1;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.15s;
+  }
+  tbody tr:hover { background: #f8fafc; }
+  
+  /* Selected Row Highlight */
+  tbody tr.row-selected {
+    background-color: #f0fdf4 !important;
+    border-left: 4px solid var(--green) !important;
+  }
+  tbody tr.row-selected:hover {
+    background-color: #dcfce7 !important;
+  }
+  
+  /* Disappearing Row Animation for Auto-hide */
+  tbody tr.row-disappearing {
+    transition: all 0.22s ease-out;
+    opacity: 0;
+    transform: translateX(30px);
+    background-color: #dcfce7 !important;
+  }
+  
+  tbody td {
+    padding: 10px 12px;
+    vertical-align: top;
+  }
+  
+  /* Checkboxes */
+  input[type="checkbox"].row-checkbox {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: var(--green);
+  }
+  input[type="checkbox"]#selectAllHeader {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: var(--maroon);
+  }
+  
+  /* Action Button inside row */
+  .btn-row-action {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-row-action:hover {
+    background: #e2e8f0;
+  }
+  .btn-row-select {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: var(--green);
+  }
+  .btn-row-select:hover {
+    background: #dcfce7;
+  }
+  .btn-row-return {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+  }
+  .btn-row-return:hover {
+    background: #ffedd5;
+  }
+  
+  /* Badges & Tags */
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-high { background: var(--high-bg); color: var(--high-red); border: 1px solid var(--high-border); }
+  .badge-med { background: var(--med-bg); color: var(--med-amber); border: 1px solid var(--med-border); }
+  .badge-field { background: #e2e8f0; color: #334155; font-family: monospace; font-size: 11.5px; }
+  
+  .suspect-tag {
+    display: inline-block;
+    background: var(--high-bg);
+    border: 1px solid var(--high-border);
+    color: var(--high-red);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13.5px;
+    word-break: break-all;
+  }
+  .suggested-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    color: var(--green);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13.5px;
+    word-break: break-all;
+  }
+  .customized-badge {
+    font-size: 9px;
+    background: var(--gold);
+    color: #fff;
+    padding: 1px 4px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .btn-edit-sug {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.6;
+    transition: opacity 0.15s;
+  }
+  .btn-edit-sug:hover { opacity: 1; }
+  
+  .btn-copy-chip {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 11px;
+    opacity: 0.55;
+    margin-left: 3px;
+    padding: 1px 3px;
+    border-radius: 3px;
+    transition: all 0.15s;
+    vertical-align: middle;
+  }
+  .btn-copy-chip:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.08);
+  }
+  
+  .sutra-tag {
+    font-size: 11px;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 1px 5px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 3px;
+  }
+  .context-text {
+    font-size: 12px;
+    color: #475569;
+    max-width: 320px;
+    word-break: break-word;
+  }
+  .context-text mark {
+    background: #fef08a;
+    padding: 1px 2px;
+    border-radius: 2px;
+    font-weight: 700;
+    color: #854d0e;
+  }
+  
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: #64748b;
+  }
+  .empty-state-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+  }
+  .empty-state-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+  }
+  .empty-state-desc {
+    font-size: 13px;
+    max-width: 480px;
+    margin: 0 auto 16px auto;
+  }
+  
+  /* Modal Dialog */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-container {
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 1080px;
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+  }
+  .modal-header {
+    background: linear-gradient(135deg, var(--maroon) 0%, var(--dark-maroon) 100%);
+    color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--gold);
+  }
+  .modal-header h3 { font-size: 18px; font-weight: 700; }
+  .btn-close-modal {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.8;
+  }
+  .btn-close-modal:hover { opacity: 1; }
+  .modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .modal-table th {
+    background: #f1f5f9;
+    padding: 8px 10px;
+    border-bottom: 2px solid #cbd5e1;
+    text-align: left;
+  }
+  .modal-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+  .modal-edit-input {
+    width: 100%;
+    padding: 5px 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--green);
+  }
+  .modal-edit-input:focus {
+    border-color: var(--green);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15);
+  }
+  .btn-remove-row {
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    border-radius: 4px;
+    padding: 3px 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .btn-remove-row:hover { background: #fca5a5; }
+  .modal-footer {
+    padding: 14px 24px;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Floating Action Dock */
+  .floating-dock {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #1e293b;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 90;
+    transform: translateY(120px);
+    transition: transform 0.25s ease;
+  }
+  .floating-dock.show { transform: translateY(0); }
+  .dock-btn {
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0f172a;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: transform 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast-undo-btn {
+    background: #3b82f6;
+    border: none;
+    color: #fff;
+    padding: 3px 9px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+  .toast-undo-btn:hover { background: #2563eb; }
+  
+  footer {
+    padding: 16px 36px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-left">
+      <h1>॥ सामसंहिता संस्कृत-सन्धि-परीक्षण-वृत्तान्तः ॥</h1>
+      <p>Interactive Sanskrit Sandhi Audit & Implementation Portal (Samhita Rik + Sāmam + Ārṣeyam)</p>
+    </div>
+    <div class="header-badges">
+      <span class="header-badge">Pipeline v3.60</span>
+      <span class="header-badge">722 Subsections</span>
+      <span class="header-badge">AST Synchronized</span>
+    </div>
+  </header>
+  
+  <!-- KPI Metrics -->
+  <div class="kpi-row">
+    <div class="kpi-card alert-info">
+      <div class="kpi-label">Subsections Audited</div>
+      <div class="kpi-value">722</div>
+      <div class="kpi-subtext">Total Samhita Subsections</div>
+    </div>
+    <div class="kpi-card alert-pending">
+      <div class="kpi-label">Pending Review</div>
+      <div class="kpi-value" id="kpiPendingCount">106</div>
+      <div class="kpi-subtext">Remaining to Review</div>
+    </div>
+    <div class="kpi-card alert-selected">
+      <div class="kpi-label">Selected to Implement</div>
+      <div class="kpi-value" id="kpiSelectedCount">0</div>
+      <div class="kpi-subtext">Ready for Auto-Patching</div>
+    </div>
+    <div class="kpi-card alert-high">
+      <div class="kpi-label">High Severity Cases</div>
+      <div class="kpi-value">104</div>
+      <div class="kpi-subtext">Grammatical Deviations</div>
+    </div>
+    <div class="kpi-card alert-med">
+      <div class="kpi-label">Medium Severity Cases</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-subtext">Spacing & Anukramani Norms</div>
+    </div>
+  </div>
+
+  <!-- VIEW MODE SEGMENTED BAR -->
+  <div class="view-mode-bar">
+    <div class="view-mode-tabs">
+      <button class="view-mode-tab active" data-view="pending" id="tabPending">
+        📥 Pending Review <span class="tab-badge" id="tabPendingCount">106</span>
+      </button>
+      <button class="view-mode-tab tab-green" data-view="selected" id="tabSelected">
+        ✅ Selected to Implement <span class="tab-badge" id="tabSelectedCount">0</span>
+      </button>
+      <button class="view-mode-tab" data-view="all" id="tabAll">
+        📋 All Cases <span class="tab-badge" id="tabAllCount">106</span>
+      </button>
+    </div>
+    
+    <div class="auto-hide-control">
+      <label class="toggle-switch">
+        <input type="checkbox" id="autoHideCheckbox" checked>
+        <span class="slider"></span>
+      </label>
+      <span class="toggle-label" title="When enabled, selected items immediately slide off the Pending list">
+        Auto-hide selected from view
+      </span>
+    </div>
+  </div>
+
+  <!-- STICKY ACTION & SELECTION TOOLBAR -->
+  <div class="selection-toolbar">
+    <div class="toolbar-left" id="toolbarLeft">
+      <!-- Dynamic contextual buttons depending on view mode -->
+    </div>
+    
+    <div class="toolbar-right">
+      <button class="action-btn btn-primary-green" id="btnDownloadPatch" title="Download selected changes as JSON patch file">
+        ⬇️ Download Patch JSON
+      </button>
+      <button class="action-btn btn-primary-maroon" id="btnDownloadScript" title="Download standalone python apply script">
+        ⚡ Download Apply Script (.py)
+      </button>
+      <button class="action-btn btn-secondary" id="btnReviewModal" title="Review and edit selected changes">
+        🔍 Review (<span id="btnReviewCount">0</span>)
+      </button>
+      <button class="action-btn btn-secondary" id="btnCopyJson" title="Copy patch JSON to clipboard">
+        📋 Copy JSON
+      </button>
+      <button class="action-btn btn-secondary" id="btnPasteJson" title="Paste / import patch JSON to select items">
+        📥 Paste JSON
+      </button>
+      <button class="action-btn btn-secondary" id="btnResetStorage" title="Clear saved selections in browser">
+        ↺ Reset
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter & Search Bar -->
+  <div class="filter-bar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by subsection ID, text, rule, or context...">
+    </div>
+    
+    <div class="filter-pills">
+      <span style="font-size: 12px; font-weight: 600; color: #64748b; margin-right: 4px;">Field:</span>
+      <button class="filter-pill active" data-filter="field" data-val="all">All</button>
+      <button class="filter-pill" data-filter="field" data-val="Arsheyam Header">Ārṣeyam (0)</button>
+      <button class="filter-pill" data-filter="field" data-val="Rik Text">Rik Text (33)</button>
+      <button class="filter-pill" data-filter="field" data-val="Samam Chant">Sāmam Chant (72)</button>
+      <button class="filter-pill" data-filter="field" data-val="Saman Metadata">Sāman Meta (1)</button>
+      <button class="filter-pill" data-filter="field" data-val="Rik Metadata">Rik Meta (0)</button>
+    </div>
+
+    <div class="filter-pills">
+      <span style="font-size: 12px; font-weight: 600; color: #64748b; margin-right: 4px;">Severity:</span>
+      <button class="filter-pill active" data-filter="sev" data-val="all">All</button>
+      <button class="filter-pill" data-filter="sev" data-val="High">High (104)</button>
+      <button class="filter-pill" data-filter="sev" data-val="Medium">Medium (2)</button>
+    </div>
+    
+    <div style="font-size: 12.5px; color: #64748b; font-weight: 500;" id="visibleResultsCount">
+      Showing cases
+    </div>
+  </div>
+
+  <!-- Interactive Table View -->
+  <div class="table-wrapper">
+    <table id="auditTable">
+      <thead>
+        <tr>
+          <th style="width: 38px; text-align: center;">
+            <input type="checkbox" id="selectAllHeader" title="Select / deselect all visible rows">
+          </th>
+          <th style="width: 38px;">#</th>
+          <th style="width: 120px;">Subsection</th>
+          <th style="width: 110px;">Field</th>
+          <th style="width: 170px;">Suspect Segment</th>
+          <th style="width: 220px;">Paninian Rule & Sutra</th>
+          <th style="width: 210px;">Suggested Sandhi</th>
+          <th style="width: 75px;">Severity</th>
+          <th>Context & Explanation</th>
+          <th style="width: 90px; text-align: center;">Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Rendered dynamically by JavaScript -->
+      </tbody>
+    </table>
+    <div id="emptyStateContainer"></div>
+  </div>
+  
+  <footer>
+    Jaimineeya Samaveda Samhita — Sanskrit Sandhi Rule Audit & Selection System (Triage Mode)
+  </footer>
+</div>
+
+<!-- REVIEW & CUSTOMIZE MODAL -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Review Selected Sandhi Changes (<span id="modalSelectedCount">0</span>)</h3>
+      <button class="btn-close-modal" id="btnCloseModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 12px;">
+        You can customize the suggested replacement directly in the editable text fields below before downloading or applying.
+      </p>
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th style="width: 30px;">#</th>
+            <th style="width: 110px;">Subsection</th>
+            <th style="width: 100px;">Field</th>
+            <th style="width: 160px;">Suspect (Original)</th>
+            <th style="width: 220px;">Suggested Replacement (Editable)</th>
+            <th>Context</th>
+            <th style="width: 60px; text-align: center;">Remove</th>
+          </tr>
+        </thead>
+        <tbody id="modalTableBody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <div style="font-size: 12px; color: #64748b;">
+        CLI command: <code>python scripts/apply_sandhi_patch.py --patch sandhi_selected_patch.json</code>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="action-btn btn-primary-green" id="btnModalDownloadPatch">⬇️ Download Patch JSON</button>
+        <button class="action-btn btn-primary-maroon" id="btnModalDownloadScript">⚡ Download Python Script</button>
+        <button class="action-btn btn-secondary" id="btnModalCopyJson">📋 Copy JSON</button>
+        <button class="action-btn btn-secondary" id="btnModalPasteJson">📥 Paste JSON</button>
+        <button class="action-btn btn-secondary" id="btnModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING ACTION DOCK -->
+<div class="floating-dock" id="floatingDock">
+  <span id="dockSelectedCount">0</span> selected
+  <button class="dock-btn" id="dockBtnReview">🔍 Review</button>
+  <button class="dock-btn" id="dockBtnDownload" style="background: #2563eb;">⬇️ Download</button>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toastMessage">
+  <span id="toastIcon">ℹ️</span>
+  <span id="toastText">Action completed</span>
+  <button class="toast-undo-btn" id="btnToastUndo" style="display:none;" onclick="undoLastAction()">Undo</button>
+</div>
+
+<script>
+  // Complete Embedded Findings Dataset
+  const FINDINGS = [{"sub_key": "subsection_28", "parva": "आग्नेयपाठः", "kandah": "तृतीय खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अग्नेमृळामाहं आसि।", "suggested": "अग्नेमृळामाहम् आसि।", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "अग्नेमृ(4)ळामाहं आ(1)सि(1)। आ(2)याआ(4)दे(1)वायुञ्ज(1)नम् ।ईये(3)थाबर्ही(1)रासादम...", "id": 1}, {"sub_key": "subsection_46", "parva": "आग्नेयपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "र्माहंआसि", "suggested": "र्माहम् आसि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "अग्ने जरी(2)तार्वीस्पातिः । तपानो(2) देवारक्षा(2)साः । अ(2)प्रो(1)षिवान् ग्रहापा...", "id": 2}, {"sub_key": "subsection_47", "parva": "आग्नेयपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अद्यादेवंऊषर्बुधाः", "suggested": "अद्यादेवम् ऊषर्बुधाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "अग्नेवी(2)वा(1)स्वादूषा(2)साः । चि(2)त्रं(2)रा(2)धोआ(2)मा(1)र्क्त्याम्(1) ।  आदा...", "id": 3}, {"sub_key": "subsection_57", "parva": "आग्नेयपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "देवंआवोवारेण्यम्", "suggested": "देवम् आवोवारेण्यम्", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "अग्नी(2)रूत्थेपूरो(2)हित(2)ः । ग्रावा(1)णोबर्हीरा(1)ध्वारे(2) । ऋचा(2)या(1)मिमरु...", "id": 4}, {"sub_key": "subsection_57", "parva": "आग्नेयपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वं आ", "suggested": "वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अग्निरुक्था(ती) इ(श) । पुरो हा(खि) इ ता(णा)ः । ग्रा(क)वा णो(का) ब(च) र्हीराध्वा(...", "id": 5}, {"sub_key": "subsection_57", "parva": "आग्नेयपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वं आ", "suggested": "वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अग्निरुक्था(ती) इ(श) । पुरो हा(खि) इ ता(णा)ः । ग्रा(क)वा णो(का) ब(च) र्हीराध्वा(...", "id": 6}, {"sub_key": "subsection_103", "parva": "आग्नेयपाठः", "kandah": "दशम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "रूद्रंआदित्यंऊता।याजस्वाध्वारञ्जनम्", "suggested": "रूद्रम् आदित्यम् ऊता।याजस्वाध्वारञ्जनम्", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "त्वामा(1)ग्नेवा(4)सुंरिहा। रूद्रं(4)आ(1)दित्यंऊता।याजस्वाध्वार(2)ञ्ज(2)न(1)म् । ...", "id": 7}, {"sub_key": "subsection_103", "parva": "आग्नेयपाठः", "kandah": "दशम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "रुद्रंआ", "suggested": "रुद्रम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "त्ववमग्नेत्वमग्ना(तू) इ(श) । वासुंरिहा(षी) रुद्रंआ(टि) दी(त) त्यं(च) ऊता(का) याज...", "id": 8}, {"sub_key": "subsection_103", "parva": "आग्नेयपाठः", "kandah": "दशम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "त्यं ऊता", "suggested": "त्यम् ऊता", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "त्ववमग्नेत्वमग्ना(तू) इ(श) । वासुंरिहा(षी) रुद्रंआ(टि) दी(त) त्यं(च) ऊता(का) याज...", "id": 9}, {"sub_key": "subsection_124", "parva": "आग्नेयपाठः", "kandah": "द्वादश खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "आयं अग्निश्रे", "suggested": "आयम् अग्निश्रे", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आयं(चा) अग्निश्रे(चि) ष्ठा(क) तमो(चा) हो(टच्) आय(चा) म् । वा(ट) मधुमत्तमो(कु) हो...", "id": 10}, {"sub_key": "subsection_146", "parva": "तद्वपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "णां ओऔ", "suggested": "णाम् ओऔ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "इन्द्रामिन्द्रंवाया(टू) माहामहाधाना(टू) इ(श) । इन्द्रा मिन्द्रंमर्भा(टू) इ(ष) हा...", "id": 11}, {"sub_key": "subsection_161", "parva": "तद्वपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "दं ई", "suggested": "दम् ई", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "उपा(चा) ह्वारा(का) ईगिरा(टिच्) ई(क) णा(च) म् । स(क) ङ्गमेचा(थि) नादा(टा) ई(क) ना...", "id": 12}, {"sub_key": "subsection_161", "parva": "तद्वपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "इणां इदामी", "suggested": "इणाम् इदामी", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "उपा(चा) ह्वारा(का) ईगिरा(टिच्) ई(क) णा(च) म् । स(क) ङ्गमेचा(थि) नादा(टा) ई(क) ना...", "id": 13}, {"sub_key": "subsection_167", "parva": "तद्वपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "दों ओं", "suggested": "दोम् ओं", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "यदिन्द्रोया(ती) । नाया(टा) दों(च) ओं(ट) ओ(ख) वा(श) । रीतो महीरापा(टू) ओं(ट) ओ(ख)...", "id": 14}, {"sub_key": "subsection_167", "parva": "तद्वपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ओं ओ", "suggested": "ओम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "यदिन्द्रोया(ती) । नाया(टा) दों(च) ओं(ट) ओ(ख) वा(श) । रीतो महीरापा(टू) ओं(ट) ओ(ख)...", "id": 15}, {"sub_key": "subsection_186", "parva": "तद्वपाठः", "kandah": "षष्ठ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "माहंइन्द्रा", "suggested": "माहम् इन्द्रा", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "माहं(4)इ(4)न्द्रा(1) पूराश्चा(1)नः । महित्वामा(2)स्तू(2)वज्री(2)णे(1)।  द्यौर्ना...", "id": 16}, {"sub_key": "subsection_186", "parva": "तद्वपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "महंइन्द्राः", "suggested": "महम् इन्द्राः", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "महंइन्द्रा(ती)ः । पूरश्चनो(की) मा(य) ही(ट) त्वा(य) मा(ट) स्तू(क) वज्रिणा(चि) इ(श...", "id": 17}, {"sub_key": "subsection_186", "parva": "तद्वपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "महंइन्द्राः", "suggested": "महम् इन्द्राः", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "महंइन्द्रा(ती)ः । पूरश्चनो(की) मा(य) ही(ट) त्वा(य) मा(ट) स्तू(क) वज्रिणा(चि) इ(श...", "id": 18}, {"sub_key": "subsection_189", "parva": "तद्वपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "हिं ओ", "suggested": "हिम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अभ्येआभी(ती) । प्रागो(का) पाती(था) ङ्गीरा(टा)ः । इन्द्रम र्च्चायाथा(यू) विदा(पा)...", "id": 19}, {"sub_key": "subsection_189", "parva": "तद्वपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "हिं ओ", "suggested": "हिम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अभ्येआभी(ती) । प्रागो(का) पाती(था) ङ्गीरा(टा)ः । इन्द्रम र्च्चायाथा(यू) विदा(पा)...", "id": 20}, {"sub_key": "subsection_203", "parva": "तद्वपाठः", "kandah": "सप्तम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "माहंआभीष्ठीरोजसा", "suggested": "माहम् आभीष्ठीरोजसा", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "इ(2)न्द्रे(2)हीम(2)त्स्य(2)न्धा(1)सः । विश्वेभिस्सोमापा(2)वा(1)भीः । मा(4)हं(4)आ...", "id": 21}, {"sub_key": "subsection_203", "parva": "तद्वपाठः", "kandah": "सप्तम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "महं आ", "suggested": "महम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "इन्द्रेहिमा(ती) हा(त) बु(श) । स्ती(त)यान्धा(पा) सा(श)ः । वाइश्वे(चि) भिस्सो(था) ...", "id": 22}, {"sub_key": "subsection_248", "parva": "तद्वपाठः", "kandah": "द्वादश खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "माहंईवायूवाजानि", "suggested": "माहम् ईवायूवाजानि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "आ(1)याह्यू(2)पा(1)नास्सू(2)तम् । वा(3)जेभिर्मा(1)हृ(1)णीयथा । माहं(4)ईवा(1)यूवा(...", "id": 23}, {"sub_key": "subsection_248", "parva": "तद्वपाठः", "kandah": "द्वादश खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "माहं ईवायुवा", "suggested": "माहम् ईवायुवा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आयाही(ति) । ऊ(च) पाना(चा) स्सूतं(शा) होवा(टा) हा(त) इ(श) । वाजे भि(कि) माहृणी(कि...", "id": 24}, {"sub_key": "subsection_256", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "।इन्द्रं ओऔ", "suggested": "।इन्द्रम् ओऔ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "तंवएदास्मा(तु)म् । ऋती(का) षाहां(चा) होवा(का) ओऔ(का) हो(त) इ हा(ता) । वासोर्मन्द...", "id": 25}, {"sub_key": "subsection_259", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "पादान्ते अनुस्वार-दोषः (Anusvara before Danda in Samam)", "sutra": "वाऽवसाने (८.४.५९) / Samavedic Paadanta Norm", "severity": "Medium", "suspect": "हिं ।", "suggested": "हिम्  ।", "explanation": "Paadanta nasal before danda standardized to makara (म् ।) in Samavedic orthography.", "context": "तंवोदस्मामृती(फू) षहां(ता) वा(प) सोर्मन्दानम(प्लु) न्धा(ङ) सा(श) । आभीवत्स(षी) न...", "id": 26}, {"sub_key": "subsection_266", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मं आवन्तूतेधीयाः", "suggested": "अस्मम् आवन्तूतेधीयाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "पीबा(3)सू(4)तस्या(1)रासी(2)नाः । मत्स्वा(1)न इन्द्रागो(2)मा(1)तः । आपिर्नो बोधीस...", "id": 27}, {"sub_key": "subsection_266", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मंआ", "suggested": "अस्मम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "पिबा(ताच्) सुतस्यरसिना(चू)ः । मत्स्वान(षि) इन्द्रगोमता(टु) हो(क) इया(चा) । आ(क) ...", "id": 28}, {"sub_key": "subsection_267", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मं आवन्तूतेधीयाः", "suggested": "अस्मम् आवन्तूतेधीयाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "पीबा(3)सू(4)तस्या(1)रासी(2)नाः । मत्स्वा(1)न इन्द्रागो(2)मा(1)तः । आपिर्नो बोधीस...", "id": 29}, {"sub_key": "subsection_267", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मंआव", "suggested": "अस्मम् आव", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "पिबासुतस्यरसिनो(तु) हा(त) इ(श) । मत्स्वानइ(ची) न्द्रागोमा(टि) तोहाउवो(खी) वा(श) ...", "id": 30}, {"sub_key": "subsection_268", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मं आवन्तूतेधीयाः", "suggested": "अस्मम् आवन्तूतेधीयाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "पीबा(3)सू(4)तस्या(1)रासी(2)नाः । मत्स्वा(1)न इन्द्रागो(2)मा(1)तः । आपिर्नो बोधीस...", "id": 31}, {"sub_key": "subsection_268", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मं अवा", "suggested": "अस्मम् अवा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "पिबासुत(षी) स्यरसिनोमत्स्वा(तू) हा(त) बु(श) । ना(टा) इन्द्रा(टा) गोमतो(टि) हा(त)...", "id": 32}, {"sub_key": "subsection_269", "parva": "बृहतिपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ओं ओं", "suggested": "ओम् ओं", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "तूवां(णाफ्) हा(ख) एहिचेरवाइ(शू) । वीदाभागंवसू(टू) क्ताया(पा) उद्वावृषस्वमाघवा(शृ...", "id": 33}, {"sub_key": "subsection_276", "parva": "बृहतिपाठः", "kandah": "द्वितीय खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "आतीधन्वेवतंईहि", "suggested": "आतीधन्वेवतम् ईहि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "आमन्द्रै(4)रि(1)न्द्राहा(2)री(1)भिः । याही(2)मा(1)यूरा(1)रोम(2)भिः । मा(2)त्वा(1...", "id": 34}, {"sub_key": "subsection_276", "parva": "बृहतिपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "तं आ", "suggested": "तम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आमन्द्रैरा(ती) इन्द्रहरिभा(तु) इ(श)ः । या(क) हीमयू(किच्) रा(क) रो(क) माभा(पा) इ(...", "id": 35}, {"sub_key": "subsection_276", "parva": "बृहतिपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "तं आ", "suggested": "तम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आमन्द्रैरा(ती) इन्द्रहरिभा(तु) इ(श)ः । या(क) हीमयू(किच्) रा(क) रो(क) माभा(पा) इ(...", "id": 36}, {"sub_key": "subsection_276", "parva": "बृहतिपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वतं आउवा", "suggested": "वतम् आउवा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आमन्द्रैरा(ती) इन्द्रहरिभा(तु) इ(श)ः । या(क) हीमयू(किच्) रा(क) रो(क) माभा(पा) इ(...", "id": 37}, {"sub_key": "subsection_285", "parva": "बृहतिपाठः", "kandah": "तृतीय खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "र्वंआसूरेभ्यः", "suggested": "र्वम् आसूरेभ्यः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "या(3) इ(1)न्द्राभू(2)जआ(2)भा(1)रा।  स्व ठ(1) र्वंआसू(1)रेभ्यः । स्तोता(2)रामिन्म...", "id": 38}, {"sub_key": "subsection_285", "parva": "बृहतिपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "स्वर्वं आ", "suggested": "स्वर्वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "याया(ता) होइ(खा) न्द्रा(श) । भू(च) जाआ(का) भा(य) रा(ट) । सुवा(ता) हार्वंया(चि) स...", "id": 39}, {"sub_key": "subsection_285", "parva": "बृहतिपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "स्वर्वं आ", "suggested": "स्वर्वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "याया(ता) होइ(खा) न्द्रा(श) । भू(च) जाआ(का) भा(य) रा(ट) । सुवा(ता) हार्वंया(चि) स...", "id": 40}, {"sub_key": "subsection_297", "parva": "बृहतिपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सूतावंआवीवासति", "suggested": "सूतावम् आवीवासति", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "या(2)च्चाक्रासी(1)पा(1)रावा(2)ति । याद(1)र्वावा(2)तीवृत्रहन् । आ(2)ता(1)स्त्वागी...", "id": 41}, {"sub_key": "subsection_297", "parva": "बृहतिपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वं आ", "suggested": "वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "यच्छाक्रासी(खी) पारावाती(प्ली) । यादर्वावा(टीच्) तीवा(का) त्रा(य) हा(ट) न् । अता...", "id": 42}, {"sub_key": "subsection_297", "parva": "बृहतिपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वं आ", "suggested": "वम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "यच्छाक्रासी(खी) पारावाती(प्ली) । यादर्वावा(टीच्) तीवा(का) त्रा(य) हा(ट) न् । अता...", "id": 43}, {"sub_key": "subsection_309", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "मूनीनां आउवा", "suggested": "मूनीनाम् आउवा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वास्तोष्पता(ती) इ(श) । ध्रूवास्थूणा(टी) उ वो(खा) वा(श) । अंसत्रं(किच्) सो(क) म्य...", "id": 44}, {"sub_key": "subsection_310", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "बण्माहंआसीसूर्या", "suggested": "बण्माहम् आसीसूर्या", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "ब(2)ण्माहं(2)आ(1)सीसूर्या । बा(2)ळा(1)दित्यामाहंआसि ।  माह(2)स्ते(1)सातो(4)मा(1)...", "id": 45}, {"sub_key": "subsection_310", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "बाळादित्यामाहंआसि", "suggested": "बाळादित्यामाहम् आसि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "ब(2)ण्माहं(2)आ(1)सीसूर्या । बा(2)ळा(1)दित्यामाहंआसि ।  माह(2)स्ते(1)सातो(4)मा(1)...", "id": 46}, {"sub_key": "subsection_310", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "मन्हादेवामाहंआसि", "suggested": "मन्हादेवामाहम् आसि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "ब(2)ण्माहं(2)आ(1)सीसूर्या । बा(2)ळा(1)दित्यामाहंआसि ।  माह(2)स्ते(1)सातो(4)मा(1)...", "id": 47}, {"sub_key": "subsection_310", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "बण्महं असिसूर्या", "suggested": "बण्महम् असिसूर्या", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "बण्महं(खि) असिसूर्या(शी) । बाळादित्या(कीच्) माहं(का) आ(य) सा(प) ई(ण) माहस्ते(णि)...", "id": 48}, {"sub_key": "subsection_310", "parva": "बृहतिपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "माहं आ", "suggested": "माहम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "बण्महं(खि) असिसूर्या(शी) । बाळादित्या(कीच्) माहं(का) आ(य) सा(प) ई(ण) माहस्ते(णि)...", "id": 49}, {"sub_key": "subsection_326", "parva": "बृहतिपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वस्यंइन्द्रासिमे", "suggested": "वस्यम् इन्द्रासिमे", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वस्यंइन्द्रासिमे(षू) हाबुपितू(ती)ः । उताभ्रा(खि) तू(प्ल)ः । आभुन्जातौ(की) वाउवो(...", "id": 50}, {"sub_key": "subsection_327", "parva": "बृहतिपाठः", "kandah": "सप्तम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "तंआमादायवज्रहास्तापीताये", "suggested": "तम् आमादायवज्रहास्तापीताये", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "इमइ(2)न्द्रायसुन्विरे । सो(3)मा(1)सोदध्या(2)शिरः ।  तं(2)आ(2)मा(2)दा(1)यवज्रहास्...", "id": 51}, {"sub_key": "subsection_327", "parva": "बृहतिपाठः", "kandah": "सप्तम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "स्तं आमदाय", "suggested": "स्तम् आमदाय", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "इ मा(खा) इमइन्द्रायसु(प्लू) न्वा(ङ) इराइ(शि) । सोमासोदध्या(षु) शिरा(का) स्तं(ख) ...", "id": 52}, {"sub_key": "subsection_329", "parva": "बृहतिपाठः", "kandah": "सप्तम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "यत्रवेपसं आइन्द्रान्धे", "suggested": "यत्रवेपसम् आइन्द्रान्धे", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आत्वाद्यासा(ती) बर्दुघा(ति) म् । हूवेगा(कि) यत्रवेपसं(कु) आइन्द्रान्धे(टी) नू(त)...", "id": 53}, {"sub_key": "subsection_351", "parva": "असाविपाठः", "kandah": "प्रथम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "त्वामर्णावान्बल्बधानं आराम्णः", "suggested": "त्वामर्णावान्बल्बधानम् आराम्णः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "आ(3)द(1)दरुत्सामा(4)सृ(1)जोविखानि । त्वा(2)मर्णावान्बल्बधानं आराम्णः । मा(2)हा(2...", "id": 54}, {"sub_key": "subsection_351", "parva": "असाविपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "धानं आराम्णाः", "suggested": "धानम् आराम्णाः", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अदर्दरू(ती) त् । समसृजो(कीच्) वी(क) खानि(का) त्वामर्णा(टि) वा(त) न्बल्ब(चा) धानं...", "id": 55}, {"sub_key": "subsection_351", "parva": "असाविपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वान्बल्बधानं आरा", "suggested": "वान्बल्बधानम् आरा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अदर्दरू(ती) त् । समसृजो(कीच्) वी(क) खानि(का) त्वामर्णा(टि) वा(त) न्बल्ब(चा) धानं...", "id": 56}, {"sub_key": "subsection_353", "parva": "असाविपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ताइवसूनां ओ", "suggested": "ताइवसूनाम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "जगृह्मातेदक्षिणमोहाओ हा(ते) ए(त) । इन्द्रहा(टि) स्ता(त) म् । वसू(का) यवोवा(यि) स...", "id": 57}, {"sub_key": "subsection_353", "parva": "असाविपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "शूरगोनां ओ", "suggested": "शूरगोनाम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "जगृह्मातेदक्षिणमोहाओ हा(ते) ए(त) । इन्द्रहा(टि) स्ता(त) म् । वसू(का) यवोवा(यि) स...", "id": 58}, {"sub_key": "subsection_387", "parva": "असाविपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "रायास्पूर्धीमाहंआसि", "suggested": "रायास्पूर्धीमाहम् आसि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "श्रू(2)धीहा(2)व(1)न्तीरश्या(1)ः । इन्द्राय(2)स्त्वासापर्या(2)ति । सू(2)र्वी(4)र्...", "id": 59}, {"sub_key": "subsection_1433", "parva": "ऐन्द्रपाठः", "kandah": "द्वितीय खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अस्मंइन्द्रावासौदधः", "suggested": "अस्मम् इन्द्रावासौदधः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "या(2)दूदीराताआज(2)या(1)ः । धृ(2)ष्णा(2)वे(1)धीयातेधानम्(1) । युं(2)क्ष्वा(4)मा(1...", "id": 60}, {"sub_key": "subsection_1433", "parva": "ऐन्द्रपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "।अस्मं इन्द्रा", "suggested": "।अस्मम् इन्द्रा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "यदुदीरा(फी) तआ(शा) जया(का)ः ।धृष्णवेधी(कीच) याता(का) इधा(या) न(ट) म्। यु(क) ङ्क्...", "id": 61}, {"sub_key": "subsection_1439", "parva": "ऐन्द्रपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "काशोचिषं इहइहा", "suggested": "काशोचिषम् इहइहा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आबुऔ(फि) हो(त) वा(त) ।अग्निन्नस्व(षी) वृक्तिभी(किख्)ः। आबुऔ(फि) हो(त) वा(त) । हो...", "id": 62}, {"sub_key": "subsection_1439", "parva": "ऐन्द्रपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "बर्हिषं इहइहा", "suggested": "बर्हिषम् इहइहा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आबुऔ(फि) हो(त) वा(त) ।अग्निन्नस्व(षी) वृक्तिभी(किख्)ः। आबुऔ(फि) हो(त) वा(त) । हो...", "id": 63}, {"sub_key": "subsection_1442", "parva": "ऐन्द्रपाठः", "kandah": "तृतीय खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "कृत्वामाहंआनूष्वाधः", "suggested": "कृत्वामाहम् आनूष्वाधः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "कृ(3)त्वामाहं(2)आनूष्वाध(2)ः । भीम(2)आ(2)वा(1)वृतेशा(2)वा(1)ः । श्रीय्या(4)रिष्व...", "id": 64}, {"sub_key": "subsection_1442", "parva": "ऐन्द्रपाठः", "kandah": "तृतीय खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "कृत्वामहं अनुष्वाधा", "suggested": "कृत्वामहम् अनुष्वाधा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "कृत्वामहं(षी) अनुष्वाधा(ती) ए(त) । भी मा(चा) आवा(थाच्) वृता(का) इशा(या) वा(ट)ः ।...", "id": 65}, {"sub_key": "subsection_1450", "parva": "ऐन्द्रपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वाजंआभिपावमानप्रागाहसे", "suggested": "वाजम् आभिपावमानप्रागाहसे", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "आ(2)नूहित्वा(3)सूतं(4)सो(1)मा(2)मा(2)दा(1)मसि । मा(2)हं(2)सा(1)मरियारा(2)ज्ये(1)...", "id": 66}, {"sub_key": "subsection_1450", "parva": "ऐन्द्रपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वाजं आ", "suggested": "वाजम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अन्वनू(ति) ।हाइत्वा(कि) सूतंसो(कि) मामदा(चि) मसिमदा(कीच्) मासा(का) ए(ट) महाइसा(ख...", "id": 67}, {"sub_key": "subsection_1507", "parva": "ऐन्द्रपाठः", "kandah": "दशम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "शं ओइसा", "suggested": "शम् ओइसा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "ओई(चा) त्री(क) का(फ) द्रूकाइषू(टी) माहि षो(चि) याव(का) शी(क) र(फ) न्तूवी शू(क) ष...", "id": 68}, {"sub_key": "subsection_1507", "parva": "ऐन्द्रपाठः", "kandah": "दशम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "रूं ओइसा", "suggested": "रूम् ओइसा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "ओई(चा) त्री(क) का(फ) द्रूकाइषू(टी) माहि षो(चि) याव(का) शी(क) र(फ) न्तूवी शू(क) ष...", "id": 69}, {"sub_key": "subsection_1513", "parva": "ऐन्द्रपाठः", "kandah": "दशम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "देवंअच्छानाधीतायाः", "suggested": "देवम् अच्छानाधीतायाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "अस्तुश्रौ(2)षा(1)ट्पूरो(2)आ(1)ग्नीन्धीया(2)दधे । आ(3)नूत्य(3)च्छर्धोदिव्यं(2)वृण...", "id": 70}, {"sub_key": "subsection_1513", "parva": "ऐन्द्रपाठः", "kandah": "दशम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "।दाइवं अच्छा", "suggested": "।दाइवम् अच्छा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अस्तुश्रौ(ति) षा(त) ट् । पू(क)रोअग्नि(षि) न्धीयादधे(की) होऔ(का) हो(त) वा(त) ।अ(क...", "id": 71}, {"sub_key": "subsection_521", "parva": "पवमानपाठः", "kandah": "प्रथम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ओं ओं", "suggested": "ओम् ओं", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "हाहाउच्चातेजा(तू) । हा(त) हा(त) इतमा(टि) न्धा(ख) सा(ण) । दिविसद्भूमिया(यू) दा(प)...", "id": 72}, {"sub_key": "subsection_564", "parva": "पवमानपाठः", "kandah": "द्वितीय खण्डः", "field": "Samam Chant", "rule_name": "पादान्ते अनुस्वार-दोषः (Anusvara before Danda in Samam)", "sutra": "वाऽवसाने (८.४.५९) / Samavedic Paadanta Norm", "severity": "Medium", "suspect": "दश्वां।", "suggested": "दश्वाम् ।", "explanation": "Paadanta nasal before danda standardized to makara (म् ।) in Samavedic orthography.", "context": "इन्दू(खा) रौहोवाहाइपावी(शृ)। ष्टचा(टा) ईत नो(खि) हा(ण) इ(श)। हा(क) होए(टा) हो(ट)...", "id": 73}, {"sub_key": "subsection_587", "parva": "पवमानपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "वृषासोमाधूमंआसी", "suggested": "वृषासोमाधूमम् आसी", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "वृ(2)षा(1)सोमाधूमंआ(1)सी ।  वृषा(2)देवावृ(2)षाव्रा(1)तः ।  वृषाध(2)र्मा(1)णिदध्र...", "id": 74}, {"sub_key": "subsection_587", "parva": "पवमानपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "द्यूमं आ", "suggested": "द्यूमम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वृषासोमा(ती)। द्यूमं(चा) आ(य) सा(ट) इ(श) । वृषादाइवो(टु) हा(त) इ(श) वार्षा(का) व...", "id": 75}, {"sub_key": "subsection_592", "parva": "पवमानपाठः", "kandah": "चतुर्थ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "आभिदेवंआयास्याः", "suggested": "आभिदेवम् आयास्याः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "प्राणा(1)इन्दोमाहेतू(2)ना(1)ः । ऊर्म्मि(1)न्नाबिभ्रादर्ष(1)सि ।  आभिदेवं(2)आयास्...", "id": 76}, {"sub_key": "subsection_592", "parva": "पवमानपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "इवं औहोवा।", "suggested": "इवम् औहोवा।", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "प्रणइन्दो(फी) ऐहीऐही(खी) या(श) । माहेतुनऐ(टु) हीऐ(ट) ही(ट) या(त)। ऊ(क) र्म्मिन्न...", "id": 77}, {"sub_key": "subsection_592", "parva": "पवमानपाठः", "kandah": "चतुर्थ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "इवं औहोवा", "suggested": "इवम् औहोवा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "प्रणइन्दो(फी) ऐहीऐही(खी) या(श) । माहेतुनऐ(टु) हीऐ(ट) ही(ट) या(त)। ऊ(क) र्म्मिन्न...", "id": 78}, {"sub_key": "subsection_607", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सोमोयऊ।त्तमां आउवा।", "suggested": "सोमोयऊ।त्तमाम् आउवा।", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परीतोषी(ती) । ञ्चता(ता) आउवा(टि)। सू(ख) त(श) म्। सोमो(टा) याऊ(चा) त्तामं(चा) हाव...", "id": 79}, {"sub_key": "subsection_610", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सुतंए", "suggested": "सुतम् ए", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परितोषिञ्चता(षू) सुतंए(ति) । सोमो(चा) या(क) उत्तमंहा(की) विर्दा(खा) धा(प्ल) हा(त...", "id": 80}, {"sub_key": "subsection_610", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सुतंए", "suggested": "सुतम् ए", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परितोषिञ्चता(षू) सुतंए(ति) । सोमो(चा) या(क) उत्तमंहा(की) विर्दा(खा) धा(प्ल) हा(त...", "id": 81}, {"sub_key": "subsection_611", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सुतंइहा।", "suggested": "सुतम् इहा।", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परितोषिञ्चता(षू) सुतंइहा(ती)। सोमोय(षि) उत्तामंहा(टी) वीरिहा(ति)। दध(का) न्वायोन...", "id": 82}, {"sub_key": "subsection_611", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ञ्चतासुतंइहा।", "suggested": "ञ्चतासुतम् इहा।", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परितोषिञ्चता(षू) सुतंइहा(ती)। सोमोय(षि) उत्तामंहा(टी) वीरिहा(ति)। दध(का) न्वायोन...", "id": 83}, {"sub_key": "subsection_612", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "सुतंओ", "suggested": "सुतम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परीतोषिञ्चता(षू) सुता(ता) म्। सो(क) मो(क) याउत्तामं(कीच्) हावा(का) इर्दाधा(टि) उ...", "id": 84}, {"sub_key": "subsection_622", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "अच्छाकोशंऔहोवाहाइ", "suggested": "अच्छाकोशम् औहोवाहाइ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "प्रसोमदेव(षु) वीतयेसिन्धू(फु) र्न्नपा(खा) औ(ण) हो(फ) वा(प्ल)। प्ये(क) अर्णासा(टि...", "id": 85}, {"sub_key": "subsection_624", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "पारीधींरातीतंईहि", "suggested": "पारीधींरातीतम् ईहि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "तावाहंसो(3)मरारणा ।  सख्या(2)इ(1)न्दोदीवेदीवे ।  पूरू(2)णी(1)बभ्रोनीचा(2)र(1)न्त...", "id": 86}, {"sub_key": "subsection_624", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "पारीधींरतितं इहा", "suggested": "पारीधींरतितम् इहा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "तवाहंसो(ती) ।मरा(टाच्) राणा(चा) रणा(शा) । सख्यइन्दोदिवा(टूच्) इ(श) दिवा(चा) इदिव...", "id": 87}, {"sub_key": "subsection_625", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "पारीधींरातीतंईहि", "suggested": "पारीधींरातीतम् ईहि", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "तावाहंसो(3)मरारणा ।  सख्या(2)इ(1)न्दोदीवेदीवे ।  पूरू(2)णी(1)बभ्रोनीचा(2)र(1)न्त...", "id": 88}, {"sub_key": "subsection_625", "parva": "पवमानपाठः", "kandah": "पञ्चम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "।तीतं आ", "suggested": "।तीतम् आ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "तवाहंसोमा(तु) रारणा(ति) । सख्याइ(खि) न्दो(श) दीवेदा(खि) इवे(णा) । पुरूणिबभ्रोनि(...", "id": 89}, {"sub_key": "subsection_651", "parva": "पवमानपाठः", "kandah": "षष्ठ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "एषस्यातेमाधूमंइन्द्रासोमाः", "suggested": "एषस्यातेमाधूमम् इन्द्रासोमाः", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "ए(2)षस्या(2)तेमा(2)धू(1)मंइन्द्रासोमाः(1) । वृ(2)षावृष्णःपा(4)री(1)पावीत्रे(1)क्...", "id": 90}, {"sub_key": "subsection_651", "parva": "पवमानपाठः", "kandah": "षष्ठ खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "इमधूमंइन्द्र", "suggested": "इमधूमम् इन्द्र", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "एषाएषा(ती)ः। स्यता(ता) ओ(प) इमधूमंइन्द्र(षू) सोमोवृषावृषा(तू) ए(त)। वृष्णा(ता) ओ...", "id": 91}, {"sub_key": "subsection_652", "parva": "पवमानपाठः", "kandah": "षष्ठ खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "पावास्वसोमामाधूमंऋतावा", "suggested": "पावास्वसोमामाधूमम् ऋतावा", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "पा(2)वा(1)स्वसो(2)मामाधूमंऋता(2)वा । आपो(4)वा(4)सा(1)नोआ(2)धीसा(2)नोअ(2)व्ये(1) ...", "id": 92}, {"sub_key": "subsection_662", "parva": "पवमानपाठः", "kandah": "सप्तम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "तीं इहो", "suggested": "तीम् इहो", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "औहोहाअयो(तु) हा(त) इ(श)। पावापवस्वैना(कु) वासू(टा) नी(त)। औ(ट) हो(च) इहा(का) ई(ट...", "id": 93}, {"sub_key": "subsection_670", "parva": "पवमानपाठः", "kandah": "अष्टम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "विपां ओ", "suggested": "विपाम् ओ", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "आहा(था) ओ(प) वा(ण)। रीया(का) ताया(का) धृष्णवे(टी) धनू(का) ओ(प) वा(ण)। ष्टन्व(काच...", "id": 94}, {"sub_key": "subsection_671", "parva": "पवमानपाठः", "kandah": "अष्टम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "योदेवान्विश्वंइत्पारी।", "suggested": "योदेवान्विश्वम् इत्पारी।", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "पा(2)रित्यं(4)हा(1)रीयातंहारीम् ।  बभ्रं(2)पु(1)नन्तीवा(2)रे(1)ण ।  यो(2)देवान्व...", "id": 95}, {"sub_key": "subsection_671", "parva": "पवमानपाठः", "kandah": "अष्टम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "रित्यंऔहो", "suggested": "रित्यम् औहो", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परित्यंहर्यतं(चू) हरिम्(का)। पा(प) रित्यंऔहो(प्ली) र्यतंहरा(ङी) इ(श) म्। बभ्रंपु...", "id": 96}, {"sub_key": "subsection_671", "parva": "पवमानपाठः", "kandah": "अष्टम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "योदेवान्विश्वं इत्पा", "suggested": "योदेवान्विश्वम् इत्पा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परित्यंहर्यतं(चू) हरिम्(का)। पा(प) रित्यंऔहो(प्ली) र्यतंहरा(ङी) इ(श) म्। बभ्रंपु...", "id": 97}, {"sub_key": "subsection_671", "parva": "पवमानपाठः", "kandah": "अष्टम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "इश्वंइत्परा", "suggested": "इश्वम् इत्परा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "परित्यंहर्यतं(चू) हरिम्(का)। पा(प) रित्यंऔहो(प्ली) र्यतंहरा(ङी) इ(श) म्। बभ्रंपु...", "id": 98}, {"sub_key": "subsection_683", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Saman Metadata", "rule_name": "श्चुत्वाभावः (Dental Stop before Palatal)", "sutra": "स्तोः श्चुना श्चुः (८.४.४०)", "severity": "High", "suspect": "द्वयोर्वाजजित्  जगती", "suggested": "द्वयोर्वाजजित्  जगती", "explanation": "Dental stop (त्) before palatal (ज) must assimilate to palatal stop (ज्, e.g. वाजजिज्जगती).", "context": "।। द्वयोर्वाजजित् (प्रजापतिः) जगती सोमसूर्यौ ।।", "id": 99}, {"sub_key": "subsection_687", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "एषप्रकोशेमाधूमंअचिक्रदत्", "suggested": "एषप्रकोशेमाधूमम् अचिक्रदत्", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "ए(2)ष(2)प्र(2)कोशेमाधू(1)मंअचिक्रदत् । इन्द्रस्याव(4)ज्रो(1)वापू(4)षो(1)वापू(2)ष...", "id": 100}, {"sub_key": "subsection_687", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "धूमं अचाइक्रा", "suggested": "धूमम् अचाइक्रा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "ए(क) षप्रकोशे(टीच्) मा(क) धूमं(टा) अचाइक्रा(खी) दा(ण) त् ।इन्द्रास्यवाज्रो(टुच) ...", "id": 101}, {"sub_key": "subsection_693", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Rik Text", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Rik)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "प्राणासिन्धूनांकालाशंअचिक्रदत्", "suggested": "प्राणासिन्धूनांकालाशम् अचिक्रदत्", "explanation": "In Sanskrit grammar, an anusvara (ं) cannot occur before a vowel; it must be makara (म्, e.g. माहं आसि -> माहम् आसि).", "context": "वृ(2)षा(1)मातीनां(2)पा(1)वतेवीचाक्षाण(2)ः । सोमोअह्रां(1)प्रा(2)तारीतो(4)षा(4)सा...", "id": 102}, {"sub_key": "subsection_693", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "कालाशं ए", "suggested": "कालाशम् ए", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वृषा(का) माती(टा) ना(कथ्) म्पावता(टि) ए(त) वीचक्षा(चि) णा(क) ए(ख)। सोमो(था) अन्ह...", "id": 103}, {"sub_key": "subsection_693", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "नाङ्कलशं आचिक्रा", "suggested": "नाङ्कलशम् आचिक्रा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वृषा(का) माती(टा) ना(कथ्) म्पावता(टि) ए(त) वीचक्षा(चि) णा(क) ए(ख)। सोमो(था) अन्ह...", "id": 104}, {"sub_key": "subsection_693", "parva": "पवमानपाठः", "kandah": "नवम खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "ङ्कलशं अचा", "suggested": "ङ्कलशम् अचा", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "वृषा(का) माती(टा) ना(कथ्) म्पावता(टि) ए(त) वीचक्षा(चि) णा(क) ए(ख)। सोमो(था) अन्ह...", "id": 105}, {"sub_key": "subsection_718", "parva": "पवमानपाठः", "kandah": "एकादश खण्डः", "field": "Samam Chant", "rule_name": "अचि अनुस्वार-दोषः (Anusvara before Vowel in Samam)", "sutra": "मोऽनुस्वारः (८.३.२३)", "severity": "High", "suspect": "द्ध्यामां आउवा।", "suggested": "द्ध्यामाम् आउवा।", "explanation": "Anusvara before vowel should be makara (म्, e.g. रुद्रंआ -> रुद्रमा, आयं अग्नि -> अयम् अग्नि).", "context": "अभाइद्यु(की) म्नां(ख) बृहाद्या(कि) शा(फ)ः। इळास्पते(की) दिदीहिदे(खी) वा(श) देवा(...", "id": 106}];
+  
+  // State
+  let selectedIds = new Set();
+  let customReplacements = {};
+  let activeViewMode = 'pending'; // 'pending', 'selected', or 'all'
+  let autoHideEnabled = true;
+  let activeField = 'all';
+  let activeSev = 'all';
+  let lastAction = null; // { type: 'select'|'deselect', id: number }
+  
+  // LocalStorage Persistence Keys
+  const STORAGE_KEY_SELECTIONS = 'samhita_sandhi_selected_ids';
+  const STORAGE_KEY_CUSTOM = 'samhita_sandhi_custom_replacements';
+  const STORAGE_KEY_VIEW = 'samhita_sandhi_view_mode';
+  const STORAGE_KEY_AUTOHIDE = 'samhita_sandhi_autohide';
+  
+  function initStorage() {
+    try {
+      const savedSel = localStorage.getItem(STORAGE_KEY_SELECTIONS);
+      if (savedSel) {
+        selectedIds = new Set(JSON.parse(savedSel));
+      }
+      const savedCustom = localStorage.getItem(STORAGE_KEY_CUSTOM);
+      if (savedCustom) {
+        customReplacements = JSON.parse(savedCustom);
+      }
+      const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
+      if (savedView && ['pending', 'selected', 'all'].includes(savedView)) {
+        activeViewMode = savedView;
+      }
+      const savedAutoHide = localStorage.getItem(STORAGE_KEY_AUTOHIDE);
+      if (savedAutoHide !== null) {
+        autoHideEnabled = (savedAutoHide === 'true');
+      }
+    } catch(e) {
+      console.warn('LocalStorage error:', e);
+    }
+  }
+  
+  function saveStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY_SELECTIONS, JSON.stringify(Array.from(selectedIds)));
+      localStorage.setItem(STORAGE_KEY_CUSTOM, JSON.stringify(customReplacements));
+      localStorage.setItem(STORAGE_KEY_VIEW, activeViewMode);
+      localStorage.setItem(STORAGE_KEY_AUTOHIDE, autoHideEnabled.toString());
+    } catch(e) {
+      console.warn('LocalStorage write error:', e);
+    }
+  }
+  
+  let toastTimer = null;
+  function showToast(text, icon = 'ℹ️', showUndo = false) {
+    const toast = document.getElementById('toastMessage');
+    const undoBtn = document.getElementById('btnToastUndo');
+    document.getElementById('toastText').innerText = text;
+    document.getElementById('toastIcon').innerText = icon;
+    
+    if (showUndo) {
+      undoBtn.style.display = 'inline-block';
+    } else {
+      undoBtn.style.display = 'none';
+    }
+    
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+  
+  function undoLastAction() {
+    if (!lastAction) return;
+    if (lastAction.type === 'select') {
+      selectedIds.delete(lastAction.id);
+      showToast(`Undone: #${lastAction.id} restored to Pending`, '↩️');
+    } else if (lastAction.type === 'deselect') {
+      selectedIds.add(lastAction.id);
+      showToast(`Undone: #${lastAction.id} restored to Selected`, '↩️');
+    }
+    lastAction = null;
+    saveStorage();
+    renderTable();
+    updateStats();
+  }
+  
+  function getEffectiveSuggested(f) {
+    return customReplacements[f.id] !== undefined ? customReplacements[f.id] : f.suggested;
+  }
+  
+  function updateToolbarButtons() {
+    const left = document.getElementById('toolbarLeft');
+    let html = '';
+    
+    if (activeViewMode === 'pending') {
+      const remainingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && f.severity === 'High').length;
+      const remainingHeaders = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === 'Arsheyam Header').length;
+      const remainingRik = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === 'Rik Text').length;
+      
+      html = `
+        <button class="quick-select-btn" id="btnSelectVisible" onclick="selectAllVisible()" title="Select all visible pending items">☑️ Select Visible</button>
+        <button class="quick-select-btn" onclick="selectHighSeverity()" title="Select all remaining High severity cases">🔥 Select High (${remainingHigh})</button>
+        <button class="quick-select-btn" onclick="selectField('Arsheyam Header')" title="Select all remaining Ārṣeyam headers">📜 Select Ārṣeyam (${remainingHeaders})</button>
+        <button class="quick-select-btn" onclick="selectField('Rik Text')" title="Select all remaining Rik text cases">📖 Select Rik (${remainingRik})</button>
+        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections">🗑️ Clear All</button>
+      `;
+    } else if (activeViewMode === 'selected') {
+      html = `
+        <button class="quick-select-btn" onclick="deselectAllVisible()" title="Move all visible selected items back to Pending">⬜ Return Visible to Pending</button>
+        <button class="quick-select-btn" onclick="clearAll()" title="Return all selected items to Pending">🗑️ Return All to Pending</button>
+      `;
+    } else { // 'all'
+      html = `
+        <button class="quick-select-btn" onclick="selectAllVisible()" title="Select all visible items">☑️ Select Visible</button>
+        <button class="quick-select-btn" onclick="deselectAllVisible()" title="Deselect all visible items">⬜ Deselect Visible</button>
+        <button class="quick-select-btn" onclick="invertSelection()" title="Invert selection on visible rows">🔄 Invert</button>
+        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections">🗑️ Clear</button>
+      `;
+    }
+    
+    left.innerHTML = html;
+  }
+  
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    const emptyContainer = document.getElementById('emptyStateContainer');
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    let visibleCount = 0;
+    
+    let html = '';
+    
+    FINDINGS.forEach(f => {
+      const isSelected = selectedIds.has(f.id);
+      
+      // View Mode Filtering:
+      if (activeViewMode === 'pending' && isSelected) return;
+      if (activeViewMode === 'selected' && !isSelected) return;
+      
+      // Category Filters:
+      if (activeField !== 'all' && f.field !== activeField) return;
+      if (activeSev !== 'all' && f.severity !== activeSev) return;
+      
+      // Query search:
+      if (query) {
+        const fullText = (f.sub_key + ' ' + f.parva + ' ' + f.kandah + ' ' + f.field + ' ' + f.suspect + ' ' + f.suggested + ' ' + f.rule_name + ' ' + f.sutra + ' ' + f.context + ' ' + f.explanation).toLowerCase();
+        if (!fullText.includes(query)) return;
+      }
+      
+      visibleCount++;
+      const isCustom = customReplacements[f.id] !== undefined;
+      const effectiveSug = getEffectiveSuggested(f);
+      const sevClass = f.severity === 'High' ? 'badge-high' : 'badge-med';
+      
+      // Highlight suspect in context
+      let ctx = f.context;
+      const sus = f.suspect.trim();
+      if (sus && ctx.includes(sus)) {
+        ctx = ctx.replace(sus, `<mark>${sus}</mark>`);
+      }
+      
+      // Action button based on current view
+      let actionBtn = '';
+      if (activeViewMode === 'pending') {
+        actionBtn = `<button class="btn-row-action btn-row-select" onclick="event.stopPropagation(); toggleSelect(${f.id}, true, true);" title="Select this change and move off pending view">✓ Select & Hide</button>`;
+      } else if (activeViewMode === 'selected') {
+        actionBtn = `<button class="btn-row-action btn-row-return" onclick="event.stopPropagation(); toggleSelect(${f.id}, false, true);" title="Return this item to Pending">✕ Return</button>`;
+      } else {
+        actionBtn = `<button class="btn-row-action" onclick="event.stopPropagation(); toggleSelect(${f.id}, !${isSelected}, false);">${isSelected ? 'Deselect' : 'Select'}</button>`;
+      }
+      
+      html += `
+        <tr class="${isSelected ? 'row-selected' : ''}" data-id="${f.id}">
+          <td style="text-align: center; cursor: pointer;" onclick="toggleRowCheckbox(${f.id}, event);" title="Click to toggle selection">
+            <input type="checkbox" class="row-checkbox" data-id="${f.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();" onchange="toggleSelect(${f.id}, this.checked, false)">
+          </td>
+          <td style="user-select: text;">${f.id}</td>
+          <td style="user-select: text;">
+            <strong><code>${f.sub_key}</code></strong><br>
+            <span style="font-size: 11px; color: #64748b;">${f.parva} — ${f.kandah}</span>
+          </td>
+          <td><span class="badge badge-field">${f.field}</span></td>
+          <td style="user-select: text;">
+            <span class="suspect-tag">
+              <span>${f.suspect}</span>
+              <button class="btn-copy-chip" onclick="event.stopPropagation(); copyTextToClipboard('${f.suspect.replace(/'/g, "\'")}', 'Copied suspect: ${f.suspect.replace(/'/g, "\'")}', '📋');" title="Copy suspect text">📋</button>
+            </span>
+          </td>
+          <td style="user-select: text;">
+            <strong>${f.rule_name}</strong><br>
+            <span class="sutra-tag">${f.sutra}</span>
+          </td>
+          <td style="user-select: text;">
+            <span class="suggested-tag">
+              <span id="sugText-${f.id}">${effectiveSug}</span>
+              <button class="btn-copy-chip" onclick="event.stopPropagation(); copyTextToClipboard('${effectiveSug.replace(/'/g, "\'")}', 'Copied suggested: ${effectiveSug.replace(/'/g, "\'")}', '📋');" title="Copy suggested text">📋</button>
+              ${isCustom ? '<span class="customized-badge">custom</span>' : ''}
+              <button class="btn-edit-sug" onclick="promptEdit(${f.id}, event)" title="Edit suggested sandhi">✏️</button>
+            </span>
+          </td>
+          <td><span class="badge ${sevClass}">${f.severity}</span></td>
+          <td style="user-select: text;">
+            <div class="context-text" style="user-select: text;">${ctx}</div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 3px; user-select: text;">${f.explanation}</div>
+          </td>
+          <td style="text-align: center;">
+            ${actionBtn}
+          </td>
+        </tr>
+      `;
+    });
+    
+    tbody.innerHTML = html;
+    
+    // Empty state handling
+    if (visibleCount === 0) {
+      document.getElementById('auditTable').style.display = 'none';
+      if (activeViewMode === 'pending') {
+        const totalPending = FINDINGS.length - selectedIds.size;
+        if (totalPending === 0) {
+          emptyContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🎉</div>
+              <div class="empty-state-title">All Cases Reviewed!</div>
+              <div class="empty-state-desc">You have reviewed and processed all 288 cases. Switch to the <strong>"Selected to Implement"</strong> tab to export your patch.</div>
+              <button class="action-btn btn-primary-green" onclick="setViewMode('selected')">Go to Selected (${selectedIds.size})</button>
+            </div>
+          `;
+        } else {
+          emptyContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🔍</div>
+              <div class="empty-state-title">No Matching Pending Cases</div>
+              <div class="empty-state-desc">No pending cases match your search or filter criteria.</div>
+            </div>
+          `;
+        }
+      } else if (activeViewMode === 'selected') {
+        emptyContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📥</div>
+            <div class="empty-state-title">No Changes Selected Yet</div>
+            <div class="empty-state-desc">Select items from the <strong>"Pending Review"</strong> tab to stage them for implementation.</div>
+            <button class="action-btn btn-primary-maroon" onclick="setViewMode('pending')">Go to Pending Review</button>
+          </div>
+        `;
+      } else {
+        emptyContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-title">No Results Found</div>
+            <div class="empty-state-desc">Try clearing your search query or field filters.</div>
+          </div>
+        `;
+      }
+    } else {
+      document.getElementById('auditTable').style.display = '';
+      emptyContainer.innerHTML = '';
+    }
+    
+    document.getElementById('visibleResultsCount').innerText = `Showing ${visibleCount} case${visibleCount === 1 ? '' : 's'}`;
+    updateMasterHeaderCheckbox();
+    updateToolbarButtons();
+  }
+  
+  function updateStats() {
+    const selCount = selectedIds.size;
+    const pendCount = FINDINGS.length - selCount;
+    
+    document.getElementById('kpiPendingCount').innerText = pendCount;
+    document.getElementById('kpiSelectedCount').innerText = selCount;
+    
+    document.getElementById('tabPendingCount').innerText = pendCount;
+    document.getElementById('tabSelectedCount').innerText = selCount;
+    document.getElementById('tabAllCount').innerText = FINDINGS.length;
+    
+    document.getElementById('btnReviewCount').innerText = selCount;
+    document.getElementById('dockSelectedCount').innerText = selCount;
+    document.getElementById('modalSelectedCount').innerText = selCount;
+    
+    // Toggle floating dock visibility
+    const dock = document.getElementById('floatingDock');
+    if (window.scrollY > 250 && selCount > 0) {
+      dock.classList.add('show');
+    } else {
+      dock.classList.remove('show');
+    }
+    
+    saveStorage();
+  }
+  
+  function updateMasterHeaderCheckbox() {
+    const visibleCheckboxes = document.querySelectorAll('.row-checkbox');
+    const headerCheckbox = document.getElementById('selectAllHeader');
+    if (visibleCheckboxes.length === 0) {
+      headerCheckbox.checked = false;
+      headerCheckbox.indeterminate = false;
+      return;
+    }
+    let checkedCount = 0;
+    visibleCheckboxes.forEach(cb => { if (cb.checked) checkedCount++; });
+    if (checkedCount === 0) {
+      headerCheckbox.checked = false;
+      headerCheckbox.indeterminate = false;
+    } else if (checkedCount === visibleCheckboxes.length) {
+      headerCheckbox.checked = true;
+      headerCheckbox.indeterminate = false;
+    } else {
+      headerCheckbox.checked = false;
+      headerCheckbox.indeterminate = true;
+    }
+  }
+  
+  function toggleSelect(id, checked, isDirectAction = false) {
+    if (checked) {
+      selectedIds.add(id);
+      lastAction = { type: 'select', id: id };
+      
+      // AUTO-HIDE BEHAVIOR: if in pending mode and auto-hide is enabled, animate off view
+      if (activeViewMode === 'pending' && autoHideEnabled) {
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+        if (row) {
+          row.classList.add('row-disappearing');
+          setTimeout(() => {
+            renderTable();
+            updateStats();
+          }, 180);
+        } else {
+          renderTable();
+          updateStats();
+        }
+        showToast(`Selected #${id} (moved off view into Selected queue)`, '✅', true);
+        return;
+      }
+    } else {
+      selectedIds.delete(id);
+      lastAction = { type: 'deselect', id: id };
+      
+      if (activeViewMode === 'selected') {
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+        if (row) {
+          row.classList.add('row-disappearing');
+          setTimeout(() => {
+            renderTable();
+            updateStats();
+          }, 180);
+        } else {
+          renderTable();
+          updateStats();
+        }
+        showToast(`Returned #${id} to Pending queue`, '↩️', true);
+        return;
+      }
+    }
+    
+    const row = document.querySelector(`tr[data-id="${id}"]`);
+    if (row) {
+      if (checked) row.classList.add('row-selected');
+      else row.classList.remove('row-selected');
+    }
+    updateStats();
+    updateMasterHeaderCheckbox();
+  }
+  
+  function toggleRowCheckbox(id, event) {
+    if (event && event.target && event.target.tagName === 'INPUT') return;
+    const isCurrently = selectedIds.has(id);
+    toggleSelect(id, !isCurrently, false);
+  }
+  
+  function selectAllVisible() {
+    const visibleCheckboxes = document.querySelectorAll('.row-checkbox');
+    let count = 0;
+    visibleCheckboxes.forEach(cb => {
+      const id = parseInt(cb.getAttribute('data-id'), 10);
+      selectedIds.add(id);
+      count++;
+    });
+    renderTable();
+    updateStats();
+    showToast(`Selected ${count} visible items`, '☑️');
+  }
+  
+  function deselectAllVisible() {
+    const visibleCheckboxes = document.querySelectorAll('.row-checkbox');
+    let count = 0;
+    visibleCheckboxes.forEach(cb => {
+      const id = parseInt(cb.getAttribute('data-id'), 10);
+      selectedIds.delete(id);
+      count++;
+    });
+    renderTable();
+    updateStats();
+    showToast(`Deselected ${count} visible items`, '⬜');
+  }
+  
+  function selectHighSeverity() {
+    const pendingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && f.severity === 'High');
+    pendingHigh.forEach(f => selectedIds.add(f.id));
+    renderTable();
+    updateStats();
+    showToast(`Selected and moved ${pendingHigh.length} High Severity cases`, '🔥');
+  }
+  
+  function selectField(fieldName) {
+    const pendingField = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === fieldName);
+    pendingField.forEach(f => selectedIds.add(f.id));
+    renderTable();
+    updateStats();
+    showToast(`Selected and moved ${pendingField.length} ${fieldName} cases`, '📜');
+  }
+  
+  function invertSelection() {
+    document.querySelectorAll('.row-checkbox').forEach(cb => {
+      const id = parseInt(cb.getAttribute('data-id'), 10);
+      if (selectedIds.has(id)) {
+        selectedIds.delete(id);
+      } else {
+        selectedIds.add(id);
+      }
+    });
+    renderTable();
+    updateStats();
+    showToast(`Inverted selection on visible items`, '🔄');
+  }
+  
+  function clearAll() {
+    if (confirm('Clear all selections and return all cases to Pending?')) {
+      selectedIds.clear();
+      renderTable();
+      updateStats();
+      showToast(`All cases returned to Pending`, '🗑️');
+    }
+  }
+  
+  function setViewMode(mode) {
+    activeViewMode = mode;
+    document.querySelectorAll('.view-mode-tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-view') === mode);
+    });
+    saveStorage();
+    renderTable();
+    window.scrollTo({ top: 120, behavior: 'smooth' });
+  }
+  
+  function promptEdit(id, event) {
+    event.stopPropagation();
+    const f = FINDINGS.find(x => x.id === id);
+    if (!f) return;
+    const current = getEffectiveSuggested(f);
+    const newSug = prompt(`Edit Suggested Sandhi for ${f.sub_key} (${f.suspect}):`, current);
+    if (newSug !== null && newSug.trim() !== '') {
+      customReplacements[id] = newSug.trim();
+      selectedIds.add(id); // auto select on edit
+      renderTable();
+      updateStats();
+      showToast(`Updated suggestion for #${id}`, '✏️');
+    }
+  }
+  
+  // Review Modal
+  function openReviewModal() {
+    const modal = document.getElementById('reviewModal');
+    const tbody = document.getElementById('modalTableBody');
+    
+    if (selectedIds.size === 0) {
+      alert('Please select at least one change to review and implement.');
+      return;
+    }
+    
+    const selFindings = FINDINGS.filter(f => selectedIds.has(f.id));
+    let html = '';
+    
+    selFindings.forEach((f, idx) => {
+      const eff = getEffectiveSuggested(f);
+      html += `
+        <tr data-modal-id="${f.id}">
+          <td>${idx + 1}</td>
+          <td><strong>${f.sub_key}</strong></td>
+          <td><span class="badge badge-field">${f.field}</span></td>
+          <td><span class="suspect-tag">${f.suspect}</span></td>
+          <td>
+            <input type="text" class="modal-edit-input" value="${eff.replace(/"/g, '&quot;')}" onchange="updateCustomFromModal(${f.id}, this.value)">
+          </td>
+          <td><span style="font-size: 11.5px; color: #64748b;">${f.rule_name}</span></td>
+          <td style="text-align: center;">
+            <button class="btn-remove-row" onclick="removeSelectedFromModal(${f.id})">✕</button>
+          </td>
+        </tr>
+      `;
+    });
+    
+    tbody.innerHTML = html;
+    modal.classList.add('open');
+  }
+  
+  function closeReviewModal() {
+    document.getElementById('reviewModal').classList.remove('open');
+  }
+  
+  function updateCustomFromModal(id, val) {
+    if (val.trim()) {
+      customReplacements[id] = val.trim();
+      saveStorage();
+      renderTable();
+      showToast(`Saved edit for #${id}`, '💾');
+    }
+  }
+  
+  function removeSelectedFromModal(id) {
+    selectedIds.delete(id);
+    updateStats();
+    renderTable();
+    openReviewModal(); // Re-render modal table
+    showToast(`Removed #${id} from selection`, '🗑️');
+  }
+  
+  // Export Functions
+  function buildPatchData() {
+    const selFindings = FINDINGS.filter(f => selectedIds.has(f.id)).map(f => ({
+      id: f.id,
+      sub_key: f.sub_key,
+      parva: f.parva,
+      kandah: f.kandah,
+      field: f.field,
+      rule_name: f.rule_name,
+      sutra: f.sutra,
+      severity: f.severity,
+      suspect: f.suspect,
+      suggested: getEffectiveSuggested(f),
+      context: f.context,
+      explanation: f.explanation
+    }));
+    
+    return {
+      version: "3.60",
+      generated_at: new Date().toISOString(),
+      total_selected: selFindings.length,
+      patch_items: selFindings
+    };
+  }
+  
+  function downloadPatchJson() {
+    if (selectedIds.size === 0) {
+      alert('Please select at least one change to export.');
+      return;
+    }
+    const data = buildPatchData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sandhi_selected_patch_${data.total_selected}_items.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Downloaded patch JSON (${data.total_selected} items)`, '⬇️');
+  }  const SCRIPT_TEMPLATE_B64 = "IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwoiIiIKU3RhbmRhbG9uZSBQeXRob24gQXBwbHkgU2NyaXB0IGZvciBTZWxlY3RlZCBTYW5za3JpdCBTYW5kaGkgQ29ycmVjdGlvbnMgKFN3YXJhLUF3YXJlKS4KR2VuZXJhdGVkIGR5bmFtaWNhbGx5IGZyb20gU2FuZGhpIEF1ZGl0IFJlcG9ydCBIVE1MIFBvcnRhbC4KIiIiCgppbXBvcnQganNvbgppbXBvcnQgcmUKaW1wb3J0IGRpZmZsaWIKaW1wb3J0IHNodXRpbApmcm9tIHBhdGhsaWIgaW1wb3J0IFBhdGgKZnJvbSBkYXRldGltZSBpbXBvcnQgZGF0ZXRpbWUKClBBVENIX0lURU1TID0gX19QQVRDSF9JVEVNU19KU09OX18KCmRlZiBzd2FyYV9hd2FyZV9yZXBsYWNlKHRleHQ6IHN0ciwgc3VzOiBzdHIsIHN1Zzogc3RyKToKICAgIGlmIG5vdCBzdXMgb3Igbm90IHN1ZyBvciBub3QgdGV4dDoKICAgICAgICByZXR1cm4gdGV4dCwgRmFsc2UKICAgIGlmIHN1cyBpbiB0ZXh0OgogICAgICAgIHJldHVybiB0ZXh0LnJlcGxhY2Uoc3VzLCBzdWcsIDEpLCBUcnVlCiAgICBzd2FyYV91bml0ID0gcicoPzpcKFteXCldK1wpfFtcdTFjZDAtXHUxY2Y5XHUwOTUxXHUwOTUyXHNdKSonCiAgICBwYXR0ZXJuX3BhcnRzID0gW10KICAgIGZvciBjaCBpbiBzdXMuc3RyaXAoKToKICAgICAgICBpZiBjaCBpbiAnIOClpOClpSc6CiAgICAgICAgICAgIHBhdHRlcm5fcGFydHMuYXBwZW5kKHInW1xz4KWk4KWlXSonKQogICAgICAgIGVsc2U6CiAgICAgICAgICAgIHBhdHRlcm5fcGFydHMuYXBwZW5kKHJlLmVzY2FwZShjaCkgKyBzd2FyYV91bml0KQogICAgcGF0dGVybiA9ICcnLmpvaW4ocGF0dGVybl9wYXJ0cykKICAgIG0gPSByZS5zZWFyY2gocGF0dGVybiwgdGV4dCkKICAgIGlmIG5vdCBtOgogICAgICAgIHJldHVybiB0ZXh0LCBGYWxzZQogICAgbWF0Y2hlZF9zcGFuID0gbS5ncm91cCgwKQogICAgbWF0Y2hlciA9IGRpZmZsaWIuU2VxdWVuY2VNYXRjaGVyKE5vbmUsIHN1cywgc3VnKQogICAgb3Bjb2RlcyA9IG1hdGNoZXIuZ2V0X29wY29kZXMoKQogICAgbmV3X3NwYW4gPSBtYXRjaGVkX3NwYW4KICAgIHN1Y2Nlc3MgPSBGYWxzZQogICAgZm9yIHRhZywgaTEsIGkyLCBqMSwgajIgaW4gcmV2ZXJzZWQob3Bjb2Rlcyk6CiAgICAgICAgaWYgdGFnIGluICgncmVwbGFjZScsICdkZWxldGUnLCAnaW5zZXJ0Jyk6CiAgICAgICAgICAgIG9sZF9jaHVuayA9IHN1c1tpMTppMl0KICAgICAgICAgICAgbmV3X2NodW5rID0gc3VnW2oxOmoyXQogICAgICAgICAgICBpZiBvbGRfY2h1bmsgaW4gbmV3X3NwYW46CiAgICAgICAgICAgICAgICBuZXdfc3BhbiA9IG5ld19zcGFuLnJlcGxhY2Uob2xkX2NodW5rLCBuZXdfY2h1bmssIDEpCiAgICAgICAgICAgICAgICBzdWNjZXNzID0gVHJ1ZQogICAgICAgICAgICBlbGlmICfgpIInIGluIG9sZF9jaHVuayBhbmQgJ+CkruCljScgaW4gbmV3X2NodW5rOgogICAgICAgICAgICAgICAgc3ViX3NwYW4sIG4gPSByZS5zdWJuKAogICAgICAgICAgICAgICAgICAgIHInKFtcdTA5MDJdKShccyooPzpcKFteXCldK1wpfFtcdTFjZDAtXHUxY2Y5XHUwOTUxXHUwOTUyXSkqKFtcc+ClpOClpeCkheCkhuCkh+CkiOCkieCkiuCki+Ckj+CkkOCkk+CklF0pKScsCiAgICAgICAgICAgICAgICAgICAgcifgpK7gpY0gXDInLAogICAgICAgICAgICAgICAgICAgIG5ld19zcGFuLAogICAgICAgICAgICAgICAgICAgIGNvdW50PTEKICAgICAgICAgICAgICAgICkKICAgICAgICAgICAgICAgIGlmIG4gPiAwOgogICAgICAgICAgICAgICAgICAgIG5ld19zcGFuID0gc3ViX3NwYW4KICAgICAgICAgICAgICAgICAgICBzdWNjZXNzID0gVHJ1ZQogICAgICAgICAgICBlbGlmICfgpIMnIGluIG9sZF9jaHVuazoKICAgICAgICAgICAgICAgIHN1Yl9zcGFuLCBuID0gcmUuc3VibigKICAgICAgICAgICAgICAgICAgICByJyhbXlx1MDkzZVx1MDkzZlx1MDk0MFx1MDk0MVx1MDk0Mlx1MDk0M1x1MDk0NFx1MDk0N1x1MDk0OFx1MDk0Ylx1MDk0Y1xzXSngpINccyonLAogICAgICAgICAgICAgICAgICAgIHInXDHgpYsgJywKICAgICAgICAgICAgICAgICAgICBuZXdfc3BhbiwKICAgICAgICAgICAgICAgICAgICBjb3VudD0xCiAgICAgICAgICAgICAgICApCiAgICAgICAgICAgICAgICBpZiBuID4gMDoKICAgICAgICAgICAgICAgICAgICBuZXdfc3BhbiA9IHN1Yl9zcGFuCiAgICAgICAgICAgICAgICAgICAgc3VjY2VzcyA9IFRydWUKICAgIGlmIHN1Y2Nlc3M6CiAgICAgICAgcmV0dXJuIHRleHRbOm0uc3RhcnQoKV0gKyBuZXdfc3BhbiArIHRleHRbbS5lbmQoKTpdLCBUcnVlCiAgICByZXR1cm4gdGV4dCwgRmFsc2UKCmRlZiBnZXRfc3Vic2VjdGlvbl9saW5lX3JhbmdlKGxpbmVzOiBsaXN0LCBzdWJfa2V5OiBzdHIpOgogICAgdGFnID0gZictLSB7c3ViX2tleX0gJwogICAgc3RhcnRfaWR4ID0gTm9uZQogICAgbGFzdF90YWdfaWR4ID0gTm9uZQogICAgZm9yIGksIGxpbmUgaW4gZW51bWVyYXRlKGxpbmVzKToKICAgICAgICBpZiB0YWcgaW4gbGluZToKICAgICAgICAgICAgaWYgc3RhcnRfaWR4IGlzIE5vbmU6CiAgICAgICAgICAgICAgICBzdGFydF9pZHggPSBpCiAgICAgICAgICAgIGxhc3RfdGFnX2lkeCA9IGkKICAgIGlmIHN0YXJ0X2lkeCBpcyBOb25lOgogICAgICAgIHJldHVybiBOb25lLCBOb25lCiAgICBlbmRfaWR4ID0gbGVuKGxpbmVzKQogICAgZm9yIGogaW4gcmFuZ2UobGFzdF90YWdfaWR4ICsgMSwgbGVuKGxpbmVzKSk6CiAgICAgICAgaWYgJy0tIHN1YnNlY3Rpb25fJyBpbiBsaW5lc1tqXSBhbmQgdGFnIG5vdCBpbiBsaW5lc1tqXToKICAgICAgICAgICAgZW5kX2lkeCA9IGoKICAgICAgICAgICAgYnJlYWsKICAgIHJldHVybiBzdGFydF9pZHgsIGVuZF9pZHgKCmRlZiBhcHBseV9wYXRjaCgpOgogICAgYXN0X3BhdGggPSBQYXRoKCJkYXRhL2NvcnBvcmEvc2FtaGl0YS8wMl9hc3QvU2FtaGl0YV9hc3QuanNvbiIpCiAgICBvdXRfYXN0X3BhdGggPSBQYXRoKCJkYXRhL291dHB1dC9TYW1oaXRhX2NvcnJlY3RlZF9vdXQuanNvbiIpCiAgICB0eHRfcGF0aCA9IFBhdGgoImRhdGEvY29ycG9yYS9zYW1oaXRhLzAxX2lucHV0L1NhbWhpdGFfRGV2YW5hZ2FyaV9Vbmljb2RlLnR4dCIpCiAgICB0eHRfc3luY19wYXRoID0gUGF0aCgiZGF0YS9pbnB1dC9TYW1oaXRhX0RldmFuYWdhcmlfVW5pY29kZS50eHQiKQogICAgCiAgICBwcmludChmIltJTkZPXSBQcmVwYXJpbmcgdG8gYXBwbHkge2xlbihQQVRDSF9JVEVNUyl9IHNlbGVjdGVkIFNhbmRoaSBjb3JyZWN0aW9ucyAoU3dhcmEtQXdhcmUpLi4uIikKICAgIHRzID0gZGF0ZXRpbWUubm93KCkuc3RyZnRpbWUoIiVZJW0lZF8lSCVNJVMiKQogICAgaWYgYXN0X3BhdGguZXhpc3RzKCk6CiAgICAgICAgYmFrID0gYXN0X3BhdGgud2l0aF9zdWZmaXgoZiIuanNvbi57dHN9LmJhayIpCiAgICAgICAgc2h1dGlsLmNvcHkyKGFzdF9wYXRoLCBiYWspCiAgICAgICAgcHJpbnQoZiJbQkFDS1VQXSBDcmVhdGVkIHtiYWsubmFtZX0iKQogICAgaWYgdHh0X3BhdGguZXhpc3RzKCk6CiAgICAgICAgdGJhayA9IHR4dF9wYXRoLndpdGhfc3VmZml4KGYiLnR4dC57dHN9LmJhayIpCiAgICAgICAgc2h1dGlsLmNvcHkyKHR4dF9wYXRoLCB0YmFrKQogICAgICAgIHByaW50KGYiW0JBQ0tVUF0gQ3JlYXRlZCB7dGJhay5uYW1lfSIpCiAgICAgICAgCiAgICB3aXRoIG9wZW4oYXN0X3BhdGgsICJyIiwgZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICAgICAgICBhc3RfZGF0YSA9IGpzb24ubG9hZChmKQogICAgICAgIAogICAgdHh0X2xpbmVzID0gdHh0X3BhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpLnNwbGl0bGluZXMoKSBpZiB0eHRfcGF0aC5leGlzdHMoKSBlbHNlIFtdCiAgICBhcHBsaWVkX2FzdCA9IDAKICAgIGFwcGxpZWRfdHh0ID0gMAogICAgCiAgICBmb3IgaXRlbSBpbiBQQVRDSF9JVEVNUzoKICAgICAgICBzdWJfa2V5ID0gaXRlbS5nZXQoInN1Yl9rZXkiKSBvciBpdGVtLmdldCgic3Vic2VjdGlvbiIpCiAgICAgICAgZmllbGQgPSBpdGVtLmdldCgiZmllbGQiKQogICAgICAgIHN1cyA9IGl0ZW0uZ2V0KCJzdXNwZWN0Iikgb3IgaXRlbS5nZXQoInN1c3BlY3Rfc2VnbWVudCIpCiAgICAgICAgc3VnID0gaXRlbS5nZXQoInN1Z2dlc3RlZCIpIG9yIGl0ZW0uZ2V0KCJzdWdnZXN0ZWRfc2FuZGhpIikKICAgICAgICAKICAgICAgICAjIDEuIEFTVCBTZWFyY2ggJiBSZXBsYWNlCiAgICAgICAgYXN0X2RvbmUgPSBGYWxzZQogICAgICAgIGZvciBzcyBpbiBhc3RfZGF0YS5nZXQoInN1cGVyc2VjdGlvbnMiLCBhc3RfZGF0YS5nZXQoInN1cGVyc2VjdGlvbiIsIHt9KSkudmFsdWVzKCk6CiAgICAgICAgICAgIGlmIG5vdCBpc2luc3RhbmNlKHNzLCBkaWN0KTogY29udGludWUKICAgICAgICAgICAgZm9yIHNlYyBpbiBzcy5nZXQoInNlY3Rpb25zIiwge30pLnZhbHVlcygpOgogICAgICAgICAgICAgICAgaWYgbm90IGlzaW5zdGFuY2Uoc2VjLCBkaWN0KTogY29udGludWUKICAgICAgICAgICAgICAgIGlmIHN1Yl9rZXkgaW4gc2VjLmdldCgic3Vic2VjdGlvbnMiLCB7fSk6CiAgICAgICAgICAgICAgICAgICAgc3ViID0gc2VjWyJzdWJzZWN0aW9ucyJdW3N1Yl9rZXldCiAgICAgICAgICAgICAgICAgICAgaWYgZmllbGQgPT0gIkFyc2hleWFtIEhlYWRlciIgYW5kICJoZWFkZXIiIGluIHN1YjoKICAgICAgICAgICAgICAgICAgICAgICAgbmV3X2gsIG9rID0gc3dhcmFfYXdhcmVfcmVwbGFjZShzdWJbImhlYWRlciJdLmdldCgiaGVhZGVyIiwgIiIpLCBzdXMsIHN1ZykKICAgICAgICAgICAgICAgICAgICAgICAgaWYgb2s6CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdWJbImhlYWRlciJdWyJoZWFkZXIiXSA9IG5ld19oCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhc3RfZG9uZSA9IFRydWUKICAgICAgICAgICAgICAgICAgICBlbGlmIGZpZWxkID09ICJSaWsgTWV0YWRhdGEiOgogICAgICAgICAgICAgICAgICAgICAgICBuZXdfcm0sIG9rID0gc3dhcmFfYXdhcmVfcmVwbGFjZShzdWIuZ2V0KCJyaWtfbWV0YWRhdGEiLCAiIiksIHN1cywgc3VnKQogICAgICAgICAgICAgICAgICAgICAgICBpZiBvazoKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1YlsicmlrX21ldGFkYXRhIl0gPSBuZXdfcm0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzdF9kb25lID0gVHJ1ZQogICAgICAgICAgICAgICAgICAgIGVsaWYgZmllbGQgPT0gIlJpayBUZXh0IjoKICAgICAgICAgICAgICAgICAgICAgICAgbmV3X3J0LCBvayA9IHN3YXJhX2F3YXJlX3JlcGxhY2Uoc3ViLmdldCgicmlrX3RleHQiLCAiIiksIHN1cywgc3VnKQogICAgICAgICAgICAgICAgICAgICAgICBpZiBvazoKICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1YlsicmlrX3RleHQiXSA9IG5ld19ydAogICAgICAgICAgICAgICAgICAgICAgICAgICAgYXN0X2RvbmUgPSBUcnVlCiAgICAgICAgICAgICAgICAgICAgZWxpZiBmaWVsZCA9PSAiU2FtYW4gTWV0YWRhdGEiOgogICAgICAgICAgICAgICAgICAgICAgICBuZXdfc20sIG9rID0gc3dhcmFfYXdhcmVfcmVwbGFjZShzdWIuZ2V0KCJzYW1hbl9tZXRhZGF0YSIsICIiKSwgc3VzLCBzdWcpCiAgICAgICAgICAgICAgICAgICAgICAgIGlmIG9rOgogICAgICAgICAgICAgICAgICAgICAgICAgICAgc3ViWyJzYW1hbl9tZXRhZGF0YSJdID0gbmV3X3NtCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBhc3RfZG9uZSA9IFRydWUKICAgICAgICAgICAgICAgICAgICBlbGlmIGZpZWxkID09ICJTYW1hbSBDaGFudCI6CiAgICAgICAgICAgICAgICAgICAgICAgIGZvciBtIGluIHN1Yi5nZXQoImNvcnJlY3RlZC1tYW50cmFfc2V0cyIsIHN1Yi5nZXQoIm1hbnRyYV9zZXRzIiwgW10pKToKICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5ld19jbSwgb2tfY20gPSBzd2FyYV9hd2FyZV9yZXBsYWNlKG0uZ2V0KCJjb3JyZWN0ZWQtbWFudHJhIiwgIiIpLCBzdXMsIHN1ZykKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmIG9rX2NtOgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG1bImNvcnJlY3RlZC1tYW50cmEiXSA9IG5ld19jbQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzdF9kb25lID0gVHJ1ZQogICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3X20sIG9rX20gPSBzd2FyYV9hd2FyZV9yZXBsYWNlKG0uZ2V0KCJtYW50cmEiLCAiIiksIHN1cywgc3VnKQogICAgICAgICAgICAgICAgICAgICAgICAgICAgaWYgb2tfbToKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtWyJtYW50cmEiXSA9IG5ld19tCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYXN0X2RvbmUgPSBUcnVlCiAgICAgICAgaWYgYXN0X2RvbmU6CiAgICAgICAgICAgIGFwcGxpZWRfYXN0ICs9IDEKICAgICAgICAgICAgCiAgICAgICAgIyAyLiBVbmljb2RlIFRleHQgU2VhcmNoICYgUmVwbGFjZSAoU2NvcGVkIHRvIHN1YnNlY3Rpb24gbGluZSByYW5nZSkKICAgICAgICBpZiB0eHRfbGluZXM6CiAgICAgICAgICAgIHNfaWR4LCBlX2lkeCA9IGdldF9zdWJzZWN0aW9uX2xpbmVfcmFuZ2UodHh0X2xpbmVzLCBzdWJfa2V5KQogICAgICAgICAgICBpZiBzX2lkeCBpcyBub3QgTm9uZToKICAgICAgICAgICAgICAgIHN1Yl9ibG9jayA9ICJcbiIuam9pbih0eHRfbGluZXNbc19pZHg6ZV9pZHhdKQogICAgICAgICAgICAgICAgbmV3X2Jsb2NrLCBva190eHQgPSBzd2FyYV9hd2FyZV9yZXBsYWNlKHN1Yl9ibG9jaywgc3VzLCBzdWcpCiAgICAgICAgICAgICAgICBpZiBva190eHQ6CiAgICAgICAgICAgICAgICAgICAgbmV3X2xpbmVzID0gbmV3X2Jsb2NrLnNwbGl0bGluZXMoKQogICAgICAgICAgICAgICAgICAgIHR4dF9saW5lcyA9IHR4dF9saW5lc1s6c19pZHhdICsgbmV3X2xpbmVzICsgdHh0X2xpbmVzW2VfaWR4Ol0KICAgICAgICAgICAgICAgICAgICBhcHBsaWVkX3R4dCArPSAxCiAgICAgICAgICAgICAgICAgICAgCiAgICB3aXRoIG9wZW4oYXN0X3BhdGgsICJ3IiwgZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICAgICAgICBqc29uLmR1bXAoYXN0X2RhdGEsIGYsIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTIpCiAgICBpZiBvdXRfYXN0X3BhdGgucGFyZW50LmV4aXN0cygpOgogICAgICAgIHdpdGggb3BlbihvdXRfYXN0X3BhdGgsICJ3IiwgZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICAgICAgICAgICAganNvbi5kdW1wKGFzdF9kYXRhLCBmLCBlbnN1cmVfYXNjaWk9RmFsc2UsIGluZGVudD0yKQogICAgaWYgdHh0X2xpbmVzOgogICAgICAgIGZpbmFsX3R4dCA9ICJcbiIuam9pbih0eHRfbGluZXMpICsgIlxuIgogICAgICAgIHR4dF9wYXRoLndyaXRlX3RleHQoZmluYWxfdHh0LCBlbmNvZGluZz0idXRmLTgiKQogICAgICAgIGlmIHR4dF9zeW5jX3BhdGgucGFyZW50LmV4aXN0cygpOgogICAgICAgICAgICB0eHRfc3luY19wYXRoLndyaXRlX3RleHQoZmluYWxfdHh0LCBlbmNvZGluZz0idXRmLTgiKQogICAgICAgICAgICAKICAgIHByaW50KGYiW1NVQ0NFU1NdIEFwcGxpZWQge2FwcGxpZWRfYXN0fSBBU1QgcmVwbGFjZW1lbnRzIGFuZCB7YXBwbGllZF90eHR9IFVuaWNvZGUgdGV4dCByZXBsYWNlbWVudHMgKFN3YXJhLUF3YXJlKS4iKQoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIGFwcGx5X3BhdGNoKCkK";
+
+  function downloadPythonScript() {
+    if (selectedIds.size === 0) {
+      alert('Please select at least one change to generate the script.');
+      return;
+    }
+    const data = buildPatchData();
+    const patchJsonStr = JSON.stringify(data.patch_items, null, 2);
+    
+    // Decode standalone python script template from base64 and inject patch json
+    const rawTemplate = new TextDecoder().decode(Uint8Array.from(atob(SCRIPT_TEMPLATE_B64), c => c.charCodeAt(0)));
+    const pyScript = rawTemplate.replace('__PATCH_ITEMS_JSON__', patchJsonStr);
+
+    const blob = new Blob([pyScript], { type: 'text/x-python;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `apply_selected_sandhi_patch_${data.total_selected}.py`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Downloaded apply script (${data.total_selected} items)`, '⚡');
+  }
+
+
+  function copyTextToClipboard(textToCopy, successMsg, icon = '📋') {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        showToast(successMsg, icon);
+      }).catch(() => {
+        fallbackCopyText(textToCopy, successMsg, icon);
+      });
+    } else {
+      fallbackCopyText(textToCopy, successMsg, icon);
+    }
+  }
+
+  function fallbackCopyText(textToCopy, successMsg, icon = '📋') {
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = textToCopy;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      if (successful) {
+        showToast(successMsg, icon);
+      } else {
+        alert('Copy failed. Please manually select and copy the text.');
+      }
+    } catch (err) {
+      console.error('Clipboard copy error:', err);
+      alert('Copy failed. Please manually select and copy the text.');
+    }
+  }
+
+  function copyPatchJson() {
+    if (selectedIds.size === 0) {
+      alert('Please select at least one change to copy.');
+      return;
+    }
+    const data = buildPatchData();
+    const jsonStr = JSON.stringify(data, null, 2);
+    copyTextToClipboard(jsonStr, `Copied ${data.total_selected} items to clipboard as JSON`, '📋');
+  }
+
+  function pastePatchJson() {
+    if (navigator.clipboard && navigator.clipboard.readText && window.isSecureContext) {
+      navigator.clipboard.readText().then(text => {
+        if (text && (text.trim().startsWith('{') || text.trim().startsWith('['))) {
+          applyPastedJson(text.trim());
+        } else {
+          promptForJsonPaste();
+        }
+      }).catch(() => {
+        promptForJsonPaste();
+      });
+    } else {
+      promptForJsonPaste();
+    }
+  }
+
+  function promptForJsonPaste() {
+    const raw = prompt('Paste your patch JSON here (array of patch items or exported patch object):');
+    if (raw && raw.trim()) {
+      applyPastedJson(raw.trim());
+    }
+  }
+
+  function applyPastedJson(jsonStr) {
+    try {
+      const parsed = JSON.parse(jsonStr.trim());
+      const items = Array.isArray(parsed) ? parsed : (parsed.patch_items || []);
+      if (!items || items.length === 0) {
+        alert('No patch items found in the pasted JSON.');
+        return;
+      }
+      let matchedCount = 0;
+      items.forEach(it => {
+        let match = null;
+        if (it.id) {
+          match = FINDINGS.find(f => f.id === it.id);
+        }
+        if (!match) {
+          const sub = it.sub_key || it.subsection;
+          const sus = it.suspect || it.suspect_segment;
+          const field = it.field;
+          match = FINDINGS.find(f => f.sub_key === sub && f.suspect === sus && (!field || f.field === field));
+        }
+        if (match) {
+          selectedIds.add(match.id);
+          const sug = it.suggested || it.suggested_sandhi;
+          if (sug && sug !== match.suggested) {
+            customReplacements[match.id] = sug;
+          }
+          matchedCount++;
+        }
+      });
+      saveStorage();
+      renderTable();
+      updateStats();
+      showToast(`Imported and selected ${matchedCount} items from pasted JSON`, '📥');
+    } catch (e) {
+      alert('Failed to parse pasted JSON: ' + e.message);
+    }
+  }
+  
+  function resetStorage() {
+    if (confirm('Clear all saved selections, view preferences, and custom replacements?')) {
+      localStorage.removeItem(STORAGE_KEY_SELECTIONS);
+      localStorage.removeItem(STORAGE_KEY_CUSTOM);
+      localStorage.removeItem(STORAGE_KEY_VIEW);
+      localStorage.removeItem(STORAGE_KEY_AUTOHIDE);
+      selectedIds.clear();
+      customReplacements = {};
+      activeViewMode = 'pending';
+      autoHideEnabled = true;
+      document.getElementById('autoHideCheckbox').checked = true;
+      document.querySelectorAll('.view-mode-tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-view') === 'pending');
+      });
+      renderTable();
+      updateStats();
+      showToast('Cleared all saved state', '↺');
+    }
+  }
+  
+  // Event Listeners
+  document.getElementById('searchInput').addEventListener('input', renderTable);
+  
+  document.getElementById('selectAllHeader').addEventListener('change', function() {
+    if (this.checked) selectAllVisible();
+    else deselectAllVisible();
+  });
+  
+  document.getElementById('autoHideCheckbox').addEventListener('change', function() {
+    autoHideEnabled = this.checked;
+    saveStorage();
+    showToast(`Auto-hide on select is now ${autoHideEnabled ? 'ON' : 'OFF'}`, autoHideEnabled ? '👁️' : '🔒');
+  });
+  
+  document.querySelectorAll('.view-mode-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      setViewMode(tab.getAttribute('data-view'));
+    });
+  });
+  
+  document.getElementById('btnDownloadPatch').addEventListener('click', downloadPatchJson);
+  document.getElementById('btnDownloadScript').addEventListener('click', downloadPythonScript);
+  document.getElementById('btnCopyJson').addEventListener('click', copyPatchJson);
+  document.getElementById('btnPasteJson').addEventListener('click', pastePatchJson);
+  document.getElementById('btnReviewModal').addEventListener('click', openReviewModal);
+  document.getElementById('btnResetStorage').addEventListener('click', resetStorage);
+  
+  document.getElementById('btnCloseModal').addEventListener('click', closeReviewModal);
+  document.getElementById('btnModalClose').addEventListener('click', closeReviewModal);
+  document.getElementById('btnModalDownloadPatch').addEventListener('click', downloadPatchJson);
+  document.getElementById('btnModalDownloadScript').addEventListener('click', downloadPythonScript);
+  document.getElementById('btnModalCopyJson').addEventListener('click', copyPatchJson);
+  document.getElementById('btnModalPasteJson').addEventListener('click', () => { pastePatchJson(); openReviewModal(); });
+  
+  document.getElementById('dockBtnReview').addEventListener('click', openReviewModal);
+  document.getElementById('dockBtnDownload').addEventListener('click', downloadPatchJson);
+  
+  window.addEventListener('scroll', updateStats);
+  
+  // Filter pills
+  document.querySelectorAll('.filter-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filterType = btn.getAttribute('data-filter');
+      const val = btn.getAttribute('data-val');
+      
+      document.querySelectorAll(`.filter-pill[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      if (filterType === 'field') activeField = val;
+      else if (filterType === 'sev') activeSev = val;
+      renderTable();
+    });
+  });
+  
+  // Keyboard shortcuts:
+  // - Escape: Close review modal
+  // - Ctrl+Z / Cmd+Z: Undo selection change (outside text inputs)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeReviewModal();
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        return; // Allow native input undo
+      }
+      e.preventDefault();
+      undoLastAction();
+    }
+  });
+
+  // Initialization
+  initStorage();
+  document.getElementById('autoHideCheckbox').checked = autoHideEnabled;
+  document.querySelectorAll('.view-mode-tab').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('data-view') === activeViewMode);
+  });
+  renderTable();
+  updateStats();
+  if (selectedIds.size > 0) {
+    showToast(`Restored ${selectedIds.size} saved selections (${FINDINGS.length - selectedIds.size} pending)`, '✓');
+  }
+</script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 - **Corpus**: `collections`
 - **Edition**: `2.05`
-- **Generated Timestamp**: `05-11-2026 08:27:52`
+- **Generated Timestamp**: `11-11-2026 16:11:15`
 - **Validation Status**: `PASSED`
 
 ---
@@ -61,6 +61,7 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 | [`Prayogamala-Purvabhagam_Devanagari.pdf`](../05_renders/pdf/Prayogamala-Purvabhagam_Devanagari.pdf) | `PDF` | `02-10-2026 01:13:01` | Ritual Prayoga: Purvabhagam (साम प्रयोगमाला पूर्वभागः) | [`PM-PB_filter.txt`](../01_input/PM-PB_filter.txt) | `Prayogamala-Purvabhagam.json` | `build_curated_collection -> render.py` |
 | [`prayogamala-Uttarabhagam_Devanagari.pdf`](../05_renders/pdf/prayogamala-Uttarabhagam_Devanagari.pdf) | `PDF` | `02-10-2026 01:13:01` | Ritual Prayoga: Uttarabhagam (साम प्रयोगमाला उत्तरभागः) | [`PM-UB_filter.txt`](../01_input/PM-UB_filter.txt) | `prayogamala-Uttarabhagam.json` | `build_curated_collection -> render.py` |
 | [`Sooktamala_Devanagari.pdf`](../05_renders/pdf/Sooktamala_Devanagari.pdf) | `PDF` | `02-10-2026 01:13:01` | Curated Sooktam Collection (सूक्तमाला) | [`Sooktam.txt`](../01_input/Sooktam.txt) | `Sooktamala.json` | `build_curated_collection -> render.py` |
+| [`Collection_Devanagari.html`](../05_renders/html/Collection_Devanagari.html) | `HTML` | `07-11-2026 17:05:40` | Ritual Prayoga: Uttarabhagam (साम प्रयोगमाला उत्तरभागः) | [`PM-UB_filter.txt`](../01_input/PM-UB_filter.txt) | `prayogamala-Uttarabhagam.json` | `build_curated_collection -> render.py` |
 | [`Prayogamala-Purvabhagam_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Devanagari.html) | `HTML` | `22-10-2026 15:45:17` | Ritual Prayoga: Purvabhagam (साम प्रयोगमाला पूर्वभागः) | [`PM-PB_filter.txt`](../01_input/PM-PB_filter.txt) | `Prayogamala-Purvabhagam.json` | `build_curated_collection -> render.py` |
 | [`Prayogamala-Purvabhagam_Rik_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Rik_Devanagari.html) | `HTML` | `22-10-2026 15:45:18` | Ritual Prayoga: Purvabhagam (साम प्रयोगमाला पूर्वभागः) | [`PM-PB_filter.txt`](../01_input/PM-PB_filter.txt) | `Prayogamala-Purvabhagam.json` | `build_curated_collection -> render.py` |
 | [`Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html) | `HTML` | `22-10-2026 15:45:20` | Ritual Prayoga: Purvabhagam (साम प्रयोगमाला पूर्वभागः) | [`PM-PB_filter.txt`](../01_input/PM-PB_filter.txt) | `Prayogamala-Purvabhagam.json` | `build_curated_collection -> render.py` |
@@ -135,6 +136,7 @@ Only the active master source files utilized for pipeline generation are listed 
 ### HTML Readers (`05_renders/html/`)
 | File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- | :--- |
+| [`Collection_Devanagari.html`](../05_renders/html/Collection_Devanagari.html) | Standard | Devanagari (Standard) | 3.37 MB | `6ffe0ccd2837ddeae99a7ee2a46a7984dcc2fae27711aba71830f78459ed36ab` |
 | [`Prayogamala-Purvabhagam_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 5.04 MB | `4f504ebee95eaf7f8132028984d36c8f28d734f95b30b5a5afa5322277bca23f` |
 | [`Prayogamala-Purvabhagam_Rik_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Rik_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 2.63 MB | `c24c462a9de467f1730c6a3b94c486392438764eab3aab4719ec710ce88a9968` |
 | [`Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html`](../05_renders/html/Prayogamala-Purvabhagam_Rik_NoMeta_Devanagari.html) | NoMeta (Continuous Chanting) | Devanagari (Standard) | 2.63 MB | `01c614f668388ea7b73f353dea52373243f755be24e87af6d6f40cc304a03fe8` |

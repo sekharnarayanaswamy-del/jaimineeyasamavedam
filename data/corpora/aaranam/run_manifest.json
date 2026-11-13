@@ -1,7 +1,7 @@
 {
   "corpus": "aaranam",
   "edition": "1.16",
-  "timestamp": "05-11-2026 08:27:52",
+  "timestamp": "11-11-2026 16:11:15",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -12,8 +12,8 @@
   },
   "hashes": {
     "input_sha256": "149cb2aa7070e421cd490c464fe94bb3c40acd2cb3df54761d7df6be7886681c",
-    "ast_sha256": "3a33fe85c94c774f5774b02447ed4ed7b299e58179214d1cc794803544377738",
-    "canonical_sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047",
+    "ast_sha256": "30d35b0701163bb163564f84abd4a3bc32e2dbf6741088f0f0e1e2d16b6bb7e7",
+    "canonical_sha256": "e5a84d6956b4bfeb8055ca3755076e06736341853276af20661b6618bf554c47",
     "kpully_input_sha256": null
   },
   "kpully_edition": null,
@@ -38,7 +38,7 @@
         "path": "data/corpora/aaranam/02_ast/Aaranam_ast.json",
         "size_bytes": 620376,
         "size_formatted": "605.8 KB",
-        "sha256": "3a33fe85c94c774f5774b02447ed4ed7b299e58179214d1cc794803544377738"
+        "sha256": "30d35b0701163bb163564f84abd4a3bc32e2dbf6741088f0f0e1e2d16b6bb7e7"
       }
     ],
     "03_reconciliation": [
@@ -67,11 +67,33 @@
         "path": "data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json",
         "size_bytes": 763715,
         "size_formatted": "745.8 KB",
-        "sha256": "e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047"
+        "sha256": "e5a84d6956b4bfeb8055ca3755076e06736341853276af20661b6618bf554c47"
       }
     ],
     "05_renders": {
       "pdf": [
+        {
+          "name": "Aaranam_book_bw_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_book_bw_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1438377,
+          "size_formatted": "1.37 MB",
+          "sha256": "159bfda736f8bdbd113896a1039dc7b92226c2cbca0b610320b5783b42cf2d9a",
+          "compiled_timestamp": "11-11-2026 16:10:28"
+        },
+        {
+          "name": "Aaranam_book_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_book_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 1513098,
+          "size_formatted": "1.44 MB",
+          "sha256": "ecbc09769ca1d02adfe5037c073a1906c7a313c86c1fb430fc79828378bfc223",
+          "compiled_timestamp": "11-11-2026 16:08:17"
+        },
         {
           "name": "Aaranam_Devanagari.pdf",
           "path": "data/corpora/aaranam/05_renders/pdf/Aaranam_Devanagari.pdf",
@@ -126,19 +148,52 @@
           "size_formatted": "486.8 KB",
           "sha256": "de5b8d95cdee8086d889cedf8ddb17604dad98bc04652a6ab857f433448f4ab9",
           "compiled_timestamp": "01-10-2026 23:59:00"
+        },
+        {
+          "name": "Aranyakam_book_bw_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aranyakam_book_bw_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 1438377,
+          "size_formatted": "1.37 MB",
+          "sha256": "159bfda736f8bdbd113896a1039dc7b92226c2cbca0b610320b5783b42cf2d9a",
+          "compiled_timestamp": "11-11-2026 16:10:28"
+        },
+        {
+          "name": "Aranyakam_book_Devanagari.pdf",
+          "path": "data/corpora/aaranam/05_renders/pdf/Aranyakam_book_Devanagari.pdf",
+          "format": "PDF",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 1513098,
+          "size_formatted": "1.44 MB",
+          "sha256": "ecbc09769ca1d02adfe5037c073a1906c7a313c86c1fb430fc79828378bfc223",
+          "compiled_timestamp": "11-11-2026 16:08:17"
         }
       ],
       "html": [
+        {
+          "name": "Aaranam.html",
+          "path": "data/corpora/aaranam/05_renders/html/Aaranam.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Combined (Study Edition)",
+          "size_bytes": 8483516,
+          "size_formatted": "8.09 MB",
+          "sha256": "a33a95d87c0babfa230639cadd7b5828a27ab83cff550a709cda6f13b54d5312",
+          "compiled_timestamp": "07-11-2026 17:20:37"
+        },
         {
           "name": "Aaranam_Devanagari.html",
           "path": "data/corpora/aaranam/05_renders/html/Aaranam_Devanagari.html",
           "format": "HTML",
           "script": "Devanagari (Standard)",
           "mode": "Combined (Study Edition)",
-          "size_bytes": 8068735,
-          "size_formatted": "7.69 MB",
-          "sha256": "751db8a6d4de14d70eab15f88b199dcf441d4d3323e962f28f71aae5cc178498",
-          "compiled_timestamp": "13-10-2026 12:27:04"
+          "size_bytes": 8284831,
+          "size_formatted": "7.90 MB",
+          "sha256": "efe72cf1f0c0b4c5f79b6d52e13a33c8dd76a35105c8466bdb6d94db6b094ee7",
+          "compiled_timestamp": "07-11-2026 18:40:32"
         },
         {
           "name": "Aaranam_Rik_Devanagari.html",

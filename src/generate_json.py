@@ -422,7 +422,7 @@ class RikMetadataParser:
                 parts_list.append(chandas)
             
             if parts_list:
-                meta_map[rik_id] = "।। " + " ".join(parts_list) + " ।।"
+                meta_map[rik_id] = "।। " + " । ".join(parts_list) + " ।।"
         
         return meta_map
 
@@ -1435,6 +1435,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     all_subsection_ids = set(subsection_headers.keys()) | set(mantra_sets_map.keys())
     
     # Trackers for Inheritance (Rule 1 & 2)
+    last_sec_id = None
     last_rik_text = ""
     last_rik_metadata = ""
 
@@ -1444,6 +1445,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     
     for sub_id in sorted_sub_ids:
         sec_id = subsection_to_section.get(sub_id, 'section_1')
+        if sec_id != last_sec_id:
+            last_rik_text = ""
+            last_rik_metadata = ""
+            last_sec_id = sec_id
         
         # Find the supersection containing this section
         for ss_id in data["supersection"]:
@@ -1546,6 +1551,17 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
                 # Populate the entry from the trackers
                 subsection_entry["rik_metadata"] = last_rik_metadata
                 subsection_entry["rik_text"] = last_rik_text
+
+                # Extract Rik ID(s) from verse number marker ॥ N ॥ in Rik Text
+                deva_to_int_map = str.maketrans('०१२३४५६७८९', '0123456789')
+                if last_rik_text:
+                    rik_num_matches = [int(n.translate(deva_to_int_map)) for n in re.findall(r'॥\s*([०-९\d]+)\s*॥', last_rik_text)]
+                    if rik_num_matches:
+                        rik_id_to_use = rik_num_matches[0]
+                        rik_ids_to_use = rik_num_matches
+
+                subsection_entry["rik_id"] = rik_id_to_use
+                subsection_entry["rik_ids"] = rik_ids_to_use
                 
                 data["supersection"][ss_id]["sections"][sec_id]["subsections"][sub_id] = subsection_entry
                 break
@@ -1576,9 +1592,7 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
 def parse_purvarchikam_from_text(input_file="data/input/vedic_text.txt", title="जैमिनीय पूर्वार्चिक ऋक् संहिता"):
     """
     Parses Purvarchikam Rik text from vedic_text.txt into standard JSON AST.
-    Bounds in source:
-      Begins with: # Title #\n॥ जैमिनीय पूर्वाचिक ऋक् संहिता ॥\n# End of Title #
-      Ends with:   ॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥
+    Supports both legacy title bounds and new Unicode format with embedded metadata.
     """
     if not os.path.exists(input_file):
         print(f"[ERROR] Input file '{input_file}' not found.")
@@ -1590,15 +1604,19 @@ def parse_purvarchikam_from_text(input_file="data/input/vedic_text.txt", title="
     full_text = sanitize_invisible_chars(full_text)
 
     purva_pattern = re.compile(
-        r'(#\s*Title\s*#\s*\n\s*॥\s*जैमिनीय\s*पूर्वाचिक\s*ऋक्\s*संहिता\s*॥\s*\n\s*#\s*End of Title\s*#.*?॥\s*इति\s*जैमिनीय\s*पूर्वाचिक\s*ऋक्\s*संहिता\s*॥)',
+        r'(#\s*Title\s*#\s*\n\s*॥\s*जैमिनीय\s*(?:पूर्वाचिक|पूर्वार्चिक)[^\n॥]*॥\s*\n\s*#\s*End of Title\s*#.*?(?:॥\s*इति\s*जैमिनीय\s*(?:पूर्वाचिक|पूर्वार्चिक)[^\n॥]*॥|(?=#\s*Title\s*#\s*\n\s*॥\s*उत्तरार्चिकम्)))',
         re.DOTALL
     )
     m = purva_pattern.search(full_text)
     if not m:
-        start_idx = full_text.find("॥ जैमिनीय पूर्वाचिक ऋक् संहिता ॥")
+        start_idx = full_text.find("॥ जैमिनीय पूर्वाचिक")
+        if start_idx == -1:
+            start_idx = full_text.find("॥ जैमिनीय पूर्वार्चिक")
         end_idx = full_text.find("॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥")
+        if end_idx == -1:
+            end_idx = full_text.find("# Title #\n॥ उत्तरार्चिकम् ॥")
         if start_idx != -1 and end_idx != -1:
-            purva_text = full_text[start_idx:end_idx + len("॥ इति जैमिनीय पूर्वाचिक ऋक् संहिता ॥")]
+            purva_text = full_text[start_idx:end_idx]
         else:
             print(f"[ERROR] Could not locate Purvarchikam bounds in '{input_file}'.")
             return None
@@ -1621,98 +1639,141 @@ def parse_purvarchikam_from_text(input_file="data/input/vedic_text.txt", title="
         "supersection": {}
     }
 
-    # Split into supersections: # Supersection title # ... # End of Supersection title.*?#
-    ss_blocks = re.split(r'#\s*Supersection title\s*#\s*\n(.*?)\n\s*#\s*End of Supersection title.*?#', purva_text, flags=re.DOTALL)
-
     def int_to_dev(n):
         mapping = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'}
         return "".join(mapping[c] for c in str(n))
 
-    for ss_idx in range(1, len(ss_blocks), 2):
-        ss_title_raw = ss_blocks[ss_idx].strip()
-        ss_content = ss_blocks[ss_idx + 1]
-        ss_num = ss_idx // 2 + 1
-        ss_id = f"supersection_{ss_num}"
-        ss_title = re.sub(r'^[॥\s]+|[॥\s]+$', '', ss_title_raw).strip()
-        # Clean 'प्रारम्भः' or 'प्रारम्भ' from actual text title
+    ss_pattern = re.compile(
+        r'(?:# Start of SuperSection Title -- (supersection_\d+) ## DO NOT EDIT\s*\n([^\n]+)\n\s*# End of SuperSection Title -- \1 ## DO NOT EDIT|# Supersection title #\s*\n([^\n]+)\n\s*# End of Supersection title#)',
+        re.MULTILINE
+    )
+
+    matches = list(ss_pattern.finditer(purva_text))
+    if not matches:
+        print(f"[ERROR] Could not find supersections in Purvarchikam text.")
+        return None
+
+    for i, sm in enumerate(matches):
+        ss_id = sm.group(1) or f"supersection_{i+1}"
+        raw_title = (sm.group(2) or sm.group(3)).strip()
+        ss_title = re.sub(r'^[॥\s]+|[॥\s]+$', '', raw_title).strip()
         ss_title = re.sub(r'\s*प्रारम्भः?\s*', '', ss_title).strip()
-        # Derive TOC title by stripping leading 'अथ'
         ss_title_toc = re.sub(r'^\s*अथ\s+', '', ss_title).strip()
 
-        json_output["supersection"][ss_id] = {
-            "supersection_title": ss_title,
-            "supersection_title_toc": ss_title_toc,
-            "sections": {}
-        }
-        current_sections = json_output["supersection"][ss_id]["sections"]
+        start = sm.end()
+        end = matches[i+1].start() if i+1 < len(matches) else len(purva_text)
+        ss_chunk = purva_text[start:end]
 
-        # Find all khandas in this supersection
-        sec_matches = list(re.finditer(r'॥\s*(अथ\s+[^॥]+?(?:खण्डः|पर्वा))\s*॥', ss_content))
+        sections = {}
+        sec_tags = list(re.finditer(r'# Start of Section Title -- (section_\d+) ## DO NOT EDIT\s*\n([^\n]+)\n\s*# End of Section Title -- \1 ## DO NOT EDIT', ss_chunk))
 
-        if not sec_matches:
-            # Single section in this supersection (e.g., Shakvara Parva)
-            sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', ss_content)
-            rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
-            subsections = {}
-            for r_idx, rm in enumerate(rik_matches, 1):
-                raw_text = rm.group(1).strip()
-                if '(' not in raw_text and '।' not in raw_text:
-                    continue
-                r_num_str = rm.group(3).strip()
-                r_text = f"{raw_text} ॥ {r_num_str} ॥"
-                r_text = re.sub(r'^\s*\d+:\s*', '', r_text)
-                sub_id = f"subsection_{r_idx}"
-                subsections[sub_id] = {
-                    "header": {"header": "", "header_number": r_idx},
-                    "rik_id": r_idx,
-                    "rik_text": r_text,
-                    "rik_metadata": "",
-                    "corrected-mantra_sets": [],
-                    "footnotes": {}
-                }
-
-            current_sections["section_1"] = {
-                "section_title": ss_title,
-                "section_title_toc": ss_title_toc,
-                "Count": int_to_dev(len(subsections)),
-                "subsections": subsections
-            }
-        else:
-            for sec_idx, sm in enumerate(sec_matches, 1):
-                sec_id = f"section_{sec_idx}"
-                sec_title = sm.group(1).strip()
-                sec_title = re.sub(r'\s*प्रारम्भः?\s*', '', sec_title).strip()
+        if sec_tags:
+            for s_idx, st in enumerate(sec_tags):
+                sec_id = st.group(1)
+                sec_title = st.group(2).strip()
                 sec_title_toc = re.sub(r'^\s*अथ\s+', '', sec_title).strip()
-                start = sm.end()
-                end = sec_matches[sec_idx].start() if sec_idx < len(sec_matches) else len(ss_content)
-                sec_chunk = ss_content[start:end]
-                sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', sec_chunk)
+                s_start = st.end()
+                s_end = sec_tags[s_idx+1].start() if s_idx+1 < len(sec_tags) else len(ss_chunk)
+                sec_chunk = ss_chunk[s_start:s_end]
 
-                rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
+                rik_pattern = re.compile(
+                    r'(?:॥\s*ऋक्\s*([०-९\d]+)\s*॥\s*\n)?'
+                    r'(?:[।\|]{2}\s*([^।\|\n]+?)\s*[।\|]{2}\s*\n)?'
+                    r'([^\n][\s\S]*?॥\s*([०-९\d]+)\s*॥)',
+                    re.MULTILINE
+                )
                 subsections = {}
-                for r_idx, rm in enumerate(rik_matches, 1):
-                    raw_text = rm.group(1).strip()
+                r_count = 0
+                for rm in rik_pattern.finditer(sec_chunk):
+                    raw_text = rm.group(3).strip()
                     if '(' not in raw_text and '।' not in raw_text:
                         continue
-                    r_num_str = rm.group(3).strip()
-                    r_text = f"{raw_text} ॥ {r_num_str} ॥"
-                    r_text = re.sub(r'^\s*\d+:\s*', '', r_text)
-                    sub_id = f"subsection_{r_idx}"
+                    r_count += 1
+                    meta_str = rm.group(2) or ""
+                    sub_id = f"subsection_{r_count}"
                     subsections[sub_id] = {
-                        "header": {"header": "", "header_number": r_idx},
-                        "rik_id": r_idx,
-                        "rik_text": r_text,
-                        "rik_metadata": "",
+                        "header": {"header": "", "header_number": r_count},
+                        "rik_id": r_count,
+                        "rik_text": raw_text,
+                        "rik_metadata": meta_str,
                         "corrected-mantra_sets": [],
                         "footnotes": {}
                     }
-
-                current_sections[sec_id] = {
+                sections[sec_id] = {
                     "section_title": sec_title,
                     "section_title_toc": sec_title_toc,
                     "Count": int_to_dev(len(subsections)),
                     "subsections": subsections
                 }
+        else:
+            sec_matches = list(re.finditer(r'॥\s*(अथ\s+[^॥]+?(?:खण्डः|पर्वा))\s*॥', ss_chunk))
+            if sec_matches:
+                for s_idx, sm_sec in enumerate(sec_matches, 1):
+                    sec_id = f"section_{s_idx}"
+                    sec_title = sm_sec.group(1).strip()
+                    sec_title_toc = re.sub(r'^\s*अथ\s+', '', sec_title).strip()
+                    s_start = sm_sec.end()
+                    s_end = sec_matches[s_idx].start() if s_idx < len(sec_matches) else len(ss_chunk)
+                    sec_chunk = ss_chunk[s_start:s_end]
+                    sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', sec_chunk)
+                    rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
+                    subsections = {}
+                    r_count = 0
+                    for rm in rik_matches:
+                        raw_text = rm.group(1).strip()
+                        if '(' not in raw_text and '।' not in raw_text:
+                            continue
+                        r_count += 1
+                        r_num_str = rm.group(3).strip()
+                        r_text = f"{raw_text} ॥ {r_num_str} ॥"
+                        sub_id = f"subsection_{r_count}"
+                        subsections[sub_id] = {
+                            "header": {"header": "", "header_number": r_count},
+                            "rik_id": r_count,
+                            "rik_text": r_text,
+                            "rik_metadata": "",
+                            "corrected-mantra_sets": [],
+                            "footnotes": {}
+                        }
+                    sections[sec_id] = {
+                        "section_title": sec_title,
+                        "section_title_toc": sec_title_toc,
+                        "Count": int_to_dev(len(subsections)),
+                        "subsections": subsections
+                    }
+            else:
+                sec_chunk = re.sub(r'॥\s*इति[^॥]*॥', '', ss_chunk)
+                rik_matches = list(re.finditer(r'([^॥]+?)(॥\s*([०-९\d]+)\s*॥)', sec_chunk))
+                subsections = {}
+                r_count = 0
+                for rm in rik_matches:
+                    raw_text = rm.group(1).strip()
+                    if '(' not in raw_text and '।' not in raw_text:
+                        continue
+                    r_count += 1
+                    r_num_str = rm.group(3).strip()
+                    r_text = f"{raw_text} ॥ {r_num_str} ॥"
+                    sub_id = f"subsection_{r_count}"
+                    subsections[sub_id] = {
+                        "header": {"header": "", "header_number": r_count},
+                        "rik_id": r_count,
+                        "rik_text": r_text,
+                        "rik_metadata": "",
+                        "corrected-mantra_sets": [],
+                        "footnotes": {}
+                    }
+                sections["section_1"] = {
+                    "section_title": ss_title,
+                    "section_title_toc": ss_title_toc,
+                    "Count": int_to_dev(len(subsections)),
+                    "subsections": subsections
+                }
+
+        json_output["supersection"][ss_id] = {
+            "supersection_title": ss_title,
+            "supersection_title_toc": ss_title_toc,
+            "sections": sections
+        }
 
     # Extract closing mantras if present
     json_output["closing_mantras"] = extract_closing_mantras(purva_text)

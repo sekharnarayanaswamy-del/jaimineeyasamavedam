@@ -171,6 +171,17 @@ test_strip.py
 # Allow entire data/corpora directory and all its subfolders
 !data/corpora/
 !data/corpora/**
+data/corpora/**/05_renders/tex/*.aux
+data/corpora/**/05_renders/tex/*.log
+data/corpora/**/05_renders/tex/*.idx
+data/corpora/**/05_renders/tex/*.ilg
+data/corpora/**/05_renders/tex/*.ind
+data/corpora/**/05_renders/tex/*.toc
+data/corpora/**/05_renders/tex/*.synctex.gz
+data/corpora/**/05_renders/tex/*.fls
+data/corpora/**/05_renders/tex/*.fdb_latexmk
+data/corpora/**/05_renders/tex/*.out
+data/corpora/**/05_renders/tex/*.pdf
 
 # Legacy root scripts and documents
 Structure.md
@@ -202,3 +213,4 @@ fonts/GANAPATHY - GRANTHA FONT.ttf
 # Microsoft Office lock files
 ~$*
 .~lock.*
+*.bak

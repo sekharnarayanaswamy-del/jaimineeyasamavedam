@@ -1,0 +1,35 @@
+{
+  "version": "3.60",
+  "generated_at": "2026-11-12T13:48:34.148Z",
+  "total_selected": 2,
+  "patch_items": [
+    {
+      "id": 26,
+      "sub_key": "subsection_259",
+      "parva": "बृहतिपाठः",
+      "kandah": "प्रथम खण्डः",
+      "field": "Samam Chant",
+      "rule_name": "पादान्ते अनुस्वार-दोषः (Anusvara before Danda in Samam)",
+      "sutra": "वाऽवसाने (८.४.५९) / Samavedic Paadanta Norm",
+      "severity": "Medium",
+      "suspect": "हिं ।",
+      "suggested": "हिम्  ।",
+      "context": "तंवोदस्मामृती(फू) षहां(ता) वा(प) सोर्मन्दानम(प्लु) न्धा(ङ) सा(श) । आभीवत्स(षी) न...",
+      "explanation": "Paadanta nasal before danda standardized to makara (म् ।) in Samavedic orthography."
+    },
+    {
+      "id": 73,
+      "sub_key": "subsection_564",
+      "parva": "पवमानपाठः",
+      "kandah": "द्वितीय खण्डः",
+      "field": "Samam Chant",
+      "rule_name": "पादान्ते अनुस्वार-दोषः (Anusvara before Danda in Samam)",
+      "sutra": "वाऽवसाने (८.४.५९) / Samavedic Paadanta Norm",
+      "severity": "Medium",
+      "suspect": "दश्वां।",
+      "suggested": "दश्वाम् ।",
+      "context": "इन्दू(खा) रौहोवाहाइपावी(शृ)। ष्टचा(टा) ईत नो(खि) हा(ण) इ(श)। हा(क) होए(टा) हो(ट)...",
+      "explanation": "Paadanta nasal before danda standardized to makara (म् ।) in Samavedic orthography."
+    }
+  ]
+}

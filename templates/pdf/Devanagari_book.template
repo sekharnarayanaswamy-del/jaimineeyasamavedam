@@ -132,9 +132,11 @@
 }
 
 % --- SPACING & BREAKING RULES ---
-% User Rule 1: No word breaking across lines
+% User Rule 1: No word breaking across lines (strictly enforced globally and per-language)
 \hyphenpenalty=10000     
 \exhyphenpenalty=10000
+\appto\captionssanskrit{\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}
+\AtBeginDocument{\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}
 
 % --- HYPHENATION & SPACING RULES (CRITICAL) ---
 \lefthyphenmin=3      % Never split first 2 letters (e.g., prevents "ha-")
@@ -237,7 +239,7 @@
     linkcolor=black,     
     filecolor=magenta,      
     urlcolor=cyan,
-    pdftitle={Vedic Text},
+    pdftitle={\VAR{doc_title_sa or 'जैमिनीयसामवेद'}},
     pdfpagemode=UseOutlines, 
 }
 
@@ -337,6 +339,9 @@
 % ------------------------------------
 
 \begin{document}
+\BLOCK{ if flow_variant }
+\raggedbottom
+\BLOCK{ endif }
 
 \renewcommand{\contentsname}{॥ अनुक्रमणिका ॥}
 
@@ -354,9 +359,23 @@
         \vfill
         
         % SS2: Title & Subtitle from Cover page docx
+        \BLOCK{ if doc_title_sa and ('आरण्यक' in doc_title_sa or 'आरण्य' in doc_title_sa) }
+        {\fontsize{24pt}{30pt}\selectfont \textbf{जैमिनीयसामवेद-आरण्यकम्}\par}
+        \vskip 0.35em
+        {\fontsize{15pt}{19pt}\selectfont \textbf{तलवकारशाखा-आरण्यक भाग:}\par}
+        \BLOCK{ elif doc_title_sa and ('पूर्वार्चिक' in doc_title_sa or 'उत्तरार्चिक' in doc_title_sa) }
+        {\fontsize{24pt}{30pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
+        \vskip 0.35em
+        {\fontsize{15pt}{19pt}\selectfont \textbf{तलवकारशाखा}\par}
+        \BLOCK{ elif doc_title_sa }
+        {\fontsize{24pt}{30pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
+        \vskip 0.35em
+        {\fontsize{15pt}{19pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
+        \BLOCK{ else }
         {\fontsize{24pt}{30pt}\selectfont \textbf{जैमिनीयसामवेद-संहिता}\par}
         \vskip 0.35em
         {\fontsize{15pt}{19pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
+        \BLOCK{ endif }
         
         \vfill
         \vfill
@@ -412,7 +431,11 @@
         \BLOCK{ if section_key != 'count' }
         
             \BLOCK{ if not ns_sec.first_section }
+            \BLOCK{ if flow_variant }
+            \par\needspace{4\baselineskip}\vspace{1.2em plus 0.4em minus 0.2em}
+            \BLOCK{ else }
             \clearpage
+            \BLOCK{ endif }
             \BLOCK{ endif }
             \BLOCK{ set ns_sec.first_section = false }
 
@@ -444,8 +467,8 @@
             \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none, first_sub=true) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
-                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id }
-                \par\penalty -200\vspace{0.25em plus 0.05em minus 0.05em}\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}\vspace{0.10em}
+                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id and (not ns.prev_rik_text or subsection.rik_text != ns.prev_rik_text) and output_mode not in ['rik', 'rik_nometa'] }
+                \par\nopagebreak[4]\vskip 0.05em plus 0.02em minus 0.02em\relax\nopagebreak[4]\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.first_sub = false }
                 
@@ -453,13 +476,13 @@
                 \BLOCK{ if output_mode == 'rik' }
                 \VAR{subsection | format_rik_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level, ns.prev_rik_text)}
                 \BLOCK{ elif output_mode == 'samam' }
-                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
+                \VAR{subsection | format_samam_only(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level, 'book')}
                 \BLOCK{ elif output_mode == 'rik_nometa' }
                 \VAR{subsection | format_rik_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level, ns.prev_rik_text)}
                 \BLOCK{ elif output_mode == 'samam_nometa' }
-                \VAR{subsection | format_samam_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
+                \VAR{subsection | format_samam_nometa(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level, 'book')}
                 \BLOCK{ else }
-                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level)}
+                \VAR{subsection | format_mantra_sets(none, none, subsection.header.header, footnote_dict, ns.prev_rik_id, key ~ '_' ~ section_key ~ '_' ~ subsection_key, toc_level, 'book', flow_variant, ns.prev_rik_text)}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.prev_rik_id = subsection.rik_id }
                 \BLOCK{ if subsection.rik_text }
@@ -475,8 +498,8 @@
             \nopagebreak\vspace{0.45em}
             \BLOCK{ if show_rik and show_samam and section.riks_count_dev and section.samams_count_dev }
             \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ ऋक् सङ्ख्या : \VAR{section.riks_count_dev}, साम सङ्ख्या : \VAR{section.samams_count_dev} ॥}}}
-            \BLOCK{ elif show_rik and section.riks_count_dev }
-            \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ ऋक् सङ्ख्या : \VAR{section.riks_count_dev} ॥}}}
+            \BLOCK{ elif show_rik and (section.riks_count_dev or section.Count) }
+            \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ ऋक् सङ्ख्या : \VAR{section.riks_count_dev or section.Count} ॥}}}
             \BLOCK{ elif show_samam and section.samams_count_dev }
             \centerline{\devafont\textbf{\textcolor{AccentBlue}{॥ साम सङ्ख्या : \VAR{section.samams_count_dev} ॥}}}
             \BLOCK{ endif }

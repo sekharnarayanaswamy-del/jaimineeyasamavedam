@@ -2,7 +2,7 @@
 
 - **Corpus**: `aaranam`
 - **Edition**: `1.16`
-- **Generated Timestamp**: `05-11-2026 08:27:52`
+- **Generated Timestamp**: `11-11-2026 16:11:15`
 - **Validation Status**: `PASSED`
 
 ---
@@ -55,12 +55,17 @@ This table directly maps each compiled file in `05_renders/` back to the active 
 
 | Output Render Artifact | Format | Compiled Timestamp | Purpose / Description | Master Input File (`01_input/`) | Intermediate AST (`02_ast/`) | Pipeline Generation Path |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| [`Aaranam_book_bw_Devanagari.pdf`](../05_renders/pdf/Aaranam_book_bw_Devanagari.pdf) | `PDF` | `11-11-2026 16:10:28` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
+| [`Aaranam_book_Devanagari.pdf`](../05_renders/pdf/Aaranam_book_Devanagari.pdf) | `PDF` | `11-11-2026 16:08:17` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Devanagari.pdf`](../05_renders/pdf/Aaranam_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:00` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Rik_Devanagari.pdf`](../05_renders/pdf/Aaranam_Rik_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:00` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Rik_NoMeta_Devanagari.pdf`](../05_renders/pdf/Aaranam_Rik_NoMeta_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:00` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Samam_Devanagari.pdf`](../05_renders/pdf/Aaranam_Samam_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:00` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Samam_NoMeta_Devanagari.pdf`](../05_renders/pdf/Aaranam_Samam_NoMeta_Devanagari.pdf) | `PDF` | `01-10-2026 23:59:00` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
-| [`Aaranam_Devanagari.html`](../05_renders/html/Aaranam_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
+| [`Aranyakam_book_bw_Devanagari.pdf`](../05_renders/pdf/Aranyakam_book_bw_Devanagari.pdf) | `PDF` | `11-11-2026 16:10:28` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
+| [`Aranyakam_book_Devanagari.pdf`](../05_renders/pdf/Aranyakam_book_Devanagari.pdf) | `PDF` | `11-11-2026 16:08:17` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
+| [`Aaranam.html`](../05_renders/html/Aaranam.html) | `HTML` | `07-11-2026 17:20:37` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
+| [`Aaranam_Devanagari.html`](../05_renders/html/Aaranam_Devanagari.html) | `HTML` | `07-11-2026 18:40:32` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Rik_Devanagari.html`](../05_renders/html/Aaranam_Rik_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Rik_NoMeta_Devanagari.html`](../05_renders/html/Aaranam_Rik_NoMeta_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
 | [`Aaranam_Samam_Devanagari.html`](../05_renders/html/Aaranam_Samam_Devanagari.html) | `HTML` | `13-10-2026 12:27:04` | Aranyaka Liturgical Chants | [`Aaranam_latest.txt`](../01_input/Aaranam_latest.txt) | `Aaranam_ast.json (Canonical: Aaranam_vargeekaran.json)` | `generate_json.py --type aaranam -> render.py --type aaranam` |
@@ -83,12 +88,12 @@ Only the active master source files utilized for pipeline generation are listed 
 ### Parsed ASTs (`02_ast/`)
 | AST File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- |
-| [`Aaranam_ast.json`](../02_ast/Aaranam_ast.json) | 605.8 KB | `3a33fe85c94c774f5774b02447ed4ed7b299e58179214d1cc794803544377738` |
+| [`Aaranam_ast.json`](../02_ast/Aaranam_ast.json) | 605.8 KB | `30d35b0701163bb163564f84abd4a3bc32e2dbf6741088f0f0e1e2d16b6bb7e7` |
 
 ### Canonical Datasets (`04_canonical/`)
 | Canonical File | Size | SHA-256 Checksum |
 | :--- | :--- | :--- |
-| [`Aaranam_vargeekaran.json`](../04_canonical/Aaranam_vargeekaran.json) | 745.8 KB | `e40c6712769657e7658491b1f702ee9aeca5339c2b29fc080c48bf0f8f355047` |
+| [`Aaranam_vargeekaran.json`](../04_canonical/Aaranam_vargeekaran.json) | 745.8 KB | `e5a84d6956b4bfeb8055ca3755076e06736341853276af20661b6618bf554c47` |
 
 ### Reconciliation Tables (`03_reconciliation/`)
 | File Name | Size |
@@ -104,16 +109,21 @@ Only the active master source files utilized for pipeline generation are listed 
 ### PDF Documents (`05_renders/pdf/`)
 | File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- | :--- |
+| [`Aaranam_book_bw_Devanagari.pdf`](../05_renders/pdf/Aaranam_book_bw_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 1.37 MB | `159bfda736f8bdbd113896a1039dc7b92226c2cbca0b610320b5783b42cf2d9a` |
+| [`Aaranam_book_Devanagari.pdf`](../05_renders/pdf/Aaranam_book_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 1.44 MB | `ecbc09769ca1d02adfe5037c073a1906c7a313c86c1fb430fc79828378bfc223` |
 | [`Aaranam_Devanagari.pdf`](../05_renders/pdf/Aaranam_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 525.1 KB | `7838d3f405325244ccf127eb951e7fe292ca1fd9b644e0c0677b61c9d4a641e8` |
 | [`Aaranam_Rik_Devanagari.pdf`](../05_renders/pdf/Aaranam_Rik_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 130.3 KB | `6dea6f2a96117fc3d1778fa4ea6d11bf2c0938b1408e4bdc51d9645fa0939ea2` |
 | [`Aaranam_Rik_NoMeta_Devanagari.pdf`](../05_renders/pdf/Aaranam_Rik_NoMeta_Devanagari.pdf) | NoMeta (Continuous Chanting) | Devanagari (Standard) | 118.4 KB | `e80a3a2f20d08d8a255519510b4c16286001b5f088d892273ab6707cdfae026a` |
 | [`Aaranam_Samam_Devanagari.pdf`](../05_renders/pdf/Aaranam_Samam_Devanagari.pdf) | Combined (Study Edition) | Devanagari (Standard) | 486.8 KB | `9e8e8702e38682a0a9c421b476f19a4bef40b73208269c493a41966cc7a6eb33` |
 | [`Aaranam_Samam_NoMeta_Devanagari.pdf`](../05_renders/pdf/Aaranam_Samam_NoMeta_Devanagari.pdf) | NoMeta (Continuous Chanting) | Devanagari (Standard) | 486.8 KB | `de5b8d95cdee8086d889cedf8ddb17604dad98bc04652a6ab857f433448f4ab9` |
+| [`Aranyakam_book_bw_Devanagari.pdf`](../05_renders/pdf/Aranyakam_book_bw_Devanagari.pdf) | Standard | Devanagari (Standard) | 1.37 MB | `159bfda736f8bdbd113896a1039dc7b92226c2cbca0b610320b5783b42cf2d9a` |
+| [`Aranyakam_book_Devanagari.pdf`](../05_renders/pdf/Aranyakam_book_Devanagari.pdf) | Standard | Devanagari (Standard) | 1.44 MB | `ecbc09769ca1d02adfe5037c073a1906c7a313c86c1fb430fc79828378bfc223` |
 
 ### HTML Readers (`05_renders/html/`)
 | File Name | Mode / Edition | Target Script | Size | SHA-256 Checksum |
 | :--- | :--- | :--- | :--- | :--- |
-| [`Aaranam_Devanagari.html`](../05_renders/html/Aaranam_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 7.69 MB | `751db8a6d4de14d70eab15f88b199dcf441d4d3323e962f28f71aae5cc178498` |
+| [`Aaranam.html`](../05_renders/html/Aaranam.html) | Combined (Study Edition) | Devanagari (Standard) | 8.09 MB | `a33a95d87c0babfa230639cadd7b5828a27ab83cff550a709cda6f13b54d5312` |
+| [`Aaranam_Devanagari.html`](../05_renders/html/Aaranam_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 7.90 MB | `efe72cf1f0c0b4c5f79b6d52e13a33c8dd76a35105c8466bdb6d94db6b094ee7` |
 | [`Aaranam_Rik_Devanagari.html`](../05_renders/html/Aaranam_Rik_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 872.6 KB | `1ba4c2179ac22374ed8870b8db8028d54fa2f7f28afaf2caf3b8ba0de3100fda` |
 | [`Aaranam_Rik_NoMeta_Devanagari.html`](../05_renders/html/Aaranam_Rik_NoMeta_Devanagari.html) | NoMeta (Continuous Chanting) | Devanagari (Standard) | 843.9 KB | `a3cb39ffd3288edf29059cc1ae0d00f74ecfadb94c131210756e6aa94c855f2e` |
 | [`Aaranam_Samam_Devanagari.html`](../05_renders/html/Aaranam_Samam_Devanagari.html) | Combined (Study Edition) | Devanagari (Standard) | 5.34 MB | `ea1fbd4a06fa2d28823ca47c58f2c8497dc3732dda9a6027e742f3eb9ed498a0` |

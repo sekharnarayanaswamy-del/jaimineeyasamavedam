@@ -1,7 +1,7 @@
 {
   "corpus": "collections",
   "edition": "2.05",
-  "timestamp": "05-11-2026 08:27:52",
+  "timestamp": "11-11-2026 16:11:15",
   "stage_status": {
     "01_input": "PRESENT",
     "02_ast": "UP_TO_DATE",
@@ -130,6 +130,17 @@
         }
       ],
       "html": [
+        {
+          "name": "Collection_Devanagari.html",
+          "path": "data/corpora/collections/05_renders/html/Collection_Devanagari.html",
+          "format": "HTML",
+          "script": "Devanagari (Standard)",
+          "mode": "Standard",
+          "size_bytes": 3530552,
+          "size_formatted": "3.37 MB",
+          "sha256": "6ffe0ccd2837ddeae99a7ee2a46a7984dcc2fae27711aba71830f78459ed36ab",
+          "compiled_timestamp": "07-11-2026 17:05:40"
+        },
         {
           "name": "Prayogamala-Purvabhagam_Devanagari.html",
           "path": "data/corpora/collections/05_renders/html/Prayogamala-Purvabhagam_Devanagari.html",

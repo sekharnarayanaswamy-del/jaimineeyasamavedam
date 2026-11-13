@@ -314,6 +314,8 @@ def setup_stage_directories():
     sam_renders = CORPORA_DIR / "samhita" / "05_renders"
     for stale_pattern in ["*.tex", "Rik.html", "Samam.html", "Rik_NoMeta.html", "Samam_NoMeta.html", "Samhita.html", "Rik_Devanagari.*", "Samam_Devanagari.*", "Rik_NoMeta_Devanagari.*", "Samam_NoMeta_Devanagari.*"]:
         for p in sam_renders.rglob(stale_pattern):
+            if p.suffix == ".tex" and p.parent.name == "tex":
+                continue
             try:
                 p.unlink()
                 print(f"  Purged transient/stale render -> {p.relative_to(ROOT_DIR)}")

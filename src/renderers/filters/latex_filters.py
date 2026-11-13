@@ -116,27 +116,22 @@ except ImportError:
 # --- General Swara & Text Helpers ---
 
 CURRENT_PDF_FONT = "AdishilaVedic"
-
+CURRENT_FLOW_VARIANT = False
 LATEX_DOC_MARKERS_MAP = {}
 
-
-
 def reset_latex_doc_markers() -> None:
-
     """Reset the document-level footnote marker map between renders."""
-
     global LATEX_DOC_MARKERS_MAP
-
     LATEX_DOC_MARKERS_MAP.clear()
 
-
+def set_flow_variant(val: bool) -> None:
+    """Set whether continuous flow variant is active (no needspace, unpenalized breaks)."""
+    global CURRENT_FLOW_VARIANT
+    CURRENT_FLOW_VARIANT = bool(val)
 
 def set_current_pdf_font(font: str) -> None:
-
     global CURRENT_PDF_FONT
-
     if font:
-
         CURRENT_PDF_FONT = font
 
 def to_devanagari_numeral(num):
@@ -1878,13 +1873,17 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
             
 
+    # Strip any trailing \vspace so no unpenalized glue trails at the end of the mantra body
+    while formatted_paragraphs and formatted_paragraphs[-1].startswith(r"\vspace"):
+        formatted_paragraphs.pop()
+
     return formatted_paragraphs
 
 
 
 
 
-def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section'):
+def format_mantra_sets(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section', layout_mode=None, flow_variant=None, prev_rik_text=None):
 
     
 
@@ -1934,6 +1933,11 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
             show_rik_info = True
 
+    # Rigorous safeguard: if this subsection's Rik text is identical to the previous subsection's,
+    # it is the exact same verse and must never be re-printed.
+    if prev_rik_text and string_2 and string_2.strip() == prev_rik_text.strip():
+        show_rik_info = False
+
     
 
     # Clean titles for Display
@@ -1979,17 +1983,45 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
     
 
     # 1. Page Break / Indexing Logic
+    is_flow = (flow_variant is True) or CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
+
+    if not is_flow:
+        if layout_mode == 'a4':
+            # Custom pagination directives requested by user for A4 edition
+            if subsection_key == "supersection_2_section_20_subsection_205":
+                # Page 72: Bring Rik 8 (last Rik+Samam block) down to Page 73
+                formatted_output.append(r"\pagebreak")
+            elif subsection_key == "supersection_2_section_18_subsection_181":
+                # Page 64: Keep Rik 7 with its chant together on Page 65
+                formatted_output.append(r"\pagebreak")
+        elif layout_mode == 'book':
+            # Custom pagination directives requested by user for Book edition
+            if subsection_key == "supersection_1_section_1_subsection_9":
+                # Break cleanly before Rik 6 so Page 9 and Page 10 stay strictly within bounding box
+                formatted_output.append(r"\pagebreak")
+
+    force_no_break = (not is_flow and layout_mode == 'book' and subsection_key == "supersection_1_section_2_subsection_18")
 
     if prev_rik_id is None:
         # First Rik of the section: sit close to the Section title
         formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
+    elif is_flow:
+        if not show_rik_info:
+            # Same Rik block: Arsheyams packed closely together
+            formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+        else:
+            # New Rik+Samam block: no needspace, natural break point penalty 0
+            formatted_output.append(r"\par\penalty 0\vspace{0.08em plus 0.02em minus 0.02em}")
+    elif force_no_break:
+        # Pull up Rik 5 from Page 15 onto Page 14 to eliminate dead vertical whitespace
+        formatted_output.append(r"\nopagebreak\vspace{0.08em plus 0.02em minus 0.02em}")
     elif not show_rik_info:
         # Same Rik block: Arsheyams packed closely together, allow break if needed
-        formatted_output.append(r"\par\penalty -50\vspace{0.25em plus 0.05em minus 0.05em}")
+        formatted_output.append(r"\par\penalty -50\vspace{0.15em plus 0.05em minus 0.05em}")
     else:
         # New Rik+Samam block: preferred break point between different Riks
         # Compact: require 2 lines so Rik header and verse stay together, allowing Samams to flow
-        formatted_output.append(r"\needspace{2\baselineskip}\par\penalty -200\vspace{0.15em plus 0.05em minus 0.05em}")
+        formatted_output.append(r"\needspace{2\baselineskip}\par\penalty -200\vspace{0.08em plus 0.02em minus 0.02em}")
 
     # The TOC/index anchor must point here, at the very start of the
     # subsection, *before* the Rik metadata + Rik text. The Rik group is
@@ -2090,8 +2122,12 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         has_samam_content = bool(display_sub_title.strip() or string_3.strip() or subsection.get('mantra_sets'))
 
         if has_samam_content:
-            # Allow break between Rik and its Samam across pages as permitted by user (mild penalty 50)
-            formatted_output.append(r"\vspace{0.15em}\par\penalty 50\vspace{0.05em}")
+            if is_flow:
+                # Flow variant: allow unpenalized natural break between Rik and its Samam
+                formatted_output.append(r"\vspace{0.10em}\par\penalty 0\vspace{0.05em}")
+            else:
+                # Allow break between Rik and its Samam across pages as permitted by user (mild penalty 50)
+                formatted_output.append(r"\vspace{0.15em}\par\penalty 50\vspace{0.05em}")
         else:
             formatted_output.append(r"\vspace{0.30em}")
 
@@ -2115,7 +2151,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
     if meta_part:
 
-        meta_part = f"\\textcolor{{AccentBrown}}{{{meta_part}}}"
+        meta_part = f"{{\\footnotesize \\textcolor{{AccentBrown}}{{{meta_part}}}}}"
 
     
 
@@ -2146,21 +2182,29 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
 
 
-    # --- MANTRA CONTENT RENDERING (Option B2: Left-Indented Chant Block) ---
+    # --- MANTRA CONTENT RENDERING (Symmetric Chant Block) ---
 
     body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
 
     if body_paras:
+        while body_paras and body_paras[-1].startswith(r"\vspace"):
+            body_paras.pop()
 
-        indented_body = "{\\begingroup\\leftskip=1.0em\\rightskip=0pt\\relax\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
-
+        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
-
+    if not is_flow and layout_mode == 'a4':
+        if subsection_key == "supersection_1_section_3_subsection_31":
+            # Page 14: Pull up content from Page 15 (Rik 8, subsection_32) into Page 14
+            formatted_output.append(r"\enlargethispage{2.5\baselineskip}")
+        elif subsection_key == "supersection_1_section_6_subsection_70":
+            # Page 26: Prevent 1-word spill of Samam 9 to Page 27
+            formatted_output.append(r"\enlargethispage{1.5\baselineskip}")
+        elif subsection_key == "supersection_2_section_16_subsection_162":
+            # Page 56: Prevent 1-word spill of Samam 10 to Page 57
+            formatted_output.append(r"\enlargethispage{1.5\baselineskip}")
 
     return "\n\n".join(formatted_output)
-
-
 
 
 
@@ -2298,7 +2342,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
 # ----------------------------------------------------
 
-def format_samam_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section'):
+def format_samam_only(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section', layout_mode=None):
 
     """
 
@@ -2366,7 +2410,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
     if meta_part:
 
-        meta_part = f"\\textcolor{{AccentBrown}}{{{meta_part}}}"
+        meta_part = f"{{\\footnotesize \\textcolor{{AccentBrown}}{{{meta_part}}}}}"
 
     
 
@@ -2407,9 +2451,11 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     body_paras = _render_devanagari_mantra_body(subsection, subsection_key, seen_markers)
 
     if body_paras:
+        while body_paras and body_paras[-1].startswith(r"\vspace"):
+            body_paras.pop()
 
-        indented_body = "{\\begingroup\\leftskip=1.0em\\rightskip=0pt\\relax\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
 
+        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
 
@@ -2538,7 +2584,7 @@ def format_rik_nometa(subsection, supersection_title, section_title, subsection_
 
 # ----------------------------------------------------
 
-def format_samam_nometa(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section'):
+def format_samam_nometa(subsection, supersection_title, section_title, subsection_title, footnote_dict={}, prev_rik_id=None, subsection_key=None, toc_level='section', layout_mode=None):
 
     """
 
