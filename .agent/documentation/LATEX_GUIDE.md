@@ -58,6 +58,72 @@ Use your plugin's **PDF Preview** to see the changes. If the build breaks, simpl
     - Vedic Accents: `NotoSerifDevanagari-Regular.ttf`
     - English Numerals & Footnotes: `Nimbus Roman.ttf`
 
+## 5. PDF Typography & Page Geometry (A4 vs Book Edition)
+
+The project maintains two distinct print targets for Devanagari Samaveda PDFs:
+*   **A4 Edition** (`templates/pdf/Devanagari_main.template`): Desktop preview and standard A4 printing.
+*   **Book Edition** (`templates/pdf/Devanagari_book.template`): Physical book printing (Crown Quarto trim).
+
+### Font Scaling Factors (AdishilaVedic)
+Both templates run under `\documentclass[12pt, ...]{book}`. The effective font size is determined by `fontspec` scaling:
+
+| Macro / Family | Scale Factor | Effective Size | Purpose |
+| :--- | :--- | :--- | :--- |
+| `\devafont`, `\setmainfont` (AdishilaVedic) | `Scale=1.35` | **16.2 pt** | Main mantra text, Samam chant lines, Rik mula |
+| `\headerfont` (AdishilaVedicBold) | `Scale=1.45` | **17.4 pt** | Chapter and Section structural titles |
+| `\smallredfont` (AdishilaVedic) | `Scale=0.95` | **11.4 pt** | Swara number notations in SwaraRed (`#C62828`) |
+| `\swarafont` (JaimineeyaSwara) | `Scale=0.88` | **10.56 pt** | Jaimineeya swara glyphs and accents |
+| `\arcfontDeva` (JaimineeyaSwara) | `Scale=1.25` | **15.0 pt** | Overhead connecting arcs |
+
+### Title Page Typography (A4 vs. Book)
+
+| Element | A4 Edition | Book Edition |
+| :--- | :--- | :--- |
+| **Mangalam / Guruvandana** | `\fontsize{11pt}{15pt}` | `\fontsize{9.5pt}{13pt}` |
+| **Main Book Title** | `\fontsize{34pt}{42pt}\bfseries` | `\fontsize{28pt}{34pt}\bfseries` |
+| **Subtitle** | `\fontsize{20pt}{26pt}\bfseries` | `\fontsize{17pt}{22pt}\bfseries` |
+| **Publisher Heading** | `\fontsize{15pt}{20pt}\bfseries` | `\fontsize{13pt}{17pt}\bfseries` |
+| **Publisher Details & Year** | `\fontsize{14pt}{19pt}` | `\fontsize{12pt}{16pt}` |
+
+### Document Body Elements
+
+| Document Element | LaTeX Macro | Standard Size | Rendered Size (1.35x Scale) |
+| :--- | :--- | :--- | :--- |
+| **Chapter / Parva Header** | `\chapter*` (`\huge\headerfont`) | 20.7 pt | **~30.0 pt** |
+| **Section / Kandah Header** | `\section*` (`\Large\headerfont`) | 14.4 pt | **~20.9 pt** |
+| **Rik Mula Verse** | `\normalsize` (Upright Bold, Blue) | 12.0 pt | **16.2 pt** |
+| **Samam Chant Line** | `\normalsize\bfseries` (Bold) | 12.0 pt | **16.2 pt** |
+| **Samam Subsection Title** | `\normalsize` (Bold, Green) | 12.0 pt | **16.2 pt** |
+| **Rik Metadata** | `\footnotesize` (Purple) | 10.0 pt | **13.5 pt** |
+| **Samam Metadata** | `\footnotesize` (Brown) | 10.0 pt | **13.5 pt** |
+| **Footnotes** | `\footnotesize` | 10.0 pt | **13.5 pt** |
+| **Summary Table** | `\small` | 11.0 pt | **14.85 pt** |
+| **Prayoga Appendix Header** | `\large\bfseries` | 14.4 pt | **19.44 pt** |
+| **Prayoga Appendix Body** | `\normalsize` | 12.0 pt | **16.2 pt** |
+| **Index (वर्णानुक्रमणिका)** | `\footnotesize` | 10.0 pt | **13.5 pt** |
+
+### Page Dimensions & Layout
+*   **A4 Edition**: `210mm × 297mm`, portrait, `oneside`. Margins: Left/Right = 18mm, Top/Bottom = 20mm. Index in 3 columns.
+*   **Book Edition**: `180mm × 228mm`, `twoside`. Margins: Inner = 18mm, Outer = 15mm, Top/Bottom = 19mm. Index in 2 columns.
+
+### Swara & Swara Modifier Font Specifications
+*   **Swara Numbers (`\smallredfont`)**:
+    *   Font: `AdishilaVedic.ttf` (`BoldFont=AdishilaVedicBold.ttf`), `Scale=0.95` (**11.4 pt**).
+    *   Color: `SwaraRed` (`#C62828` in color; black in B&W).
+    *   Placement: Stacked below base akshara (`\raisebox{-1.05ex}`) in Standard mode, or above base akshara (`\raisebox{1.55ex}`) in Kodunthirapully mode (`-kpully`).
+*   **Swara Modifiers (`\swarafont`)**:
+    *   Font: `JaimineeyaSwara.ttf`, `Script=Grantha`, `Scale=0.88` (**10.56 pt**), `AutoFakeBold=3.5`, `AutoFakeSlant`.
+    *   Color: `ModifierSkyBlue` (`#0284C7` in color; black in B&W).
+*   **Overhead Arcs (`\arcfontDeva`)**:
+    *   Font: `JaimineeyaSwara.ttf`, `Scale=1.25` (**15.0 pt**), `AutoFakeBold=3.5`.
+*   **Core Modifiers**:
+    *   `\arcOverSyllable`: Overhead conjunct arc (`U+E004` / `U+E02E`) centered above syllables.
+    *   `\dandaWithArc`: Arc over danda (`U+E00D`) positioned on the danda stem.
+    *   `\caretWithSwara`: Peak elevation caret (`U+E005`) bridging two syllables with apex swara.
+    *   `\modGUnder`: Lower under-slash (`U+E003`) below-right of syllable.
+    *   `\underbarMark`: In-line under-dash rule (`\rule{0.35em}{0.28ex}`).
+    *   Tone dots/commas: In-line `{\Large\textbf{.}}` / `{\Large\textbf{,}}` in ModifierSkyBlue.
+
 ---
 *Created by Antigravity for the Jaimineeya Samavedam Digitalization Project.*
 

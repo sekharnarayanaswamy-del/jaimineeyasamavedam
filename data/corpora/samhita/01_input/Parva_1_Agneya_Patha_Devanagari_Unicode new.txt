@@ -1,0 +1,1777 @@
+﻿जैमिनीयसामवेद संहिता - आग्नेयपाठः
+
+Version 3.33 04-11-2026 14:41:55
+
+# Start of SuperSection Title -- supersection_1 ## DO NOT EDIT
+आग्नेयपाठः
+# End of SuperSection Title -- supersection_1 ## DO NOT EDIT
+
+# Start of Section Title -- section_1 ## DO NOT EDIT
+प्रथम खण्डः
+# End of Section Title -- section_1 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_1 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_1 ## DO NOT EDIT
+# Start of Rik Text -- subsection_1 ## DO NOT EDIT
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) ॥ १ ॥
+# End of Rik Text -- subsection_1 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_1 ## DO NOT EDIT
+॥गौतमस्यपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_1 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_1 ## DO NOT EDIT
+ओ(त) ग्ना(त) इ(श) ।आ या(थाच्) ही वा(चा) इ(श) । ता या(टा) इ(श) ता या(टि) इ(श) । गृ णा(चा) नो(श) हव्या दा(चि) ।ता या(टा) इ(श) ता या(टि) इ(श) । नाइ हो(कि) ता(च) । सा(ट) त्सा(ट) इ बा(खा) औहो वा(शि) । ही(ख) षि(श) ॥१॥
+#End of Mantra Sets -- subsection_1 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_2 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_2 ## DO NOT EDIT
+# Start of Rik Text -- subsection_2 ## DO NOT EDIT
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) ॥ १ ॥
+# End of Rik Text -- subsection_2 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_2 ## DO NOT EDIT
+॥कश्यपस्यबर्हिषीयम्॥  ।। कश्यपो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_2 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_2 ## DO NOT EDIT
+अग्नआयाही वी(तू) ।तायाइगृणानो(षू) हव्यदाता(टी) या(त) इ(श)। नीहोता(चि) सत्सीब र्हा(टी) इ षी(ता)। ब र्हा(टा) इ षा(खा) औहोवा(शि) ।ब(च) र्हीषी(खा)॥२॥
+#End of Mantra Sets -- subsection_2 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_3 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_3 ## DO NOT EDIT
+# Start of Rik Text -- subsection_3 ## DO NOT EDIT
+अग्ना(1) आ(2) या ही वी(2)ता(2)ये । गृ(2)णा(2)नो हव्यादा(1)तये । नीहो(2)ता(1) सत्सी बर्हीषि(1) ॥ १ ॥
+# End of Rik Text -- subsection_3 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_3 ## DO NOT EDIT
+॥गौतमस्यचैवपर्कः॥  ।। गोतमो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_3 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_3 ## DO NOT EDIT
+अग्नआयाहीवा(तू) इताया(ति) इ(श) । गृणानोहव्यदा(यू) ता(प) ये(श) । निहोता(खि) सा(ण) त्। सा(ट) इबा(ता) र्हा(पा) आइषो(प्लि) । हाइ(शा) ॥३॥
+#End of Mantra Sets -- subsection_3 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_4 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_4 ## DO NOT EDIT
+# Start of Rik Text -- subsection_4 ## DO NOT EDIT
+त्वा(1)माग्ने यज्ञा(2)नाम् । हो(1)ता विश्वे(1)षां हितः । देवेभि(1)र्मानूषे(1) जने ॥ २ ॥
+# End of Rik Text -- subsection_4 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_4 ## DO NOT EDIT
+॥सौपर्णञ्च॥  ।। विश्वमना गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_4 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_4 ## DO NOT EDIT
+त्वमग्नेयज्ञाना(षू) न्त्वमग्ना(ति) इ(श)। यज्ञानांहोता विश्वे(षृ) षांहा(टा) इता(ता)ः । दे(क) वाइभा(टि) इर्मा(ता) । नुषे(ताच्) ज(क) नाऔ(टा) हो(ख) बा(प्ल)। हो(प्ल) इळा(शा) ॥४॥
+#End of Mantra Sets -- subsection_4 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_5 ## DO NOT EDIT
+।। मेधातिथिः काण्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_5 ## DO NOT EDIT
+# Start of Rik Text -- subsection_5 ## DO NOT EDIT
+अग्निन्दूतं(2)वृ(1)णीमहे । हो(2)ता(1)रंविश्वा(2)वे(1)दसम् । अस्या(4)यज्ञास्या(1) सुक्रा(1)तुम् ॥ ३ ॥
+# End of Rik Text -- subsection_5 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_5 ## DO NOT EDIT
+॥वैश्वमनसञ्चादित्यसामवा॥  ।। (बृहदाग्नेयम्, बृहद्वासौरम्) भरद्वाजो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_5 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_5 ## DO NOT EDIT
+अग्निन्दू(टि) ता(त) म् ।वृणीमहाइ(षू) होतारां(टि) वी(त)। श्वा वे(चा) दसा(चा) म् ।अस्यया(टि) ज्ञा(त)।ओऔ(का) हो(त) वा(त) । स्यासू(चा) क्रतूमिळा(टी) भा(खण) ।ओ(प) इळा(प्ला)॥५॥
+#End of Mantra Sets -- subsection_5 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_6 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_6 ## DO NOT EDIT
+# Start of Rik Text -- subsection_6 ## DO NOT EDIT
+अग्निर्वृ(1)णि(1)जङ्घनात् । द्रविणास्यु(4)र्वीपन्या(2)या । सामी(2)द्धश्शुक्रा(2)आहूतः ॥ ४ ॥
+# End of Rik Text -- subsection_6 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_6 ## DO NOT EDIT
+॥श्रौतर्षाणित्रीणि॥  ।। त्रयाणां श्रुतर्षिर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_6 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_6 ## DO NOT EDIT
+अग्निर्वृत्रा(ती) ।णा(ट) इजा(खा) औहोवा(शि) ।घा(ख) ना(श) त् । द्र(च) वि(श) णा(क) स्युर्वीप(कि) न्याया(टा) ओइसमि द्धा(टु) श्शू(त) ।क्राया(चा) हुताइळा(टी) भा(खण्)। ओ(प) इळा(प्ला) ॥६॥ अग्नी(खा) रौहोवा(शि) हाइवृत्राणी(शु) ।जङ्घा(टा) ना(त) दौहो(टा) वा(त) इ(श) ।द्रविणा(पि) स्यू(ण)ः ।ओइवाइ(षी) पन्याया(टि) सामाइद्धा(टीट्) श्शू(ख) औहोवा(शि) ।क्राया हू(टि) ता(ख)ः॥७॥ ओ(त) ग्नी(त)ः। वृत्राणी(कि) जङ्घनादौ(की) होऔहो(खि) वा(श) । द्रवी(चा) णा(क) स्युर्वीप(कि) न्यया(चा) औ(क) होऔ हो(खि) वा(श) ।समिद्धा(चि) श्शुक्रया(चि) औ(क) होऔहो(खि) बा(प्ल) हूतो(प्ला) । हाइ(शा)॥८॥
+#End of Mantra Sets -- subsection_6 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_7 ## DO NOT EDIT
+।। उशना अग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_7 ## DO NOT EDIT
+# Start of Rik Text -- subsection_7 ## DO NOT EDIT
+प्रेष्ठं(3)वोआतीथिम् । स्तू(2) षे(2) मित्रामीवाप्रीयम् । अ(2)ग्ने राथन्ना(2)वेद्यम् ॥ ५ ॥
+# End of Rik Text -- subsection_7 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_7 ## DO NOT EDIT
+॥औशनञ्च॥  ।। उशना विराड्गात्र्यग्निः ।।
+# End of SubSection Title -- subsection_7 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_7 ## DO NOT EDIT
+प्रेष्ठंवा(ति)ः ।अता(टा) इथी(ता) म् ।स्तुषे(चा) मित्रमिव प्रा(टु) या(त) म् ।अग्नाइरा(भी) था(त) न्नावा(टा) हा(खण) इ(श) । दा(प) आया(प्ला) म् । हाइ(शा) ॥९॥
+#End of Mantra Sets -- subsection_7 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_8 ## DO NOT EDIT
+।। उशना अग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_8 ## DO NOT EDIT
+# Start of Rik Text -- subsection_8 ## DO NOT EDIT
+प्रेष्ठं(3)वोआतीथिम् । स्तू(2) षे(2) मित्रामीवाप्रीयम् । अ(2)ग्ने राथन्ना(2)वेद्यम् ॥ ५ ॥
+# End of Rik Text -- subsection_8 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_8 ## DO NOT EDIT
+॥शैरीषेच॥  ।। शिरीषो उशना गायत्र्यग्निः ।। ।। उशना विराड्गात्र्यग्निः ।।
+# End of SubSection Title -- subsection_8 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_8 ## DO NOT EDIT
+प्रेष्ठंवयो(ती) हा(त) इ(श) ।अता(टा) इथी(ता) म् ।स्तूषा(ता) इ(श) मीत्रा(ता) मीवा(टा) प्रा(ख) या(ण) म् । औ(थ) हो(च) इ(श) । अग्ने(था) राथा(टा) न्ना(प) वे(श) ।दा(ख) या(श) म् ।हाइ(शा)॥१०॥ प्रेष्ठंवो(ति) हा(त) बु(श) ।आतिथाइंस्तू(षु) षेमि त्रामीवप्रा(टू) या(त) म् ।अग्नाइरा(टीट्) था(ख) औहोवा(शि)। नावेदी(टि) या(ख) म्॥११॥
+#End of Mantra Sets -- subsection_8 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_9 ## DO NOT EDIT
+।। सुदीतिपुरुमीढा वाङ्गिरसौ तयोर्वाऽन्यतरोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_9 ## DO NOT EDIT
+# Start of Rik Text -- subsection_9 ## DO NOT EDIT
+त्वन्नोआग्नेमा(2)हो(1)भिः । पाही विश्वा(1)स्याआ(2)रा(1)तेः । ऊत(2)द्वीषो मर्त्त्या(1)स्या ॥ ६ ॥
+# End of Rik Text -- subsection_9 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_9 ## DO NOT EDIT
+॥इन्द्रस्यसंवर्गौवात्रघ्नेद्वे॥  ।। (संवर्गः) साकमश्वो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_9 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_9 ## DO NOT EDIT
+त्वन्नोया(ति) ।ग्ने(च) माहो(था) भिःपाहाइवी(टु) श्वा(त) । स्या(च) आराते(थिच्) रूता(चा) द्वा(य) इषा(टा)ः ।मा(क) र्त्या(थ) स्याइळा(टि) भा(खण्) ।ओ(प) इळा(शा) ॥१२॥ त्वान्त्वन्नो(षि) अग्नेमहो(ती) भा(त) इ(श)ः ।पा(क) हिविश्वा औ(टी) हो(त)। स्याऔ(टा) हो(त)। आराते(किच्) रूता(चा) द्वा(य) इषा(टा)ः ।मर्तो(टाट्) या(ख) औहोवा(शि) ।स्या(ख) ॥१३॥
+#End of Mantra Sets -- subsection_9 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_10 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_10 ## DO NOT EDIT
+# Start of Rik Text -- subsection_10 ## DO NOT EDIT
+एह्यू(2)षुब्रा(2)वा(1)णिते । अग्नाइत्थे(4)ता(1)रा(1)गीराः । ए(2)भिर्वार्धा(1)साइ(2)न्दू(1)भिः ॥ ७ ॥
+# End of Rik Text -- subsection_10 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_10 ## DO NOT EDIT
+॥साकमश्वस्यशौनःशेपेःसामनी द्वे॥  ।। वत्सो गायत्र्यग्निः ।। ।। शौनश्शेपो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_10 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_10 ## DO NOT EDIT
+एह्यू(फा) षुब्रावा(खि) णाइताइ(शी) । अग्नइत्थे(षी) तरागा(टि) इरा(चा)ः ।एभा(टा) इर्वाधा(चि) ।सया(टा) हा(खण्) इ(श) । दो(प) भो(प्ल) ।हाइ(शा) ॥१४॥ एह्यूषू(षि) ब्रवौहोणा(ती) इता(ता) इ(श) ।अग्नइत्थेतरा(यू) गी(प) रा(श)ः ।एभिर्वा(खि) र्द्धा(ण) ।सया(टा) हा(खण्) इ(श) ।दो(प) भो(प्ल) ।हाइ(शा)॥१५॥
+#End of Mantra Sets -- subsection_10 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_11 ## DO NOT EDIT
+।। वत्सः काण्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_11 ## DO NOT EDIT
+# Start of Rik Text -- subsection_11 ## DO NOT EDIT
+आ(3)तेवात्सो(2)मानो यमात् । परामा(4)ञ्चित्साधास्थात् । अ(2) ग्ने(2) त्वाङ्कामयो गी(2)रा(1) ॥ ८ ॥
+# End of Rik Text -- subsection_11 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_11 ## DO NOT EDIT
+॥वत्सस्यकाण्वस्यसामनीद्वे॥  ।। वत्सो गायत्र्यग्निः ।। ।। कण्वो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_11 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_11 ## DO NOT EDIT
+आतेवत्सा(ती)ः ।मा(च) नो(श) यमत्पारा(ची) मा(थ) च्चित्साधा(टि) स्था(त) त्। अग्नाइत्वा(भी) ङ्का(त)। मयो(पा) बा(प्ल) गाइरो(प्लि)। हाइ(शा)॥१६॥ आतेवत्सो(षी) मनोयमदय्या(तू) हा(त) इ(श) ।पारामा(षि) च्चित्सधस्थादय्या(टू) हो(कच्) इया(शा) ।अग्नेत्वाङ्का(षी) मायाअय्या(टूच्) हो(कच) इया(शा) ।गीरा(का) इळा(टा) भा(खण्)। ओ(प) इळा(शा) ॥१७॥
+#End of Mantra Sets -- subsection_11 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_12 ## DO NOT EDIT
+।। भारद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_12 ## DO NOT EDIT
+# Start of Rik Text -- subsection_12 ## DO NOT EDIT
+त्वामाग्ने पु(4)ष्काराद(2)धी(1) । आ(3)थ(1)र्वाणीरा(1)मन्धत । मूर्ध्नो(2) विश्वास्यावाघा(2)ता(1)ः ॥ ९ ॥
+# End of Rik Text -- subsection_12 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_12 ## DO NOT EDIT
+॥अग्नेश्चवैश्वानरस्यार्षेयम्॥  ।। अग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_12 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_12 ## DO NOT EDIT
+त्वामग्नेपुष्का(तु) रादधी(ति) ।आ(च) थर्वा(चा) नाइरा मा(टी) न्धा(ख) ता(ण) ।मू(ख) र्ध्नो(प्ल) वा(ख) इश्वा(णा) ।स्यावो(पा) बा(प्ल) घातो(प्ला) ।हाइ(शा)॥१८॥
+#End of Mantra Sets -- subsection_12 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_13 ## DO NOT EDIT
+।। वामदेवोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_13 ## DO NOT EDIT
+# Start of Rik Text -- subsection_13 ## DO NOT EDIT
+अग्नेवी(3)वा(2)स्वादा(2) भारा । अस्मभ्यामू(2)ता(4)ये(1) माहे(2) । देवो ह्यासी(1) नोदृशे ॥ १० ॥
+# End of Rik Text -- subsection_13 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_13 ## DO NOT EDIT
+॥सुमित्रस्यचवार्द्धश्वेस्साम॥  ।। (वध्यश्वोऽनूपो वा) वाध्यश्वः गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_13 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_13 ## DO NOT EDIT
+अग्नेविव(षी) स्वदाभरोवा(तू) हा(त) इ(श) ।अस्मा(चा) भ्या मू(काच्) ताया(चा) इमहा(टि)। ओवा(टा) हा(त) ओवा(टा) हा(त) इ(श) ।दा(च) इवो(या) हिया(टा)। ओवा(टा) हा(त) ओवा(टा) हा(त) इ(श) ।सा(ट) इ ना(खा) औहोवा(शि) ।दृशे(ताच्)॥१९॥
+#End of Mantra Sets -- subsection_13 ## DO NOT EDIT
+
+# Start of Section Title -- section_2 ## DO NOT EDIT
+द्वितीय खण्डः
+# End of Section Title -- section_2 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_14 ## DO NOT EDIT
+।। आयुङ्क्ष्वाहिः (ऋ विरूपाङ्गिरसः) अग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_14 ## DO NOT EDIT
+# Start of Rik Text -- subsection_14 ## DO NOT EDIT
+नामास्ते(2)अग्ना(2)ओज(1)से । गृणन्तीदे(2)वा(1)कृष्टायाः । आमै(2)रामित्रा(2)मर्दया ॥ १ ॥
+# End of Rik Text -- subsection_14 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_14 ## DO NOT EDIT
+॥अग्नेश्चसंवर्गः॥  ।। सांवर्गः अग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_14 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_14 ## DO NOT EDIT
+नमस्तौहो(ति) ग्ना(त) इ(श) ।ओजासा(कि) इगृणा(टि) न्ता(ख) इ दे(णा) ।वा(च) का(य) र्ष्टाया(टा)ः ।आमाइरा(टीट्) मा(ख) औहो वा(शि) ।त्रमर्दया(खी) ॥१॥
+#End of Mantra Sets -- subsection_14 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_15 ## DO NOT EDIT
+।। वामदेवो गौतमोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_15 ## DO NOT EDIT
+# Start of Rik Text -- subsection_15 ## DO NOT EDIT
+दूतंवो(1)विश्वावे(1)दसम् । हव्यावाहामामा(2)र्त्त्यम्(1)। याजीष्ठमृञ्जसे(2)गीरा ॥ २ ॥
+# End of Rik Text -- subsection_15 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_15 ## DO NOT EDIT
+॥वैश्वमनसञ्च॥  ।। विश्वमना गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_15 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_15 ## DO NOT EDIT
+दू(ण) तां(फ) वो(ख) विश्ववेदसा(शु) म् ।हा(थ) व्यावाहाम मा(टु) र्त्ता(ख) य(ण) म् ।या(च) जिष्ठमृञ्जसे(टु) हा(त) इ(श) ।गी(च) राऔ(टा) हो(ख) बा(प्ल) ।हो(प्ल) इळा(शा)॥२॥
+#End of Mantra Sets -- subsection_15 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_16 ## DO NOT EDIT
+।। प्रयोगो भागर्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_16 ## DO NOT EDIT
+# Start of Rik Text -- subsection_16 ## DO NOT EDIT
+ऊपात्वा जामायो(2)गीरा(1)ः। देदीशतिर्हा(1)विष्कृताः । वायोरा(1)नीकेअस्थिरन् ॥ ३ ॥
+# End of Rik Text -- subsection_16 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_16 ## DO NOT EDIT
+॥श्नाभाश्नौष्टेद्वे॥  ।। श्नाभो गायत्र्यग्निः ।। ।। श्नौष्टम् श्नुष्टो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_16 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_16 ## DO NOT EDIT
+उपत्वाजा(ती) ।मयो(टा) गीरा(टा)ः ।ओइयायूर्दा(षु) इदिशतीर्हा(तू) विष्कृता(टि)ः ।ओ(क) इयायू(टिच्) र्वा(क) यो रा(टा) नी(त) ।कयास्था(खि) इरा(त्रा) न् ।अश्वा(था) गा(ट) वा(ख)ः॥३॥ उपत्वाजामा(तु) योगीरा(ति)ः ।दा(च) इ(श) दिशा(का) ताइर्हावि(टी) ष्का(ख) र्ता(ण)ः ।वायोरना(ती)। हाइका या(ती) ।स्था(ट)इरा(ता) नौहो(खा) वाइळा(शि) ॥४॥
+#End of Mantra Sets -- subsection_16 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_17 ## DO NOT EDIT
+।। मधुच्छन्दा वैश्वामित्रोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_17 ## DO NOT EDIT
+# Start of Rik Text -- subsection_17 ## DO NOT EDIT
+ऊ(1)पात्वाग्ने दीवे(2)दीवे । दो(2)षा(1)वस्तार्धीया वायम्(2) । ना(2)मो भा(4)र(1)न्ताएमा(1)सि ॥ ४ ॥
+# End of Rik Text -- subsection_17 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_17 ## DO NOT EDIT
+॥वैश्वामित्रञ्च॥  ।। विश्वामित्रो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_17 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_17 ## DO NOT EDIT
+ऊपात्वा(पि) ग्नेदिवेदिवाइ(शू) ।दोषा(टा) वास्ता(टा) र्द्धी या(चा) वाय(चा) म् ।नामो(टा) भारा(टाच्) न्ता(च) ए(क) मा(ट) सा(खण्) इ(श) । ओ(प) इळा(शा)॥५॥
+#End of Mantra Sets -- subsection_17 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_18 ## DO NOT EDIT
+।। शुनः शेप आजीर्गतोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_18 ## DO NOT EDIT
+# Start of Rik Text -- subsection_18 ## DO NOT EDIT
+जरा(1)बोधाताव्दीविड्ढी । वीशेवी(2)शेय(1)ज्ञीयाया । स्तो(3)मंरुद्रायादृशीक(2)म् ॥ ५ ॥
+# End of Rik Text -- subsection_18 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_18 ## DO NOT EDIT
+॥अग्नेश्चजराबोधीये॥  ।। द्वयोरग्निर्गायत्री रुद्रः ।।
+# End of SubSection Title -- subsection_18 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_18 ## DO NOT EDIT
+जारा(ता) । बोधा(टा) बोधा(टा) ताद्वी(चा) विढ्ढा(चा) इ(श) । वी शे(का) वाइशे(टि)। यज्ञो(टा) याया(खा) औहोवा(शि) । स्तोमं(का) रूद्रायदृशी(कू) का(च) म्॥६॥ जराबोधो(ती) वा(त) । ता(च) द्वीविड्ढा(चि) इ(श) । वीशाइवा(टी) इशे(ता) । या(थ) ज्ञी(श) यायास्तो(किच्) मां(च) रू(य) द्रा(प) या(ण) दृ(श) । शीको(खा) इळा(शा) ॥७॥
+#End of Mantra Sets -- subsection_18 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_19 ## DO NOT EDIT
+।। मेधातिथिरग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_19 ## DO NOT EDIT
+# Start of Rik Text -- subsection_19 ## DO NOT EDIT
+प्रातित्यञ्चा(2)रुमाध्वारम्(2) । गो(3)पी(1)था(2)यप्रा(2)हू(1)यसे । मा(2)रुद्भीरग्नाआग(1)हि ॥ ६ ॥
+# End of Rik Text -- subsection_19 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_19 ## DO NOT EDIT
+॥मारूतञ्च॥  ।। मरुतो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_19 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_19 ## DO NOT EDIT
+प्रातित्या(पि) ञ्चारूमध्वरा(शु) म्। गोपी(था) थायाप्रा(चि) हु(क) या(ख) सा(ण) इ(श) । मारू(चा) द्भी(क) राग्नाया(टि) ग(च) हा औ(टा) हो(ख) बा(प्ल)। हो(प्ल) इळा(शा) ॥८॥
+#End of Mantra Sets -- subsection_19 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_20 ## DO NOT EDIT
+।। शुनः शेप आजीर्गितोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_20 ## DO NOT EDIT
+# Start of Rik Text -- subsection_20 ## DO NOT EDIT
+अ(1)श्वन्न(2)त्वा वारा(1) व(2)न्तम् । व(3)न्द(4)ध्याआग्नि(2) न्नामोभिः । स(2)म्म्रा(2)जन्तमाध्वाराणा(1)म् ॥ ७ ॥
+# End of Rik Text -- subsection_20 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_20 ## DO NOT EDIT
+॥भार्गवेच॥  ।। द्वयोर्भृगुर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_20 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_20 ## DO NOT EDIT
+आश्वा(टा) औहो(खा) वा(श) ।नात्वा(टा) औहो(खा) वा(श) । वारवन्तं(षी) वन्दध्यै(ति) ।आग्ना(टा) औहो(खा) वा(श) । नमोभि(षि) स्सम्म्राजन्ता(तु) म् ।आध्वरा(कि) णामौ(पा) हो बा(प्ला) ।हो(प्ल) इळा(शा)॥९॥ अश्वन्नत्वा(षी) वारवन्ता(ती) म्।वन्दध्या(षि) अग्निन्नमोभा(चु) इ(श)ः ।स(क) म्म्राज(थाच्) न्तामा(चा) ध्वरा(खा) औहोवाइ(खु) हो हा(ण) इ(श) ।औ(क) हो(ट) या(ख) औहोवा(शि) ।णा(ख) म् ॥१०॥
+#End of Mantra Sets -- subsection_20 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_21 ## DO NOT EDIT
+।। शुनः शेप आजीर्गितोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_21 ## DO NOT EDIT
+# Start of Rik Text -- subsection_21 ## DO NOT EDIT
+अ(1)श्वन्न(2)त्वा वारा(1) व(2)न्तम् । व(3)न्द(4)ध्याआग्नि(2) न्नामोभिः । स(2)म्म्रा(2)जन्तमाध्वाराणा(1)म् ॥ ७ ॥
+# End of Rik Text -- subsection_21 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_21 ## DO NOT EDIT
+॥अग्नेश्चवारवन्तीयम्॥  ।। शुनश्शेपो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_21 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_21 ## DO NOT EDIT
+अश्वन्नत्वाबुहो(तू) हा(त) इ(श) ।वारावा(खि) न्तं(श) वन्द(का) ध्यो(प) हा(ण) इ(श) ।अग्नाइन्नमा(पु) औहोवाइहो(खु) हा(ण) इ(श)। उहुवा(खि) भी(ण)ः ।स(क) म्म्राज(था) न्तामाध्वरा(पी) औ होवाइहो(खु) हा(ण) इ(श) ।उहुवा(पि) णामेहि या(प्ली) हा(श) ।हो(प्ल) इळा(शा)॥११॥
+#End of Mantra Sets -- subsection_21 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_22 ## DO NOT EDIT
+।। प्रयोगो भागर्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_22 ## DO NOT EDIT
+# Start of Rik Text -- subsection_22 ## DO NOT EDIT
+और्वा(2)भृगूवच्छूचिम् । आप्नावा(2)नावादाहु(1)वे । अग्निं(4)सामुद्रावाससम् ॥ ८ ॥
+# End of Rik Text -- subsection_22 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_22 ## DO NOT EDIT
+॥और्वस्यवैधारेस्सामनीद्वे॥  ।। समुद्रस्य वासो वा और्वो द्वयोरग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_22 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_22 ## DO NOT EDIT
+और्वभृगुवदो(चू) हा(त) इ(श) ।शो(ख) चि(श) म् ।आप्ना वा(टि) ना(क) वादा(टा) हुवा(टा) इहुवायो(ची) इ(श) ।अग्ना(टा) इंसामू(टिच्) सामूओ(चि) द्रावा(चा) सा(क) सा(त) बु(श) ।बा(ख) ॥१२॥ और्वभृगुव(षु) च्छुचिमे(ति) शुचि(ता) म् ।आप्नवा(कि) ना(च) वादा(टा) हुवा(ता) इहुवा(टि) इहुवा(टि) ए(त) ।अग्नाइं सा(टी) मू(त) सामू(टा) सामू(टा) ए(त) ।द्रा(टट्) वा(ख) औहो वा(शि) ।सा(च) सा(ट) मे(ख) ॥१३॥
+#End of Mantra Sets -- subsection_22 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_23 ## DO NOT EDIT
+।। प्रयोगो भार्गवोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_23 ## DO NOT EDIT
+# Start of Rik Text -- subsection_23 ## DO NOT EDIT
+अ(2)ग्नी(2)मिन्धानो(1) माना(1)सा। धी(1)यं सचेतामा(2)र्त्या(1)ः । अ(2)ग्नी(2)मिन्धे वीवा(2)स्वा(1)भिः ॥ ९ ॥
+# End of Rik Text -- subsection_23 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_23 ## DO NOT EDIT
+॥अत्रेश्चासङ्गम्॥  ।। आसङ्गः अत्रिर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_23 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_23 ## DO NOT EDIT
+अग्निमि(षि) न्धानोमनसौहोऔहोवा(ते) हा(त) इ(श) । धीयंसचेतमौ(टू) हो(ट) हा(त) होवा(टा) र्त्या(ता)ः । अग्नाइमा(टीट्) इन्धा(खा) औहोवा(शि) ।वीवास्वा(टि) भी(ख)ः॥१४॥
+#End of Mantra Sets -- subsection_23 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_24 ## DO NOT EDIT
+।। वत्सः काण्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_24 ## DO NOT EDIT
+# Start of Rik Text -- subsection_24 ## DO NOT EDIT
+आदी(2)त्प्रत्ना(2)स्यारे(2)ता(1)सः । ज्योतिः पश्यन्ती वासा(2)रम् । पा(2)रोयातिध्या(4)ते दीवि(2) ॥ १० ॥
+# End of Rik Text -- subsection_24 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_24 ## DO NOT EDIT
+॥प्रजापतेश्चनिधनकामम्॥  ।। प्रजापतिर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_24 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_24 ## DO NOT EDIT
+आदित्प्रत्ना(फी) स्यरे(शा) तसा(का)ः ।ज्योतिःपश्य(षी) न्तिवा सा(टि) रा(च) म् ।पारोया(टि) तिध्यता(चि) इ(श) ।दिविहोइ होऔ(कू) होऔ(का) होवा(पा) हा(प्ल) बु(श) ।बा(ख)॥१५॥
+#End of Mantra Sets -- subsection_24 ## DO NOT EDIT
+
+# Start of Section Title -- section_3 ## DO NOT EDIT
+तृतीय खण्डः
+# End of Section Title -- section_3 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_25 ## DO NOT EDIT
+।। प्रयोगो भागर्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_25 ## DO NOT EDIT
+# Start of Rik Text -- subsection_25 ## DO NOT EDIT
+अग्निंवोवृधन्तम् । अध्वाराणाम्पुरूतामम् । अच्छानाप्त्रेसाहा(2)स्वते ॥ १ ॥
+# End of Rik Text -- subsection_25 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_25 ## DO NOT EDIT
+॥सैन्धुक्षितानित्रीणि॥  ।। त्रयाणां सिन्धुक्षिगायत्र्यग्निः ।। ।। (स्वारं सैन्धुक्षितम्) ।।
+# End of SubSection Title -- subsection_25 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_25 ## DO NOT EDIT
+अग्निंवोवृधा(तु) न्ता(त) म्।आध्वा(चा) राणाम्(थाच्)। पूरू(का) ता(य) मौ(ट) होवा(टा) हा(त) इ(श) ।आच्छा(टा) नाप्त्रे(टा)। सा(क) हो(प) वा(प्ल) स्वातो(प्ला)। हाइ(शा)॥१॥ अग्निंवा(ति) ए(त) ।वृधन्ता(षि) मध्वराणाम्पुरू(कू) तमम च्छा(टीच्) हो(य) इना(टा) प्त्रे(त) ।साहास्वा(पि) ता(त्र) इ(श) ।ई(ख) ति(श) ॥२॥ अग्निंवो(ति) हा(त) इ(श) ।वृधा(टा) न्ता(त) म्।आध्वराणा म्पुरू(यू) ता(प) मा(श) म् ।अच्छानप्त्रो(खी) हा(ण) इ(श) ।सा(क) हो(प) हा(च) इ(श) ।स्वा(क) ताऔ(टा) हो(ख) बा(प्ल) ।हो(प्ल) इळा(शा) ॥३॥
+#End of Mantra Sets -- subsection_25 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_26 ## DO NOT EDIT
+।। भाद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_26 ## DO NOT EDIT
+# Start of Rik Text -- subsection_26 ## DO NOT EDIT
+अग्निस्तिग्मे(4)ना(1)शोचीषा(1) । यंसद्वि(2)श्वंन्या ३ त्रीणम् । अ(2)ग्नि(2)र्नो(1)वंसतेरायिम्(3) ॥ २ ॥
+# End of Rik Text -- subsection_26 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_26 ## DO NOT EDIT
+॥अग्नेर्हरसीद्वे॥  ।। द्वयोरग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_26 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_26 ## DO NOT EDIT
+आग्ना(टा) उवो(खा) वा(श) ।तिग्मे(थाच्) ना(क) शोचाइषा(टी) उवो(खा) वा(श) ।यंसा(टा) उवो(खा) वा(श) ।वाइश्वान्या त्राइणा(टू) उवो(खा) वा(श) ।अग्निर्नो(टि) वंसते(किच्) रायी(चा) म् ॥४॥ ओहायाग्नी(ती)ः ।ता(ख) इग्मे(शा) नाशोचा(खि) इषा(णा) ।यं सा(टा) द्वा(ख) इश्वा(शा)। नीयात्रा(खि) इण(णा) म् ।अग्निर्नो(टि) वंसा(टाट्) ता(ख) औहोवा(शि) ।रा(ख) यि(श) म् ॥५॥
+#End of Mantra Sets -- subsection_26 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_27 ## DO NOT EDIT
+।। भाद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_27 ## DO NOT EDIT
+# Start of Rik Text -- subsection_27 ## DO NOT EDIT
+अग्निस्तिग्मे(4)ना(1)शोचीषा(1) । यंसद्वि(2)श्वन्न्या ३ त्रिणम् । अ(2)ग्नि(2)र्नो(1)वंसतेरायिम्(3) ॥ २ ॥
+# End of Rik Text -- subsection_27 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_27 ## DO NOT EDIT
+॥इहवद्वामदेव्यन्तृतीयम्॥  ।। वामदेवो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_27 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_27 ## DO NOT EDIT
+अग्निस्तिग्मे(षी) नशोचिषाइहा(तू) ।यंसद्विश्व(षी) न्न्य त्रीणा(टि) मिहा(ता) ।अग्निर्नोवंसता(टू) इहा(ता) । रा(प) आयाइम् (प्लि) ।हाइ(शा)॥६॥
+#End of Mantra Sets -- subsection_27 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_28 ## DO NOT EDIT
+।। वामदेवो गौतमोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_28 ## DO NOT EDIT
+# Start of Rik Text -- subsection_28 ## DO NOT EDIT
+अग्नेमृ(4)ळामाहं आ(1)सि(1)। आ(2)याआ(4)दे(1)वायुञ्ज(1)नम् ।ईये(3)थाबर्ही(1)रासादम् ॥ ३ ॥
+# End of Rik Text -- subsection_28 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_28 ## DO NOT EDIT
+॥यामेद्वे॥  ।। यमो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_28 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_28 ## DO NOT EDIT
+अग्नाइमृळा(टु) महंया(खि) सी(ण) ।आयआदा(टी) इवयुञ्जा(खी) न(ण) म्। ईयेथाबा(टी) र्हिरासा(खि) ।दा(त्र) म् ॥७॥ आ(ण) ग्ने(फ) मृळामा(फि) हंयासि(फि)। ओहा(खा) ओ(ख) हा(श) ।आ(ण) या(फ) आदेवा(फि) युञ्जना(फि) मो(ख) हाओ(खा) हा(श) ।इयाईथा(टी) बर्हिरासा(खा) ।दा(त्र) म् ॥८॥
+#End of Mantra Sets -- subsection_28 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_29 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्गायत्री ।। ।। भाद्वाजो बार्हस्पत्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_29 ## DO NOT EDIT
+# Start of Rik Text -- subsection_29 ## DO NOT EDIT
+अ(2)ग्नेर(4)क्षाणोअं(2)हा(1)सः। प्रा(2)तीस्मदेवरिषाताः। ता(2)पीष्ठैराज(2)रोदहा ॥ ४ ॥ अ(3)ग्नेयुङ्क्ष्वाहीयेता(2)वा(1)।अश्वा(1)सोदेवासाधावाः । आ(2)रं(1) वा(4)ह(1)न्त्याशा(2)वा(1)ः ॥ ५ ॥
+# End of Rik Text -- subsection_29 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_29 ## DO NOT EDIT
+॥अग्नेराक्षोघ्नेद्वे॥  ।। अग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_29 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_29 ## DO NOT EDIT
+अग्नेराक्षा(खी) णो(श) अंहास(प्लि)ः ।प्रातिस्मदे(की) वारीषा(टि) ता(त)ः। तापाइष्ठा(टी) इरा(ता)।जरोदा(टि) हा(खण्)।ओ(प) इळा(शा) ॥९॥ अग्नेयूङ्क्ष्वा(खी) ही(श) येतावा(प्लि) ।अश्वासोदे(ची) वासाधा(टि) वा(त)ः ।आरंवा(टि) हा(त) न्ती(क) याशा(टा) वा(खण्)ः । ओ(प) इळा(शा) ॥१०॥
+#End of Mantra Sets -- subsection_29 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_30 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_30 ## DO NOT EDIT
+# Start of Rik Text -- subsection_30 ## DO NOT EDIT
+नित्वा(1)नक्षविस्पते । धू(2)म(1)न्त(2)न्धीमहे वायम् । सु(2)वी(2)रामग्नआ(3)हुतः ॥ ६ ॥
+# End of Rik Text -- subsection_30 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_30 ## DO NOT EDIT
+॥वैश्वमनसञ्च॥  ।। विश्वमना गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_30 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_30 ## DO NOT EDIT
+नित्वाहो(खि) इनक्ष्या(शि) ।वा(च) इस्पाता(चि) इ(श)। द्यू(क) म न्त(था) न्धाइमा(चि) हे(क) वा(ख) य(ण) म् ।सुवो(ता) हा(त) इ(श) । रामग्ना(चि) ओ(प) बाहूतो(प्लि)। हाइ(शा) ॥११॥
+#End of Mantra Sets -- subsection_30 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_31 ## DO NOT EDIT
+।। विरूप आङ्गिरसोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_31 ## DO NOT EDIT
+# Start of Rik Text -- subsection_31 ## DO NOT EDIT
+अ(2)ग्नि(2)र्मूर्द्धादीवाःकाकू(2)त् । पा(2)तीः पृथिव्या(2)आ(2)यम्। आपांरेतांसिजिन्वति ॥ ७ ॥
+# End of Rik Text -- subsection_31 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_31 ## DO NOT EDIT
+॥अग्नेश्चार्षेयम्॥  ।। अग्निर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_31 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_31 ## DO NOT EDIT
+अग्निर्मूर्धादी(तु) वःककू(ति) त् ।पाती(टा)ः पार्त्थी(टा) व्याअया(चि) म् ।आपां(टा) राइतां(टि) सी(क) जिन्वा(टा) ता(खण्) इ(श) ।ओ(प) इळा(प्ला) ॥१२॥
+#End of Mantra Sets -- subsection_31 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_32 ## DO NOT EDIT
+।। शुनः शेप आजीर्गितोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_32 ## DO NOT EDIT
+# Start of Rik Text -- subsection_32 ## DO NOT EDIT
+ई(2)मामू(1)षुत्वाम(2)स्मा(1)कम् । सा(2)नि(4) ङ्गा(1)यात्र(2)न्नव्या(1)सम् । अग्ने(1) दे(2) वे(2)षु प्रा(2)वोचः ॥ ८ ॥
+# End of Rik Text -- subsection_32 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_32 ## DO NOT EDIT
+॥सोमसामच॥  ।। सोमो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_32 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_32 ## DO NOT EDIT
+इममूषू(ती) ।त्वामास्मा(टि) का(त) म् ।सानिं(टा) होइ गाया(टी) हो(क) तृ(थ) न्नव्यां(टा) सा(ता) म् ।आग्ने(टा) होइ देवा(टी) हो(कथ्) षुप्रावो(टि) चा(खण्)ः ।ओ(प) इळा(प्ला)॥१३॥
+#End of Mantra Sets -- subsection_32 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_33 ## DO NOT EDIT
+।। गोपवन अत्रयेरग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_33 ## DO NOT EDIT
+# Start of Rik Text -- subsection_33 ## DO NOT EDIT
+तन्त्वा(1)गोपा(2)वा(1)नो गिरा । जा(2)नि(1)ष्ठदग्ने अङ्गिरः । सा(2)पा(1)वकाश्रू(1)धीहा(2)व(1)म् ॥ ९ ॥
+# End of Rik Text -- subsection_33 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_33 ## DO NOT EDIT
+॥गोपवनञ्च॥  ।। गोपवनो गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_33 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_33 ## DO NOT EDIT
+तन्त्वागोपा(ती) ।वानो(टा) गा(ख) इरा(णा)ः ।जना(चा) इष्ठादग्नाया(टू) ङ्गा(ख) इरा(णा)ः ।सपौवाउवो(खु) वा(श)। कौवाउवो(खि) वा(ण) ।श्रुधीहवाम् (प्ली)। हो(प) इळा(शा) ॥१४॥
+#End of Mantra Sets -- subsection_33 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_34 ## DO NOT EDIT
+।। वामदेवो गौतमोऽग्निर्गायत्री ।। ।। प्रस्कण्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_34 ## DO NOT EDIT
+# Start of Rik Text -- subsection_34 ## DO NOT EDIT
+पा(2)रिवा(2)जपतीः कावि(2)ः । अ(2)ग्नि(2)ऋ(2)हव्या(2)न्या(1)क्रमीत् । दध(2)द्रत्ना(2)नीदाशू(2)षे(2) ॥ १० ॥ ऊदूत्य(2)ञ्जाता(2)वे(1)दसम् । दे(2) वं(2)वाहन्तीकेता(2)वा(1)ः । दृशे(4)वि(4)श्वा(1)यासूर्यम् ॥ ११ ॥
+# End of Rik Text -- subsection_34 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_34 ## DO NOT EDIT
+॥सूर्यसामनीद्वे॥  ।। सूर्यवर्चा वा वसुरोचिर्वा गायत्र्यग्निः ।। ।। सूर्यो गायत्री सूर्यः ।।
+# End of SubSection Title -- subsection_34 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_34 ## DO NOT EDIT
+परियौहो(षी) इवाजा(ति) ।पाता(चा) इःका(या) वी(ट)ः । अग्नी(चा) र्हव्या(था) न्ना(ट) यःक्रमी(टि) त्। दधाद्रा(टिट्) त्ना(ख) औहोवा(शि) ।निदा(ता) शूषे(टाख्) ॥१५॥ उदुत्यमो(ती) हा(त) इ(श) ।जातावे(कि) दा(ख) स(ण) म् ।दे(क) वंवहन्तीके(कु) ता(ख) वा(ण)ः ।दार्शे(पा) हा(ण) इ(श) ।वाइ श्वा(किच्) या(क) सूर्यामौ(पि) होबा(प्ला) ।हो(प्ल) इळा(शा)॥१६॥
+#End of Mantra Sets -- subsection_34 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_35 ## DO NOT EDIT
+।। मेधातिथिः काण्वोऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_35 ## DO NOT EDIT
+# Start of Rik Text -- subsection_35 ## DO NOT EDIT
+का(2)वी(2)माग्नी(2)मू(2)पा(1)स्तुहि । स(2)त्या(2)धर्मा(1)णमाध्वारे । दे(2)वा(2)मा(1)मीवाचा(2)ता(1)नम् ॥ १२ ॥
+# End of Rik Text -- subsection_35 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_35 ## DO NOT EDIT
+॥कावञ्च॥  ।। कविर्वसुरोचिर्गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_35 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_35 ## DO NOT EDIT
+कविमग्नी(ती) म् ।उपास्तू(टिट्) हा(ख) औहोवा(शि) । सत्या(चा) ध(क) र्माणमा(चि) ध्वारे(चा) ।देवाममी(ती)। वाचा ता(टि) ना(खण्) म् ।ओ(प) इळा(प्ला)॥१७॥
+#End of Mantra Sets -- subsection_35 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_36 ## DO NOT EDIT
+।। सिन्धुद्वीप आम्बरीषस्त्रित आत्यो वा अग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_36 ## DO NOT EDIT
+# Start of Rik Text -- subsection_36 ## DO NOT EDIT
+श(3)न्नो(1) देवी(2)राभीष्टा(1)ये।श(2)न्नो(1) भूवन्तूपीता(2)ये(1) । श(2)य्योराभि(2)स्रावन्तूनः ॥ १३ ॥
+# End of Rik Text -- subsection_36 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_36 ## DO NOT EDIT
+॥वसुरोचिषस्सौर्यवर्चस्यसामनीद्वे॥  ।। कापीतं वा सुमन्दं वा पारावतो (पारावतिर्वा) गायत्र्यग्निः ।।
+# End of SubSection Title -- subsection_36 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_36 ## DO NOT EDIT
+शन्नोदेवी(ती)ः ।आभीष्टा(टि) या(ख) इशन्नोभुवा(शु) म् । तूपीता(टि) या(ख) इशय्योरभी(शु)ः ।श्रावान्तू(टिट्) ना(ख) औहोवा(शि) ।ऊ(ख) पा(श)॥१८॥ हुवा(ता) हो(प) इशन्नोदेवी(प्लु) रभिष्टया(ङि) इ(श) । हुवा(ता) हो(प) इशन्नोभुवा(प्लु) न्तूपीताया(ङी) इ(श) । हुवा(ता) हो(प) इशय्योरभी(प्लु) स्रवन्तु(ङि) ना(श)ः। हुवा(ता) हो(ट) या(ख) औहोवा(शि) ।ऊ(ख) पा(श) ॥१९॥
+#End of Mantra Sets -- subsection_36 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_37 ## DO NOT EDIT
+।। उशना काव्योऽग्निर्गायत्री ।।
+# End of Rik Metadata -- subsection_37 ## DO NOT EDIT
+# Start of Rik Text -- subsection_37 ## DO NOT EDIT
+कस्या नू(2)नम्पारी(1)णसि । धीयो(1)जिन्वसिसत्पते । गो(2)षा(2)तायस्यातागी(2)रा(2)ः ॥ १४ ॥
+# End of Rik Text -- subsection_37 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_37 ## DO NOT EDIT
+॥गौराङ्गिरसस्यसामनीद्वे॥  ।। द्वयोर्गोतमो (गोराङ्गिरसो वा) गायत्र्यग्निः ।। ।। गौतमस्य मनाज्यं वा मनाज्योत्तरं वा ।।
+# End of SubSection Title -- subsection_37 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_37 ## DO NOT EDIT
+कस्यानूना(टी) म्पारीणा(खि) सी(ण) ।धीयोजिन्वा(टी) सीसात्पा(खि) ता(ण) इ(श)।गो(च) षाता(चा) यास्या(टाट्) ता(ख) औहोवा(शि) ।उप्गी(खा) रा(श)ः॥२०॥ ओ(क) होवा(था) इहुवा(टि) इहुवा(चि) ए(त) ।कस्यनू ना(खी) म्पारी(चा) णासी(फा) ।ओ(क) होवा(था) इहुवा(टि) इहुवा(चि) ए(त) ।धीयोजिन्वा(खी) सीसा(चा) त्पाती(फा) म् ।ओ(क) होवा(था) इहुवा(टि) इहुवा(चि) ए(त) ।गो(ष) षाता यस्यतागा(खू) इ(श) ।रा(त्र)ः ॥२१॥
+#End of Mantra Sets -- subsection_37 ## DO NOT EDIT
+
+# Start of Section Title -- section_4 ## DO NOT EDIT
+चतुर्थ खण्डः
+# End of Section Title -- section_4 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_38 ## DO NOT EDIT
+।। शय्युबार्हस्पत्योऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_38 ## DO NOT EDIT
+# Start of Rik Text -- subsection_38 ## DO NOT EDIT
+यज्ञा(2)याज्ञा(2)वो अग्ना(2)ये(1) । गी(2)रा(2)गी(1)राचाद(2)क्षासे । प्र(3)प्रा(2)वाया(2)मामृ(4)त(2)ञ्जा(1)तावेदसम् । प्रीयम्मित्र(2) न्ना(2)शंसिषम् ॥ १ ॥
+# End of Rik Text -- subsection_38 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_38 ## DO NOT EDIT
+॥भारद्वाजस्यौपहवौद्वौ॥  ।। द्वयोर्भरद्वाजो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_38 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_38 ## DO NOT EDIT
+यज्ञायज्ञा(ती) ।वो(त) ग्नया(ता) ईगीरा(टि) गिरा(खा) हा(शप्ल) हा(त) इचा(चा) दक्षा(खा) सा(ण) इ(श) ।प्रप्रा(टाच्) वा(क) यममृत(षी) ञ्जातावे(यि) दासा(टा) म् ।प्रीया(चा) म्मित्रा(कि) न्ना(कि) शंसिषा मे(की) हियाऔहोऔहो(खू) इळा(प्ला) ॥१॥ यज्ञायज्ञा(ती) ।हो(त) इवो(ता) ग्नाया(का) ए(ख) हिया(णा) । गीरा(काच्) गी(च) राचा(टा) दा(च) क्षासा(चा) इ(श) ।प्रप्रा(थाच्) वा या(चा) मा(क) मृतञ्जातावे(टु) दा(ख) स(ण)म् ।प्रीय(चा) म्मित्रान्ना(कि) शंसिषामे(की) हियाऔहो(खा) इळा(प्ला) ॥२॥
+#End of Mantra Sets -- subsection_38 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_39 ## DO NOT EDIT
+।। शय्युर्बार्हस्पत्योऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_39 ## DO NOT EDIT
+# Start of Rik Text -- subsection_39 ## DO NOT EDIT
+यज्ञा(2)याज्ञा(2)वो अग्ना(2)ये(1) । गी(2)रा(2)गी(1)राचाद(2)क्षासे । प्र(3)प्रा(2)वाया(2)मामृ(4)त(2)ञ्जा(1)तावेदसम् । प्रीयम्मित्र(2) न्ना(2)शंसिषम् ॥ १ ॥
+# End of Rik Text -- subsection_39 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_39 ## DO NOT EDIT
+॥श्रुष्टीगवम्॥  ।। श्नुष्टीगुर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_39 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_39 ## DO NOT EDIT
+याज्ञायाज्ञा(टी) वोअग्नाया(टी) इ(श) ।गाइरागाइ रा(टू) चादक्षासा(टी) इ(श) ।प्रप्रावाया(टीच्) मा(क) मृतञ्जा(कि) तावे(टा) दा(ख) स(ण) म् ।प्रा(च) या(य) म्माइत्रान्ना(ची) शां(य) सा(ट) इषा(खाण्) म् ।ओ(प) इळा(प्ला)॥३॥
+#End of Mantra Sets -- subsection_39 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_40 ## DO NOT EDIT
+।। शय्युर्बार्हस्पत्योऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_40 ## DO NOT EDIT
+# Start of Rik Text -- subsection_40 ## DO NOT EDIT
+यज्ञा(2)याज्ञा(2)वो अग्ना(2)ये(1) । गी(2)रा(2)गी(1)राचाद(2)क्षासे । प्र(3)प्रा(2)वाया(2)मामृ(4)त(2)ञ्जा(1)तावेदसम् । प्रीयम्मित्र(2) न्ना(2)शंसिषम् ॥ १ ॥
+# End of Rik Text -- subsection_40 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_40 ## DO NOT EDIT
+॥अग्नेश्चयज्ञायज्ञीयम्॥  ।। (भरद्वाजः) बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_40 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_40 ## DO NOT EDIT
+यज्ञा(णा) यज्ञा(णा) वो(फ) अग्ना(खा) या(ण) इ(श) ।गाइरागीरा चा(टू) दाक्षा(पा) साइ(शा)। प्रप्रा(टाच्) वा(क) यममृतञ्जाता(पू) वा(श) हिम्मा(चा) इ(श) ।दा(त) सा(त) म् ।प्रायम्मित्रान्नाशां(कू) सिषा(का) बु(श) ।बा(ख) ॥४॥
+#End of Mantra Sets -- subsection_40 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_41 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_41 ## DO NOT EDIT
+# Start of Rik Text -- subsection_41 ## DO NOT EDIT
+पाहिनोअग्नाएका(1)या । पा(2)ह्यूता द्वि(2)तीया(2)या । पा(2)हीगीर्भीस्तीसृ(2)भीरूर्जा(1)म्पते । पाही(4)चातासृभी(1)र्वसो ॥ २ ॥
+# End of Rik Text -- subsection_41 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_41 ## DO NOT EDIT
+॥कार्तवेशञ्च॥  ।। कृतयशा बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_41 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_41 ## DO NOT EDIT
+पाहिनोआ(खी) ग्नाएकया(प्ली) ।पा(च) ह्युतचिता(ची) इया(या) या(ट) ।पाहीगी(टि) र्भिस्तिसृभीरू(चु) र्जा(क) म्पा(य) ता(ट) इ(श) ।पाही(का) चातौ(का) हो(त) वा(त) ।स्रभिर्वा(टि) सा(खण्) बु(श) ।ओ(प) इळा(प्ला)॥५॥
+#End of Mantra Sets -- subsection_41 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_42 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_42 ## DO NOT EDIT
+# Start of Rik Text -- subsection_42 ## DO NOT EDIT
+पाहिनोअग्नाएका(1)या । पा(2)ह्यूता द्वि(2)तीया(2)या । पा(2)हीगीर्भीस्तीसृ(2)भीरूर्जा(1)म्पते । पाही(4)चातासृभी(1)र्वसो ॥ २ ॥
+# End of Rik Text -- subsection_42 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_42 ## DO NOT EDIT
+॥नार्मेधञ्च॥  ।। नृमेधा (भरद्वाजः) बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_42 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_42 ## DO NOT EDIT
+पाहीनो(षि) अग्नएकया(तु) ए(त) ।पा(क) हाउता(टि) द्वि ताइया(पी) या(श) ।पाहा(टा) इगा(खा) इर्भी(णा)ः ।ताइसृभी रू(कु) र्जाम्पाता(टि) औहोऔहो(खी) वा(ण) ।पा(प) ही हा(चा) इ(श) ।चा(क) तासृभा(टि) औहोऔहो(खी) वा(ण)। वा(प) सावेहियाहा(प्लु) ।हो(प्ल) इळा(शा)॥६॥
+#End of Mantra Sets -- subsection_42 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_43 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_43 ## DO NOT EDIT
+# Start of Rik Text -- subsection_43 ## DO NOT EDIT
+पाहिनोअग्नाएका(1)या । पा(2)ह्यूता द्वि(2)तीया(2)या । पा(2)हीगीर्भीस्तीसृ(2)भीरूर्जा(1)म्पते । पाही(4)चातासृभी(1)र्वसो ॥ २ ॥
+# End of Rik Text -- subsection_43 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_43 ## DO NOT EDIT
+॥महाकार्तवेशञ्च॥  ।। कृतवेशो (भरद्वाजः) बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_43 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_43 ## DO NOT EDIT
+पाहिनोअग्नए(फू) कया(ता) पा(प) ह्यूतद्वीती(प्ली) या(ङ) या(श) ।पाहिगीर्भी(षी) स्तिसृभिरूर्जाम्पा(खू) ता(ण) इ(श) । पाहा(चा) इ(श) ।चा(ख) ताहाओवा(शी) ।सृभिर्व सो(ती) ।ऊ(ट) पा(ख) ॥७॥
+#End of Mantra Sets -- subsection_43 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_44 ## DO NOT EDIT
+।। शय्युबार्हस्पत्योऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_44 ## DO NOT EDIT
+# Start of Rik Text -- subsection_44 ## DO NOT EDIT
+बृ(2)हा(2)द्भी(1)रग्नेरर्च्ची(1)भिः । शुक्रेणा(1) देवाशोची(2)षा(1) । भारा(2)द्वा(1)जेसमीधा । नो(2)या(1)विष्ट्यारेवा(2)त्पा(1)वकदीदिहि ॥ ३ ॥
+# End of Rik Text -- subsection_44 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_44 ## DO NOT EDIT
+॥भारद्वाजस्यपृश्नीद्वे॥  ।। भरद्वाजो बृहत्यग्निः ।। ।। भरद्वाजो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_44 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_44 ## DO NOT EDIT
+बृहाद्भी(पि) रग्नेरर्च्चिभीर्हाबु(शृ) । शुक्राइणा दे(कु) वाशोचिषा(ची) भारा(का) द्वा(य) जे(ट) हो वा(टा) हा(त) इ(श) । समी(चा) धानो(था) या(च) वी(य) ष्टिया(टा) होवा(टा) हा(त) इ(श) । रेवा(चा) त्पा(य) वा(ट) होवा(टा) हा(त) इ(श) । कादीदि(कि) हीइळा(टि) भा(खण्) । ओ(प) इ ळा(शा)॥८॥ बृहद्भीरग्ने(षु) रर्च्चिभी(ति) रे(त) । शुक्राइणा दे(कु) वाशोचिषा(ची) भा(क) रा(च) द्वा(य) जे(ट) ओवा(का) । समी(चा) धानो(था) या(च) वी(य) ष्टिया(टा) ओ वा(का) । रेवा(चा) त्पा(य) वा(ट) ओ वा(का) । कादीदि(कि) हीइळा(टि) भा(खण्) । ओ(प) इ ळा(प्ला) ॥९॥
+#End of Mantra Sets -- subsection_44 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_45 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_45 ## DO NOT EDIT
+# Start of Rik Text -- subsection_45 ## DO NOT EDIT
+त्वय्या(1)ग्नेस्वा(2)हुतः । प्रीया(2)सा(2)सन्तू सूराया(1)ः । यन्ता(2)रोयेमाघा(4)वा(1)नो ज(2)ना(1)नाम् । ऊर्वन्दय(3)न्ता गो(2)नाम् ॥ ४ ॥
+# End of Rik Text -- subsection_45 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_45 ## DO NOT EDIT
+॥उरोराङ्गिरसस्यसाम॥  ।। उरुर्ब्रहत्यग्निः ।।
+# End of SubSection Title -- subsection_45 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_45 ## DO NOT EDIT
+त्वय्या(पा) ग्नेस्वाहुताहाबु(शृ) । प्रियासा स(ची) न्तुसू(का) रायो(चा) यन्ता(का) रो(य) या(प) ई(फ) माघावा नो(फी) ज ना(ता) ना(त) म् । ऊ(च) र्वा(य) न्दया(टा) हा(तच्) न्ता(क) गोना(का) मीळा(टा) भा(खण्) । ओ(प) इ ळा(शा) ॥१०॥
+#End of Mantra Sets -- subsection_45 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_46 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_46 ## DO NOT EDIT
+# Start of Rik Text -- subsection_46 ## DO NOT EDIT
+अग्ने जरी(2)तार्वीस्पातिः । तपानो(2) देवारक्षा(2)साः । अ(2)प्रो(1)षिवा ङ्ग्रहापा(1)ति र्माहंआ(1)सि । दी(1)वा(2)स्पायू(2) र्दुरोणायुः ॥ ५ ॥
+# End of Rik Text -- subsection_46 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_46 ## DO NOT EDIT
+॥गौतमस्यपौरुमुद्गेद्वे पुरुमुद्गस्यवाङ्गीरसस्यदेवानांवा ॥  ।। द्वयोर्गोतमो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_46 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_46 ## DO NOT EDIT
+अग्नेजरितर्विस्पति(षृ) रौहोवाएहिया(तू) हा(त) बु(श) । तपा(का) नोदे(टा) वा(च) रक्षसा(चि) अप्रो(का) षा(य) इवा(टा) न् । गार्हापाता(टी) इर्मा हं(कि) या(ख) सी(ण) । दीवा(चा) स्पायौ(का) वाउवो(खि) वा(प्ल) हा(त) हा(त) इ(श) । दुरोणयू(प्ली)ः । हो(प्ल) इ ळा(शा) ॥११॥ अग्नेजरितार्वी(फू) स्पती(ता) स्ता(प) पानोदेव रक्षसा(शू)ः । तापानोदेव(षु) रक्षसाअप्रोषी(टू) वा(त) न् । गृहा(चा) पताइर्मा(ची) हं(क) या(ख) सी(ण) । ओ(ख) हा(प्ल) हा(त) हा(त) इ(श) । दीवस्पा(चि) यू(ट)ः । ओ(ख) हा(प्ल) हा(त) हा(त) इ(श) । दुरो(टाच्) णा(क) यू(च)ः । ओ(ख) हा(प्ल) हा हा(खाण्) इ(श) । ओ(प) इळा(शा) ॥१२॥
+#End of Mantra Sets -- subsection_46 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_47 ## DO NOT EDIT
+।। प्रस्कण्वः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_47 ## DO NOT EDIT
+# Start of Rik Text -- subsection_47 ## DO NOT EDIT
+अग्नेवी(2)वा(1)स्वादूषा(2)साः । चि(2)त्रं(2)रा(2)धोआ(2)मा(1)र्त्त्यम्(1) ।  आदाशू(2)षेजातवेदोवा(2)हात्वम्(2) । अद्या(2)देवं(4)ऊ(1)ष(3)र्बुधाः ॥ ६ ॥
+# End of Rik Text -- subsection_47 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_47 ## DO NOT EDIT
+॥मण्डोर्जामदग्न्यस्यसामनीद्वे॥  ।। जमदग्निर्द्वयोर्मण्डुर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_47 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_47 ## DO NOT EDIT
+अग्नेवीवा(ती) हा(त) बु(श) । स्वा(क) दू षा(टा) सा(त) श्चाइत्रां(टि) हा(त) इराधो(टि) हा(त) अमा(टा) र्ता(ख) य(ण) म् ।आ(च) दा(य) शुषे(टा) जाता(चा) वेदो(थाच्) वा हा(का) तू(य) वा(ट) म् । अद्याहोइदा(टु) इवम्(ता)। ऊ(क) षार्बु(टाट्) धा(ख) औहोवा(शि) । हु वे(ता) वासू(टाख्)ः॥१३॥ अग्नेविव(षी) स्वदुषा(ति) सा(त)ः । चित्रंराधो(की) अमा(का) र्त्त्यामा(का) दा(य) शू षे(टा) । जाता(चा) वेदो(थाच्) वा हा(का) तू(य) वा(ट) म् । अद्यादा(टि) इव(ता) म् । ऊ(क) षा र्बू(टाट्) धा(ख) औहोवा(शि) । विदा(ता) वासू(टाख्)ः ॥१४॥
+#End of Mantra Sets -- subsection_47 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_48 ## DO NOT EDIT
+।। शय्युबार्हस्पत्यः (तृणपाणिः) अग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_48 ## DO NOT EDIT
+# Start of Rik Text -- subsection_48 ## DO NOT EDIT
+त्व(3)न्नाश्चित्रावूत्य । वा(2)सो(2)राधांसि चो(2)दया। अ(2)स्या(2)रायेत्वा(2)मा(1)ग्ने रा(1)थीरासी(2) । वीदागा(2)धन्तूचेतूनाः ॥ ७ ॥
+# End of Rik Text -- subsection_48 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_48 ## DO NOT EDIT
+॥भारद्वाजस्यगाधम्॥  ।। भरद्वाजो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_48 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_48 ## DO NOT EDIT
+त्वन्ना(पा) श्चित्रऊत्या(शी) । वासो(चा) रा(क) धां(च) सिचो(का) दा(य) या(ट)। आ स्या(का) रा(ख) या(ण) इ(श) । त्वा(च) मा ग्ने(काच्) राथा(का) इरा(या) सी(ट)। वीदा(का) गा(ख) ध(ण) म् । तुचो(ता) हा(त) इ(श)। तू(क) ना औ(टा) हो(ख) बा(प्ल) । हो(प्ल) इ ळा(शा) ॥१५॥
+#End of Mantra Sets -- subsection_48 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_49 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_49 ## DO NOT EDIT
+# Start of Rik Text -- subsection_49 ## DO NOT EDIT
+त्वा(2)मीत्सप्रा(2)था(1)(2)असि । अग्नेत्राता(2)ऋताःकाविः।त्वांविप्रा(1)सस्समीधानदीदिवः। आ(2)वीवासन्तीवेधासाः ॥ ८ ॥
+# End of Rik Text -- subsection_49 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_49 ## DO NOT EDIT
+॥गौतमेद्वे॥  ।। गोतमो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_49 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_49 ## DO NOT EDIT
+हाबुत्वमि(षी) त्सप्रथायसि हा(तू) बु(श) । अग्ने त्रा(चि) ता(क) ॠता(का)ः कवा(पा) इर्हा(प्ला) हा(ङ) इ(श) । त्वां(च) वि प्रा(का) सस्सा(चा) मीधा(का) नदीदीवा(पी) हा(प्ल) हा(ङ) इ(श) । आवीवा सा(पी) हा(प्ल) हा(तच्) न्ती(क) वो(प) बा(प्ल) धासो(प्ला) ।हाइ(शा) ॥१६॥ त्वन्त्वामे(ति) । इत्सा(की) प्राथा(चा) यासो(का) या(ख) सी(ण) । अग्ने(चा) त्रा(क) ता(च) ॠता(चा)ः कावा(का) इःका(खा) वी(ण)ः । त्वां(च) विप्रा(का) सस्सामीधा(की) ना(च) दीदीवो(कि) दा(ख) इवा(णा)ः । आविवा(कि) सा(ट) हा(तच्) न्ती(क) वेधा(टा) सा(खण्)ः । ओ(प) इ ळा(शा) ॥१७॥
+#End of Mantra Sets -- subsection_49 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_50 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_50 ## DO NOT EDIT
+# Start of Rik Text -- subsection_50 ## DO NOT EDIT
+आनो(1) आग्नेवायो(2) वृ(2)धम्(1) । रायिम्पा(1)वाका(1)शंस्यम्(1) । रास्वा(1)चन(2)उपमाते पूरूस्पृहम्(1) । सू(1)नी(2)न्ती सू(2)याशस्तरम् ॥ ९ ॥
+# End of Rik Text -- subsection_50 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_50 ## DO NOT EDIT
+॥अग्नेरायुः॥  ।। अग्निर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_50 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_50 ## DO NOT EDIT
+आनोअग्ने(षी) वयोवृधमे(तु) राया(खा) इ(श) म् । पा(तच्) वा का(का) शां(य) सा(ट) या(त) म् । रास्वा(चा) चनउपा(ची) मा ते(था) पू रू(या) स्पृहा(टा) म् । सूनाइताइसू(टू) हा(त) इ(श) । या शा(चा) स्ता(क) रामौ(पा) होबा(प्ला) । हो(प्ल) इ ळा(शा) ॥१८॥
+#End of Mantra Sets -- subsection_50 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_51 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_51 ## DO NOT EDIT
+# Start of Rik Text -- subsection_51 ## DO NOT EDIT
+यो(2) विश्वाद(4)यातेवासू(1) । हो(3)ता(1)मन्द्रोजना(1)नाम् । मा(2)धोर्नपात्राप्राथा(2)मान्यस्मै । प्रस्तो(2)मायन्त्वग्ना(2)ये ॥ १० ॥
+# End of Rik Text -- subsection_51 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_51 ## DO NOT EDIT
+॥अग्नेर्हरसीद्वे॥  ।। द्वयोरग्निर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_51 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_51 ## DO NOT EDIT
+योवीश्वादा(खी) यातेवासू(शी) । होता(टा) मन्द्रो(टाच्) जना(चा) ना(श) म् । माधो(टा) र्नापा(टा) त्राप्रथमान्यस्मै(चू) । प्रास्तो(टा) माया(टाच) न्तू(क) वो(प) बा(प्ल) ग्नायो(प्ला)।हाइ(शा) ॥१९॥ योविश्वादयते(षू) वसुहा(ति) बु(श) । हो ता(टा) म न्द्रो(टाच्) जनानामो(ची) वा(क) ओ वा(का) । माधो(टा) र्ना पा(टा) त्राप्रथमान्यस्मा(चू) ओवा(का) ओवा(का) । प्रास्तो(टा) मा या(टाच्) न्तू(क) वो(प) बा(प्ल) ग्नायो(प्ला) ।हाइ(शा) ॥२०॥
+#End of Mantra Sets -- subsection_51 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_52 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_52 ## DO NOT EDIT
+# Start of Rik Text -- subsection_52 ## DO NOT EDIT
+यो(2) विश्वाद(4)यातेवासू(1) । हो(3)ता(1)मन्द्रोजना(1)नाम् । मा(2)धोर्नपात्राप्राथा(2)मान्यस्मै । प्रस्तो(2)मायन्त्वग्ना(2)ये ॥ १० ॥
+# End of Rik Text -- subsection_52 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_52 ## DO NOT EDIT
+॥दैर्घश्रवसेद्वे॥  ।। द्वयोर्दीर्घश्रवा बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_52 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_52 ## DO NOT EDIT
+योविश्वादयते(षू) वस्वोहाओहा(तु) ए(त) । हो ता(टा) म(क) न्द्रोजना(कि) नामो(टा) हा(त) ओ(ट) हा ए(खा)। मधो(खा) र्नपा(ता) ।त्राप्रा(का) थमा(का) न्ना(च) यास्मा(का) ओ(ट) हा(त) ओ(ट) हा ए(खा)। प्रास्तो(खा) माया(ताच्) न्तू(क) वो(प) वो(प) बा(प्ल) ग्नायो(प्ला) । हाइ(शा) ॥२१॥ योविश्वादयतेवसू(तू) ए(त) । होता(चा) मन्द्रोजना(ची) म्मा(क) धो(च) र्नापौवा(तित्) । त्राप्रथमान्यस्मै(चू) प्रा(क) स्तो(त) मायौवा(तित्) । त्वग्ना(चा) याइळा(टि) भा(खण्) । ओ(प) इळा(शा) ॥२२॥
+#End of Mantra Sets -- subsection_52 ## DO NOT EDIT
+
+# Start of Section Title -- section_5 ## DO NOT EDIT
+पञ्चम खण्डः
+# End of Section Title -- section_5 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_53 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_53 ## DO NOT EDIT
+# Start of Rik Text -- subsection_53 ## DO NOT EDIT
+ए(2)नावो(2) अग्नि(2)न्ना(2)मा(1)सा । ऊर्जो(4) नापातामाहू(1)वे । प्री(2)यञ्चेतिष्ठामारातिं(4) स्वाध्वारम्(2) । विश्वा(1)स्यादूता(3)मामृत(1)म् ॥ १ ॥
+# End of Rik Text -- subsection_53 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_53 ## DO NOT EDIT
+॥अग्नेराग्नेयेद्वे॥  ।। द्वयोरग्निर्बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_53 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_53 ## DO NOT EDIT
+एनावोअग्निन्ना(तू) ओमसा(ति) । ऊर्जोनपा(की) तामा(या) हुवे(टा) । प्रायञ्चे(चि) तिष्ठा(टा) मारतिं(चि) सू(क)आध्वाराम्(भि) । विश्वा(चा) स्या(य) दू(ट) । ता(च) मामृ(चा) ता(क) मिळा(टा) भा(खण्) ।ओ(प) इळा(शा) ॥१॥ एनावोअग्नि(षु) न्नामसा(तू) हा(त) बु(श) । ऊर्जोन पा(की) तामा(या) हु वे(टा) हा(त) बु(श) । प्रायञ्चे(चि) ति ष्ठा(टा) मारतिं(चि) सू(ट) आध्वारां(भि) हा(त) बु(श) । वि श्वा(चा) स्या(य) दू(ट) हा(त) बु(श) । ता(च) मा मृ(चा) ता(क) मिळा(टा) भा(खण्) ।ओ(प) इळा(शा)॥२॥
+#End of Mantra Sets -- subsection_53 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_54 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_54 ## DO NOT EDIT
+# Start of Rik Text -- subsection_54 ## DO NOT EDIT
+ए(2)नावो(2) अग्नि(2)न्ना(2)मा(1)सा । ऊर्जो(4) नापातामाहू(1)वे । प्री(2)यञ्चेतिष्ठामारातिं(4) स्वाध्वारम्(2) । विश्वा(1)स्यादूता(3)मामृत(1)म् ॥ १ ॥
+# End of Rik Text -- subsection_54 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_54 ## DO NOT EDIT
+॥गौतमस्यमनार्येद्वे॥  ।। द्वयोर्गोतमो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_54 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_54 ## DO NOT EDIT
+एनावोअग्निम्मे(तू) नमसा(ति) । ऊ(क) र्जोनपा(टिच्) तामा(चा) हु वे(का) प्रा(ट) या(त) म् । चाइती(चि) ष्ठामा(का) रतिं(टाच्) सूआ(का) ध्वा(य) रा(ट) म् । विश्वा(का) स्या(य) दू(ट) । ता(च) मा मृ(चा) ता(क) मिळा(टा) भा(खण्) । ओ(प) इ ळा(शा) ॥३॥ एनावोअग्निन्न(षू) मसऊर्जोनपो(तू) वा(त) । ता मा(चा) हुवे(का) प्रा(ट) या(त) म् । चाइती(चि) ष्ठामा(का) रा(ट) तीम्(त) । स्वा(थ) ध्वारंविश्वस्या(टु) दू(त) । ता(च) मामृ(चा) ता(क) मिळा(टा) भा(खण्) । ओ(प) इ ळा(शा)॥४॥
+#End of Mantra Sets -- subsection_54 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_55 ## DO NOT EDIT
+।। भगः प्रागाथोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_55 ## DO NOT EDIT
+# Start of Rik Text -- subsection_55 ## DO NOT EDIT
+शे(2)षेवा(2)ने(1)षू मातृ(1)षु । स(2)न्त्वा मर्त्ता(1)स इन्धते । आत(1)न्द्रो हव्यं(2)वा(1)हसि हाविष्कृता(1)ः । आ(2)दि(2)द्देवेषु(1)राजसि ॥ २ ॥
+# End of Rik Text -- subsection_55 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_55 ## DO NOT EDIT
+॥दैवोराजञ्च॥  ।। देवराड् (गौतमः) बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_55 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_55 ## DO NOT EDIT
+शेषेवना(फी) इषुमातृषू(कु) । सान्त्वा(का) मार्ता(काच्) सा(क) इ न्धा(टा) ता(त) इ(श) । आतन्द्रो(किच्) हव्यं(चा) वहा(का) साइ हावी(टी) ष्का(ख) र्ता(ण)ः । आदिद्दे(कि) वा(च) इ(श) । षूराजा(टि) सा(खण्) इ(श) । ओ(प) इळा(शा) ॥५॥
+#End of Mantra Sets -- subsection_55 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_56 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_56 ## DO NOT EDIT
+# Start of Rik Text -- subsection_56 ## DO NOT EDIT
+अ(2)द(1)र्शीगातूवि(2)त्ता(1)मः । यस्मि(1)न्व्राता(4)न्याद(2)धु(2)ः । ऊपोषूजाता(4)मा(4)र्यास्या वार्थानम् । अ(2)ग्नि(2)न्ना(1)क्षन्तू नोगीरा(1)ः ॥ ३ ॥
+# End of Rik Text -- subsection_56 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_56 ## DO NOT EDIT
+॥गाधिनश्चकौशिकस्यसाम॥  ।। कौशिको गाथिर्बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_56 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_56 ## DO NOT EDIT
+अदर्शिगा(षी) तुवित्तमा(तु) ए(त) । यास्मिन्व्रा(की) तान्या(टाच्) दधुरू(कि) पो(य) षूजा(टा) हा(त) हा(त) इ(श) । ता मा(चा) र्या(क) स्यावा(चा) र्धाना(का) मग्ना(का) इन्नक्षा(टि) हा(त) हान्तुनो गी(ची) राइळा(टि) भा(खण्) । ओ(प) इ ळा(शा) ॥६॥
+#End of Mantra Sets -- subsection_56 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_57 ## DO NOT EDIT
+।। मनवुर्वैस्वस्तोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_57 ## DO NOT EDIT
+# Start of Rik Text -- subsection_57 ## DO NOT EDIT
+अग्नी(2)रूत्थेपूरो(2)हित(2)ः । ग्रावा(1)णोबर्हीरा(1)ध्वारे(2) । ऋचा(2)या(1)मिमरुतो ब्रह्मणस्पते । देवंआ(2)वोवा(2)रेण्यम् ॥ ४ ॥
+# End of Rik Text -- subsection_57 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_57 ## DO NOT EDIT
+॥बार्हदुत्थेद्वे॥  ।। द्वयोर्वृहदुक्थो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_57 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_57 ## DO NOT EDIT
+अग्निरुक्था(ती) इ(श) । पुरो हा(खि) इ ता(णा)ः । ग्रा(क)वा णो(का) ब(च) र्हीराध्वा(खि) रा(ण) इ(श) । ऋचायामि(षी) मरुतो ब्रह्मा(चु) णा(य) स्पाता(टा) इ(श) । दाइ वं(टि) आ वो(टाच्) वा(क) रो(प) बा(प्ल) णा या(प्ला) म् ।हा इ(शा) ॥७॥ अग्निरुक्थाबु हो(तू) हो(त) हा(त) इ(श) । पुरौवाउ वो(खु) वाहि त(शि)ः ।ग्रा(क) वा णो(का) बर्हिरौ(कि) वाउ वो(खि) वाध्वरा इ(शी) । ऋ चौ(टा) हो(त) यामिमरुतो(षु) ब्रह्माणा(यि) स्पाता(टा) इ(श) । दाइ वं(टि) आ वो(टाच्) वा(क) रो(प) बा(प्ल) णाया(प्ला) म्। हा इ(शा) ॥८॥
+#End of Mantra Sets -- subsection_57 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_58 ## DO NOT EDIT
+।। सुदीतिपुरुमी-ळावाङ्गिरसौ अग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_58 ## DO NOT EDIT
+# Start of Rik Text -- subsection_58 ## DO NOT EDIT
+अग्नी(4)मीळिष्वा(2)वा(1)से । गा(2)था(1)भीश्शीरा(2)शो(1)चिषम् । अ(2)ग्निं(2)राये(2)पू(1)रूमिढा श्रूतन्ना(2)रा(1)ः । अग्निस्सू(1)दीताये(4)च्छार्दिः ॥ ५ ॥
+# End of Rik Text -- subsection_58 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_58 ## DO NOT EDIT
+॥पौरुमीढञ्च॥  ।। पुरुमीढो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_58 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_58 ## DO NOT EDIT
+अग्नि मी(फि) ळिष्वा(खा) औ(ण) हो(फ) वा(श) । अवसे(कि) गाधाभी(चि) श्शी(थ) रा(क) शो चा(टा) इषा(ता) म् । अग्निंरायाइ(ष) पुरू मा(टि) इ ढा(ता) । श्रूतन्नरोअग्नि स्सू(टू) दी(त) । तायाइच्छा(पी) र्दी(त्र) । द क्षा(ता) या(टाख्) ॥९॥
+#End of Mantra Sets -- subsection_58 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_59 ## DO NOT EDIT
+।। प्रस्कण्वः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_59 ## DO NOT EDIT
+# Start of Rik Text -- subsection_59 ## DO NOT EDIT
+श्रूधि(2)श्रुत्कर्णावन्ही(1)भिः । देवैरा(1)ग्ने(2)सायावा(1)भिः । आ सी(1)दतुबर्ही(2)षी(1)मित्रो(4) अर्यामा । प्रात(2)र्या(2)वा(1)भीराध्वारे(2) ॥ ६ ॥
+# End of Rik Text -- subsection_59 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_59 ## DO NOT EDIT
+॥कार्णश्रवसम्॥  ।। कर्णश्रवा बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_59 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_59 ## DO NOT EDIT
+श्रुधी(ता) श्रू(प) धिश्रुत्कर्णवन्हिभाइ(शृ)ः । दे(क) वैराग्ने(कि) सायावा(टि) भी(त)ः ।आ(क) सीदतुबर्हिषि(षू) मित्रोअर्या(टी) मा(त) । प्रा(क) त र्या(टा) वा(त) । भा(ट) इ रा(खा) औहोवा(शि) । ए(त) ध्वरा(ता) या(ख) ॥१०॥
+#End of Mantra Sets -- subsection_59 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_60 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_60 ## DO NOT EDIT
+# Start of Rik Text -- subsection_60 ## DO NOT EDIT
+प्रदै(2)वो(1)दासोअग्निः । दे(2)व इन्द्रोनाम(2)ज्मा(2)ना । आ(3)नू(2)मातार(1)म्पृथिवींवीवा(1)वृते । तस्थौ(4) ना(4)का(1)स्या शर्माणि ॥ ७ ॥
+# End of Rik Text -- subsection_60 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_60 ## DO NOT EDIT
+॥दैवोदासञ्च॥  ।। दिवोदासो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_60 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_60 ## DO NOT EDIT
+प्र(ष) दैवोदासोअग्नी(तू)ः । दे(क) वइन्द्रो(कि) नामज्माना(ची) म् । आनूमा(टिच्) ता(क) रं(च) पृथिवीं(टि) विवावृता(ची) इ(श) । तस्थौना(भि) का(त) । स्याश(का) र्मणि इळा(टि) भा(खण) । ओ(प) इ ळा(शा)॥११॥
+#End of Mantra Sets -- subsection_60 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_61 ## DO NOT EDIT
+।। मेधातिमध्येआतिथी काण्वौ इन्द्रो बृहती ।।
+# End of Rik Metadata -- subsection_61 ## DO NOT EDIT
+# Start of Rik Text -- subsection_61 ## DO NOT EDIT
+आधा(1)ज्मो(2) आधा(1) वा दी(1)वः । बृ(2)हातो(4) रो(1)चानाद(2)धी(1) । आया(2) वा(3)र्धस्वा(2)तन्वा(2)गीरा(2)मामा । आजाता(2)सूकृतॊ(1)पृणा ॥ ८ ॥
+# End of Rik Text -- subsection_61 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_61 ## DO NOT EDIT
+॥सौकृतवञ्च॥  ।। सुक्रतुर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_61 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_61 ## DO NOT EDIT
+अधज्माओवा(तु) । आ(च) धा वा(का) दा(य) इ वा(टा)ः । बृहतो रोचा(चु) ना(य) दाधि(टा) । आयौहो(कि) औहो(ता) वा(त) । वार्धस्वा(चि) तन्वा(था) गा(च) इ रा(य) म मा(टा) । आजाता सौ(की) होऔहो(ति) वा(त) । हा(फ) हाउ वा(ति) । कृतोपृणा(खी) ॥१२॥
+#End of Mantra Sets -- subsection_61 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_62 ## DO NOT EDIT
+।। विश्वामित्रो गाथिनोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_62 ## DO NOT EDIT
+# Start of Rik Text -- subsection_62 ## DO NOT EDIT
+काया(1)मानोवा(2)नात्वम्(2) । य(3)न्मा(1)त्ररा(2)ज(1)गन्नाप(2)ः । ना(2)तात्ते(1)अग्नेप्रामृ(4)षे नीवार्त्ता(1)नम् । य(2)द्दूरे स(2)न्नी(2)हाभूवः ॥ ९ ॥
+# End of Rik Text -- subsection_62 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_62 ## DO NOT EDIT
+॥काण्वेद्वे॥  ।। द्वयोः कण्वो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_62 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_62 ## DO NOT EDIT
+कायमानो(फी) वनातुवा(की) म् । य(क) न्मातृ(टा) राजाग(कि) न्ना(ख) पा(ण)ः । नतत्तया(ती) ग्ना(त) इ(श) प्रमृ षे(टि) हा(त) इ(श)। नी वा(टा) र्ता(ख) न(ण) म् । यद्दूरा(टि) इसा(ता) न् । इहा(काच्) भू(क) वाऔ(टा) हो(ख) बा(प्ल) । हो(प्ल) इ ळा(शा) ॥१३॥ एका या(ति) । मा नो(का) व ना(का) तू(ख) वा(प्ल) मोइ तू(खी) वामुहुवाहाइ(शू) ।औ(ट) हो(तच्) इयन्मातृ(टी) राजा ग(कि) न्ना(ख) पा(प्ल)। आ(ख) पाउहुवाहाइ(शू) । औ(ट) हो(तच्) इ ना(का) तत्तया(टि) ग्नाइप्रमृ(टी) षाइनीवा(टी) र्ता(ख) ना(प्ल)।आन्ता(खा) नामुहुवाहा इ(शू) । औ(ट) हो(तच्) इयद्दूरे(की) सन्निहा(टि) भू(ख) वा(प्ल) आ भू(खा) वाउहुवाहा इ(शू) । औ(ट) हो(त) या(टख्) औहोवा(शि) । ऊ(ख) पा(श) ॥१४॥
+#End of Mantra Sets -- subsection_62 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_63 ## DO NOT EDIT
+।। कण्वो घौरोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_63 ## DO NOT EDIT
+# Start of Rik Text -- subsection_63 ## DO NOT EDIT
+नित्वा(1)माग्ने(2)मानू(1)र्दधे । ज्यो(2)तीर्ज(1)ना(1)याशा(2)श्वा(1)ते । दीदेथाक(4)ण्वऋताजात उक्षीतः । यन्ना(1)मास्य(4)न्ती कृष्टायाः ॥ १० ॥
+# End of Rik Text -- subsection_63 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_63 ## DO NOT EDIT
+॥मानवेद्वे॥  ।। द्वयोर्मनुर्बुहत्यग्निः ।।
+# End of SubSection Title -- subsection_63 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_63 ## DO NOT EDIT
+नित्वामग्ना(ती) इ(श) । मनुर्दा(खि) धा(ण) इ(श) । ज्योतिर्ज ना(की) या(च) शा(य) श्वाता(टा) इ(श) । दी(क) दाइथाक(की) ण्वाऋतजा(टी) तऊ(टा) क्षा(ख) इ ता(णा)ः। यन्नामा(टि) स्या(त) न्ता(टट्) इ कृ(खा) औहो वा(शि) । ष्टा(ख) या(प्ल)ः॥१५॥ होवाइनित्वाम(षू) ग्नेमनुर्दधेहो(तू) वा(त) इ(श) । ज्योतिर्जनाय(षु) शस्वतेदाइदे(चू) थाकण्वा(कि) ऋत जा(टि) ओतऊ(टि) क्षा(ख) इता(णा)ः। यन्नामा(चि) स्या(त) न्ता(टट्) इकृ(ख) औहोवा(शि) । ष्टा(ख) या(प्ल)ः ॥१६॥
+#End of Mantra Sets -- subsection_63 ## DO NOT EDIT
+
+# Start of Section Title -- section_6 ## DO NOT EDIT
+षष्ठ खण्डः
+# End of Section Title -- section_6 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_64 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_64 ## DO NOT EDIT
+# Start of Rik Text -- subsection_64 ## DO NOT EDIT
+दे(2)वो(2)वो(1)द्रविणोदाः । पूर्णां(1)वी(1)वाष्ट्‌वासी(2)च(1)म् । उद्वा(1) सिञ्चा(2)ध्वामू(2)पा(1) वापृणध्वम्  । आदीद्वो(1)देवा(2) ओहते ॥ १ ॥
+# End of Rik Text -- subsection_64 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_64 ## DO NOT EDIT
+॥अग्नेश्चद्रविणम्॥  ।। अग्निर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_64 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_64 ## DO NOT EDIT
+दे वो(णफ) वो(ख) द्रविणो दा(शी)ः । पू(क) र्णांविव ष्ट्वा(टीच्) सी(क) चमूद्वा(यि) सिञ्चा(टा)।ध्वामुपावा(टी) पृ णा(का) ध्वामा(चा) दी(य) द्वोदे(टा) । वाओ(चा) हताइळा(टी) भा(खण्) । ओ(प) इ ळा(प्ला) ॥१॥
+#End of Mantra Sets -- subsection_64 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_65 ## DO NOT EDIT
+।। कण्वो घौरो ब्रह्मणस्पतिर्बृहती ।।
+# End of Rik Metadata -- subsection_65 ## DO NOT EDIT
+# Start of Rik Text -- subsection_65 ## DO NOT EDIT
+प्रैतू(4)ब्रह्माण(2)स्पा(2)तीः । प्रा(2)देव्येतू सूनृ(2)ता । अच्छा वीरं(4)नर्य(1)म्पङ्तीरा(1)धसम् । दे(2)वा(2) यज्ञ(2) न्ना(2)यन्तुनः ॥ २ ॥
+# End of Rik Text -- subsection_65 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_65 ## DO NOT EDIT
+॥बार्हस्पत्यञ्चब्राह्मणस्पत्यंवा॥  ।। बृहस्पतिर्बुहत्यग्निः ।।
+# End of SubSection Title -- subsection_65 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_65 ## DO NOT EDIT
+प्रैतूब्रा(खि) ह्माणास्पाती(प्ली)ः । प्रादाइ व्ये(टीच्) तू(क) सूनृता(कि) अच्छा(टा) वा(ख) इर(णा) म् । नर्यंप(तिच्) न्तीरा(चा) धा(य) सा(ट) म् । देवा(टा) या(ख) ज्ञ(ण) म् । ना(ट) या(ख) औहो वा(शि) । तू(ख) ना(श)ः॥२॥
+#End of Mantra Sets -- subsection_65 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_66 ## DO NOT EDIT
+।। कण्वो घौरो यूपो बृहती ।।
+# End of Rik Metadata -- subsection_66 ## DO NOT EDIT
+# Start of Rik Text -- subsection_66 ## DO NOT EDIT
+ऊर्ध्वाऊषू(4)णा(1) ऊता(2)ये(1) । तिष्ठा(1) देवो(4)ना(4)सा(1)वीता । ऊर्ध्वो वा(2)ज(1)स्यासानीता(4) यादञ्जी(2)भि(1)ः । वा(2)घा(4)द्भी(1)र्वीभ्वाया(1)महे ॥ ३ ॥
+# End of Rik Text -- subsection_66 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_66 ## DO NOT EDIT
+॥वसिष्ठस्यचवीङ्कम्॥  ।। वसिष्ठो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_66 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_66 ## DO NOT EDIT
+ऊर्ध्वऊषुणा(कु) ऊता(पा) या(ण) इ(श) । तिष्ठादेवो नस्स(षू) विताऊर्ध्वोवा(टु) जा(त) । स्या(च) सा(क) निता(का) या(च) दा(य) ञ्जीभी(टा)ः । वा(क) घा(ट) द्भी(क) र्वीं(च) भाया मा(टि) हा(खण्) इ(श) । ओ(प) इळा(प्ला) ॥३॥
+#End of Mantra Sets -- subsection_66 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_67 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_67 ## DO NOT EDIT
+# Start of Rik Text -- subsection_67 ## DO NOT EDIT
+प्र(3)योरा(1)येनीनीषते । म(2)र्तोयस्तेवासोदा(1)शा(1)त् । सावीरन्धाक्तेअ(2)ग्नि उत्थाशंसी(1)नम् । इत्माना(1) सहस्रापोषी(2)णम् ॥ ४ ॥
+# End of Rik Text -- subsection_67 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_67 ## DO NOT EDIT
+॥विस्पर्धञ्च॥  ।। विष्पर्धा बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_67 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_67 ## DO NOT EDIT
+प्रयोराया(फी) इनिनीष ता(तु) इ(श) । मर्तोयस्ते(की) वासोदाशात्सा(कु) वीरा(टा) न्धा(त)। तायग्ने उक्था शं(कू) सीनं(था) त्मानासा(टि) हा(त) । स्रापोषा(टि) इणा(खाण्) म् । ओ(प) इ ळा(शा)॥४॥
+#End of Mantra Sets -- subsection_67 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_68 ## DO NOT EDIT
+।। कण्वो घौरोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_68 ## DO NOT EDIT
+# Start of Rik Text -- subsection_68 ## DO NOT EDIT
+प्रावो(1) यम्भम्पू(1)रूणाम्(2) । वीशा(2)न्दे(1)वायातीनाम् । अग्निं सूक्तेभिर्वाचो(1)भिर्वृणीमहे । यं समीदन्याइ(2)न्धा(2)ते ॥ ५ ॥
+# End of Rik Text -- subsection_68 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_68 ## DO NOT EDIT
+॥ऐतवृधञ्च॥  ।। ऐतवद्भिर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_68 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_68 ## DO NOT EDIT
+प्रवा(ता)ः । यम्भम्पुरू(टी) णा(त) म् ।वी(क) शान्दे(टा) वाय ता(टि) इना(ता) म् । अग्निंसूक्ते(षी) भिर्वचोभि(की) र्वृणी मा(टि) हा(ता) इ(श) । यांसा(टा) माइदा(टि) न्याइ(का) न्धताइ ळा(टी) भा(खण्) । ओ(प) इ ळा(प्ला)॥५॥
+#End of Mantra Sets -- subsection_68 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_69 ## DO NOT EDIT
+।। उत्कीलः कात्योऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_69 ## DO NOT EDIT
+# Start of Rik Text -- subsection_69 ## DO NOT EDIT
+आया(2)मग्नी(2)सूवी(2)र्या(1)स्या । ई(2)शेहिसौ(2)भा(2)गस्य । रायाई(2)शेस्वापत्यास्यागो(2)मा(1)तः। ईशे(1)हि वृ(2)त्राहा(2)थानाम् ॥ ६ ॥
+# End of Rik Text -- subsection_69 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_69 ## DO NOT EDIT
+॥मनसश्चदोहः॥  ।। दोहो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_69 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_69 ## DO NOT EDIT
+अयमग्नि(षी) स्सुवीर्यस्यहा(तु) बु(श) । आइशे(किच्) हीसौभ स्या(चु)। होवा(टा) हा(त) इ(श) । रायई(कि) शेस्वाप त्या(की) स्या(क) गो(य) माता(टा)। होवा(टा) हा(त) इ(श) ।ई(क) शे हा(टा) इवृ(ता)। होवा(टा) हा(त) इ(श) । त्राहा(चा) था(थ) नामि ळा(टा) भा(खण्) । ओ(प) इ ळा(प्ला)॥६॥
+#End of Mantra Sets -- subsection_69 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_70 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_70 ## DO NOT EDIT
+# Start of Rik Text -- subsection_70 ## DO NOT EDIT
+त्वा(3)मा(1)ग्नेगृहा(2)पा(1)तिः । त्वं(2)होता(1) नोआ(3)ध्वारे । त्वा(2)म्पो(2)ता(1)विश्वावार प्रा(2)चे(1)तः । य(2)क्षीया(4)सी(1)चावार्यम् ॥ ७ ॥
+# End of Rik Text -- subsection_70 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_70 ## DO NOT EDIT
+॥समन्तानित्रिणि अग्नेरेकमिन्द्राग्न्योर्वा प्रजापतेर्वावरुणस्यद्वे॥  ।। अग्निर्वसिष्ठो वा बृहत्यग्निः ।। ।। द्वयोर्वरुणो बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_70 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_70 ## DO NOT EDIT
+त्वमग्ने(षि) गृहपता(ती) इ(श)ः । त्वं(क) होतानो(कि) अध्वराइत्वाम्पो(टू) ता(त) । वाइश्वावारा(कु) प्रचाइ ता(भी) औ(क) हो(फ) वा(प्ल) हा(ण) इ(श) । यक्षाइया(टी) सी(त)। हो वा(टा) हा(त) इ(श) । चावारा(टी) या(खण्) म् । ओ(प) इ ळा(प्ला) ॥७॥ त्वमा(खा) ग्नेगृहपताइ(शू)ः । त्वं(क) होता(का) नोअध्वरे(की) त्वा(प) म्पोता(फा) औहो(फा) औ हो(फा) वा(त) हा(त) इ(श) । वाइश्वावारा(कु) प्रचाइता(पी) औहो(फा) औहो(फ) वा(त) हा(त) इ(श) । यक्षाइया(यी) सा(प) औहो(फा) औहो(फ) वा(त) हा(त) इ(श) । चावारा(टि) या(खण्) म् । ओ(प) इळा(प्ला) ॥८॥ त्वमग्नेगृहा(तु) पती(ता)ः । त्वंहो(खा) ता(श) नोअध्वा(खि) रा(ण) इ(श) । त्वाम्पो(खा) ता(श) विश्वावा(खि) रा(ण) । प्राचेता(किथ्) यक्षाइया(टीट्) सा(ख) औहोवा(श) । चावारी(टि) या(ख) म् ॥९॥
+#End of Mantra Sets -- subsection_70 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_71 ## DO NOT EDIT
+।। विश्वामित्रो गाथिनोऽग्निर्बृहती ।।
+# End of Rik Metadata -- subsection_71 ## DO NOT EDIT
+# Start of Rik Text -- subsection_71 ## DO NOT EDIT
+साखायस्त्वाववृमहे । दे(2)वम्मर्ता(2)साऊता(2)ये । आ(2)पान्ना(1)पातंसूभा(4)गं(1) सूदंसा(1)सम् । सु(2)प्रा(2)तू(1)र्तीमानेहा(2)सम् ॥ ८ ॥
+# End of Rik Text -- subsection_71 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_71 ## DO NOT EDIT
+॥वमृस्यवैखानसस्यसाम॥  ।। वाम्रो वैखानस आञ्जिग दानवो वा बृहत्यग्निः ।।
+# End of SubSection Title -- subsection_71 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_71 ## DO NOT EDIT
+सखायस्त्वाबुहो(तू) हो(त) हा(त) इ(श) । ववृमा(खि) हा(ण) इ(श) ।दे(क) वम्मर्ता(टि) हा(त) सऊ(टा) ता(ख) या(ण) इ(श) । अ पा(चा) न्न पा(खा) त(श) म्। सुभगौवा(ती) हा(त) इ(श)। सूदं(का) सा(ख) स(ण) म् । सुप्रातू(टि) र्ती(त) म् ।आनेहा(टि) सा(खण्) म् ।ओ(प) इळा(प्ला)॥१०॥
+#End of Mantra Sets -- subsection_71 ## DO NOT EDIT
+
+# Start of Section Title -- section_7 ## DO NOT EDIT
+सप्तम खण्डः
+# End of Section Title -- section_7 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_72 ## DO NOT EDIT
+।। श्यावाश्वो वामदेवो वा अग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_72 ## DO NOT EDIT
+# Start of Rik Text -- subsection_72 ## DO NOT EDIT
+आजू(1)होताहविषा(1)मर्जयध्वम् । नीहो(2)ता(1)रङ्गृहा(2)पा(1)तिन्दधिध्वम् । ईळा(1)स्पाते नामा(1)सारा(2)ताहा(1)व्यम् । सपर्याता याजतम्पस्त्या १(1) नाम् ॥ १ ॥
+# End of Rik Text -- subsection_72 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_72 ## DO NOT EDIT
+॥श्यावाश्वञ्च॥  ।। श्यावाश्वस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_72 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_72 ## DO NOT EDIT
+आजुहोता(ती) ।हविषामर्जया(टूच) ध्वां(य) वा(ट) । निहोतार(षी) ङ्गृहापातिन्दधा(टूच) इ(च) ध्वां(य) वा(प) इळा(खा) स्पाता(ता) इ(श)। नामसा(चि) राताहा(टि) ओव्या(टा) म् । सापरीया(की) तायाजत(की) म्पा(प) स्त्योबा(प्ला) । ओना(प्ला) म् । हाइ(शा) ॥१॥
+#End of Mantra Sets -- subsection_72 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_73 ## DO NOT EDIT
+।। उपस्तुतो वाहिष्ठव्योऽग्निर्जगती ।।
+# End of Rik Metadata -- subsection_73 ## DO NOT EDIT
+# Start of Rik Text -- subsection_73 ## DO NOT EDIT
+चित्र(2) इच्छीशो(2)स्ता(2)रुणास्या वक्षा(2)था(1)ः । न(2)यो(2) माता(4)रा(1)वन्वे(2)ती धा(2)ता(1)वे । अ(2)नुधा(2) याद(2)जीज(1)नाद(2)धा(1) चीदा(2) ।  वावक्षस्सद्यो मा(1)ही दूत्या ३ ञ्चा(2)र(1)न् ॥ २ ॥
+# End of Rik Text -- subsection_73 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_73 ## DO NOT EDIT
+॥ऋतुसामनीच॥  ।। द्वयोरग्निर्वृहत्यग्निः ।।
+# End of SubSection Title -- subsection_73 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_73 ## DO NOT EDIT
+ओइ(षा) चित्रइच्छाइशो(यू) स्तरुणा(पि) स्यावाक्षा(कि) था(फ)ः । ओइनयोमातारा(यू) वनुवा(पि) इतीधाता(की) वे(फ) ।ओअनुधाया(यु) दजीजना(पी) दधा(चा) ची(क) दा(फ) । ओ(ष) इववक्षसाद्यो(यू) माही(टा) द्यूत्याञ्चा(खि) रा(त्र) न्। दुत्यञ्चरन्मा(टु) ही(ख) ॥२॥ चित्रा(ता) ए(त) ।ए(त) ए(प) इच्छिशोस्तरूणस्य वक्षथ(षे) क्षथोहीहीहीया(तू) हा(त) बु(श) ।ए(त) ए(प) नयोमातरावन्वेतिधात(षे) वेतवेहीहीहीया(तू) हा(त) बु(श) ।ए(त) ए(प) अनूधायदजीजनदधाचि(षै) दा चिदाहीहीहीया(तू) हा(त) बु(श) ।ए(त) ए(प) ववक्षस्सद्यो महिद्युत्यञ्चर(षै) ञ्चरन्हीहीहीया(तू) हाउवा(ति) । ए(त) ऋतू(टाख्) ॥३॥
+#End of Mantra Sets -- subsection_73 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_74 ## DO NOT EDIT
+।। बृहदुक्तो वामदेव्योऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_74 ## DO NOT EDIT
+# Start of Rik Text -- subsection_74 ## DO NOT EDIT
+ईद(2)न्ताएक(1)म्पारा(4)ऊ(1) ता एकम्(1) । तृतीये(1)न ज्योती(1)षासं(2)वीशस्वा । सं(2)वे(2)शान(4)स्तन्वे ३ चारू(2)रेधि ।  प्रियो(1) देवा(2)ना(1)म्पा(1)रामेज(2)नित्रे ॥ ३ ॥
+# End of Rik Text -- subsection_74 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_74 ## DO NOT EDIT
+॥यामञ्च॥  ।। कौत्सं वा यमस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_74 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_74 ## DO NOT EDIT
+ओ(ख) हा(शप्ल) हा(त) हा(त) इ(श) ।ईदन्तआइका(टू) म्पाराऊ(कि) त ए(खा) क(श) म् ।तृतीयेनज्यो(टु) तीषा(चा) संवीशा(खि) स्वा(श) । सं(क) वेशनास्ता(टी) न्वेचा(का) रुरे(खा) धि(श) ।ओ(ख) हा(शप्ल) हा(त) हा(त) इ(श) ।प्रियोदेवाना(टु) म्परमा(पि) इजाना(खि) इ(श)। त्रा(त्र) इ(श) ॥४॥
+#End of Mantra Sets -- subsection_74 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_75 ## DO NOT EDIT
+।। कुत्स आङ्गिरसोऽग्निर्जगती ।।
+# End of Rik Metadata -- subsection_75 ## DO NOT EDIT
+# Start of Rik Text -- subsection_75 ## DO NOT EDIT
+इमं(2)स्तोमामर्हाते जाता(2)वेदसे । राथा(1)मी(4)वा(2)संमा(1)हेमा मा(1)नीषा(2)या । भ(2)द्रा(2)ही नःप्रामा(1)तीरस्यासंसादि ।  अग्ने(1) सख्येमारी(1)षामा वायन्ता(2)वा(1) ॥ ४ ॥
+# End of Rik Text -- subsection_75 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_75 ## DO NOT EDIT
+॥अग्नेश्चाग्नेयम्॥  ।। कुत्सो जगत्यग्निर्यज्ञसारथिः अग्निः ।।
+# End of SubSection Title -- subsection_75 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_75 ## DO NOT EDIT
+इमंस्तो(खि) मा(श) मर्हाते(खि) जा(ण) । ता वे(का) द से(चा) हो ये(टा) रथा मी(खि) वा(श) सम्मा हे(खि) मा(ण) । मा नी(का) ष या(चा) हो ये(टा) भद्रा ही(खि) न(श)ः प्रमाती(खि) रा(ण) । स्या सं(का) सदी(चा) हो ये(टा)। अग्नाइसा(खि) ख्या(ण) इ(श) । माराइ षा(खि) मा(ण) । वा य(का) न्त वा(टा) हो(ख) इ ळा(शा) ॥५॥
+#End of Mantra Sets -- subsection_75 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_76 ## DO NOT EDIT
+।। भरद्वाजो बार्हस्पत्योऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_76 ## DO NOT EDIT
+# Start of Rik Text -- subsection_76 ## DO NOT EDIT
+मूर्धानन्दीवोआ(1)राति(4)म्पृ(1)थिव्या(2)ः । वैश्वा(2)नारा(2)मृतआ(2) जाता(2)म(2)ग्निम् । काविं(2) सम्म्राजमा(4)तीथि(1)ञ्ज(1)ना(1)नाम् ।  आ(2)स(2)न्ना पा(1)त्रञ्जनयन्तादेवाः ॥ ५ ॥
+# End of Rik Text -- subsection_76 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_76 ## DO NOT EDIT
+॥अग्नेर्वैश्वानरस्यसामनीद्वे॥  ।। द्वयोरग्निर्वैश्वानरस्त्रिष्टुबग्निर्वैश्वानरः ।।
+# End of SubSection Title -- subsection_76 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_76 ## DO NOT EDIT
+मूर्धाहो(ति) हा(त) इ(श) । नन्दा(खा) इवा(णा)ः । आरताइम्पृ थी(टू) व्या(क) वै(थ) श्वा(ष) नरमृतआजा(कू) तामा(टा) ग्नी(त) म् । काविंसम्म्रा(षी) जमातिथाइ(कु) ञ्जना(ट) ना(त) म् । आ(क) सन्नापात्र(टी) ञ्जनया(पि) न्तादा(खा) इ(श) ।वा(त्र)ः ॥६॥ होवाइमूर्धा हो(तू) हा(त) इ(श) । नन्दा(का) इवो(टा) आरातिं(कि) पृथी(खा) व्या(प्ल)ः । इ हो(का) इहा(का) इ(ट) यावै(था) श्वा(ष) नरमृतआजा(कू) तमा(खा) ग्नि(श) म् । इहो(का) इ हा(का) इ(ट) या का(था) विंसम्म्राजा(की) मातिथि(कि) ञ्जना(खा) ना(श) म् । इ हो(का) इ हा(का) इ(ट) या(क) आ(थ) सन्नापात्रं(की) जानाय(कि) न्तदे(खा) वा(प्ल)ः । इ हो(का) इ हा(का) ई(ट) या(खा) औहोवा(शि) । ई(ख) ॥७॥
+#End of Mantra Sets -- subsection_76 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_77 ## DO NOT EDIT
+।। भरद्वाजो बार्हस्पत्योऽग्निः ।।
+# End of Rik Metadata -- subsection_77 ## DO NOT EDIT
+# Start of Rik Text -- subsection_77 ## DO NOT EDIT
+वित्वा(2)दापो(2)नापा(2)र्वातस्या पृष्ठात् । उक्थे(2)भी(1)रग्ने र्जनयन्ता दे(2)वा(2)ः । त न्त्वा(2) गीरा(1)स्सू(1)ष्टू(1)तायो(1) र्वाजयन्ति ।  आ(2)जि(4)न्ना गीर्वावाहो(1) जीग्यूरा(2)श्वाः ॥ ६ ॥
+# End of Rik Text -- subsection_77 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_77 ## DO NOT EDIT
+॥ऐटतेद्वे॥  ।। द्वयोरश्वस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_77 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_77 ## DO NOT EDIT
+वित्वदो(ति) हा(त) इ(श) । आपोनपर्वता(कू) स्यापा(टा) रिष्ठा(ता)त् । उत्थेभीरग्ने(षु) जनायन्ता(की) दा(ट) इवा(ता)ः । तन्त्वागीर(षी) स्सुष्टुतयोवा(कु) जया(टा) न्ती(त) । आ(क) जिन्नगा इर्ववा(टू) हो(त)। जाइग्यू(टिट्) रा(ख) औहोवा(शि) । अश्वा(टाख्)ः ॥८॥ हा(फ) यायाइदीवो(खु) हाइवित्वा(शी) त् । आपो(का) ना पा(का) र्वातस्यपा(खी) रिष्ठा(शा) त् । हा(फ) यायाइदि वो(खु) हाइउक्थाइ(शु) । भीराग्ने(टि) जानाय(कि) न्तदे(खा) वा(प्ल)ः । हा(फ) यायाइदीवो(खु) हाइतन्त्वा(शी) । गीरा(का) स्सुष्टूतयोवा(कु) ज या(खा) न्ति(श) । हा(फ) यायाइदीवो(खु) हायाजि(शि) म् । नागाइर्ववा(टु) हो(त)। जाइग्यू(टिट्) रा(ख) औहोवा(शि) । अश्वा(टाख्)ः ॥९॥
+#End of Mantra Sets -- subsection_77 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_78 ## DO NOT EDIT
+।। वामदेवो गौतमोऽग्निः ।।
+# End of Rik Metadata -- subsection_78 ## DO NOT EDIT
+# Start of Rik Text -- subsection_78 ## DO NOT EDIT
+आ(2) वो रा(2)जानमध्वर(4)स्या(1) रूद्रम् (2) । हो(2)ता(1)रं सत्याया(2)जं रो(2)द(1)स्योः । अग्निम्पूरा(2) तानाइत्नो(2)राचित्तात् ।  हिरण्य रूपामा(2)वा(1)सेकृणुध्वम् ॥ ७ ॥
+# End of Rik Text -- subsection_78 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_78 ## DO NOT EDIT
+॥वामदेव्यञ्च॥  ।। रौद्रं वा रुद्रस्त्रिष्टुबग्निर्रुद्रः ।।
+# End of SubSection Title -- subsection_78 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_78 ## DO NOT EDIT
+आवोराजा(ती) । नमध्वारस्यरू(खू) द्र(श) म् । होता(क) रा(च) म्। स(ष) त्ययजंरोदसी(खू) यो(प्ल)ः ।अग्नि(चा) म्पूरा(चा) तनइत्नोराची(खू) त्ता(श) त् । हिर(चा) ण्यरूपा(टि) मव सा(पि) इकार्णू(खि)। ध्वा(त्र) म् ॥१०॥
+#End of Mantra Sets -- subsection_78 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_79 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निः ।।
+# End of Rik Metadata -- subsection_79 ## DO NOT EDIT
+# Start of Rik Text -- subsection_79 ## DO NOT EDIT
+इन्धेरा(2)जा सामर्यो(4) नामो(1)भिः । यस्या प्रा(4)ती(1)कामा(1)हूतङ्घृतेना । नारो(2) हव्येभीरीडतेसाबाधाः ।  अ(2)ग्नी(2)राग्रामूषा(2)सा(2)माशोचि ॥ ८ ॥
+# End of Rik Text -- subsection_79 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_79 ## DO NOT EDIT
+॥वैश्यज्योतिषेच॥  ।। द्वयोर्विश्वज्योतिस्त्रिष्टुबग्निः उषा वा ।।
+# End of SubSection Title -- subsection_79 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_79 ## DO NOT EDIT
+इन्धा(ता) ओ(प) इहा(णा) बुहाबुहाबु(शु) राजासम र्योन(षू) मोभीयोभीयो भी(तू)ः । यस्या(ता) ओ(प) हा(ण) बुहाबुहा बु(शु) प्रतीकमाहुतङ्घृता(षै) इनाइनाइना(तू) । नरा(ता) ओ(प) हा(ण) बुहा बुहा बु(शु) हव्येभीरिढतेस(षृ) बाधा बाधाबा धा(तू)ः । अग्ना(ता) ओ(प) हा(ण) बुहाबुहाउवा(तू) । अग्रा(चा) मूष सा(टि) मशो(का) उवा(ता) । ची(ख) ॥११॥ हाबुहोवा(की) हाबुहोवा(की) हाबुहो वा(की) । इन्धेराजा(षी) समर्यो(चि) ना(क) मो(क) भी(ट) योभी(टा) योभी(टा)ः । यस्यप्रतिक(षु) माहुतङ्घृ(कू) ता(क) इ ना(टा) आइना(टि) आइना(टि) । नरोहव्येभी(षु) रीढते(चि) सा(क) बा(क) धा(ट) बाधा(ट) बाधा(टा)ः । हाबुहो वा(की) हाबुहोवा(की) हाबुहोवा(की) । अग्निरा ग्रा(ची) मूषसा(टि) मशो(का) उवा(ता) । ची(ख) ॥१२॥
+#End of Mantra Sets -- subsection_79 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_80 ## DO NOT EDIT
+।। त्रिशिरास्त्वाष्ट्र्ोऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_80 ## DO NOT EDIT
+# Start of Rik Text -- subsection_80 ## DO NOT EDIT
+प्रा(2)केतुना(1)बृहाता(4)यात्य(2)ग्नि(2)ः। आ(2)रो(1)दसी(1)वृषाभो(2)रो(1)रवीति।दीवा(2)श्चीद(2)न्तादूपामा(2)मू(2)दानाट्।  आ(2)पा(2)मूपास्थे(1)माहीषो(2) वावर्धा ॥ ९ ॥
+# End of Rik Text -- subsection_80 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_80 ## DO NOT EDIT
+॥यामेद्वे॥  ।। द्वयोर्यमस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_80 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_80 ## DO NOT EDIT
+प्राकेतुना(की) बृहताया(की) तीयग्नाइ(षी) होइ हो वा(की) हो(च) इ(श) । आरो(था) दसा(चा) इ(श) । वृषा भोरो(की) राविताइ(षी) होइहोवा(टी) हो(च) इ(श) । दी(क) वश्चिदान्ता(की) दूपामा(कि) मुदाना(षि) ढ्ढोइहोवा(की) हो(च) इ(श) । अपा(चा) मुपास्थे(कि) माहीषो(कि) वावर्धहोइ(षु) होइहोवा(कीच्) हा(य) उवा(टा) । दे(त) दि वा(टाख्) म्॥१३॥ हाहायौहोवा(षु) इप्रा(खा) के(ण) । तुना(का) बृह तायातिया(खू) ग्नि(प्ल)ः । हाहायौहोवा(षु) आ(ख) रो(ण) । दसा(चा) इवृषभोरोरवी(खू) ति(श) । हाहायौ होवा(षु) इदी(खा) वा(ण)ः । चिदान्ता(भि) दूपामा(कि) मुदा(खा) ना(श) ट् । हाहायौहोवा(षु) आ(ख) पा(ण) म् । उपास्थे(भि) माहिषो(कि) वावा(खा) र्धा(श) । हाहायौहोवा(षु) हा(ख) औहोवा(शि) । ए(त) दिवा(टाख्) म् ॥१४॥
+#End of Mantra Sets -- subsection_80 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_81 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निस्त्रिपदाविराटगायत्री ।।
+# End of Rik Metadata -- subsection_81 ## DO NOT EDIT
+# Start of Rik Text -- subsection_81 ## DO NOT EDIT
+अग्निन्नारो(2)दीधितिभिरारण्यो(1)ः।ह(2)स्ता(1)च्युतञ्जनयतप्राशस्तम्।दूरेदृशङ्गृहा(2)पा(1)तीमाथव्युम् ॥ १० ॥
+# End of Rik Text -- subsection_81 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_81 ## DO NOT EDIT
+॥प्रजापतेराशिमरायेद्वे मरायराशिनिवा॥  ।। द्वयोराशिमरायो विराडग्निः ।।
+# End of SubSection Title -- subsection_81 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_81 ## DO NOT EDIT
+हाबुहाबु(षी) हावाग्नी(ती) म् । नरोनरो(षी) नरोदी(कि) धितिभी(कि) ररा(ता) ण्यो(च)ः । हाबुहाबु(षी) हाबु हा(ति) स्ता(त) त् । च्युताञ्चुता(षी) ञ्चुताञ्ज(कि) नायातप्रा(की) शा(त) स्त(च) म् । हाबुहाबु(षी) हाबुदू(ति) रा(त) इ(श) । दृशान्दृशा(षी) न्दृशाङ्गृ(कि) हापतीमा(की) था(त) व्यू(च) म् । हाबुहाबु(षी) हाउ वा(ति) । ई(ख) ।॥१५॥ हाबुहाबु(षी) हावाग्नी(ति) म् । नरोदी(ति) धीतिभी(कि) ररा(ता) ण्यो(ट) ण्यो(ट) ण्यो(च)ः । हाबुहाबु(षी) हाबु हा(ति) स्ता(त) त् । च्यूता(चा) ञ्ज(क) नायातप्रा(की) शा(त) स्तं(ट) स्तं(ट) स्त(च) म् । हाबुहाबु(षी) हाबु दू(ति) रा(त) इ(श) । दृशाङ्गृ(की) हापतीमा(की) था(त) व्यूं(ट) व्यूं(ट) व्यू(च) म् । हाबुहाबु(षी) हाउवा(ति) । ई(ख) ॥१६॥
+#End of Mantra Sets -- subsection_81 ## DO NOT EDIT
+
+# Start of Section Title -- section_8 ## DO NOT EDIT
+अष्टम खण्डः
+# End of Section Title -- section_8 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_82 ## DO NOT EDIT
+।। बुधगविष्ठिरावात्रेयौ अग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_82 ## DO NOT EDIT
+# Start of Rik Text -- subsection_82 ## DO NOT EDIT
+आ(2)बो(1)ध्यग्निस्सा(2)मीधा ज(2)ना(1)नाम्  । प्रा(3)ती धेनू(2)मीवायातीमू(2)षा(2)सम् । यह्वा(3)इ(3)व प्रा(2) वाया(2)मूज्जीहा(1)नाः ।  प्रा(3) भान्नावा सस्राते(2) नाकामाच्छा ॥ १ ॥
+# End of Rik Text -- subsection_82 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_82 ## DO NOT EDIT
+॥श्येनञ्च॥  ।। प्रजापतिस्त्रिष्टुबग्निः ।। ।। उषा वा ।।
+# End of SubSection Title -- subsection_82 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_82 ## DO NOT EDIT
+अबोधिया(ती) । ग्नाइस्समीधा(कु) जना(भा) ना(त) म् । प्रताइ धे(भी) नू(त) म् । इवा(का) याती(चा) मू(क) षासं(था) यह्वाई(भि) वा(त) । प्रवयामुज्जि(चु) हाना(था)ः प्रभान्ना(भि) वा(त)ः । सस्रा ते(कि) नाका(का) मा(च) च्छाइळा(टि) भा(खण्) । ओ(प) इळा(शा) ॥ १॥
+#End of Mantra Sets -- subsection_82 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_83 ## DO NOT EDIT
+।। वत्सप्रिर्भालन्दनः‍ अग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_83 ## DO NOT EDIT
+# Start of Rik Text -- subsection_83 ## DO NOT EDIT
+प्रा भूर्जय(2)न्त म्माहीं(4) वीपोधाम् । मूरै(2)रा(2) मू(2)रम्पूरा(2) न्द(1)र्माण(1)म् ।  ना(2)यान्तङ्गी(2)र्भिर्वाना(2) धिय(1)न्धाः । हारी(1)श्मा श्रून्ना वर्मणा धानार्चि(1)म् ॥ २ ॥
+# End of Rik Text -- subsection_83 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_83 ## DO NOT EDIT
+॥वासोक्रञ्च॥  ।। शुक्रं वा वसुक्रस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_83 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_83 ## DO NOT EDIT
+प्रभूर्जयन्ता(तु) म् । माहां(णाफ्) विबो(खा) धा(श) म् । मू(क) रैरमूरम्पुरा(षू) न्दर्मा(टा) णा(त) म् । नाया(णाफ्) न्तङ्गी(खा) र्भि(श)ः । वाणा(णाफ्) धिया(खा) न्धा(प्ल)ः। हरिश्मश्रुन्न(षु) वर्म णा(फि) हाउवा(शि) । धना(ता) र्च्ची(ख) म् ॥२॥
+#End of Mantra Sets -- subsection_83 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_84 ## DO NOT EDIT
+।। भरद्वाजो बार्हस्पत्यः पूषा त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_84 ## DO NOT EDIT
+# Start of Rik Text -- subsection_84 ## DO NOT EDIT
+शु(2)क्रन्ते(1) अन्य(1)द्या जतन्ते(1)अन्यात् । वि(1)षूरूपे आ(3)हा(1)नि द्यौरीवा(1)सी ।  विश्वा(4) ही माया(2)आवासिस्वधावन् । भ(2)द्रा(2)ते पूषन्नीहारातीरस्तू ॥ ३ ॥
+# End of Rik Text -- subsection_84 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_84 ## DO NOT EDIT
+॥पौष्णञ्च॥  ।। पूषा त्रिष्टुप्पूषा ।।
+# End of SubSection Title -- subsection_84 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_84 ## DO NOT EDIT
+शुक्रन्तेअन्य(षु) द्यजतन्तेअन्या(तू) त्। विषुरूपे(षी) अहनीद्यौ(की) रीवा(टा) सी(त) । विश्वाहिमाया(षु) अवसा इस्वधा(टू) वा(त) न् । भद्राते(टि) पुषा(टा) न्नीहा रा(कि) ती रा(खा) स्तु(श) । तीरास्तुहा(प्ली) बु(श) । बा(श) ॥३॥
+#End of Mantra Sets -- subsection_84 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_85 ## DO NOT EDIT
+।। विश्वामित्रो गाथिनोऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_85 ## DO NOT EDIT
+# Start of Rik Text -- subsection_85 ## DO NOT EDIT
+ई(1)ळामग्ने(4) पू(1)रूदं(3)सं(3)सा(3)निङ्गोः । श(2)श्वत्ता मं(2)हा(2)वा(1)मानाया सा(2)धा(1)ः ।  स्यानस्सूनुस्ताना(1)यो र्वीजा(2)वा । अ(2)ग्ने सा ते(1) सूमात्य(4)र्भूत्वस्मे ॥ ४ ॥
+# End of Rik Text -- subsection_85 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_85 ## DO NOT EDIT
+॥कौत्सञ्च॥  ।। कुत्सस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_85 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_85 ## DO NOT EDIT
+इळामग्ना(ती) इ(श) । पुरूदंसंसनी(खू) ङ्गो(प्ल)ः । शश्वक्तमं(षी) हवमानायसा(खू) धा(प्ल)ः । स्यानस्सू(षि) नुस्तनयो र्वीजा(कू) वा(ख) ग्नाइसाताइ(शु) । सूमा(णाफ्) तिर्भु(ख) तुहाउवा(शी) । स्मा(ख) इ(श) ॥४॥
+#End of Mantra Sets -- subsection_85 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_86 ## DO NOT EDIT
+।। वत्सप्रिर्भालन्दनः‍ अग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_86 ## DO NOT EDIT
+# Start of Rik Text -- subsection_86 ## DO NOT EDIT
+प्र हो(3)ता(1) जातो(1) माहा(4)न्ना(2)भोवीत् । नृषात्मा(1) सीददपां(4) वीवार्ते(1) ।  दधद्यो(1) धायी सू(1)ते(2) वा(2)यांसि(1) । यन्ता वासूनी वीधाते(4) ता(1)नूपाः ॥ ५ ॥
+# End of Rik Text -- subsection_86 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_86 ## DO NOT EDIT
+॥काश्यपेद्वे॥  ।। द्वयोः कश्यपस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_86 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_86 ## DO NOT EDIT
+प्रहोताजाता(तु)ः । माहान्नभोवाइ(षू) नृषद्मा(टि) सी(त) । दा(तच्) द(क) पांविवर्ताइ(षु) दधद्यो(टि) धा(त) । याइ सूते(षी) वयांसियन्ता(कु) उवा(ता) । वासूनीवी(की) धा(च) तो(टट्) या(ख) औहोवा(शि) । तनू(ता) पा(ख) ॥५॥ प्रहोताजात(षु) उहुवा(ति) हा(त) इ(श) । माहा(टा) न्न भो(टा) वाइनृषद्मा(टु) सीददपां(की) वीवा(टा) र्ता(त) इ(श) । ओ औ(का) हो(त) इहा(ता) । दाधा(टा) द्योधा(टा) याइसुते(षी) वयांसियन्ता(कु) वासू(ट्) नी(त) । ओऔ(का) हो(त) इहा(ता) । वीधा(का) ताइतनू(टीट्) पा(ख) औहोवा(शि) । हाविष्मा(टि) ते(ख) ॥६॥
+#End of Mantra Sets -- subsection_86 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_87 ## DO NOT EDIT
+।। वसिष्ठो मैत्रावरुणिरग्निस्त्रिष्टुप् ।। ।। विश्वामित्रो गाथिनोऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_87 ## DO NOT EDIT
+# Start of Rik Text -- subsection_87 ## DO NOT EDIT
+प्रा सम्राजमा(2)सू(1)रस्य प्रा(1)शस्तम् । पुंसः कृष्टीना(4)मा(1)नूमाद्यास्या(1) । इन्द्रस्येव प्रा(2) तावा(4)सःकृता(2)नि । व(2)न्द(4)द्वीरा वन्दमाना विवष्टु ॥ ६ ॥ आरण्यो(2)र्नीहीतो जातावे(1)दाः । ग(3)र्भा(1)यीवे त्सू(4)भृ(1)तो गर्भिणीभिः । दीवे(4)दीवा ईश्वो जागृवा(2)त्मिः । हा(2)वि(2)ष्मा(1)द्धि(4)र्मानुष्ये(1)भीरग्नि(2)ः ॥ ७ ॥
+# End of Rik Text -- subsection_87 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_87 ## DO NOT EDIT
+॥घृताचेराङ्गिरसस्यसामनीद्वे॥  ।। घृताचिस्त्रिष्टुबग्निः ।। ।। इन्द्रो वा ।। ।। भरद्वाजस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_87 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_87 ## DO NOT EDIT
+प्रसम्म्राजा(ती) म् । आसुरस्यप्राशा(खू) स्त(श) म् । पुंसः कृष्टाइना(टू) मानुमा(कि) दीया(खा) स्या(श) । इन्द्रस्येवा(खी) प्रातावासःकृता(खू) नि(श) । वन्द(चा) द्वीरा(था) वन्द(चा) मा ना(था) वि वा(टा) ष्टू(ख) औहोवा(शि) । दी(ख) शआ(प्ला)ः ॥७॥ अरण्यो(ति)ः । निहितोजा(खी) तवे(खा) दा(प्ल)ः । गर्भइ वे(षी) त्सुभृतोग(फु) र्भिणा(खा) इभी(प्ला)ः । दीवेदीव(षी) ई ढ्योजा(कि) गृवा(टा) द्भी(त)ः । हा(ख) वी(प्ल) ष्मा(ख) द्भी(ण)ः । मनुष्ये भीरग्नि(षू) रेहियाहा(प्लू) ।हो(प्ल) इळा(शा) ॥८॥
+#End of Mantra Sets -- subsection_87 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_88 ## DO NOT EDIT
+।। पायुर्भारद्वाजोऽग्निस्त्रिष्टुप् ।।
+# End of Rik Metadata -- subsection_88 ## DO NOT EDIT
+# Start of Rik Text -- subsection_88 ## DO NOT EDIT
+सा(2)नाद(1) अग्ने मृणसि(1) यतूधाना(1)न् । न(2)त्वा रक्षां(4)सी पृ(2)ता(1)नासु जिग्युः । आनू(1) दहा साहामूरान् काया(2)दाः । मा(3) ते(1) हेत्या मू(1)क्षाता दै(2)व्या(1)याः ॥ ८ ॥
+# End of Rik Text -- subsection_88 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_88 ## DO NOT EDIT
+॥भारद्वाजस्यप्रासाहम्॥  ।। अग्निस्त्रिष्टुबग्निः ।।
+# End of SubSection Title -- subsection_88 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_88 ## DO NOT EDIT
+अहावोअहावो(षू) अहा(ता) । सानादग्नाइ(कु) मृणासीया(की) तूधा(खा) ना(श) न् । नत्वारक्षांसी(कु) पार्ताना(कि) सुजी(खा) ग्यु(प्ल)ः । अनुदहा(की) सहमू रा(की) ङ्कया(खा) दा(प्ल)ः । अहावोअहावो(षू) अहा(ता) । मा(क) ताइहे(कि) त्यामुक्षतदा(पु) इवीया(खि) । या(त्र)ः ॥९॥
+#End of Mantra Sets -- subsection_88 ## DO NOT EDIT
+
+# Start of Section Title -- section_9 ## DO NOT EDIT
+नवम खण्डः
+# End of Section Title -- section_9 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_89 ## DO NOT EDIT
+।। गय आत्रयेरग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_89 ## DO NOT EDIT
+# Start of Rik Text -- subsection_89 ## DO NOT EDIT
+अग्ना(4) ओजीष्ठामा(2) भा(1)रा । धुम्नामस्माभ्या(1)मधिगो । प्रा(3) नो(3) रा(1)ये पा(2)नीयसे । रत्सी वा(4)जाया पन्थाम् ॥ १ ॥
+# End of Rik Text -- subsection_89 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_89 ## DO NOT EDIT
+॥पाथेद्वे॥  ।। द्वयोः पथोऽनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_89 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_89 ## DO NOT EDIT
+आग्ना(टा) उवो(खा) वा(श) । ओजी(चा) ष्ठामाभारा(टा) उवो(खा) वा(श) । द्यु(क) म्नमस्मा(चि) भ्यमध्रिगो(ती) ओइप्राना(टी) उ वो(खा) वा(श) । रा(क) येपा नी(कि) य से(ता) ओइरात्सा उवो(खा) वा(श) । वाजा(थाच्) या(क) प(ट) न्धा(ख) म् ॥१॥ अग्ने(ता) हा(त) बु(श) । ओजीष्ठामा(यी) भारा(टा) औहो(खा) वा(श) । द्युम्नमस्मभ्यामा(यू) ध्रीगा(टा) औहो(खा) वा(श) । प्रा नोरायेपानी(यू) यासा(टा) औहो(खा) वा(श) । रात्सी(टा) वाजा(टाच्) या(क) पो(प) बा(प्ल) न्धायाम् (प्ला) ।हाइ(शा) ॥२॥
+#End of Mantra Sets -- subsection_89 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_90 ## DO NOT EDIT
+।। वामदेवोऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_90 ## DO NOT EDIT
+# Start of Rik Text -- subsection_90 ## DO NOT EDIT
+या(3)दी वीरो(1) आनूष्यात् । अ(2)ग्नी(2)मि(2)न्धीता मार्त्याः । आ(2)जुह्वद्धेर्व्यमानूषाक् । शर्मा भक्षिता दै(2)व्य(1)म् ॥ २ ॥
+# End of Rik Text -- subsection_90 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_90 ## DO NOT EDIT
+॥बृहच्चाग्नेयम्॥  ।। अग्निरनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_90 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_90 ## DO NOT EDIT
+यदिवीरो(षी) अनुष्यादय्या(खु) ई(ख) या(श) । अग्निमिन्धीतमौ(चू) हो(ट) हा(त) होवा(टा) र्त्या(त)ः । आजु(टा) बाक्ता(टा) र्व्या मा(टा) नू(ख) षा(ण) त् । श(क) र्मभक्षाइतादा(टू) हा(त) इवा(ता) ओ(प) बा(प्ल) ।व्या(ख) म् ॥३॥
+#End of Mantra Sets -- subsection_90 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_91 ## DO NOT EDIT
+।। भरद्वाजो बार्हस्पत्योऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_91 ## DO NOT EDIT
+# Start of Rik Text -- subsection_91 ## DO NOT EDIT
+त्वे(2)ष(4)स्ते(1)धूमा(2) ऋण्वति । दिविसच्छुक्र आ(2)त(1)तः । सू(2)रोनहिद्यूता त्वम् (2) । कृपापावा(2)का रो(2)चा(1)से ॥ ३ ॥
+# End of Rik Text -- subsection_91 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_91 ## DO NOT EDIT
+॥कौन्मुदम्॥  ।। यमोऽनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_91 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_91 ## DO NOT EDIT
+त्वे(क) षा स्ते(पा) धूमऋण्वतीहाबु(शृ) । दिविसन्शू(ची) क्राआ(का) ता(य) ता(प) सूरोनहिहाबु(शू) । द्युता(चा) तू(य) वा(प) ङ्कृपापवाहाबु(शृ) । कारोचा(टि) सा(खण्) इ(श) । ओ(प) इळा(प्ला) ॥४॥
+#End of Mantra Sets -- subsection_91 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_92 ## DO NOT EDIT
+।। भरद्वाजो बार्हस्पत्योऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_92 ## DO NOT EDIT
+# Start of Rik Text -- subsection_92 ## DO NOT EDIT
+त्वं(1)ही क्षैता(2)व(2)द्या(2)शाः । अ(3)ग्ने(1)मित्रो(2) नापा(2)त्या(1)से । त्वं वि(1)चर्षा(1)णेश्रा(2)वा(1)ः । वासो(1) पूष्टिन्ना(2)पूष्यसि ॥ ४ ॥
+# End of Rik Text -- subsection_92 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_92 ## DO NOT EDIT
+॥बृहचैवाग्नेयम्॥  ।। अग्निरनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_92 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_92 ## DO NOT EDIT
+त्वंहिक्षैतवद्य(षू) शइयइय्या(तु) हा(त) इ(श) । अग्नाइमि त्रोना(कू) पात्या(खा) सा(ण) इ(श) । ओऔ(का) हो(ख) इया(प्ला) हा(ण) इ(श) । त्वंविचार्षणे(कु) श्रा(ख) वा(ण)ः । ओऔ(का) हो(ख) इया(प्ला) हा(ण) इ(श) । वासो(का) आ(प) पुष्टाइन्नापू(कु) ष्या(ख) सी(ण) । ओऔ(का) हो(ख) इयाहा(प्लि) । हो(प्ल) इळा(शा) ॥५॥
+#End of Mantra Sets -- subsection_92 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_93 ## DO NOT EDIT
+।। द्वितो भृगवुाहा आत्रयेरग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_93 ## DO NOT EDIT
+# Start of Rik Text -- subsection_93 ## DO NOT EDIT
+प्रा(3)ता(1)रग्निःपूरूप्रीय(2)ः । वीश(4)स्तावेता(2)तीथिः । विश्वे यास्मिन्ना(2)मार्ये । हव्य म्मर्ता(1)साइन्धाते ॥ ५ ॥
+# End of Rik Text -- subsection_93 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_93 ## DO NOT EDIT
+॥कौन्मुदञ्चैव॥  ।। कुमुद्द्वृहदनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_93 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_93 ## DO NOT EDIT
+प्रातरग्नाइःपू(तू) रूप्रीया(ति)ः । वीशा(का) स्तवे(टा) ताअतिथा(ती) इ(श)ः । वाइश्वेया(की) स्मिन्नामा(टि) र्ता(ख) या(ण) इ(श) । हा व्यां(टा) होइमर्ता(टी) हो(कथ्) साइन्धा(टि) ता(खण्) इ(श) । ओ(प) इळा(प्ला) ॥६॥
+#End of Mantra Sets -- subsection_93 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_94 ## DO NOT EDIT
+।। वस्युव आत्रयेा अग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_94 ## DO NOT EDIT
+# Start of Rik Text -- subsection_94 ## DO NOT EDIT
+य(3)द्वाही(1)ष्ठन्ता(1) दग्ना(2)ये । बृहा(2)द(1)र्चविभा(1)वसो । माही(1)षीवत्वा(2)द्रायिः । त्व(3)द्वा(1)जाऊ(2)दी(1)रते ॥ ६ ॥
+# End of Rik Text -- subsection_94 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_94 ## DO NOT EDIT
+॥अग्नेर्यद्वाहिष्ठीयेद्वे॥  ।। द्वयोरग्निरनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_94 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_94 ## DO NOT EDIT
+यद्वाहिष्ठन्तदा(तू) । ग्नायाइ(षि) बृहदर्चावी(तु) भावा(टा) सा(त) बु(श) । माही(टा) षाइवा(टि) त्वद्रयिस्त्वाद्वा(टू) जा(त)ः । ऊदीरा(टि) ता(खण्) इ । ओ(प) इ ळा(शा)॥७॥ यद्वाहिष्ठन्तद(षु) ग्नयेयद्वाहिष्ठो(तू) वा(त) । तादग्नया इ(षु) बृहदा(टि) र्चा(तच्) वी(क) भा(च) वासा(चा) बु(श) । महीषा(टि) इवा(ता) त्वद्रयीस्त्वाद्वा(टु) जा(त)ः । ऊदीरा(टि) ता(खण्) इ । ओ(प) इळा(प्ला)॥८॥
+#End of Mantra Sets -- subsection_94 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_95 ## DO NOT EDIT
+।। गोपवन आत्रयेरग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_95 ## DO NOT EDIT
+# Start of Rik Text -- subsection_95 ## DO NOT EDIT
+वी(2)शोवी(2)शोवो आ(2)ती(1)थिम् । वज(2)यन्ताः पूरूप्रीयम् । अ(2)ग्निं(4) वो(1) दुर्यंवाचाः । स्तूषेशुषास्या म(2)न्मा(1)भिः ॥ ७ ॥
+# End of Rik Text -- subsection_95 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_95 ## DO NOT EDIT
+॥अग्नेश्चविशोविशीयम्॥  ।। अग्निरनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_95 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_95 ## DO NOT EDIT
+विशोविशोहिंवो(तू) अतिथा(खि) इ(श) म् । वा(तच) जय(का) न्ताःपू(टा) रूप्री(प) य(श) म् । अग्निंवो(टि) दूरा(पा) या(श) हि म्मा(चा) इ(श) । वा(त) चा(त) स्तू(प) षेहा(णा) इ(श) । ओ हो(का) वाइशू(खि) षा(ण) हिम्मा(चा) इ(श) । स्या(त) मा(त) न्मा(ख) भाएहिया(प्ली) हा(श) । हो(प्ल) इळा(शा)॥९॥
+#End of Mantra Sets -- subsection_95 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_96 ## DO NOT EDIT
+।। पूरुरात्रयेरग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_96 ## DO NOT EDIT
+# Start of Rik Text -- subsection_96 ## DO NOT EDIT
+बृ(2)ह(4)द्वा(4)यो ही भा(2)ना(2)वे । अ(3)र्चा(1) देवा(2)यअग्ना(2)ये । यम्मित्र(2)न्नप्रा(2)शा(1)स्तये । म(2)र्त्ता(1)सो दधी(4)रे(1) पूरः ॥ ८ ॥
+# End of Rik Text -- subsection_96 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_96 ## DO NOT EDIT
+॥प्रजापतेःकनीनिकेद्वे अत्रेर्वा॥  ।। द्वयोरत्रिरनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_96 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_96 ## DO NOT EDIT
+बृहद्वया(ती)ः । हीभाना(टि) वा(त) इ(श) । अर्चादेवाया ग्ना(टू) या(त) इ(श) । यम्मित्रन्नप्राशा(यू) स्ताया(टा) इ(श) । मर्तासो(पि) दा(श) । धीरो(खा) बा(प्ल) पू रो(प्ला)। हाइ(शा) ॥१०॥ बृहद्वयो(षी) हिभानवा(ती) ए(त) । अर्चा(चा) देवा(थाच्) या(क) अ ग्ना(टा) या(त) इ(श) । यम्मित्र(कि) न्नप्रा(का) शा(य) स्ता(टा) इ(श) । मा(क) र्तासो(था) दधाइरे(यी) पु रा(टा) औहो हा(खि) औहोवा(शि) । वा(त) हा(टख्)ः॥११॥
+#End of Mantra Sets -- subsection_96 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_97 ## DO NOT EDIT
+।। गोपवन आत्रयेरग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_97 ## DO NOT EDIT
+# Start of Rik Text -- subsection_97 ## DO NOT EDIT
+आ(2)ग(1)न्म वृत्राह(2)न्तामम् । ज्ये(3)ष्ठा(1)मग्निमाना(2)वम् । यस्म(1)श्रूतार्वन्नाक्षे । बृहाद(1)नीका(1)इध्याते ॥ ९ ॥
+# End of Rik Text -- subsection_97 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_97 ## DO NOT EDIT
+॥श्रौतर्वणञ्च॥  ।। श्रुतर्वानुष्टुबग्निः ।। ।। वृत्रहा वा ।।
+# End of SubSection Title -- subsection_97 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_97 ## DO NOT EDIT
+अगन्मवृ(ती) । त्रा(त) हन्ता(पा) म(श) म् । ज्याइष्ठा(कि) माग्निमा ना(पी) व(श) म् । यास्मा(टाच्) हो(क) इश्रु(का) तर्वन्नाक्षा(षी) इबृहा(टूच्) द्धो(च) यानी(का) कया(ता) आउवा ए(भी) । ध्या(ख) ते(श) ॥१२॥
+#End of Mantra Sets -- subsection_97 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_98 ## DO NOT EDIT
+।। वामदेवः, कश्यपो वा मारीचो, मनुर्वा वैवस्वत, उभौ वा अग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_98 ## DO NOT EDIT
+# Start of Rik Text -- subsection_98 ## DO NOT EDIT
+जाता(4)ःपा(2)रे(1)णाध(2)र्माणा । यत्सा(2)वृ(4)द्भी(1)स्साहा(2)भू(1)वः । पी(2)ता य(2)त्काश्या(2)पा(1)स्याग्निः । श्रद्धा(4)माता(1) मानूःकाविः ॥ १० ॥
+# End of Rik Text -- subsection_98 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_98 ## DO NOT EDIT
+॥कश्यपस्यसयोनिः॥  ।। इन्द्रोऽनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_98 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_98 ## DO NOT EDIT
+जाता(चा)ः परे(टाच्) णा(क) धाई(टा) हा(कथ्) र्माणाइ(टि) हा यो(खा) नि(श) म् । योनिमिन्द्रा(की) श्च(कथ्) गच्छथो(की) यस्ता(टा) वृद्भि(टा) सा(क) हाई(टा) हा(कथ्) भूवाई(टि) हा यो(खा) नि(श) म् । योनिमिन्द्रा(की) श्च(कथ्) गच्छथा(कि)ः । पिताया(टि) त्का(क) श्यापाई(टि) हा(कथ्) स्याग्नाई(टि) हायो(खा) नि(श)म् । योनिमिन्द्रा(की) श्चगच्छथाश्रद्धा(कू) माता(थाच्) मा(क) नाई(टा) हा(कथ्) कावाई(टि) हायो(खा) नि(श) म् । योनिमिन्द्रा(की) श्चगच्छथा(खी)ः॥१३॥
+#End of Mantra Sets -- subsection_98 ## DO NOT EDIT
+
+# Start of Section Title -- section_10 ## DO NOT EDIT
+दशम खण्डः
+# End of Section Title -- section_10 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_99 ## DO NOT EDIT
+।। अग्निस्तापसो विश्वेदेवा अनुष्टुप् ।।
+# End of Rik Metadata -- subsection_99 ## DO NOT EDIT
+# Start of Rik Text -- subsection_99 ## DO NOT EDIT
+सोमंरा(4)जा(1)नंवा(2)रूणम्। अ(2)ग्नी(2)मन्वारा(1)भामहे । आ(2)दित्यंविष्णुंसू(2)र्य(1)म् । ब्र(2)ह्मा(4)ण(1)ञ्चाबृहस्पा(2)तिम् ॥ १ ॥
+# End of Rik Text -- subsection_99 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_99 ## DO NOT EDIT
+॥बार्हस्पत्यञ्च॥  ।। बृहस्पतिरनुष्टुबग्निः ।। ।। विश्वेदेवाः ।।
+# End of SubSection Title -- subsection_99 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_99 ## DO NOT EDIT
+सोमंराजा(षी) नंवरुणा(ती) म् । अग्नीमन्वा(की) रभाम हे(ची) होवा(टा) हा(त) इ(श) । आ(थ) दित्यंविष्णुं(की) सूर्यं(का) होवा(टा) हा(त) इ(श) । ब्रह्मा णा(टि) ञ्चा(त) होवा(टा) हा(त) इ(श) । बृहा(टा) उवा(ता) ।स्पा(ख) ति(श) म् ॥१॥
+#End of Mantra Sets -- subsection_99 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_100 ## DO NOT EDIT
+।। वामदेवो कश्यपः, असितो दवेलो वा अङ्गिरा अनुष्टुप् ।।
+# End of Rik Metadata -- subsection_100 ## DO NOT EDIT
+# Start of Rik Text -- subsection_100 ## DO NOT EDIT
+ईता(2)एता(2)ऊदारूहन् । दीव(2)ःपृष्ठान्यारू(1)हन् । प्राभूर्जयो(1)या(4)थापाथा(2) । उ(2)द्यामङ्गी(1)रसोययुः ॥ २ ॥
+# End of Rik Text -- subsection_100 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_100 ## DO NOT EDIT
+॥ऐषञ्चारूढवदाङ्गिरसम्॥  ।। आरूढविदाङ्गिरानुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_100 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_100 ## DO NOT EDIT
+आरू(टाच्) ह(क) न्नारू(टा) ह(क) न्नारू(टाच्) हन्(क) । इतए ता(ची) ऊदा(काच्) रू(य) हा(ट) न् । दीवा(चा)ः पृष्ठान्नि या(की) रू(य) हा(ट) न् । प्राभु(का) र्जयो(काच्) याथा(का) पा(य) था(ट) । उद्या(चा) मङ्गी(काच्) रासो(का) या(य) यू(ट)ः । आरू(टाच्) ह(क) न्नारू(टा) ह(क) न्नारू(टाट्) हा(ख) औहोवा(शि) ।ऊ(ख) पा(श)॥२॥
+#End of Mantra Sets -- subsection_100 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_101 ## DO NOT EDIT
+।। वामदेवो कश्यपः, असितो दवेलो वा अग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_101 ## DO NOT EDIT
+# Start of Rik Text -- subsection_101 ## DO NOT EDIT
+रा(2)ये(2)आग्नेमाहेत्वा । दा(4)ना(1)यासा(2)मी(1)धीमहि । ई(3)ळिष्वाहीमा(1)हेवृषन् । द्या(3)वा(1)होत्रा(1)या(1)पृथिवी(2) ॥ ३ ॥
+# End of Rik Text -- subsection_101 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_101 ## DO NOT EDIT
+॥आसीतेद्वे॥  ।। द्वयोरसितोऽनुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_101 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_101 ## DO NOT EDIT
+रायेअग्नेमाहा(तू) इ(श) । त्वादानायसमी(कू) धीमा(टा) ही(त) । आइळि(टि) ष्वाही(टा) मा(क) हे(च) वृषा(चा) न् । द्यावा(टा) होत्रा(टाच्) या(क) प्रो(प) बा(प्ल) थावा(प्ला) इ(श) ।हाइ(शा) ॥३॥ राया(का) या(प) ग्नेमहेत्वाहाबु(शू) । दानायसमी(कु) धीमा(टा) हा(त) इ(श) । आइळाइष्वा(टू) हा(त) इ(श)। माहे(का) वा(ख) र्षा(ण) न् । द्यावाहो(भि) त्रा(त) या(क) प्रो(प) बा(प्ल) थावा(प्ला) इ(श) । हाइ(शा) ॥४॥
+#End of Mantra Sets -- subsection_101 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_102 ## DO NOT EDIT
+।। सोमाहुतिभागर्वोऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_102 ## DO NOT EDIT
+# Start of Rik Text -- subsection_102 ## DO NOT EDIT
+दधन्वे(2)वाया(2)दीमानू । वो(4)चा(1)त्ब्रह्मे(2)तीवे(2)रूतात् । पा(2)रीवि(4)श्वा(1)नीका(2)व्या(1)। ने(2)मीश्चक्रा(2)मी(1)वाभुवात् ॥ ४ ॥
+# End of Rik Text -- subsection_102 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_102 ## DO NOT EDIT
+॥त्वाष्ट्रीसामच॥  ।। त्वष्टानुष्टुबग्निः ।।
+# End of SubSection Title -- subsection_102 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_102 ## DO NOT EDIT
+दधन्वेवा(फी) यदीमनू(की) । वोचद्ब्रह्मे(षी) तीवेरूतत्पा(तु) रीविश्वा(टिच्) नीका(चा) व्या(श) । नाइमी(षि) चक्राउवा(कू) मी(ख) वा(श) ।भूवादौ(पि) होबा(प्ला) । हो(प्ल) इळा(शा) ॥५॥
+#End of Mantra Sets -- subsection_102 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_103 ## DO NOT EDIT
+।। पायुभारद्वाजोऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_103 ## DO NOT EDIT
+# Start of Rik Text -- subsection_103 ## DO NOT EDIT
+त्वामा(1)ग्नेवा(4)सुंरिहा। रूद्रं(4)आ(1)दित्यम् ऊता।याजस्वाध्वार(2)ञ्ज(2)न(1)म् । आ(2)नूजातङ्घृ(4)तप्रू(2)षम् ॥ ५ ॥
+# End of Rik Text -- subsection_103 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_103 ## DO NOT EDIT
+॥मानवञ्च॥  ।। मनुरनुष्टबग्निः ।। ।। विश्वेदेवा वा ।।
+# End of SubSection Title -- subsection_103 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_103 ## DO NOT EDIT
+त्ववमग्नेत्वमग्ना(तू) इ(श) । वासुंरिहा(षी) रुद्रंआ(टि) दी(त) त्यं(च) ऊता(का) याजासू(टि) आ(त) ध्वा(क) रञ्जना(चि) मानुजा(टि) ता(त) म्। घृतप्रू(चि) षामिळा(टि) भा(खण्) । ओ(प) इळा(प्ला) ॥६॥
+#End of Mantra Sets -- subsection_103 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_104 ## DO NOT EDIT
+।। प्रस्कण्वः काण्वोऽग्निरनुष्टुप् ।।
+# End of Rik Metadata -- subsection_104 ## DO NOT EDIT
+# Start of Rik Text -- subsection_104 ## DO NOT EDIT
+प्रत्य(1)ग्नेहा(4)रा(1)साहा(2)राः । शृणा(2)हीविश्वा(2)तप्रा(2)ती । या(2)तूधा(2)ना(1)स्या(3)रक्षासा(1)ः । बलं न्युब्जावीर्य(1)म् ॥ ६ ॥
+# End of Rik Text -- subsection_104 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_104 ## DO NOT EDIT
+॥अगस्तस्यराक्षोघ्नम्॥  ।। अगस्त्योऽनुष्टुबग्निः ।। ।। रक्षोहा वा ।।
+# End of SubSection Title -- subsection_104 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_104 ## DO NOT EDIT
+प्रत्याग्ने(फिप्ल) होइहरसा(खु) हराए(प्लि) । श्रृणा हिवा(टी) इश्वता(खाणफप्ल्)ः । प्रा(ख) ती(श) । या(ट) तूधाना(चि) । स्यरक्षसो(ची) बा(ट) ला(त) म् । न्युब्जा(ता) ओ(प) बा(प्ल) । री(ख) य(श) म्॥७॥
+#End of Mantra Sets -- subsection_104 ## DO NOT EDIT
+
+# Start of Section Title -- section_11 ## DO NOT EDIT
+एकादश खण्डः
+# End of Section Title -- section_11 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_105 ## DO NOT EDIT
+।। दीर्घतमा औचथ्योऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_105 ## DO NOT EDIT
+# Start of Rik Text -- subsection_105 ## DO NOT EDIT
+पूरू(2)त्वा(1)दाशीवं(2)वो(1)चे(3)त् । आरीरग्नेता(4)वास्वीदा(2) । तोद(2)स्ये(2)वशारणआ(1)माहास्या(1) ॥ १ ॥
+# End of Rik Text -- subsection_105 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_105 ## DO NOT EDIT
+॥तौदेद्वे॥  ।। द्वयोस्तोद उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_105 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_105 ## DO NOT EDIT
+पुरू(ता) । त्वा(क) दाशिवंवोचाए(पू) दारीरग्नाइ(शु) । ता(क) वस्विदा(चि) तो(क) दस्येवशरणया(टू) हो(च) इ(श) । महा(टा) होये(टा) स्योया(खा) औहोवा(शि) । ई(ख) ॥ १॥ पुरूत्वादा(षी) शिवंवोचे(तु) त् । आरीरा(खि) ग्नाइ(शा) तावास्वा(खि) इदा(णा) । तोदस्येव(षी) शरणया(खी) हा(ण) इ(श) । मा(ट) हा(त) होये(टा) स्योया(खा) औहोवा(शि) । ई(ख) ॥ २ ॥
+#End of Mantra Sets -- subsection_105 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_106 ## DO NOT EDIT
+।। दीर्घतमा औचथ्योऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_106 ## DO NOT EDIT
+# Start of Rik Text -- subsection_106 ## DO NOT EDIT
+पूरू(2)त्वा(1)दाशीवं(2)वो(1)चे(3)त् । आरीरग्नेता(4)वास्वीदा(2) । तोद(2)स्ये(2)वशारणआ(1)माहास्या(1) ॥ १ ॥
+# End of Rik Text -- subsection_106 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_106 ## DO NOT EDIT
+॥दैर्घतमसानित्रीणि॥  ।। त्रयाणान्दीर्घतमा उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_106 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_106 ## DO NOT EDIT
+पुरुत्वादा(षी) शिवंवो(ति) चे(त) त् । आराइरा(पी) ग्नाइ(शा)।तावास्वा(खि) इदा(णा) । तोदास्या(खि) इवा(शा) शाराणा(खि) या(ण) । माहा(खा) स्या(त्र) । ए(तच्) ॥३॥ पुरूत्वा(खि) दाशिवंवोचे(शु) त् । अरिरग्ना(षी) इतवा(टि) स्वा(ख) इदा(णा) । तो(ख) दा(प्ल) स्या(ख) इवा(शा) शाराणा(खि) या(ण) । माहा(खा) । स्या(त्र) ॥४॥ । पुरूत्वा(पि) दाशिवंवोचेद्धाबु(शृ) । हा(क) बुहो(टा) हाउवो(खि) वा(ण) । अरिरग्ने(की) तवास्वी(कि) दा(च) । हा(क) बुहो(टा) हाउवो(खि) वा(ण) । तो(क) दस्ये(का) वशरा(कि) णाया(चा) । हा(क) बुहो(टा) हाउ वो(खि) वा(त्र) । ए(तच) मा(क) हा(ट) स्या(ख) ॥५॥
+#End of Mantra Sets -- subsection_106 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_107 ## DO NOT EDIT
+।। विश्वामित्रो गाथिनोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_107 ## DO NOT EDIT
+# Start of Rik Text -- subsection_107 ## DO NOT EDIT
+प्र(3)होत्रे(1)पूर्वीयंवाचा(1)ः । अग्नाये(1)भरताबृहा(2)त् । वीपाञ्ज्योती(1)षिबि(4)भ्रा(1) तेना(2)वेधासे(1) ॥ २ ॥
+# End of Rik Text -- subsection_107 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_107 ## DO NOT EDIT
+॥श्यावाश्वस्यप्रहितौद्वौ॥  ।। द्वयोः श्यावाश्व उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_107 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_107 ## DO NOT EDIT
+प्रहोत्रेपू(ती) । र्व्यंवचोग्नया(टु) इभा(चा) रा(क) ता(च) बृहा(चा) त् । वीपाञ्जो(टि) ती(त) म् । षीबाइभ्रा(टीट्) ता(ख) औहोवा(शि) । नवे(ताच्) धा(ट) से(ख) ॥६॥ प्रहोत्राइपू(खु) र्वीयंवाचा(प्ली)ः । आग्नये(टि) भा(च) रता(काच्) बृ(क) हा(ट) त् । वीपाञ्जोतीषीबी(फू) भ्रता(ता) इ(श) । ना(प) वे(श) धा(ख) सो(प्ल) ।हाइ(शा) ॥७॥
+#End of Mantra Sets -- subsection_107 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_108 ## DO NOT EDIT
+।। गौतमो राहूगणोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_108 ## DO NOT EDIT
+# Start of Rik Text -- subsection_108 ## DO NOT EDIT
+अग्नेवाज(1)स्यागोमा(1)तः । ई(2)शा(1)नस्सहसोयहो । अ(3)स्मे(2)देहीजातवेदोमा(2)हिश्रावाः ॥ ३ ॥
+# End of Rik Text -- subsection_108 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_108 ## DO NOT EDIT
+॥प्रजापतेःश्रुधीयेद्वे॥  ।। द्वयोः प्रजापति उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_108 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_108 ## DO NOT EDIT
+अग्नेवाजा(फी) स्यागोमातो(ची) वा(श) । ई(क) शानस्साहसो(कु) याहो(का)। अस्मे(का) देही(का) जाता(चा) वेदो(था) महा(टा) इश्रवा(टि) उवा(ता) । श्रो(च) धिया(टा) ए(ट) हिया(खाण्) । ओ(प) इळा(शा) ॥८॥ अग्नेवाज(षी) स्यगोमतो(ती) हो(त) वा(त) । ई(क) शान स्साहसो(कु) या(ख) हो(श) । आ(च) स्मे(य) दाइही(पि) जाता(प्ला) वेदो(ता) । मा(प) ही(श) श्रा(ख) वो(प्ल) ।हाइ(शा) ॥९॥
+#End of Mantra Sets -- subsection_108 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_109 ## DO NOT EDIT
+।। विश्वामित्रो गाथिनोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_109 ## DO NOT EDIT
+# Start of Rik Text -- subsection_109 ## DO NOT EDIT
+अ(3)ग्ने(2)या(2)जीष्ठोआध्वारे । देवान्दे(1)वायातेयाजा । होता(1)मन्द्रो(4) वी(1)राज(2)स्यातिसृधाः ॥ ४ ॥
+# End of Rik Text -- subsection_109 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_109 ## DO NOT EDIT
+॥प्रजापतेःसदोहविर्धानानित्रीणि सदःपूर्वंहविर्धाने उत्तरे॥  ।। त्रयाणाम्प्रजापतिरुष्णिगग्निः ।।
+# End of SubSection Title -- subsection_109 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_109 ## DO NOT EDIT
+अग्नेयजिष्ठो(षु) अध्वरा(ति) ए(त) । देवान्देवा(ची) याता(का) इया(या) जा(ट) हुवा(ता) होवा(का) । होता(चा) मन्द्रो(थाच्) वीरा(का) जा(य) सी(ट) हुवा(ता) होवा(का) । आतिस्रा(टि) इधा(खाण)ः । ओ(प) इळा(शा)॥१०॥ आग्ना(फा) इया(खा) ई(ख) या(श) ।याजिष्ठोअध्वारा(षू) इदेवान्दे(ती) वायते(टि) हाबुहोवा(की) । याजा(टा) होता(टा) मन्द्रो(था) वी(क) राजा(पा) सी(श) । आ(ट) तीया(खा) औहोवा(शि) । स्री(ख) धा(प्ल)ः ॥११॥ अग्नियाओवा(तु) । याजिष्ठोअध्वरा(षू) इदेवान्दा(टी) इवा(ता) । आयाते(चि) याजा(टा) होता(पा) उवा(शा) । मन्द्रो(थाच्) वीरा(का) जा(ट) सा(ख) औहोवा(शि) । आ(थ) तिस्रीधा(टिख्)ः ॥१२॥
+#End of Mantra Sets -- subsection_109 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_110 ## DO NOT EDIT
+।। त्रित आत्यः पवमानः सोम उष्णिक् ।।
+# End of Rik Metadata -- subsection_110 ## DO NOT EDIT
+# Start of Rik Text -- subsection_110 ## DO NOT EDIT
+जज्ञान(2)स्सप्ता(2)मातृ(2)भिः । मे(2)धामाशा(1)सातश्रिये(2) । आ(3)यन्ध्रुवोरायीणा(4)ञ्चीके(1)तादा ॥ ५ ॥
+# End of Rik Text -- subsection_110 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_110 ## DO NOT EDIT
+॥त्वष्टुश्चातिथ्यम्॥  ।। त्वष्टोष्णिगग्निरदितिर्वा ।।
+# End of SubSection Title -- subsection_110 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_110 ## DO NOT EDIT
+जज्ञानस्सा(ती) । प्तमा(काच्) तृ(क) भाइर्मेधा(की) मा(ख) शा(ण) । सातस्रा(चि) या(ट) अया(टा) न्ध्रु(ख) वा(ण)ः । रया(टा) इणा(ता) ञ्चिकाइता(टीट्) दा(ख) औहोवा(शि) । ऊ(ख) पा(श) ॥१३॥
+#End of Mantra Sets -- subsection_110 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_111 ## DO NOT EDIT
+।। इरिम्बिठः काण्वोऽदितिरुष्णिक् ।।
+# End of Rik Metadata -- subsection_111 ## DO NOT EDIT
+# Start of Rik Text -- subsection_111 ## DO NOT EDIT
+ऊत(2)स्या(2)नोदीवामातिः । आदी(1)तीरूत्यगमात् । साश(3)न्तातामायास्कारादपश्री(2)धाः ॥ ६ ॥
+# End of Rik Text -- subsection_111 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_111 ## DO NOT EDIT
+॥अदितेश्चसाम॥  ।। अदितिरुष्णिगग्निरदितिर्वा ।।
+# End of SubSection Title -- subsection_111 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_111 ## DO NOT EDIT
+उतस्यानो(खी) दीवामाति(प्ली)ः । आ(क) दीतिरू(कि) तिया(चा) गा(य) मा(ट)त्।साशान्ता(टि) ता(त) । माया(फा) स्कराउवो(खी) वा(श) ।अपास्रिधा(प्ली)ः । हो(प्ल) इळा(शा) ॥१४॥
+#End of Mantra Sets -- subsection_111 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_112 ## DO NOT EDIT
+।। विश्वमना वैयश्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_112 ## DO NOT EDIT
+# Start of Rik Text -- subsection_112 ## DO NOT EDIT
+ईळि(1)ष्वाहि(4)प्रा(1)तिव्यम्(1) । या(2)ज(1)स्वाजातावे(1)दसम् । चरिष्णू(1)धूमामागृभीतशोचिषम् ॥ ७ ॥
+# End of Rik Text -- subsection_112 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_112 ## DO NOT EDIT
+॥अगस्तस्यचराक्षोघ्नम्॥  ।। अगस्त्य उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_112 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_112 ## DO NOT EDIT
+ई ळा(का) इष्वा(पा) हिप्रतिव्या(शि) म् । याजस्वा(कि) जातावे(कि) दसा(टा)म्। चरिष्णुधूमा(खु) मग्रभा(ति) इ(श) । ता(ट) शो(ख) औहोवा(शि) । ची(ख) ष(श) म् ॥१५॥
+#End of Mantra Sets -- subsection_112 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_113 ## DO NOT EDIT
+।। विश्वमना वैयश्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_113 ## DO NOT EDIT
+# Start of Rik Text -- subsection_113 ## DO NOT EDIT
+नत(2)स्यामाया(4)याचाना(2) । री(2)पू(2)रीशीतामाक्र्त्याः । यो(2)अग्ना(4)ये(1)ददा(4)शा हव्या(2)दा(1)तये ॥ ८ ॥
+# End of Rik Text -- subsection_113 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_113 ## DO NOT EDIT
+॥वार्ग्जम्भञ्च॥  ।। वृकजम्भो उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_113 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_113 ## DO NOT EDIT
+नतो(ता) वा(त) । स्या(ख) मा(श) । यायाचाना(टी) री(च) पुरीशी(कि) तमा(ता) आउवा(टि)। र्ती(ख) या(प्ल)ः । योअग्नये(षी) ददाशहव्यदो(पू) बा(प्ल) । ता(ख) ये(श) ॥१६॥
+#End of Mantra Sets -- subsection_113 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_114 ## DO NOT EDIT
+।। ऋजिश्वा भारद्वाजो विश्वेदेवा उष्णिक् ।।
+# End of Rik Metadata -- subsection_114 ## DO NOT EDIT
+# Start of Rik Text -- subsection_114 ## DO NOT EDIT
+अपत्यं(4)वृ(1)जीनंरिपु(2)म् । स्ते(2)ना(2)मा(1)ग्नेदूराध्यम् । दे(2)वीष्ठमत्स्यस(1)त्पतेकृधीसूगम् ॥ ९ ॥
+# End of Rik Text -- subsection_114 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_114 ## DO NOT EDIT
+॥बृहदाग्नेयञ्चसङ्कृतंवा॥  ।। सोमक्रतुरुष्णिगग्निः ।।
+# End of SubSection Title -- subsection_114 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_114 ## DO NOT EDIT
+अपत्यंव्रजिनं(षू) रिपुंस्तेना(खी) मग्ना(ता) इ(श) । दूराधा(टि) या(ख) न्दिविष्ठमत्स्यासा(फू) त्पता(ता) इ(श) । का(प) र्द्धी(श) सू(ख) गा(प्ल) म् । हाइ(शा) ॥१७॥
+#End of Mantra Sets -- subsection_114 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_115 ## DO NOT EDIT
+।। विश्वमना वैयश्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_115 ## DO NOT EDIT
+# Start of Rik Text -- subsection_115 ## DO NOT EDIT
+श्रु(2)ष्ट्या(2)ग्नेना(2)वा(1)स्यमे । स्तोमा(1)स्यवीरविस्पते । नीमा(2)यिनस्तपा(2)सा रक्षा(2)सो(1)दह ॥ १० ॥
+# End of Rik Text -- subsection_115 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_115 ## DO NOT EDIT
+॥अगस्तस्यचैवराक्षोघ्नम्॥  ।। अगस्त्य उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_115 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_115 ## DO NOT EDIT
+हाबुश्रुष्ट्यग्ने(षु) नवस्यामे(त) हा(त) बु(श) । स्तो(क) मास्यवा(कि) ईरविस्पताये(पू) ऐहिहाबुहोवा(शू) । नीमा(का) ईना(का) स्तापसारा(पी) ऐहिहाबुहोवा(शू) । क्षासा(प) ऐहीहाबुहोवा(शू) । दहएहिया(प्लु) हा(श) ।हो(प्ल) इळा(शा) ॥१८॥
+#End of Mantra Sets -- subsection_115 ## DO NOT EDIT
+
+# Start of Section Title -- section_12 ## DO NOT EDIT
+द्वादश खण्डः
+# End of Section Title -- section_12 ## DO NOT EDIT
+# Start of Rik Metadata -- subsection_116 ## DO NOT EDIT
+।। प्रयोगो भागर्वः (सोभिरः काण्वः) अग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_116 ## DO NOT EDIT
+# Start of Rik Text -- subsection_116 ## DO NOT EDIT
+प्रमंही(1)ष्ठायगायता । ऋताव्नेबृहाते(2)शुक्राशो(1)चिषे । उ(2)प(2)स्तूता(4)सो(1)अग्नाये ॥ १ ॥
+# End of Rik Text -- subsection_116 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_116 ## DO NOT EDIT
+॥वसिष्ठस्यप्रमंहिष्ठीयानिचत्वारि॥  ।। द्वयोरिन्द्रः ककुबग्निः ।। ।। असितः ककुबग्निः ।। ।। इन्द्रः ककुबग्निः ।।
+# End of SubSection Title -- subsection_116 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_116 ## DO NOT EDIT
+प्रमंहा(खि) इष्ठायगायता(शू) । ऋताव्ने(टिच्) बृहते(कि) शुक्रा(पा) शो(श) चा(त) इषा(ता) इ(श) । उपाऔ(पि) हो(श)। स्तुतासो(पि) आ(श) ग्ना(ख) यो(प्ल) । हाइ(शा) ॥१॥ प्रमंहिष्ठायगा(तू) । या(च) ताऋता(टि) व्ने(टच्) बृहा(का) ता(य) इशू(टा)। क्रा(क) शोचा(टा) इषा(ता) इ(श) । ऊपा(चा) स्तुतौ(टाच्) हु(क) वाए(टा) होवा(का) । सा(क) वो(प) बा(प्ल्) ग्नायो(प्ला) ।हाइ(शा) ॥२॥ प्रमंहिष्ठायागा(फु) इय्या(खा) ई(ख) या(श) । या(थ) ताऋताव्ने(की) बृहतेशू(टी) क्राशौ(टा) हौ(ट) हुवा(टी) इचाइषा(टी) इ(श) । उपा(का) होइस्तुता(की) हो(क) सो(थ) अग्ना(टा) या(खण्) इ(श) । ओ(प) इळा(शा) ॥३॥ प्रमंहिष्ठायगा(षू) यतप्रमंहिष्ठो(तू) वा(त) । यागा(का) यताऋता(टी) व्ने(ख) ईबृहते(णी) शुक्राशो(फि) चा(त) इषा(ता) इ(श) । उपौ(फा) होवा(ता) हा(त) इ(श) । स्तुतौ(फा) होवा(ता) हा(त) इ(श) । सओ(प्ला) बाग्नायो(प्लि) । हाइ(शा) ॥४॥
+#End of Mantra Sets -- subsection_116 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_117 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_117 ## DO NOT EDIT
+# Start of Rik Text -- subsection_117 ## DO NOT EDIT
+प्र(3)सोअग्नेतावोतीभीः । सू(2)वीरा(1)भिस्तारातीवा(2)जकर्म(1)भिः । या(2)स्यत्वं(2)सख्यमा(2)वी(2)थ ॥ २ ॥
+# End of Rik Text -- subsection_117 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_117 ## DO NOT EDIT
+॥भारद्वाजस्यवाजभृत्॥  ।। भरद्वाजः ककुबग्निः ।।
+# End of SubSection Title -- subsection_117 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_117 ## DO NOT EDIT
+प्रासो(टा) हा(त) आग्ने(टा) हा(त) इ(श) । तवा(ता) आउवा(टि) । ती(ख) भी(प्ल)ः । सूवी(चा) रा(श) भिस्तारा(चि) तीवा(चा) जक(का) र्माभिर्या(चि) स्या(ट) हा(त) इ(श) । त्वंसा(पा) ख्यमोबा(प्लि) वाइथो(प्लि) ।हाइ(शा) ॥५॥
+#End of Mantra Sets -- subsection_117 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_118 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_118 ## DO NOT EDIT
+# Start of Rik Text -- subsection_118 ## DO NOT EDIT
+त(2)ङ्गूर्धायास्व(2)र्णारम् । देवासो(1)देवा(4)मा(1)रातिन्द(1)धन्विरे । देवात्रा(2)हव्या(2)मू(1)हिषे ॥ ३ ॥
+# End of Rik Text -- subsection_118 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_118 ## DO NOT EDIT
+॥सौभराणित्रीणि॥  ।। त्रयाणां सुभरिः ककुबग्निः ।।
+# End of SubSection Title -- subsection_118 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_118 ## DO NOT EDIT
+तङ्गू(णाफ्) र्धाया(खा) स्वर्णा(प्ला) रो(ङ) वा(श) । दे(क) वासो(चा) दे(क) वामाराता(टी) इन्दधा(टि) होइन्वा(टि) इरा(ता) इ(श) । दे(थ) वात्राहव्यमू(टु) हा(त) हा(त) इ(श) । हा(ट) इषा(खा) औहोवा(शि) । ऊ(ख) क् ॥६॥ तङ्गूर्धयास्वर्णा(तू) रा(त) म् । दे(क) वासो(का) दा(क) इवामा(चि) राता(टा) इन्दधन्विराउवाइ(शॄ) । दे(ख) वा(शप्ल्) त्रा(त) हा(प) व्यमोबा(प्लि) हाइषो(प्लि) । हाइ(शा) ॥७॥ तङ्गूर्धयास्वौ(कु) होआर्णा(ति) रा(त) म् । देवा(टा) सो(ख) दे(ण) । वामारता(टी) इन्दा(खा) धा(प्ल) न्वा(ख) इराइ(शि) । हाहो(खा) हा(ण) इ(श) । देवा(टा) त्रा(ख)हा(ण) । व्यमूहा(खिणफप्ल्) इ(श) । षा(ख) इ(श) ॥८॥
+#End of Mantra Sets -- subsection_118 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_119 ## DO NOT EDIT
+।। प्रयोगो भागर्वः सोभिरः काण्वो वा अग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_119 ## DO NOT EDIT
+# Start of Rik Text -- subsection_119 ## DO NOT EDIT
+मानो(1)हृ(1)णिथाआ(2)तीथिम् । वा(4)सूरग्नि(2)ःपू(1)रूप्राशस्ता(2) एषः । या(2)सुहोता(1)सूआध्वारः ॥ ४ ॥
+# End of Rik Text -- subsection_119 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_119 ## DO NOT EDIT
+॥पथस्यसौभरस्यसामनीद्वे॥  ।। द्वयोः पक्थः ककुबग्निः ।।
+# End of SubSection Title -- subsection_119 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_119 ## DO NOT EDIT
+माना(ता)ः । हृणी(का) था(ट) आतिथिं(कि) वासु(टा) रा(ख) ग्नि(श)ः । पुरौ(फा) होवा(ता) हा(त) इ(श)। प्रशौ(फा) होवा(ता) हा(त) इ(श) । स्तओबा(प्लि) आइषो(प्लि) । हाइ(शा) ॥९॥ मानो(ता) हा(त) बु(श) । हा(प) र्णीथा(णा) आ(ण) तिथिं(फाप्ल्) वासुरा(खि) ग्ना(ण) इ(श)ः । पूरो(चा) हाहो(चा) इ(श)। प्रा(क) शो(थ) हाहो(काथ्) स्ताये(पा) षाएहिया(प्ली) हा(श) ।हो(प्ल) इळा(शा) ॥१०॥
+#End of Mantra Sets -- subsection_119 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_120 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_120 ## DO NOT EDIT
+# Start of Rik Text -- subsection_120 ## DO NOT EDIT
+भद्रो(4)नो(1)अग्नि(2)राहूतः । भ(2)द्रा(2)रातिस्सू(2)भागभद्रो(4)आ(1)ध्वार(2)ः । भद्रा(4) ऊतप्रा(2)शा(1)स्तयः ॥ ५ ॥
+# End of Rik Text -- subsection_120 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_120 ## DO NOT EDIT
+॥दैवानीकञ्च॥  ।। देवानीकः ककुबग्निः ।।
+# End of SubSection Title -- subsection_120 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_120 ## DO NOT EDIT
+भद्रोनो(फि) ओ(प्ल) होअग्निरा(खी) हुताए(प्लि) ।भा(क) द्रारा(था) ता(च) इ(श)। सु(क) भगा(टा) भद्रो(टा) अध्वा(खा) रा(ण)ः ।भद्राऊ(टि) ता(त) ।प्रा(प) शा(श) स्ता(ख) यो(प्ल) । हाइ(शा) ॥११॥
+#End of Mantra Sets -- subsection_120 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_121 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_121 ## DO NOT EDIT
+# Start of Rik Text -- subsection_121 ## DO NOT EDIT
+या(2)जी(1)ष्ठ(1)न्त्वाववृमहे । देवन्दे(1)वत्रा(4)हो(4)ता(1)रामा(2)मा(1)र्त्यम् । अस्या(2) यज्ञा(4)स्या(1)सुक्रातु(1)म् ॥ ६ ॥
+# End of Rik Text -- subsection_121 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_121 ## DO NOT EDIT
+॥साध्रञ्च॥  ।। साधिः ककुबग्निः ।।
+# End of SubSection Title -- subsection_121 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_121 ## DO NOT EDIT
+याजी(णा) ष्ठन्त्वा(फा) वा(ख) वृमहाइ(शी) । दे(क) वन्देवत्राहो ता(टू) रा(च) म् । आमा(चा) र्त्या(क) मास्ययाज्ञा(टी) । स्या(प) सु(श) क्रा(ख) तू(प्ल) म् । हाइ(शा) ॥१२॥
+#End of Mantra Sets -- subsection_121 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_122 ## DO NOT EDIT
+।। सोभिरः काण्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_122 ## DO NOT EDIT
+# Start of Rik Text -- subsection_122 ## DO NOT EDIT
+ता(2)दग्नेद्युम्नामा(2)भारा । य(2)त्सासा(2)हासाद(1)ने कञ्ची(1)दत्री(2)णम् । मन्यु(2)ञ्जना(1)स्यादूढ्यम् ॥ ७ ॥
+# End of Rik Text -- subsection_122 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_122 ## DO NOT EDIT
+॥जमदग्नेश्चसंवर्गः॥  ।। जमदग्न्युष्णिगग्निः ।।
+# End of SubSection Title -- subsection_122 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_122 ## DO NOT EDIT
+तदग्नेद्यू(फी) म्नामाभारो(ची) वा(श) । यत्सासा(टी) हा(त) सादा(टा) ना(त) इ(श) । क(थ) ञ्चिदत्रा(टि) इणा(ता) म्। मन्यू(का) ञ्जना(चा) स्यदू(टाच्) हो(य) ढा(प) यामेहिया(प्ली) हा(श) । हो(प्ल) इळा(शा) ॥१३॥
+#End of Mantra Sets -- subsection_122 ## DO NOT EDIT
+
+# Start of Rik Metadata -- subsection_123 ## DO NOT EDIT
+।। विश्वमना वैयश्वोऽग्निरुष्णिक् ।।
+# End of Rik Metadata -- subsection_123 ## DO NOT EDIT
+# Start of Rik Text -- subsection_123 ## DO NOT EDIT
+य(2)द्वा(2)ऊविश्पा(4)तीश्शितः । सुप्रीतो(1)मा(2)नुषोवीशे । विश्वेदग्निप्रा(2)तिर(1)क्षांसि सेधति ॥ ८ ॥
+# End of Rik Text -- subsection_123 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_123 ## DO NOT EDIT
+॥अगस्तस्यचराक्षोघ्नम्॥  ।। अगस्त्य उष्णिगग्निः ।।
+# End of SubSection Title -- subsection_123 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_123 ## DO NOT EDIT
+यद्वाऊ(पि) विश्पतिश्शित(शु)ः । सुप्रीतो(कि) मानुषो(किच्) वीशे(चा) वीश्वेदा(टि) ग्नी(त)ः । प्रातिरक्षांसिसे(कूच्) धा(क) ताऔ(टा) हो(ख) बा(प्ल) ।हो(प्ल) इळा(शा) ॥१४॥
+#End of Mantra Sets -- subsection_123 ## DO NOT EDIT
+
+# Start of Rik Text -- subsection_124 ## DO NOT EDIT
+आ(2)या(2)मग्नि(2) श्रेष्ठातमः । आ(2)यं(2)वामाधू(2)मक्तमः । आयं(2)साहस्रासा(2)तमः । अ(2)स्मि(2)न्ना(1)स्तुसूवीर्यम् ॥ ९ ॥
+# End of Rik Text -- subsection_124 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_124 ## DO NOT EDIT
+॥अग्नेश्चश्रैष्ठ्यम्॥  ।। त्रिष्टुपग्निः ।।
+# End of SubSection Title -- subsection_124 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_124 ## DO NOT EDIT
+आयं(चा) अग्निश्रे(चि) ष्ठा(क) तमो(चा) हो(टच्) आय(चा) म् । वा(ट) मधुमत्तमो(कु) हो(टच्) आय(चा) म् । साहा(चा) स्रासा(चा) तमो(टा) हो(टच्) आय(चा) म् । अस्मिन्नास्तु(की) सुवी(काथ्) र्यामौ(टा) हो(त) ।ओ(प) इळा(शा) ॥१५॥
+#End of Mantra Sets -- subsection_124 ## DO NOT EDIT
+
+# Start of Rik Text -- subsection_125 ## DO NOT EDIT
+आ(2)दित्य(2)ःशुक्रा(2) ऊ(2)दगात्पूरास्तात् । ज्यो(3)तिः कृण्वन्वी(2)तामो(1)बाधामानः । आ(2)भा(2)स(1)मानाप्रादीशो(1)नूसा(2)र्वाः । भद्रस्या(2) कर्ता(1)रूचायन्नाआगात् ॥ १० ॥
+# End of Rik Text -- subsection_125 ## DO NOT EDIT
+
+# Start of SubSection Title -- subsection_125 ## DO NOT EDIT
+॥आदित्यस्यचरुचिरोचनंवा॥  ।। आदित्यो ककुबग्निः ।।
+# End of SubSection Title -- subsection_125 ## DO NOT EDIT
+#Start of Mantra Sets -- subsection_125 ## DO NOT EDIT
+आदित्यश्शू(ती)। क्रा(च) उदगात्पुरुरा(खू) स्ता(श) त् । ज्यो(क) तिःकृण्वा(कि) न्वितमोबाधमा(खू) ना(प्ल)ः । आ(क) भासमाना(टी)ः प्रादीशो(कि) नुसा(खा) र्वा(प्ल)ः । भद्रस्यका(की) र्ता(त) रूचया(पि) न्नाया(खा) ।गा(त्र) त्॥१६॥
+#End of Mantra Sets -- subsection_125 ## DO NOT EDIT

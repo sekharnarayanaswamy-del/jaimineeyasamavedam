@@ -21,6 +21,8 @@ import argparse
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+if str(ROOT_DIR / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR / "src"))
 
 PARVA_METADATA = {
     "supersection_1": {
@@ -65,12 +67,15 @@ def split_samhita_by_parva(source_path: Path, output_dirs: list[Path], dry_run: 
     print(f"Reading master Samhita file: {source_path}")
     content = source_path.read_text(encoding='utf-8')
     
+    from core.version import get_corpus_edition
+    current_edition = get_corpus_edition("samhita")
+    
     # Extract version header
     header_match = re.match(r'^(.*?)(?=#\s*Start\s+of\s+SuperSection\s+Title)', content, re.DOTALL)
-    orig_header = header_match.group(1).strip() if header_match else "जैमिनीयसामवेद संहिता\n\nVersion 3.33"
+    orig_header = header_match.group(1).strip() if header_match else f"जैमिनीयसामवेद संहिता\n\nVersion {current_edition}"
     
     # Extract Version line
-    version_line = "Version 3.33 04-11-2026 14:41:55"
+    version_line = f"Version {current_edition}"
     v_match = re.search(r'Version\s+[^\n]+', orig_header)
     if v_match:
         version_line = v_match.group(0)

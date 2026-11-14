@@ -190,6 +190,13 @@ def main():
         help="Preserve Dravidian short (hrsva) e/o vowels in transliterated Devanagari output (default: False, native Sanskrit deergha e/o)",
     )
     parser.add_argument(
+        "--preserve-spaces", "--keep-spaces",
+        dest="preserve_spaces",
+        action="store_true",
+        default=False,
+        help="Retain inter-word spaces from source Unicode text instead of scriptio continua (default: False)",
+    )
+    parser.add_argument(
         "--legacy-html",
         action="store_true",
         help="Use legacy single-page HTML layout instead of modern VedaVMS reader layout",
@@ -272,6 +279,8 @@ def main():
         extra_flags.append("--legacy-html")
     if args.preserve_hrsva:
         extra_flags.append("--preserve-hrsva")
+    if args.preserve_spaces:
+        extra_flags.append("--preserve-spaces")
 
     # ----------------------------------------------------
     # 1. SAMHITA PIPELINE
@@ -284,6 +293,13 @@ def main():
         if not deva_input_path.exists():
             print(f"[ERROR] Samhita Devanagari input not found: {deva_input_path}", file=sys.stderr)
             sys.exit(1)
+
+        # Manage and synchronize input Unicode version
+        try:
+            from core.version import manage_input_unicode_version
+            manage_input_unicode_version(deva_input_path, corpus_name="samhita")
+        except Exception as e:
+            print(f"[WARN] Version check error: {e}")
 
         deva_json_path.parent.mkdir(parents=True, exist_ok=True)
 

@@ -274,10 +274,141 @@ def format_build_stamp(meta: Dict[str, Any]) -> str:
         
     return " · ".join(parts)
 
+def manage_input_unicode_version(
+    file_path: Union[str, Path],
+    corpus_name: Optional[str] = None,
+    sync_mirror: bool = True
+) -> Tuple[str, str, bool]:
+    """
+    Manages the version of an input Unicode text file based on its header and filesystem update timestamp.
+    For instance, given a line at the top:
+        'Version 3.33 04-11-2026 14:41:55'
+    If the file's update timestamp (mtime) is different from the header timestamp,
+    the minor version is updated (e.g. 3.33 -> 3.34) and the header timestamp is updated to the
+    file's update timestamp. The filesystem mtime is preserved so that subsequent processing runs
+    detect that the header and mtime match and do not increment again unless the file is modified.
+    
+    If mirror files exist (e.g. data/corpora/samhita/01_input/... <-> data/input/...),
+    they are kept in sync.
+    Corpus edition in pipeline_config.yaml and src/VERSION is synced to the new version.
+    
+    Returns: (version, timestamp_str, was_updated)
+    """
+    path = Path(file_path)
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    if not path.exists():
+        return "", "", False
+
+    try:
+        with open(path, "r", encoding="utf-8", newline="") as f:
+            content = f.read()
+    except Exception as e:
+        print(f"[WARNING] manage_input_unicode_version: could not read {path}: {e}")
+        return "", "", False
+
+    header_pattern = re.compile(
+        r'^(?P<prefix>#\s*)?Version\s+(?P<version>\d+\.\d+)\s+(?P<timestamp>(?:\d{2}[-/]\d{2}[-/]\d{4}|\d{4}[-/]\d{2}[-/]\d{2})\s+\d{2}:\d{2}:\d{2})',
+        re.MULTILINE
+    )
+    match = header_pattern.search(content[:3000])
+    if not match:
+        return "", "", False
+
+    prefix = match.group("prefix") or ""
+    current_ver = match.group("version")
+    header_ts_str = match.group("timestamp")
+
+    # Parse header timestamp
+    header_dt = None
+    for fmt in ("%d-%m-%Y %H:%M:%S", "%d/%m/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S"):
+        try:
+            header_dt = datetime.datetime.strptime(header_ts_str, fmt)
+            break
+        except ValueError:
+            pass
+
+    file_mtime = os.path.getmtime(path)
+    file_dt = datetime.datetime.fromtimestamp(file_mtime).replace(microsecond=0)
+
+    # Determine corpus name if not provided
+    target_corpus = corpus_name
+    if not target_corpus:
+        s_name = path.name.lower()
+        if "samhita" in s_name:
+            target_corpus = "samhita"
+        elif "aaranam" in s_name:
+            target_corpus = "aaranam"
+        elif "kpully" in s_name or "malayalam" in s_name:
+            target_corpus = "kpully"
+        elif "vedic_text" in s_name:
+            target_corpus = "rik"
+        else:
+            target_corpus = "samhita"
+
+    # If timestamps match down to the second, ensure config edition matches and return
+    if header_dt and file_dt == header_dt:
+        if get_corpus_edition(target_corpus) != current_ver:
+            set_corpus_edition(target_corpus, current_ver)
+        return current_ver, header_ts_str, False
+
+    # Timestamps are different -> update minor version and timestamp
+    parts = current_ver.split(".")
+    major = parts[0]
+    minor = parts[1]
+    width = len(minor)
+    new_minor = f"{int(minor) + 1:0{width}d}"
+    new_ver = f"{major}.{new_minor}"
+
+    new_ts_str = file_dt.strftime("%d-%m-%Y %H:%M:%S")
+    new_header_line = f"{prefix}Version {new_ver} {new_ts_str}"
+    
+    # Replace header in content
+    new_content = content[:match.start()] + new_header_line + content[match.end():]
+
+    # Write back and preserve mtime
+    target_mtime = file_dt.timestamp()
+    try:
+        with open(path, "w", encoding="utf-8", newline="") as f:
+            f.write(new_content)
+        os.utime(path, (target_mtime, target_mtime))
+        print(f"[AUTO-VERSION] Updated {path.name} header: Version {current_ver} ({header_ts_str}) -> Version {new_ver} ({new_ts_str})")
+    except Exception as e:
+        print(f"[WARNING] manage_input_unicode_version: could not write {path}: {e}")
+        return current_ver, header_ts_str, False
+
+    # Mirror file synchronization
+    if sync_mirror:
+        mirror_path = None
+        s_path = str(path).replace("\\", "/")
+        if "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt" in s_path:
+            mirror_path = REPO_ROOT / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
+        elif "data/input/Samhita_Devanagari_Unicode.txt" in s_path:
+            mirror_path = REPO_ROOT / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt"
+
+        if mirror_path and mirror_path.exists() and mirror_path.resolve() != path.resolve():
+            try:
+                with open(mirror_path, "r", encoding="utf-8", newline="") as mf:
+                    m_content = mf.read()
+                m_match = header_pattern.search(m_content[:3000])
+                if m_match:
+                    m_prefix = m_match.group("prefix") or ""
+                    m_new_line = f"{m_prefix}Version {new_ver} {new_ts_str}"
+                    m_new_content = m_content[:m_match.start()] + m_new_line + m_content[m_match.end():]
+                    with open(mirror_path, "w", encoding="utf-8", newline="") as mf:
+                        mf.write(m_new_content)
+                    os.utime(mirror_path, (target_mtime, target_mtime))
+            except Exception as e:
+                print(f"[WARNING] manage_input_unicode_version: mirror sync failed for {mirror_path}: {e}")
+
+    # Synchronize corpus edition in config and src/VERSION
+    set_corpus_edition(target_corpus, new_ver)
+    return new_ver, new_ts_str, True
+
 def check_and_auto_increment_edition(corpus_name: str = "samhita", input_file: Optional[Union[str, Path]] = None) -> Tuple[str, bool]:
     """
-    Checks if the SHA-256 fingerprint of the input file has changed since the last manifest run.
-    If changed (input updated in correction workflow), automatically increments the patch edition version.
+    Checks if the input file has an authoritative header and manages its version based on file update timestamp.
+    If no header, checks if the SHA-256 fingerprint has changed since the last manifest run.
     Returns (current_or_new_edition, was_incremented).
     """
     edition = get_corpus_edition(corpus_name)
@@ -289,6 +420,45 @@ def check_and_auto_increment_edition(corpus_name: str = "samhita", input_file: O
         input_path = REPO_ROOT / input_path
     if not input_path.exists():
         return edition, False
+
+    normalized = corpus_name.lower().strip()
+    folder_map = {
+        "collection": "collections",
+        "purva": "Rik",
+        "purvarchikam": "Rik",
+        "uttara": "Rik",
+        "uttararchikam": "Rik",
+        "rik": "Rik",
+    }
+    corpus_folder = folder_map.get(normalized, normalized)
+    manifest_path = REPO_ROOT / "data" / "corpora" / corpus_folder / "run_manifest.json"
+
+    # Step 1: Manage version directly from input file header and update timestamp
+    file_ver, file_ts, was_updated = manage_input_unicode_version(input_path, corpus_name=corpus_name, sync_mirror=True)
+    if was_updated:
+        current_hash = get_file_hash(input_path)
+        if current_hash and manifest_path.exists():
+            try:
+                with open(manifest_path, "r", encoding="utf-8") as f:
+                    m_data = json.load(f)
+                if "hashes" not in m_data:
+                    m_data["hashes"] = {}
+                is_kpully_input = (input_path.name == "Samam_Malayalam_Unicode.txt" or corpus_name == "kpully")
+                if is_kpully_input:
+                    m_data["hashes"]["kpully_input_sha256"] = current_hash
+                m_data["hashes"]["input_sha256"] = current_hash
+                for art in m_data.get("artifacts", {}).get("01_input", []):
+                    if art.get("name") == input_path.name:
+                        art["sha256"] = current_hash
+                with open(manifest_path, "w", encoding="utf-8") as f:
+                    json.dump(m_data, f, indent=2, ensure_ascii=False)
+            except Exception:
+                pass
+        return file_ver, True
+    elif file_ver:
+        if edition != file_ver:
+            set_corpus_edition(corpus_name, file_ver)
+        return file_ver, False
 
     current_hash = get_file_hash(input_path)
     if not current_hash:

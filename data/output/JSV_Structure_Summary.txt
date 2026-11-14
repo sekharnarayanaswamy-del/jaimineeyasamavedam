@@ -1,6 +1,6 @@
 ================================================================================
-JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY (v3.70)
-Generated: 14-11-2026 09:59:30
+JAIMINEEYA SAMAVEDA SAMHITA - STRUCTURE SUMMARY (v3.73)
+Generated: 14-11-2026 16:31:05
 ================================================================================
 
 Counts from JSON output (used by both website and PDF generation)

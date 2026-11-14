@@ -204,13 +204,21 @@ def apply_sandhi_patch(patch_items: list, dry_run: bool = False,
                 if sub_key in sec.get('subsections', {}):
                     sub = sec['subsections'][sub_key]
                     
-                    if field == 'Arsheyam Header' and 'header' in sub:
-                        h = sub['header'].get('header', '')
-                        new_h, ok = swara_aware_replace(h, sus, sug)
-                        if ok:
-                            if not dry_run: sub['header']['header'] = new_h
-                            ast_done = True
-                            ast_replacements += 1
+                    if field == 'Arsheyam Header':
+                        if 'header' in sub:
+                            h = sub['header'].get('header', '')
+                            new_h, ok = swara_aware_replace(h, sus, sug)
+                            if ok:
+                                if not dry_run: sub['header']['header'] = new_h
+                                ast_done = True
+                                ast_replacements += 1
+                        if not ast_done and 'saman_metadata' in sub:
+                            sm = sub.get('saman_metadata', '')
+                            new_sm, ok = swara_aware_replace(sm, sus, sug)
+                            if ok:
+                                if not dry_run: sub['saman_metadata'] = new_sm
+                                ast_done = True
+                                ast_replacements += 1
                             
                     elif field == 'Rik Metadata':
                         rm = sub.get('rik_metadata', '')

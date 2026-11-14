@@ -45,7 +45,7 @@ except ImportError:
 class WebsiteGenerator:
     """Generates static HTML website from parsed data - Rig Veda style"""
     
-    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic', metadata: Dict = None, closing_mantras: List[str] = None, output_mode: str = 'combined', kpully: bool = False):
+    def __init__(self, parvas: List[Parva], output_dir: str, audio_dir: str, mode: str = 'samhita', custom_title: str = None, font: str = 'AdishilaVedic', font_sans: str = 'AdishilaSanVedic', metadata: Dict = None, closing_mantras: List[str] = None, output_mode: str = 'combined', kpully: bool = False, preserve_spaces: bool = False):
         self.parvas = parvas
         self.output_dir = Path(output_dir)
         self.audio_dir = Path(audio_dir)
@@ -55,6 +55,10 @@ class WebsiteGenerator:
         self.closing_mantras = closing_mantras or []
         self.output_mode = output_mode or 'combined'
         self.kpully = bool(kpully)
+        self.preserve_spaces = bool(preserve_spaces)
+        if self.preserve_spaces:
+            from .formatters import set_preserve_spaces
+            set_preserve_spaces(True)
         
         # Content inclusion flags
         self.has_riks = self.output_mode in ('combined', 'rik', 'rik_nometa')

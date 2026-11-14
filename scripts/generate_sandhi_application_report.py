@@ -1,3 +1,4 @@
+import argparse
 import subprocess
 import re
 import html
@@ -5,114 +6,157 @@ import json
 from pathlib import Path
 from collections import Counter
 
-# 1. Fetch original content at HEAD
+parser = argparse.ArgumentParser(description="Generate Sanskrit Sandhi Application Audit Report")
+parser.add_argument(
+    "--base",
+    default="2820e674",
+    help="Base commit to compare against (default: 2820e674 - pre-sandhi baseline)",
+)
+parser.add_argument(
+    "--output",
+    default="data/corpora/samhita/06_reports/SANDHI_APPLICATION_AUDIT_REPORT.html",
+    help="Output HTML report path",
+)
+args = parser.parse_args()
+
+# 1. Fetch original content at baseline
 p_orig = subprocess.run(
-    ['git', 'show', 'HEAD:data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt'],
+    ['git', 'show', f'{args.base}:data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt'],
     capture_output=True, text=True, encoding='utf-8'
 )
+if p_orig.returncode != 0:
+    print(f"[WARN] Could not fetch baseline commit '{args.base}'. Falling back to HEAD~1.")
+    p_orig = subprocess.run(
+        ['git', 'show', 'HEAD~1:data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt'],
+        capture_output=True, text=True, encoding='utf-8'
+    )
+
 orig_lines = p_orig.stdout.splitlines()
 
 # 2. Fetch current content
 curr_path = Path('data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt')
 curr_lines = curr_path.read_text(encoding='utf-8').splitlines()
 
+# 3. Robust structural block parsing
+def parse_blocks(lines):
+    blocks = {}
+    current_ssec = "आग्नेयपाठः"
+    current_sec = "Section 1"
+    current_sub = "subsection_1"
+    current_field = "Preamble"
+    
+    for idx, line in enumerate(lines):
+        line_num = idx + 1
+        if '# Start of SuperSection Title' in line:
+            current_field = "SuperSection Title"
+        elif '# Start of Section Title' in line:
+            current_field = "Section Title"
+        elif '# Start of SubSection Title' in line:
+            m = re.search(r'subsection_\d+', line)
+            if m:
+                current_sub = m.group(0)
+            current_field = "SubSection Title"
+        elif '# Start of Rik Metadata' in line:
+            current_field = "Rik Metadata"
+        elif '# Start of Rik Text' in line:
+            current_field = "Rik Text"
+        elif '# Start of Saman Metadata' in line:
+            current_field = "Saman Metadata"
+        elif '#Start of Mantra Sets' in line or '# Start of Mantra Sets' in line:
+            current_field = "Mantra Sets (Chants)"
+        elif line.startswith('# End of') or line.startswith('#End of'):
+            pass
+        elif line.strip():
+            if current_field == "SuperSection Title":
+                current_ssec = line.strip()
+            key = (current_ssec, current_sub, current_field)
+            if key not in blocks:
+                blocks[key] = []
+            blocks[key].append((line_num, line))
+    return blocks
+
+orig_blocks = parse_blocks(orig_lines)
+curr_blocks = parse_blocks(curr_lines)
+
 changes = []
 
-current_ssec = "आग्नेयपाठः"
-current_sec = "Section 1"
-current_sub = "subsection_1"
-current_field = "Preamble"
+for key, o_list in orig_blocks.items():
+    if key not in curr_blocks:
+        continue
+    c_list = curr_blocks[key]
+    current_ssec, current_sub, current_field = key
+    
+    o_text = "\n".join(l for _, l in o_list).strip()
+    c_text = "\n".join(l for _, l in c_list).strip()
+    
+    if o_text == c_text:
+        continue
+        
+    line_num = c_list[0][0]
+    old_line = o_text
+    new_line = c_text
+    
+    category = "Metadata Sandhi Normalization"
+    badge_class = "cat-meta"
 
-for i in range(len(orig_lines)):
-    old_line = orig_lines[i]
-    new_line = curr_lines[i]
-    line_num = i + 1
+    if current_field == "Rik Text":
+        if 'टट्य' in old_line and '३' in new_line:
+            category = "Ṛgveda Inline Numeral ३"
+            badge_class = "cat-num"
+        elif 'ठ' in old_line and '१' in new_line:
+            category = "Ṛgveda Inline Numeral १(1)"
+            badge_class = "cat-num"
+        elif 'ं' in old_line and any(c in new_line for c in ['न्', 'ङ्', 'ञ्', 'ण्', 'म्']):
+            category = "Parasavarṇa Sandhi (Homorganic Nasal)"
+            badge_class = "cat-para"
+        elif 'न्ज' in old_line and 'ञ्ज' in new_line:
+            category = "Ścutva Sandhi (न्ज → ञ्ज)"
+            badge_class = "cat-scut"
+        elif 'न्च' in old_line and 'ञ्च' in new_line:
+            category = "Ścutva Sandhi (न्च → ञ्च)"
+            badge_class = "cat-scut"
+        else:
+            category = "Rik Text Sandhi"
+            badge_class = "cat-para"
 
-    if '# Start of SuperSection Title' in old_line:
-        current_field = "SuperSection Title"
-    elif '# Start of Section Title' in old_line:
-        current_field = "Section Title"
-    elif '# Start of SubSection Title' in old_line:
-        m = re.search(r'subsection_\d+', old_line)
-        if m:
-            current_sub = m.group(0)
-        current_field = "SubSection Title"
-    elif '# Start of Rik Metadata' in old_line:
-        current_field = "Rik Metadata"
-    elif '# Start of Rik Text' in old_line:
-        current_field = "Rik Text"
-    elif '# Start of Saman Metadata' in old_line:
-        current_field = "Saman Metadata"
-    elif '#Start of Mantra Sets' in old_line or '# Start of Mantra Sets' in old_line:
-        current_field = "Mantra Sets (Chants)"
-    elif old_line.startswith('# End of'):
-        pass
-    else:
-        if current_field == "SuperSection Title" and old_line.strip() and not old_line.startswith('#'):
-            current_ssec = old_line.strip()
+    elif current_field == "Mantra Sets (Chants)":
+        if 'न्ज' in old_line and 'ञ्ज' in new_line:
+            category = "Ścutva Sandhi (न्ज → ञ्ज)"
+            badge_class = "cat-scut"
+        elif 'न्च' in old_line and 'ञ्च' in new_line:
+            category = "Ścutva Sandhi (न्च → ञ्च)"
+            badge_class = "cat-scut"
+        else:
+            category = "Chant Sandhi / Normalization"
+            badge_class = "cat-scut"
 
-    if old_line != new_line:
-        category = "Metadata Sandhi Normalization"
-        badge_class = "cat-meta"
+    elif current_field in ["Rik Metadata", "Saman Metadata", "SubSection Title"]:
+        if 'वांगिरसौ' in old_line and 'वाङ्गिरसौ' in new_line:
+            category = "Parasavarṇa Sandhi (Velar ङ्)"
+            badge_class = "cat-para"
+        elif 'ककुप' in old_line and 'ककुप्' in new_line:
+            category = "Typographical Normalization (ककुप्)"
+            badge_class = "cat-typo"
+        elif 'ः' in old_line and 'स्' in new_line:
+            category = "Visarga Sandhi (विसर्जनीयस्य सः)"
+            badge_class = "cat-meta"
+        elif '।' in old_line and '।' not in new_line:
+            category = "Option 1 Continuous Sandhi"
+            badge_class = "cat-meta"
+        else:
+            category = "Option 1 Continuous Sandhi"
+            badge_class = "cat-meta"
 
-        if current_field == "Rik Text":
-            if 'टट्य' in old_line and '३' in new_line:
-                category = "Ṛgveda Inline Numeral ३"
-                badge_class = "cat-num"
-            elif 'ठ' in old_line and '१' in new_line:
-                category = "Ṛgveda Inline Numeral १(1)"
-                badge_class = "cat-num"
-            elif 'ं' in old_line and ('न्' in new_line or 'ङ्' in new_line or 'ञ्' in new_line or 'ण्' in new_line or 'म्' in new_line):
-                category = "Parasavarṇa Sandhi (Homorganic Nasal)"
-                badge_class = "cat-para"
-            elif 'न्ज' in old_line and 'ञ्ज' in new_line:
-                category = "Ścutva Sandhi (न्ज → ञ्ज)"
-                badge_class = "cat-scut"
-            elif 'न्च' in old_line and 'ञ्च' in new_line:
-                category = "Ścutva Sandhi (न्च → ञ्च)"
-                badge_class = "cat-scut"
-            else:
-                category = "Rik Text Sandhi"
-                badge_class = "cat-para"
-
-        elif current_field == "Mantra Sets (Chants)":
-            if 'न्ज' in old_line and 'ञ्ज' in new_line:
-                category = "Ścutva Sandhi (न्ज → ञ्ज)"
-                badge_class = "cat-scut"
-            elif 'न्च' in old_line and 'ञ्च' in new_line:
-                category = "Ścutva Sandhi (न्च → ञ्च)"
-                badge_class = "cat-scut"
-            else:
-                category = "Chant Sandhi / Normalization"
-                badge_class = "cat-scut"
-
-        elif current_field in ["Rik Metadata", "Saman Metadata", "SubSection Title"]:
-            if 'वांगिरसौ' in old_line and 'वाङ्गिरसौ' in new_line:
-                category = "Parasavarṇa Sandhi (Velar ङ्)"
-                badge_class = "cat-para"
-            elif 'ककुप' in old_line and 'ककुप्' in new_line:
-                category = "Typographical Normalization (ककुप्)"
-                badge_class = "cat-typo"
-            elif 'ः' in old_line and 'स्' in new_line:
-                category = "Visarga Sandhi (विसर्जनीयस्य सः)"
-                badge_class = "cat-meta"
-            elif '।' in old_line and '।' not in new_line:
-                category = "Option 1 Continuous Sandhi"
-                badge_class = "cat-meta"
-            else:
-                category = "Option 1 Continuous Sandhi"
-                badge_class = "cat-meta"
-
-        changes.append({
-            'line_num': line_num,
-            'ssec': current_ssec,
-            'sub': current_sub,
-            'field': current_field,
-            'category': category,
-            'badge_class': badge_class,
-            'old': old_line.strip(),
-            'new': new_line.strip()
-        })
+    changes.append({
+        'line_num': line_num,
+        'ssec': current_ssec,
+        'sub': current_sub,
+        'field': current_field,
+        'category': category,
+        'badge_class': badge_class,
+        'old': old_line,
+        'new': new_line
+    })
 
 # Compute stats
 counts = Counter(c['category'] for c in changes)
@@ -249,7 +293,10 @@ html_content = f"""<!DOCTYPE html>
     user-select: none;
     transition: all 0.15s ease;
   }}
-  .pill:hover {{ background: #e2e8f0; }}
+  .pill:hover {{
+    background: #e2e8f0;
+    color: #0f172a;
+  }}
   .pill.active {{
     background: #2563eb;
     color: white;
@@ -328,13 +375,13 @@ html_content = f"""<!DOCTYPE html>
 <div class="container">
   <header>
     <h1>Sanskrit Sandhi Application Audit Report</h1>
-    <p class="subtitle">Complete line-by-line audit of all continuous Paninian Sandhi, Parasavarṇa assimilation, Ścutva rules, Ṛgveda inline numerals, and typographical normalizations applied to <code>Samhita_Devanagari_Unicode.txt</code>.</p>
+    <p class="subtitle">Complete audit of all continuous Paninian Sandhi, Parasavarṇa assimilation, Ścutva rules, Ṛgveda inline numerals, and typographical normalizations applied to <code>Samhita_Devanagari_Unicode.txt</code> (Baseline: <code>{args.base}</code> → Current Edition).</p>
   </header>
 
   <div class="stats-grid">
     <div class="stat-card total">
       <div class="stat-value">{len(changes)}</div>
-      <div class="stat-label">Total Lines Modified</div>
+      <div class="stat-label">Total Blocks / Items Modified</div>
     </div>
     <div class="stat-card meta">
       <div class="stat-value">{cat_meta_cnt}</div>
@@ -372,11 +419,11 @@ html_content = f"""<!DOCTYPE html>
     <table id="auditTable">
       <thead>
         <tr>
-          <th style="width: 60px;">Line</th>
+          <th style="width: 80px;">Line #</th>
           <th style="width: 140px;">Subsection</th>
-          <th style="width: 130px;">Field</th>
-          <th style="width: 170px;">Rule Category</th>
-          <th style="width: 440px;">Before Modification (Original)</th>
+          <th style="width: 160px;">Field</th>
+          <th style="width: 240px;">Rule Category</th>
+          <th style="width: 440px;">Original Text</th>
           <th style="width: 440px;">After Modification (Transformed)</th>
         </tr>
       </thead>
@@ -446,7 +493,7 @@ function filterRows() {
 </html>
 """
 
-report_file = Path("data/corpora/samhita/06_reports/SANDHI_APPLICATION_AUDIT_REPORT.html")
+report_file = Path(args.output)
 report_file.parent.mkdir(parents=True, exist_ok=True)
 report_file.write_text(html_content, encoding='utf-8')
 print(f"Audit report written to: {report_file}")

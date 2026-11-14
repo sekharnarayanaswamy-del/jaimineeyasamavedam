@@ -70,14 +70,14 @@
 \setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
 \newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
 \newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}]{AdishilaVedic.ttf}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
 \newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
 \setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
 \newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
 \newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed]{AdishilaVedic}
+\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, BoldFont=*Bold]{AdishilaVedic}
 \newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
 \newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
@@ -347,54 +347,45 @@
     \thispagestyle{empty}
     \begin{singlespace}
     \begin{center}
-        % SS1: Exact text from Cover page.docx, single line spacing, Harfbuzz
-        \vspace*{-0.4cm}
-        {\fontsize{9.5pt}{12.5pt}\selectfont
-        ॥ श्री: ॥\\[0.20em]
-        ॥ श्रीमते जैमिन्याचार्याय नमः ॥\ ॥ श्री तलवकारगुरवे नमः ॥\\[0.20em]
+        % Mangalam & Guruvandana from Cover page.docx
+        \vspace*{0.5cm}
+        {\fontsize{11pt}{15pt}\selectfont
+        ॥ श्री: ॥\\[0.3em]
+        ॥ श्रीमते जैमिन्याचार्याय नमः ॥\qquad ॥ श्री तलवकारगुरवे नमः ॥\\[0.3em]
         ॥ श्री गुरुभ्यो नमः ॥\par}
         
-        \vfill
+        \vspace{\fill}
         
-        % SS2: Title & Subtitle from Cover page docx
+        % Title & Subtitle from Cover page.docx
         \BLOCK{ if doc_title_sa and ('आरण्यक' in doc_title_sa or 'आरण्य' in doc_title_sa) }
-        {\fontsize{30pt}{38pt}\selectfont \textbf{जैमिनीयसामवेद-आरण्यकम्}\par}
-        \vskip 0.4em
-        {\fontsize{17pt}{22pt}\selectfont \textbf{तलवकारशाखा-आरण्यक भाग:}\par}
+        {\fontsize{34pt}{42pt}\selectfont \textbf{जैमिनीयसामवेद-आरण्यकम्}\par}
+        \vskip 0.6em
+        {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा-आरण्यक भाग:}\par}
         \BLOCK{ elif doc_title_sa and ('पूर्वार्चिक' in doc_title_sa or 'उत्तरार्चिक' in doc_title_sa) }
-        {\fontsize{30pt}{38pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
-        \vskip 0.4em
-        {\fontsize{17pt}{22pt}\selectfont \textbf{तलवकारशाखा}\par}
+        {\fontsize{34pt}{42pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
+        \vskip 0.6em
+        {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा}\par}
         \BLOCK{ elif doc_title_sa }
-        {\fontsize{30pt}{38pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
-        \vskip 0.4em
-        {\fontsize{17pt}{22pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
+        {\fontsize{34pt}{42pt}\selectfont \textbf{\VAR{doc_title_sa}}\par}
+        \vskip 0.6em
+        {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
         \BLOCK{ else }
-        {\fontsize{30pt}{38pt}\selectfont \textbf{जैमिनीयसामवेद-संहिता}\par}
-        \vskip 0.4em
-        {\fontsize{17pt}{22pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
+        {\fontsize{34pt}{42pt}\selectfont \textbf{जैमिनीयसामवेद-संहिता}\par}
+        \vskip 0.6em
+        {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा-प्रकृति भाग:}\par}
         \BLOCK{ endif }
         
-        \vfill
-        \vfill
+        \vspace{\fill}
+        \vspace{\fill}
         
-        % SS3: Editors (Dual) from Cover page docx
-        {\fontsize{18pt}{22pt}\selectfont
-        \textbf{सम्पादकौ}\\[0.35em]
-        {\fontsize{15pt}{19pt}\selectfont वेदमूर्तिः मकरभूषणम् अय्यङ्गार्}\\[0.20em]
-        {\fontsize{15pt}{19pt}\selectfont ब्रह्मश्रीः शैलेष देशपाण्डे}\par}
+        % Publisher & Location & Year from Cover page.docx
+        {\fontsize{15pt}{20pt}\selectfont
+        \textbf{प्रकाशकः}\\[0.4em]
+        {\fontsize{14pt}{19pt}\selectfont आर्ष विद्या वेदपाठशाला, कोडुन्तिरपुळ्ळि}\\[0.25em]
+        {\fontsize{14pt}{19pt}\selectfont पालक्काड्, केरळम्}\\[0.25em]
+        {\fontsize{14pt}{19pt}\selectfont २०२६}\par}
         
-        \vfill
-        \vfill
-        
-        % SS4: Publisher & Date from Cover page docx
-        {\fontsize{14pt}{18pt}\selectfont
-        \textbf{प्रकाशकः}\\[0.30em]
-        {\fontsize{13pt}{17pt}\selectfont आर्ष विद्या वेदपाठशाला, कोडुन्तिरपुळ्ळि}\\[0.20em]
-        {\fontsize{13pt}{17pt}\selectfont पालक्काड्, केरळम्}\\[0.20em]
-        {\fontsize{13pt}{17pt}\selectfont २०२६}\par}
-        
-        \vspace*{-0.3cm}
+        \vspace*{0.5cm}
     \end{center}
     \end{singlespace}
 \end{titlepage}

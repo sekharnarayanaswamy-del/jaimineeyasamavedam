@@ -71,11 +71,11 @@ except ValueError:
     _SAMAM_MAX_PADAS = 5
 
 if _SAMAM_ALIGN == "left":
-    _SAMAM_PARA_OPEN = r"\noindent\raggedright "
+    _SAMAM_PARA_OPEN = r"\noindent\raggedright\bfseries "
 elif _SAMAM_ALIGN == "justify":
-    _SAMAM_PARA_OPEN = r"\noindent\sloppy "
+    _SAMAM_PARA_OPEN = r"\noindent\sloppy\bfseries "
 else:
-    _SAMAM_PARA_OPEN = r"\noindent\centering "
+    _SAMAM_PARA_OPEN = r"\noindent\centering\bfseries "
 
 
 
@@ -338,42 +338,36 @@ def handle_consecutive_accents(text):
 
 
 
+PRESERVE_SPACES = False
+
+def set_preserve_spaces(enabled: bool = True):
+    """Controls whether inter-word spaces are retained from the Unicode input or stripped (scriptio continua)."""
+    global PRESERVE_SPACES
+    PRESERVE_SPACES = bool(enabled)
+
 def remove_mantra_spaces(text):
-
     """
-
-    Removes all spaces within the text to create continuous Samhita text.
-
+    Removes all spaces within the text to create continuous Samhita text (scriptio continua),
+    unless PRESERVE_SPACES is enabled via CLI.
     Handles all types of Unicode whitespace characters.
-
     Preserves Dandas.
-
     """
-
     if not text: return text
 
-    
+    if PRESERVE_SPACES:
+        # Retain inter-word spaces as given in the Unicode input file
+        text = text.replace('\uFEFF', '').replace('\u200B', '').replace('\u200C', '').replace('\u200D', '')
+        return text.strip()
 
     # Remove all Unicode whitespace characters using regex
-
     # \s covers: space, tab, newline, carriage return, form feed, vertical tab
-
     # Also explicitly remove non-breaking space (U+00A0) and other invisible separators
-
     text = re.sub(r'\s+', '', text)
-
     text = text.replace('\u00A0', '')  # Non-breaking space
-
     text = text.replace('\u200B', '')  # Zero-width space
-
     text = text.replace('\u200C', '')  # Zero-width non-joiner
-
     text = text.replace('\u200D', '')  # Zero-width joiner
-
     text = text.replace('\uFEFF', '')  # Byte order mark
-
-    
-
     return text
 
 
@@ -1252,7 +1246,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
             line_fmt = format_dandas(line)
 
-            paras.append(f"{{\\sloppy {line_fmt} \\par}}")
+            paras.append(f"{{\\sloppy\\bfseries {line_fmt} \\par}}")
 
         return paras
 
@@ -1409,7 +1403,9 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
                 else:
                     prev_multi = (prev_tok and _has_multiple_swaras(prev_tok))
                     next_multi = (next_tok and _has_multiple_swaras(next_tok))
-                    if prev_multi or next_multi:
+                    if PRESERVE_SPACES:
+                        paragraph_buffer.append(r"\hskip 0.35em plus 0.1em minus 0.05em ")
+                    elif prev_multi or next_multi:
                         paragraph_buffer.append(r"\hskip 0.12em plus 0.04em minus 0.02em ")
                     else:
                         paragraph_buffer.append(r"\hskip 0.08em plus 0.03em minus 0.02em ")
@@ -1892,7 +1888,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
         if paragraph_buffer:
             full_paragraph = "".join(paragraph_buffer)
-            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}\\par}}")
+            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy\\bfseries {full_paragraph}\\par}}")
             formatted_paragraphs.append(r"\vspace{0.10em}")
 
             
@@ -2214,7 +2210,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         while body_paras and body_paras[-1].startswith(r"\vspace"):
             body_paras.pop()
 
-        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+        indented_body = "{\\begingroup\\sloppy\\bfseries\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
     if not is_flow and layout_mode == 'a4':
@@ -2479,7 +2475,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
             body_paras.pop()
 
 
-        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+        indented_body = "{\\begingroup\\sloppy\\bfseries\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
 

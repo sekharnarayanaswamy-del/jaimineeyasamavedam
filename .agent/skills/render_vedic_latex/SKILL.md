@@ -41,6 +41,13 @@ When generating "Rik Samhita" (Continuous Text):
 
 ## 6. Fonts & Rendering
 *   **Devanagari PDF**: Uses XeLaTeX/LuaLaTeX with `fontspec` and `AdishilaVedic` font family.
+    *   **Document Base**: `\documentclass[12pt, ...]{book}`
+    *   **AdishilaVedic Scales**: Body/Chant = `1.35` (16.2 pt), Headers = `1.45` (17.4 pt), Swaras = `0.95` (11.4 pt), Glyphs = `0.88` (10.56 pt).
+    *   **A4 vs. Book Editions**:
+        *   **A4** (`Devanagari_main.template`): `210mm × 297mm`, `oneside`. Title = 34pt, Subtitle = 20pt. 3-column Index.
+        *   **Book** (`Devanagari_book.template`): `180mm × 228mm` (Crown Quarto), `twoside`. Title = 28pt, Subtitle = 17pt. 2-column Index.
+        *   *Body text elements (Rik, Samam, Metadata) maintain identical font sizing across both layouts for consistent chanting legibility.*
+    *   Detailed reference: `.agent/documentation/typography_guide.md` and `.agent/documentation/LATEX_GUIDE.md`.
 *   **Malayalam PDF**: Uses XeLaTeX with `NotoSerifMalayalam-Regular.ttf` for base text, `JaimineeyaSwara.ttf` for superscript swaras and modifiers, `NotoSerifDevanagari-Regular.ttf` for Vedic accents, and `Nimbus Roman.ttf` for English numerals and footnotes.
 *   **HTML**: CSS font-family stack utilizing `JaimineeyaSwara`, `Noto Serif Malayalam`, and `Adishila Vedic`.
 

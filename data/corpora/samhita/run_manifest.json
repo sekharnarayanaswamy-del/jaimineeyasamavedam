@@ -11,7 +11,7 @@
     "06_reports": "CURRENT"
   },
   "hashes": {
-    "input_sha256": "204c65f60de10e6940ef651858f44e4319792d342fddc4042417c47b41ce19f9",
+    "input_sha256": "84d61e1ae0393e3b8e9b6e02d6f045070eee8c58ecc5e74a24ad01be696108e9",
     "ast_sha256": "9837fdd63e69c6c841776f2504a6b7e0acade6e398a81002d79eab95ef30fc91",
     "canonical_sha256": "691f46f6f4bf771de3f0df3ffa26f6a29c2a666e3e0a88430fbc8444593fa45f",
     "kpully_input_sha256": "2f7a2dfe330a170ac534970639c9ca6edddaa90f20a92594ce68db72235696a5"
@@ -36,7 +36,7 @@
         "path": "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt",
         "size_bytes": 1369310,
         "size_formatted": "1.31 MB",
-        "sha256": "204c65f60de10e6940ef651858f44e4319792d342fddc4042417c47b41ce19f9"
+        "sha256": "84d61e1ae0393e3b8e9b6e02d6f045070eee8c58ecc5e74a24ad01be696108e9"
       }
     ],
     "02_ast": [

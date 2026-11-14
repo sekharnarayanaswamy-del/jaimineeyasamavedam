@@ -1213,6 +1213,10 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
              print(f"[ERROR] Metadata file not found: {metadata_file_path}")
     # -------------------------------------
 
+    # Ensure version and timestamp of input Unicode file are managed
+    from core.version import manage_input_unicode_version
+    file_ver, file_ts, was_upd = manage_input_unicode_version(filepath, corpus_name='samhita')
+
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -1223,8 +1227,8 @@ def parse_unicode_text_file(filepath, metadata_file_path=None, title="Jaimineeya
     file_meta = extract_metadata_from_text(content)
     data = {
         "meta": {
-            "version": file_meta.get("version", JSV_VERSION),
-            "generated_at": GENERATED_AT,
+            "version": file_meta.get("version") or file_ver or JSV_VERSION,
+            "generated_at": file_meta.get("generated_at") or file_ts or GENERATED_AT,
             "title": title
         },
         "supersection": {}

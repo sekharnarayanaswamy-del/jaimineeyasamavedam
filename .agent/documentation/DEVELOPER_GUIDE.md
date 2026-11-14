@@ -1061,4 +1061,52 @@ The pipeline uses a **Hybrid Rendering** approach:
 *   **HTML (.html)**: Generates a single-page document with an embedded sidebar-to-content mapping.
 *   **Text (.txt)**: Produces a "Round-trip" Unicode file designed to be re-imported as a source file after manual corrections.
 
+### 7.5 PDF Typography & Page Geometry (A4 vs. Book Edition)
+
+The rendering pipeline supports two primary PDF layouts:
+*   **A4 Edition** (`templates/pdf/Devanagari_main.template`): Desktop preview, full-width printout (`210mm × 297mm`, `oneside`, 3-column index).
+*   **Book Edition** (`templates/pdf/Devanagari_book.template`): Physical book printing (`180mm × 228mm`, `twoside`, 2-column index).
+
+#### Base Document Class & Font Scaling (AdishilaVedic)
+Both templates run under `\documentclass[12pt, ...]{book}`. Effective font sizes are determined by `fontspec` scaling parameters:
+
+| Font Variable | Font Family | Scaling | Effective Base Size | Usage |
+| :--- | :--- | :--- | :--- | :--- |
+| `\devafont`, `\setmainfont` | AdishilaVedic | `Scale=1.35` | **16.2 pt** | Main Devanagari text, Samam chant lines, Rik mula |
+| `\headerfont` | AdishilaVedicBold | `Scale=1.45` | **17.4 pt** | Chapter and Section structural titles |
+| `\smallredfont` | AdishilaVedic | `Scale=0.95` | **11.4 pt** | Swara number notations in SwaraRed (`#C62828`) |
+| `\swarafont` | JaimineeyaSwara | `Scale=0.88` | **10.56 pt** | Jaimineeya swara glyphs and accents |
+| `\arcfontDeva` | JaimineeyaSwara | `Scale=1.25` | **15.0 pt** | Overhead connecting arcs |
+
+*(For Noto Sans / Serif: Body `Scale=1.05` [12.6 pt], Headers `Scale=1.15` [13.8 pt], Swaras `Scale=0.76` [9.12 pt]).*
+
+#### Cover Page Differences (A4 vs. Book)
+Cover page font sizes are proportionally scaled down for the smaller Book trim size:
+
+| Title Page Element | A4 Edition (`Devanagari_main`) | Book Edition (`Devanagari_book`) |
+| :--- | :--- | :--- |
+| **Mangalam / Guruvandana** | `\fontsize{11pt}{15pt}` | `\fontsize{9.5pt}{13pt}` |
+| **Main Book Title** | `\fontsize{34pt}{42pt}\bfseries` | `\fontsize{28pt}{34pt}\bfseries` |
+| **Subtitle** | `\fontsize{20pt}{26pt}\bfseries` | `\fontsize{17pt}{22pt}\bfseries` |
+| **Publisher Heading** | `\fontsize{15pt}{20pt}\bfseries` | `\fontsize{13pt}{17pt}\bfseries` |
+| **Publisher Details & Year** | `\fontsize{14pt}{19pt}` | `\fontsize{12pt}{16pt}` |
+
+#### Document Body Elements (Identical across A4 & Book)
+
+| Document Element | LaTeX Macro | Standard Size | Rendered Size (1.35x Scale) |
+| :--- | :--- | :--- | :--- |
+| **Chapter / Parva Header** | `\chapter*` (`\huge\headerfont`) | 20.7 pt | **~30.0 pt** |
+| **Section / Kandah Header** | `\section*` (`\Large\headerfont`) | 14.4 pt | **~20.9 pt** |
+| **Rik Mula Verse** | `\normalsize` (Upright Bold, Blue) | 12.0 pt | **16.2 pt** |
+| **Samam Chant Line** | `\normalsize\bfseries` (Bold) | 12.0 pt | **16.2 pt** |
+| **Samam Subsection Title** | `\normalsize` (Bold, Green) | 12.0 pt | **16.2 pt** |
+| **Rik Metadata** | `\footnotesize` (Purple) | 10.0 pt | **13.5 pt** |
+| **Samam Metadata** | `\footnotesize` (Brown) | 10.0 pt | **13.5 pt** |
+| **Footnotes** | `\footnotesize` | 10.0 pt | **13.5 pt** |
+| **Summary Table** | `\small` | 11.0 pt | **14.85 pt** |
+| **Prayoga Appendix Header** | `\large\bfseries` | 14.4 pt | **19.44 pt** |
+| **Prayoga Appendix Body** | `\normalsize` | 12.0 pt | **16.2 pt** |
+| **Closing Mantras** | `\normalsize\bfseries` | 12.0 pt | **16.2 pt** |
+| **Index (वर्णानुक्रमणिका)** | `\footnotesize` | 10.0 pt | **13.5 pt** |
+
 **Files**: `src/render_pdf.py` (Engine), `templates/pdf/` (LaTeX), `templates/html/` (HTML), `templates/text/` (Unicode)

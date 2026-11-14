@@ -33,6 +33,7 @@ except ImportError:
 try:
     from src.renderers.filters.latex_filters import (
         remove_mantra_spaces,
+        set_preserve_spaces,
         _match_verse_num_marker,
         _parse_swara_and_modifiers,
         SWARA_CANONICAL_MAP,
@@ -40,6 +41,7 @@ try:
 except ImportError:
     from renderers.filters.latex_filters import (
         remove_mantra_spaces,
+        set_preserve_spaces,
         _match_verse_num_marker,
         _parse_swara_and_modifiers,
         SWARA_CANONICAL_MAP,
@@ -508,7 +510,14 @@ def render_deva_html_from_line(
         
         if t == 'space':
             prev_is_danda = (idx > 0 and tokens[idx-1]['type'] == 'danda')
-            if prev_is_danda:
+            try:
+                from src.renderers.filters.latex_filters import PRESERVE_SPACES
+            except ImportError:
+                try:
+                    from renderers.filters.latex_filters import PRESERVE_SPACES
+                except ImportError:
+                    PRESERVE_SPACES = False
+            if prev_is_danda or PRESERVE_SPACES:
                 rendered_items.append({
                     'type': 'space',
                     'html': '<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>'

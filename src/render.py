@@ -83,7 +83,7 @@ def normalize_output_basename(name, doc_family):
     return name
 
 # --- Core Document Generators ---
-def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False, flow_variant=False):
+def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False, flow_variant=False, skip_compile=False):
     reset_latex_doc_markers()
     set_flow_variant(flow_variant)
     data=escape_for_latex(data)
@@ -145,6 +145,19 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         flow_variant=flow_variant
     )
     
+    if skip_compile:
+        is_pdf_render_dir = "05_renders/pdf" in outputdir.replace('\\', '/') or outputdir.replace('\\', '/').endswith('/pdf')
+        if is_pdf_render_dir:
+            tex_dir = Path(outputdir).parent / "tex"
+            tex_dir.mkdir(parents=True, exist_ok=True)
+            dst_tex_file = tex_dir / TexFileName
+        else:
+            dst_tex_file = Path(f"{outputdir}/{TexFileName}")
+        dst_tex_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(dst_tex_file, "w", encoding="utf-8") as f:
+            f.write(document)
+        print(f"[INFO] Generated LaTeX file (skipped compilation): {dst_tex_file}")
+        return 0
 
     tmpdirname="."
     with tempfile.TemporaryDirectory() as tmpdirname:
@@ -628,6 +641,8 @@ Examples:
                         help='Use the book printing layout template (Devanagari_book.template: 180x228mm, twoside, inner 30mm)')
     parser.add_argument('--flow', '--flow-variant', '--continuous-flow', dest='flow_variant', action='store_true', default=False,
                         help='Continuous flow layout variant: allows natural breaking of Rik+Samam blocks without penalty to minimize vertical whitespace')
+    parser.add_argument('--preserve-spaces', '--keep-spaces', dest='preserve_spaces', action='store_true', default=False,
+                        help='Retain spaces between words as given in the Unicode input file (disables scriptio continua).')
     parser.add_argument('--pdf-color-mode', dest='pdf_color_mode',
                         choices=['bw', 'color'], default='color',
                         help='Color mode for PDF output: color (default) or bw')
@@ -657,6 +672,8 @@ Examples:
                         help='Generate only Rik output (skips Samam output in separate/nometa modes)')
     parser.add_argument('--no-pdf', dest='no_pdf', action='store_true', default=False,
                         help='Skip PDF compilation (generates HTML and text outputs)')
+    parser.add_argument('--tex-only', dest='tex_only', action='store_true', default=False,
+                        help='Generate only LaTeX (.tex) output without invoking LuaLaTeX compilation')
     parser.add_argument('--output-dir', dest='output_dir', default=None,
                         help='Base output directory for generated renders (e.g. data/corpora/samhita/05_renders)')
     parser.add_argument('--jsv-version', dest='jsv_version', default=None,
@@ -683,10 +700,19 @@ Examples:
     global CURRENT_KPULLY_MODE
     CURRENT_KPULLY_MODE = kpully_mode
     
+    preserve_spaces = getattr(args, 'preserve_spaces', False)
+    set_preserve_spaces(preserve_spaces)
+    
     # Target format dispatch flags
-    gen_pdf = not (args.html_only or args.txt_only or args.no_pdf)
-    gen_txt = not (args.html_only or args.pdf_only)
-    gen_html = not (args.pdf_only or args.txt_only)
+    skip_pdf_compile = getattr(args, 'tex_only', False)
+    if getattr(args, 'tex_only', False):
+        gen_pdf = True
+        gen_txt = False
+        gen_html = False
+    else:
+        gen_pdf = not (args.html_only or args.txt_only or args.no_pdf)
+        gen_txt = not (args.html_only or args.pdf_only)
+        gen_html = not (args.pdf_only or args.txt_only)
     gen_rik = not args.samam_only
     gen_samam = not args.rik_only
     if mode_type in ['purvarchikam', 'uttararchikam']:
@@ -745,6 +771,8 @@ Examples:
         file_prefix = f"{file_prefix}_book"
     if getattr(args, 'flow_variant', False) and not args.output and not out_name:
         file_prefix = f"{file_prefix}_flow"
+    if getattr(args, 'preserve_spaces', False) and not args.output and not out_name:
+        file_prefix = f"{file_prefix}_spaced"
     if pdf_color_mode == 'bw' and not args.output and not out_name:
         file_prefix = f"{file_prefix}_bw"
 
@@ -1184,7 +1212,7 @@ Examples:
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         if gen_pdf:
-            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False))
+            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
         if gen_txt:
             CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
             if script == 'malayalam':
@@ -1206,7 +1234,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Rik" if not base_pfx.endswith("_Rik") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False))
+                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1221,7 +1249,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Samam" if not base_pfx.endswith("_Samam") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False))
+                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1244,7 +1272,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Rik_NoMeta" if not base_pfx.endswith("_Rik_NoMeta") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False))
+                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1259,7 +1287,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Samam_NoMeta" if not base_pfx.endswith("_Samam_NoMeta") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False))
+                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':

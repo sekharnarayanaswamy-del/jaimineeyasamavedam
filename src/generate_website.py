@@ -163,6 +163,12 @@ Examples:
         default=None,
         help='Primary font for the website (default: AdishilaVedic)'
     )
+    parser.add_argument(
+        '--preserve-spaces', '--keep-spaces',
+        action='store_true',
+        default=False,
+        help='Retain spaces between words as given in the Unicode input file (disables scriptio continua).'
+    )
     
     args = parser.parse_args()
     
@@ -276,7 +282,8 @@ Examples:
         metadata=parser_obj.metadata,
         closing_mantras=parser_obj.closing_mantras,
         output_mode=output_mode,
-        kpully=args.kpully
+        kpully=args.kpully,
+        preserve_spaces=args.preserve_spaces
     )
     generator.generate()
     

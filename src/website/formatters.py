@@ -187,10 +187,29 @@ def local_format_dandas_html(text: str) -> str:
     return text.strip()
 
 
+PRESERVE_SPACES = False
+
+def set_preserve_spaces(enabled: bool = True):
+    """Controls whether inter-word spaces are retained or stripped (scriptio continua)."""
+    global PRESERVE_SPACES
+    PRESERVE_SPACES = bool(enabled)
+    try:
+        from src.renderers.filters.latex_filters import set_preserve_spaces as set_ltx_preserve
+        set_ltx_preserve(enabled)
+    except Exception:
+        try:
+            from renderers.filters.latex_filters import set_preserve_spaces as set_ltx_preserve
+            set_ltx_preserve(enabled)
+        except Exception:
+            pass
+
 def local_remove_mantra_spaces(text: str) -> str:
-    """Removes all spaces within the text to create continuous Samhita text."""
+    """Removes all spaces within the text to create continuous Samhita text, unless PRESERVE_SPACES is enabled."""
     if not text:
         return text
+    if PRESERVE_SPACES:
+        text = text.replace('\uFEFF', '').replace('\u200B', '').replace('\u200C', '').replace('\u200D', '')
+        return text.strip()
     text = re.sub(r'\s+', '', text)
     text = text.replace('\u00A0', '')
     text = text.replace('\u200B', '')
@@ -260,17 +279,20 @@ def _fix_visarga_accent_with_zwj(text: str) -> str:
     return text
 
 
-def format_rik_text_html(rik_text: str, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None) -> Tuple[str, List]:
+def format_rik_text_html(rik_text: str, footnotes_dict=None, counter_obj=None, seen_map=None, accumulator=None, preserve_spaces: bool = False) -> Tuple[str, List]:
     """
     Format Rik text for HTML display with proper accent marks.
-    Removes spaces (Samhita mode) and converts accent markers to Unicode.
+    Removes spaces (Samhita mode) unless preserve_spaces or PRESERVE_SPACES is True.
     Also processes footnote markers via accumulator logic.
     Returns: (formatted_text, collected_footnotes)
     """
     if not rik_text:
         return "", []
     
-    text = _remove_spaces(rik_text)
+    if not (preserve_spaces or PRESERVE_SPACES):
+        text = _remove_spaces(rik_text)
+    else:
+        text = rik_text.replace('\uFEFF', '').replace('\u200B', '').replace('\u200C', '').replace('\u200D', '').strip()
     text = _handle_trikamba(text)
     text = _escape_html(text)
     text, collected_footnotes = local_process_footnotes_html(text, footnotes_dict, counter_obj, seen_map, accumulator)

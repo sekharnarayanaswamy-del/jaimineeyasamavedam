@@ -65,7 +65,7 @@ def get_generated_metadata(corpus_name="samhita", increment=False):
     if isinstance(corpus_name, bool):
         increment = corpus_name
         corpus_name = "samhita"
-    from core.version import get_corpus_edition, increment_corpus_edition
+    from core.version import get_corpus_edition, increment_corpus_edition, manage_input_unicode_version
     version = increment_corpus_edition(corpus_name) if increment else get_corpus_edition(corpus_name)
     return {
         "version": version,
@@ -104,6 +104,11 @@ def extract_metadata_from_text(content):
     if match:
         meta["version"] = match.group("version").strip()
         meta["generated_at"] = normalize_to_dd_mm_yyyy(match.group("at").strip())
+    else:
+        hdr_match = re.search(r'^(?:#\s*)?Version\s+(?P<version>\d+\.\d+)\s+(?P<at>[^\r\n]+)', content, re.MULTILINE)
+        if hdr_match:
+            meta["version"] = hdr_match.group("version").strip()
+            meta["generated_at"] = normalize_to_dd_mm_yyyy(hdr_match.group("at").strip())
     
     return meta
 

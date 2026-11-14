@@ -95,7 +95,7 @@ def audit_subsection(sub_key: str, sub: dict, parva: str, kandah: str) -> list:
         # Rule 4: Dental nasal before palatal (Schutva / Parasavarna)
         for m in re.finditer(r'(\S*न्\s*[चछजझ]\S*)', clean_h):
             matched = m.group(1)
-            sug = matched.replace('न्च', 'ञ्च').replace('न्ज', 'ञ्ज').replace('न् च', 'ञ्च')
+            sug = matched.replace('न्च', 'ञ्च').replace('न्ज', 'ञ्ज').replace('न् च', 'ञ्च').replace('न् ज', 'ञ्ज')
             findings.append({
                 'sub_key': sub_key,
                 'parva': parva,
@@ -407,21 +407,23 @@ def audit_subsection(sub_key: str, sub: dict, parva: str, kandah: str) -> list:
                 'context': rt[:80] + '...'
             })
             
-        # Rule 4: Schutva in Rik (e.g. दिविसत्शुक्र)
-        for m in re.finditer(r'(\S*(?:[तद]\u094d)\s*[चछजझश]\S*)', clean_rt):
+        # Rule 4: Schutva in Rik (e.g. दिविसत्शुक्र, हंस् च)
+        for m in re.finditer(r'(\S*(?:[तदस्]\u094d)\s*[चछजझश]\S*)', clean_rt):
             matched = m.group(1)
-            sug = matched.replace('त्श', 'च्छ').replace('त् शुक्र', 'च्छुक्र')
+            if any(k in matched for k in ['श्च', 'च्छ', 'ज्ज']):
+                continue
+            sug = matched.replace('त्श', 'च्छ').replace('त् शुक्र', 'च्छुक्र').replace('स् च', 'श्च').replace('स्च', 'श्च')
             findings.append({
                 'sub_key': sub_key,
                 'parva': parva,
                 'kandah': kandah,
                 'field': 'Rik Text',
-                'rule_name': 'श्चुत्वाभावः (Dental Stop before Palatal in Rik)',
-                'sutra': 'स्तोः श्चुना श्चुः (८.४.४०) & शश्छोऽटि (८.४.६३)',
+                'rule_name': 'श्चुत्वाभावः (Dental before Palatal in Rik)',
+                'sutra': 'स्तोः श्चुना श्चुः (८.४.४०)',
                 'severity': 'High',
                 'suspect': matched,
                 'suggested': sug,
-                'explanation': 'Dental stop (त्) before palatal sibilant (श) must become ccha (च्छ, e.g. दिविसत्शुक्र -> दिविसच्छुक्र).',
+                'explanation': 'Dental stop (त्) or sibilant (स्) before a palatal (च, श) must assimilate to palatal (e.g. हंस् च -> हंश्च, दिविसत्शुक्र -> दिविसच्छुक्र).',
                 'context': rt[:80] + '...'
             })
             
@@ -505,13 +507,220 @@ def audit_subsection(sub_key: str, sub: dict, parva: str, kandah: str) -> list:
                 'context': cm[:80] + '...'
             })
 
+        # Rule 3: Parasavarna - Dental stop (त, थ, द, ध) -> न्
+        for m in re.finditer(r'(\S*[\u0902]\s*([तथदध])\S*)', clean_cm):
+            matched = m.group(1)
+            sug = re.sub(r'([\u0902])(\s*)([तथदध])', r'न्\3', matched)
+            findings.append({
+                'sub_key': sub_key,
+                'parva': parva,
+                'kandah': kandah,
+                'field': 'Samam Chant',
+                'rule_name': 'परसवर्णः (Anusvara before Dental in Samam)',
+                'sutra': 'अनुस्वारस्य ययि परसवर्णः (८.४.५८)',
+                'severity': 'High',
+                'suspect': matched,
+                'suggested': sug,
+                'explanation': 'Anusvara before dental stop (त, थ, द, ध) assimilates to dental nasal (न्, e.g. त्वां त्वा -> त्वान्त्वा).',
+                'context': cm[:80] + '...'
+            })
+
+        # Rule 4: Parasavarna - Palatal stop (च, छ, ज, झ) -> ञ्
+        for m in re.finditer(r'(\S*[\u0902]\s*([चछजझ])\S*)', clean_cm):
+            matched = m.group(1)
+            sug = re.sub(r'([\u0902])(\s*)([चछजझ])', r'ञ्\3', matched)
+            findings.append({
+                'sub_key': sub_key,
+                'parva': parva,
+                'kandah': kandah,
+                'field': 'Samam Chant',
+                'rule_name': 'परसवर्णः (Anusvara before Palatal in Samam)',
+                'sutra': 'अनुस्वारस्य ययि परसवर्णः (८.४.५८)',
+                'severity': 'High',
+                'suspect': matched,
+                'suggested': sug,
+                'explanation': 'Anusvara before palatal stop (च, छ, ज, झ) assimilates to palatal nasal (ञ्, e.g. किंच -> किञ्च).',
+                'context': cm[:80] + '...'
+            })
+
+        # Rule 5: Parasavarna - Velar stop (क, ख, ग, घ) -> ङ्
+        for m in re.finditer(r'(\S*[\u0902]\s*([कखगघ])\S*)', clean_cm):
+            matched = m.group(1)
+            sug = re.sub(r'([\u0902])(\s*)([कखगघ])', r'ङ्\3', matched)
+            findings.append({
+                'sub_key': sub_key,
+                'parva': parva,
+                'kandah': kandah,
+                'field': 'Samam Chant',
+                'rule_name': 'परसवर्णः (Anusvara before Velar in Samam)',
+                'sutra': 'अनुस्वारस्य ययि परसवर्णः (८.४.५८)',
+                'severity': 'High',
+                'suspect': matched,
+                'suggested': sug,
+                'explanation': 'Anusvara before velar stop (क, ख, ग, घ) assimilates to velar nasal (ङ्, e.g. संगमे -> सङ्गमे).',
+                'context': cm[:80] + '...'
+            })
+
+        # Rule 6: Purvarupa Sandhi (एङ्ः पदान्तादति - e/o before a)
+        for m in re.finditer(r'(\S*[ेो]\s+अ[क-ह]\S*)', clean_cm):
+            matched = m.group(1)
+            sug = re.sub(r'([ेो])\s+अ', r'\1ऽ', matched)
+            findings.append({
+                'sub_key': sub_key,
+                'parva': parva,
+                'kandah': kandah,
+                'field': 'Samam Chant',
+                'rule_name': 'पूर्वरूप-सन्ध्यभावः (Purvarupa e/o before a in Samam)',
+                'sutra': 'एङ्ः पदान्तादति (६.१.१०९)',
+                'severity': 'Medium',
+                'suspect': matched,
+                'suggested': sug,
+                'explanation': 'Padanta e/o followed by short a elides the a with avagraha (e.g. त्वान्त्वन्नो अग्ने -> त्वान्त्वन्नोऽग्ने).',
+                'context': cm[:80] + '...'
+            })
+
     return findings
 
-def run_sandhi_audit(json_path: Path):
-    """Loads AST and runs comprehensive Sandhi audit across all subsections."""
+def build_txt_line_index(txt_path: Path) -> dict:
+    """Builds a map of (sub_key, field) -> line number in Samhita_Devanagari_Unicode.txt"""
+    if not txt_path or not txt_path.exists():
+        return {}
+    lines = txt_path.read_text(encoding='utf-8').splitlines()
+    line_index = {}
+    for idx, line in enumerate(lines, 1):
+        if '# Start of Rik Metadata --' in line:
+            sub = line.split('--')[1].split('##')[0].strip()
+            line_index[(sub, 'Rik Metadata')] = idx + 1
+        elif '# Start of Rik Text --' in line:
+            sub = line.split('--')[1].split('##')[0].strip()
+            line_index[(sub, 'Rik Text')] = idx + 1
+        elif '# Start of SubSection Title --' in line:
+            sub = line.split('--')[1].split('##')[0].strip()
+            line_index[(sub, 'Arsheyam Header')] = idx + 1
+            line_index[(sub, 'Saman Metadata')] = idx + 1
+        elif '#Start of Mantra Sets --' in line or '# Start of Mantra Sets --' in line:
+            sub = line.split('--')[1].split('##')[0].strip()
+            line_index[(sub, 'Samam Chant')] = idx + 1
+    return line_index
+
+def run_sandhi_audit_txt(txt_path: Path):
+    """Directly parses and audits Samhita_Devanagari_Unicode.txt, assigning exact line numbers."""
+    if not txt_path or not txt_path.exists():
+        raise FileNotFoundError(f"Master text file not found at {txt_path}")
+        
+    lines = txt_path.read_text(encoding='utf-8').splitlines()
+    subs = {}
+    current_ss = 'पूर्वार्चिकम्'
+    current_sec = 'आग्नेयकाण्डम्'
+    current_sub = ''
+    current_field = ''
+    
+    for idx, line in enumerate(lines, 1):
+        raw = line.strip()
+        if not raw:
+            continue
+        if raw.startswith('#'):
+            if 'Start of SuperSection Title --' in raw:
+                current_ss = raw.split('--')[1].split('##')[0].strip()
+            elif 'Start of Section Title --' in raw:
+                current_sec = raw.split('--')[1].split('##')[0].strip()
+            elif 'Start of SubSection Title --' in raw:
+                current_sub = raw.split('--')[1].split('##')[0].strip()
+                current_field = 'header'
+            elif 'Start of Rik Metadata --' in raw:
+                current_sub = raw.split('--')[1].split('##')[0].strip()
+                current_field = 'rik_metadata'
+            elif 'Start of Rik Text --' in raw:
+                current_sub = raw.split('--')[1].split('##')[0].strip()
+                current_field = 'rik_text'
+            elif 'Start of Mantra Sets --' in raw or '#Start of Mantra Sets --' in raw:
+                current_sub = raw.split('--')[1].split('##')[0].strip()
+                current_field = 'mantra_sets'
+            elif 'Start of Saman Metadata --' in raw:
+                current_sub = raw.split('--')[1].split('##')[0].strip()
+                current_field = 'saman_metadata'
+            elif 'End of ' in raw:
+                current_field = ''
+            continue
+
+        if current_sub:
+            if current_sub not in subs:
+                subs[current_sub] = {
+                    'parva': current_ss,
+                    'kandah': current_sec,
+                    'header': '',
+                    'rik_metadata': '',
+                    'saman_metadata': '',
+                    'rik_text': '',
+                    'mantra_sets': [],
+                    'line_map': {}
+                }
+            if current_field == 'header':
+                subs[current_sub]['header'] = raw
+                subs[current_sub]['line_map']['Arsheyam Header'] = idx
+            elif current_field == 'rik_metadata':
+                subs[current_sub]['rik_metadata'] = raw
+                subs[current_sub]['line_map']['Rik Metadata'] = idx
+            elif current_field == 'saman_metadata':
+                subs[current_sub]['saman_metadata'] = raw
+                subs[current_sub]['line_map']['Saman Metadata'] = idx
+            elif current_field == 'rik_text':
+                if subs[current_sub]['rik_text']:
+                    subs[current_sub]['rik_text'] += ' ' + raw
+                else:
+                    subs[current_sub]['rik_text'] = raw
+                    subs[current_sub]['line_map']['Rik Text'] = idx
+            elif current_field == 'mantra_sets':
+                subs[current_sub]['mantra_sets'].append({'corrected-mantra': raw, 'line': idx})
+
+    all_findings = []
+    for sub_key, sdata in subs.items():
+        sub_dict = {
+            'header': {'header': sdata['header']},
+            'rik_metadata': sdata['rik_metadata'],
+            'saman_metadata': sdata['saman_metadata'],
+            'rik_text': sdata['rik_text'],
+            'corrected-mantra_sets': sdata['mantra_sets']
+        }
+        sub_findings = audit_subsection(sub_key, sub_dict, sdata['parva'], sdata['kandah'])
+        for f in sub_findings:
+            if f['field'] == 'Samam Chant':
+                found_line = None
+                for m in sdata['mantra_sets']:
+                    clean_m = clean_swaras_for_sandhi(m['corrected-mantra'])
+                    if f['suspect'] in clean_m or f['suspect'] in m['corrected-mantra']:
+                        f['line_number'] = m['line']
+                        f['context'] = m['corrected-mantra']
+                        found_line = m['line']
+                        break
+                if not found_line and sdata['mantra_sets']:
+                    f['line_number'] = sdata['mantra_sets'][0]['line']
+            elif f['field'] == 'Rik Text':
+                f['line_number'] = sdata['line_map'].get('Rik Text', 0)
+                f['context'] = sdata['rik_text']
+            elif f['field'] == 'Rik Metadata':
+                f['line_number'] = sdata['line_map'].get('Rik Metadata', 0)
+                f['context'] = sdata['rik_metadata']
+            elif f['field'] == 'Arsheyam Header':
+                f['line_number'] = sdata['line_map'].get('Arsheyam Header', 0)
+                f['context'] = sdata['header']
+            elif f['field'] == 'Saman Metadata':
+                f['line_number'] = sdata['line_map'].get('Saman Metadata', 0)
+                f['context'] = sdata['saman_metadata']
+            else:
+                f['line_number'] = sdata['line_map'].get(f['field'], 0)
+        all_findings.extend(sub_findings)
+
+    for i, f in enumerate(all_findings, 1):
+        f['id'] = i
+    return len(subs), all_findings
+
+def run_sandhi_audit(json_path: Path, txt_path: Path = None):
+    """Loads AST and runs comprehensive Sandhi audit across all subsections, mapping to Unicode text lines."""
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
         
+    line_index = build_txt_line_index(txt_path) if txt_path else {}
     supersections = data.get('supersections', data.get('supersection', {}))
     
     total_subsections = 0
@@ -528,6 +737,8 @@ def run_sandhi_audit(json_path: Path):
             for sub_key, sub in sec.get('subsections', {}).items():
                 total_subsections += 1
                 sub_findings = audit_subsection(sub_key, sub, parva_title, kandah_title)
+                for f in sub_findings:
+                    f['line_number'] = line_index.get((sub_key, f['field']), 0)
                 all_findings.extend(sub_findings)
                 
     for i, f in enumerate(all_findings, 1):
@@ -831,6 +1042,7 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   .kpi-card.alert-info { border-left: 4px solid var(--navy); }
   .kpi-card.alert-pending { border-left: 4px solid #ea580c; background: #fffaf0; }
   .kpi-card.alert-selected { border-left: 4px solid var(--green); background: #f0fdf4; }
+  .kpi-card.alert-postponed { border-left: 4px solid #d97706; background: #fffdf5; }
   .kpi-card.alert-high { border-left: 4px solid var(--high-red); }
   .kpi-card.alert-med { border-left: 4px solid var(--med-amber); }
   
@@ -849,6 +1061,7 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   .kpi-card.alert-pending .kpi-value { color: #ea580c; }
   .kpi-card.alert-selected .kpi-value { color: var(--green); }
+  .kpi-card.alert-postponed .kpi-value { color: #d97706; }
   .kpi-subtext {
     font-size: 11px;
     color: #a0aec0;
@@ -898,6 +1111,12 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   .view-mode-tab.active.tab-green {
     color: var(--green);
   }
+  .view-mode-tab.tab-amber {
+    color: #b45309;
+  }
+  .view-mode-tab.active.tab-amber {
+    color: #b45309;
+  }
   .tab-badge {
     background: #cbd5e1;
     color: #334155;
@@ -912,6 +1131,10 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   .view-mode-tab.active.tab-green .tab-badge {
     background: var(--green);
+    color: #ffffff;
+  }
+  .view-mode-tab.active.tab-amber .tab-badge {
+    background: #d97706;
     color: #ffffff;
   }
   
@@ -1074,6 +1297,113 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     border-color: var(--maroon);
   }
   
+  /* Rule-based Bulk Triage Section & Matrix */
+  .rule-matrix-card {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 36px;
+    transition: all 0.2s ease;
+  }
+  .rule-matrix-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 0;
+  }
+  .rule-matrix-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--maroon);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rule-matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  .rule-matrix-table th {
+    background: #f8fafc;
+    padding: 7px 10px;
+    border-bottom: 2px solid #cbd5e1;
+    color: #475569;
+    font-weight: 600;
+  }
+  .rule-matrix-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+  .rule-matrix-table tr:hover {
+    background: #fdfbf7;
+  }
+  .rule-count-pill {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .rule-pill-total { background: #e2e8f0; color: #334155; }
+  .rule-pill-pending { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+  .rule-pill-selected { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+  .rule-pill-postponed { background: #fffdf5; color: #b45309; border: 1px solid #fde68a; }
+  
+  .btn-rule-action {
+    padding: 4px 9px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .btn-rule-select {
+    background: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+  }
+  .btn-rule-select:hover {
+    background: #dcfce7;
+  }
+  .btn-rule-postpone {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #b45309;
+  }
+  .btn-rule-postpone:hover {
+    background: #fef3c7;
+    border-color: #fcd34d;
+  }
+  .btn-rule-reset {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
+  }
+  .btn-rule-reset:hover {
+    background: #e2e8f0;
+  }
+  .btn-rule-filter {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+  }
+  .btn-rule-filter:hover {
+    background: #dbeafe;
+  }
+  .btn-rule-action:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  
   /* Table View */
   .table-wrapper {
     overflow-x: auto;
@@ -1170,6 +1500,18 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   .btn-row-return:hover {
     background: #ffedd5;
+  }
+  .btn-row-postpone {
+    background: #fffbeb;
+    border-color: #fde68a;
+    color: #b45309;
+  }
+  .btn-row-postpone:hover {
+    background: #fef3c7;
+    border-color: #fcd34d;
+  }
+  .row-postponed {
+    background-color: #fffdf5 !important;
   }
   
   /* Badges & Tags */
@@ -1495,6 +1837,11 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
       <div class="kpi-value" id="kpiSelectedCount">0</div>
       <div class="kpi-subtext">Ready for Auto-Patching</div>
     </div>
+    <div class="kpi-card alert-postponed">
+      <div class="kpi-label">Postponed</div>
+      <div class="kpi-value" id="kpiPostponedCount">0</div>
+      <div class="kpi-subtext">Deferred for Review</div>
+    </div>
     <div class="kpi-card alert-high">
       <div class="kpi-label">High Severity Cases</div>
       <div class="kpi-value">__HIGH_COUNT__</div>
@@ -1515,6 +1862,9 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
       </button>
       <button class="view-mode-tab tab-green" data-view="selected" id="tabSelected">
         ✅ Selected to Implement <span class="tab-badge" id="tabSelectedCount">0</span>
+      </button>
+      <button class="view-mode-tab tab-amber" data-view="postponed" id="tabPostponed">
+        ⏸️ Postponed <span class="tab-badge" id="tabPostponedCount">0</span>
       </button>
       <button class="view-mode-tab" data-view="all" id="tabAll">
         📋 All Cases <span class="tab-badge" id="tabAllCount">__FINDINGS_COUNT__</span>
@@ -1566,6 +1916,27 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
       <input type="text" id="searchInput" placeholder="Search by subsection ID, text, rule, or context...">
     </div>
     
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span style="font-size: 12px; font-weight: 600; color: #64748b; white-space: nowrap;">Sandhi Rule:</span>
+      <select id="ruleSelect" style="padding: 5px 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; max-width: 360px; background: #fff; font-family: inherit; font-weight: 500; color: #1e293b; cursor: pointer;">
+        <option value="all">All Sandhi Rules (__FINDINGS_COUNT__)</option>
+      </select>
+    </div>
+
+    <!-- Active Rule Bulk Triage Strip (visible when a specific rule is active) -->
+    <div id="ruleBulkActions" style="display: none; align-items: center; gap: 6px; background: #fdf6eb; padding: 4px 10px; border-radius: 6px; border: 1px solid #fed7aa;">
+      <span style="font-size: 11.5px; font-weight: 700; color: #9a3412;">Rule Bulk Action:</span>
+      <button class="btn-rule-action btn-rule-select" id="btnSelectActiveRule" onclick="selectCurrentRule()" title="Select all remaining cases of this rule to implement">
+        ✅ Select All (<span id="ruleSelectCount">0</span>)
+      </button>
+      <button class="btn-rule-action btn-rule-postpone" id="btnPostponeActiveRule" onclick="postponeCurrentRule()" title="Postpone all remaining cases of this rule">
+        ⏸️ Postpone All (<span id="rulePostponeCount">0</span>)
+      </button>
+      <button class="btn-rule-action btn-rule-reset" onclick="returnCurrentRuleToPending()" title="Return all cases of this rule to Pending">
+        ↩️ Reset Rule
+      </button>
+    </div>
+    
     <div class="filter-pills">
       <span style="font-size: 12px; font-weight: 600; color: #64748b; margin-right: 4px;">Field:</span>
       <button class="filter-pill active" data-filter="field" data-val="all">All</button>
@@ -1585,6 +1956,42 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     
     <div style="font-size: 12.5px; color: #64748b; font-weight: 500;" id="visibleResultsCount">
       Showing cases
+    </div>
+  </div>
+
+  <!-- COLLAPSIBLE RULE-BASED TRIAGE MATRIX -->
+  <div class="rule-matrix-card">
+    <div class="rule-matrix-header" onclick="toggleRuleMatrix()">
+      <div class="rule-matrix-title">
+        <span id="matrixToggleIcon">▼</span>
+        <span>⚖️ Rule-Based Bulk Triage Matrix (<span id="totalRulesCount">0</span> detected Paninian rules)</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 11.5px; color: #64748b;">
+          Bulk select for patching or postpone entire rule lists in one click
+        </span>
+        <button class="btn-rule-action btn-rule-reset" style="padding: 2px 7px;" onclick="event.stopPropagation(); toggleRuleMatrix();">
+          <span id="matrixToggleText">Hide</span>
+        </button>
+      </div>
+    </div>
+    <div id="ruleMatrixBody" style="display: block;">
+      <table class="rule-matrix-table">
+        <thead>
+          <tr>
+            <th style="width: 290px;">Paninian Rule Name</th>
+            <th style="width: 230px;">Sutra / Authority</th>
+            <th style="width: 65px; text-align: center;">Total</th>
+            <th style="width: 75px; text-align: center;">Pending</th>
+            <th style="width: 75px; text-align: center;">Selected</th>
+            <th style="width: 75px; text-align: center;">Postponed</th>
+            <th style="text-align: center;">Quick Bulk Action</th>
+          </tr>
+        </thead>
+        <tbody id="ruleMatrixTableBody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -1682,18 +2089,24 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   
   // State
   let selectedIds = new Set();
+  let postponedIds = new Set();
   let customReplacements = {};
-  let activeViewMode = 'pending'; // 'pending', 'selected', or 'all'
+  let activeViewMode = 'pending'; // 'pending', 'selected', 'postponed', or 'all'
   let autoHideEnabled = true;
   let activeField = 'all';
   let activeSev = 'all';
-  let lastAction = null; // { type: 'select'|'deselect', id: number }
+  let activeRule = 'all';
+  let isMatrixCollapsed = false;
+  let lastAction = null; // { type: 'select'|'deselect'|'postpone'|'unpostpone', id: number }
   
   // LocalStorage Persistence Keys
   const STORAGE_KEY_SELECTIONS = 'samhita_sandhi_selected_ids';
+  const STORAGE_KEY_POSTPONED = 'samhita_sandhi_postponed_ids';
   const STORAGE_KEY_CUSTOM = 'samhita_sandhi_custom_replacements';
   const STORAGE_KEY_VIEW = 'samhita_sandhi_view_mode';
   const STORAGE_KEY_AUTOHIDE = 'samhita_sandhi_autohide';
+  const STORAGE_KEY_RULE = 'samhita_sandhi_active_rule';
+  const STORAGE_KEY_MATRIX_COLLAPSED = 'samhita_sandhi_matrix_collapsed';
   
   function initStorage() {
     try {
@@ -1701,17 +2114,29 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
       if (savedSel) {
         selectedIds = new Set(JSON.parse(savedSel));
       }
+      const savedPost = localStorage.getItem(STORAGE_KEY_POSTPONED);
+      if (savedPost) {
+        postponedIds = new Set(JSON.parse(savedPost));
+      }
       const savedCustom = localStorage.getItem(STORAGE_KEY_CUSTOM);
       if (savedCustom) {
         customReplacements = JSON.parse(savedCustom);
       }
       const savedView = localStorage.getItem(STORAGE_KEY_VIEW);
-      if (savedView && ['pending', 'selected', 'all'].includes(savedView)) {
+      if (savedView && ['pending', 'selected', 'postponed', 'all'].includes(savedView)) {
         activeViewMode = savedView;
       }
       const savedAutoHide = localStorage.getItem(STORAGE_KEY_AUTOHIDE);
       if (savedAutoHide !== null) {
         autoHideEnabled = (savedAutoHide === 'true');
+      }
+      const savedRule = localStorage.getItem(STORAGE_KEY_RULE);
+      if (savedRule) {
+        activeRule = savedRule;
+      }
+      const savedMatrixCollapsed = localStorage.getItem(STORAGE_KEY_MATRIX_COLLAPSED);
+      if (savedMatrixCollapsed === 'true') {
+        isMatrixCollapsed = true;
       }
     } catch(e) {
       console.warn('LocalStorage error:', e);
@@ -1721,9 +2146,12 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   function saveStorage() {
     try {
       localStorage.setItem(STORAGE_KEY_SELECTIONS, JSON.stringify(Array.from(selectedIds)));
+      localStorage.setItem(STORAGE_KEY_POSTPONED, JSON.stringify(Array.from(postponedIds)));
       localStorage.setItem(STORAGE_KEY_CUSTOM, JSON.stringify(customReplacements));
       localStorage.setItem(STORAGE_KEY_VIEW, activeViewMode);
       localStorage.setItem(STORAGE_KEY_AUTOHIDE, autoHideEnabled.toString());
+      localStorage.setItem(STORAGE_KEY_RULE, activeRule);
+      localStorage.setItem(STORAGE_KEY_MATRIX_COLLAPSED, isMatrixCollapsed.toString());
     } catch(e) {
       console.warn('LocalStorage write error:', e);
     }
@@ -1755,6 +2183,12 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     } else if (lastAction.type === 'deselect') {
       selectedIds.add(lastAction.id);
       showToast(`Undone: #${lastAction.id} restored to Selected`, '↩️');
+    } else if (lastAction.type === 'postpone') {
+      postponedIds.delete(lastAction.id);
+      showToast(`Undone: #${lastAction.id} restored to Pending`, '↩️');
+    } else if (lastAction.type === 'unpostpone') {
+      postponedIds.add(lastAction.id);
+      showToast(`Undone: #${lastAction.id} restored to Postponed`, '↩️');
     }
     lastAction = null;
     saveStorage();
@@ -1766,33 +2200,238 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     return customReplacements[f.id] !== undefined ? customReplacements[f.id] : f.suggested;
   }
   
+  // Rule Matrix and Bulk Triage
+  function toggleRuleMatrix() {
+    isMatrixCollapsed = !isMatrixCollapsed;
+    const body = document.getElementById('ruleMatrixBody');
+    const icon = document.getElementById('matrixToggleIcon');
+    const txt = document.getElementById('matrixToggleText');
+    if (isMatrixCollapsed) {
+      body.style.display = 'none';
+      icon.innerText = '▶';
+      txt.innerText = 'Show';
+    } else {
+      body.style.display = 'block';
+      icon.innerText = '▼';
+      txt.innerText = 'Hide';
+    }
+    saveStorage();
+  }
+
+  function getRuleStats() {
+    const rulesMap = {};
+    FINDINGS.forEach(f => {
+      const r = f.rule_name;
+      if (!rulesMap[r]) {
+        rulesMap[r] = {
+          name: r,
+          sutra: f.sutra,
+          severity: f.severity,
+          total: 0,
+          pending: 0,
+          selected: 0,
+          postponed: 0
+        };
+      }
+      rulesMap[r].total++;
+      if (selectedIds.has(f.id)) {
+        rulesMap[r].selected++;
+      } else if (postponedIds.has(f.id)) {
+        rulesMap[r].postponed++;
+      } else {
+        rulesMap[r].pending++;
+      }
+    });
+    return Object.values(rulesMap).sort((a, b) => b.total - a.total);
+  }
+
+  function populateRuleDropdownAndMatrix() {
+    const rules = getRuleStats();
+    const countEl = document.getElementById('totalRulesCount');
+    if (countEl) countEl.innerText = rules.length;
+    
+    // 1. Populate Dropdown
+    const select = document.getElementById('ruleSelect');
+    if (select) {
+      let selHtml = `<option value="all">All Sandhi Rules (${FINDINGS.length})</option>`;
+      rules.forEach(r => {
+        const isSel = (r.name === activeRule) ? 'selected' : '';
+        selHtml += `<option value="${r.name.replace(/"/g, '&quot;')}" ${isSel}>${r.name} (${r.total}) — ${r.pending} pending</option>`;
+      });
+      select.innerHTML = selHtml;
+    }
+    
+    // 2. Populate Matrix Table
+    const tbody = document.getElementById('ruleMatrixTableBody');
+    if (tbody) {
+      let matHtml = '';
+      rules.forEach(r => {
+        const rEsc = r.name.replace(/'/g, "\\'");
+        const isActive = (r.name === activeRule);
+        matHtml += `
+          <tr style="${isActive ? 'background: #fef9c3 !important;' : ''}">
+            <td>
+              <strong>${r.name}</strong>
+            </td>
+            <td><span class="sutra-tag">${r.sutra}</span></td>
+            <td style="text-align: center;"><span class="rule-count-pill rule-pill-total">${r.total}</span></td>
+            <td style="text-align: center;"><span class="rule-count-pill rule-pill-pending">${r.pending}</span></td>
+            <td style="text-align: center;"><span class="rule-count-pill rule-pill-selected">${r.selected}</span></td>
+            <td style="text-align: center;"><span class="rule-count-pill rule-pill-postponed">${r.postponed}</span></td>
+            <td style="text-align: center;">
+              <div style="display: inline-flex; gap: 4px; align-items: center;">
+                <button class="btn-rule-action btn-rule-filter" onclick="filterByRule('${rEsc}')" title="Filter view to this rule">
+                  ${isActive ? '✓ Filtering' : '🔍 Filter'}
+                </button>
+                <button class="btn-rule-action btn-rule-select" onclick="selectRuleMatches('${rEsc}')" ${r.pending === 0 ? 'disabled' : ''} title="Select all pending cases of this rule to implement">
+                  ✅ Select All (${r.pending})
+                </button>
+                <button class="btn-rule-action btn-rule-postpone" onclick="postponeRuleMatches('${rEsc}')" ${r.pending === 0 ? 'disabled' : ''} title="Postpone all pending cases of this rule for later review">
+                  ⏸️ Postpone All (${r.pending})
+                </button>
+                <button class="btn-rule-action btn-rule-reset" onclick="returnRuleMatchesToPending('${rEsc}')" ${(r.selected === 0 && r.postponed === 0) ? 'disabled' : ''} title="Return all cases of this rule to Pending">
+                  ↩️ Reset
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = matHtml;
+    }
+    
+    updateActiveRuleBar();
+  }
+
+  function updateActiveRuleBar() {
+    const strip = document.getElementById('ruleBulkActions');
+    if (!strip) return;
+    if (activeRule === 'all') {
+      strip.style.display = 'none';
+      return;
+    }
+    const matching = FINDINGS.filter(f => f.rule_name === activeRule);
+    const pendingCount = matching.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id)).length;
+    const selEl = document.getElementById('ruleSelectCount');
+    const postEl = document.getElementById('rulePostponeCount');
+    if (selEl) selEl.innerText = pendingCount;
+    if (postEl) postEl.innerText = pendingCount;
+    strip.style.display = 'inline-flex';
+  }
+
+  function filterByRule(ruleName) {
+    if (activeRule === ruleName) {
+      activeRule = 'all'; // toggle back
+    } else {
+      activeRule = ruleName;
+    }
+    const select = document.getElementById('ruleSelect');
+    if (select) select.value = activeRule;
+    saveStorage();
+    renderTable();
+    populateRuleDropdownAndMatrix();
+  }
+
+  function selectCurrentRule() {
+    if (activeRule === 'all') return;
+    selectRuleMatches(activeRule);
+  }
+
+  function postponeCurrentRule() {
+    if (activeRule === 'all') return;
+    postponeRuleMatches(activeRule);
+  }
+
+  function returnCurrentRuleToPending() {
+    if (activeRule === 'all') return;
+    returnRuleMatchesToPending(activeRule);
+  }
+
+  function selectRuleMatches(ruleName) {
+    const matches = FINDINGS.filter(f => f.rule_name === ruleName && !selectedIds.has(f.id));
+    matches.forEach(f => {
+      selectedIds.add(f.id);
+      postponedIds.delete(f.id);
+    });
+    saveStorage();
+    renderTable();
+    updateStats();
+    populateRuleDropdownAndMatrix();
+    showToast(`Selected ${matches.length} cases for "${ruleName}" to implement`, '✅');
+  }
+
+  function postponeRuleMatches(ruleName) {
+    const matches = FINDINGS.filter(f => f.rule_name === ruleName && !postponedIds.has(f.id));
+    matches.forEach(f => {
+      postponedIds.add(f.id);
+      selectedIds.delete(f.id);
+    });
+    saveStorage();
+    renderTable();
+    updateStats();
+    populateRuleDropdownAndMatrix();
+    showToast(`Postponed ${matches.length} cases for "${ruleName}" for later review`, '⏸️');
+  }
+
+  function returnRuleMatchesToPending(ruleName) {
+    const matches = FINDINGS.filter(f => f.rule_name === ruleName && (selectedIds.has(f.id) || postponedIds.has(f.id)));
+    matches.forEach(f => {
+      selectedIds.delete(f.id);
+      postponedIds.delete(f.id);
+    });
+    saveStorage();
+    renderTable();
+    updateStats();
+    populateRuleDropdownAndMatrix();
+    showToast(`Returned ${matches.length} cases of "${ruleName}" to Pending`, '↩️');
+  }
+  
   function updateToolbarButtons() {
     const left = document.getElementById('toolbarLeft');
     let html = '';
     
     if (activeViewMode === 'pending') {
-      const remainingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && f.severity === 'High').length;
-      const remainingHeaders = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === 'Arsheyam Header').length;
-      const remainingRik = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === 'Rik Text').length;
+      const remainingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id) && f.severity === 'High').length;
+      const remainingHeaders = FINDINGS.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id) && f.field === 'Arsheyam Header').length;
+      const remainingRik = FINDINGS.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id) && f.field === 'Rik Text').length;
+      
+      let ruleButtons = '';
+      if (activeRule !== 'all') {
+        const ruleMatches = FINDINGS.filter(f => f.rule_name === activeRule);
+        const rulePending = ruleMatches.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id)).length;
+        ruleButtons = `
+          <button class="quick-select-btn" style="background:#f0fdf4; border-color:#86efac; color:#166534;" onclick="selectCurrentRule()" title="Select all pending cases of active rule for patching">✅ Select Rule (${rulePending})</button>
+          <button class="quick-select-btn" style="background:#fffbeb; border-color:#fde68a; color:#b45309;" onclick="postponeCurrentRule()" title="Postpone all pending cases of active rule">⏸️ Postpone Rule (${rulePending})</button>
+        `;
+      }
       
       html = `
         <button class="quick-select-btn" id="btnSelectVisible" onclick="selectAllVisible()" title="Select all visible pending items">☑️ Select Visible</button>
+        <button class="quick-select-btn" onclick="postponeAllVisible()" title="Postpone all visible pending items for later review">⏸️ Postpone Visible</button>
+        ${ruleButtons}
         <button class="quick-select-btn" onclick="selectHighSeverity()" title="Select all remaining High severity cases">🔥 Select High (${remainingHigh})</button>
         <button class="quick-select-btn" onclick="selectField('Arsheyam Header')" title="Select all remaining Ārṣeyam headers">📜 Select Ārṣeyam (${remainingHeaders})</button>
         <button class="quick-select-btn" onclick="selectField('Rik Text')" title="Select all remaining Rik text cases">📖 Select Rik (${remainingRik})</button>
-        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections">🗑️ Clear All</button>
+        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections & return to Pending">🗑️ Clear All</button>
       `;
     } else if (activeViewMode === 'selected') {
       html = `
         <button class="quick-select-btn" onclick="deselectAllVisible()" title="Move all visible selected items back to Pending">⬜ Return Visible to Pending</button>
-        <button class="quick-select-btn" onclick="clearAll()" title="Return all selected items to Pending">🗑️ Return All to Pending</button>
+        <button class="quick-select-btn" onclick="postponeSelectedVisible()" title="Move visible selected items to Postponed">⏸️ Postpone Visible</button>
+        <button class="quick-select-btn" onclick="clearAllSelected()" title="Return all selected items to Pending">🗑️ Return All to Pending</button>
+      `;
+    } else if (activeViewMode === 'postponed') {
+      html = `
+        <button class="quick-select-btn" onclick="selectAllPostponedVisible()" title="Move visible postponed items to Selected to implement">✅ Select Visible</button>
+        <button class="quick-select-btn" onclick="returnVisiblePostponedToPending()" title="Move visible postponed items back to Pending">⬜ Return Visible to Pending</button>
+        <button class="quick-select-btn" onclick="returnAllPostponedToPending()" title="Move all postponed items back to Pending">↩️ Return All to Pending</button>
       `;
     } else { // 'all'
       html = `
         <button class="quick-select-btn" onclick="selectAllVisible()" title="Select all visible items">☑️ Select Visible</button>
-        <button class="quick-select-btn" onclick="deselectAllVisible()" title="Deselect all visible items">⬜ Deselect Visible</button>
-        <button class="quick-select-btn" onclick="invertSelection()" title="Invert selection on visible rows">🔄 Invert</button>
-        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections">🗑️ Clear</button>
+        <button class="quick-select-btn" onclick="postponeAllVisible()" title="Postpone all visible items">⏸️ Postpone Visible</button>
+        <button class="quick-select-btn" onclick="deselectAllVisible()" title="Deselect visible items to Pending">⬜ Return to Pending</button>
+        <button class="quick-select-btn" onclick="clearAll()" title="Clear all selections and postponements">🗑️ Clear All</button>
       `;
     }
     
@@ -1809,14 +2448,17 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     
     FINDINGS.forEach(f => {
       const isSelected = selectedIds.has(f.id);
+      const isPostponed = postponedIds.has(f.id);
       
       // View Mode Filtering:
-      if (activeViewMode === 'pending' && isSelected) return;
+      if (activeViewMode === 'pending' && (isSelected || isPostponed)) return;
       if (activeViewMode === 'selected' && !isSelected) return;
+      if (activeViewMode === 'postponed' && !isPostponed) return;
       
       // Category Filters:
       if (activeField !== 'all' && f.field !== activeField) return;
       if (activeSev !== 'all' && f.severity !== activeSev) return;
+      if (activeRule !== 'all' && f.rule_name !== activeRule) return;
       
       // Query search:
       if (query) {
@@ -1839,21 +2481,56 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
       // Action button based on current view
       let actionBtn = '';
       if (activeViewMode === 'pending') {
-        actionBtn = `<button class="btn-row-action btn-row-select" onclick="event.stopPropagation(); toggleSelect(${f.id}, true, true);" title="Select this change and move off pending view">✓ Select & Hide</button>`;
+        actionBtn = `
+          <div style="display: inline-flex; gap: 4px; align-items: center;">
+            <button class="btn-row-action btn-row-select" onclick="event.stopPropagation(); toggleSelect(${f.id}, true, true);" title="Select this change to implement">✓ Select</button>
+            <button class="btn-row-action btn-row-postpone" onclick="event.stopPropagation(); togglePostpone(${f.id}, true, true);" title="Postpone this case for later review">⏸️ Postpone</button>
+          </div>
+        `;
       } else if (activeViewMode === 'selected') {
-        actionBtn = `<button class="btn-row-action btn-row-return" onclick="event.stopPropagation(); toggleSelect(${f.id}, false, true);" title="Return this item to Pending">✕ Return</button>`;
+        actionBtn = `
+          <div style="display: inline-flex; gap: 4px; align-items: center;">
+            <button class="btn-row-action btn-row-return" onclick="event.stopPropagation(); toggleSelect(${f.id}, false, true);" title="Return this item to Pending">✕ Return</button>
+            <button class="btn-row-action btn-row-postpone" onclick="event.stopPropagation(); togglePostpone(${f.id}, true, true);" title="Move to Postponed">⏸️ Postpone</button>
+          </div>
+        `;
+      } else if (activeViewMode === 'postponed') {
+        actionBtn = `
+          <div style="display: inline-flex; gap: 4px; align-items: center;">
+            <button class="btn-row-action btn-row-return" onclick="event.stopPropagation(); togglePostpone(${f.id}, false, true);" title="Return this item to Pending">↩️ Pending</button>
+            <button class="btn-row-action btn-row-select" onclick="event.stopPropagation(); toggleSelect(${f.id}, true, true);" title="Select this item to implement">✓ Select</button>
+          </div>
+        `;
       } else {
-        actionBtn = `<button class="btn-row-action" onclick="event.stopPropagation(); toggleSelect(${f.id}, !${isSelected}, false);">${isSelected ? 'Deselect' : 'Select'}</button>`;
+        let statusBadge = '';
+        if (isSelected) {
+          statusBadge = `<span class="badge" style="background:#dcfce7;color:#166534;font-size:10px;margin-bottom:2px;display:inline-block;">Selected</span>`;
+        } else if (isPostponed) {
+          statusBadge = `<span class="badge" style="background:#fef3c7;color:#92400e;font-size:10px;margin-bottom:2px;display:inline-block;">Postponed</span>`;
+        } else {
+          statusBadge = `<span class="badge" style="background:#f1f5f9;color:#475569;font-size:10px;margin-bottom:2px;display:inline-block;">Pending</span>`;
+        }
+        actionBtn = `
+          <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 3px;">
+            ${statusBadge}
+            <div style="display: inline-flex; gap: 3px;">
+              ${!isSelected ? `<button class="btn-row-action btn-row-select" onclick="event.stopPropagation(); toggleSelect(${f.id}, true, false);" title="Select">✓</button>` : ''}
+              ${!isPostponed ? `<button class="btn-row-action btn-row-postpone" onclick="event.stopPropagation(); togglePostpone(${f.id}, true, false);" title="Postpone">⏸️</button>` : ''}
+              ${(isSelected || isPostponed) ? `<button class="btn-row-action btn-row-return" onclick="event.stopPropagation(); toggleSelect(${f.id}, false); togglePostpone(${f.id}, false);" title="Return to Pending">↩️</button>` : ''}
+            </div>
+          </div>
+        `;
       }
       
       html += `
-        <tr class="${isSelected ? 'row-selected' : ''}" data-id="${f.id}">
+        <tr class="${isSelected ? 'row-selected' : (isPostponed ? 'row-postponed' : '')}" data-id="${f.id}">
           <td style="text-align: center; cursor: pointer;" onclick="toggleRowCheckbox(${f.id}, event);" title="Click to toggle selection">
             <input type="checkbox" class="row-checkbox" data-id="${f.id}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation();" onchange="toggleSelect(${f.id}, this.checked, false)">
           </td>
           <td style="user-select: text;">${f.id}</td>
           <td style="user-select: text;">
-            <strong><code>${f.sub_key}</code></strong><br>
+            <strong><code>${f.sub_key}</code></strong>
+            ${f.line_number ? `<span style="display: inline-block; margin-left: 4px; padding: 1px 5px; background: #e0e7ff; color: #3730a3; border-radius: 4px; font-size: 11px; font-weight: 600;" title="Line ${f.line_number} in Samhita_Devanagari_Unicode.txt">L${f.line_number}</span>` : ''}<br>
             <span style="font-size: 11px; color: #64748b;">${f.parva} — ${f.kandah}</span>
           </td>
           <td><span class="badge badge-field">${f.field}</span></td>
@@ -1893,14 +2570,17 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     if (visibleCount === 0) {
       document.getElementById('auditTable').style.display = 'none';
       if (activeViewMode === 'pending') {
-        const totalPending = FINDINGS.length - selectedIds.size;
+        const totalPending = FINDINGS.length - selectedIds.size - postponedIds.size;
         if (totalPending === 0) {
           emptyContainer.innerHTML = `
             <div class="empty-state">
               <div class="empty-state-icon">🎉</div>
-              <div class="empty-state-title">All Cases Reviewed!</div>
-              <div class="empty-state-desc">You have reviewed and processed all 288 cases. Switch to the <strong>"Selected to Implement"</strong> tab to export your patch.</div>
-              <button class="action-btn btn-primary-green" onclick="setViewMode('selected')">Go to Selected (${selectedIds.size})</button>
+              <div class="empty-state-title">All Cases Triaged!</div>
+              <div class="empty-state-desc">All ${FINDINGS.length} cases have been triaged: <strong>${selectedIds.size}</strong> selected to implement, and <strong>${postponedIds.size}</strong> postponed for later review. Switch to <strong>"Selected to Implement"</strong> to review and download your patch script.</div>
+              <div style="display:inline-flex; gap: 10px; margin-top: 14px;">
+                <button class="action-btn btn-primary-green" onclick="setViewMode('selected')">Go to Selected (${selectedIds.size})</button>
+                <button class="action-btn btn-primary-maroon" onclick="setViewMode('postponed')">Go to Postponed (${postponedIds.size})</button>
+              </div>
             </div>
           `;
         } else {
@@ -1918,6 +2598,15 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
             <div class="empty-state-icon">📥</div>
             <div class="empty-state-title">No Changes Selected Yet</div>
             <div class="empty-state-desc">Select items from the <strong>"Pending Review"</strong> tab to stage them for implementation.</div>
+            <button class="action-btn btn-primary-maroon" onclick="setViewMode('pending')">Go to Pending Review</button>
+          </div>
+        `;
+      } else if (activeViewMode === 'postponed') {
+        emptyContainer.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⏸️</div>
+            <div class="empty-state-title">No Postponed Cases</div>
+            <div class="empty-state-desc">You have not postponed any cases. When reviewing cases in the <strong>"Pending Review"</strong> tab, click <strong>"⏸️ Postpone"</strong> to defer items you want to consult on or review later.</div>
             <button class="action-btn btn-primary-maroon" onclick="setViewMode('pending')">Go to Pending Review</button>
           </div>
         `;
@@ -1942,13 +2631,20 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   
   function updateStats() {
     const selCount = selectedIds.size;
-    const pendCount = FINDINGS.length - selCount;
+    const postCount = postponedIds.size;
+    const pendCount = FINDINGS.length - selCount - postCount;
     
     document.getElementById('kpiPendingCount').innerText = pendCount;
     document.getElementById('kpiSelectedCount').innerText = selCount;
+    if (document.getElementById('kpiPostponedCount')) {
+      document.getElementById('kpiPostponedCount').innerText = postCount;
+    }
     
     document.getElementById('tabPendingCount').innerText = pendCount;
     document.getElementById('tabSelectedCount').innerText = selCount;
+    if (document.getElementById('tabPostponedCount')) {
+      document.getElementById('tabPostponedCount').innerText = postCount;
+    }
     document.getElementById('tabAllCount').innerText = FINDINGS.length;
     
     document.getElementById('btnReviewCount').innerText = selCount;
@@ -1991,6 +2687,7 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   function toggleSelect(id, checked, isDirectAction = false) {
     if (checked) {
       selectedIds.add(id);
+      postponedIds.delete(id);
       lastAction = { type: 'select', id: id };
       
       // AUTO-HIDE BEHAVIOR: if in pending mode and auto-hide is enabled, animate off view
@@ -2038,6 +2735,134 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     updateStats();
     updateMasterHeaderCheckbox();
   }
+
+  function togglePostpone(id, postpone, isDirectAction = false) {
+    if (postpone) {
+      postponedIds.add(id);
+      selectedIds.delete(id);
+      lastAction = { type: 'postpone', id: id };
+      
+      if ((activeViewMode === 'pending' || activeViewMode === 'selected') && autoHideEnabled) {
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+        if (row) {
+          row.classList.add('row-disappearing');
+          setTimeout(() => {
+            renderTable();
+            updateStats();
+          }, 180);
+        } else {
+          renderTable();
+          updateStats();
+        }
+        showToast(`Postponed #${id} (deferred for later review)`, '⏸️', true);
+        return;
+      }
+    } else {
+      postponedIds.delete(id);
+      lastAction = { type: 'unpostpone', id: id };
+      
+      if (activeViewMode === 'postponed') {
+        const row = document.querySelector(`tr[data-id="${id}"]`);
+        if (row) {
+          row.classList.add('row-disappearing');
+          setTimeout(() => {
+            renderTable();
+            updateStats();
+          }, 180);
+        } else {
+          renderTable();
+          updateStats();
+        }
+        showToast(`Returned #${id} to Pending queue`, '↩️', true);
+        return;
+      }
+    }
+    
+    renderTable();
+    updateStats();
+  }
+
+  function postponeAllVisible() {
+    const visibleRows = document.querySelectorAll('#tableBody tr');
+    let count = 0;
+    visibleRows.forEach(row => {
+      const id = parseInt(row.getAttribute('data-id'), 10);
+      if (id) {
+        postponedIds.add(id);
+        selectedIds.delete(id);
+        count++;
+      }
+    });
+    renderTable();
+    updateStats();
+    showToast(`Postponed ${count} visible items`, '⏸️');
+  }
+
+  function postponeSelectedVisible() {
+    const visibleRows = document.querySelectorAll('#tableBody tr');
+    let count = 0;
+    visibleRows.forEach(row => {
+      const id = parseInt(row.getAttribute('data-id'), 10);
+      if (id && selectedIds.has(id)) {
+        selectedIds.delete(id);
+        postponedIds.add(id);
+        count++;
+      }
+    });
+    renderTable();
+    updateStats();
+    showToast(`Postponed ${count} selected items`, '⏸️');
+  }
+
+  function selectAllPostponedVisible() {
+    const visibleRows = document.querySelectorAll('#tableBody tr');
+    let count = 0;
+    visibleRows.forEach(row => {
+      const id = parseInt(row.getAttribute('data-id'), 10);
+      if (id) {
+        postponedIds.delete(id);
+        selectedIds.add(id);
+        count++;
+      }
+    });
+    renderTable();
+    updateStats();
+    showToast(`Selected ${count} postponed items to implement`, '✅');
+  }
+
+  function returnAllPostponedToPending() {
+    if (confirm('Return all postponed cases back to the Pending Review queue?')) {
+      const count = postponedIds.size;
+      postponedIds.clear();
+      renderTable();
+      updateStats();
+      showToast(`Returned ${count} postponed cases to Pending`, '↩️');
+    }
+  }
+
+  function returnVisiblePostponedToPending() {
+    const visibleRows = document.querySelectorAll('#tableBody tr');
+    let count = 0;
+    visibleRows.forEach(row => {
+      const id = parseInt(row.getAttribute('data-id'), 10);
+      if (id && postponedIds.has(id)) {
+        postponedIds.delete(id);
+        count++;
+      }
+    });
+    renderTable();
+    updateStats();
+    showToast(`Returned ${count} items to Pending`, '↩️');
+  }
+
+  function clearAllSelected() {
+    if (confirm('Return all selected cases to Pending?')) {
+      selectedIds.clear();
+      renderTable();
+      updateStats();
+      showToast(`All selected cases returned to Pending`, '🗑️');
+    }
+  }
   
   function toggleRowCheckbox(id, event) {
     if (event && event.target && event.target.tagName === 'INPUT') return;
@@ -2051,6 +2876,7 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     visibleCheckboxes.forEach(cb => {
       const id = parseInt(cb.getAttribute('data-id'), 10);
       selectedIds.add(id);
+      postponedIds.delete(id);
       count++;
     });
     renderTable();
@@ -2072,16 +2898,22 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   
   function selectHighSeverity() {
-    const pendingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && f.severity === 'High');
-    pendingHigh.forEach(f => selectedIds.add(f.id));
+    const pendingHigh = FINDINGS.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id) && f.severity === 'High');
+    pendingHigh.forEach(f => {
+      selectedIds.add(f.id);
+      postponedIds.delete(f.id);
+    });
     renderTable();
     updateStats();
     showToast(`Selected and moved ${pendingHigh.length} High Severity cases`, '🔥');
   }
   
   function selectField(fieldName) {
-    const pendingField = FINDINGS.filter(f => !selectedIds.has(f.id) && f.field === fieldName);
-    pendingField.forEach(f => selectedIds.add(f.id));
+    const pendingField = FINDINGS.filter(f => !selectedIds.has(f.id) && !postponedIds.has(f.id) && f.field === fieldName);
+    pendingField.forEach(f => {
+      selectedIds.add(f.id);
+      postponedIds.delete(f.id);
+    });
     renderTable();
     updateStats();
     showToast(`Selected and moved ${pendingField.length} ${fieldName} cases`, '📜');
@@ -2094,6 +2926,7 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
         selectedIds.delete(id);
       } else {
         selectedIds.add(id);
+        postponedIds.delete(id);
       }
     });
     renderTable();
@@ -2102,8 +2935,9 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   
   function clearAll() {
-    if (confirm('Clear all selections and return all cases to Pending?')) {
+    if (confirm('Clear all selections and postponements, returning all cases to Pending?')) {
       selectedIds.clear();
+      postponedIds.clear();
       renderTable();
       updateStats();
       showToast(`All cases returned to Pending`, '🗑️');
@@ -2210,9 +3044,12 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
     }));
     
     return {
-      version: "3.60",
+      version: "3.71",
       generated_at: new Date().toISOString(),
+      total_findings: FINDINGS.length,
       total_selected: selFindings.length,
+      total_postponed: postponedIds.size,
+      postponed_ids: Array.from(postponedIds),
       patch_items: selFindings
     };
   }
@@ -2327,6 +3164,9 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   function applyPastedJson(jsonStr) {
     try {
       const parsed = JSON.parse(jsonStr.trim());
+      if (parsed.postponed_ids && Array.isArray(parsed.postponed_ids)) {
+        postponedIds = new Set(parsed.postponed_ids);
+      }
       const items = Array.isArray(parsed) ? parsed : (parsed.patch_items || []);
       if (!items || items.length === 0) {
         alert('No patch items found in the pasted JSON.');
@@ -2363,19 +3203,31 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   }
   
   function resetStorage() {
-    if (confirm('Clear all saved selections, view preferences, and custom replacements?')) {
+    if (confirm('Clear all saved selections, postponed statuses, view preferences, and custom replacements?')) {
       localStorage.removeItem(STORAGE_KEY_SELECTIONS);
+      localStorage.removeItem(STORAGE_KEY_POSTPONED);
       localStorage.removeItem(STORAGE_KEY_CUSTOM);
       localStorage.removeItem(STORAGE_KEY_VIEW);
       localStorage.removeItem(STORAGE_KEY_AUTOHIDE);
+      localStorage.removeItem(STORAGE_KEY_RULE);
+      localStorage.removeItem(STORAGE_KEY_MATRIX_COLLAPSED);
       selectedIds.clear();
+      postponedIds.clear();
       customReplacements = {};
       activeViewMode = 'pending';
+      activeRule = 'all';
+      isMatrixCollapsed = false;
       autoHideEnabled = true;
       document.getElementById('autoHideCheckbox').checked = true;
       document.querySelectorAll('.view-mode-tab').forEach(t => {
         t.classList.toggle('active', t.getAttribute('data-view') === 'pending');
       });
+      if (document.getElementById('ruleMatrixBody')) {
+        document.getElementById('ruleMatrixBody').style.display = 'block';
+        document.getElementById('matrixToggleIcon').innerText = '▼';
+        document.getElementById('matrixToggleText').innerText = 'Hide';
+      }
+      populateRuleDropdownAndMatrix();
       renderTable();
       updateStats();
       showToast('Cleared all saved state', '↺');
@@ -2384,6 +3236,16 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
   
   // Event Listeners
   document.getElementById('searchInput').addEventListener('input', renderTable);
+  
+  const ruleSelectEl = document.getElementById('ruleSelect');
+  if (ruleSelectEl) {
+    ruleSelectEl.addEventListener('change', function() {
+      activeRule = this.value;
+      saveStorage();
+      renderTable();
+      populateRuleDropdownAndMatrix();
+    });
+  }
   
   document.getElementById('selectAllHeader').addEventListener('change', function() {
     if (this.checked) selectAllVisible();
@@ -2453,14 +3315,20 @@ def generate_html_report(total_subs: int, findings: list, output_path: Path):
 
   // Initialization
   initStorage();
+  if (isMatrixCollapsed && document.getElementById('ruleMatrixBody')) {
+    document.getElementById('ruleMatrixBody').style.display = 'none';
+    document.getElementById('matrixToggleIcon').innerText = '▶';
+    document.getElementById('matrixToggleText').innerText = 'Show';
+  }
   document.getElementById('autoHideCheckbox').checked = autoHideEnabled;
   document.querySelectorAll('.view-mode-tab').forEach(t => {
     t.classList.toggle('active', t.getAttribute('data-view') === activeViewMode);
   });
+  populateRuleDropdownAndMatrix();
   renderTable();
   updateStats();
-  if (selectedIds.size > 0) {
-    showToast(`Restored ${selectedIds.size} saved selections (${FINDINGS.length - selectedIds.size} pending)`, '✓');
+  if (selectedIds.size > 0 || postponedIds.size > 0) {
+    showToast(`Restored ${selectedIds.size} selected, ${postponedIds.size} postponed (${FINDINGS.length - selectedIds.size - postponedIds.size} pending)`, '✓');
   }
 </script>
 
@@ -2525,14 +3393,15 @@ def generate_markdown_report(total_subs: int, findings: list, output_path: Path)
     lines.append("")
     lines.append("### Detailed Suspect Cases (High Severity Selection)")
     lines.append("")
-    lines.append("| # | Subsection | Field | Suspect Segment | Suggested Sandhi | Rule | Context |")
-    lines.append("| :---: | :--- | :--- | :--- | :--- | :--- | :--- |")
+    lines.append("| # | Line in Text | Subsection | Field | Suspect Segment | Suggested Sandhi | Rule | Context |")
+    lines.append("| :---: | :---: | :--- | :--- | :--- | :--- | :--- | :--- |")
     
-    for i, f in enumerate([x for x in findings if x['severity'] == 'High'][:100], 1):
+    for i, f in enumerate(findings, 1):
         clean_ctx = f['context'].replace('\n', ' ')
         if len(clean_ctx) > 60:
             clean_ctx = clean_ctx[:60] + "..."
-        lines.append(f"| {i} | `{f['sub_key']}` | {f['field']} | `{f['suspect']}` | **`{f['suggested']}`** | {f['rule_name']} | {clean_ctx} |")
+        line_ref = f"[L{f['line_number']}](file:///C:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt#L{f['line_number']})" if f.get('line_number') else "-"
+        lines.append(f"| {i} | {line_ref} | `{f['sub_key']}` | {f['field']} | `{f['suspect']}` | **`{f['suggested']}`** | {f['rule_name']} | {clean_ctx} |")
         
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -2544,6 +3413,8 @@ def main():
     parser = argparse.ArgumentParser(description="Audit Sanskrit Sandhi rules in Jaimineeya Samaveda Samhita.")
     parser.add_argument('--input', '-i', default='data/corpora/samhita/02_ast/Samhita_ast.json',
                         help='Input AST JSON path')
+    parser.add_argument('--txt', '-t', default='data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt',
+                        help='Input Devanagari Unicode master text path')
     parser.add_argument('--html', default='data/corpora/samhita/06_reports/SANDHI_AUDIT_REPORT.html',
                         help='Output HTML report path')
     parser.add_argument('--md', default='data/corpora/samhita/06_reports/SANDHI_AUDIT_REPORT.md',
@@ -2552,16 +3423,21 @@ def main():
                         help='Output JSON dataset path')
     args = parser.parse_args()
     
-    in_path = Path(args.input)
-    if not in_path.exists():
-        alt_path = Path('data/corpora/samhita/02_ast/Samhita_ast.json')
-        if alt_path.exists():
-            in_path = alt_path
-        else:
-            raise FileNotFoundError(f"Input file not found at {in_path} or {alt_path}")
-            
-    print(f"[INFO] Auditing Sanskrit Sandhi rules in: {in_path}")
-    total_subs, findings = run_sandhi_audit(in_path)
+    txt_path = Path(args.txt)
+    if txt_path.exists():
+        print(f"[INFO] Auditing Sanskrit Sandhi rules DIRECTLY on master text: {txt_path}")
+        total_subs, findings = run_sandhi_audit_txt(txt_path)
+    else:
+        in_path = Path(args.input)
+        if not in_path.exists():
+            alt_path = Path('data/corpora/samhita/02_ast/Samhita_ast.json')
+            if alt_path.exists():
+                in_path = alt_path
+            else:
+                raise FileNotFoundError(f"Input file not found at {in_path} or {alt_path}")
+        print(f"[INFO] Auditing Sanskrit Sandhi rules from AST: {in_path}")
+        total_subs, findings = run_sandhi_audit(in_path, txt_path=txt_path)
+        
     print(f"[INFO] Audited {total_subs} subsections. Found {len(findings)} suspect Sandhi cases.")
     
     # Save JSON findings

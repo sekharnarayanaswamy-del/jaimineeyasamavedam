@@ -1,6 +1,6 @@
 जैमिनीयसामवेद संहिता - तद्वपाठः
 
-Version 3.33 04-11-2026 14:41:55
+Version 3.34 14-11-2026 15:05:00
 
 # Start of SuperSection Title -- supersection_2 ## DO NOT EDIT
 तद्वपाठः
@@ -136,7 +136,7 @@ Version 3.33 04-11-2026 14:41:55
 #End of Mantra Sets -- subsection_135 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_136 ## DO NOT EDIT
-।। गोषूकश्वसूनूकाण्वायनाै इन्द्रो गायत्री ।।
+।। गोषूकश्वसूनूकाण्वायनौ इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_136 ## DO NOT EDIT
 # Start of Rik Text -- subsection_136 ## DO NOT EDIT
 यज्ञा इ(2)न्द्रा(1)मवर्धयात् । य(2)द्भूमिं व्या(2)वा(1) र्क्तयात् । चक्रा(4)णा ओपाश(2)न्दीवि ॥ ७ ॥
@@ -148,7 +148,6 @@ Version 3.33 04-11-2026 14:41:55
 #Start of Mantra Sets -- subsection_136 ## DO NOT EDIT
 यज्ञइन्द्र(षी) मवर्धा(ति) या(त) त् । यद्भूमिंवायवा(टू) र्ता(ख) या(ण) त् । चा(ख) क्रा(प्ल) णा(ख) ओ(ण) । पाश(काच्) न्दी(क) वीचक्रा(किच्) णाओ(का) पाशा(खा) औहोवा(शि) । दी(ख) वि(श) ॥१७॥
 #End of Mantra Sets -- subsection_136 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_137 ## DO NOT EDIT
 ।। गोषूकश्वसूनूकाण्वायनौ इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_137 ## DO NOT EDIT
@@ -209,7 +208,7 @@ Version 3.33 04-11-2026 14:41:55
 द्वितीय खण्डः
 # End of Section Title -- section_15 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_141 ## DO NOT EDIT
-।। सुकक्षत्रुतकाै (सुकक्ष आङ्गिरसः) इन्द्रो गायत्री ।।
+।। सुकक्षत्रुतकौ (सुकक्ष आङ्गिरसः) इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_141 ## DO NOT EDIT
 # Start of Rik Text -- subsection_141 ## DO NOT EDIT
 उ(2)त्घेदभी(2) श्रूता(2)मा(1)घम् । वृषाभ(2) न्नर्या(1)पसम् । अस्तारमेळि सूर्या ॥ १ ॥
@@ -235,7 +234,7 @@ Version 3.33 04-11-2026 14:41:55
 यदद्यका(फी) च्चवृत्रहा(की) न् । ऊदगाआभी(कु) सूरा(टा) या(त) । सार्वान्तादि(की) न्द्रताये(टि) हिम् (च) । वा(ख) शो(प्ल)। हाइ(शा)॥४॥
 #End of Mantra Sets -- subsection_142 ## DO NOT EDIT
 # Start of Rik Metadata -- subsection_143 ## DO NOT EDIT
-।। भारद्वाजः (शय्युबार्हस्पत्यः) इन्द्रो गायत्री ।।
+।। भारद्वाजः (शय्युर्बार्हस्पत्यः) इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_143 ## DO NOT EDIT
 # Start of Rik Text -- subsection_143 ## DO NOT EDIT
 य(2) आ(2)ना(1)य त्पारावा(2)ताः । सू(2)नी(1)ती तूर्वा(2) शं(2)या(2)दुम्(1) । इ(2)न्द्रस्सा(2) नो यू(1)वा सा(2)खा(1) ॥ ३ ॥
@@ -247,7 +246,6 @@ Version 3.33 04-11-2026 14:41:55
 #Start of Mantra Sets -- subsection_143 ## DO NOT EDIT
 यया(ता) हा(त) बु(श) । आनाया(टि) दानाया(टि) त्पारा(का) वा(ख) ता(ण)ः । सूनीतीतू(टीच्) सू(क) नीतीतू(टिच्) र्वाशं(का) या(ख) दू(ण) म् । इन्द्रास्सानो(टीच्) इ(क) न्द्रास्सानो(टिच्) यू(ट) वा(ख) औहोवा(शि) । सा(ख) खा(श) ॥५॥ यआन(षि) यत्परावा(ती) ता(त)ः । सूनीतितुर्वशां(यू) या(प) दू(श) म् । इन्द्रस्सनोयूवा(यू) सा(प) खा(श) । इन्द्रो(खा) ग्नि(श)ः । इ(क) न्द्राऔ(का) हो(ख) ग्ना(ण) इ(श)ः । आइन्द्रो(कि) ग्ना(ट) या(ख) औहोवा(शि) । ई(ख) न्द्रा(प्ल)ः॥६॥
 #End of Mantra Sets -- subsection_143 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_144 ## DO NOT EDIT
 ।। श्रुतकक्षः (सुकक्षो वा आङ्गिरसः) इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_144 ## DO NOT EDIT
@@ -312,12 +310,11 @@ Version 3.33 04-11-2026 14:41:55
 # End of Rik Text -- subsection_148 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_148 ## DO NOT EDIT
-॥धॄषतोमारूतस्यसामनीद्वे॥  ।। धृषन्मरुत् गायत्रीन्द्रः ।।
+॥धॄषतोमारूतस्यसामनीद्वे॥  ।। धृषन्मरुद् गायत्रीन्द्रः ।।
 # End of SubSection Title -- subsection_148 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_148 ## DO NOT EDIT
 वयमा(पि) इन्द्रा(णा) । त्वाया(टाट्) वा(ख) औहोवा(शि) । आभिप्रनो(टि) नुमोवृषा(खी) न्विद्धा(खा) इतुवा(ति) । स्या(टट्) ना(ख) औहोवा(शि) । वा(ख) सो(श)॥१४॥ वयमिन्द्रा(ती) । त्वाया(प्ला) वा(श)ः । आभिप्रनोनु मो(प्लू) वा(प) र्षा(श) न् । विद्धितू(खि) वा(प्ल्) आओ(खा) हा(ण) इ(श) । स्यानोबा(पि) वासो(प्ला) । हा(प्ल) इ(श) ॥१५॥
 #End of Mantra Sets -- subsection_148 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_149 ## DO NOT EDIT
 ।। वसिष्ठोः मैत्रावरुणिरिन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_149 ## DO NOT EDIT
@@ -548,7 +545,7 @@ Version 3.33 04-11-2026 14:41:55
 #End of Mantra Sets -- subsection_164 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_165 ## DO NOT EDIT
-।। मेधातिथिः (शय्युबार्हस्पत्यः) काण्व ।।
+।। मेधातिथिः (शय्युर्बार्हस्पत्यः) काण्व ।।
 # End of Rik Metadata -- subsection_165 ## DO NOT EDIT
 # Start of Rik Text -- subsection_165 ## DO NOT EDIT
 ईमा(2) उत्वापूरोवासो । आ(2)भि प्रा(2)नो(1) ना वुद् गीरा(1)ः।गा(3)वो(1) वत्स(2)न्ना(2)धेना(2)वा(1)ः ॥ २ ॥
@@ -598,7 +595,7 @@ Version 3.33 04-11-2026 14:41:55
 # End of Rik Text -- subsection_169 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_169 ## DO NOT EDIT
-॥प्रजापतेस्सुतंरयिष्ठीयेद्वे॥  ।। द्वयोः प्रजापतिर्निचृत् गायत्रीन्द्रः ।।
+॥प्रजापतेस्सुतंरयिष्ठीयेद्वे॥  ।। द्वयोः प्रजापतिर्निचृद् गायत्रीन्द्रः ।।
 # End of SubSection Title -- subsection_169 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_169 ## DO NOT EDIT
 उपानो(पि) हरिभी(प्लि) स्सूतो(ङा) वा(श) । याहिमदा(टी) नाम्पाता(टि) उपनो(ति) हा(त) ओ(प) बा(प्ल)। रा(ख) इभी(प्ला)ः । सूता मौ(पि) होबा(प्ला) ।हो(प्ल) इळा(शा) ॥ १० ॥ उपनो(षि) हाबुहोरा(ती) इभी(ता)ः । सू(ट) ता(त) म् । याहिमदा(की) नाम्पा(टा) ताउपानो(खी) हा(ण) । रा(ट) इ भा(खा) औहो वा(शि) । सूतं(का) रा(च) इ ष्ठा(टाख्)ः॥११॥
@@ -897,12 +894,11 @@ Version 3.33 04-11-2026 14:41:55
 # End of Rik Text -- subsection_191 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_191 ## DO NOT EDIT
-॥वाचस्सामनीद्वे॥  ।। द्वयोर्वाक् गायत्रीन्द्रः ।।
+॥वाचस्सामनीद्वे॥  ।। द्वयोर्वाग् गायत्रीन्द्रः ।।
 # End of SubSection Title -- subsection_191 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_191 ## DO NOT EDIT
 कयानश्ची(ती) । त्रा(त) याभू(पा) वा(श) त् । ऊ(क) ताइ सदावा(कु) र्धस्सा(खा) खा(ण) । कयाशा(टि) चा(त) इ(श) । ष्ठा(प) या(श) वा(ख) र्तो(प्ल) । हाइ(शा)॥१४॥ होवाइ होवाइ(षू) कयानश्ची(ती) । त्रा(त) याभू(पा) वा(श) त् । होवाइहोवाइ(षू) ऊती(चा) स्सादा(काच्) वृधा(का) स्सा(प) खा(श) । होवाइ होवाइ(षू) कया(ता) शचा(ता) इ(श) । ष्ठाया वा(टिट्) र्ता(ख) औहोवा(शि) । ऊ(ख) पा(श) ॥१५॥
 #End of Mantra Sets -- subsection_191 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_192 ## DO NOT EDIT
 ।। वामदेवो गौतम इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_192 ## DO NOT EDIT
@@ -1488,7 +1484,7 @@ Version 3.33 04-11-2026 14:41:55
 #End of Mantra Sets -- subsection_232 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_233 ## DO NOT EDIT
-।। गोषूकश्वसूनूकाण्वायनाै इन्द्रो गायत्री ।।
+।। गोषूकश्वसूनूकाण्वायनौ इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_233 ## DO NOT EDIT
 # Start of Rik Text -- subsection_233 ## DO NOT EDIT
 आ(2)पाम्फे(4)ने(1)नानामू(1)चेः । शी(1)रा(1)इ(1)न्द्रोद(1)वर्क्तया । वि(2)श्वा(2)या(4)दजयस्पृधा(1)ः ॥ ८ ॥
@@ -1500,7 +1496,6 @@ Version 3.33 04-11-2026 14:41:55
 #Start of Mantra Sets -- subsection_233 ## DO NOT EDIT
 अपाम्फेने(षी) ननमुचे(ती)ः । शीरइ(चि) न्द्रोदवा(टि) र्त्ता(ख) या(ण)ः । वाइश्वाया(टीट्) दा(ख) औहोवा(शि) । जया(ता) स्पा(ट) र्धा(ख)ः॥८॥
 #End of Mantra Sets -- subsection_233 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_234 ## DO NOT EDIT
 ।। वामदेवो गौतम इन्द्रो गायत्री ।। ।। श्रुतकक्षः सुकक्षो वा आङ्गिरस इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_234 ## DO NOT EDIT
@@ -1588,7 +1583,7 @@ Version 3.33 04-11-2026 14:41:55
 #End of Mantra Sets -- subsection_239 ## DO NOT EDIT
 
 # Start of Rik Metadata -- subsection_240 ## DO NOT EDIT
-।। ब्रहमातिथिः काण्वः अश्विनौ मित्रावरुणौ गायत्री ।।
+।। ब्रह्मातिथिः काण्वः अश्विनौ मित्रावरुणौ गायत्री ।।
 # End of Rik Metadata -- subsection_240 ## DO NOT EDIT
 # Start of Rik Text -- subsection_240 ## DO NOT EDIT
 दूरा(2)दीहे(2)वायात्सातः । आरूणा(2)स्पूरा(2)शिश्वीतात् । विभा(4)नूंविश्वाथातनात् ॥ ६ ॥
@@ -1637,7 +1632,7 @@ Version 3.33 04-11-2026 14:41:55
 # End of Rik Text -- subsection_243 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_243 ## DO NOT EDIT
-॥विष्णोश्चसाम॥  ।। विष्णुर्निवृत्गायत्री ।।
+॥विष्णोश्चसाम॥  ।। विष्णुर्निवृद्गायत्री ।।
 # End of SubSection Title -- subsection_243 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_243 ## DO NOT EDIT
 इदामे(ति) । विष्णू(टा) र्विचाक्रा(खि) मा(ण) इ(श)। त्राइ धा(चि) निद(का) धा(च) इ पा(या) दाम्(ट)। समू(टा) हो(य) ढा(ट) मा(त) । स्या(ट) पा(ख) औहोवा(शि) । एं(त) सूले(ताच्) ॥९॥
@@ -1722,12 +1717,11 @@ Version 3.33 04-11-2026 14:41:55
 # End of Rik Text -- subsection_249 ## DO NOT EDIT
 
 # Start of SubSection Title -- subsection_249 ## DO NOT EDIT
-॥अभिवादस्यचऔदलस्यसाम॥  ।। उदलो निचृत्गायत्रीन्द्रः ।।
+॥अभिवादस्यचऔदलस्यसाम॥  ।। उदलो निचृद्गायत्रीन्द्रः ।।
 # End of SubSection Title -- subsection_249 ## DO NOT EDIT
 #Start of Mantra Sets -- subsection_249 ## DO NOT EDIT
 एन्द्रपृक्षु(षी) कासुची(ति) दे(त) । नृम्णा(चा) तनू(काच्) षूधा(का) हा(य) इ ना(टा)ः । सा(च) त्रा(श) जिदू(चा) ग्रापा(टा) पुंसिया(कि) उवा(ता) । ऊ(ख) पा(श) ॥११॥
 #End of Mantra Sets -- subsection_249 ## DO NOT EDIT
-
 # Start of Rik Metadata -- subsection_250 ## DO NOT EDIT
 ।। श्रुतकक्षः (सुकेवा) आङ्गिरस इन्द्रो गायत्री ।।
 # End of Rik Metadata -- subsection_250 ## DO NOT EDIT
