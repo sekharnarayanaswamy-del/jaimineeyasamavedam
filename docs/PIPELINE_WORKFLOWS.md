@@ -32,26 +32,26 @@ graph TD
         SamaMeta --> InitParser
         PrayogaIdx --> InitParser
         
-        InitParser --> InitialAST["Initial AST JSON<br/><i>data/output/Samhita_corrected_out.json</i>"]
-        InitParser --> ConsolidatedText["<b>Consolidated Master Text</b><br/><i>data/input/Samhita_corrected.txt</i>"]
+        InitParser --> InitialAST["Initial AST JSON<br/><i>data/corpora/samhita/02_ast/Samhita_ast.json</i>"]
+        InitParser --> ConsolidatedText["<b>Consolidated Master Text</b><br/><i>data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt</i>"]
     end
 
-    subgraph "WORKFLOW 2: CORRECTION & PUBLISHING (DEFAULT)"
-        MasterText["<b>Master Source of Truth</b><br/><i>data/input/Samhita_corrected.txt</i>"]
+    subgraph "WORKFLOW 2: UNIFIED PRODUCTION & PUBLISHING (DEFAULT)"
+        MasterText["<b>Master Source of Truth</b><br/><i>data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt</i>"]
         --> Preflight["<b>Stage 2: Tag Integrity Pre-flight</b><br/><i>src/tools/renumber_sooktam.py --no-increment --no-renumber</i>"]
-        --> CorrParser["<b>Stage 3: AST Generation</b><br/><i>src/generate_json.py --type samhita (default)</i>"]
+        --> UnifiedParser["<b>Stage 3: AST Generation & Auto-Enrichment</b><br/><i>src/generate_json.py --type samhita</i><br/>(Parses text + RDC auto-enrichment)"]
         
-        CorrParser --> AstJSON["Parsed AST<br/><i>data/output/Samhita_corrected_out.json</i>"]
+        ReconExcel["Human Reconciliation Asset<br/><i>data/output/Rik Reconciliation table (JSV-KSV).xlsx</i>"] --> UnifiedParser
         
-        AstJSON --> ReconEngine["<b>Stage 4: Rik Reconciliation</b><br/><i>src/generate_rik_table.py --type samhita</i>"]
-        ReconExcel["Human Reconciliation Asset<br/><i>data/output/Rik Reconciliation table (JSV-KSV).xlsx</i>"] --> ReconEngine
+        UnifiedParser --> AstJSON["<b>Canonical AST (Samhita_ast.json)</b><br/><i>data/corpora/samhita/02_ast/Samhita_ast.json</i>"]
         
-        ReconEngine --> Vargeekaran["<b>Canonical AST (Vargeekaran.json)</b><br/>+ JSV_Rik_Table.csv"]
+        AstJSON --> ReconEngine["<b>Stage 4: Rik Classification Table Export</b><br/><i>src/generate_rik_table.py --type samhita</i>"]
+        ReconEngine --> Tables["<b>Classification Tables</b><br/>JSV_Rik_Table.csv & .xlsx"]
         
-        Vargeekaran --> Audit["<b>Stage 5: Macro Verification & Continuity</b><br/><i>src/generate_json_summary.py</i><br/>(Asserts 6 Pathas, 59 Khandas, 1226 Samas)"]
+        AstJSON --> Audit["<b>Stage 5: Macro Verification & Continuity</b><br/><i>src/generate_json_summary.py</i><br/>(Asserts 6 Pathas, 59 Khandas, 1226 Samas)"]
         
-        Vargeekaran --> SiteGen["<b>Stage 6A: Website Generator</b><br/><i>src/generate_website.py --samhita</i><br/>-> docs/samhita/ (722 Search Items)"]
-        Vargeekaran --> PDFGen["<b>Stage 6B: PDF, HTML & PlainText Renderer</b><br/><i>src/render.py (Combined, -kpully, Separate)</i><br/>-> data/corpora/samhita/05_renders/{pdf,html,txt}/"]
+        AstJSON --> SiteGen["<b>Stage 6A: Website Generator</b><br/><i>src/generate_website.py --samhita</i><br/>-> docs/samhita/ (722 Search Items)"]
+        AstJSON --> PDFGen["<b>Stage 6B: PDF, HTML & PlainText Renderer</b><br/><i>src/render.py (Combined, -kpully, Separate)</i><br/>-> data/corpora/samhita/05_renders/{pdf,html,txt}/"]
     end
 ```
 
@@ -83,23 +83,23 @@ python src/generate_json.py --type samhita --input-mode initial
 5. **`extract_closing_mantras`**: Extracts concluding Mangala Shlokas and stamps them into top-level metadata.
 
 ### Output Produced
-- `data/output/Samhita_corrected_out.json`: The assembled Abstract Syntax Tree (AST).
-- `data/input/Samhita_corrected.txt`: A single, consolidated Unicode markup text with all headers, subsections, delimiters (`॥ N ॥`), and embedded metadata.
+- `data/corpora/samhita/02_ast/Samhita_ast.json`: The assembled Abstract Syntax Tree (AST).
+- `data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt`: A single, consolidated Unicode markup text with all headers, subsections, delimiters (`॥ N ॥`), and embedded metadata.
 
 > [!NOTE]
-> Once `Samhita_corrected.txt` is generated, **Workflow 1 is retired for that corpus**. All subsequent editorial and publishing work transitions permanently to **Workflow 2 (Correction Workflow)**.
+> Once `Samhita_Devanagari_Unicode.txt` is generated, **Workflow 1 is retired for that corpus**. All subsequent editorial and publishing work transitions permanently to **Workflow 2 (Canonical Workflow)**.
 
 ---
 
-## 3. Workflow 2: Correction & Publishing Workflow (Default)
+## 3. Workflow 2: Unified Production & Publishing Workflow (Default)
 
 ### Purpose
-This is the primary production workflow for the Jaimineeya Samavedam. In this mode, editors edit **one canonical text file** (`data/input/Samhita_corrected.txt`). The pipeline parses this file, merges it with curated reconciliation workbooks, and compiles all downstream publication targets.
+This is the primary production workflow for the Jaimineeya Samavedam. In this mode, editors edit **one canonical text file** (`data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt`). The pipeline parses this file, automatically merges it with curated reconciliation workbooks, and compiles all downstream publication targets from a single canonical AST (`Samhita_ast.json`).
 
 ### Input Files Required
 | Asset | Default Path | Nature | Description |
 |---|---|---|---|
-| **Canonical Source Text** | `data/input/Samhita_corrected.txt` | Single Source of Truth | 836 KB text file with 5,263 lines of structured Vedic markup. |
+| **Canonical Source Text** | `data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt` | Single Source of Truth | 836 KB text file with 5,263 lines of structured Vedic markup. |
 | **Reconciliation Workbook** | `data/output/Rik Reconciliation table (JSV-KSV).xlsx` | Human Editorial Asset | 587 curated entries mapping JSV Samams to Kauthuma Samaveda (KSV) parallels. |
 
 ---
@@ -107,7 +107,7 @@ This is the primary production workflow for the Jaimineeya Samavedam. In this mo
 ### Step-by-Step Production Pipeline
 
 #### Stage 1: Source Text Curation
-Maintainers make corrections directly in `data/input/Samhita_corrected.txt`:
+Maintainers make corrections directly in `data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt`:
 - Correcting Vedic accents: Swarita (`॑` / U+0951), Anudatta (`॒` / U+0952), Kampa (`᳸` / U+1CF8), Trikampa (`३॑`).
 - Adjusting verse delimiters: `॥ १ ॥`, `॥ २ ॥`.
 - Modifying subsection headers: `# SubSection: ...`.
@@ -115,43 +115,70 @@ Maintainers make corrections directly in `data/input/Samhita_corrected.txt`:
 #### Stage 2: Structural Tag Integrity Pre-flight Check
 Before parsing, verify that all structural tags (`# Start of SuperSection`, `# Start of Section`, `# End of SubSection`) are perfectly balanced:
 ```bash
-python src/tools/renumber_sooktam.py data/input/Samhita_corrected.txt --type samhita --no-increment --no-renumber
+python src/tools/renumber_sooktam.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt --type samhita --no-increment --no-renumber
 ```
 - **Verification Rule**: Must report `Structural Integrity Check...` with **zero tag mismatches** and **zero unclosed tags**.
 
-#### Stage 3: Generate Canonical JSON AST
-Parse the unified markup into the formal AST schema:
+#### Stage 3: Generate & Auto-Enrich Canonical JSON AST
+Parse the unified markup into the formal AST schema and automatically enrich with Ṛk & Sāmam RDC:
 ```bash
-python src/generate_json.py data/input/Samhita_corrected.txt --type samhita
+python src/generate_json.py --type samhita
 ```
 - **CLI Options**: `--type samhita` (default), `--output <path>` (optional override).
-- **Execution Time**: ~0.4 seconds.
-- **Output**: `data/output/Samhita_corrected_out.json` (1.45 MB, 6 Pathas, 59 Khandas, 722 SubSections).
+- **Execution**: Parses structural text and automatically reconciles Ṛk & Sāmam RDC with Sanskrit Pada-cheda.
+- **Output**: `data/corpora/samhita/02_ast/Samhita_ast.json` (The single canonical AST, 722 SubSections, 100% RDC coverage).
 
-#### Stage 4: Reconcile with Rik Metadata & Build Canonical Vargeekaran
-Merge the AST with the human-curated JSV-KSV reconciliation workbook:
+#### Stage 4: Rik Classification Table Export & Tabular Reconciliation
+Generate human-readable and machine-readable tabular exports from the canonical AST:
 ```bash
 python src/generate_rik_table.py --type samhita
 ```
-- **CLI Options**: 
-  - `-e, --excel`: Override reconciliation spreadsheet.
-  - `-j, --json_out`: Override Vargeekaran JSON path.
-  - `-o, --output`: Override CSV path.
-  - `--no-enrich`: Skip Excel lookup and rely only on resident JSON metadata.
-- **Execution Time**: ~17 seconds (due to openpyxl Excel parsing).
 - **Outputs**:
-  - `data/output/Vargeekaran.json`: The fully reconciled canonical AST (2.0 MB).
-  - `data/output/JSV_Rik_Table.csv`: Tabular export with 722 unique Rik rows.
-  - `data/output/JSV_Rik_Table.xlsx`: Formatted spreadsheet version.
+  - `data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv`: Tabular export with 587 unique Rik rows.
+  - `data/corpora/samhita/03_reconciliation/JSV_Rik_Table.xlsx`: Formatted spreadsheet version.
+
+##### 1. Rik RDC Population (`rik_rishi`, `rik_devata`, `rik_chandas`)
+- **Primary Source**: `data/output/Rik Reconciliation table (JSV-KSV).xlsx` (587 curated Rik classifications mapped by scholars).
+- **Primary Key**: Sequential `Global_Rik_Num` (1 to 587) assigned across the 722 subsections based on unique `(SuperSection, Section, Rik_ID)` tuples.
+- **Fallback Resolution**: If a cell in the reconciliation Excel is blank or unclassified, the pipeline automatically falls back to parsing the raw `rik_metadata` string in the subsection (e.g. `अग्निः । अग्निः । गायत्री` $\rightarrow$ Ṛṣi: `अग्निः`, Devatā: `अग्निः`, Chandas: `गायत्री`).
+- **Structured Representation**: Each subsection receives `rik_rishi`, `rik_devata`, and `rik_chandas` as top-level strings, alongside a normalized `rik_classifications` list.
+
+##### 2. Sāmam RDC Population (`saman_rishi`, `saman_devata`, `saman_chandas`)
+- **Primary Source**: Derived directly from the `saman_metadata` string in each subsection (e.g., `।। वत्सो गायत्र्यग्निः ।। ।। शौनश्शेपो गायत्र्यग्निः ।।`).
+- **Multi-Element Array Data Structure (`List[str]`)**:
+  In Jaiminīya Sāmaveda Saṃhitā, an Ārṣeyam subsection can contain one, two, or three distinct Sāmam chants. To preserve 1-to-1 correspondence with each Sāmam chant without loss or flattening, Sāmam RDC fields are structured as **JSON arrays (lists of strings)**:
+  ```json
+  "saman_rishi": ["वत्सः", "शौनश्शेपः"],
+  "saman_devata": ["अग्निः", "अग्निः"],
+  "saman_chandas": ["गायत्री", "गायत्री"]
+  ```
+  For single-chant subsections (669 out of 722), the lists contain a single element:
+  ```json
+  "saman_rishi": ["गोतमः"],
+  "saman_devata": ["अग्निः"],
+  "saman_chandas": ["गायत्री"]
+  ```
+- **Sanskrit Grammatical Pada-cheda (पदच्छेदः)**:
+  The raw chant notes in `saman_metadata` follow continuous Vedic Saṃhitā sandhi. The enrichment engine performs automatic linguistic Pada-cheda:
+  - **Scope Prefix Detachment**: Strips scope indicators like `द्वयोः`, `द्वयोर्`, `द्वयोरि-` $\rightarrow$ `इ-`, `त्रयाणां`, resolving initial sandhi boundaries.
+  - **Compound (Samāsa) Decomposition**: Deconstructs Dvandva/Karmadhāraya compounds like `गायत्र्यग्निः` $\rightarrow$ Chandas `गायत्री`, Devatā `अग्निः`; `विराड्गात्र्यग्निः` $\rightarrow$ Chandas `विराड्गायत्री`, Devatā `अग्निः`; `त्रिष्टुबग्निर्रुद्रः` $\rightarrow$ Chandas `त्रिष्टुप्`, Devatā `अग्निरुद्रौ`. Handles Pūrvarūpa avagraha (`ऽ...`) and Rutva (`र...`) variants.
+  - **Visarga Restoration**: Restores nominative singular endings:
+    - `-o` $\rightarrow$ `-aḥ` (`गोतमो` $\rightarrow$ `गोतमः`, `भरद्वाजो` $\rightarrow$ `भरद्वाजः`).
+    - Halantas in `-r`, `-s`, `-ś`, `-ṣ` $\rightarrow$ `-aḥ` (`श्रुतर्षिर्` $\rightarrow$ `श्रुतर्षिः`, `भरद्वाजस्` $\rightarrow$ `भरद्वाजः`).
+    - Stems lacking visarga in raw chant notes (`प्रजापति` $\rightarrow$ `प्रजापतिः`, `अगस्त्य` $\rightarrow$ `अगस्त्यः`).
+  - **Inheritance Fallback**: When Chandas or Devatā is not explicitly declared in a Sāmam clause, it defaults to the parent Ṛk's `rik_chandas` or `rik_devata`.
+
+- **Output**:
+  - `data/corpora/samhita/02_ast/Samhita_ast.json`: Canonical parsed & enriched AST (100% RDC coverage).
 
 #### Stage 5: Structural Summary & Liturgical Invariant Audit
-Audit the generated Vargeekaran to ensure no verses or chapters were dropped or duplicated:
+Audit the generated AST to ensure no verses or chapters were dropped or duplicated:
 ```bash
 # 1. Macro counts across all 6 Pathas and 59 Khandas
 python src/generate_json_summary.py
 
 # 2. Sequential continuity check across all 1226 Samas
-python src/tools/check_continuity.py data/output/Vargeekaran.json
+python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json
 ```
 - **Mandatory Liturgical Invariants**:
   - **Pathas (SuperSections)**: Exactly **6**
@@ -171,14 +198,15 @@ python src/generate_website.py --samhita
   - `docs/samhita/kandah/`: Individual HTML pages for each Khanda.
   - `docs/samhita/search-index.js`: Lunr.js search index containing 722 searchable verse records.
   - `docs/samhita/classification/`: Indices for Rishi, Devata, Chandas, and Anukramanika.
+- **Backlog Notice**: An active backlog item tracks reconciling the updated array-structured Sāmam RDC (`List[str]`) with `src/website/models.py`, `src/website/parser.py`, `src/website/generator.py`, and `search-index.js` for all micro-website generation targets.
 
 ##### Target 6B: XeLaTeX / LuaLaTeX PDF Publication
 ```bash
 # Standard layout (swara markings below mantra text)
-python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json --type samhita --output-mode combined
+python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --type samhita --output-mode combined
 
 # Kodunthirapully paddhati (-kpully: swara markings placed directly ABOVE mantra text)
-python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json -kpully
+python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully
 ```
 - **Outputs**:
   - Compiled `.pdf` documents in `data/corpora/samhita/05_renders/pdf/`.
@@ -186,7 +214,7 @@ python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json -kpully
 
 ##### Target 6C: PlainText Unicode Export
 ```bash
-python src/render.py data/corpora/samhita/04_canonical/Vargeekaran.json --type samhita --output-mode separate
+python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --type samhita --output-mode separate
 ```
 - **Outputs**: Clean `.txt` files in `data/corpora/samhita/05_renders/txt/` (Combined, Rik-only, Samam-only, and Nometa).
 
@@ -264,11 +292,22 @@ Recon Excel  : Rik Reconciliation table (JSV-KSV).xlsx (3,019,400 bytes)
 |---|---|
 | **Quick Health Check** | `python src/tools/run_regression_suite.py` |
 | **Golden Baseline Equivalence** | `python src/tools/verify_golden_equivalence.py` |
-| **Tag Pre-flight Check** | `python src/tools/renumber_sooktam.py data/input/Samhita_corrected.txt --type samhita --no-increment --no-renumber` |
-| **Compile Samhita JSON** | `python src/generate_json.py data/input/Samhita_corrected.txt --type samhita` |
-| **Compile Samhita Vargeekaran** | `python src/generate_rik_table.py --type samhita` |
-| **Check Samhita Continuity** | `python src/tools/check_continuity.py data/output/Vargeekaran.json` |
+| **Tag Pre-flight Check** | `python src/tools/renumber_sooktam.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt --type samhita --no-increment --no-renumber` |
+| **Generate & Enrich Samhita AST** | `python src/generate_json.py --type samhita` |
+| **Export Samhita Rik Tables** | `python src/generate_rik_table.py --type samhita` |
+| **Check Samhita Continuity** | `python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json` |
 | **Compile Samhita Website** | `python src/generate_website.py --samhita` |
-| **Render Samhita PDF (-kpully)** | `python src/render_pdf.py data/output/Vargeekaran.json -kpully` |
+| **Render Samhita PDF (-kpully)** | `python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully` |
 | **Compile Aaranam JSON** | `python src/generate_json.py data/input/Aaranam_latest.txt --type aaranam` |
 | **Compile Aaranam Website** | `python src/generate_website.py --aaranam` |
+
+---
+
+## 6. Active Pipeline Backlog
+
+### Backlog Item: Reconcile Array-Structured RDC with Micro-Website Reader & Search
+- **Context**: The canonical AST (`Samhita_ast.json`) now carries scalar Ṛk RDC strings and multi-element Sāmam RDC arrays (`List[str]`) with Sanskrit Pada-cheda.
+- **Action Required**:
+  1. **Website Parser & Data Model**: Update `src/website/models.py` (`saman_rishi`, `saman_devata`, `saman_chandas`) to accept `Union[str, List[str]]` and ensure `src/website/parser.py` maps them directly from `Samhita_ast.json`.
+  2. **Micro-Website UI**: Adapt `src/website/formatters.py` and `generator.py` to render both scalar Ṛk metadata and multi-chant Sāmam metadata (e.g. split cards/badges for multi-Sāmam subsections such as `subsection_10`).
+  3. **Classification & Search Index**: Update `classification/rishi.html`, `classification/devata.html`, `classification/chandas.html`, and `search-index.js` across all 8 micro-website targets (`samhita`, `aaranam`, `collections`, `kpully-devanagari`, `malayalam`, etc.) to index and query both Ṛk and Sāmam RDC elements.

@@ -11,6 +11,11 @@ This skill provides the standard rules for taking raw Vedic text markup and prop
 The JSON structure must rigidly follow this path:
 `Parva (SuperSection) -> Kandah (Section) -> Arsheyam (Subsection/Header) -> Samam (Mantra Sets) -> Rik (Individual verse)`
 
+Each subsection contains:
+- `rik_rishi`, `rik_devata`, `rik_chandas`: Reconciled Ṛk metadata strings (`str`).
+- `saman_metadata`: Raw chant metadata string with `।।` delimiters.
+- `saman_rishi`, `saman_devata`, `saman_chandas`: Sāmam chant metadata stored as **JSON arrays (`List[str]`)** with Pada-cheda applied, supporting single and multiple Sāmam chants per subsection.
+
 ## 2. Text Markup Conventions
 *   **SuperSection**: Starts with `# Start of SuperSection Title -- ID ## DO NOT EDIT` and ends with `# End of SuperSection Title -- ID`
 *   **Section**: Starts with `# Start of Section Title -- ID ## DO NOT EDIT` and ends with `# End of Section Title -- ID`

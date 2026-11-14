@@ -20,8 +20,7 @@ TXT_PATHS = [
 ]
 
 AST_PATHS = [
-    ROOT_DIR / 'data/corpora/samhita/02_ast/Samhita_ast.json',
-    ROOT_DIR / 'data/output/Samhita_corrected_out.json'
+    ROOT_DIR / 'data/corpora/samhita/02_ast/Samhita_ast.json'
 ]
 
 def clean_text_content(content: str) -> tuple[str, dict]:

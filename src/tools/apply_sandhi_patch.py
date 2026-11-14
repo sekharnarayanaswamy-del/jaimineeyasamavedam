@@ -29,7 +29,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 DEFAULT_AST_PATH = ROOT_DIR / 'data/corpora/samhita/02_ast/Samhita_ast.json'
-DEFAULT_OUT_AST_PATH = ROOT_DIR / 'data/output/Samhita_corrected_out.json'
+DEFAULT_OUT_AST_PATH = ROOT_DIR / 'data/corpora/samhita/02_ast/Samhita_ast.json'
 DEFAULT_TXT_PATH = ROOT_DIR / 'data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt'
 DEFAULT_SYNC_TXT_PATH = ROOT_DIR / 'data/input/Samhita_Devanagari_Unicode.txt'
 DEFAULT_FINDINGS_PATH = ROOT_DIR / 'data/corpora/samhita/06_reports/sandhi_audit_findings.json'

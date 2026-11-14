@@ -93,7 +93,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 *   **Structure Injection**: Dynamically injects a `rik_classifications` list into each Arsheyam (Subsection) in the JSON. This list identifies the Riks associated with that Arsheyam and their respective classifications.
 *   **Output**:
     *   `JSV_Rik_Table.csv`: A flattened, deduplicated verse-level table.
-    *   `Vargeekaran.json`: The **Enhanced Source of Truth** used by the website generator for classification-based navigation.
+    *   `Samhita_ast.json`: The **Enhanced Source of Truth** used by the website generator for classification-based navigation.
 
 ### 2.7 `src/generate_missing_metadata_report.py`
 **Role**: Data quality validation tool that identifies missing metadata.
@@ -109,7 +109,7 @@ The system is modular, with distinct scripts handling data parsing, rendering, a
 
 ### 2.9 Swara Extraction & Analysis (`scripts/extract_devanagari_samhita_swaras.py`)
 **Role**: Extracts sequential Devanagari swara symbols with explicit sentence/verse danda (`|`) markers across all 6 Parvas, 59 Kandahs, and 722 Samas in the Samhita.
-*   **`extract_devanagari_swaras()`**: Parses structured JSON (`data/output/Samhita_corrected_out.json`), splits verses into sentence units by dandas (`।`, `॥`), and extracts parenthesized swara tokens.
+*   **`extract_devanagari_swaras()`**: Parses structured JSON (`data/corpora/samhita/02_ast/Samhita_ast.json`), splits verses into sentence units by dandas (`।`, `॥`), and extracts parenthesized swara tokens.
 *   **Artifacts Generated**:
     *   `data/output/Samhita_Devanagari_Swara_Table.csv`: Granular succession table (32,556 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Sama Name`, and `Swara symbol` (including explicit `|` separator rows).
     *   `data/output/Samhita_Devanagari_Swara_By_Sama.csv`: Per-Sama table (722 rows) with `Sl No`, `Parva`, `Kandah <M>`, `Kandah Name`, `Sama Name`, and `Swara Symbols` partitioned by ` | `.
@@ -189,15 +189,15 @@ The generated Unicode text from Phase 1 is taken up for further corrections by V
 Update the Website, PDF, HTML, and Text outputs to reflect the changes.
 
 1. **Integrate Classifications** (Required for Website):
-   This step maps the Riks to their Rishi, Devata, and Chandas from the Excel sheet and generates the `Vargeekaran.json`.
+   This step maps the Riks to their Rishi, Devata, and Chandas from the Excel sheet and generates the `Samhita_ast.json`.
    ```bash
    python src/generate_rik_table.py data/output/Agneyam-Pavamanam_corrected_out.json
    ```
 
 2. **Regenerate Site & Book**:
    ```bash
-   # Website (uses the Vargeekaran JSON generated above)
-   python src/generate_website.py --source-file data/output/Vargeekaran.json
+   # Website (uses the Canonical AST (Samhita_ast.json) generated above)
+   python src/generate_website.py --source-file data/corpora/samhita/02_ast/Samhita_ast.json
    
    # PDF, HTML, and Unicode Text
    python src/render_pdf.py data/output/Agneyam-Pavamanam_corrected_out.json
@@ -540,19 +540,19 @@ python src/generate_granular_table.py [OPTIONS]
 *Output*: CSV and XLSX files with per-Samam rows including Global_Rik_Num, Patha, Khanda, metadata fields.
 
 ### `src/generate_rik_table.py`
-*Generates the Rik-level CSV and the Vargeekaran JSON.*
+*Generates the Rik-level CSV and the Canonical AST (Samhita_ast.json).*
 
 ```bash
 python src/generate_rik_table.py [INPUT_JSON] [OPTIONS]
 ```
 | Option | Description |
 | :--- | :--- |
-| `INPUT_JSON` | Path to the source JSON file (default: `data\output\Samhita_corrected_out.json`). |
+| `INPUT_JSON` | Path to the source JSON file (default: `data/corpora/samhita/02_ast/Samhita_ast.json`). |
 | `-o`, `--output` | Path to the output CSV table (default: `data\output\JSV_Rik_Table.csv`). |
 | `-e`, `--excel` | Path to the Reconciliation Excel (mapping Riks to R/D/C). (default: `data\output\Rik Reconciliation table (JSV-KSV).xlsx`) |
-| `-j`, `--json_out` | Path to save the enriched/Vargeekaran JSON (default: `data\output\Vargeekaran.json`). |
+| `-j`, `--json_out` | Path to save the enriched/Canonical AST (Samhita_ast.json) (default: `data/corpora/samhita/02_ast/Samhita_ast.json`). |
 
-*Output*: A UTF-8-sig CSV for metadata reconciliation and the **Vargeekaran JSON** required for the website's classification logic.
+*Output*: A UTF-8-sig CSV for metadata reconciliation and the **Canonical AST (Samhita_ast.json)** required for the website's classification logic.
 
 ### `src/generate_missing_metadata_report.py`
 *Generates a report of missing Rik and Samam metadata.*
@@ -587,7 +587,7 @@ python src/tools/build_collection.py [OPTIONS]
 | :--- | :--- |
 | `--ids` | List of IDs (e.g., 1.1.1 1.1.2). |
 | `--file` | Plain text file containing IDs to extract. |
-| `--source` | Source JSON file (default: `data/output/Vargeekaran.json`). |
+| `--source` | Source JSON file (default: `data/corpora/samhita/02_ast/Samhita_ast.json`). |
 | `--output` | Output JSON file (default: `data/output/Collection_latest_out.json`). |
 | `--title` | Title for the collection (default: जैमिनीय साम सूक्तमाला). |
 
@@ -938,8 +938,8 @@ The path depth varies by page type:
 
 ---
 
-### 5.6 Rik Identification & Global Mapping (Vargeekaran.json)
-The `src/generate_rik_table.py` script generates the `Vargeekaran.json`, which acts as the **Enriched Source of Truth** for the website.
+### 5.6 Rik Identification & Global Mapping (Samhita_ast.json)
+The `src/generate_rik_table.py` script generates the `Samhita_ast.json`, which acts as the **Enriched Source of Truth** for the website.
 *   **Sequential verse numbering**: It maintains a global counter as it traverses the Samhita hierarchy. This counter matches the row index in the Reconciliation Excel and becomes the `Global_Rik_Num` used for classification lookups.
 *   **Verse Extraction**: The parser looks for Devanagari verse numbers (e.g., `॥ ७ ॥`) within Arsheyam text blocks. It converts these Devanagari digits to standard integers to determine the relative `Rik_ID`.
 *   **Classification Injection**: Instead of modifying the core JSON schema, it adds a `rik_classifications` list to each Arsheyam (Subsection).
@@ -1000,7 +1000,7 @@ Modify the string inside the `_generate_css` method in `src/generate_website.py`
 **Step 4: Regenerate**
 Run the generator to see the changes:
 ```bash
-python src/generate_website.py --source-file data/output/Vargeekaran.json -o docs
+python src/generate_website.py --source-file data/corpora/samhita/02_ast/Samhita_ast.json -o docs
 ```
 Usage of `!important` should be minimized and reserved for situations where global hierarchy rules (like the numeral group) conflict with specific component needs.
 
@@ -1016,7 +1016,7 @@ The following diagram illustrates how raw JSON data flows through the rendering 
 
 ```mermaid
 graph TD
-    JSON[Vargeekaran JSON] --> PreProcess[Python Pre-processing]
+    JSON[Canonical AST (Samhita_ast.json)] --> PreProcess[Python Pre-processing]
     Cfg[pipeline_config.yaml] --> PreProcess
     
     subgraph render_pdf.py Logic

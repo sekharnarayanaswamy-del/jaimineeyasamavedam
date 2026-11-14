@@ -20,7 +20,7 @@ from pathlib import Path
 
 # Base Paths
 REPO_ROOT = Path(__file__).resolve().parent.parent
-INPUT_JSON = REPO_ROOT / "data" / "output" / "Samhita_corrected_out.json"
+INPUT_JSON = REPO_ROOT / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_ast.json"
 OUTPUT_DIR_CSV = REPO_ROOT / "data" / "output"
 OUTPUT_DIR_SWARA = REPO_ROOT / "data" / "output" / "swara_devanagari"
 

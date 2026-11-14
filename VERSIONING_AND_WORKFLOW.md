@@ -107,7 +107,7 @@ jaimineeyasamavedam/
 │   ├── corpora/                        <--- [ACTIVE RUNS] Stage-numbered production directories
 │   │   ├── samhita/
 │   │   │   ├── 01_input/               <--- Working input text and metadata tables
-│   │   │   ├── 02_ast/                 <--- Active generated JSON AST (Samhita_corrected_out.json)
+│   │   │   ├── 02_ast/                 <--- Active generated JSON AST (Samhita_ast.json)
 │   │   │   ├── 03_reconciliation/      <--- Cross-reference tables & CSVs
 │   │   │   ├── 04_curated/             <--- Curated extracts (Ashirvachana, etc.)
 │   │   │   ├── 05_renders/             <--- Partitioned strictly by format (NO loose root files!)
@@ -125,7 +125,7 @@ jaimineeyasamavedam/
 └── src/
     ├── pipeline_config.yaml            <--- Master Configuration (profiles, paths, editions)
     ├── run_pipeline.py                 <--- Master Runner with profile support
-    ├── render_pdf.py                   <--- Decoupled Renderer (Zero YAML dependency)
+    ├── render.py                   <--- Decoupled Renderer (Zero YAML dependency)
     └── tools/
         ├── validate_run.py             <--- Dual-Track Validator & Golden Promotion Tool
         ├── run_regression_suite.py     <--- 8/8 Invariant Health Check Suite
@@ -307,8 +307,8 @@ render_profiles:
   python src/run_pipeline.py --list-profiles
   ```
 
-### C. Zero-YAML Decoupling for `render_pdf.py`
-* `render_pdf.py` is an independent, pure rendering engine.
+### C. Zero-YAML Decoupling for `render.py`
+* `render.py` is an independent, pure rendering engine.
 * It does **not** read or depend on any `.yaml` configuration files.
 * All parameters are passed directly via CLI flags by `run_pipeline.py` or manually by the user, with built-in fallbacks to standard templates and output directories.
 

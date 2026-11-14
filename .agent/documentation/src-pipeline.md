@@ -208,16 +208,35 @@ A lightweight module dedicated to consistent Samam counting across all scripts.
           "section_title": "प्रथम खण्डः",
           "subsections": {
             "subsection_1": {
-              "header": {"header": "...", "header_number": 1},
+              "header": {"header": "॥गौतमस्यपर्कः॥", "header_number": 1},
               "rik_id": 1,
               "rik_text": "...",
-              "rik_metadata": "अग्निः । अग्निः । गायत्री",
-              "rik_rishi": "अग्निः",
+              "rik_metadata": "भरद्वाजो बार्हस्पत्यः । अग्निः । गायत्री",
+              "rik_rishi": "भरद्वाजो बार्हस्पत्यः",
               "rik_devata": "अग्निः",
               "rik_chandas": "गायत्री",
-              "saman_metadata": "...",
+              "saman_metadata": "।। गोतमो गायत्र्यग्निः ।।",
+              "saman_rishi": ["गोतमः"],
+              "saman_devata": ["अग्निः"],
+              "saman_chandas": ["गायत्री"],
               "corrected-mantra_sets": [
                 {"corrected-mantra": "...॥ १ ॥..."}
+              ]
+            },
+            "subsection_10": {
+              "header": {"header": "॥साकमश्वस्यशौनःशेपेःसामनी द्वे॥", "header_number": 10},
+              "rik_id": 7,
+              "rik_text": "...",
+              "rik_metadata": "भरद्वाजो बार्हस्पत्यः । अग्निः । गायत्री",
+              "rik_rishi": "भरद्वाजो बार्हस्पत्यः",
+              "rik_devata": "अग्निः",
+              "rik_chandas": "गायत्री",
+              "saman_metadata": "।। वत्सो गायत्र्यग्निः ।। ।। शौनश्शेपो गायत्र्यग्निः ।।",
+              "saman_rishi": ["वत्सः", "शौनश्शेपः"],
+              "saman_devata": ["अग्निः", "अग्निः"],
+              "saman_chandas": ["गायत्री", "गायत्री"],
+              "corrected-mantra_sets": [
+                {"corrected-mantra": "...॥ १४ ॥...॥ १५ ॥..."}
               ]
             }
           }
@@ -228,6 +247,10 @@ A lightweight module dedicated to consistent Samam counting across all scripts.
   "closing_mantras": []
 }
 ```
+
+> **RDC Field Population Note**:
+> - **Ṛk RDC (`rik_rishi`, `rik_devata`, `rik_chandas`)**: Re-injected from `data/output/Rik Reconciliation table (JSV-KSV).xlsx` via primary key `Global_Rik_Num` (1–587). Fallback to raw `rik_metadata` string parser.
+> - **Sāmam RDC (`saman_rishi`, `saman_devata`, `saman_chandas`)**: Derived from `saman_metadata` using compound decomposition and Sanskrit Pada-cheda (पदच्छेदः). To support multi-Sāmam subsections (e.g. `subsection_10` with two Sāmam chants), Sāmam RDC fields are represented as **arrays of strings (`List[str]`)**.
 
 ---
 
@@ -302,6 +325,34 @@ A lightweight module dedicated to consistent Samam counting across all scripts.
 | `Samam_Chandas` | `samam_chandas` |
 | `Rik_Metadata` | `rik_metadata` |
 | `Saman_Metadata` | `saman_metadata` |
+
+### 7.3 `tools/enrich_ast_rdc.py`
+
+**Purpose**: Core enrichment tool that populates complete Ṛṣi, Devatā, and Chandas (RDC) for both Ṛk verses and Sāmam chants with full Sanskrit Pada-cheda (पदच्छेदः).
+
+| Function | Purpose |
+|---|---|
+| `load_reconciliation_table(excel_path)` | Loads 587 curated Rik classifications from `Rik Reconciliation table (JSV-KSV).xlsx` using `openpyxl` |
+| `parse_raw_rik_metadata(meta_str)` | Fallback parser for raw `rik_metadata` string (`Rishi । Devata । Chandas`) |
+| `clean_scope(text)` | Strips liturgical scope prefixes (`द्वयोः`, `द्वयोर्`, `द्वयोरि-` $\rightarrow$ `इ-`, `त्रयाणां`) |
+| `padacheda_word(w)` | Restores canonical Visarga to nominal stems in Saṃhitā sandhi form (`गोतमो` $\rightarrow$ `गोतमः`, `श्रुतर्षिर्` $\rightarrow$ `श्रुतर्षिः`) |
+| `parse_single_saman_clause(clause, default_c, default_d)` | Deconstructs Sandhi compounds (e.g. `गायत्र्यग्निः` $\rightarrow$ `गायत्री`, `अग्निः`) and applies Pada-cheda |
+| `extract_multi_saman_rdc(meta_str, default_c, default_d)` | Splits `saman_metadata` into clauses by `।।` and extracts an array of RDC records for multi-Sāmam subsections |
+| `enrich_ast(ast, rik_recon)` | Traverses AST; assigns `Global_Rik_Num` (1..587); sets `rik_rishi`, `rik_devata`, `rik_chandas` (str) and `saman_rishi`, `saman_devata`, `saman_chandas` (`List[str]`) |
+| `main()` | CLI runner; enriches canonical `Samhita_ast.json`; validates 100% population |
+
+**RDC Data Schema in AST Subsections:**
+```json
+{
+  "rik_rishi": "भरद्वाजो बार्हस्पत्यः",
+  "rik_devata": "अग्निः",
+  "rik_chandas": "गायत्री",
+  "saman_metadata": "।। वत्सो गायत्र्यग्निः ।। ।। शौनश्शेपो गायत्र्यग्निः ।।",
+  "saman_rishi": ["वत्सः", "शौनश्शेपः"],
+  "saman_devata": ["अग्निः", "अग्निः"],
+  "saman_chandas": ["गायत्री", "गायत्री"]
+}
+```
 
 ---
 

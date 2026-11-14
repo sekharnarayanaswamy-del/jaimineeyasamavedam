@@ -17,7 +17,7 @@ Unicode text and PDF.
 
 Usage:
     .venv\\Scripts\\python.exe -X utf8 -m malayalam.ml_text \
-        --input data/output/Vargeekaran.json \
+        --input data/corpora/samhita/02_ast/Samhita_ast.json \
         --output data/output/malayalam/Samhita_Malayalam.json
 """
 
@@ -377,7 +377,7 @@ def render_intermediate_text(data: dict) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="JSV Samam -> Malayalam intermediate text")
-    parser.add_argument("--input", required=True, help="Devanagari AST JSON (Vargeekaran.json)")
+    parser.add_argument("--input", required=True, help="Devanagari AST JSON (Samhita_ast.json)")
     parser.add_argument("--output", required=True, help="Output transformed JSON path")
     parser.add_argument("--text-out", default=None, help="Intermediate Unicode text output")
     parser.add_argument("--qa-out", default=None, help="QA report output path")

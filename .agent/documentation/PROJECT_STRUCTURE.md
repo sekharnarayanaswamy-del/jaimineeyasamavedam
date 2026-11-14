@@ -26,19 +26,17 @@ jaimineeyasamavedam/
 
 ### **A. The Data Engine (`data/`)**
 - **Input Data**:
-    - [`data/input/Samhita_corrected.txt`](../../data/input/Samhita_corrected.txt): The master unified source file for the Jaimineeya Samhita.
+    - [`data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt`](../../data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt): The master unified source file for the Jaimineeya Samhita.
     - [`data/input/Aaranam_latest.txt`](../../data/input/Aaranam_latest.txt): The master source for the Aaranam collection.
-    - [`data/input/Rik Reconciliation table (JSV-KSV).xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29.xlsx): The reference for Samhita metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
-    - [`data/input/Rik Reconciliation table (JSV-KSV) - Aaranam.xlsx`](../../data/input/Rik%20Reconciliation%20table%20%28JSV-KSV%29%20-%20Aaranam.xlsx): The reference for Aaranam metadata is the KSV table of Jitendra Bansal (https://sanskritdocuments.org/sanskrit/veda/).
+    - [`data/output/Rik Reconciliation table (JSV-KSV).xlsx`](../../data/output/Rik%20Reconciliation%20table%20%28JSV-KSV%29.xlsx): The reference for Samhita metadata from the KSV table of Jitendra Bansal.
     - [`data/input/prayoga/prayoga_index.yaml`](../../data/input/prayoga/prayoga_index.yaml): The index mapping ritual procedure Markdown descriptions to specific mantra sections/subsections.
     
-- **Output Data**:
-- The json files represent the single source of truth in the project. 
+- **Canonical AST Databases**:
+- The JSON files represent the single source of truth in the project. 
 
-    - [`data/output/Samhita_corrected_out.json`](../../data/output/Samhita_corrected_out.json): The processed, hierarchical database of the Samhita that is generated from the `Samhita_corrected.txt` file.
+    - [`data/corpora/samhita/02_ast/Samhita_ast.json`](../../data/corpora/samhita/02_ast/Samhita_ast.json): The canonical, fully enriched hierarchical AST of the Samhita, populated with 100% Ṛk and Sāmam RDC metadata.
     - [`data/output/Aaranam_latest_out.json`](../../data/output/Aaranam_latest_out.json): The processed, hierarchical database of the Aaranam that is generated from the `Aaranam_latest.txt` file.
-    - [`data/output/Vargeekaran.json`](../../data/output/Vargeekaran.json): The processed, hierarchical database of the Samhita enriched with Rishi, Devata, Chandas metadata for website publishing.
-    - [`data/output/Aaranam_vargeekaran.json`](../../data/output/Aaranam_vargeekaran.json): The processed database of the Aaranam enriched with Rishi, Devata, Chandas metadata for website publishing.
+    - [`data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv`](../../data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv): The tabular reconciliation export of unique Riks.
 
 - **Pipeline Document Outputs (`data/output/`)**:
     - `data/output/html/<language>/`: Interactive HTML readers (e.g., `Malayalam/Samam_Malayalam.html`, `Devanagari/Samhita_kpully_Devanagari.html`).

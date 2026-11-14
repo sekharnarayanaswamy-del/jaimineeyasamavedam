@@ -75,7 +75,7 @@ renumber_sooktam:
     no_increment: false
     no_renumber: false
   samhita:
-    input: "data/input/Samhita_Devanagari_Unicode.txt"
+    input: "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt"
     start_super: 1
     start_section: 1
     start_subsection: 1
@@ -117,8 +117,8 @@ generate_json:
   
   # Type-specific input/output paths
   samhita:
-    input: "data/input/Samhita_Devanagari_Unicode.txt"
-    output: "data/output/Samhita_corrected_out.json"
+    input: "data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt"
+    output: "data/corpora/samhita/02_ast/Samhita_ast.json"
     mode: "correction"
   aaranam:
     input: "data/input/Aaranam_latest.txt"
@@ -137,7 +137,7 @@ generate_json:
 #   input                    Override Input JSON file
 #   -o, --output             Override Output CSV file
 #   -e, --excel              Override Reconciliation Excel file
-#   -j, --json_out          Override Output Vargeekaran JSON file
+#   -j, --json_out          Override Output JSON file
 #   --no-enrich             Skip external Excel reconciliation; use JSON-resident metadata only.
 #
 generate_rik_table:
@@ -145,10 +145,10 @@ generate_rik_table:
   default_type: "samhita"  # Choices: samhita, aaranam
   
   samhita:
-    input: "data/output/Samhita_corrected_out.json"
-    output_csv: "data/output/JSV_Rik_Table.csv"
+    input: "data/corpora/samhita/02_ast/Samhita_ast.json"
+    output_csv: "data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv"
     recon_excel: "data/output/Rik Reconciliation table (JSV-KSV).xlsx"
-    v_json: "data/output/Vargeekaran.json"
+    v_json: "data/corpora/samhita/02_ast/Samhita_ast.json"
   aaranam:
     input: "data/output/Aaranam_latest_out.json"
     output_csv: "data/output/Aaranam_Rik_Table_Baseline.csv"
@@ -171,7 +171,7 @@ generate_aaranam_rik_table:
 # --- JSV CURATION (src/curate_jsv.py) ---
 curate_jsv:
   sources:
-    - "data/output/Vargeekaran.json"
+    - "data/corpora/samhita/02_ast/Samhita_ast.json"
     - "data/output/Aaranam_vargeekaran.json"
   filter: "data/input/Ashirvachana_samani.txt"
   output: "data/output/Ashirvachana_samani_out.json"
@@ -203,7 +203,7 @@ generate_website:
   
   # Type-specific sources
   samhita:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/samhita"
     title: "जैमिनीयसामवेद संहिता"
   aaranam:
@@ -215,7 +215,7 @@ generate_website:
     output_dir: "docs/collection"
     title: "जैमिनीयसामवेद सङ्ग्रहः"
   kpully_devanagari:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/kpully-devanagari"
     kpully: true
     output_mode: "samam_nometa"
@@ -226,22 +226,22 @@ generate_website:
     font: "Noto Serif Malayalam"
     title: "ജൈമിനീയ സാമവേദ സംഹിത"
   samhita_samam:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/samhita-samam"
     output_mode: "samam"
     title: "जैमिनीयसामवेद संहिता (साम सविशेषम्)"
   samhita_rik:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/samhita-rik"
     output_mode: "rik"
     title: "जैमिनीय सामवेद संहिता (ऋक् सविशेषम्)"
   samhita_samam_nometa:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/samhita-samam-nometa"
     output_mode: "samam_nometa"
     title: "जैमिनीय सामवेद संहिता (साम गान पाठः)"
   samhita_rik_nometa:
-    source: "data/corpora/samhita/04_canonical/Vargeekaran.json"
+    source: "data/corpora/samhita/02_ast/Samhita_ast.json"
     output_dir: "docs/samhita-rik-nometa"
     output_mode: "rik_nometa"
     title: "जैमिनीय सामवेद संहिता (ऋक् पाठः)"

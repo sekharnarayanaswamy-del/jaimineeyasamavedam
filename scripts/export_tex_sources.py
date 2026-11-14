@@ -19,7 +19,7 @@ def export_all_tex_sources(output_dir="data/output/tex"):
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    json_path = ROOT_DIR / "data/output/Samhita_corrected_out.json"
+    json_path = ROOT_DIR / "data/corpora/samhita/02_ast/Samhita_ast.json"
     with open(json_path, "r", encoding="utf-8") as f:
         raw_data = json.load(f)
 

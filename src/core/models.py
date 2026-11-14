@@ -82,9 +82,9 @@ class SubSection:
     rik_devata: str = ""
     rik_chandas: str = ""
     saman_metadata: str = ""
-    saman_rishi: str = ""
-    saman_devata: str = ""
-    saman_chandas: str = ""
+    saman_rishi: Union[str, List[str]] = field(default_factory=list)
+    saman_devata: Union[str, List[str]] = field(default_factory=list)
+    saman_chandas: Union[str, List[str]] = field(default_factory=list)
     corrected_mantra_sets: List[MantraVerse] = field(default_factory=list)
     content_lines: List[str] = field(default_factory=list)
     footnotes: Dict[str, str] = field(default_factory=dict)
@@ -102,9 +102,9 @@ class SubSection:
             "rik_rishi": self.rik_rishi,
             "rik_devata": self.rik_devata,
             "rik_chandas": self.rik_chandas,
-            "saman_rishi": self.saman_rishi,
-            "saman_devata": self.saman_devata,
-            "saman_chandas": self.saman_chandas,
+            "saman_rishi": list(self.saman_rishi) if isinstance(self.saman_rishi, list) else self.saman_rishi,
+            "saman_devata": list(self.saman_devata) if isinstance(self.saman_devata, list) else self.saman_devata,
+            "saman_chandas": list(self.saman_chandas) if isinstance(self.saman_chandas, list) else self.saman_chandas,
             "procedure_ref": self.procedure_ref.to_dict() if self.procedure_ref else None,
             "rik_metadata": self.rik_metadata,
             "rik_text": self.rik_text,
@@ -146,6 +146,13 @@ class SubSection:
         }
         extra = {k: v for k, v in data.items() if k not in standard_keys}
 
+        def _parse_list_or_str(val: Any) -> Any:
+            if val is None:
+                return []
+            if isinstance(val, list):
+                return [str(x) for x in val]
+            return str(val)
+
         return cls(
             header=HeaderInfo.from_dict(data.get("header")),
             rik_id=data.get("rik_id"),
@@ -156,9 +163,9 @@ class SubSection:
             rik_devata=str(data.get("rik_devata", "")),
             rik_chandas=str(data.get("rik_chandas", "")),
             saman_metadata=str(data.get("saman_metadata", "")),
-            saman_rishi=str(data.get("saman_rishi", "")),
-            saman_devata=str(data.get("saman_devata", "")),
-            saman_chandas=str(data.get("saman_chandas", "")),
+            saman_rishi=_parse_list_or_str(data.get("saman_rishi")),
+            saman_devata=_parse_list_or_str(data.get("saman_devata")),
+            saman_chandas=_parse_list_or_str(data.get("saman_chandas")),
             corrected_mantra_sets=mantra_sets,
             content_lines=list(data.get("content_lines", [])),
             footnotes=footnotes,

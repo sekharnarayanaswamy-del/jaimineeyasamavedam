@@ -32,7 +32,12 @@ This document captures the strategic milestones and architectural evolution of t
   - Full alignment with standalone HTML viewers for Kodunthirapully (`kpully`) swara modifier geometry & typography.
   - Multi-site static suite generating all 8 micro-website targets (`samhita`, `aaranam`, `collections`, `kpully-devanagari`, `malayalam`, `samhita-samam`, `samhita-rik`, `samhita-samam-nometa`, `samhita-rik-nometa`).
 
-## 🔭 Phase 5: Extended Corpora Expansion (Future)
+## 🔭 Phase 5: Extended Corpora Expansion & Pipeline Evolution (Future / Backlog)
+- [ ] **Reconcile RDC Enrichment with Canonical AST (Samhita_ast.json) & Micro-Website Generation Pipeline**:
+  - **Schema & Model Reconciliation**: Update `src/website/models.py` (`saman_rishi`, `saman_devata`, `saman_chandas` to `Union[str, List[str]]`) and `src/website/parser.py` to ingest multi-element Sāmam RDC arrays alongside Ṛk RDC strings from `Samhita_ast.json`.
+  - **Multi-Sāmam UI Rendering**: Enhance the VedaVMS 2-column reader in `src/website/formatters.py` and `generator.py` to render per-chant Sāmam Ṛṣi, Devatā, and Chandas cleanly (e.g. split cards/badges for multi-Sāmam subsections like `subsection_10`).
+  - **Classification & Search Indexing**: Update `src/website/generator.py` (`classification/*.html`) and `src/website/search.py` (`search-index.js`) to index both Ṛk and Sāmam RDC so users can search and filter by Sāmam Ṛṣi/Devatā/Chandas across all 8 micro-website targets (`samhita`, `aaranam`, `collections`, `kpully-devanagari`, `malayalam`, `samhita-samam`, `samhita-rik`, `samhita-samam-nometa`, `samhita-rik-nometa`).
+  - **Build Orchestration**: Seamlessly bind `src/tools/enrich_ast_rdc.py` into the default `generate_rik_table.py` / `Samhita_ast.json` build sequence prior to executing `generate_website.py`.
 - [ ] **Full Archikam Integration**: Complete publication pipeline for Purvarchikam and Uttararchikam Rik corpora.
 - [ ] **Interactive Visual Curation**: Malayalam-Devanagari swara geometry tuning interface.
 - [ ] **Unified Standalone HTML Viewer & Cross-Project Notes Library**:

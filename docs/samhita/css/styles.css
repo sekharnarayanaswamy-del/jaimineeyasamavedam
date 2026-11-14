@@ -1277,7 +1277,8 @@ background: var(--bg-sidebar);
     display: inline-flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    text-align: center;
+    justify-content: flex-start;
+    text-align: left;
     gap: 0;
 }
 

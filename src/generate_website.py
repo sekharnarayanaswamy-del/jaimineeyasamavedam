@@ -81,7 +81,7 @@ Examples:
     script_dir = Path(__file__).parent
     project_root = script_dir.parent
     
-    default_source = project_root / 'data' / 'output' / 'Vargeekaran.json'
+    default_source = project_root / 'data' / 'corpora' / 'samhita' / '02_ast' / 'Samhita_ast.json'
     default_output = project_root / 'docs'
     default_audio = project_root / 'data' / 'input' / 'Audio_Placeholders'
     
@@ -219,8 +219,8 @@ Examples:
         font = args.font or type_cfg.get('font') or 'Noto Serif Malayalam'
         font_sans = 'Noto Sans Malayalam'
     else:
-        cand_sam_canon = project_root / 'data' / 'corpora' / 'samhita' / '04_canonical' / 'Vargeekaran.json'
-        effective_default_source = cand_sam_canon if cand_sam_canon.exists() else default_source
+        cand_sam_ast = project_root / 'data' / 'corpora' / 'samhita' / '02_ast' / 'Samhita_ast.json'
+        effective_default_source = cand_sam_ast if cand_sam_ast.exists() else default_source
         source_file = args.source_file or type_cfg.get('source') or web_cfg.get('source') or str(effective_default_source)
         output_dir = args.output_dir or type_cfg.get('output_dir') or web_cfg.get('output_dir') or str(default_output)
         audio_dir = args.audio_dir or type_cfg.get('audio_dir') or web_cfg.get('audio_dir') or str(default_audio)

@@ -32,7 +32,7 @@ After curation or manual editing, use `src/tools/renumber_sooktam.py` to ensure 
 
 ### Pipeline for complex cases (Example): 
 1. ```powershell
-   python src/curate_jsv.py --sources data/corpora/samhita/04_canonical/Vargeekaran.json data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json --filter data/input/Nakshatra_sooktam.txt --output data/corpora/collections/02_ast/Nakshatra_sooktam.json --mode rik_nometa --filter-type rik
+   python src/curate_jsv.py --sources data/corpora/samhita/02_ast/Samhita_ast.json data/corpora/aaranam/04_canonical/Aaranam_vargeekaran.json --filter data/input/Nakshatra_sooktam.txt --output data/corpora/collections/02_ast/Nakshatra_sooktam.json --mode rik_nometa --filter-type rik
    ```
 2. ```powershell
    python src/render.py data/corpora/collections/02_ast/Nakshatra_sooktam.json --type collection -o Nakshatra_sooktam --output-dir data/corpora/collections/05_renders

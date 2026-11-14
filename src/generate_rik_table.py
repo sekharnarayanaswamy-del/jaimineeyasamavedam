@@ -35,10 +35,10 @@ try:
 except ImportError:
     HAS_OPENPYXL = False
 
-DEFAULT_INPUT = r'data\output\Samhita_corrected_out.json'
-DEFAULT_OUTPUT_CSV = r'data\output\JSV_Rik_Table.csv'
+DEFAULT_INPUT = r'data\corpora\samhita\02_ast\Samhita_ast.json'
+DEFAULT_OUTPUT_CSV = r'data\corpora\samhita\03_reconciliation\JSV_Rik_Table.csv'
 DEFAULT_RECON_EXCEL = r'data\output\Rik Reconciliation table (JSV-KSV).xlsx'
-DEFAULT_VARGEEKARAN_JSON = r'data\output\Vargeekaran.json'
+DEFAULT_VARGEEKARAN_JSON = r'data\corpora\samhita\02_ast\Samhita_ast.json'
 
 def replace_accents_unicode(text):
     """

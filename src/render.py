@@ -731,7 +731,7 @@ Examples:
          elif mode_type == 'uttararchikam':
              input_file = 'data/output/Uttararchikam_out.json'
          else:
-             input_file = 'data/output/Samhita_corrected_out.json'
+             input_file = 'data/corpora/samhita/02_ast/Samhita_ast.json'
     
     file_prefix = (
         "Aaranam" if mode_type == 'aaranam' else 

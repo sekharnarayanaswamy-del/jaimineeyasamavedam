@@ -32,7 +32,7 @@ This skill covers the mechanics of translating the Source of Truth JSON into the
 ## 4. Generation Commands
 *   **Samhita**: `python src/generate_website.py --samhita -o docs/samhita`
 *   **Aaranam**: `python src/generate_website.py --aaranam -o docs/aaranam`
-*   **Custom Collection**: `python src/curate_jsv.py --sources data/corpora/samhita/04_canonical/Vargeekaran.json --filter logic.txt --output data/corpora/collections/02_ast/custom.json`
+*   **Custom Collection**: `python src/curate_jsv.py --sources data/corpora/samhita/02_ast/Samhita_ast.json --filter logic.txt --output data/corpora/collections/02_ast/custom.json`
 
 ## 5. Prayoga Procedure Links
 *   **JSON Generation**: First generate JSON with procedures:

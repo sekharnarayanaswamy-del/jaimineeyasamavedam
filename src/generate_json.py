@@ -1950,7 +1950,7 @@ Examples:
 
     # Priority: CLI > Config > Default
     default_input_map = {
-        'samhita': 'data/input/Samhita_Devanagari_Unicode.txt',
+        'samhita': 'data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt',
         'aaranam': 'data/input/Aaranam_latest.txt',
         'purvarchikam': 'data/input/vedic_text.txt',
         'uttararchikam': 'data/input/vedic_text.txt',
@@ -2018,7 +2018,20 @@ Examples:
         output_data = parse_unicode_text_file(input_file, metadata_file_path=args.metadata_file, title=title)
     
     if output_data:
+        if mode_type == 'samhita':
+            try:
+                from tools.enrich_ast_rdc import enrich_ast, load_reconciliation_table
+                recon_path = Path("data/output/Rik Reconciliation table (JSV-KSV).xlsx")
+                if recon_path.exists():
+                    print("[Enrichment] Automatically reconciling Rik and Samam RDC with Padacheda...")
+                    rik_recon = load_reconciliation_table(str(recon_path))
+                    enrich_ast(output_data, rik_recon)
+                    print("[Enrichment] RDC enrichment complete.")
+            except Exception as e:
+                print(f"[WARNING] Automatic RDC enrichment skipped: {e}")
+
         try:
+            Path(output_file_path).parent.mkdir(parents=True, exist_ok=True)
             with open(output_file_path, 'w', encoding='utf-8') as outfile:
                 json.dump(output_data, outfile, indent=4, ensure_ascii=False)
             print(f"Success! Saved to '{output_file_path}'")

@@ -53,7 +53,7 @@ python src/tools/check_status.py
 ### What It Reports:
 1. **Current Git Branch & Commit**: Confirms you are on branch `refactor` and shows if working tree has untracked/dirty files.
 2. **Active Baseline Manifest**: Displays the active baseline name, date recorded, and git hash.
-3. **Staleness / Drift Check**: Alerts you if master input files (`data/input/Samhita_corrected.txt`, etc.) or output files have changed compared to the active baseline.
+3. **Staleness / Drift Check**: Alerts you if master input files (`data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt`, etc.) or output files have changed compared to the active baseline.
 4. **Recommended Next Actions**: Suggests immediate CLI commands to execute.
 
 ---
@@ -80,7 +80,7 @@ python src/generate_json_summary.py
 Verify that all `# Start of` and `# End of` tags in master texts are balanced and uncorrupted:
 
 ```bash
-python src/tools/renumber_sooktam.py data/input/Samhita_corrected.txt --type samhita --no-increment --no-renumber
+python src/tools/renumber_sooktam.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt --type samhita --no-increment --no-renumber
 ```
 
 - [ ] Output confirms: `Structural Integrity Check...` with **zero tag mismatches** and **zero unclosed tags**.
@@ -101,7 +101,7 @@ python src/tools/validate_run.py all
 - [ ] **Track B (Semantic Curation Diff)**: Byte/verse parity or expected intentional curation changes reported.
 - [ ] Round-trip validation via Typed AST:
   ```bash
-  python -c "from src.core.models import VedicDocument; import json; doc = VedicDocument.from_dict(json.load(open('data/output/Samhita_corrected_out.json', encoding='utf-8'))); assert len(doc.supersections) == 6; print('VedicDocument AST Valid!')"
+  python -c "from src.core.models import VedicDocument; import json; doc = VedicDocument.from_dict(json.load(open('data/corpora/samhita/02_ast/Samhita_ast.json', encoding='utf-8'))); assert len(doc.supersections) == 6; print('VedicDocument AST Valid!')"
   ```
 
 #### Promoting Active Run to Golden Baseline
@@ -123,10 +123,10 @@ python src/generate_rik_table.py --type samhita
 
 Check continuity across all 1226 Samas:
 ```bash
-python src/tools/check_continuity.py data/output/Vargeekaran.json
+python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json
 ```
 
-- [ ] Generated files exist: `data/output/JSV_Rik_Table.csv` and `data/output/Vargeekaran.json`.
+- [ ] Generated files exist: `data/corpora/samhita/03_reconciliation/JSV_Rik_Table.csv` and `data/corpora/samhita/02_ast/Samhita_ast.json`.
 - [ ] Total Samams reported: **1226**.
 
 ---
@@ -136,10 +136,10 @@ Verify that the rendering layer compiles without template or syntax errors:
 
 ```bash
 # 1. Standard Devanagari Combined Render (LaTeX + PlainText)
-python src/render_pdf.py data/output/Vargeekaran.json --type samhita --output-mode combined
+python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --type samhita --output-mode combined
 
 # 2. Kodunthirapully Swara Stacking Mode (-kpully)
-python src/render_pdf.py data/output/Vargeekaran.json -kpully
+python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully
 ```
 
 - [ ] Generated files exist in `data/output/pdf/Devanagari/` and `data/output/txt/Devanagari/`.
@@ -166,7 +166,7 @@ python src/generate_website.py --aaranam
 Verify that software modifications do not falsely inflate corpus edition numbers:
 
 ```bash
-python -c "from src.core.version import get_engine_version, get_corpus_edition, get_build_metadata; print('Engine:', get_engine_version()); print('Edition:', get_corpus_edition('samhita')); meta = get_build_metadata('samhita', 'data/input/Samhita_corrected.txt'); print('Input SHA:', meta['input_sha256'][:16]); assert meta['version'] == '3.28'"
+python -c "from src.core.version import get_engine_version, get_corpus_edition, get_build_metadata; print('Engine:', get_engine_version()); print('Edition:', get_corpus_edition('samhita')); meta = get_build_metadata('samhita', 'data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt'); print('Input SHA:', meta['input_sha256'][:16]); assert meta['version'] == '3.28'"
 ```
 
 - [ ] Engine version reflects git tag & commit (e.g. `v4.0.0+<commit>`).
@@ -230,10 +230,10 @@ Use when modifying parsers, renderers, or build scripts to prove zero regression
 Use when correcting accents, modifying swaras, or editing verses in canonical texts:
 
 1. **Edit Source Text**:
-   - Edit verse in `data/input/Samhita_corrected.txt` (or `data/corpora/samhita/01_input/Samhita.txt`).
+   - Edit verse in `data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt` (or `data/corpora/samhita/01_input/Samhita.txt`).
 2. **Run Corpus Pipeline**:
    ```bash
-   python src/generate_json.py data/input/Samhita_corrected.txt --type samhita
+   python src/generate_json.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt --type samhita
    python src/generate_rik_table.py --type samhita
    ```
 3. **Run Semantic Curation Audit**:
@@ -287,7 +287,7 @@ python src/tools/baseline.py verify
 
 ### Step 3: Check Verse Continuity
 ```bash
-python src/tools/check_continuity.py data/output/Vargeekaran.json
+python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json
 ```
 *Verifies that Sama numbers within every section run sequentially (`1, 2, 3...`) with zero gaps or duplicate verse numbers.*
 
@@ -308,8 +308,8 @@ python src/tools/baseline.py create baseline-<date>-<milestone> -d "Description 
 
 | Symptom | Probable Cause | Action to Resolve |
 |---|---|---|
-| `Total Samas != 1226` | Verse delimiter tag (`॥ N ॥`) missing, malformed, or split line | Run `python src/tools/check_continuity.py data/output/Vargeekaran.json` and check reported line |
-| `Unclosed structural tags` | Missing `# End of SubSection` or Section boundary tag in input text | Run `python src/ingest/renumber.py data/input/Samhita_corrected.txt` to see exact line number |
+| `Total Samas != 1226` | Verse delimiter tag (`॥ N ॥`) missing, malformed, or split line | Run `python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json` and check reported line |
+| `Unclosed structural tags` | Missing `# End of SubSection` or Section boundary tag in input text | Run `python src/ingest/renumber.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt` to see exact line number |
 | `Dotted circle on Visarga (ः) or Anusvara (ं)` | Accent combining mark placed before base character | Run `from src.core.swara_engine import fix_visarga_accent_order` on target text |
 | `Baseline status shows [MODIFIED]` | Input or output file changed since last snapshot | Run `python src/tools/baseline.py verify` to check if change was intentional AST edit or unintended regression |
 

@@ -46,7 +46,7 @@ DEFAULT_DEVA_INPUT = (
     if (ROOT_DIR / "data" / "corpora" / "samhita" / "01_input" / "Samhita_Devanagari_Unicode.txt").exists()
     else ROOT_DIR / "data" / "input" / "Samhita_Devanagari_Unicode.txt"
 )
-DEFAULT_DEVA_JSON = ROOT_DIR / "data" / "output" / "Samhita_corrected_out.json"
+DEFAULT_DEVA_JSON = ROOT_DIR / "data" / "corpora" / "samhita" / "02_ast" / "Samhita_ast.json"
 
 DEFAULT_AARANAM_INPUT = (
     ROOT_DIR / "data" / "corpora" / "aaranam" / "01_input" / "Aaranam_latest.txt"
@@ -301,20 +301,15 @@ def main():
                 description="Samhita Step 1: Generating JSON AST from source text",
             )
 
-            # Step 1A.1: Generate Canonical Vargeekaran AST & Rik Table
+            # Step 1A.1: Generate Canonical Rik Table & Enriched AST
             run_cmd(
                 [
                     sys.executable,
                     "-X", "utf8",
                     str(ROOT_DIR / "src" / "generate_rik_table.py"),
                 ],
-                description="Samhita Step 1A.1: Generating Canonical Vargeekaran AST & Rik Table",
+                description="Samhita Step 1A.1: Generating Canonical Rik Table & Enriched AST",
             )
-            sam_v_json = ROOT_DIR / "data" / "output" / "Vargeekaran.json"
-            if sam_v_json.exists():
-                sam_can_dir = ROOT_DIR / "data" / "corpora" / "samhita" / "04_canonical"
-                sam_can_dir.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(str(sam_v_json), str(sam_can_dir / "Vargeekaran.json"))
 
             # Step 1B: Render Devanagari in requested modes
             mode_descriptions = {

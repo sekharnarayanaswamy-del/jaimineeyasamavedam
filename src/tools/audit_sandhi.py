@@ -621,7 +621,7 @@ def get_subsection_line_range(lines: list, sub_key: str):
 
 def apply_patch():
     ast_path = Path("data/corpora/samhita/02_ast/Samhita_ast.json")
-    out_ast_path = Path("data/output/Samhita_corrected_out.json")
+    out_ast_path = Path("data/corpora/samhita/02_ast/Samhita_ast.json")
     txt_path = Path("data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt")
     txt_sync_path = Path("data/input/Samhita_Devanagari_Unicode.txt")
     
@@ -2542,7 +2542,7 @@ def generate_markdown_report(total_subs: int, findings: list, output_path: Path)
 
 def main():
     parser = argparse.ArgumentParser(description="Audit Sanskrit Sandhi rules in Jaimineeya Samaveda Samhita.")
-    parser.add_argument('--input', '-i', default='data/output/Samhita_corrected_out.json',
+    parser.add_argument('--input', '-i', default='data/corpora/samhita/02_ast/Samhita_ast.json',
                         help='Input AST JSON path')
     parser.add_argument('--html', default='data/corpora/samhita/06_reports/SANDHI_AUDIT_REPORT.html',
                         help='Output HTML report path')
