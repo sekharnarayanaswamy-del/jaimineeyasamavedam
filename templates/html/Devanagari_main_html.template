@@ -636,11 +636,15 @@
 
         /* Rik-Samam Separate Layout */
         .rik-metadata {
-            color: var(--accent-purple);
-            font-size: 1.05rem;
+            color: var(--accent-brown);
+            font-size: 1.15rem;
             margin-bottom: 6px;
             line-height: 1.6;
             text-align: center;
+        }
+
+        .rik-metadata .danda {
+            font-size: inherit;
         }
 
         .rik-text {
@@ -1682,7 +1686,9 @@
                             <div class="toc-sec-header" onclick="toggleTocSection('toc-sec-\VAR{key}-\VAR{section_key}')">
                                 <a href="#\VAR{key}-\VAR{section_key}" class="toc-sec-title">
                                     <span>\VAR{(section.section_title_toc or (section.section_title | toc_header)) | replace(':', 'ः')}</span>
+                                    \BLOCK{ if section.Count }
                                     <span class="toc-count">(\VAR{section.Count})</span>
+                                    \BLOCK{ endif }
                                 </a>
                                 <span class="toc-sec-toggle">▾</span>
                             </div>
@@ -1965,11 +1971,20 @@
         }
 
         function applyFontSize() {
+            const remVal = currentSize + 'rem';
+            const mantraVal = (currentSize * 1.25) + 'rem';
             const mainEl = document.querySelector('.main-content');
-            if (mainEl) mainEl.style.setProperty('--font-size', currentSize + 'rem');
-            document.documentElement.style.setProperty('--font-size', currentSize + 'rem');
+            if (mainEl) {
+                mainEl.style.setProperty('--font-size', remVal);
+                mainEl.style.setProperty('--mantra-size', mantraVal);
+            }
+            document.documentElement.style.setProperty('--font-size', remVal);
+            document.documentElement.style.setProperty('--mantra-size', mantraVal);
             updateFontSizeDisplay();
-            localStorage.setItem('jsv-reader-font-size', currentSize);
+            try {
+                localStorage.setItem('jsv-reader-font-size', currentSize);
+                localStorage.removeItem('reader-font-size');
+            } catch (e) {}
         }
 
         function adjustFont(delta) {
@@ -2625,6 +2640,9 @@
                     else el.classList.remove('collapsed');
                 }
             }
+            try {
+                localStorage.removeItem('reader-font-size');
+            } catch (e) {}
             const savedFont = localStorage.getItem('jsv-reader-font-idx');
             if (savedFont !== null) {
                 setFont(parseInt(savedFont, 10) || 0);

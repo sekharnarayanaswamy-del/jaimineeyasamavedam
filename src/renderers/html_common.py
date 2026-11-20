@@ -1746,89 +1746,14 @@ def get_viewer_notes_js(storage_prefix: str = "jsv") -> str:
                 });
             });
 
-            // Close mobile Suchi on Escape key
+            // Close mobile Suchi / drawer on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    closeMobileToc();
-                    closePrintModal();
                     toggleBookmarksDrawer(false);
                 }
             });
 
-            function onOrientationOrResize() {
-                handleLayoutChange();
-                // Ensure viewport zoom and scaling reset cleanly on mobile orientation switch
-                const viewportMeta = document.querySelector('meta[name="viewport"]');
-                if (viewportMeta) {
-                    viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover');
-                }
-            }
-
-            // Trap window resize
-            window.addEventListener('resize', onOrientationOrResize);
-
-            // Trap mobile device orientation change (both legacy and modern APIs)
-            window.addEventListener('orientationchange', function() {
-                setTimeout(onOrientationOrResize, 50);
-                setTimeout(onOrientationOrResize, 150);
-                setTimeout(onOrientationOrResize, 350);
-            });
-
-            if (window.screen && window.screen.orientation) {
-                window.screen.orientation.addEventListener('change', function() {
-                    setTimeout(onOrientationOrResize, 50);
-                    setTimeout(onOrientationOrResize, 150);
-                    setTimeout(onOrientationOrResize, 350);
-                });
-            }
-
-            const mqlPortrait = window.matchMedia('(orientation: portrait)');
-            if (mqlPortrait.addEventListener) {
-                mqlPortrait.addEventListener('change', onOrientationOrResize);
-            } else if (mqlPortrait.addListener) {
-                mqlPortrait.addListener(onOrientationOrResize);
-            }
-
-            const sidebar = document.querySelector('.toc-sidebar');
-            if (sidebar) {
-                let tocTimeout;
-                sidebar.addEventListener('wheel', () => {
-                    isUserInteractingWithToc = true;
-                    clearTimeout(tocTimeout);
-                    tocTimeout = setTimeout(() => { isUserInteractingWithToc = false; }, 1500);
-                }, { passive: true });
-            }
-
-            // Synchronize initial layout state based on screen orientation and width
-            handleLayoutChange();
-            const tocState = JSON.parse(localStorage.getItem('toc-chapters') || '{}');
-            for (const [id, isCollapsed] of Object.entries(tocState)) {
-                if (isCollapsed) {
-                    const el = document.getElementById(id);
-                    if (el) el.classList.add('collapsed');
-                }
-            }
-            const savedFont = localStorage.getItem('reader-font-idx');
-            if (savedFont !== null) {
-                setFont(parseInt(savedFont, 10) || 0);
-            }
-            const savedSize = localStorage.getItem('reader-font-size');
-            if (savedSize !== null) {
-                currentSize = parseFloat(savedSize) || defaultSize;
-                applyFontSize();
-            } else {
-                updateFontSizeDisplay();
-            }
             updateBookmarksUI();
         });
-
-        window.addEventListener('scroll', function() {
-            const btn = document.getElementById('back-to-top');
-            if (btn) {
-                if (window.scrollY > 350) btn.classList.add('visible');
-                else btn.classList.remove('visible');
-            }
-        });
-    
     """
     return js_template.replace("__STORAGE_PREFIX__", storage_prefix)
