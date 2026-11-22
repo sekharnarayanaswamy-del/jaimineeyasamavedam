@@ -2016,11 +2016,20 @@
         }
 
         function applyFontSize() {
+            const remVal = currentSize + 'rem';
+            const mantraVal = (currentSize * 1.25) + 'rem';
             const mainEl = document.querySelector('.main-content');
-            if (mainEl) mainEl.style.setProperty('--font-size', currentSize + 'rem');
-            document.documentElement.style.setProperty('--font-size', currentSize + 'rem');
+            if (mainEl) {
+                mainEl.style.setProperty('--font-size', remVal);
+                mainEl.style.setProperty('--mantra-size', mantraVal);
+            }
+            document.documentElement.style.setProperty('--font-size', remVal);
+            document.documentElement.style.setProperty('--mantra-size', mantraVal);
             updateFontSizeDisplay();
-            localStorage.setItem('jsv-ml-reader-font-size', currentSize);
+            try {
+                localStorage.setItem('jsv-ml-reader-font-size', currentSize);
+                localStorage.removeItem('reader-font-size');
+            } catch (e) {}
         }
 
         function adjustFont(delta) {

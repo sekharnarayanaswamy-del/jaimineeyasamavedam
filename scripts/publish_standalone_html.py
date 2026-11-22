@@ -121,6 +121,20 @@ CANONICAL_READERS = {
         "featured": False,
         "aliases": ["Aaranam.html"],
     },
+    "Samhita_Grantha.html": {
+        "title": "𑌜𑍈𑌮𑌿𑌨𑍀𑌯 𑌸𑌾𑌮 𑌸𑌂𑌹𑌿𑌤𑌾 (Grantha)",
+        "category": "Samhita",
+        "script": "Grantha",
+        "description": "Complete Grantha script edition of Jaimineeya Sama Samhita with embedded Noto Serif Grantha typography, continuous flow, and Latin numerals.",
+        "featured": True,
+    },
+    "Aaranam_Grantha.html": {
+        "title": "𑌜𑍈𑌮𑌿𑌨𑍀𑌯 𑌸𑌾𑌮 𑌆𑌰𑌣𑍍𑌯𑌕𑌮𑍍 (Grantha)",
+        "category": "Aranyakam",
+        "script": "Grantha",
+        "description": "Complete Grantha script edition of Jaimineeya Aranya Ganam (Aranyakam) with embedded Noto Serif Grantha typography, continuous flow, and Latin numerals.",
+        "featured": True,
+    },
 }
 
 
@@ -181,7 +195,7 @@ def cleanup_obsolete_files(target_dir: Path):
 
 
 def build_catalog_page(items):
-    categories = ["All", "Featured", "Samam Chants", "Collections", "Samhita", "Aranyakam", "Kauthuma Samaveda", "Devanagari", "Malayalam"]
+    categories = ["All", "Featured", "Samam Chants", "Collections", "Samhita", "Aranyakam", "Kauthuma Samaveda", "Devanagari", "Malayalam", "Grantha"]
     total_files = len(items)
     dev_count = sum(1 for x in items if x["script"] == "Devanagari")
     mal_count = sum(1 for x in items if x["script"] == "Malayalam")
@@ -192,7 +206,14 @@ def build_catalog_page(items):
 
     initial_cards_html = []
     for item in items:
-        script_badge_class = "badge-devanagari" if item["script"] == "Devanagari" else "badge-malayalam"
+        if item["script"] == "Devanagari":
+            script_badge_class = "badge-devanagari"
+        elif item["script"] == "Malayalam":
+            script_badge_class = "badge-malayalam"
+        elif item["script"] == "Grantha":
+            script_badge_class = "badge-grantha"
+        else:
+            script_badge_class = "badge-category"
         featured_badge = '<span class="badge badge-featured">★ Featured</span>' if item["featured"] else ''
         card = f'''
             <div class="card{(' featured' if item['featured'] else '')}">
@@ -235,7 +256,7 @@ def build_catalog_page(items):
     <title>जैमिनीय सामवेदः | Standalone HTML Readers</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Noto+Serif+Grantha:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {{
             --bg-primary: #0f1117;
@@ -486,6 +507,12 @@ def build_catalog_page(items):
             border: 1px solid rgba(45, 212, 191, 0.3);
         }}
 
+        .badge-grantha {{
+            background: rgba(129, 140, 248, 0.2);
+            color: #818cf8;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+        }}
+
         .badge-category {{
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-muted);
@@ -671,7 +698,7 @@ def build_catalog_page(items):
                 const card = document.createElement('div');
                 card.className = 'card' + (item.featured ? ' featured' : '');
 
-                const scriptBadgeClass = item.script === 'Devanagari' ? 'badge-devanagari' : 'badge-malayalam';
+                const scriptBadgeClass = item.script === 'Devanagari' ? 'badge-devanagari' : (item.script === 'Malayalam' ? 'badge-malayalam' : 'badge-grantha');
 
                 card.innerHTML = `
                     <div>

@@ -57,6 +57,8 @@ from utils import (
     get_canonical_rik_id
 )
 
+GRANTHA_TO_LATIN_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯\u0be6\u0be7\u0be8\u0be9\u0bea\u0beb\u0bec\u0bed\u0bee\u0bef", "012345678901234567890123456789")
+
 # --- Output Filename Normalization ---
 def normalize_output_basename(name, doc_family):
     """
@@ -83,7 +85,7 @@ def normalize_output_basename(name, doc_family):
     return name
 
 # --- Core Document Generators ---
-def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False, flow_variant=False, skip_compile=False):
+def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, current_os="Windows", output_mode="combined", font_family="AdishilaVedic", doc_title_sa="जैमिनीय साम संहिता", pdf_color_mode="bw", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, kpully=False, flow_variant=False, skip_compile=False, summary_title_deva=None):
     reset_latex_doc_markers()
     set_flow_variant(flow_variant)
     data=escape_for_latex(data)
@@ -137,6 +139,7 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
         total_riks=total_riks,
         total_samams=total_samams,
         summary_title=summary_title,
+        summary_title_deva=summary_title_deva,
         toc_level=toc_level,
         has_riks=has_riks,
         has_samams=has_samams,
@@ -173,7 +176,22 @@ def CreatePdf(templateFileName, name, DocfamilyName, data, prayogas=None, curren
             # Step 2: run makeindex if .idx file exists to generate index (.ind)
             idx_file = Path(tmpdirname) / f"{Path(TexFileName).stem}.idx"
             if idx_file.exists() and idx_file.stat().st_size > 0:
-                cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
+                if DocfamilyName == "Grantha":
+                    ist_file = Path(tmpdirname) / "grantha.ist"
+                    ist_content = (
+                        'item_0 "\\n  \\\\item \\\\granthafont "\n'
+                        'item_1 "\\n    \\\\subitem \\\\granthafont "\n'
+                        'item_2 "\\n      \\\\subsubitem \\\\granthafont "\n'
+                        'delim_0 "\\\\latinfont , "\n'
+                        'delim_1 "\\\\latinfont , "\n'
+                        'delim_2 "\\\\latinfont , "\n'
+                        'delim_n "\\\\latinfont , "\n'
+                    )
+                    with open(ist_file, "w", encoding="utf-8") as f_ist:
+                        f_ist.write(ist_content)
+                    cmd_idx = ["makeindex", "-c", "-q", "-s", str(ist_file.name), str(idx_file.name)]
+                else:
+                    cmd_idx = ["makeindex", "-c", "-q", str(idx_file.name)]
                 subprocess.run(cmd_idx, cwd=tmpdirname, capture_output=True, text=True, encoding='utf-8', errors='ignore')
                 
             # Step 3: Pass 2 of lualatex to resolve TOC, index, and page cross-references
@@ -320,6 +338,7 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
             for subsection_key, subsection in section.get('subsections', {}).items():
                 unique_key = f"{super_key}_{section_key}_{subsection_key}"
                 is_malayalam = (script == 'malayalam')
+                is_grantha = (script == 'grantha')
                 
                 # Dispatch based on mode
                 html_content = ""
@@ -347,6 +366,13 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
                             seen_content_map=seen_content_map, subsection_key=unique_key,
                             doc_markers_map=doc_markers_map
                         )
+                    elif is_grantha:
+                        html_content, footnote_counter = format_grantha_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key,
+                            doc_markers_map=doc_markers_map
+                        )
                     else:
                         html_content, footnote_counter = format_samam_only_html(
                             subsection, None, None, subsection.get('header', {}).get('header'), {}, 
@@ -357,6 +383,13 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
                 elif output_mode == 'samam_nometa':
                     if is_malayalam:
                         html_content, footnote_counter = format_malayalam_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=False,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key,
+                            doc_markers_map=doc_markers_map
+                        )
+                    elif is_grantha:
+                        html_content, footnote_counter = format_grantha_samam_html(
                             subsection, subsection.get('header', {}).get('header', ''), include_metadata=False,
                             footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
                             seen_content_map=seen_content_map, subsection_key=unique_key,
@@ -380,6 +413,22 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
                                 doc_markers_map=doc_markers_map
                             )
                         s_html, footnote_counter = format_malayalam_samam_html(
+                            subsection, subsection.get('header', {}).get('header', ''), include_metadata=True,
+                            footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
+                            seen_content_map=seen_content_map, subsection_key=unique_key,
+                            doc_markers_map=doc_markers_map
+                        )
+                        html_content = f"{r_html}\n{s_html}" if r_html else s_html
+                    elif is_grantha:
+                        r_html = ""
+                        if subsection.get('rik_text') or subsection.get('rik_metadata'):
+                            r_html, footnote_counter = format_rik_only_html(
+                                subsection, None, None, subsection.get('header', {}).get('header'), {}, 
+                                prev_rik_id, unique_key, 
+                                footnote_counter, footnotes_accumulator, seen_content_map,
+                                doc_markers_map=doc_markers_map
+                            )
+                        s_html, footnote_counter = format_grantha_samam_html(
                             subsection, subsection.get('header', {}).get('header', ''), include_metadata=True,
                             footnote_counter=footnote_counter, footnotes_accumulator=footnotes_accumulator,
                             seen_content_map=seen_content_map, subsection_key=unique_key,
@@ -459,7 +508,7 @@ def preprocess_html_data(supersections, output_mode='combined', script='devanaga
     
     return sorted_index
 
-def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True, kpully=False):
+def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'AdishilaVedic', 'AdishilaSanVedic'", output_mode="combined", doc_title_sa="जैमिनीय साम संहिता", closing_mantras=None, summary_table=None, total_riks=None, total_samams=None, summary_title="संहिता सङ्ख्या", toc_level='both', has_riks=True, has_samams=True, output_dir_override=None, name_override=None, jsv_version=None, generated_at=None, script='devanagari', with_modifiers=True, kpully=False, summary_title_deva=None):
     """
     Creates an HTML file from the template and data.
     Similar to CreatePdf but outputs HTML instead.
@@ -540,6 +589,14 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     if rachana_bld_file.exists():
         with open(rachana_bld_file, "rb") as f_font:
             rachana_bold_b64 = base64.b64encode(f_font.read()).decode("ascii")
+
+    noto_serif_grantha_b64 = ""
+    grantha_font_file = Path(__file__).resolve().parent.parent / "fonts" / "NotoSerifGrantha-Regular.ttf"
+    if not grantha_font_file.exists():
+        grantha_font_file = Path("fonts/NotoSerifGrantha-Regular.ttf")
+    if grantha_font_file.exists():
+        with open(grantha_font_file, "rb") as f_font:
+            noto_serif_grantha_b64 = base64.b64encode(f_font.read()).decode("ascii")
     
     document = template.render(
         supersections=data, 
@@ -554,6 +611,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         total_riks=total_riks,
         total_samams=total_samams,
         summary_title=summary_title,
+        summary_title_deva=summary_title_deva,
         toc_level=toc_level,
         has_riks=has_riks,
         has_samams=has_samams,
@@ -562,6 +620,7 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
         adishila_vedic_bold_b64=adishila_vedic_bold_b64,
         rachana_regular_b64=rachana_regular_b64,
         rachana_bold_b64=rachana_bold_b64,
+        noto_serif_grantha_b64=noto_serif_grantha_b64,
         kpully=kpully,
         notes_css=get_viewer_notes_css(),
         notes_js=get_viewer_notes_js(name.lower().replace('-', '_')),
@@ -570,6 +629,8 @@ def CreateHtmlFile(templateFileName, name, DocfamilyName, data, html_font="'Adis
     )
     
     output_path = Path(f"{outputdir}/{HtmlFileName}")
+    if script == 'grantha':
+        document = document.translate(GRANTHA_TO_LATIN_DIGITS)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(document)
     
@@ -617,8 +678,8 @@ Examples:
                         help='Type of Samaveda text: samhita, aaranam, collection, purvarchikam, or uttararchikam')
     
     parser.add_argument('--script', dest='script',
-                        choices=['devanagari', 'malayalam'], default='devanagari',
-                        help='Rendering script: devanagari (default) or malayalam (Phase 1 Samam-only pilot)')
+                        choices=['devanagari', 'malayalam', 'grantha'], default='devanagari',
+                        help='Rendering script: devanagari (default), malayalam (Phase 1 Samam-only pilot), or grantha')
     
     # CLI OPTION for Swara Modifiers in Devanagari
     parser.add_argument('--swara-modifiers', dest='swara_modifiers', action='store_true', default=True,
@@ -836,6 +897,14 @@ Examples:
     latex_jinja_env.filters["clean_toc_title"] = clean_toc_title
     latex_jinja_env.filters["toc_header"] = toc_header
     latex_jinja_env.filters["get_canonical_rik_id"] = get_canonical_rik_id
+    latex_jinja_env.filters["format_grantha_combined"] = format_grantha_combined
+    latex_jinja_env.filters["format_grantha_rik_only"] = format_grantha_rik_only
+    latex_jinja_env.filters["format_grantha_samam_only"] = format_grantha_samam_only
+    latex_jinja_env.filters["format_grantha_rik_nometa"] = format_grantha_rik_nometa
+    latex_jinja_env.filters["format_grantha_samam_nometa"] = format_grantha_samam_nometa
+    latex_jinja_env.filters["format_grantha_samam"] = format_grantha_samam
+    latex_jinja_env.filters["format_grantha_rik_only_text"] = format_grantha_rik_only_text
+    latex_jinja_env.filters["format_grantha_samam_text"] = format_grantha_samam_text
     
     # HTML Jinja environment (uses same LaTeX-style delimiters for consistency)
     html_jinja_env = jinja2.Environment(
@@ -859,6 +928,7 @@ Examples:
     html_jinja_env.filters["format_samam_only_html"] = format_samam_only_html
     html_jinja_env.filters["format_rik_nometa_html"] = format_rik_nometa_html
     html_jinja_env.filters["format_samam_nometa_html"] = format_samam_nometa_html
+    html_jinja_env.filters["format_grantha_samam_html"] = format_grantha_samam_html
     html_jinja_env.filters["escape_for_html"] = escape_for_html
     html_jinja_env.filters["replacecolon"] = replacecolon
     html_jinja_env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter
@@ -921,6 +991,11 @@ Examples:
                         sec_data['section_title'] = devanagari_to_malayalam(sec_data['section_title'])
                     except Exception:
                         pass
+    elif script == 'grantha':
+        from grantha.gr_transliterate import transform_ast, devanagari_to_grantha, to_grantha_numeral
+        data_Devanagari, gr_stats = transform_ast(data_Devanagari)
+        print(f"[INFO] Grantha script mode: Full {file_prefix} "
+              f"({gr_stats['mantras']} mantras, {gr_stats['riks']} riks transliterated)")
 
     supersections = data_Devanagari.get('supersections', data_Devanagari.get('supersection', {}))
     supersections = sanitize_data_structure(supersections)
@@ -992,8 +1067,8 @@ Examples:
                     khanda_rows.append({
                         'khanda': khanda_name,
                         'id': f"{ss_key}-{sec_key}",
-                        'riks': str(sec_riks) if script == 'malayalam' else to_devanagari_numeral(sec_riks),
-                        'samams': str(samam_count) if script == 'malayalam' else to_devanagari_numeral(samam_count)
+                        'riks': str(sec_riks) if script in ('malayalam', 'grantha') else to_devanagari_numeral(sec_riks),
+                        'samams': str(samam_count) if script in ('malayalam', 'grantha') else to_devanagari_numeral(samam_count)
                     })
                 patha_riks += sec_riks
                 patha_samams += samam_count
@@ -1005,6 +1080,16 @@ Examples:
                 if sec_riks > 0 and samam_count > 0:
                     count_parts.append(f"ഋ-{sec_riks}")
                     count_parts.append(f"സാ-{samam_count}")
+                elif sec_riks > 0:
+                    count_parts.append(str(sec_riks))
+                elif samam_count > 0:
+                    count_parts.append(str(samam_count))
+                else:
+                    count_parts.append("0")
+            elif script == 'grantha':
+                if sec_riks > 0 and samam_count > 0:
+                    count_parts.append(f"𑌋-{sec_riks}")
+                    count_parts.append(f"𑌸𑌾-{samam_count}")
                 elif sec_riks > 0:
                     count_parts.append(str(sec_riks))
                 elif samam_count > 0:
@@ -1027,7 +1112,7 @@ Examples:
             sec_data['samams_count'] = samam_count
             sec_data['riks_count_dev'] = to_devanagari_numeral(sec_riks)
             sec_data['samams_count_dev'] = to_devanagari_numeral(samam_count)
-            if script == 'malayalam':
+            if script in ('malayalam', 'grantha'):
                 sec_data['riks_count_str'] = str(sec_riks)
                 sec_data['samams_count_str'] = str(samam_count)
             else:
@@ -1040,6 +1125,14 @@ Examples:
             if patha_riks > 0 and patha_samams > 0:
                 ss_count_parts.append(f"ഋ-{patha_riks}")
                 ss_count_parts.append(f"സാ-{patha_samams}")
+            elif patha_riks > 0:
+                ss_count_parts.append(str(patha_riks))
+            else:
+                ss_count_parts.append(str(patha_samams))
+        elif script == 'grantha':
+            if patha_riks > 0 and patha_samams > 0:
+                ss_count_parts.append(f"𑌋-{patha_riks}")
+                ss_count_parts.append(f"𑌸𑌾-{patha_samams}")
             elif patha_riks > 0:
                 ss_count_parts.append(str(patha_riks))
             else:
@@ -1059,13 +1152,13 @@ Examples:
             summary_table.append({
                 'patha': patha_name,
                 'id': ss_key,
-                'patha_riks': str(patha_riks) if script == 'malayalam' else to_devanagari_numeral(patha_riks),
-                'patha_samams': str(patha_samams) if script == 'malayalam' else to_devanagari_numeral(patha_samams),
+                'patha_riks': str(patha_riks) if script in ('malayalam', 'grantha') else to_devanagari_numeral(patha_riks),
+                'patha_samams': str(patha_samams) if script in ('malayalam', 'grantha') else to_devanagari_numeral(patha_samams),
                 'khandas': khanda_rows
             })
                 
-    total_riks_dev = str(total_riks) if script == 'malayalam' else to_devanagari_numeral(total_riks)
-    total_samams_dev = str(total_samams) if script == 'malayalam' else to_devanagari_numeral(total_samams)
+    total_riks_dev = str(total_riks) if script in ('malayalam', 'grantha') else to_devanagari_numeral(total_riks)
+    total_samams_dev = str(total_samams) if script in ('malayalam', 'grantha') else to_devanagari_numeral(total_samams)
     
     # Define Sanskrit title based on type (for PDF/html generation)
     # Priority: CLI > JSON Meta title (if Sanskrit/Devanagari) > pipeline_config.yaml > Hardcoded default
@@ -1117,6 +1210,7 @@ Examples:
     current_os = platform.system()
 
     deva_doc_title_sa = doc_title_sa
+    deva_summary_title_sa = summary_title_sa
 
     # Malayalam script: transliterate the title on the title page and summary table title
     if script == 'malayalam':
@@ -1133,6 +1227,20 @@ Examples:
                 pass
         else:
             summary_title_sa = "സംഹിതാ സംഖ്യ"
+    elif script == 'grantha':
+        from grantha.gr_transliterate import devanagari_to_grantha
+        if doc_title_sa:
+            try:
+                doc_title_sa = devanagari_to_grantha(doc_title_sa)
+            except Exception:
+                pass
+        if summary_title_sa:
+            try:
+                summary_title_sa = devanagari_to_grantha(summary_title_sa)
+            except Exception:
+                pass
+        else:
+            summary_title_sa = "𑌆𑌰𑌣𑍍𑌯𑌮𑍍 𑌸𑌙𑍍𑌖𑍍𑌯𑌾" if mode_type == 'aaranam' else "𑌸𑌂𑌹𑌿𑌤𑌾 𑌸𑌙𑍍𑌖𑍍𑌯𑌾"
     
     print(f"Processing {input_file} in '{output_mode}' mode...")
     print(f"Document Title: {doc_title_sa}")
@@ -1176,9 +1284,9 @@ Examples:
         
     prayogas_list = list(procedures.values())
 
-    doc_family = 'Malayalam' if script == 'malayalam' else 'Devanagari'
+    doc_family = 'Malayalam' if script == 'malayalam' else ('Grantha' if script == 'grantha' else 'Devanagari')
 
-    # Template selection (Malayalam script uses its own Samam-only templates)
+    # Template selection (Malayalam and Grantha scripts use their own templates)
     if script == 'malayalam':
         template_file_src = templateFile_Malayalam
         text_template_file_src = f"{text_template_dir}/Malayalam_main.template"
@@ -1188,6 +1296,12 @@ Examples:
             html_template_file_src = f"{html_template_dir}/Malayalam_main_html.template"
         pdf_font = "NotoSerifMalayalam"
         html_font = "Noto Serif Malayalam"
+    elif script == 'grantha':
+        template_file_src = templateFile_Grantha
+        text_template_file_src = f"{text_template_dir}/Grantha_main.template"
+        html_template_file_src = f"{html_template_dir}/Grantha_main_html.template"
+        pdf_font = "NotoSerifGrantha"
+        html_font = "'Noto Serif Grantha', serif"
     else:
         if getattr(args, 'book_print', False):
             template_file_src = f"{template_dir}/Devanagari_book.template"
@@ -1212,7 +1326,7 @@ Examples:
         html_template_file = html_jinja_env.get_template(html_template_file_src) if html_template_file_src else None
         
         if gen_pdf:
-            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
+            CreatePdf(template_file, f"{file_prefix}", doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='combined', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile, summary_title_deva=deva_summary_title_sa)
         if gen_txt:
             CreateTextFile(text_template_file, f"{file_prefix}", doc_family, supersections, output_mode='combined', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=out_name, jsv_version=jsv_version, generated_at=generated_at)
             if script == 'malayalam':
@@ -1234,7 +1348,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Rik" if not base_pfx.endswith("_Rik") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
+                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='rik', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile, summary_title_deva=deva_summary_title_sa)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1249,7 +1363,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Samam" if not base_pfx.endswith("_Samam") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
+                CreatePdf(template_file, final_out_name, doc_family, supersections, prayogas=prayogas_list, current_os=current_os, output_mode='samam', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile, summary_title_deva=deva_summary_title_sa)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1272,7 +1386,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Rik_NoMeta" if not base_pfx.endswith("_Rik_NoMeta") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
+                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='rik_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile, summary_title_deva=deva_summary_title_sa)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='rik_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':
@@ -1287,7 +1401,7 @@ Examples:
             base_pfx = out_name if out_name else file_prefix
             final_out_name = f"{base_pfx}_Samam_NoMeta" if not base_pfx.endswith("_Samam_NoMeta") else base_pfx
             if gen_pdf:
-                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile)
+                CreatePdf(template_file, final_out_name, doc_family, supersections, current_os=current_os, output_mode='samam_nometa', font_family=pdf_font, doc_title_sa=doc_title_sa, pdf_color_mode=pdf_color_mode, closing_mantras=closing_mantras, summary_table=summary_table, total_riks=total_riks_dev, total_samams=total_samams_dev, summary_title=summary_title_sa, toc_level=toc_level, has_riks=total_riks > 0, has_samams=total_samams > 0, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at, kpully=kpully_mode, flow_variant=getattr(args, 'flow_variant', False), skip_compile=skip_pdf_compile, summary_title_deva=deva_summary_title_sa)
             if gen_txt:
                 CreateTextFile(text_template_file, final_out_name, doc_family, supersections, output_mode='samam_nometa', doc_title_sa=doc_title_sa, closing_mantras=closing_mantras, toc_level=toc_level, output_dir_override=out_dir, name_override=final_out_name, jsv_version=jsv_version, generated_at=generated_at)
                 if script == 'malayalam':

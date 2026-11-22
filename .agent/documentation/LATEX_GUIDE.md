@@ -69,11 +69,11 @@ Both templates run under `\documentclass[12pt, ...]{book}`. The effective font s
 
 | Macro / Family | Scale Factor | Effective Size | Purpose |
 | :--- | :--- | :--- | :--- |
-| `\devafont`, `\setmainfont` (AdishilaVedic) | `Scale=1.35` | **16.2 pt** | Main mantra text, Samam chant lines, Rik mula |
-| `\headerfont` (AdishilaVedicBold) | `Scale=1.45` | **17.4 pt** | Chapter and Section structural titles |
-| `\smallredfont` (AdishilaVedic) | `Scale=0.95` | **11.4 pt** | Swara number notations in SwaraRed (`#C62828`) |
-| `\swarafont` (JaimineeyaSwara) | `Scale=0.88` | **10.56 pt** | Jaimineeya swara glyphs and accents |
-| `\arcfontDeva` (JaimineeyaSwara) | `Scale=1.25` | **15.0 pt** | Overhead connecting arcs |
+| `\devafont`, `\setmainfont` (AdishilaVedic) | `Scale=1.50` | **18.0 pt** | Main mantra text, Samam chant lines, Rik mula |
+| `\headerfont` (AdishilaVedicBold) | `Scale=1.60` | **19.2 pt** | Chapter and Section structural titles |
+| `\smallredfont` (AdishilaVedic) | `Scale=1.05` | **12.6 pt** | Swara number notations in SwaraRed (`#C62828`) |
+| `\swarafont` (JaimineeyaSwara) | `Scale=0.98` | **11.76 pt** | Jaimineeya swara glyphs and accents |
+| `\arcfontDeva` (JaimineeyaSwara) | `Scale=1.38` | **16.56 pt** | Overhead connecting arcs |
 
 ### Title Page Typography (A4 vs. Book)
 
@@ -91,9 +91,9 @@ Both templates run under `\documentclass[12pt, ...]{book}`. The effective font s
 | :--- | :--- | :--- | :--- |
 | **Chapter / Parva Header** | `\chapter*` (`\huge\headerfont`) | 20.7 pt | **~30.0 pt** |
 | **Section / Kandah Header** | `\section*` (`\Large\headerfont`) | 14.4 pt | **~20.9 pt** |
-| **Rik Mula Verse** | `\normalsize` (Upright Bold, Blue) | 12.0 pt | **16.2 pt** |
-| **Samam Chant Line** | `\normalsize\bfseries` (Bold) | 12.0 pt | **16.2 pt** |
-| **Samam Subsection Title** | `\normalsize` (Bold, Green) | 12.0 pt | **16.2 pt** |
+| **Rik Mula Verse** | `\normalsize` (Upright Regular, Blue) | 12.0 pt | **18.0 pt** |
+| **Samam Chant Line** | `\normalsize` (Regular) | 12.0 pt | **18.0 pt** |
+| **Samam Subsection Title** | `\normalsize` (Bold, Green) | 12.0 pt | **18.0 pt** |
 | **Rik Metadata** | `\footnotesize` (Purple) | 10.0 pt | **13.5 pt** |
 | **Samam Metadata** | `\footnotesize` (Brown) | 10.0 pt | **13.5 pt** |
 | **Footnotes** | `\footnotesize` | 10.0 pt | **13.5 pt** |

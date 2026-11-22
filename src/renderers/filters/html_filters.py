@@ -1496,6 +1496,353 @@ def format_malayalam_samam_html(subsection, subsection_title, include_metadata=T
 
     return '\n'.join(formatted_output), footnote_counter
 
+
+GRANTHA_TO_LATIN_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯\u0be6\u0be7\u0be8\u0be9\u0bea\u0beb\u0bec\u0bed\u0bee\u0bef", "012345678901234567890123456789")
+
+
+def render_grantha_html_from_line(
+    line: str,
+    with_modifiers: bool = True,
+    footnote_data: dict = None,
+    seen_markers_map: dict = None,
+    subsection_key: str = None,
+    footnote_counter_obj: list = None,
+    collected_footnotes: list = None,
+    doc_markers_map: dict = None
+) -> str:
+    """Render a Grantha mantra line to flexbox-stacked HTML matching PDF layout (swara below, Latin numerals)."""
+    from grantha.gr_transliterate import split_grantha_syllables, devanagari_to_grantha
+    from core.swara_engine import tokenize_mantra_line
+
+    line = devanagari_to_grantha(line)
+    line = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', line)
+    line = re.sub(r'\u200d(?=\()', '', line)
+    line = re.sub(r'(\S)\s+\(', r'\1(', line)
+
+    tokens = tokenize_mantra_line(line)
+    SPANNING_MARKERS = {'A', 'a', '⁀', 'A1', 'a1', 'A_1', 'a_1', '\uE00D', 'D', 'd', '∧', 'Ʌ', 'B', 'b', '^', 'B1', 'b1'}
+
+    rendered_items = []
+    idx = 0
+    while idx < len(tokens):
+        v_count, v_num = _match_verse_num_marker(tokens, idx)
+        if v_count > 0:
+            v_num_latin = str(v_num).translate(GRANTHA_TO_LATIN_DIGITS)
+            rendered_items.append({
+                'type': 'verse_num',
+                'html': f'<span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num_latin}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
+            })
+            idx += v_count
+            continue
+
+        tok = tokens[idx]
+        t = tok['type']
+
+        if t == 'space':
+            rendered_items.append({
+                'type': 'space',
+                'html': '<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>'
+            })
+        elif t == 'danda':
+            rendered_items.append({
+                'type': 'danda',
+                'char': tok["char"],
+                'html': f'<span class="mantra-word"><span class="mantra-text danda">{tok["char"]}</span><span class="swara-text">&nbsp;</span></span>'
+            })
+        elif t == 'marker':
+            m_val = tok.get('marker', '').strip('()')
+            if with_modifiers and m_val in SPANNING_MARKERS:
+                if m_val in ('A', 'a', '⁀', '\uE004'):
+                    d_idx = idx + 1
+                    while d_idx < len(tokens) and tokens[d_idx]['type'] == 'space':
+                        d_idx += 1
+                    if d_idx < len(tokens) and tokens[d_idx]['type'] == 'danda' and tokens[d_idx]['char'] == '।':
+                        m_val = 'A1'
+                mod_h = render_mod_html(m_val)
+                attached = False
+                for prev_item in reversed(rendered_items):
+                    if prev_item['type'] == 'word':
+                        prev_item['spanning_mod'] = mod_h
+                        prev_item['spanning_type'] = m_val
+                        attached = True
+                        break
+                if not attached:
+                    rendered_items.append({
+                        'type': 'marker',
+                        'html': f'<span class="mantra-word"><span class="mantra-text">{mod_h}</span><span class="swara-text">&nbsp;</span></span>'
+                    })
+            elif with_modifiers:
+                mod_h = render_mod_html(tok['marker'])
+                rendered_items.append({
+                    'type': 'marker',
+                    'html': f'<span class="mantra-word"><span class="mantra-text">{mod_h}</span><span class="swara-text">&nbsp;</span></span>'
+                })
+        elif t == 'footnote':
+            marker_full = tok.get('text', '')
+            marker = marker_full.strip('()')
+            fn_html = f'<sup>{marker_full}</sup>'
+            if footnote_data and marker in footnote_data:
+                footnote_text = footnote_data[marker].strip()
+                if seen_markers_map is not None and footnote_text in seen_markers_map:
+                    unique_id, gr_num = seen_markers_map[footnote_text]
+                    fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}">{gr_num}</a></sup>'
+                else:
+                    if footnote_counter_obj is not None:
+                        footnote_counter_obj[0] += 1
+                        cnt = footnote_counter_obj[0]
+                    else:
+                        cnt = 1
+                    gr_num = str(cnt)
+                    safe_key = subsection_key if subsection_key else "unknown"
+                    unique_id = f"fn-{safe_key}-{marker}"
+                    fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}" id="ref-{unique_id}">{gr_num}</a></sup>'
+                    if collected_footnotes is not None:
+                        collected_footnotes.append((unique_id, gr_num, footnote_text))
+                    if seen_markers_map is not None:
+                        seen_markers_map[footnote_text] = (unique_id, gr_num)
+                        seen_markers_map[f"@marker:{marker}"] = (unique_id, gr_num)
+                        seen_markers_map[marker] = (unique_id, gr_num)
+                    if doc_markers_map is not None:
+                        doc_markers_map[marker] = (unique_id, gr_num)
+            elif seen_markers_map is not None and (f"@marker:{marker}" in seen_markers_map or marker in seen_markers_map):
+                unique_id, gr_num = seen_markers_map.get(f"@marker:{marker}") or seen_markers_map.get(marker)
+                fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}">{gr_num}</a></sup>'
+            elif doc_markers_map is not None and marker in doc_markers_map:
+                unique_id, gr_num = doc_markers_map[marker]
+                fn_html = f'<sup class="footnote-ref"><a href="#{unique_id}">{gr_num}</a></sup>'
+
+            if rendered_items and rendered_items[-1]['type'] == 'word':
+                rendered_items[-1]['footnote_html'] = rendered_items[-1].get('footnote_html', '') + fn_html
+            elif rendered_items and rendered_items[-1]['type'] in ('danda', 'verse_num'):
+                rendered_items[-1]['html'] += fn_html
+            else:
+                rendered_items.append({
+                    'type': 'footnote',
+                    'html': fn_html
+                })
+        elif t == 'word':
+            word = tok.get('word', '')
+            swara = tok.get('swara', '')
+            visarga = tok.get('visarga', '')
+            if visarga:
+                word += visarga
+
+            span_mod_html = None
+            span_mod_type = None
+            if not with_modifiers:
+                core_word = word.strip(ALL_SWARA_PUNCT_CHARS)
+                punct_html = ''
+                mods_html = ''
+                sw_parts, _ = _parse_swara_and_modifiers(swara)
+            else:
+                leading_punct = ""
+                while word and word[0] in ALL_SWARA_PUNCT_CHARS:
+                    leading_punct += word[0]
+                    word = word[1:]
+                core_word = word.rstrip(ALL_SWARA_PUNCT_CHARS)
+                trailing_punct = word[len(core_word):]
+                punct_html = ''.join([render_mod_html(p) for p in (leading_punct + trailing_punct)])
+                sw_parts, mods = _parse_swara_and_modifiers(swara)
+
+                next_is_danda = False
+                n_idx = idx + 1
+                while n_idx < len(tokens) and tokens[n_idx]['type'] == 'space':
+                    n_idx += 1
+                if n_idx < len(tokens) and tokens[n_idx]['type'] == 'danda' and tokens[n_idx]['char'] == '।':
+                    next_is_danda = True
+
+                reg_mods = []
+                has_mod_g_word = False
+                for m in mods:
+                    m_clean = m.strip('()')
+                    if m_clean in SPANNING_MARKERS:
+                        if m_clean in ('A', 'a', '⁀', '\uE004') and next_is_danda:
+                            m_clean = 'A1'
+                        span_mod_html = render_mod_html(m_clean)
+                        span_mod_type = m_clean
+                    elif m_clean in ('G', 'g', '\\', '\uE003'):
+                        has_mod_g_word = True
+                    else:
+                        reg_mods.append(m)
+                mods_html = ''.join([render_mod_html(m) for m in reg_mods])
+
+            sw_letter = ' '.join(sw_parts) if sw_parts else ''
+            syllables = split_grantha_syllables(core_word) if core_word else []
+            last_syl = syllables.pop() if syllables else ''
+
+            w_html_parts = []
+            for syl in syllables:
+                w_html_parts.append(f'<span class="mantra-word"><span class="mantra-text">{syl}</span><span class="swara-text">&nbsp;</span></span>')
+
+            last_syl_formatted = last_syl
+            if has_mod_g_word and 'syl-mod-g-wrap' not in last_syl_formatted:
+                last_syl_formatted = f'<span class="syl-mod-g-wrap">{last_syl_formatted}<span class="swara-mod mod-g" title="MOD-G: Lower Under-Slash (\\)">&#xE003;</span></span>'
+
+            rendered_items.append({
+                'type': 'word',
+                'prefix_syls_html': ''.join(w_html_parts),
+                'last_syl_formatted': last_syl_formatted,
+                'mods_html': mods_html,
+                'punct_html': punct_html,
+                'bot_content': sw_letter if sw_letter else "&nbsp;",
+                'spanning_mod': span_mod_html,
+                'spanning_type': span_mod_type
+            })
+        idx += 1
+
+    final_output = []
+    i = 0
+    while i < len(rendered_items):
+        item = rendered_items[i]
+        if item['type'] == 'word' and item.get('spanning_mod'):
+            group_items = [item]
+            j = i + 1
+            while j < len(rendered_items):
+                next_it = rendered_items[j]
+                if next_it['type'] == 'space':
+                    j += 1
+                    continue
+                group_items.append(next_it)
+                j += 1
+                if next_it['type'] == 'word' and not next_it.get('spanning_mod'):
+                    break
+
+            has_a1_group = any(g.get('spanning_type') in ('A1', 'a1', 'A_1', 'a_1', '\uE00D') for g in group_items if g['type'] == 'word')
+            group_html = []
+            for g_item in group_items:
+                if g_item['type'] == 'word':
+                    span_mod_str = '' if (g_item.get('spanning_type') in ('A1', 'a1', 'A_1', 'a_1', '\uE00D')) else (g_item.get('spanning_mod') or '')
+                    fn_str = g_item.get('footnote_html', '')
+                    top_content = f"{g_item['last_syl_formatted']}{g_item['mods_html']}{g_item['punct_html']}{fn_str}{span_mod_str}" if (g_item['last_syl_formatted'] or g_item['mods_html'] or g_item['punct_html'] or fn_str or span_mod_str) else "&nbsp;"
+                    bot_content = g_item['bot_content']
+                    word_html = f"{g_item['prefix_syls_html']}<span class=\"mantra-word\"><span class=\"mantra-text\">{top_content}</span><span class=\"swara-text\">{bot_content}</span></span>"
+                    group_html.append(word_html)
+                elif g_item['type'] == 'danda' and has_a1_group:
+                    a1_html = render_mod_html('A1')
+                    d_ch = g_item.get("char", "।")
+                    group_html.append('<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>')
+                    group_html.append(f'<span class="mantra-word danda-word-a1"><span class="mantra-text danda danda-with-arc">{d_ch}{a1_html}</span><span class="swara-text">&nbsp;</span></span>')
+                    group_html.append('<span class="mantra-word word-space"><span class="mantra-text">&nbsp;</span><span class="swara-text">&nbsp;</span></span>')
+                else:
+                    group_html.append(g_item['html'])
+
+            final_output.append(f'<span class="mantra-connected-group">{"".join(group_html)}</span>')
+            i = j
+        else:
+            if item['type'] == 'word':
+                fn_str = item.get('footnote_html', '')
+                top_content = f"{item['last_syl_formatted']}{item['mods_html']}{item['punct_html']}{fn_str}" if (item['last_syl_formatted'] or item['mods_html'] or item['punct_html'] or fn_str) else "&nbsp;"
+                bot_content = item['bot_content']
+                word_html = f"{item['prefix_syls_html']}<span class=\"mantra-word\"><span class=\"mantra-text\">{top_content}</span><span class=\"swara-text\">{bot_content}</span></span>"
+                final_output.append(word_html)
+            else:
+                final_output.append(item['html'])
+            i += 1
+
+    return ''.join(final_output)
+
+
+def format_grantha_samam_html(subsection, subsection_title, include_metadata=True,
+                              footnote_counter=0, footnotes_accumulator=None, seen_content_map=None, subsection_key=None, doc_markers_map=None):
+    """Format Grantha Samam content as semantic HTML with clean Grantha swara stacking."""
+    from grantha.gr_transliterate import to_grantha_numeral, devanagari_to_grantha
+    formatted_output = []
+    collected_footnotes = []
+    seen_markers_map = seen_content_map if seen_content_map is not None else {}
+    footnote_data = subsection.get('footnotes', {})
+    
+    # 1. Header
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+    saman_metadata = subsection.get('saman_metadata', '') if include_metadata else ''
+    
+    header_parts = []
+    if display_sub_title:
+        header_title = escape_for_html(devanagari_to_grantha(display_sub_title))
+        header_title = format_dandas_html(header_title)
+        header_parts.append(f'<span class="header-title">{header_title}</span>')
+    if saman_metadata:
+        meta = escape_for_html(devanagari_to_grantha(saman_metadata))
+        meta = format_dandas_html(meta, preserve_spaces=True)
+        meta, fnotes, footnote_counter = process_footnotes_html(meta, footnote_data, footnote_counter, seen_markers_map, subsection_key, doc_markers_map=doc_markers_map)
+        collected_footnotes.extend(fnotes)
+        header_parts.append(f'<span class="header-meta">{meta}</span>')
+        
+    if header_parts:
+        formatted_output.append(f'<div class="subsection-header">{" &nbsp; ".join(header_parts)}</div>')
+        
+    # 2. Mantra verses
+    mantra_array = []
+    mantra_sets = subsection.get('grantha-mantra-sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+
+    for mset in mantra_sets:
+        m = mset.get('grantha-mantra') or mset.get('corrected-mantra') or mset.get('mantra', '')
+        if m:
+            mantra_array.append(m)
+        elif mset.get('mantra-words'):
+            words = []
+            for word_dict in mset.get('mantra-words', []):
+                w = word_dict.get('word', '')
+                sw = word_dict.get('swara', '')
+                if sw:
+                    words.append(f"{w}({sw})")
+                else:
+                    words.append(w)
+            if words:
+                mantra_array.append(" ".join(words))
+
+    fn_counter_obj = [footnote_counter]
+    for mantra_line in mantra_array:
+        clean_mantra = mantra_line.replace('\\newline%', ' ').replace('\\newline', ' ')
+        clean_mantra = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', clean_mantra)
+        clean_mantra = re.sub(r'\u200d(?=\()', '', clean_mantra)
+        clean_mantra = re.sub(r'(\S)\s+\(', r'\1(', clean_mantra)
+        
+        verse_parts = re.split(r'(॥\s*[\d०-९\u0BE6-\u0BEF]+\s*॥)', clean_mantra)
+        
+        for idx_v in range(0, len(verse_parts), 2):
+            v_text = verse_parts[idx_v].strip()
+            v_marker = verse_parts[idx_v + 1] if idx_v + 1 < len(verse_parts) else ''
+            
+            if not v_text and not v_marker:
+                continue
+                
+            v_html = render_grantha_html_from_line(
+                v_text,
+                footnote_data=footnote_data,
+                seen_markers_map=seen_markers_map,
+                subsection_key=subsection_key,
+                footnote_counter_obj=fn_counter_obj,
+                collected_footnotes=collected_footnotes,
+                doc_markers_map=doc_markers_map
+            )
+            if v_marker:
+                num_m = re.search(r'[\d०-९\u0BE6-\u0BEF]+', v_marker)
+                v_num = num_m.group(0).translate(GRANTHA_TO_LATIN_DIGITS) if num_m else ''
+                v_marker_html = f'<span class="mantra-word verse-num-word"><span class="mantra-text verse-num-marker"><span class="danda">॥</span><span class="verse-num">{v_num}</span><span class="danda">॥</span></span><span class="swara-text">&nbsp;</span></span>'
+                full_v = f"{v_html} {v_marker_html}"
+                v_pada = full_v
+                line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+                clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+                note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+                id_attr = f' id="{line_id}"' if line_id else ""
+                formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_pada}{note_btn}</div>')
+            else:
+                line_id = f"{subsection_key}-m{idx_v + 1}" if subsection_key else ""
+                clean_snip = re.sub(r'<[^>]+>', '', v_html).strip()[:40]
+                note_btn = render_inline_note_btn(line_id, clean_snip) if line_id else ""
+                id_attr = f' id="{line_id}"' if line_id else ""
+                formatted_output.append(f'<div{id_attr} class="mantra-verse verse-p">{v_html}{note_btn}</div>')
+
+    footnote_counter = fn_counter_obj[0]
+    if collected_footnotes and footnotes_accumulator is not None:
+        footnotes_accumulator.extend(collected_footnotes)
+
+    return '\n'.join(formatted_output).translate(GRANTHA_TO_LATIN_DIGITS), footnote_counter
+
 # --- Metadata / Title Helpers ---
 def clean_toc_title(raw_title):
     """
@@ -1531,6 +1878,7 @@ def register_html_filters(env):
     env.filters["format_rik_nometa_html"] = format_rik_nometa_html
     env.filters["format_samam_nometa_html"] = format_samam_nometa_html
     env.filters["format_malayalam_samam_html"] = format_malayalam_samam_html
+    env.filters["format_grantha_samam_html"] = format_grantha_samam_html
     env.filters["escape_for_html"] = escape_for_html
     env.filters["replacecolon"] = replacecolon
     env.filters["reset_html_footnote_counter"] = reset_html_footnote_counter

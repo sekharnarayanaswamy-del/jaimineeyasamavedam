@@ -71,11 +71,11 @@ except ValueError:
     _SAMAM_MAX_PADAS = 5
 
 if _SAMAM_ALIGN == "left":
-    _SAMAM_PARA_OPEN = r"\noindent\raggedright\bfseries "
+    _SAMAM_PARA_OPEN = r"\noindent\raggedright "
 elif _SAMAM_ALIGN == "justify":
-    _SAMAM_PARA_OPEN = r"\noindent\sloppy\bfseries "
+    _SAMAM_PARA_OPEN = r"\noindent\sloppy "
 else:
-    _SAMAM_PARA_OPEN = r"\noindent\centering\bfseries "
+    _SAMAM_PARA_OPEN = r"\noindent\centering "
 
 
 
@@ -1246,7 +1246,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
             line_fmt = format_dandas(line)
 
-            paras.append(f"{{\\sloppy\\bfseries {line_fmt} \\par}}")
+            paras.append(f"{{\\sloppy {line_fmt} \\par}}")
 
         return paras
 
@@ -1888,7 +1888,7 @@ def _render_devanagari_mantra_body(subsection, subsection_key=None, seen_markers
 
         if paragraph_buffer:
             full_paragraph = "".join(paragraph_buffer)
-            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy\\bfseries {full_paragraph}\\par}}")
+            formatted_paragraphs.append(f"{{\\noindent\\centering\\sloppy {full_paragraph}\\par}}")
             formatted_paragraphs.append(r"\vspace{0.10em}")
 
             
@@ -2131,9 +2131,9 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-        # Output: Upright Bold Mula verse at \normalsize (16pt). Keep all lines of a multi-Rik line together.
+        # Output: Upright regular Mula verse at \normalsize (18pt). Keep all lines of a multi-Rik line together.
 
-        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textbf{{\\textcolor{{AccentBlue}}{{{s2}}}}} \\par}}")
+        formatted_output.append(f"{{\\interlinepenalty=10000 \\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
 
         
 
@@ -2210,7 +2210,7 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         while body_paras and body_paras[-1].startswith(r"\vspace"):
             body_paras.pop()
 
-        indented_body = "{\\begingroup\\sloppy\\bfseries\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
     if not is_flow and layout_mode == 'a4':
@@ -2344,7 +2344,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
 
         s2 = format_dandas(s2)
 
-        formatted_output.append(f"{{\\centering \\textbf{{\\textcolor{{AccentBlue}}{{{s2}}}}} \\par}}")
+        formatted_output.append(f"{{\\centering \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
 
         formatted_output.append(r"\vspace{0.8em}")
 
@@ -2475,7 +2475,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
             body_paras.pop()
 
 
-        indented_body = "{\\begingroup\\sloppy\\bfseries\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
+        indented_body = "{\\begingroup\\sloppy\n" + "\n\n".join(body_paras) + "\n\\par\\endgroup}"
         formatted_output.append(indented_body)
 
 
@@ -2688,7 +2688,8 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
 
 # --- Malayalam LaTeX Filters & Renderers ---
 
-_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯", "01234567890123456789")
+_ENGLISH_DIGITS = str.maketrans("०१२३४५६७८९൦൧൨൩൪൫൬൭൮൯\u0be6\u0be7\u0be8\u0be9\u0bea\u0beb\u0bec\u0bed\u0bee\u0bef", "012345678901234567890123456789")
+_ALL_DIGITS_TO_LATIN = _ENGLISH_DIGITS
 
 
 
@@ -4478,47 +4479,329 @@ def toc_header(text):
 
 
 
+# --- Grantha LaTeX Filters & Renderers ---
+
+def _format_single_grantha_word_latex(tok, with_modifiers=True, exclude_mods=None, exclude_swara=False):
+    """Format a single Grantha word token with swara stack and modifiers."""
+    from grantha.gr_transliterate import split_grantha_syllables, devanagari_to_grantha
+
+    word = tok.get('word', '')
+    swara = tok.get('swara', '')
+    if not word:
+        return ""
+
+    if "(" in word:
+        embedded_mods = re.findall(r"\(([^)]+)\)", word)
+        if embedded_mods:
+            word = re.sub(r"\([^)]*\)", "", word)
+            swara = (swara or "") + "".join(f"({m})" for m in embedded_mods)
+
+    word = devanagari_to_grantha(word)
+    if swara:
+        swara = devanagari_to_grantha(swara)
+
+    if word in ('.', ','):
+        if word == '.':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{.}}}\hspace{0.08em}"
+        elif word == ',':
+            return r"{\Large\textcolor{ModifierSkyBlue}{\textbf{,}}}\hspace{0.08em}"
+        return ""
+
+    exclude_mods = exclude_mods or set()
+    core_word = word.rstrip("_,.")
+    trailing_punct = word[len(core_word):]
+
+    if not core_word:
+        return ""
+
+    swara_parts, active_mods = _parse_swara_and_modifiers(swara)
+    syllables = split_grantha_syllables(core_word)
+    if not syllables:
+        syllables = [core_word]
+
+    parts = []
+    for idx, syl in enumerate(syllables):
+        if idx > 0:
+            parts.append(r"\allowbreak ")
+        syl_esc = escape_for_latex(syl)
+        if idx == len(syllables) - 1:
+            syl_mod = syl_esc
+            swara_str = "".join(swara_parts)
+            if not exclude_swara and swara_str:
+                swara_latex = f"{{\\smallredfont \\textbf{{{escape_for_latex(swara_str)}}}}}"
+                stack_code = f"\\stackcenter{{\\granthafont {syl_mod}}}{{{swara_latex}}}"
+            else:
+                stack_code = f"{{\\granthafont {syl_mod}}}"
+            parts.append(stack_code)
+        else:
+            parts.append(f"{{\\granthafont {syl_esc}}}")
+
+    return "".join(parts)
+
+
+def _render_grantha_mantra_body(subsection):
+    """Helper to render Grantha mantra body with top swara stacks and footnotes."""
+    from core.swara_engine import tokenize_mantra_line
+    from grantha.gr_transliterate import devanagari_to_grantha
+
+    mantra_sets = subsection.get('grantha-mantra-sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if not mantra_sets:
+        mantra_sets = subsection.get('mantra_sets', [])
+    if not mantra_sets:
+        return []
+
+    footnote_data = subsection.get('footnotes', {})
+    paragraph_buffer = []
+    formatted_paragraphs = []
+
+    for mantra_set in mantra_sets:
+        line = mantra_set.get('grantha-mantra') or mantra_set.get('corrected-mantra') or mantra_set.get('mantra', '')
+        if not line:
+            continue
+        line = devanagari_to_grantha(line)
+        tokens = tokenize_mantra_line(line)
+
+        idx_t = 0
+        while idx_t < len(tokens):
+            v_count, v_num = _match_verse_num_marker(tokens, idx_t)
+            if v_count > 0:
+                v_num_latin = str(v_num).translate(_ALL_DIGITS_TO_LATIN)
+                paragraph_buffer.append(f"\\nolinebreak\\hspace{{0.65em plus 0.25em minus 0.1em}}\\mbox{{\\granthafont ॥{{\\latinfont {v_num_latin}}}॥}}")
+                full_paragraph = "".join(paragraph_buffer)
+                formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\granthafont {full_paragraph}}}\\par}}")
+                formatted_paragraphs.append(r"\vspace{0.25em plus 0.05em minus 0.05em}")
+                paragraph_buffer = []
+                idx_t += v_count
+                continue
+
+            tok = tokens[idx_t]
+            t = tok['type']
+            if t == 'space':
+                paragraph_buffer.append(" ")
+            elif t == 'danda':
+                ch = tok['char'].replace('|', '।')
+                paragraph_buffer.append(f"\\kern 0.05em {ch}\\hskip 0.2em plus 0.2em minus 0.05em\\allowbreak ")
+            elif t == 'footnote':
+                marker = tok.get('text', '').strip('()')
+                fn_text = footnote_data.get(marker, '')
+                if fn_text:
+                    try:
+                        fn_text = devanagari_to_grantha(fn_text)
+                    except Exception:
+                        pass
+                    fn_esc = escape_for_latex(fn_text)
+                    paragraph_buffer.append(f"\\footnote{{\\granthafont {fn_esc}}}")
+            elif t == 'marker':
+                m_str = tok['marker']
+                m_esc = _apply_mantrakshara_modifier("", m_str)
+                paragraph_buffer.append(m_esc)
+            elif t == 'word':
+                if idx_t > 0 and tokens[idx_t - 1]['type'] == 'word':
+                    paragraph_buffer.append(r"\allowbreak ")
+                chunk = _format_single_grantha_word_latex(tok, with_modifiers=True)
+                paragraph_buffer.append(chunk)
+            idx_t += 1
+
+        if paragraph_buffer:
+            full_paragraph = "".join(paragraph_buffer)
+            formatted_paragraphs.append(f"{{\\noindent\\justifying\\sloppy {{\\granthafont {full_paragraph}}}\\par}}")
+            formatted_paragraphs.append(r"\vspace{0.25em plus 0.05em minus 0.05em}")
+            paragraph_buffer = []
+
+    while formatted_paragraphs and formatted_paragraphs[-1].startswith(r"\vspace"):
+        formatted_paragraphs.pop()
+
+    return formatted_paragraphs
+
+
+def format_grantha_rik_block(subsection, prev_rik_id=None, include_metadata=True, prev_rik_text=None):
+    """Format Rik metadata + Rik verse in Grantha for LaTeX PDF."""
+    from grantha.gr_transliterate import devanagari_to_grantha
+
+    current_rik_id = get_canonical_rik_id(subsection)
+    rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
+    rik_metadata = subsection.get('rik_metadata_deva') or subsection.get('rik_metadata', '')
+    rik_text = subsection.get('rik_text_deva') or subsection.get('rik_text', '')
+
+    if prev_rik_text and rik_text and rik_text.strip() == prev_rik_text.strip():
+        return ""
+
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info and len(rik_ids) > 1:
+        max_rik_id = max(rik_ids) if rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
+
+    if not show_rik_info or (not rik_metadata and not rik_text):
+        return ""
+
+    out = []
+    # Matching Devanagari standard: no separate '॥ 𑌋𑌕𑍍 ... ॥' header before Rik metadata
+
+    if include_metadata and rik_metadata:
+        try:
+            rm_gr = devanagari_to_grantha(rik_metadata)
+        except Exception:
+            rm_gr = rik_metadata
+        out.append(f"{{\\centering \\footnotesize \\granthafont \\textcolor{{AccentPurple}}{{{format_dandas(rm_gr)}}} \\par}}")
+        out.append(r"\nopagebreak\vspace{0.12em}")
+
+    if rik_text:
+        s2 = rik_text.strip()
+        s2 = fix_visarga_accent_order_local(s2)
+        s2 = handle_consecutive_accents(s2)
+        try:
+            s2 = devanagari_to_grantha(s2)
+        except Exception:
+            pass
+        accent_replacements = [
+            ('(1)', r'\raisebox{0.25ex}{\accentmark{12}{\char"0951}}'),
+            ('(2)', r'\raisebox{0.25ex}{\accentmark{15}{\char"1CD2}}'),
+            ('(3)', r'\raisebox{0.15ex}{\accentmark{12}{\char"1CF8}}'),
+            ('(4)', r'\raisebox{0.15ex}{\accentmark{12}{\char"1CF9}}'),
+        ]
+        for marker, rep in accent_replacements:
+            s2 = s2.replace(marker, rep)
+        s2 = re.sub(
+            r'([॥।]\s*)([\d०-९\u0BE6-\u0BEF]+)(\s*[॥।])',
+            lambda m: f"{m.group(1)}{{\\latinfont {m.group(2).translate(_ALL_DIGITS_TO_LATIN)}}}{m.group(3)}",
+            s2
+        )
+        s2 = split_rik_lines_latex(s2)
+        s2 = re.sub(r'\s*([।॥])\s*', r'\\allowbreak\\kern 0.05em \1\\hskip 0.25em plus 0.25em minus 0.05em\\allowbreak ', s2)
+        out.append(f"{{\\centering\\sloppy \\granthafont \\textcolor{{AccentBlue}}{{{s2}}} \\par}}")
+        out.append(r"\vspace{0.8em}")
+
+    return "\n".join(out)
+
+
+def format_grantha_samam_block(subsection, subsection_title, toc_level='section', include_metadata=True):
+    """Format Samam subsection header + Saman metadata + Samam mantras in Grantha for LaTeX PDF."""
+    from grantha.gr_transliterate import devanagari_to_grantha
+
+    formatted_output = []
+    display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ''
+
+    samam_header_only = display_sub_title
+    m_split = re.match(r'([|॥]+\s*.*?[|॥]+)', display_sub_title)
+    if m_split:
+        samam_header_only = m_split.group(1).strip()
+    index_title = re.sub(r'[|॥]', '', samam_header_only).strip()
+
+    try:
+        display_sub_title = devanagari_to_grantha(display_sub_title)
+        samam_header_only = devanagari_to_grantha(samam_header_only)
+        index_title = devanagari_to_grantha(index_title)
+    except Exception:
+        pass
+
+    formatted_output.append(r"\par\penalty 0\vspace{0.15em plus 0.05em minus 0.05em}")
+    formatted_output.append(r"\phantomsection")
+    if subsection_title:
+        toc_title = format_dandas(samam_header_only)
+        gr_toc = "{\\granthafont " + toc_title + "}"
+        hdr_deva = subsection.get('header', {}).get('header_deva', '') if isinstance(subsection.get('header'), dict) else ''
+        if not hdr_deva:
+            try:
+                from grantha.gr_transliterate import grantha_to_devanagari
+                hdr_deva = grantha_to_devanagari(samam_header_only)
+            except Exception:
+                hdr_deva = subsection_title
+        deva_toc = re.sub(r'[|॥।]+', '', hdr_deva).strip()
+        deva_bookmark = f"॥ {deva_toc} ॥" if deva_toc else ""
+        toc_entry = f"\\texorpdfstring{{{gr_toc}}}{{{deva_bookmark or format_dandas(samam_header_only)}}}"
+        if toc_level == 'subsection':
+            formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_entry}}}")
+        else:
+            formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_entry}}}")
+        if index_title:
+            formatted_output.append(f"\\index{{{index_title}}}")
+
+    header_parts = []
+    if display_sub_title:
+        header_parts.append(format_dandas(display_sub_title.strip()))
+    if include_metadata:
+        saman_metadata = subsection.get('saman_metadata', '')
+        if saman_metadata:
+            try:
+                sm_gr = devanagari_to_grantha(saman_metadata)
+            except Exception:
+                sm_gr = saman_metadata
+            header_parts.append(f"\\textcolor{{AccentBrown}}{{{format_dandas(sm_gr)}}}")
+
+    if header_parts:
+        header_latex = "{\\granthafont \\textbf{\\textcolor{AccentGreen}{" + " \\quad ".join(header_parts) + "}}}"
+        formatted_output.append("{\\centering " + header_latex + " \\par}")
+
+    formatted_output.append(r"\nopagebreak\vspace{0.4em}\nopagebreak")
+    mantra_paragraphs = _render_grantha_mantra_body(subsection)
+    formatted_output.extend(mantra_paragraphs)
+
+    return "\n\n".join(formatted_output)
+
+
+def format_grantha_combined(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section'):
+    """Combined mode: Rik (with metadata) followed by Samam (with metadata) for Grantha."""
+    parts = []
+    rik_part = format_grantha_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=True)
+    if rik_part:
+        parts.append(rik_part)
+    samam_part = format_grantha_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=True)
+    if samam_part:
+        parts.append(samam_part)
+    return "\n\n".join(parts)
+
+
+def format_grantha_rik_only(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section', prev_rik_text=None):
+    """Rik-only mode (with metadata) for Grantha."""
+    return format_grantha_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=True, prev_rik_text=prev_rik_text)
+
+
+def format_grantha_rik_nometa(subsection, supersection_title, section_title, subsection_title, prev_rik_id=None, toc_level='section', prev_rik_text=None):
+    """Rik-only mode (without metadata) for Grantha."""
+    return format_grantha_rik_block(subsection, prev_rik_id=prev_rik_id, include_metadata=False, prev_rik_text=prev_rik_text)
+
+
+def format_grantha_samam_only(subsection, supersection_title, section_title, subsection_title, toc_level='section'):
+    """Samam-only mode (with metadata) for Grantha."""
+    return format_grantha_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=True)
+
+
+format_grantha_samam = format_grantha_samam_only
+
+
+def format_grantha_samam_nometa(subsection, supersection_title, section_title, subsection_title, toc_level='section'):
+    """Samam-only mode (without metadata) for Grantha."""
+    return format_grantha_samam_block(subsection, subsection_title, toc_level=toc_level, include_metadata=False)
+
+
 def register_latex_filters(env):
-
     """Registers all LaTeX rendering filters onto the provided Jinja2 environment."""
-
     env.filters["my_encodeURL"] = my_encodeURL
-
     env.filters["escape_for_latex"] = escape_for_latex
-
     env.filters["replace_footnotes"] = replace_footnote_markers_filter
-
     env.filters["format_mantra_sets"] = format_mantra_sets
-
     env.filters["format_rik_only"] = format_rik_only
-
     env.filters["format_samam_only"] = format_samam_only
-
     env.filters["format_rik_nometa"] = format_rik_nometa
-
     env.filters["format_samam_nometa"] = format_samam_nometa
-
     env.filters["format_malayalam_rik_only"] = format_malayalam_rik_only
-
     env.filters["format_malayalam_rik_nometa"] = format_malayalam_rik_nometa
-
     env.filters["format_malayalam_samam_only"] = format_malayalam_samam_only
-
     env.filters["format_malayalam_samam_nometa"] = format_malayalam_samam_nometa
-
     env.filters["format_malayalam_combined"] = format_malayalam_combined
-
     env.filters["format_malayalam_samam"] = format_malayalam_samam
-
+    env.filters["format_grantha_rik_only"] = format_grantha_rik_only
+    env.filters["format_grantha_rik_nometa"] = format_grantha_rik_nometa
+    env.filters["format_grantha_samam_only"] = format_grantha_samam_only
+    env.filters["format_grantha_samam_nometa"] = format_grantha_samam_nometa
+    env.filters["format_grantha_combined"] = format_grantha_combined
     env.filters["split_rik_lines_latex"] = split_rik_lines_latex
-
     env.filters["replacecolon"] = replacecolon
-
     env.filters["clean_toc_title"] = clean_toc_title
-
     env.filters["toc_header"] = toc_header
-
     env.filters["format_metadata_dandas"] = format_metadata_dandas
-
     return env
 

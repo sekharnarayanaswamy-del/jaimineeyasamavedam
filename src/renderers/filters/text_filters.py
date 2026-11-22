@@ -198,6 +198,76 @@ def format_malayalam_samam_text(subsection: dict, section_title: str = "", subse
     return "\n".join(formatted_sets)
 
 
+def normalize_grantha_samam_text_line(line: str) -> str:
+    """Cleans a Grantha plain-text Samam line."""
+    if not line:
+        return ""
+    clean = line.replace('\\newline%', ' ').replace('\\newline', ' ')
+    clean = re.sub(r'[\u200b\u200c\ufeff\u2060\u180e\u00ad]', '', clean)
+    clean = re.sub(r'\u200d(?=\()', '', clean)
+    clean = re.sub(r'\s+', ' ', clean).strip()
+    return clean
+
+
+def format_grantha_samam_text(subsection: dict, section_title: str = "", subsection_title: str = "") -> str:
+    """Plain-text artifact for Grantha Samam."""
+    formatted_sets = []
+    for mantra_set in subsection.get('grantha-mantra-sets', []):
+        mantra = mantra_set.get('grantha-mantra', '')
+        if mantra:
+            formatted_sets.append(normalize_grantha_samam_text_line(mantra))
+    if formatted_sets:
+        return "\n".join(formatted_sets)
+    corrected_mantra_sets = subsection.get('corrected-mantra_sets', [])
+    if corrected_mantra_sets:
+        for corrected in corrected_mantra_sets:
+            c_mantra = corrected.get('corrected-mantra', '')
+            if c_mantra:
+                formatted_sets.append(normalize_grantha_samam_text_line(c_mantra))
+        if formatted_sets:
+            return "\n".join(formatted_sets)
+    for mantra_set in subsection.get('mantra_sets', []):
+        words = []
+        for word_dict in mantra_set.get('mantra-words', []):
+            w = word_dict.get('word', '')
+            sw = word_dict.get('swara', '')
+            if sw:
+                words.append(f"{w}({sw})")
+            else:
+                words.append(w)
+        if words:
+            formatted_sets.append(normalize_grantha_samam_text_line(" ".join(words)))
+    return "\n".join(formatted_sets)
+
+
+def format_grantha_rik_only_text(subsection: dict, section_title: str = "", subsection_title: str = "", prev_rik_id: Optional[Any] = None, prev_rik_text: Optional[str] = None) -> str:
+    """Format only Rik content for Grantha plain text output."""
+    from grantha.gr_transliterate import to_grantha_numeral
+    formatted_output = []
+    current_rik_id = get_canonical_rik_id(subsection)
+    rik_ids = subsection.get('rik_ids', [current_rik_id] if current_rik_id else [])
+    rik_metadata = subsection.get('rik_metadata', '')
+    rik_text = subsection.get('rik_text', '')
+    if prev_rik_text and rik_text and rik_text.strip() == prev_rik_text.strip():
+        return ""
+    show_rik_info = (prev_rik_id is None) or (current_rik_id != prev_rik_id)
+    if not show_rik_info and len(rik_ids) > 1:
+        max_rik_id = max(rik_ids) if rik_ids else None
+        if max_rik_id is not None and max_rik_id != prev_rik_id:
+            show_rik_info = True
+    if not show_rik_info or (not rik_metadata and not rik_text):
+        return ""
+    if current_rik_id:
+        formatted_output.append(f"॥ 𑌋𑌕𑍍 {to_grantha_numeral(current_rik_id)} ॥")
+    if rik_metadata:
+        formatted_output.append(rik_metadata)
+    if rik_text:
+        footnotes = subsection.get('footnotes', {})
+        rik_text, _ = process_footnotes_text(rik_text, footnotes)
+        formatted_output.append(rik_text)
+    return "\n".join(formatted_output)
+
+
 def format_rik_only_text(subsection: dict, section_title: str = "", subsection_title: str = "", prev_rik_id: Optional[Any] = None, prev_rik_text: Optional[str] = None) -> str:
     """Format only Rik content for plain text output."""
     formatted_output = []
@@ -354,4 +424,6 @@ def register_text_filters(env: Any):
     env.filters["format_rik_nometa_text"] = format_rik_nometa_text
     env.filters["format_samam_nometa_text"] = format_samam_nometa_text
     env.filters["format_malayalam_samam_text"] = format_malayalam_samam_text
+    env.filters["format_grantha_samam_text"] = format_grantha_samam_text
+    env.filters["format_grantha_rik_only_text"] = format_grantha_rik_only_text
     env.filters["split_rik_lines"] = split_rik_lines_text

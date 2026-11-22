@@ -67,19 +67,19 @@
 \BLOCK{ else }
 % Default: AdishilaVedic
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
-\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
+\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
+\newfontfamily\arcfontDeva[Scale=1.38, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\devafont[Scale=1.35, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\headerfont[Scale=1.45, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=0.95, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\swarafont[Scale=0.88, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
-\newfontfamily\arcfontDeva[Scale=1.25, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
+\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX]{AdishilaVedicBold}
+\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
+\newfontfamily\arcfontDeva[Scale=1.38, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ endif }
 

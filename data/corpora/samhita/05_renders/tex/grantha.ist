@@ -1,0 +1,7 @@
+item_0 "\n  \\item \\granthafont "
+item_1 "\n    \\subitem \\granthafont "
+item_2 "\n      \\subsubitem \\granthafont "
+delim_0 "\\latinfont , "
+delim_1 "\\latinfont , "
+delim_2 "\\latinfont , "
+delim_n "\\latinfont , "

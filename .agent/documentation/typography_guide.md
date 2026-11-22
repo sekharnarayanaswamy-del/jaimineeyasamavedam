@@ -251,11 +251,11 @@ Both PDF templates compile with `\documentclass[12pt, ...]{book}` (LaTeX base si
 
 | Font Family | Font Variable | Scale | Effective Base Size (12pt × Scale) | Usage |
 | :--- | :--- | :--- | :--- | :--- |
-| **AdishilaVedic** | `\devafont`, `\setmainfont` | `Scale=1.35` | **16.2 pt** | Main Devanagari text, Samam chant lines, Rik mula |
-| **AdishilaVedicBold** | `\headerfont` | `Scale=1.45` | **17.4 pt** | Chapter and Section structural headers |
-| **AdishilaVedic** | `\smallredfont` | `Scale=0.95` | **11.4 pt** | Swara number markings in SwaraRed (`#C62828`) |
-| **JaimineeyaSwara** | `\swarafont` | `Scale=0.88` | **10.56 pt** | Vedic swara notations and modifiers |
-| **JaimineeyaSwara** | `\arcfontDeva` | `Scale=1.25` | **15.0 pt** | Overhead connecting arcs |
+| **AdishilaVedic** | `\devafont`, `\setmainfont` | `Scale=1.50` | **18.0 pt** | Main Devanagari text, Samam chant lines, Rik mula |
+| **AdishilaVedicBold** | `\headerfont` | `Scale=1.60` | **19.2 pt** | Chapter and Section structural headers |
+| **AdishilaVedic** | `\smallredfont` | `Scale=1.05` | **12.6 pt** | Swara number markings in SwaraRed (`#C62828`) |
+| **JaimineeyaSwara** | `\swarafont` | `Scale=0.98` | **11.76 pt** | Vedic swara notations and modifiers |
+| **JaimineeyaSwara** | `\arcfontDeva` | `Scale=1.38` | **16.56 pt** | Overhead connecting arcs |
 
 *(Alternative Noto fonts, if selected: `Scale=1.05` for body [12.6 pt], `Scale=1.15` for headers [13.8 pt], `Scale=0.76` for swaras [9.12 pt]).*
 
@@ -277,9 +277,9 @@ Body font sizes remain identical across A4 and Book to maintain chanting legibil
 | :--- | :--- | :--- | :--- | :--- |
 | **Chapter Header** | `\chapter*` (`\huge\headerfont`) | 20.7 pt | **~30.0 pt** | Charcoal / Maroon |
 | **Section Header** | `\section*` (`\Large\headerfont`) | 14.4 pt | **~20.9 pt** | Charcoal / Maroon |
-| **Rik Mula Verse** | `\normalsize` | 12.0 pt | **16.2 pt** | AccentBlue (`#1565C0`, Bold) |
-| **Samam Chant Line** | `\normalsize\bfseries` | 12.0 pt | **16.2 pt** | Charcoal (`#000000`, Bold) |
-| **Samam Header** | `\normalsize` | 12.0 pt | **16.2 pt** | AccentGreen (`#2E7D32`, Bold) |
+| **Rik Mula Verse** | `\normalsize` | 12.0 pt | **18.0 pt** | AccentBlue (`#1565C0`, Regular) |
+| **Samam Chant Line** | `\normalsize` | 12.0 pt | **18.0 pt** | Charcoal (`#000000`, Regular) |
+| **Samam Header** | `\normalsize` | 12.0 pt | **18.0 pt** | AccentGreen (`#2E7D32`, Bold) |
 | **Rik Metadata** | `\footnotesize` | 10.0 pt | **13.5 pt** | AccentPurple (`#7B1FA2`) |
 | **Samam Metadata** | `\footnotesize` | 10.0 pt | **13.5 pt** | AccentBrown (`#8B4513`) |
 | **Footnotes** | `\footnotesize` | 10.0 pt | **13.5 pt** | Charcoal |
