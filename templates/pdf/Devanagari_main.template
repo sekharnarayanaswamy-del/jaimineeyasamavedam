@@ -357,7 +357,11 @@
         \vspace{\fill}
         
         % Title & Subtitle from Cover page.docx
-        \BLOCK{ if doc_title_sa and ('आरण्यक' in doc_title_sa or 'आरण्य' in doc_title_sa) }
+        \BLOCK{ if doc_title_sa and ('संहितारण्य' in doc_title_sa or ('संहिता' in doc_title_sa and 'रण्य' in doc_title_sa)) }
+        {\fontsize{34pt}{42pt}\selectfont \textbf{जैमिनीयसामवेद-संहितारण्यकम्}\par}
+        \vskip 0.6em
+        {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा}\par}
+        \BLOCK{ elif doc_title_sa and ('आरण्यक' in doc_title_sa or 'आरण्य' in doc_title_sa) }
         {\fontsize{34pt}{42pt}\selectfont \textbf{जैमिनीयसामवेद-आरण्यकम्}\par}
         \vskip 0.6em
         {\fontsize{20pt}{26pt}\selectfont \textbf{तलवकारशाखा-आरण्यक भाग:}\par}
@@ -402,6 +406,37 @@
 % ==========================================
 
 \BLOCK{ for key, supersection in supersections.items() }
+
+    \BLOCK{ if key == 'supersection_1' and ('संहितारण्य' in doc_title_sa or ('संहिता' in doc_title_sa and 'रण्य' in doc_title_sa)) }
+    % --- PART 1: SAMHITA ---
+    \clearpage
+    \phantomsection
+    \addcontentsline{toc}{part}{प्रथमः भागः — संहिता}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+    {\fontsize{24pt}{32pt}\selectfont \textbf{\textcolor{vedicmaroon}{प्रथमः भागः}}\par}
+    \vskip 1.0em
+    {\fontsize{30pt}{38pt}\selectfont \textbf{\textcolor{vedicmaroon}{संहिता}}\par}
+    \end{center}
+    \vspace*{\fill}
+    \clearpage
+    \BLOCK{ endif }
+    \BLOCK{ if key == 'supersection_7' and ('संहितारण्य' in doc_title_sa or ('संहिता' in doc_title_sa and 'रण्य' in doc_title_sa)) }
+    % --- PART 2: ARANYAKAM ---
+    \clearpage
+    \phantomsection
+    \addcontentsline{toc}{part}{द्वितीयः भागः — आरण्यकम्}
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+    {\fontsize{24pt}{32pt}\selectfont \textbf{\textcolor{vedicmaroon}{द्वितीयः भागः}}\par}
+    \vskip 1.0em
+    {\fontsize{30pt}{38pt}\selectfont \textbf{\textcolor{vedicmaroon}{आरण्यकम्}}\par}
+    \end{center}
+    \vspace*{\fill}
+    \clearpage
+    \BLOCK{ endif }
 
     % --- SUPERSECTION ---
     \clearpage           
@@ -456,7 +491,7 @@
             \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none, first_sub=true) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
-                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id and (not ns.prev_rik_text or subsection.rik_text != ns.prev_rik_text) and output_mode not in ['rik', 'rik_nometa'] }
+                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id and (not ns.prev_rik_text or subsection.rik_text != ns.prev_rik_text) and output_mode == 'combined' }
                 \par\nopagebreak[4]\vskip 0.05em plus 0.02em minus 0.02em\relax\nopagebreak[4]\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}
                 \BLOCK{ endif }
                 \BLOCK{ set ns.first_sub = false }

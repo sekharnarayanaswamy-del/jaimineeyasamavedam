@@ -1196,7 +1196,9 @@ Examples:
             doc_title_sa = "जैमिनीयसामवेद संहिता"
             summary_title_sa = "संहिता सङ्ख्या"
     else:
-        if mode_type == 'aaranam':
+        if doc_title_sa and ('संहितारण्य' in doc_title_sa or ('संहिता' in doc_title_sa and 'रण्य' in doc_title_sa)):
+            summary_title_sa = "संहिता-आरण्यक साम सङ्ख्या"
+        elif mode_type == 'aaranam':
             summary_title_sa = "आरण्यम् सङ्ख्या"
         elif mode_type == 'collection':
             summary_title_sa = "सङ्ग्रह सङ्ख्या"

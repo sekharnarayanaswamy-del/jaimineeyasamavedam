@@ -14,6 +14,8 @@ project:
 editions:
   samhita: "3.34"
   aaranam: "1.16"
+  samhita_aranyakam: "3.34+3.28"
+  grantha: "1.00"
   collections: "2.05"
   kpully: "1.07"
   purvarchikam: "1.03"
@@ -56,6 +58,22 @@ render_profiles:
     modes: ["combined", "separate", "nometa"]
     formats: ["pdf", "html", "txt"]
     kpully: true
+
+  grantha_flow:
+    description: "Grantha script rendering suite for Samhita and Aranyakam (A4 Flow Color & BW, HTML reader, Unicode TXT)"
+    corpora: ["samhita", "aaranam"]
+    script: "grantha"
+    modes: ["combined"]
+    formats: ["pdf", "html", "txt"]
+    flow: true
+
+  samam_unified:
+    description: "Unified Samhita + Aranyakam Samam chanting edition (1,521 contiguous Samams, A4 & Book, Color & BW)"
+    corpora: ["samhita_aranyakam"]
+    modes: ["separate"]
+    samam_only: true
+    formats: ["pdf"]
+    variants: ["flow", "book"]
 
 # --- RENUMBERING (src/tools/renumber_sooktam.py) ---
 # CLI Options:
@@ -251,3 +269,42 @@ procedures:
   enabled: true
   input_dir: "data/input/prayoga"
   index_file: "data/input/prayoga/prayoga_index.yaml"
+
+# --- GRANTHA SCRIPT PIPELINE (src/run_grantha_pipeline.py) ---
+grantha_pipeline:
+  corpora:
+    samhita:
+      input: "data/corpora/samhita/02_ast/Samhita_ast.json"
+      out_name: "Samhita_Grantha"
+      bw_out_name: "Samhita_flow_bw_Grantha"
+      bw_alias: "Samhita_bw_Grantha"
+      render_dir: "data/corpora/samhita/05_renders/pdf"
+    aaranam:
+      input: "data/corpora/aaranam/02_ast/Aaranam_ast.json"
+      out_name: "Aaranam_Grantha"
+      bw_out_name: "Aaranam_flow_bw_Grantha"
+      bw_alias: "Aaranam_bw_Grantha"
+      render_dir: "data/corpora/aaranam/05_renders/pdf"
+  formats: ["pdf", "html", "txt"]
+  flow: true
+  pdf_font: "NotoSerifGrantha"
+  html_font: "'Noto Serif Grantha', serif"
+
+# --- UNIFIED SAMHITA + ARANYAKAM SAMAM EDITION (scripts/recompile_samhita_aranyakam_samam.py) ---
+samhita_aranyakam_unified:
+  ast_builder: "scripts/build_combined_ast.py"
+  input_samhita: "data/corpora/samhita/02_ast/Samhita_ast.json"
+  input_aaranam: "data/corpora/aaranam/02_ast/Aaranam_ast.json"
+  combined_ast: "data/corpora/samhita_aranyakam/02_ast/Samhita_Aranyakam_ast.json"
+  output_dir: "data/corpora/samhita_aranyakam/05_renders/pdf"
+  title: "जैमिनीयसामवेद-संहितारण्यकम्"
+  subtitle: "तलवकारशाखा"
+  total_samams: 1521
+  total_arsheyams: 876
+  part_1: "प्रथमः भागः — संहिता (Supersections 1–6, Samams 1–1226)"
+  part_2: "द्वितीयः भागः — आरण्यकम् (Supersections 7–12, Samams 1227–1521)"
+  editions:
+    a4_flow_color: "Samhita_Aranyakam_flow_Samam_Devanagari.pdf"
+    a4_flow_bw: "Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf"
+    book_flow_color: "Samhita_Aranyakam_book_flow_Samam_Devanagari.pdf"
+    book_flow_bw: "Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf"

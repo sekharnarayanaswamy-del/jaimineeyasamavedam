@@ -2289,8 +2289,11 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     
 
     # Page Break / Indexing
-
-    formatted_output.append(r"\par\filbreak")
+    is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
+    if is_flow:
+        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+    else:
+        formatted_output.append(r"\par\filbreak")
 
     formatted_output.append(r"\phantomsection")
 
@@ -2377,50 +2380,33 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     
 
     # --- FOOTNOTE TRACKING ---
-
     seen_markers = set()
 
-    
-
-    string_3 = subsection.get('saman_metadata', '')
-
-    
+    string_3 = subsection.get('saman_metadata', '') or subsection.get('rik_metadata', '')
 
     # Clean titles
-
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ""
-
     index_title = re.sub(r'[|॥]', '', subsection_title).strip() if subsection_title else ""
 
-
-
     # Page Break / Indexing
-
-    formatted_output.append(r"\par\filbreak")
-
+    is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
+    if is_flow:
+        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+    else:
+        formatted_output.append(r"\par\filbreak")
     formatted_output.append(r"\phantomsection")
-
     if subsection_title:
-
         toc_title = display_sub_title.strip()
-
         if toc_level == 'subsection':
-
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_title}}}")
-
         else:
-
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
-
         formatted_output.append(f"\\index{{{index_title}}}")
 
-
-
-    # Combined Header: Subsection header + samam_metadata
-
+    # Header: Subsection header (Arsheyam) without numbering + samam_metadata
     header_part = format_metadata_dandas(display_sub_title)
-
-    header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}" if header_part else ""
+    if header_part:
+        header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}"
 
     
 
@@ -2545,8 +2531,11 @@ def format_rik_nometa(subsection, supersection_title, section_title, subsection_
     
 
     # Page Break / Indexing
-
-    formatted_output.append(r"\par\filbreak")
+    is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
+    if is_flow:
+        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+    else:
+        formatted_output.append(r"\par\filbreak")
 
     formatted_output.append(r"\phantomsection")
 
@@ -2625,44 +2614,29 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
     
 
     # Clean titles - skip saman_metadata
-
     display_sub_title = re.sub(r'^([|॥]+)\s*', r'\1 ', subsection_title) if subsection_title else ""
-
     index_title = re.sub(r'[|॥]', '', subsection_title).strip() if subsection_title else ""
 
-
-
     # Page Break / Indexing
-
-    formatted_output.append(r"\par\filbreak")
-
+    is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
+    if is_flow:
+        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+    else:
+        formatted_output.append(r"\par\filbreak")
     formatted_output.append(r"\phantomsection")
-
     if subsection_title:
-
         toc_title = display_sub_title.strip()
-
         if toc_level == 'subsection':
-
             formatted_output.append(f"\\addcontentsline{{toc}}{{section}}{{{toc_title}}}")
-
         else:
-
             formatted_output.append(f"\\addcontentsline{{toc}}{{subsection}}{{{toc_title}}}")
-
         formatted_output.append(f"\\index{{{index_title}}}")
 
-
-
-    # Header only (NO saman_metadata)
-
-    header_part = display_sub_title.strip()
-
+    # Header only (NO saman_metadata, NO numbering before subsection header)
+    header_part = format_metadata_dandas(display_sub_title)
     if header_part:
-
-        header_part = f"\\textcolor{{AccentGreen}}{{{header_part}}}"
-
-        formatted_output.append(f"{{\\centering \\textbf{{{header_part}}} \\par}}")
+        header_part = f"\\textbf{{\\textcolor{{AccentGreen}}{{{header_part}}}}}"
+        formatted_output.append(f"{{\\centering {header_part} \\par}}")
 
 
 

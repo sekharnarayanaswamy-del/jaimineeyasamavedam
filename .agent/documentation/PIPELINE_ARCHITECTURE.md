@@ -105,12 +105,48 @@ The generation pipeline populates two parallel sets of liturgical classification
 
 ---
 
+## 6. Grantha Script Rendering Pipeline
+
+Transforms Devanagari ASTs into Grantha script publications using `src/grantha/gr_transliterate.py`.
+
+```mermaid
+graph TD
+    A2["Devanagari AST (Samhita / Aaranam)"] --> B2("gr_transliterate.py")
+    B2 --> C2["Grantha AST"]
+    C2 --> D2("render.py --script grantha --flow")
+    D2 --> E2["Grantha PDF (LuaLaTeX + NotoSerifGrantha)"]
+    D2 --> F2["Grantha Standalone HTML (with Latin Numerals)"]
+    D2 --> G2["Grantha Unicode Plaintext (.txt)"]
+```
+
+---
+
+## 7. Unified Samhita + Aranyakam Samam Pipeline
+
+Combines the Samam chanting corpora of both Samhita (Supersections 1–6) and Aranyakam (Supersections 7–12) into a continuous publication.
+
+```mermaid
+graph TD
+    S1["Samhita_ast.json (Supersections 1-6)"] --> M1("build_combined_ast.py")
+    A1["Aaranam_ast.json (Supersections 7-12)"] --> M1
+    M1 --> U1["Samhita_Aranyakam_ast.json<br/>(1,521 Contiguous Samams, 876 Arsheyams)"]
+    U1 --> R1("recompile_samhita_aranyakam_samam.py")
+    R1 --> P1["A4 Flow PDF (Color & BW)"]
+    R1 --> P2["Book 180x228mm PDF (Color & BW)"]
+```
+
+---
+
 ## Key Maintenance Commands
 
 | Pipeline | Command Example |
 | :--- | :--- |
 | **Core AST (Parse & Enrich)** | `python src/generate_json.py --type samhita` |
 | **Rik Table Export** | `python src/generate_rik_table.py --type samhita` |
-| **Website** | `python src/generate_website.py --samhita` |
+| **Unified Samam Edition (A4)** | `python scripts/recompile_samhita_aranyakam_samam.py` |
+| **Unified Samam Edition (Book)** | `python scripts/recompile_samhita_aranyakam_samam.py --book` |
+| **Grantha Pipeline (All)** | `python src/run_grantha_pipeline.py` |
+| **Grantha Pipeline (BW A4)** | `python src/run_grantha_pipeline.py --bw` |
+| **End-to-End Runner** | `python src/run_pipeline.py --profile samam_unified` |
 | **Curation** | `python src/curate_jsv.py` |
-| **PDF** | `python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully` |
+| **PDF (Single Target)** | `python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json --flow` |
