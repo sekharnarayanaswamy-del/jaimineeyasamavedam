@@ -286,24 +286,105 @@ Recon Excel  : Rik Reconciliation table (JSV-KSV).xlsx (3,019,400 bytes)
 
 ---
 
-## 5. Summary Cheat Sheet for Maintainers
+## 5. Workflow 5: Aranyakam Parva Splitting Tool (`scripts/split_aranyakam_parvas.py`)
+
+### Purpose
+The Aranyakam master text is maintained in a unified file `data/corpora/aaranam/01_input/Aaranam_latest.txt` (2,677 lines). To support modular analysis, section-wise editing, and parity with the Samhita parva directory structure, the splitting tool slices the unified Aranyakam file into 6 independent, self-contained Parva text files.
+
+### Execution Command
+```bash
+python scripts/split_aranyakam_parvas.py
+```
+
+### Slice Boundaries & Parva Structure
+| Global Parva | Aranyakam Parva | SuperSection Tag | Title | Line Range in Source | Subsections | Primary Output File |
+| :---: | :---: | :--- | :--- | :---: | :---: | :--- |
+| **Parva 7** | Parva 1 | `supersection_7` | व्रत पर्व (*Vrata Parva*) | Lines 11–984 (974 lines) | 56 | `data/corpora/aaranam/01_input/parvas/Parva_7_Vrata_Parva_Devanagari_Unicode.txt` |
+| **Parva 8** | Parva 2 | `supersection_8` | अर्काणि पाठः (*Arkani Patha*) | Lines 985–1903 (919 lines) | 56 | `data/corpora/aaranam/01_input/parvas/Parva_8_Arkani_Patha_Devanagari_Unicode.txt` |
+| **Parva 9** | Parva 3 | `supersection_9` | द्वन्द्व – पर्व (*Dvandva Parva*) | Lines 1904–2418 (515 lines) | 29 | `data/corpora/aaranam/01_input/parvas/Parva_9_Dvandva_Parva_Devanagari_Unicode.txt` |
+| **Parva 10** | Parva 4 | `supersection_10` | शुक्रिया पर्व (*Shukriya Parva*) | Lines 2419–2542 (124 lines) | 7 | `data/corpora/aaranam/01_input/parvas/Parva_10_Shukriya_Parva_Devanagari_Unicode.txt` |
+| **Parva 11** | Parva 5 | `supersection_11` | शाक्वर्य पर्व (*Shakvarya Parva*) | Lines 2543–2584 (42 lines) | 1 | `data/corpora/aaranam/01_input/parvas/Parva_11_Shakvarya_Parva_Devanagari_Unicode.txt` |
+| **Parva 12** | Parva 6 | `supersection_12` | औपनिषद पर्व (*Aupanishada Parva*) | Lines 2585–2677 (93 lines) | 5 | `data/corpora/aaranam/01_input/parvas/Parva_12_Aupanishada_Parva_Devanagari_Unicode.txt` |
+
+### Key Guarantees:
+- **Zero Line Loss**: Exactly $974 + 919 + 515 + 124 + 42 + 93 = 2,667$ body text lines extracted (matching lines 11–2677 of the source).
+- **Header Synchronization**: Each file receives a canonical metadata block with project version, timestamp, and specific Parva title.
+- **Dual Filename Convention**: In `data/corpora/aaranam/01_input/parvas/`, both canonical continuous filenames (`Parva_7_...` to `Parva_12_...`) and Aranyakam-relative aliases (`Parva_1_...` to `Parva_6_...`) are created.
+- **Root Mirroring**: Canonical files (`Parva_7` through `Parva_12`) are mirrored directly into `data/corpora/aaranam/01_input/`.
+- **Parser Validation**: Every output file is directly validated against `src/generate_json.py` (`parse_unicode_text_file`) ensuring valid AST reconstruction.
+
+---
+
+## 6. Workflow 6: Unified Samhita + Aranyakam Samam Edition (`scripts/recompile_samhita_aranyakam_samam.py`)
+
+### Purpose
+Traditional practitioners require a single continuous liturgical chanting volume containing the entire Samam repertoire: **Samhita** (Supersections 1–6) and **Aranyakam** (Supersections 7–12). The unified compilation pipeline merges both ASTs and compiles high-density, flowing chant publications with publication-grade typography.
+
+```mermaid
+graph TD
+    SamhitaAST["Samhita AST<br/><i>data/corpora/samhita/02_ast/Samhita_ast.json</i>"] --> Merger["<b>scripts/build_combined_ast.py</b>"]
+    AranyakamAST["Aranyakam AST<br/><i>data/corpora/aaranam/02_ast/Aaranam_latest_out.json</i>"] --> Merger
+    
+    Merger --> CombinedAST["<b>Unified Combined AST</b><br/><i>data/corpora/samhita_aranyakam/02_ast/Samhita_Aranyakam_ast.json</i><br/>12 Supersections · 71 Sections · 876 Arsheyams · 1,521 Samams"]
+    
+    CombinedAST --> Compiler["<b>scripts/recompile_samhita_aranyakam_samam.py</b><br/>(render.py --samam-only --flow)"]
+    
+    Compiler --> A4Flow["<b>A4 Flow Edition</b><br/>Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf<br/>(251 pages)"]
+    Compiler --> BookFlow["<b>Book Flow Edition (180x228mm)</b><br/>Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf<br/>(385 pages)"]
+```
+
+### Execution Commands
+```bash
+# 1. Rebuild Combined AST and render A4 Flow B&W Edition:
+python scripts/recompile_samhita_aranyakam_samam.py --bw
+
+# 2. Render both Color and B&W editions (A4):
+python scripts/recompile_samhita_aranyakam_samam.py --all-colors
+
+# 3. Render 180x228mm Crown Quarto Book Edition:
+python scripts/recompile_samhita_aranyakam_samam.py --book --bw
+
+# 4. Generate/refresh the Combined AST independently:
+python scripts/build_combined_ast.py
+```
+
+### Output Deliverables (`data/corpora/samhita_aranyakam/05_renders/pdf/`)
+- `Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf` (A4 Flow, Black & White, 251 pages)
+- `Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf` (180×228mm Book Flow, Black & White, 385 pages)
+- `Samhita_Aranyakam_flow_Samam_Devanagari.pdf` (A4 Flow, Color edition)
+
+### Key Formatting Specifications:
+- **20 pt High-Legibility Chant Typography** (`\documentclass[12pt, ...]{book}`):
+  - **Main Chant Text (`\devafont`)**: `Scale=1.68` (**20.16 pt**), `AdishilaVedic.ttf` (`AutoFakeBold=1.18`).
+  - **Section Headings (`\headerfont`)**: `Scale=1.79` (**21.48 pt**), `AdishilaVedicBold.ttf`.
+  - **Swara Numbers (`\smallredfont`)**: `Scale=1.18` (**14.16 pt**), `AdishilaVedic.ttf`.
+  - **Overhead Arcs (`\arcfontDeva`)**: `Scale=1.55` (**18.60 pt**), `JaimineeyaSwara.ttf`.
+  - **Vedic PUA Modifiers (`\swarafont`)**: `Scale=1.10` (**13.20 pt**), `JaimineeyaSwara.ttf`.
+- **Alternating Running Headers**: Configured via `fancyhdr` to display `[Supersection Name] — [Section Name] — [Page Number]`.
+- **Flowing Footnote Apparatus**: Configured via `\usepackage[perpage,para,bottom]{footmisc}` with tab separator (`\hskip 2.0em plus 1.0em minus 0.5em`), bottom anchoring, and elevated `\skip\footins` (24pt) to prevent collisions with subscript swaras.
+
+---
+
+## 7. Summary Cheat Sheet for Maintainers
 
 | Task | Command |
 |---|---|
 | **Quick Health Check** | `python src/tools/run_regression_suite.py` |
 | **Golden Baseline Equivalence** | `python src/tools/verify_golden_equivalence.py` |
+| **Split Aranyakam Parva Files** | `python scripts/split_aranyakam_parvas.py` |
+| **Build Combined Samhita+Aranyakam AST** | `python scripts/build_combined_ast.py` |
+| **Compile Combined Samam Edition (A4 BW)** | `python scripts/recompile_samhita_aranyakam_samam.py --bw` |
+| **Compile Combined Samam Edition (Book BW)** | `python scripts/recompile_samhita_aranyakam_samam.py --book --bw` |
 | **Tag Pre-flight Check** | `python src/tools/renumber_sooktam.py data/corpora/samhita/01_input/Samhita_Devanagari_Unicode.txt --type samhita --no-increment --no-renumber` |
 | **Generate & Enrich Samhita AST** | `python src/generate_json.py --type samhita` |
 | **Export Samhita Rik Tables** | `python src/generate_rik_table.py --type samhita` |
 | **Check Samhita Continuity** | `python src/tools/check_continuity.py data/corpora/samhita/02_ast/Samhita_ast.json` |
-| **Compile Samhita Website** | `python src/generate_website.py --samhita` |
 | **Render Samhita PDF (-kpully)** | `python src/render.py data/corpora/samhita/02_ast/Samhita_ast.json -kpully` |
 | **Compile Aaranam JSON** | `python src/generate_json.py data/input/Aaranam_latest.txt --type aaranam` |
-| **Compile Aaranam Website** | `python src/generate_website.py --aaranam` |
 
 ---
 
-## 6. Active Pipeline Backlog
+## 8. Active Pipeline Backlog
 
 ### Backlog Item: Reconcile Array-Structured RDC with Micro-Website Reader & Search
 - **Context**: The canonical AST (`Samhita_ast.json`) now carries scalar Ṛk RDC strings and multi-element Sāmam RDC arrays (`List[str]`) with Sanskrit Pada-cheda.

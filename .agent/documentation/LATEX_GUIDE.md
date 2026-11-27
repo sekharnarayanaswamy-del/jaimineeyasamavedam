@@ -124,6 +124,43 @@ Both templates run under `\documentclass[12pt, ...]{book}`. The effective font s
     *   `\underbarMark`: In-line under-dash rule (`\rule{0.35em}{0.28ex}`).
     *   Tone dots/commas: In-line `{\Large\textbf{.}}` / `{\Large\textbf{,}}` in ModifierSkyBlue.
 
+## 6. Unified Samhita + Aranyakam Samam Flow Edition
+
+The continuous-flow edition compiles the entire Samam repertoire (Supersections 1–12, 1,521 Samams) into high-legibility liturgical publications.
+
+### Compilation Command
+```bash
+# A4 Flow B&W:
+python scripts/recompile_samhita_aranyakam_samam.py --bw
+
+# Book 180x228mm Flow B&W:
+python scripts/recompile_samhita_aranyakam_samam.py --book --bw
+```
+
+### High-Legibility 20 pt Typography Profile
+Under `\documentclass[12pt, ...]{book}`:
+
+| Element | LaTeX Font Family | Scale Factor | Effective Rendered Size |
+| :--- | :--- | :---: | :---: |
+| **Main Body / Chant Text** | `\devafont` (`AdishilaVedic.ttf` with `AutoFakeBold=1.18`) | `Scale=1.68` | **20.16 pt** (~**20 pt**) |
+| **Section & Parva Headers** | `\headerfont` (`AdishilaVedicBold.ttf`) | `Scale=1.79` | **21.48 pt** |
+| **Swara Notations** | `\smallredfont` (`AdishilaVedic.ttf`) | `Scale=1.18` | **14.16 pt** |
+| **Overhead Connecting Arcs** | `\arcfontDeva` (`JaimineeyaSwara.ttf`) | `Scale=1.55` | **18.60 pt** |
+| **Vedic Modifiers & PUA Glyphs** | `\swarafont` (`JaimineeyaSwara.ttf`) | `Scale=1.10` | **13.20 pt** |
+
+### Running Headers & Page Numbers (`fancyhdr`)
+- **Book Edition (twoside)**:
+  - Left/Verso (`[LE]`): `\thepage\quad\quad\leftmark` (`[Page Number]    [Supersection/Parva Title]`)
+  - Right/Recto (`[RO]`): `\rightmark\quad\quad\thepage` (`[Section/Khanda Title]    [Page Number]`)
+- **A4 Flow Edition (oneside)**:
+  - Header (`[R]`): `\leftmark\enspace---\enspace\rightmark\quad\quad\thepage` (`[Supersection] --- [Section]    [Page Number]`)
+
+### Flowing Footnote Apparatus (`footmisc`)
+- **Package**: `\usepackage[perpage,para]{footmisc}`
+- **Tab Separator**: `\hskip 2.0em plus 1.0em minus 0.5em` between consecutive footnotes within a continuous paragraph block.
+- **Rule & Clearance**: `\footnoterule` with `\setlength{\skip\footins}{16pt plus 2pt minus 2pt}` to prevent lower swara diacritics from encroaching upon the footnote divider.
+- **Variant Notations**: Standardized ingestion for manuscript markers `को.प` (Kodunthirapully) and `तो.प` (Togur).
+
 ---
 *Created by Antigravity for the Jaimineeya Samavedam Digitalization Project.*
 

@@ -65,19 +65,19 @@
 \newfontfamily\arcfontDeva[Scale=1.15, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
 \BLOCK{ else }
-% Default: AdishilaVedic
+% Default: AdishilaVedic (18 pt body text, bold)
 \BLOCK{ if font_path }
-\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
-\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedicBold.ttf}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedicBold.ttf}
 \newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Path=\VAR{font_path}]{AdishilaVedicBold.ttf}
-\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedic.ttf}
+\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, Path=\VAR{font_path}, BoldFont=AdishilaVedicBold.ttf]{AdishilaVedicBold.ttf}
 \newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \newfontfamily\arcfontDeva[Scale=1.38, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, Path=\VAR{font_path}]{JaimineeyaSwara.ttf}
 \BLOCK{ else }
-\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
-\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, \BLOCK{ if pdf_color_mode == 'bw' }AutoFakeBold=1.18, \BLOCK{ endif }BoldFont=*Bold]{AdishilaVedic}
+\setmainfont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedicBold}
+\newfontfamily\devafont[Scale=1.50, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, BoldFont=*Bold]{AdishilaVedicBold}
 \newfontfamily\headerfont[Scale=1.60, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX]{AdishilaVedicBold}
-\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, BoldFont=*Bold]{AdishilaVedic}
+\newfontfamily\smallredfont[Scale=1.05, Script=Devanagari, Renderer=Harfbuzz, Ligatures=TeX, Color=SwaraRed, BoldFont=*Bold]{AdishilaVedicBold}
 \newfontfamily\swarafont[Scale=0.98, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5, AutoFakeSlant]{JaimineeyaSwara}
 \newfontfamily\arcfontDeva[Scale=1.38, Script=Grantha, Ligatures=TeX, AutoFakeBold=3.5]{JaimineeyaSwara}
 \BLOCK{ endif }
@@ -89,7 +89,8 @@
 \usepackage{ragged2e} 
 \usepackage{stackengine} 
 \usepackage{fancyhdr}    
-\usepackage[perpage,norule]{footmisc} % Resets footnote numbering on every page - MUST BE BEFORE hyperref
+\usepackage[perpage,para,bottom]{footmisc} % Resets footnote numbering on every page, flowing text in paragraph, anchored to bottom - MUST BE BEFORE hyperref
+\setlength{\skip\footins}{24pt plus 4pt minus 2pt} % Generous clearance for descending swara markings above the dividing line
 \usepackage{hyperref}    
 \usepackage{bookmark}
 \bookmarksetup{depth=2, numbered=false} % PDF Bookmarks Navigation: Includes individual Arsheyams (Subsections)
@@ -256,8 +257,8 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\thepage}
-\fancyhead[LO]{\rightmark}   
-\fancyhead[RE]{\leftmark}    
+\fancyhead[LO,RE]{\leftmark}
+\fancyhead[C]{\rightmark}
 \renewcommand{\headrulewidth}{0.4pt}
 
 % --- FOOTER CONFIG ---
@@ -278,12 +279,21 @@
 \newcommand{\accentadj}{\kern0.15ex}
 
 % newunicodechar overrides removed to ensure strict zero-space ||N|| and tight danda binding
-% --- CUSTOM FOOTNOTE STYLE: Devanagari Numerals & Higher Position ---
+% --- CUSTOM FOOTNOTE STYLE: Devanagari Numerals & Flowing Paragraph with Tab Separation ---
 \makeatletter
 \def\devanagarinumeral#1{\expandafter\dodevanagari\number#1\relax}
 \def\dodevanagari#1{\ifx#1\relax\else\ifcase#1०\or१\or२\or३\or४\or५\or६\or७\or८\or९\fi\expandafter\dodevanagari\fi}
 \renewcommand{\thefootnote}{\devanagarinumeral{\value{footnote}}}
-\renewcommand\@makefnmark{\hbox{\textsuperscript{\raisebox{1.2ex}{\normalfont\@thefnmark}}}}
+\renewcommand{\footnoterule}{%
+  \kern -3pt
+  \hrule width 0.4\columnwidth
+  \kern 6pt
+}
+\renewcommand\@makefnmark{\hbox{\textsuperscript{\raisebox{0.35ex}{\normalfont\@thefnmark}}}}
+\long\def\@makefntext#1{%
+  \leavevmode
+  \@makefnmark\nobreak\hskip 0.25em\relax#1\unskip\penalty -10\hskip 2.0em plus 1.0em minus 0.5em\relax
+}
 \makeatother
 % ------------------------
 
@@ -493,8 +503,8 @@
             \BLOCK{ set ns = namespace(prev_rik_id=none, prev_rik_text=none, first_sub=true) }
             \BLOCK{ for subsection_key, subsection in section.subsections.items() }
                 % --- SUBSECTIONS (Mantras) ---
-                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id and (not ns.prev_rik_text or subsection.rik_text != ns.prev_rik_text) and output_mode == 'combined' }
-                \par\nopagebreak[4]\vskip 0.05em plus 0.02em minus 0.02em\relax\nopagebreak[4]\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}
+                \BLOCK{ if not ns.first_sub and subsection.rik_id != ns.prev_rik_id and (not ns.prev_rik_text or subsection.rik_text != ns.prev_rik_text) and output_mode != 'samam' and output_mode != 'samam_nometa' }
+                \par\nopagebreak[4]\vskip 0.40em plus 0.05em minus 0.05em\relax\nopagebreak[4]\centerline{\textcolor{black!35}{\rule{3.0cm}{0.35pt}}}\vskip 0.35em plus 0.05em minus 0.05em
                 \BLOCK{ endif }
                 \BLOCK{ set ns.first_sub = false }
                 
@@ -577,8 +587,8 @@
 }
 \end{center}
 \clearpage
-\fancyhead[LO]{\rightmark}
-\fancyhead[RE]{\leftmark}
+\fancyhead[LO,RE]{\leftmark}
+\fancyhead[C]{\rightmark}
 \BLOCK{ endif }
 
 \BLOCK{ if closing_mantras }

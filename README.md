@@ -173,6 +173,61 @@ python -X utf8 src/generate_json.py data/input/Samhita_Devanagari_Unicode.txt --
 
 ---
 
+### 3. Aranyakam Parva Splitting Tool (`scripts/split_aranyakam_parvas.py`)
+
+Extracts individual parva files from the unified master Aranyakam Unicode file [`data/corpora/aaranam/01_input/Aaranam_latest.txt`](data/corpora/aaranam/01_input/Aaranam_latest.txt) (2,677 lines):
+
+```powershell
+python scripts/split_aranyakam_parvas.py
+```
+
+#### Outputs:
+1. **Canonical Continuous Files** (`Parva_7_...` to `Parva_12_...`) in [`data/corpora/aaranam/01_input/parvas/`](data/corpora/aaranam/01_input/parvas/):
+   - `Parva_7_Vrata_Parva_Devanagari_Unicode.txt` (व्रत पर्व, 974 lines, 56 subsections)
+   - `Parva_8_Arkani_Patha_Devanagari_Unicode.txt` (अर्काणि पाठः, 919 lines, 56 subsections)
+   - `Parva_9_Dvandva_Parva_Devanagari_Unicode.txt` (द्वन्द्व – पर्व, 515 lines, 29 subsections)
+   - `Parva_10_Shukriya_Parva_Devanagari_Unicode.txt` (शुक्रिय पर्व, 124 lines, 7 subsections)
+   - `Parva_11_Shakvarya_Parva_Devanagari_Unicode.txt` (शाक्वर्य पर्व, 42 lines, 1 subsection)
+   - `Parva_12_Aupanishada_Parva_Devanagari_Unicode.txt` (औपनिषद पर्व, 93 lines, 5 subsections, with Closing Mantras)
+2. **Aranyakam-Relative Aliases** (`Parva_1_...` to `Parva_6_...`) in [`data/corpora/aaranam/01_input/parvas/`](data/corpora/aaranam/01_input/parvas/) for liturgical convenience.
+3. **Mirrored Canonical Files** directly in [`data/corpora/aaranam/01_input/`](data/corpora/aaranam/01_input/).
+4. **AST Compatibility**: 100% verified through `src/generate_json.py` (`parse_unicode_text_file`) with zero line loss ($974+919+515+124+42+93=2,667$ content lines).
+
+---
+
+### 4. Unified Samhita + Aranyakam Samam Compilation (`scripts/recompile_samhita_aranyakam_samam.py`)
+
+Compiles the complete unified Samam chanting corpus across both **Samhita** (Supersections 1–6) and **Aranyakam** (Supersections 7–12) into continuous-flow publications ($1,521$ Samams, $876$ Arsheyams across $12$ Supersections and $71$ Sections):
+
+```powershell
+# 1. Compile A4 Flow Edition (Color & B&W):
+python scripts/recompile_samhita_aranyakam_samam.py --all-colors
+
+# 2. Compile Book Format (180x228mm Crown Quarto, B&W):
+python scripts/recompile_samhita_aranyakam_samam.py --book --bw
+
+# 3. Build/Refresh Combined AST independently:
+python scripts/build_combined_ast.py
+```
+
+#### Key Publications Generated in `data/corpora/samhita_aranyakam/05_renders/pdf/`:
+- `Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf` (A4 Flow, Black & White, 251 pages)
+- `Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf` (180×228mm Book Flow, Black & White, 385 pages)
+- `Samhita_Aranyakam_flow_Samam_Devanagari.pdf` (A4 Flow, Color edition)
+
+#### Key Typography & Layout Features:
+- **20 pt Body Typography Profile** (`\documentclass[12pt, ...]{book}`):
+  - **Main Chant Text (`\devafont`)**: `Scale=1.68` (**20.16 pt**), `AdishilaVedic.ttf` with `AutoFakeBold=1.18`.
+  - **Section & Parva Headings (`\headerfont`)**: `Scale=1.79` (**21.48 pt**), `AdishilaVedicBold.ttf`.
+  - **Swara Numbers (`\smallredfont`)**: `Scale=1.18` (**14.16 pt**), `AdishilaVedic.ttf`.
+  - **Overhead Arcs (`\arcfontDeva`)**: `Scale=1.55` (**18.60 pt**), `JaimineeyaSwara.ttf`.
+  - **Vedic PUA Modifiers (`\swarafont`)**: `Scale=1.10` (**13.20 pt**), `JaimineeyaSwara.ttf`.
+- **Balanced Running Header**: Alternates `[Supersection Name] — [Section Name] — [Page Number]` across verso/recto pages using `fancyhdr`.
+- **Flowing Footnotes with Tab Separation**: Formats footnote apparatus into a continuous paragraph using `\usepackage[perpage,para]{footmisc}` separated by tab spacing (`\hskip 2.0em plus 1.0em minus 0.5em`), separated from body text by a clear `\footnoterule` and swara-safe clearance (`\skip\footins` at 16pt).
+- **Manuscript Apparatus Support**: Ingests footnote abbreviations (`को.प` for Kodunthirapully, `तो.प` for Togur).
+
+---
+
 ## 🔤 Malayalam Vedic Font & Swara Modifiers
 
 The custom OpenType font [`fonts/JaimineeyaSwara.ttf`](fonts/JaimineeyaSwara.ttf) includes:

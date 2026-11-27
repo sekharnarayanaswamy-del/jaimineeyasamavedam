@@ -12,8 +12,8 @@ project:
 
 # --- TIER 2: CORPUS EDITIONS ---
 editions:
-  samhita: "3.34"
-  aaranam: "1.16"
+  samhita: "3.37"
+  aaranam: "3.29"
   samhita_aranyakam: "3.34+3.28"
   grantha: "1.00"
   collections: "2.05"

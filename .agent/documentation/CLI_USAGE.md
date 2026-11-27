@@ -717,10 +717,13 @@ python scripts/recompile_samhita_aranyakam_samam.py
 # 2. Compile A4 Flow Black & White Edition
 python scripts/recompile_samhita_aranyakam_samam.py --bw
 
-# 3. Compile Book Format (180 × 228 mm) Color Edition
+# 3. Compile both Color and Black & White Editions (A4)
+python scripts/recompile_samhita_aranyakam_samam.py --all-colors
+
+# 4. Compile Book Format (180 × 228 mm) Color Edition
 python scripts/recompile_samhita_aranyakam_samam.py --book
 
-# 4. Compile Book Format (180 × 228 mm) Black & White Edition
+# 5. Compile Book Format (180 × 228 mm) Black & White Edition
 python scripts/recompile_samhita_aranyakam_samam.py --book --bw
 ```
 
@@ -730,15 +733,55 @@ python scripts/recompile_samhita_aranyakam_samam.py --book --bw
 | :--- | :--- | :--- |
 | `--book` | Compile Crown Quarto Book format (180 × 228 mm) instead of standard A4. | `False` (A4) |
 | `--bw` | Compile pure Black & White monochrome edition instead of Vedic color. | `False` (Color) |
+| `--all-colors` | Compile both Color and Black & White editions in a single run. | `False` |
 
 ### Publication Outputs
 
-| Format | Color Mode | Output PDF File | Pages |
-| :--- | :--- | :--- | :--- |
-| **A4 Continuous Flow** | Vedic Color | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_flow_Samam_Devanagari.pdf` | 231 |
-| **A4 Continuous Flow** | Black & White | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf` | 231 |
-| **Book (180 × 228 mm)** | Vedic Color | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_book_flow_Samam_Devanagari.pdf` | 357 |
-| **Book (180 × 228 mm)** | Black & White | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf` | 357 |
+| Format | Color Mode | Output PDF File | Pages (20pt Edition) |
+| :--- | :--- | :--- | :---: |
+| **A4 Continuous Flow** | Vedic Color | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_flow_Samam_Devanagari.pdf` | 251 |
+| **A4 Continuous Flow** | Black & White | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_flow_bw_Samam_Devanagari.pdf` | 251 |
+| **Book (180 × 228 mm)** | Vedic Color | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_book_flow_Samam_Devanagari.pdf` | 385 |
+| **Book (180 × 228 mm)** | Black & White | `data/corpora/samhita_aranyakam/05_renders/pdf/Samhita_Aranyakam_book_flow_bw_Samam_Devanagari.pdf` | 385 |
+
+### Typography & Layout Specifications:
+- **20 pt Chant Text**: `\devafont[Scale=1.68]` in `AdishilaVedic.ttf` with proportional headings (`Scale=1.79`), swaras (`Scale=1.18`), and arcs (`Scale=1.55`).
+- **Balanced Running Header**: Alternates `[Supersection Name] — [Section Name] — [Page Number]` across verso/recto pages using `fancyhdr`.
+- **Flowing Footnote Apparatus**: Configured via `\usepackage[perpage,para]{footmisc}` with tab separator (`\hskip 2.0em plus 1.0em minus 0.5em`) and elevated `\skip\footins` (16pt).
+- **Variant Notations**: Standardized ingestion for manuscript markers `को.प` (Kodunthirapully) and `तो.प` (Togur).
+
+---
+
+## 14. Aranyakam Parva Splitting Tool (CLI Guide)
+
+This tool slices the unified master Aranyakam text (`data/corpora/aaranam/01_input/Aaranam_latest.txt`, 2,677 lines) into individual Parva files matching the structure of the Samhita parvas.
+
+**Location:** `scripts/split_aranyakam_parvas.py`
+
+### Usage
+
+```bash
+python scripts/split_aranyakam_parvas.py
+```
+
+### Generated Files & Directory Layout
+
+1. **Parvas Directory** (`data/corpora/aaranam/01_input/parvas/`):
+   - Canonical continuous filenames (Parvas 7–12 across Samhita+Aranyakam):
+     - `Parva_7_Vrata_Parva_Devanagari_Unicode.txt` (974 lines, 56 subsections)
+     - `Parva_8_Arkani_Patha_Devanagari_Unicode.txt` (919 lines, 56 subsections)
+     - `Parva_9_Dvandva_Parva_Devanagari_Unicode.txt` (515 lines, 29 subsections)
+     - `Parva_10_Shukriya_Parva_Devanagari_Unicode.txt` (124 lines, 7 subsections)
+     - `Parva_11_Shakvarya_Parva_Devanagari_Unicode.txt` (42 lines, 1 subsection)
+     - `Parva_12_Aupanishada_Parva_Devanagari_Unicode.txt` (93 lines, 5 subsections, with Closing Mantras)
+   - Aranyakam-relative aliases (`Parva_1_...` through `Parva_6_...`) for liturgical study.
+
+2. **Root Directory Mirror** (`data/corpora/aaranam/01_input/`):
+   - Canonical `Parva_7` through `Parva_12` files mirrored for root-level tool convenience.
+
+### Invariants:
+- Zero line loss ($974 + 919 + 515 + 124 + 42 + 93 = 2,667$ extracted content lines).
+- 100% parseable by `src/generate_json.py` (`parse_unicode_text_file`).
 
 
 

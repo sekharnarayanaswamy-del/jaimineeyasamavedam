@@ -12,10 +12,15 @@ Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/One
 | Target | Parameter / Macro | Location | Current Value | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | **Document Base** | `\documentclass[12pt, a4paper, openany]{book}` | Line 1 | `12pt` | Base size for all LaTeX calculations. |
-| **Main & Mantra Font** | `\setmainfont[Scale=1.35...]` / `\devafont` | Lines 64–75 | `Scale=1.35` (~`16.2pt`) | Primary Sanskrit / Devanagari chant text (`AdishilaVedic.ttf`). |
-| **Section Headers** | `\newfontfamily\headerfont[Scale=1.45...]` | Lines 66, 73 | `Scale=1.45` (~`17.4pt`) | Bold titles for Parva, Kanda, and Samam headings. |
-| **Red Swara Font** | `\newfontfamily\smallredfont[Scale=0.95...]` | Lines 67, 74 | `Scale=0.95` (~`11.4pt`) | Red pitch indicators above/below syllables. |
-| **Vedic PUA Glyph Font** | `\newfontfamily\swarafont[Scale=0.88...]` | Lines 68, 75 | `Scale=0.88` (~`10.5pt`) | Specialized chant glyphs (`JaimineeyaSwara.ttf`). |
+| **Main & Mantra Font (Standard)** | `\setmainfont[Scale=1.35...]` / `\devafont` | Lines 64–75 | `Scale=1.35` (~`16.2pt`) | Primary Sanskrit / Devanagari chant text (`AdishilaVedic.ttf`). |
+| **Main & Mantra Font (20pt Flow)** | `\devafont[Scale=1.68, AutoFakeBold=1.18...]` | Flow configs | `Scale=1.68` (**20.16 pt**)| High-legibility 20pt chanting text with subtle bold weight (`AdishilaVedic.ttf`). |
+| **Section Headers (Standard)** | `\newfontfamily\headerfont[Scale=1.45...]` | Lines 66, 73 | `Scale=1.45` (~`17.4pt`) | Bold titles for Parva, Kanda, and Samam headings. |
+| **Section Headers (20pt Flow)** | `\headerfont[Scale=1.79...]` | Flow configs | `Scale=1.79` (**21.48 pt**)| Scaled bold headings for 20pt flow editions (`AdishilaVedicBold.ttf`). |
+| **Red Swara Font (Standard)** | `\newfontfamily\smallredfont[Scale=0.95...]` | Lines 67, 74 | `Scale=0.95` (~`11.4pt`) | Red pitch indicators above/below syllables. |
+| **Red Swara Font (20pt Flow)** | `\smallredfont[Scale=1.18...]` | Flow configs | `Scale=1.18` (**14.16 pt**)| Scaled swara numbers for 20pt chant text. |
+| **Vedic PUA Glyph Font (Standard)**| `\newfontfamily\swarafont[Scale=0.88...]` | Lines 68, 75 | `Scale=0.88` (~`10.5pt`) | Specialized chant glyphs (`JaimineeyaSwara.ttf`). |
+| **Vedic PUA Glyph Font (20pt Flow)**| `\newfontfamily\swarafont[Scale=1.10...]` | Flow configs | `Scale=1.10` (**13.20 pt**)| Scaled chant glyphs for 20pt flow editions. |
+| **Overhead Arcs (20pt Flow)** | `\arcfontDeva[Scale=1.55...]` | Flow configs | `Scale=1.55` (**18.60 pt**)| Overhead slur and conjunct connecting arcs. |
 
 ### B. Vertical Line & Paragraph Rhythm
 Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/templates/pdf/Devanagari_main.template) and [`src/render.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render.py):
@@ -26,9 +31,26 @@ Defined in [`templates/pdf/Devanagari_main.template`](file:///c:/Users/sekha/One
 | **Inter-verse Spacing** | `\par\vspace{0.35em}` | `src/render.py` | `0.35em` | Vertical blank space between two verses. |
 | **Header-to-Mantra Gap** | `\vspace{0.15em}` | `src/render.py` | `0.15em` | Keeps the Samam header closely tied to its chant text. |
 | **Rik-to-Samam Gap** | `\vspace{0.3em}` | `src/render.py` | `0.3em` | Separation between Rik verse and following Samam set. |
-| **Page Margins** | `\usepackage[margin=2.0cm...]{geometry}` | `Devanagari_main.template:L101` | `2.0cm` | Left, right, bottom margins (top is `2.5cm`). |
+| **Page Margins (A4)** | `\usepackage[margin=2.0cm...]{geometry}` | `Devanagari_main.template:L101` | `2.0cm` | Left, right, bottom margins (top is `2.5cm`). |
+| **Page Margins (Book Flow)** | `\usepackage[paperwidth=180mm,paperheight=228mm...]{geometry}` | Book template | Inner 18mm, Outer 15mm | Crown Quarto format with balanced binding margin. |
 
-### C. Horizontal Syllable & Danda Spacing
+### C. Balanced Running Headers (`fancyhdr`)
+Flow editions implement alternating, balanced running headers to provide orientation across long chant chapters:
+- **Two-Sided (Book Edition)**:
+  - Even pages (verso): `\fancyhead[LE]{\footnotesize\headerfont\thepage\quad\quad\leftmark}` (displays Page Number + Supersection/Parva).
+  - Odd pages (recto): `\fancyhead[RO]{\footnotesize\headerfont\rightmark\quad\quad\thepage}` (displays Section/Khanda + Page Number).
+- **One-Sided (A4 Flow Edition)**:
+  - Header: `\fancyhead[R]{\footnotesize\headerfont\leftmark\enspace---\enspace\rightmark\quad\quad\thepage}` (displays `[Supersection] --- [Section]    [Page Number]`).
+  - Footer: empty (`\cfoot{}`).
+
+### D. Paragraph-Flowing Footnote Engine (`footmisc`)
+Vedic manuscript apparatus often contains numerous short variant readings (e.g., `को.प` for Kodunthirapully, `तो.प` for Togur). Instead of wasting vertical page space with one footnote per line:
+- **Flowing Paragraph Mode**: `\usepackage[perpage,para]{footmisc}` gathers footnotes into a continuous paragraph.
+- **Tab Separator**: Separated by `\hskip 2.0em plus 1.0em minus 0.5em` between entries rather than commas, preventing ambiguity when footnotes themselves contain internal commas.
+- **Swara Breathing Clearance**: `\setlength{\skip\footins}{16pt plus 2pt minus 2pt}` creates essential breathing room between the lowest subscript swaras of the chant text and the `\footnoterule`.
+- **Footnote Rule**: Clean horizontal rule (`\footnoterule`) cleanly delimiting text from apparatus.
+
+### E. Horizontal Syllable & Danda Spacing
 Defined in `_render_devanagari_mantra_body()` in [`src/render.py`](file:///c:/Users/sekha/OneDrive/Documents/GitHub/jaimineeyasamavedam/src/render.py):
 
 | Target | Code / Macro | Location | Value | Purpose |

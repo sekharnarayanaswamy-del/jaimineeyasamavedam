@@ -2027,11 +2027,11 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
         formatted_output.append(r"\par\nopagebreak\vspace{0.15em}")
     elif is_flow:
         if not show_rik_info:
-            # Same Rik block: Arsheyams packed closely together
-            formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+            # Same Rik block: Arsheyams spaced with uniform breathing room
+            formatted_output.append(r"\par\penalty 0\vspace{0.75em plus 0.05em minus 0.05em}")
         else:
-            # New Rik+Samam block: no needspace, natural break point penalty 0
-            formatted_output.append(r"\par\penalty 0\vspace{0.08em plus 0.02em minus 0.02em}")
+            # New Rik+Samam block: divider line is present in template for combined mode
+            formatted_output.append(r"\par\penalty 0\vspace{0.35em plus 0.05em minus 0.05em}")
     elif force_no_break:
         # Pull up Rik 5 from Page 15 onto Page 14 to eliminate dead vertical whitespace
         formatted_output.append(r"\nopagebreak\vspace{0.08em plus 0.02em minus 0.02em}")
@@ -2197,8 +2197,8 @@ def format_mantra_sets(subsection, supersection_title, section_title, subsection
 
         
 
-    # Keep header with mantra text, but compact
-    formatted_output.append(r"\nopagebreak\vspace{-0.35em}\nopagebreak")
+    # Keep header with mantra text with uniform line spacing
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
 
 
@@ -2291,7 +2291,7 @@ def format_rik_only(subsection, supersection_title, section_title, subsection_ti
     # Page Break / Indexing
     is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
     if is_flow:
-        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+        formatted_output.append(r"\par\penalty 0\vspace{0.75em plus 0.05em minus 0.05em}")
     else:
         formatted_output.append(r"\par\filbreak")
 
@@ -2391,7 +2391,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
     # Page Break / Indexing
     is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
     if is_flow:
-        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+        formatted_output.append(r"\par\penalty 0\vspace{0.75em plus 0.05em minus 0.05em}")
     else:
         formatted_output.append(r"\par\filbreak")
     formatted_output.append(r"\phantomsection")
@@ -2448,7 +2448,7 @@ def format_samam_only(subsection, supersection_title, section_title, subsection_
 
 
 
-    formatted_output.append(r"\nopagebreak\vspace{-0.20em}\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
 
 
@@ -2533,7 +2533,7 @@ def format_rik_nometa(subsection, supersection_title, section_title, subsection_
     # Page Break / Indexing
     is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
     if is_flow:
-        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+        formatted_output.append(r"\par\penalty 0\vspace{0.75em plus 0.05em minus 0.05em}")
     else:
         formatted_output.append(r"\par\filbreak")
 
@@ -2620,7 +2620,7 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
     # Page Break / Indexing
     is_flow = CURRENT_FLOW_VARIANT or (layout_mode == 'flow')
     if is_flow:
-        formatted_output.append(r"\par\penalty 0\vspace{0.10em plus 0.02em minus 0.02em}")
+        formatted_output.append(r"\par\penalty 0\vspace{0.75em plus 0.05em minus 0.05em}")
     else:
         formatted_output.append(r"\par\filbreak")
     formatted_output.append(r"\phantomsection")
@@ -2640,11 +2640,11 @@ def format_samam_nometa(subsection, supersection_title, section_title, subsectio
 
 
 
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
     formatted_output.append(r"\vspace{0.15em}")
 
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
 
 
@@ -4307,11 +4307,11 @@ def format_malayalam_samam_block(subsection, subsection_title, toc_level='sectio
 
     # Keep header with mantra text
 
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
     formatted_output.append(r"\vspace{0.4em}")
 
-    formatted_output.append(r"\nopagebreak")
+    formatted_output.append(r"\nopagebreak\vspace{0.15em}\nopagebreak")
 
 
 
